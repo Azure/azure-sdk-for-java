@@ -5,22 +5,31 @@
 package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Definition of the configuration profile. */
+/**
+ * Definition of the configuration profile.
+ */
 @Fluent
 public final class ConfigurationProfileUpdate extends UpdateResource {
     /*
      * Properties of the configuration profile.
      */
-    @JsonProperty(value = "properties")
     private ConfigurationProfileProperties properties;
 
     /**
+     * Creates an instance of ConfigurationProfileUpdate class.
+     */
+    public ConfigurationProfileUpdate() {
+    }
+
+    /**
      * Get the properties property: Properties of the configuration profile.
-     *
+     * 
      * @return the properties value.
      */
     public ConfigurationProfileProperties properties() {
@@ -29,7 +38,7 @@ public final class ConfigurationProfileUpdate extends UpdateResource {
 
     /**
      * Set the properties property: Properties of the configuration profile.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ConfigurationProfileUpdate object itself.
      */
@@ -38,7 +47,9 @@ public final class ConfigurationProfileUpdate extends UpdateResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConfigurationProfileUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -47,14 +58,53 @@ public final class ConfigurationProfileUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationProfileUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationProfileUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationProfileUpdate.
+     */
+    public static ConfigurationProfileUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationProfileUpdate deserializedConfigurationProfileUpdate = new ConfigurationProfileUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedConfigurationProfileUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConfigurationProfileUpdate.properties = ConfigurationProfileProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationProfileUpdate;
+        });
     }
 }

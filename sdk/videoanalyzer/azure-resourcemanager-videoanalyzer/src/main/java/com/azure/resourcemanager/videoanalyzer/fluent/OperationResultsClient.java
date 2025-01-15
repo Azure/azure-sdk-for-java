@@ -41,6 +41,6 @@ public interface OperationResultsClient {
      * @return private endpoint connection operation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String accountName, String name, String operationId, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String accountName, String name,
+        String operationId, Context context);
 }

@@ -25,20 +25,16 @@ public final class TenantConfigurationsImpl implements TenantConfigurations {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public TenantConfigurationsImpl(
-        TenantConfigurationsClient innerClient,
+    public TenantConfigurationsImpl(TenantConfigurationsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public OperationResultContract deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters) {
-        OperationResultContractInner inner =
-            this.serviceClient().deploy(resourceGroupName, serviceName, configurationName, parameters);
+    public OperationResultContract deploy(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters) {
+        OperationResultContractInner inner
+            = this.serviceClient().deploy(resourceGroupName, serviceName, configurationName, parameters);
         if (inner != null) {
             return new OperationResultContractImpl(inner, this.manager());
         } else {
@@ -46,14 +42,10 @@ public final class TenantConfigurationsImpl implements TenantConfigurations {
         }
     }
 
-    public OperationResultContract deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context) {
-        OperationResultContractInner inner =
-            this.serviceClient().deploy(resourceGroupName, serviceName, configurationName, parameters, context);
+    public OperationResultContract deploy(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters, Context context) {
+        OperationResultContractInner inner
+            = this.serviceClient().deploy(resourceGroupName, serviceName, configurationName, parameters, context);
         if (inner != null) {
             return new OperationResultContractImpl(inner, this.manager());
         } else {
@@ -61,13 +53,10 @@ public final class TenantConfigurationsImpl implements TenantConfigurations {
         }
     }
 
-    public OperationResultContract save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters) {
-        OperationResultContractInner inner =
-            this.serviceClient().save(resourceGroupName, serviceName, configurationName, parameters);
+    public OperationResultContract save(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, SaveConfigurationParameter parameters) {
+        OperationResultContractInner inner
+            = this.serviceClient().save(resourceGroupName, serviceName, configurationName, parameters);
         if (inner != null) {
             return new OperationResultContractImpl(inner, this.manager());
         } else {
@@ -75,14 +64,10 @@ public final class TenantConfigurationsImpl implements TenantConfigurations {
         }
     }
 
-    public OperationResultContract save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters,
-        Context context) {
-        OperationResultContractInner inner =
-            this.serviceClient().save(resourceGroupName, serviceName, configurationName, parameters, context);
+    public OperationResultContract save(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, SaveConfigurationParameter parameters, Context context) {
+        OperationResultContractInner inner
+            = this.serviceClient().save(resourceGroupName, serviceName, configurationName, parameters, context);
         if (inner != null) {
             return new OperationResultContractImpl(inner, this.manager());
         } else {
@@ -90,13 +75,10 @@ public final class TenantConfigurationsImpl implements TenantConfigurations {
         }
     }
 
-    public OperationResultContract validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters) {
-        OperationResultContractInner inner =
-            this.serviceClient().validate(resourceGroupName, serviceName, configurationName, parameters);
+    public OperationResultContract validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters) {
+        OperationResultContractInner inner
+            = this.serviceClient().validate(resourceGroupName, serviceName, configurationName, parameters);
         if (inner != null) {
             return new OperationResultContractImpl(inner, this.manager());
         } else {
@@ -104,14 +86,10 @@ public final class TenantConfigurationsImpl implements TenantConfigurations {
         }
     }
 
-    public OperationResultContract validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context) {
-        OperationResultContractInner inner =
-            this.serviceClient().validate(resourceGroupName, serviceName, configurationName, parameters, context);
+    public OperationResultContract validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters, Context context) {
+        OperationResultContractInner inner
+            = this.serviceClient().validate(resourceGroupName, serviceName, configurationName, parameters, context);
         if (inner != null) {
             return new OperationResultContractImpl(inner, this.manager());
         } else {
@@ -119,25 +97,22 @@ public final class TenantConfigurationsImpl implements TenantConfigurations {
         }
     }
 
-    public Response<TenantConfigurationSyncStateContract> getSyncStateWithResponse(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName, Context context) {
-        Response<TenantConfigurationSyncStateContractInner> inner =
-            this.serviceClient().getSyncStateWithResponse(resourceGroupName, serviceName, configurationName, context);
+    public Response<TenantConfigurationSyncStateContract> getSyncStateWithResponse(String resourceGroupName,
+        String serviceName, ConfigurationIdName configurationName, Context context) {
+        Response<TenantConfigurationSyncStateContractInner> inner
+            = this.serviceClient().getSyncStateWithResponse(resourceGroupName, serviceName, configurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TenantConfigurationSyncStateContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public TenantConfigurationSyncStateContract getSyncState(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName) {
-        TenantConfigurationSyncStateContractInner inner =
-            this.serviceClient().getSyncState(resourceGroupName, serviceName, configurationName);
+    public TenantConfigurationSyncStateContract getSyncState(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName) {
+        TenantConfigurationSyncStateContractInner inner
+            = this.serviceClient().getSyncState(resourceGroupName, serviceName, configurationName);
         if (inner != null) {
             return new TenantConfigurationSyncStateContractImpl(inner, this.manager());
         } else {

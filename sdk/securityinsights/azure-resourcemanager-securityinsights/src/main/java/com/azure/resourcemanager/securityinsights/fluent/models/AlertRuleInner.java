@@ -5,37 +5,105 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.securityinsights.models.AlertRuleKind;
 import com.azure.resourcemanager.securityinsights.models.FusionAlertRule;
-import com.azure.resourcemanager.securityinsights.models.MLBehaviorAnalyticsAlertRule;
 import com.azure.resourcemanager.securityinsights.models.MicrosoftSecurityIncidentCreationAlertRule;
-import com.azure.resourcemanager.securityinsights.models.NrtAlertRule;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.ScheduledAlertRule;
-import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceAlertRule;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Alert rule. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = AlertRuleInner.class)
-@JsonTypeName("AlertRule")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "MLBehaviorAnalytics", value = MLBehaviorAnalyticsAlertRule.class),
-    @JsonSubTypes.Type(name = "Fusion", value = FusionAlertRule.class),
-    @JsonSubTypes.Type(name = "ThreatIntelligence", value = ThreatIntelligenceAlertRule.class),
-    @JsonSubTypes.Type(
-        name = "MicrosoftSecurityIncidentCreation",
-        value = MicrosoftSecurityIncidentCreationAlertRule.class),
-    @JsonSubTypes.Type(name = "Scheduled", value = ScheduledAlertRule.class),
-    @JsonSubTypes.Type(name = "NRT", value = NrtAlertRule.class)
-})
+/**
+ * Alert rule.
+ */
 @Fluent
 public class AlertRuleInner extends ResourceWithEtag {
-    /** {@inheritDoc} */
+    /*
+     * The alert rule kind
+     */
+    private AlertRuleKind kind = AlertRuleKind.fromString("AlertRule");
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AlertRuleInner class.
+     */
+    public AlertRuleInner() {
+    }
+
+    /**
+     * Get the kind property: The alert rule kind.
+     * 
+     * @return the kind value.
+     */
+    public AlertRuleKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlertRuleInner withEtag(String etag) {
         super.withEtag(etag);
@@ -44,11 +112,87 @@ public class AlertRuleInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertRuleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertRuleInner.
+     */
+    public static AlertRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Fusion".equals(discriminatorValue)) {
+                    return FusionAlertRule.fromJson(readerToUse.reset());
+                } else if ("MicrosoftSecurityIncidentCreation".equals(discriminatorValue)) {
+                    return MicrosoftSecurityIncidentCreationAlertRule.fromJson(readerToUse.reset());
+                } else if ("Scheduled".equals(discriminatorValue)) {
+                    return ScheduledAlertRule.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AlertRuleInner fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertRuleInner deserializedAlertRuleInner = new AlertRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAlertRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAlertRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAlertRuleInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAlertRuleInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAlertRuleInner.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAlertRuleInner.kind = AlertRuleKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertRuleInner;
+        });
     }
 }

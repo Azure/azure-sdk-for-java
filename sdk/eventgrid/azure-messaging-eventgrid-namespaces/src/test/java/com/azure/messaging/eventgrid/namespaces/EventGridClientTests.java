@@ -41,7 +41,6 @@ public class EventGridClientTests extends EventGridClientTestBase {
         return senderBuilder.credential(getKey(EVENTGRID_KEY)).buildClient();
     }
 
-
     @Test
     void send() {
         EventGridSenderClient client = buildSenderClient();
@@ -71,7 +70,8 @@ public class EventGridClientTests extends EventGridClientTestBase {
         senderClient.send(getCloudEvent());
         ReceiveResult receiveResult = client.receive(1, Duration.ofSeconds(10));
 
-        AcknowledgeResult acknowledgeResult = client.acknowledge(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
+        AcknowledgeResult acknowledgeResult = client.acknowledge(
+            Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
         assertNotNull(acknowledgeResult);
         assertFalse(acknowledgeResult.getSucceededLockTokens().isEmpty());
     }
@@ -83,7 +83,8 @@ public class EventGridClientTests extends EventGridClientTestBase {
         senderClient.send(getCloudEvent());
         ReceiveResult receiveResult = client.receive(1, Duration.ofSeconds(10));
 
-        ReleaseResult releaseResult = client.release(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
+        ReleaseResult releaseResult = client
+            .release(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
         assertNotNull(releaseResult);
         assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
     }
@@ -94,7 +95,9 @@ public class EventGridClientTests extends EventGridClientTestBase {
         EventGridReceiverClient client = buildReceiverClient();
         senderClient.send(getCloudEvent());
         ReceiveResult receiveResult = client.receive(1, Duration.ofSeconds(10));
-        ReleaseResult releaseResult = client.release(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()), ReleaseDelay.TEN_SECONDS);
+        ReleaseResult releaseResult = client.release(
+            Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()),
+            ReleaseDelay.TEN_SECONDS);
         assertNotNull(releaseResult);
         assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
     }
@@ -105,7 +108,8 @@ public class EventGridClientTests extends EventGridClientTestBase {
         EventGridReceiverClient client = buildReceiverClient();
         senderClient.send(getCloudEvent());
         ReceiveResult receiveResult = client.receive(1, Duration.ofSeconds(10));
-        RejectResult rejectResult = client.reject(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
+        RejectResult rejectResult = client
+            .reject(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
         assertNotNull(rejectResult);
         assertFalse(rejectResult.getSucceededLockTokens().isEmpty());
     }
@@ -116,7 +120,8 @@ public class EventGridClientTests extends EventGridClientTestBase {
         EventGridReceiverClient client = buildReceiverClient();
         senderClient.send(getCloudEvent());
         ReceiveResult receiveResult = client.receive(1, Duration.ofSeconds(10));
-        RenewLocksResult renewResult =  client.renewLocks(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
+        RenewLocksResult renewResult = client.renewLocks(
+            Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
         assertNotNull(renewResult);
         assertFalse(renewResult.getSucceededLockTokens().isEmpty());
     }

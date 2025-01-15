@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.SharedExecutorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.LONG_BODY;
@@ -46,8 +47,8 @@ import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.RETURN_HEAD
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.TIMEOUT;
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
-import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
@@ -171,7 +172,7 @@ public class OkHttpAsyncHttpClientTests {
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
-            com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
+            assertArraysEqual(LONG_BODY, response);
             return true;
         }).expectComplete().verify(Duration.ofSeconds(60));
     }
@@ -181,23 +182,21 @@ public class OkHttpAsyncHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new OkHttpAsyncClientProvider().createInstance();
 
-        ForkJoinPool pool = new ForkJoinPool();
-        try {
-            List<Callable<Void>> requests = new ArrayList<>(numRequests);
-            for (int i = 0; i < numRequests; i++) {
-                requests.add(() -> {
-                    try (HttpResponse response = doRequestSync(client, "/long")) {
-                        byte[] body = response.getBodyAsBinaryData().toBytes();
-                        com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, body);
-                        return null;
-                    }
-                });
-            }
+        List<Callable<Void>> requests = new ArrayList<>(numRequests);
+        for (int i = 0; i < numRequests; i++) {
+            requests.add(() -> {
+                try (HttpResponse response = doRequestSync(client, "/long")) {
+                    byte[] body = response.getBodyAsBinaryData().toBytes();
+                    assertArraysEqual(LONG_BODY, body);
+                    return null;
+                }
+            });
+        }
 
-            pool.invokeAll(requests);
-        } finally {
-            pool.shutdown();
-            assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
+        List<Future<Void>> futures = SharedExecutorService.getInstance().invokeAll(requests, 60, TimeUnit.SECONDS);
+        for (Future<Void> future : futures) {
+            assertTrue(future.isDone());
+            assertDoesNotThrow(() -> future.get());
         }
     }
 
@@ -293,7 +292,7 @@ public class OkHttpAsyncHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
+            .assertNext(bytes -> assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 

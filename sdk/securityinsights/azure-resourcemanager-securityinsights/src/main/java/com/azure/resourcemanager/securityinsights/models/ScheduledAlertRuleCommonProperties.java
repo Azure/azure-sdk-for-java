@@ -5,79 +5,80 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-/** Scheduled alert rule template property bag. */
+/**
+ * Scheduled alert rule template property bag.
+ */
 @Fluent
-public class ScheduledAlertRuleCommonProperties {
+public class ScheduledAlertRuleCommonProperties implements JsonSerializable<ScheduledAlertRuleCommonProperties> {
     /*
      * The query that creates alerts for this rule.
      */
-    @JsonProperty(value = "query")
     private String query;
 
     /*
      * The frequency (in ISO 8601 duration format) for this alert rule to run.
      */
-    @JsonProperty(value = "queryFrequency")
     private Duration queryFrequency;
 
     /*
      * The period (in ISO 8601 duration format) that this alert rule looks at.
      */
-    @JsonProperty(value = "queryPeriod")
     private Duration queryPeriod;
 
     /*
      * The severity for alerts created by this alert rule.
      */
-    @JsonProperty(value = "severity")
     private AlertSeverity severity;
 
     /*
      * The operation against the threshold that triggers alert rule.
      */
-    @JsonProperty(value = "triggerOperator")
     private TriggerOperator triggerOperator;
 
     /*
      * The threshold triggers this alert rule.
      */
-    @JsonProperty(value = "triggerThreshold")
     private Integer triggerThreshold;
 
     /*
      * The event grouping settings.
      */
-    @JsonProperty(value = "eventGroupingSettings")
     private EventGroupingSettings eventGroupingSettings;
 
     /*
      * Dictionary of string key-value pairs of columns to be attached to the alert
      */
-    @JsonProperty(value = "customDetails")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customDetails;
 
     /*
      * Array of the entity mappings of the alert rule
      */
-    @JsonProperty(value = "entityMappings")
     private List<EntityMapping> entityMappings;
 
     /*
      * The alert details override settings
      */
-    @JsonProperty(value = "alertDetailsOverride")
     private AlertDetailsOverride alertDetailsOverride;
 
     /**
+     * Creates an instance of ScheduledAlertRuleCommonProperties class.
+     */
+    public ScheduledAlertRuleCommonProperties() {
+    }
+
+    /**
      * Get the query property: The query that creates alerts for this rule.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -86,7 +87,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the query property: The query that creates alerts for this rule.
-     *
+     * 
      * @param query the query value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -97,7 +98,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Get the queryFrequency property: The frequency (in ISO 8601 duration format) for this alert rule to run.
-     *
+     * 
      * @return the queryFrequency value.
      */
     public Duration queryFrequency() {
@@ -106,7 +107,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the queryFrequency property: The frequency (in ISO 8601 duration format) for this alert rule to run.
-     *
+     * 
      * @param queryFrequency the queryFrequency value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -117,7 +118,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Get the queryPeriod property: The period (in ISO 8601 duration format) that this alert rule looks at.
-     *
+     * 
      * @return the queryPeriod value.
      */
     public Duration queryPeriod() {
@@ -126,7 +127,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the queryPeriod property: The period (in ISO 8601 duration format) that this alert rule looks at.
-     *
+     * 
      * @param queryPeriod the queryPeriod value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -137,7 +138,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -146,7 +147,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -157,7 +158,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Get the triggerOperator property: The operation against the threshold that triggers alert rule.
-     *
+     * 
      * @return the triggerOperator value.
      */
     public TriggerOperator triggerOperator() {
@@ -166,7 +167,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the triggerOperator property: The operation against the threshold that triggers alert rule.
-     *
+     * 
      * @param triggerOperator the triggerOperator value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -177,7 +178,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Get the triggerThreshold property: The threshold triggers this alert rule.
-     *
+     * 
      * @return the triggerThreshold value.
      */
     public Integer triggerThreshold() {
@@ -186,7 +187,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the triggerThreshold property: The threshold triggers this alert rule.
-     *
+     * 
      * @param triggerThreshold the triggerThreshold value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -197,7 +198,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Get the eventGroupingSettings property: The event grouping settings.
-     *
+     * 
      * @return the eventGroupingSettings value.
      */
     public EventGroupingSettings eventGroupingSettings() {
@@ -206,7 +207,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the eventGroupingSettings property: The event grouping settings.
-     *
+     * 
      * @param eventGroupingSettings the eventGroupingSettings value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -217,7 +218,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Get the customDetails property: Dictionary of string key-value pairs of columns to be attached to the alert.
-     *
+     * 
      * @return the customDetails value.
      */
     public Map<String, String> customDetails() {
@@ -226,7 +227,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the customDetails property: Dictionary of string key-value pairs of columns to be attached to the alert.
-     *
+     * 
      * @param customDetails the customDetails value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -237,7 +238,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Get the entityMappings property: Array of the entity mappings of the alert rule.
-     *
+     * 
      * @return the entityMappings value.
      */
     public List<EntityMapping> entityMappings() {
@@ -246,7 +247,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the entityMappings property: Array of the entity mappings of the alert rule.
-     *
+     * 
      * @param entityMappings the entityMappings value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -257,7 +258,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Get the alertDetailsOverride property: The alert details override settings.
-     *
+     * 
      * @return the alertDetailsOverride value.
      */
     public AlertDetailsOverride alertDetailsOverride() {
@@ -266,7 +267,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Set the alertDetailsOverride property: The alert details override settings.
-     *
+     * 
      * @param alertDetailsOverride the alertDetailsOverride value to set.
      * @return the ScheduledAlertRuleCommonProperties object itself.
      */
@@ -277,7 +278,7 @@ public class ScheduledAlertRuleCommonProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -290,5 +291,80 @@ public class ScheduledAlertRuleCommonProperties {
         if (alertDetailsOverride() != null) {
             alertDetailsOverride().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("queryFrequency", CoreUtils.durationToStringWithDays(this.queryFrequency));
+        jsonWriter.writeStringField("queryPeriod", CoreUtils.durationToStringWithDays(this.queryPeriod));
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("triggerOperator",
+            this.triggerOperator == null ? null : this.triggerOperator.toString());
+        jsonWriter.writeNumberField("triggerThreshold", this.triggerThreshold);
+        jsonWriter.writeJsonField("eventGroupingSettings", this.eventGroupingSettings);
+        jsonWriter.writeMapField("customDetails", this.customDetails, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("entityMappings", this.entityMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("alertDetailsOverride", this.alertDetailsOverride);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledAlertRuleCommonProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledAlertRuleCommonProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledAlertRuleCommonProperties.
+     */
+    public static ScheduledAlertRuleCommonProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledAlertRuleCommonProperties deserializedScheduledAlertRuleCommonProperties
+                = new ScheduledAlertRuleCommonProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedScheduledAlertRuleCommonProperties.query = reader.getString();
+                } else if ("queryFrequency".equals(fieldName)) {
+                    deserializedScheduledAlertRuleCommonProperties.queryFrequency
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("queryPeriod".equals(fieldName)) {
+                    deserializedScheduledAlertRuleCommonProperties.queryPeriod
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("severity".equals(fieldName)) {
+                    deserializedScheduledAlertRuleCommonProperties.severity
+                        = AlertSeverity.fromString(reader.getString());
+                } else if ("triggerOperator".equals(fieldName)) {
+                    deserializedScheduledAlertRuleCommonProperties.triggerOperator
+                        = TriggerOperator.fromString(reader.getString());
+                } else if ("triggerThreshold".equals(fieldName)) {
+                    deserializedScheduledAlertRuleCommonProperties.triggerThreshold
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("eventGroupingSettings".equals(fieldName)) {
+                    deserializedScheduledAlertRuleCommonProperties.eventGroupingSettings
+                        = EventGroupingSettings.fromJson(reader);
+                } else if ("customDetails".equals(fieldName)) {
+                    Map<String, String> customDetails = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduledAlertRuleCommonProperties.customDetails = customDetails;
+                } else if ("entityMappings".equals(fieldName)) {
+                    List<EntityMapping> entityMappings = reader.readArray(reader1 -> EntityMapping.fromJson(reader1));
+                    deserializedScheduledAlertRuleCommonProperties.entityMappings = entityMappings;
+                } else if ("alertDetailsOverride".equals(fieldName)) {
+                    deserializedScheduledAlertRuleCommonProperties.alertDetailsOverride
+                        = AlertDetailsOverride.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledAlertRuleCommonProperties;
+        });
     }
 }

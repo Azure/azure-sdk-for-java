@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkHubs. */
+/**
+ * Resource collection API of PrivateLinkHubs.
+ */
 public interface PrivateLinkHubs {
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,7 +25,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -44,12 +46,12 @@ public interface PrivateLinkHubs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a privateLinkHub along with {@link Response}.
      */
-    Response<PrivateLinkHub> getByResourceGroupWithResponse(
-        String resourceGroupName, String privateLinkHubName, Context context);
+    Response<PrivateLinkHub> getByResourceGroupWithResponse(String resourceGroupName, String privateLinkHubName,
+        Context context);
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +63,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +74,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -84,7 +86,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of privateLinkHubs as paginated response with {@link PagedIterable}.
@@ -93,7 +95,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,7 +106,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +117,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +129,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +139,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface PrivateLinkHubs {
 
     /**
      * Begins definition for a new PrivateLinkHub resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PrivateLinkHub definition.
      */

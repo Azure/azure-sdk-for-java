@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The placement policy for allocating nodes in the pool.
  * 
@@ -38,7 +35,6 @@ public enum NodePlacementPolicyType {
      * @param value the serialized value to parse.
      * @return the parsed NodePlacementPolicyType object, or null if unable to parse.
      */
-    @JsonCreator
     public static NodePlacementPolicyType fromString(String value) {
         if (value == null) {
             return null;
@@ -55,7 +51,6 @@ public enum NodePlacementPolicyType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

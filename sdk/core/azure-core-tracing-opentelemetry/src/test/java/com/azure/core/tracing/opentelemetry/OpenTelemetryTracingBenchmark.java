@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.tracing.Tracer;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.context.Context;
@@ -76,7 +77,7 @@ public class OpenTelemetryTracingBenchmark {
 
     private static Tracer configureTracer(boolean enabled) {
         if (!enabled) {
-            return new OpenTelemetryTracer("benchmark", null, null,
+            return new OpenTelemetryTracer(new LibraryTelemetryOptions("benchmark"),
                 new OpenTelemetryTracingOptions().setEnabled(false));
         }
 
@@ -86,7 +87,7 @@ public class OpenTelemetryTracingBenchmark {
             .build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(provider).build();
-        return new OpenTelemetryTracer("benchmark", null, null,
+        return new OpenTelemetryTracer(new LibraryTelemetryOptions("benchmark"),
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
     }
 

@@ -13,16 +13,18 @@ public final class LakeHouseWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseWriteSettings\",\"maxConcurrentConnections\":\"datasgpdbhbdxsjsox\",\"disableMetricsCollection\":\"datawuungdvvddr\",\"copyBehavior\":\"dataquyin\",\"metadata\":[{\"name\":\"datavonwrpel\",\"value\":\"datamitmtkcqixgqxs\"}],\"\":{\"wqumecqyianjmv\":\"datavthuvupdsafqag\"}}")
+            "{\"type\":\"LakeHouseWriteSettings\",\"maxConcurrentConnections\":\"datarezpuzkwi\",\"disableMetricsCollection\":\"datafin\",\"copyBehavior\":\"datasdtlpshxjhans\",\"metadata\":[{\"name\":\"datalcnk\",\"value\":\"datasqvfyoksstal\"},{\"name\":\"dataqlxjjltuymnaaqh\",\"value\":\"dataaa\"},{\"name\":\"datadlvccuvcvaf\",\"value\":\"databyjgdjvyclasd\"}],\"\":{\"gsnpv\":\"datanupftek\"}}")
             .toObject(LakeHouseWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("datasgpdbhbdxsjsox")
-            .withDisableMetricsCollection("datawuungdvvddr")
-            .withCopyBehavior("dataquyin")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datavonwrpel").withValue("datamitmtkcqixgqxs")));
+        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("datarezpuzkwi")
+            .withDisableMetricsCollection("datafin")
+            .withCopyBehavior("datasdtlpshxjhans")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datalcnk").withValue("datasqvfyoksstal"),
+                new MetadataItem().withName("dataqlxjjltuymnaaqh").withValue("dataaa"),
+                new MetadataItem().withName("datadlvccuvcvaf").withValue("databyjgdjvyclasd")));
         model = BinaryData.fromObject(model).toObject(LakeHouseWriteSettings.class);
     }
 }

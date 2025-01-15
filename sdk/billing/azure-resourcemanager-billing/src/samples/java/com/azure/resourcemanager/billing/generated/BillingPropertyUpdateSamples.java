@@ -5,20 +5,52 @@
 package com.azure.resourcemanager.billing.generated;
 
 import com.azure.resourcemanager.billing.fluent.models.BillingPropertyInner;
+import com.azure.resourcemanager.billing.models.BillingPropertyProperties;
+import com.azure.resourcemanager.billing.models.BillingPropertyPropertiesSubscriptionServiceUsageAddress;
 
-/** Samples for BillingProperty Update. */
+/**
+ * Samples for BillingProperty Update.
+ */
 public final class BillingPropertyUpdateSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateBillingProperty.json
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
+     * billingPropertyPatchSubscriptionServiceUsageAddress.json
      */
     /**
-     * Sample code: UpdateBillingProperty.
-     *
+     * Sample code: BillingPropertyPatchSubscriptionServiceUsageAddress.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void updateBillingProperty(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .billingProperties()
-            .updateWithResponse(new BillingPropertyInner().withCostCenter("1010"), com.azure.core.util.Context.NONE);
+    public static void
+        billingPropertyPatchSubscriptionServiceUsageAddress(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.billingProperties()
+            .updateWithResponse(new BillingPropertyInner()
+                .withProperties(new BillingPropertyProperties().withSubscriptionServiceUsageAddress(
+                    new BillingPropertyPropertiesSubscriptionServiceUsageAddress().withAddressLine1("Address line 1")
+                        .withAddressLine2("Address line 2")
+                        .withCity("City")
+                        .withCountry("US")
+                        .withFirstName("Jenny")
+                        .withLastName("Doe")
+                        .withMiddleName("Ann")
+                        .withPostalCode("fakeTokenPlaceholder")
+                        .withRegion("State"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
+     * billingPropertyPatchCostCenter.json
+     */
+    /**
+     * Sample code: BillingPropertyPatchCostCenter.
+     * 
+     * @param manager Entry point to BillingManager.
+     */
+    public static void billingPropertyPatchCostCenter(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.billingProperties()
+            .updateWithResponse(
+                new BillingPropertyInner().withProperties(new BillingPropertyProperties().withCostCenter("1010")),
+                com.azure.core.util.Context.NONE);
     }
 }

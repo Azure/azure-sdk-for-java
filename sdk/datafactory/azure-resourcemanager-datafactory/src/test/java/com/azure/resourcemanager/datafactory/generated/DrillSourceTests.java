@@ -11,19 +11,19 @@ public final class DrillSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillSource model = BinaryData.fromString(
-            "{\"type\":\"DrillSource\",\"query\":\"datadbvcxoamh\",\"queryTimeout\":\"datauhnbdlz\",\"additionalColumns\":\"dataectzjjgvcbt\",\"sourceRetryCount\":\"datampnkyvujhej\",\"sourceRetryWait\":\"datarvlguy\",\"maxConcurrentConnections\":\"datarngnbqhmuqyzxko\",\"disableMetricsCollection\":\"datarcjshtcfnbf\",\"\":{\"huboqozx\":\"dataxlyhxpdqo\"}}")
+            "{\"type\":\"DrillSource\",\"query\":\"datafn\",\"queryTimeout\":\"dataeyavldovpwrq\",\"additionalColumns\":\"datazokplzliizb\",\"sourceRetryCount\":\"datajumulhfq\",\"sourceRetryWait\":\"datanchah\",\"maxConcurrentConnections\":\"datanrptrqcap\",\"disableMetricsCollection\":\"datafvowzbk\",\"\":{\"qzzkplqmca\":\"datapzdpujywjmo\",\"jgfpqwwugfwpvj\":\"dataseiauveeng\"}}")
             .toObject(DrillSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DrillSource model = new DrillSource().withSourceRetryCount("datampnkyvujhej")
-            .withSourceRetryWait("datarvlguy")
-            .withMaxConcurrentConnections("datarngnbqhmuqyzxko")
-            .withDisableMetricsCollection("datarcjshtcfnbf")
-            .withQueryTimeout("datauhnbdlz")
-            .withAdditionalColumns("dataectzjjgvcbt")
-            .withQuery("datadbvcxoamh");
+        DrillSource model = new DrillSource().withSourceRetryCount("datajumulhfq")
+            .withSourceRetryWait("datanchah")
+            .withMaxConcurrentConnections("datanrptrqcap")
+            .withDisableMetricsCollection("datafvowzbk")
+            .withQueryTimeout("dataeyavldovpwrq")
+            .withAdditionalColumns("datazokplzliizb")
+            .withQuery("datafn");
         model = BinaryData.fromObject(model).toObject(DrillSource.class);
     }
 }

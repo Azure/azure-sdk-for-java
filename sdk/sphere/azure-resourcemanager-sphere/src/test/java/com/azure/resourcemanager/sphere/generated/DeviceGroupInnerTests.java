@@ -29,7 +29,8 @@ public final class DeviceGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeviceGroupInner model = new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("d")
-            .withOsFeedType(OSFeedType.RETAIL).withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
+            .withOsFeedType(OSFeedType.RETAIL)
+            .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
             .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
             .withRegionalDataBoundary(RegionalDataBoundary.EU));
         model = BinaryData.fromObject(model).toObject(DeviceGroupInner.class);

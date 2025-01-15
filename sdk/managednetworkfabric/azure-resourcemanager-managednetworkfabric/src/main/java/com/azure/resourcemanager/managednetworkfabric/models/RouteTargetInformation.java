@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Route Target Configuration. */
+/**
+ * Route Target Configuration.
+ */
 @Fluent
-public final class RouteTargetInformation {
+public final class RouteTargetInformation implements JsonSerializable<RouteTargetInformation> {
     /*
      * Route Targets to be applied for incoming routes into CE.
      */
-    @JsonProperty(value = "importIpv4RouteTargets")
     private List<String> importIpv4RouteTargets;
 
     /*
      * Route Targets to be applied for incoming routes from CE.
      */
-    @JsonProperty(value = "importIpv6RouteTargets")
     private List<String> importIpv6RouteTargets;
 
     /*
      * Route Targets to be applied for outgoing routes into CE.
      */
-    @JsonProperty(value = "exportIpv4RouteTargets")
     private List<String> exportIpv4RouteTargets;
 
     /*
      * Route Targets to be applied for outgoing routes from CE.
      */
-    @JsonProperty(value = "exportIpv6RouteTargets")
     private List<String> exportIpv6RouteTargets;
 
-    /** Creates an instance of RouteTargetInformation class. */
+    /**
+     * Creates an instance of RouteTargetInformation class.
+     */
     public RouteTargetInformation() {
     }
 
     /**
      * Get the importIpv4RouteTargets property: Route Targets to be applied for incoming routes into CE.
-     *
+     * 
      * @return the importIpv4RouteTargets value.
      */
     public List<String> importIpv4RouteTargets() {
@@ -50,7 +54,7 @@ public final class RouteTargetInformation {
 
     /**
      * Set the importIpv4RouteTargets property: Route Targets to be applied for incoming routes into CE.
-     *
+     * 
      * @param importIpv4RouteTargets the importIpv4RouteTargets value to set.
      * @return the RouteTargetInformation object itself.
      */
@@ -61,7 +65,7 @@ public final class RouteTargetInformation {
 
     /**
      * Get the importIpv6RouteTargets property: Route Targets to be applied for incoming routes from CE.
-     *
+     * 
      * @return the importIpv6RouteTargets value.
      */
     public List<String> importIpv6RouteTargets() {
@@ -70,7 +74,7 @@ public final class RouteTargetInformation {
 
     /**
      * Set the importIpv6RouteTargets property: Route Targets to be applied for incoming routes from CE.
-     *
+     * 
      * @param importIpv6RouteTargets the importIpv6RouteTargets value to set.
      * @return the RouteTargetInformation object itself.
      */
@@ -81,7 +85,7 @@ public final class RouteTargetInformation {
 
     /**
      * Get the exportIpv4RouteTargets property: Route Targets to be applied for outgoing routes into CE.
-     *
+     * 
      * @return the exportIpv4RouteTargets value.
      */
     public List<String> exportIpv4RouteTargets() {
@@ -90,7 +94,7 @@ public final class RouteTargetInformation {
 
     /**
      * Set the exportIpv4RouteTargets property: Route Targets to be applied for outgoing routes into CE.
-     *
+     * 
      * @param exportIpv4RouteTargets the exportIpv4RouteTargets value to set.
      * @return the RouteTargetInformation object itself.
      */
@@ -101,7 +105,7 @@ public final class RouteTargetInformation {
 
     /**
      * Get the exportIpv6RouteTargets property: Route Targets to be applied for outgoing routes from CE.
-     *
+     * 
      * @return the exportIpv6RouteTargets value.
      */
     public List<String> exportIpv6RouteTargets() {
@@ -110,7 +114,7 @@ public final class RouteTargetInformation {
 
     /**
      * Set the exportIpv6RouteTargets property: Route Targets to be applied for outgoing routes from CE.
-     *
+     * 
      * @param exportIpv6RouteTargets the exportIpv6RouteTargets value to set.
      * @return the RouteTargetInformation object itself.
      */
@@ -121,9 +125,62 @@ public final class RouteTargetInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("importIpv4RouteTargets", this.importIpv4RouteTargets,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("importIpv6RouteTargets", this.importIpv6RouteTargets,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("exportIpv4RouteTargets", this.exportIpv4RouteTargets,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("exportIpv6RouteTargets", this.exportIpv6RouteTargets,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteTargetInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteTargetInformation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteTargetInformation.
+     */
+    public static RouteTargetInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteTargetInformation deserializedRouteTargetInformation = new RouteTargetInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("importIpv4RouteTargets".equals(fieldName)) {
+                    List<String> importIpv4RouteTargets = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRouteTargetInformation.importIpv4RouteTargets = importIpv4RouteTargets;
+                } else if ("importIpv6RouteTargets".equals(fieldName)) {
+                    List<String> importIpv6RouteTargets = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRouteTargetInformation.importIpv6RouteTargets = importIpv6RouteTargets;
+                } else if ("exportIpv4RouteTargets".equals(fieldName)) {
+                    List<String> exportIpv4RouteTargets = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRouteTargetInformation.exportIpv4RouteTargets = exportIpv4RouteTargets;
+                } else if ("exportIpv6RouteTargets".equals(fieldName)) {
+                    List<String> exportIpv6RouteTargets = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRouteTargetInformation.exportIpv6RouteTargets = exportIpv6RouteTargets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteTargetInformation;
+        });
     }
 }

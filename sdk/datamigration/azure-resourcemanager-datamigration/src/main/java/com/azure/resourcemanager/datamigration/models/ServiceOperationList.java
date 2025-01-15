@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datamigration.fluent.models.ServiceOperationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** OData page of action (operation) objects. */
+/**
+ * OData page of action (operation) objects.
+ */
 @Fluent
-public final class ServiceOperationList {
+public final class ServiceOperationList implements JsonSerializable<ServiceOperationList> {
     /*
      * List of actions
      */
-    @JsonProperty(value = "value")
     private List<ServiceOperationInner> value;
 
     /*
      * URL to load the next page of actions
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ServiceOperationList class. */
+    /**
+     * Creates an instance of ServiceOperationList class.
+     */
     public ServiceOperationList() {
     }
 
     /**
      * Get the value property: List of actions.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceOperationInner> value() {
@@ -39,7 +45,7 @@ public final class ServiceOperationList {
 
     /**
      * Set the value property: List of actions.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServiceOperationList object itself.
      */
@@ -50,7 +56,7 @@ public final class ServiceOperationList {
 
     /**
      * Get the nextLink property: URL to load the next page of actions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ServiceOperationList {
 
     /**
      * Set the nextLink property: URL to load the next page of actions.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ServiceOperationList object itself.
      */
@@ -70,12 +76,53 @@ public final class ServiceOperationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceOperationList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceOperationList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceOperationList.
+     */
+    public static ServiceOperationList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceOperationList deserializedServiceOperationList = new ServiceOperationList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ServiceOperationInner> value
+                        = reader.readArray(reader1 -> ServiceOperationInner.fromJson(reader1));
+                    deserializedServiceOperationList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedServiceOperationList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceOperationList;
+        });
     }
 }

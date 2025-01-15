@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Update integration runtime request. */
+/**
+ * Update integration runtime request.
+ */
 @Fluent
-public final class UpdateIntegrationRuntimeRequest {
+public final class UpdateIntegrationRuntimeRequest implements JsonSerializable<UpdateIntegrationRuntimeRequest> {
     /*
      * Enables or disables the auto-update feature of the self-hosted integration runtime. See
      * https://go.microsoft.com/fwlink/?linkid=854189.
      */
-    @JsonProperty(value = "autoUpdate")
     private IntegrationRuntimeAutoUpdate autoUpdate;
 
     /*
-     * The time offset (in hours) in the day, e.g., PT03H is 3 hours. The integration runtime auto update will happen
-     * on that time.
+     * The time offset (in hours) in the day, e.g., PT03H is 3 hours. The integration runtime auto update will happen on
+     * that time.
      */
-    @JsonProperty(value = "updateDelayOffset")
     private String updateDelayOffset;
 
-    /** Creates an instance of UpdateIntegrationRuntimeRequest class. */
+    /**
+     * Creates an instance of UpdateIntegrationRuntimeRequest class.
+     */
     public UpdateIntegrationRuntimeRequest() {
     }
 
     /**
      * Get the autoUpdate property: Enables or disables the auto-update feature of the self-hosted integration runtime.
      * See https://go.microsoft.com/fwlink/?linkid=854189.
-     *
+     * 
      * @return the autoUpdate value.
      */
     public IntegrationRuntimeAutoUpdate autoUpdate() {
@@ -41,7 +47,7 @@ public final class UpdateIntegrationRuntimeRequest {
     /**
      * Set the autoUpdate property: Enables or disables the auto-update feature of the self-hosted integration runtime.
      * See https://go.microsoft.com/fwlink/?linkid=854189.
-     *
+     * 
      * @param autoUpdate the autoUpdate value to set.
      * @return the UpdateIntegrationRuntimeRequest object itself.
      */
@@ -53,7 +59,7 @@ public final class UpdateIntegrationRuntimeRequest {
     /**
      * Get the updateDelayOffset property: The time offset (in hours) in the day, e.g., PT03H is 3 hours. The
      * integration runtime auto update will happen on that time.
-     *
+     * 
      * @return the updateDelayOffset value.
      */
     public String updateDelayOffset() {
@@ -63,7 +69,7 @@ public final class UpdateIntegrationRuntimeRequest {
     /**
      * Set the updateDelayOffset property: The time offset (in hours) in the day, e.g., PT03H is 3 hours. The
      * integration runtime auto update will happen on that time.
-     *
+     * 
      * @param updateDelayOffset the updateDelayOffset value to set.
      * @return the UpdateIntegrationRuntimeRequest object itself.
      */
@@ -74,9 +80,50 @@ public final class UpdateIntegrationRuntimeRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("autoUpdate", this.autoUpdate == null ? null : this.autoUpdate.toString());
+        jsonWriter.writeStringField("updateDelayOffset", this.updateDelayOffset);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateIntegrationRuntimeRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateIntegrationRuntimeRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateIntegrationRuntimeRequest.
+     */
+    public static UpdateIntegrationRuntimeRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateIntegrationRuntimeRequest deserializedUpdateIntegrationRuntimeRequest
+                = new UpdateIntegrationRuntimeRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autoUpdate".equals(fieldName)) {
+                    deserializedUpdateIntegrationRuntimeRequest.autoUpdate
+                        = IntegrationRuntimeAutoUpdate.fromString(reader.getString());
+                } else if ("updateDelayOffset".equals(fieldName)) {
+                    deserializedUpdateIntegrationRuntimeRequest.updateDelayOffset = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateIntegrationRuntimeRequest;
+        });
     }
 }

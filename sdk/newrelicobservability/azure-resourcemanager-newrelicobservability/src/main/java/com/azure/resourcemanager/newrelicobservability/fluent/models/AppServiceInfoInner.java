@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of VM Resource having NewRelic OneAgent installed.
  */
 @Fluent
-public final class AppServiceInfoInner {
+public final class AppServiceInfoInner implements JsonSerializable<AppServiceInfoInner> {
     /*
      * Azure App service resource ID
      */
-    @JsonProperty(value = "azureResourceId")
     private String azureResourceId;
 
     /*
      * Version of the NewRelic agent installed on the App service.
      */
-    @JsonProperty(value = "agentVersion")
     private String agentVersion;
 
     /*
      * Status of the NewRelic agent installed on the App service.
      */
-    @JsonProperty(value = "agentStatus")
     private String agentStatus;
 
     /**
@@ -102,5 +103,47 @@ public final class AppServiceInfoInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureResourceId", this.azureResourceId);
+        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("agentStatus", this.agentStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServiceInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServiceInfoInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppServiceInfoInner.
+     */
+    public static AppServiceInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServiceInfoInner deserializedAppServiceInfoInner = new AppServiceInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureResourceId".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.azureResourceId = reader.getString();
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.agentVersion = reader.getString();
+                } else if ("agentStatus".equals(fieldName)) {
+                    deserializedAppServiceInfoInner.agentStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServiceInfoInner;
+        });
     }
 }

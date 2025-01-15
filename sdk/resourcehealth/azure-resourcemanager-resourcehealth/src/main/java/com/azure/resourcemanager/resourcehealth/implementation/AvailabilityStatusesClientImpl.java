@@ -30,23 +30,28 @@ import com.azure.resourcemanager.resourcehealth.fluent.models.AvailabilityStatus
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatusListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AvailabilityStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AvailabilityStatusesClient.
+ */
 public final class AvailabilityStatusesClientImpl implements AvailabilityStatusesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AvailabilityStatusesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftResourceHealthImpl client;
 
     /**
      * Initializes an instance of AvailabilityStatusesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AvailabilityStatusesClientImpl(MicrosoftResourceHealthImpl client) {
-        this.service =
-            RestProxy
-                .create(AvailabilityStatusesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AvailabilityStatusesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,198 +62,138 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftResourceHea")
     public interface AvailabilityStatusesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/availabilityStatuses")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilityStatusListResult>> listBySubscriptionId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AvailabilityStatusListResult>> listBySubscriptionId(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ResourceHealth/availabilityStatuses")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ResourceHealth/availabilityStatuses")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilityStatusListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AvailabilityStatusListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses/current")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilityStatusInner>> getByResource(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AvailabilityStatusInner>> getByResource(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilityStatusListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AvailabilityStatusListResult>> list(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailabilityStatusListResult>> listBySubscriptionIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailabilityStatusListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailabilityStatusListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the current availability status for all the resources in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdSinglePageAsync(
-        String filter, String expand) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdSinglePageAsync(String filter,
+        String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscriptionId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            filter,
-                            this.client.getSubscriptionId(),
-                            expand,
-                            accept,
-                            context))
-            .<PagedResponse<AvailabilityStatusInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySubscriptionId(this.client.getEndpoint(), this.client.getApiVersion(),
+                filter, this.client.getSubscriptionId(), expand, accept, context))
+            .<PagedResponse<AvailabilityStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the current availability status for all the resources in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdSinglePageAsync(
-        String filter, String expand, Context context) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdSinglePageAsync(String filter,
+        String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscriptionId(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                filter,
-                this.client.getSubscriptionId(),
-                expand,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySubscriptionId(this.client.getEndpoint(), this.client.getApiVersion(), filter,
+                this.client.getSubscriptionId(), expand, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the current availability status for all the resources in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -257,14 +202,13 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listBySubscriptionIdAsync(String filter, String expand) {
-        return new PagedFlux<>(
-            () -> listBySubscriptionIdSinglePageAsync(filter, expand),
+        return new PagedFlux<>(() -> listBySubscriptionIdSinglePageAsync(filter, expand),
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the current availability status for all the resources in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
@@ -273,16 +217,15 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     private PagedFlux<AvailabilityStatusInner> listBySubscriptionIdAsync() {
         final String filter = null;
         final String expand = null;
-        return new PagedFlux<>(
-            () -> listBySubscriptionIdSinglePageAsync(filter, expand),
+        return new PagedFlux<>(() -> listBySubscriptionIdSinglePageAsync(filter, expand),
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the current availability status for all the resources in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,16 +234,15 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AvailabilityStatusInner> listBySubscriptionIdAsync(
-        String filter, String expand, Context context) {
-        return new PagedFlux<>(
-            () -> listBySubscriptionIdSinglePageAsync(filter, expand, context),
+    private PagedFlux<AvailabilityStatusInner> listBySubscriptionIdAsync(String filter, String expand,
+        Context context) {
+        return new PagedFlux<>(() -> listBySubscriptionIdSinglePageAsync(filter, expand, context),
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the current availability status for all the resources in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
@@ -314,9 +256,9 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
 
     /**
      * Lists the current availability status for all the resources in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,31 +273,27 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
 
     /**
      * Lists the current availability status for all the resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, String expand) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -364,57 +302,37 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            filter,
-                            expand,
-                            accept,
-                            context))
-            .<PagedResponse<AvailabilityStatusInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), filter, expand, accept, context))
+            .<PagedResponse<AvailabilityStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the current availability status for all the resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, String expand, Context context) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -423,32 +341,18 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                filter,
-                expand,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), filter, expand, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the current availability status for all the resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -456,16 +360,15 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AvailabilityStatusInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, String expand) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand),
+    private PagedFlux<AvailabilityStatusInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        String expand) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the current availability status for all the resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -476,17 +379,16 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     private PagedFlux<AvailabilityStatusInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         final String expand = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the current availability status for all the resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -495,16 +397,15 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AvailabilityStatusInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, String expand, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, context),
+    private PagedFlux<AvailabilityStatusInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        String expand, Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the current availability status for all the resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -520,10 +421,10 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
 
     /**
      * Lists the current availability status for all the resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,101 +433,87 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AvailabilityStatusInner> listByResourceGroup(
-        String resourceGroupName, String filter, String expand, Context context) {
+    public PagedIterable<AvailabilityStatusInner> listByResourceGroup(String resourceGroupName, String filter,
+        String expand, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, context));
     }
 
     /**
      * Gets current availability status for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return current availability status for a single resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(
-        String resourceUri, String filter, String expand) {
+    private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(String resourceUri, String filter,
+        String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResource(
-                            this.client.getEndpoint(),
-                            resourceUri,
-                            this.client.getApiVersion(),
-                            filter,
-                            expand,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResource(this.client.getEndpoint(), resourceUri,
+                this.client.getApiVersion(), filter, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets current availability status for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return current availability status for a single resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(
-        String resourceUri, String filter, String expand, Context context) {
+    private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(String resourceUri, String filter,
+        String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResource(
-                this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter, expand, accept, context);
+        return service.getByResource(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter,
+            expand, accept, context);
     }
 
     /**
      * Gets current availability status for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -642,14 +529,14 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
 
     /**
      * Gets current availability status for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -658,19 +545,19 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @return current availability status for a single resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AvailabilityStatusInner> getByResourceWithResponse(
-        String resourceUri, String filter, String expand, Context context) {
+    public Response<AvailabilityStatusInner> getByResourceWithResponse(String resourceUri, String filter, String expand,
+        Context context) {
         return getByResourceWithResponseAsync(resourceUri, filter, expand, context).block();
     }
 
     /**
      * Gets current availability status for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -685,84 +572,64 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
 
     /**
      * Lists all historical availability transitions and impacting events for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(
-        String resourceUri, String filter, String expand) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(String resourceUri, String filter,
+        String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceUri,
-                            this.client.getApiVersion(),
-                            filter,
-                            expand,
-                            accept,
-                            context))
-            .<PagedResponse<AvailabilityStatusInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(),
+                filter, expand, accept, context))
+            .<PagedResponse<AvailabilityStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all historical availability transitions and impacting events for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(
-        String resourceUri, String filter, String expand, Context context) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(String resourceUri, String filter,
+        String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -771,27 +638,20 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter, expand, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all historical availability transitions and impacting events for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -800,18 +660,18 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listAsync(String resourceUri, String filter, String expand) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, filter, expand), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, filter, expand),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all historical availability transitions and impacting events for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -821,20 +681,20 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     private PagedFlux<AvailabilityStatusInner> listAsync(String resourceUri) {
         final String filter = null;
         final String expand = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, filter, expand), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, filter, expand),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all historical availability transitions and impacting events for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -843,21 +703,20 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AvailabilityStatusInner> listAsync(
-        String resourceUri, String filter, String expand, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, filter, expand, context),
+    private PagedFlux<AvailabilityStatusInner> listAsync(String resourceUri, String filter, String expand,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, filter, expand, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all historical availability transitions and impacting events for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -872,14 +731,14 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
 
     /**
      * Lists all historical availability transitions and impacting events for a single resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -888,21 +747,20 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AvailabilityStatusInner> list(
-        String resourceUri, String filter, String expand, Context context) {
+    public PagedIterable<AvailabilityStatusInner> list(String resourceUri, String filter, String expand,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceUri, filter, expand, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink) {
@@ -910,76 +768,55 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AvailabilityStatusInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AvailabilityStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -987,76 +824,55 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AvailabilityStatusInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AvailabilityStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listNextSinglePageAsync(String nextLink) {
@@ -1064,37 +880,26 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AvailabilityStatusInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AvailabilityStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1102,23 +907,13 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

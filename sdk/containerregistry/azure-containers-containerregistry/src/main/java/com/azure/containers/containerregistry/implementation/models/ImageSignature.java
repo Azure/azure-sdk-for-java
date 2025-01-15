@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Signature of a signed manifest. */
+/**
+ * Signature of a signed manifest.
+ */
 @Fluent
 public final class ImageSignature implements JsonSerializable<ImageSignature> {
     /*
@@ -29,12 +31,15 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
      */
     private String protectedProperty;
 
-    /** Creates an instance of ImageSignature class. */
-    public ImageSignature() {}
+    /**
+     * Creates an instance of ImageSignature class.
+     */
+    public ImageSignature() {
+    }
 
     /**
      * Get the headerProperty property: A JSON web signature.
-     *
+     * 
      * @return the headerProperty value.
      */
     public JWK getHeaderProperty() {
@@ -43,7 +48,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
 
     /**
      * Set the headerProperty property: A JSON web signature.
-     *
+     * 
      * @param headerProperty the headerProperty value to set.
      * @return the ImageSignature object itself.
      */
@@ -54,7 +59,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
 
     /**
      * Get the signature property: A signature for the image manifest, signed by a libtrust private key.
-     *
+     * 
      * @return the signature value.
      */
     public String getSignature() {
@@ -63,7 +68,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
 
     /**
      * Set the signature property: A signature for the image manifest, signed by a libtrust private key.
-     *
+     * 
      * @param signature the signature value to set.
      * @return the ImageSignature object itself.
      */
@@ -74,7 +79,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
 
     /**
      * Get the protectedProperty property: The signed protected header.
-     *
+     * 
      * @return the protectedProperty value.
      */
     public String getProtectedProperty() {
@@ -83,7 +88,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
 
     /**
      * Set the protectedProperty property: The signed protected header.
-     *
+     * 
      * @param protectedProperty the protectedProperty value to set.
      * @return the ImageSignature object itself.
      */
@@ -92,6 +97,9 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,32 +111,31 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
 
     /**
      * Reads an instance of ImageSignature from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ImageSignature if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ImageSignature.
      */
     public static ImageSignature fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ImageSignature deserializedImageSignature = new ImageSignature();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ImageSignature deserializedImageSignature = new ImageSignature();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("header".equals(fieldName)) {
-                            deserializedImageSignature.headerProperty = JWK.fromJson(reader);
-                        } else if ("signature".equals(fieldName)) {
-                            deserializedImageSignature.signature = reader.getString();
-                        } else if ("protected".equals(fieldName)) {
-                            deserializedImageSignature.protectedProperty = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("header".equals(fieldName)) {
+                    deserializedImageSignature.headerProperty = JWK.fromJson(reader);
+                } else if ("signature".equals(fieldName)) {
+                    deserializedImageSignature.signature = reader.getString();
+                } else if ("protected".equals(fieldName)) {
+                    deserializedImageSignature.protectedProperty = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedImageSignature;
-                });
+            return deserializedImageSignature;
+        });
     }
 }

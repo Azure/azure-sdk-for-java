@@ -8,25 +8,27 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.attestation.fluent.models.AttestationProviderListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of AttestationProviderListResult. */
+/**
+ * An immutable client-side representation of AttestationProviderListResult.
+ */
 public interface AttestationProviderListResult {
     /**
      * Gets the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the value property: Attestation Provider array.
-     *
+     * 
      * @return the value value.
      */
     List<AttestationProvider> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.attestation.fluent.models.AttestationProviderListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     AttestationProviderListResultInner innerModel();

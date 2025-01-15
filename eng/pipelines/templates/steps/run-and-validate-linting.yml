@@ -2,9 +2,6 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
-  - name: JavadocSafeJavaBuildVersion
-    type: string
-    default: $(JavadocSafeJavaBuildVersion)
   - name: AdditionalLintingOptions
     type: string
     default: ''
@@ -23,34 +20,19 @@ parameters:
 
 steps:
   # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
-  - task: Maven@3
-    displayName: 'Build and Install'
-    inputs:
-      mavenPomFile: pom.xml
-      goals: 'install'
-      options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-    continueOnError: ${{ parameters.ContinueOnError }}
-    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
-
-  - task: Maven@3
+  - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
-      displayName: 'Run SpotBugs and Checkstyle'
+      displayName: 'Build and Run SpotBugs and Checkstyle'
     ${{ else }}:
-      displayName: 'Run SpotBugs, Checkstyle, and RevApi'
+      displayName: 'Build and Run SpotBugs, Checkstyle, and RevApi'
     inputs:
       mavenPomFile: pom.xml
       ${{ if ne(parameters.SDKType, 'client') }}:
-        options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl $(ProjectList)'
-        goals: 'checkstyle:check spotbugs:check'
+        options: '$(DefaultOptions) --no-transfer-progress -T ${{parameters.BuildParallelization}} -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.skip=true -pl $(ProjectList) -am'
       ${{ else }}:
-        options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList)'
-        goals: 'checkstyle:check spotbugs:check revapi:check'
-      mavenOptions: '$(MemoryOptions)'
+        options: '$(DefaultOptions) --no-transfer-progress -T ${{parameters.BuildParallelization}} -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList) -am'
+      goals: 'install'
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
@@ -68,16 +50,7 @@ steps:
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
-  - pwsh: |
-      if (Test-Path -Path "$(System.DefaultWorkingDirectory)/troubleshooting/linting-report.zip") {
-        Write-Host "Linting errors have been found, download the 'linting-report.zip' artifact to see what was found."
-        exit 1
-      }
-    displayName: 'Fail Pipeline if Linting Reports Exist'
-    continueOnError: ${{ parameters.ContinueOnError }}
-    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
-
-  - task: Maven@3
+  - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Run Javadoc and Spotless'
     ${{ else }}:
@@ -87,7 +60,7 @@ steps:
       options: '$(DefaultOptions) --no-transfer-progress ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
       mavenOptions: '$(MemoryOptions)'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }} # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete. See: https://github.com/Azure/azure-sdk-for-java/issues/38267.
+      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       ${{ if ne(parameters.SDKType, 'client') }}:

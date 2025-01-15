@@ -20,31 +20,28 @@ public final class LinkedWorkspacesImpl implements LinkedWorkspaces {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public LinkedWorkspacesImpl(
-        LinkedWorkspacesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public LinkedWorkspacesImpl(LinkedWorkspacesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<LinkedWorkspace> getWithResponse(String resourceGroupName, String automationAccountName,
+        Context context) {
+        Response<LinkedWorkspaceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LinkedWorkspaceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LinkedWorkspace get(String resourceGroupName, String automationAccountName) {
         LinkedWorkspaceInner inner = this.serviceClient().get(resourceGroupName, automationAccountName);
         if (inner != null) {
             return new LinkedWorkspaceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<LinkedWorkspace> getWithResponse(
-        String resourceGroupName, String automationAccountName, Context context) {
-        Response<LinkedWorkspaceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new LinkedWorkspaceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

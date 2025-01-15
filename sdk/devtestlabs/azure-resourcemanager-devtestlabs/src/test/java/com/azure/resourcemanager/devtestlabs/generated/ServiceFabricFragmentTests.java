@@ -13,10 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceFabricFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceFabricFragment model =
-            BinaryData
-                .fromString("{\"tags\":{\"usxjbaqehg\":\"uewmrswnjlxuzrhw\"}}")
-                .toObject(ServiceFabricFragment.class);
+        ServiceFabricFragment model = BinaryData.fromString("{\"tags\":{\"usxjbaqehg\":\"uewmrswnjlxuzrhw\"}}")
+            .toObject(ServiceFabricFragment.class);
         Assertions.assertEquals("uewmrswnjlxuzrhw", model.tags().get("usxjbaqehg"));
     }
 

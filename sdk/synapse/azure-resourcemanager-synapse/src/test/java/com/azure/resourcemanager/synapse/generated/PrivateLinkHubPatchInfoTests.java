@@ -13,32 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubPatchInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubPatchInfo model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"foskghsauuimj\":\"ku\",\"rfbyaosvexcso\":\"vxieduugidyj\",\"vleggzfbuhfmvfax\":\"pclhocohslk\",\"hl\":\"ffeii\"}}")
+        PrivateLinkHubPatchInfo model
+            = BinaryData.fromString("{\"tags\":{\"ftnkhtj\":\"bwccsnjvcdwxlpqe\",\"ngwfqatm\":\"y\"}}")
                 .toObject(PrivateLinkHubPatchInfo.class);
-        Assertions.assertEquals("ku", model.tags().get("foskghsauuimj"));
+        Assertions.assertEquals("bwccsnjvcdwxlpqe", model.tags().get("ftnkhtj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubPatchInfo model =
-            new PrivateLinkHubPatchInfo()
-                .withTags(
-                    mapOf(
-                        "foskghsauuimj",
-                        "ku",
-                        "rfbyaosvexcso",
-                        "vxieduugidyj",
-                        "vleggzfbuhfmvfax",
-                        "pclhocohslk",
-                        "hl",
-                        "ffeii"));
+        PrivateLinkHubPatchInfo model
+            = new PrivateLinkHubPatchInfo().withTags(mapOf("ftnkhtj", "bwccsnjvcdwxlpqe", "ngwfqatm", "y"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubPatchInfo.class);
-        Assertions.assertEquals("ku", model.tags().get("foskghsauuimj"));
+        Assertions.assertEquals("bwccsnjvcdwxlpqe", model.tags().get("ftnkhtj"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

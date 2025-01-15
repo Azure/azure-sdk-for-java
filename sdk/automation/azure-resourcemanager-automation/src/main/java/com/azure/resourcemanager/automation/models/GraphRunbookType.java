@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Runbook Type. */
+/**
+ * Runbook Type.
+ */
 public final class GraphRunbookType extends ExpandableStringEnum<GraphRunbookType> {
-    /** Static value GraphPowerShell for GraphRunbookType. */
+    /**
+     * Static value GraphPowerShell for GraphRunbookType.
+     */
     public static final GraphRunbookType GRAPH_POWER_SHELL = fromString("GraphPowerShell");
 
-    /** Static value GraphPowerShellWorkflow for GraphRunbookType. */
+    /**
+     * Static value GraphPowerShellWorkflow for GraphRunbookType.
+     */
     public static final GraphRunbookType GRAPH_POWER_SHELL_WORKFLOW = fromString("GraphPowerShellWorkflow");
 
     /**
+     * Creates a new instance of GraphRunbookType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GraphRunbookType() {
+    }
+
+    /**
      * Creates or finds a GraphRunbookType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GraphRunbookType.
      */
-    @JsonCreator
     public static GraphRunbookType fromString(String name) {
         return fromString(name, GraphRunbookType.class);
     }
 
     /**
      * Gets known GraphRunbookType values.
-     *
+     * 
      * @return known GraphRunbookType values.
      */
     public static Collection<GraphRunbookType> values() {

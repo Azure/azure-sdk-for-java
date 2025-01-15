@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets the status of the resource at the time the operation was called. */
+/**
+ * Gets the status of the resource at the time the operation was called.
+ */
 public final class DeploymentProvisioningState extends ExpandableStringEnum<DeploymentProvisioningState> {
-    /** Static value Accepted for DeploymentProvisioningState. */
+    /**
+     * Static value Accepted for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState ACCEPTED = fromString("Accepted");
 
-    /** Static value Creating for DeploymentProvisioningState. */
+    /**
+     * Static value Creating for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Deleting for DeploymentProvisioningState. */
+    /**
+     * Static value Deleting for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Moving for DeploymentProvisioningState. */
+    /**
+     * Static value Moving for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState MOVING = fromString("Moving");
 
-    /** Static value Failed for DeploymentProvisioningState. */
+    /**
+     * Static value Failed for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for DeploymentProvisioningState. */
+    /**
+     * Static value Succeeded for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Disabled for DeploymentProvisioningState. */
+    /**
+     * Static value Disabled for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState DISABLED = fromString("Disabled");
 
-    /** Static value Canceled for DeploymentProvisioningState. */
+    /**
+     * Static value Canceled for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of DeploymentProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +62,17 @@ public final class DeploymentProvisioningState extends ExpandableStringEnum<Depl
 
     /**
      * Creates or finds a DeploymentProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeploymentProvisioningState.
      */
-    @JsonCreator
     public static DeploymentProvisioningState fromString(String name) {
         return fromString(name, DeploymentProvisioningState.class);
     }
 
     /**
      * Gets known DeploymentProvisioningState values.
-     *
+     * 
      * @return known DeploymentProvisioningState values.
      */
     public static Collection<DeploymentProvisioningState> values() {

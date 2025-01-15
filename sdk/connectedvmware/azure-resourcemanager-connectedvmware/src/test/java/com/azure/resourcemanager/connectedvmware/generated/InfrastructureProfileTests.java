@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InfrastructureProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InfrastructureProfile model =
-            BinaryData
-                .fromString(
-                    "{\"templateId\":\"azul\",\"vCenterId\":\"ethwwnpjhlfz\",\"moRefId\":\"pchwa\",\"inventoryItemId\":\"bousn\",\"moName\":\"pgfewetwlyx\",\"folderPath\":\"cxy\",\"instanceUuid\":\"hdjhlimmbcx\",\"smbiosUuid\":\"bcporxvxcjzhqizx\",\"firmwareType\":\"efi\",\"customResourceName\":\"gqscj\"}")
-                .toObject(InfrastructureProfile.class);
+        InfrastructureProfile model = BinaryData.fromString(
+            "{\"templateId\":\"azul\",\"vCenterId\":\"ethwwnpjhlfz\",\"moRefId\":\"pchwa\",\"inventoryItemId\":\"bousn\",\"moName\":\"pgfewetwlyx\",\"folderPath\":\"cxy\",\"instanceUuid\":\"hdjhlimmbcx\",\"smbiosUuid\":\"bcporxvxcjzhqizx\",\"firmwareType\":\"efi\",\"customResourceName\":\"gqscj\"}")
+            .toObject(InfrastructureProfile.class);
         Assertions.assertEquals("azul", model.templateId());
         Assertions.assertEquals("ethwwnpjhlfz", model.vCenterId());
         Assertions.assertEquals("bousn", model.inventoryItemId());
@@ -26,13 +24,11 @@ public final class InfrastructureProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InfrastructureProfile model =
-            new InfrastructureProfile()
-                .withTemplateId("azul")
-                .withVCenterId("ethwwnpjhlfz")
-                .withInventoryItemId("bousn")
-                .withSmbiosUuid("bcporxvxcjzhqizx")
-                .withFirmwareType(FirmwareType.EFI);
+        InfrastructureProfile model = new InfrastructureProfile().withTemplateId("azul")
+            .withVCenterId("ethwwnpjhlfz")
+            .withInventoryItemId("bousn")
+            .withSmbiosUuid("bcporxvxcjzhqizx")
+            .withFirmwareType(FirmwareType.EFI);
         model = BinaryData.fromObject(model).toObject(InfrastructureProfile.class);
         Assertions.assertEquals("azul", model.templateId());
         Assertions.assertEquals("ethwwnpjhlfz", model.vCenterId());

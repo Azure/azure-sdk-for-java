@@ -4,20 +4,14 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.AvroSerialization;
 import com.azure.resourcemanager.streamanalytics.models.BlobReferenceInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.BlobStreamInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
-import com.azure.resourcemanager.streamanalytics.models.EventGridEventSchemaType;
-import com.azure.resourcemanager.streamanalytics.models.EventGridStreamInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.EventHubStreamInputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.EventHubV2StreamInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.FileReferenceInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.GatewayMessageBusStreamInputDataSource;
-import com.azure.resourcemanager.streamanalytics.models.InputWatermarkMode;
-import com.azure.resourcemanager.streamanalytics.models.InputWatermarkProperties;
 import com.azure.resourcemanager.streamanalytics.models.IoTHubStreamInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.JsonSerialization;
 import com.azure.resourcemanager.streamanalytics.models.ReferenceInputProperties;
@@ -31,32 +25,7 @@ import java.util.Arrays;
 public final class InputsCreateOrReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Input_Create_EventGrid.json
-     */
-    /**
-     * Sample code: Create an Event Grid input.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        createAnEventGridInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs().define("input7970").withExistingStreamingjob("sjrg3467", "sj9742")
-            .withProperties(new StreamInputProperties().withDatasource(new EventGridStreamInputDataSource()
-                .withSubscriber(new EventHubV2StreamInputDataSource().withConsumerGroupName("sdkconsumergroup")
-                    .withEventHubName("sdkeventhub").withPartitionCount(16).withServiceBusNamespace("sdktest")
-                    .withSharedAccessPolicyName("RootManageSharedAccessKey")
-                    .withSharedAccessPolicyKey("fakeTokenPlaceholder").withAuthenticationMode(AuthenticationMode.MSI))
-                .withSchema(EventGridEventSchemaType.CLOUD_EVENT_SCHEMA)
-                .withStorageAccounts(Arrays.asList(new StorageAccount().withAccountName("myaccount")
-                    .withAccountKey("fakeTokenPlaceholder").withAuthenticationMode(AuthenticationMode.MSI)))
-                .withEventTypes(Arrays.asList("Microsoft.Storage.BlobCreated"))))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Reference_File.json
      */
     /**
@@ -66,7 +35,9 @@ public final class InputsCreateOrReplaceSamples {
      */
     public static void
         createAReferenceFileInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs().define("input7225").withExistingStreamingjob("sjrg8440", "sj9597")
+        manager.inputs()
+            .define("input7225")
+            .withExistingStreamingjob("sjrg8440", "sj9597")
             .withProperties(
                 new ReferenceInputProperties().withDatasource(new FileReferenceInputDataSource().withPath("my/path")))
             .create();
@@ -74,7 +45,7 @@ public final class InputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Stream_IoTHub_Avro.json
      */
     /**
@@ -84,17 +55,21 @@ public final class InputsCreateOrReplaceSamples {
      */
     public static void createAStreamIoTHubInputWithAvroSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs().define("input7970").withExistingStreamingjob("sjrg3467", "sj9742")
+        manager.inputs()
+            .define("input7970")
+            .withExistingStreamingjob("sjrg3467", "sj9742")
             .withProperties(new StreamInputProperties().withSerialization(new AvroSerialization())
                 .withDatasource(new IoTHubStreamInputDataSource().withIotHubNamespace("iothub")
-                    .withSharedAccessPolicyName("owner").withSharedAccessPolicyKey("fakeTokenPlaceholder")
-                    .withConsumerGroupName("sdkconsumergroup").withEndpoint("messages/events")))
+                    .withSharedAccessPolicyName("owner")
+                    .withSharedAccessPolicyKey("fakeTokenPlaceholder")
+                    .withConsumerGroupName("sdkconsumergroup")
+                    .withEndpoint("messages/events")))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Reference_Blob_CSV.json
      */
     /**
@@ -104,22 +79,24 @@ public final class InputsCreateOrReplaceSamples {
      */
     public static void createAReferenceBlobInputWithCSVSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs().define("input7225").withExistingStreamingjob("sjrg8440", "sj9597")
+        manager.inputs()
+            .define("input7225")
+            .withExistingStreamingjob("sjrg8440", "sj9597")
             .withProperties(new ReferenceInputProperties()
                 .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
-                .withDatasource(new BlobReferenceInputDataSource().withBlobName("myblobinput")
-                    .withDeltaPathPattern("/testBlob/{date}/delta/{time}/").withSourcePartitionCount(16)
-                    .withFullSnapshotRefreshRate("16:14:30").withDeltaSnapshotRefreshRate("16:14:30")
+                .withDatasource(new BlobReferenceInputDataSource()
                     .withStorageAccounts(Arrays.asList(
                         new StorageAccount().withAccountName("someAccountName").withAccountKey("fakeTokenPlaceholder")))
-                    .withContainer("state").withPathPattern("{date}/{time}").withDateFormat("yyyy/MM/dd")
+                    .withContainer("state")
+                    .withPathPattern("{date}/{time}")
+                    .withDateFormat("yyyy/MM/dd")
                     .withTimeFormat("HH")))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_GatewayMessageBus.json
      */
     /**
@@ -129,7 +106,9 @@ public final class InputsCreateOrReplaceSamples {
      */
     public static void
         createAGatewayMessageBusInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs().define("input7970").withExistingStreamingjob("sjrg3467", "sj9742")
+        manager.inputs()
+            .define("input7970")
+            .withExistingStreamingjob("sjrg3467", "sj9742")
             .withProperties(new StreamInputProperties()
                 .withDatasource(new GatewayMessageBusStreamInputDataSource().withTopic("EdgeTopic1")))
             .create();
@@ -137,7 +116,7 @@ public final class InputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Stream_EventHub_JSON.json
      */
     /**
@@ -147,13 +126,14 @@ public final class InputsCreateOrReplaceSamples {
      */
     public static void createAStreamEventHubInputWithJSONSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs().define("input7425").withExistingStreamingjob("sjrg3139", "sj197")
+        manager.inputs()
+            .define("input7425")
+            .withExistingStreamingjob("sjrg3139", "sj197")
             .withProperties(
                 new StreamInputProperties().withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
-                    .withWatermarkSettings(
-                        new InputWatermarkProperties().withWatermarkMode(InputWatermarkMode.READ_WATERMARK))
                     .withDatasource(new EventHubStreamInputDataSource().withConsumerGroupName("sdkconsumergroup")
-                        .withEventHubName("sdkeventhub").withServiceBusNamespace("sdktest")
+                        .withEventHubName("sdkeventhub")
+                        .withServiceBusNamespace("sdktest")
                         .withSharedAccessPolicyName("RootManageSharedAccessKey")
                         .withSharedAccessPolicyKey("fakeTokenPlaceholder")))
             .create();
@@ -161,7 +141,7 @@ public final class InputsCreateOrReplaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Create_Stream_Blob_CSV.json
      */
     /**
@@ -171,13 +151,17 @@ public final class InputsCreateOrReplaceSamples {
      */
     public static void createAStreamBlobInputWithCSVSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs().define("input8899").withExistingStreamingjob("sjrg8161", "sj6695")
+        manager.inputs()
+            .define("input8899")
+            .withExistingStreamingjob("sjrg8161", "sj6695")
             .withProperties(new StreamInputProperties()
                 .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
                 .withDatasource(new BlobStreamInputDataSource().withSourcePartitionCount(16)
                     .withStorageAccounts(Arrays.asList(
                         new StorageAccount().withAccountName("someAccountName").withAccountKey("fakeTokenPlaceholder")))
-                    .withContainer("state").withPathPattern("{date}/{time}").withDateFormat("yyyy/MM/dd")
+                    .withContainer("state")
+                    .withPathPattern("{date}/{time}")
+                    .withDateFormat("yyyy/MM/dd")
                     .withTimeFormat("HH")))
             .create();
     }

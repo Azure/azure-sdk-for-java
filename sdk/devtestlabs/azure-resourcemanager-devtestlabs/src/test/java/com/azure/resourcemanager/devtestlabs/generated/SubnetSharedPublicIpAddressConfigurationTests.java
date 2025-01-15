@@ -14,24 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SubnetSharedPublicIpAddressConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubnetSharedPublicIpAddressConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"allowedPorts\":[{\"transportProtocol\":\"Udp\",\"backendPort\":1319448407},{\"transportProtocol\":\"Tcp\",\"backendPort\":510914114}]}")
-                .toObject(SubnetSharedPublicIpAddressConfiguration.class);
+        SubnetSharedPublicIpAddressConfiguration model = BinaryData.fromString(
+            "{\"allowedPorts\":[{\"transportProtocol\":\"Udp\",\"backendPort\":1319448407},{\"transportProtocol\":\"Tcp\",\"backendPort\":510914114}]}")
+            .toObject(SubnetSharedPublicIpAddressConfiguration.class);
         Assertions.assertEquals(TransportProtocol.UDP, model.allowedPorts().get(0).transportProtocol());
         Assertions.assertEquals(1319448407, model.allowedPorts().get(0).backendPort());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubnetSharedPublicIpAddressConfiguration model =
-            new SubnetSharedPublicIpAddressConfiguration()
-                .withAllowedPorts(
-                    Arrays
-                        .asList(
-                            new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(1319448407),
-                            new Port().withTransportProtocol(TransportProtocol.TCP).withBackendPort(510914114)));
+        SubnetSharedPublicIpAddressConfiguration model
+            = new SubnetSharedPublicIpAddressConfiguration().withAllowedPorts(
+                Arrays.asList(new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(1319448407),
+                    new Port().withTransportProtocol(TransportProtocol.TCP).withBackendPort(510914114)));
         model = BinaryData.fromObject(model).toObject(SubnetSharedPublicIpAddressConfiguration.class);
         Assertions.assertEquals(TransportProtocol.UDP, model.allowedPorts().get(0).transportProtocol());
         Assertions.assertEquals(1319448407, model.allowedPorts().get(0).backendPort());

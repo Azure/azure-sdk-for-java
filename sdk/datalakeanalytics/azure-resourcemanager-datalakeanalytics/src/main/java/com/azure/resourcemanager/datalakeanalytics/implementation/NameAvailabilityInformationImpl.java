@@ -12,8 +12,7 @@ public final class NameAvailabilityInformationImpl implements NameAvailabilityIn
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    NameAvailabilityInformationImpl(
-        NameAvailabilityInformationInner innerObject,
+    NameAvailabilityInformationImpl(NameAvailabilityInformationInner innerObject,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

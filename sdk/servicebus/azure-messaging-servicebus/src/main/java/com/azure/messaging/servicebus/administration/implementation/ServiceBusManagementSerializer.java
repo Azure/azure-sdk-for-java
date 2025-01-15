@@ -25,16 +25,15 @@ import java.util.regex.Pattern;
  */
 public class ServiceBusManagementSerializer implements SerializerAdapter {
     private static final String MINIMUM_DATETIME_FORMATTED = ">0001-01-01T00:00:00Z</";
-    private static final Pattern MINIMUM_DATETIME_PATTERN = Pattern.compile(">0001-01-01T00:00:00</",
-        Pattern.MULTILINE);
+    private static final Pattern MINIMUM_DATETIME_PATTERN
+        = Pattern.compile(">0001-01-01T00:00:00</", Pattern.MULTILINE);
     private static final Pattern NAMESPACE_PATTERN = Pattern.compile(
         "xmlns:(?<namespace>\\w+)=\"http://schemas\\.microsoft\\.com/netservices/2010/10/servicebus/connect\"",
         Pattern.MULTILINE);
-    private static final Pattern FILTER_ACTION_PATTERN = Pattern.compile("<(Filter|Action) type=",
-        Pattern.MULTILINE);
-    private static final Pattern FILTER_VALUE_PATTERN = Pattern.compile("<(Value)",
-        Pattern.MULTILINE);
-    private static final String RULE_VALUE_ATTRIBUTE_XML = "<$1 xmlns:d6p1=\"http://www.w3.org/2001/XMLSchema\" ns0:type=\"d6p1:string\"";
+    private static final Pattern FILTER_ACTION_PATTERN = Pattern.compile("<(Filter|Action) type=", Pattern.MULTILINE);
+    private static final Pattern FILTER_VALUE_PATTERN = Pattern.compile("<(Value)", Pattern.MULTILINE);
+    private static final String RULE_VALUE_ATTRIBUTE_XML
+        = "<$1 xmlns:d6p1=\"http://www.w3.org/2001/XMLSchema\" ns0:type=\"d6p1:string\"";
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusManagementSerializer.class);
@@ -44,8 +43,10 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         final String contents = SERIALIZER_ADAPTER.serialize(object, encoding);
 
         final Class<?> clazz = object.getClass();
-        if (!CreateQueueBodyImpl.class.equals(clazz) && !CreateRuleBodyImpl.class.equals(clazz)
-            && !CreateSubscriptionBodyImpl.class.equals(clazz) && !CreateTopicBodyImpl.class.equals(clazz)) {
+        if (!CreateQueueBodyImpl.class.equals(clazz)
+            && !CreateRuleBodyImpl.class.equals(clazz)
+            && !CreateSubscriptionBodyImpl.class.equals(clazz)
+            && !CreateTopicBodyImpl.class.equals(clazz)) {
             return contents;
         }
 
@@ -60,9 +61,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         }
 
         final String namespace = namespaceMatcher.group("namespace");
-        String replaced = contents
-            .replaceAll(namespace + ":", "")
-            .replace("xmlns:" + namespace + "=", "xmlns=");
+        String replaced = contents.replaceAll(namespace + ":", "").replace("xmlns:" + namespace + "=", "xmlns=");
 
         if (!CreateRuleBodyImpl.class.equals(clazz) && !CreateSubscriptionBodyImpl.class.equals(clazz)) {
             return replaced;

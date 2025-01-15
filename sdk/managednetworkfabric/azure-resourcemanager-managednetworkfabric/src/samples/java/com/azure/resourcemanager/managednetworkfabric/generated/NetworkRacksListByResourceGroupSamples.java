@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for NetworkRacks ListByResourceGroup. */
+/**
+ * Samples for NetworkRacks ListByResourceGroup.
+ */
 public final class NetworkRacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkRacks_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkRacks_ListByResourceGroup_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkRacksListByResourceGroupMaximumSetGen(

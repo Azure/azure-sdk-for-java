@@ -13,8 +13,8 @@ public final class ShipmentPickUpResponseImpl implements ShipmentPickUpResponse 
 
     private final com.azure.resourcemanager.databox.DataBoxManager serviceManager;
 
-    ShipmentPickUpResponseImpl(
-        ShipmentPickUpResponseInner innerObject, com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
+    ShipmentPickUpResponseImpl(ShipmentPickUpResponseInner innerObject,
+        com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

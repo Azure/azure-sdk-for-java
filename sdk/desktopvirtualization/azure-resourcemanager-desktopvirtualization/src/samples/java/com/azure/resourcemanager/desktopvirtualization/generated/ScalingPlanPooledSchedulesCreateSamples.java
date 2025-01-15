@@ -9,26 +9,27 @@ import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBal
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
 import java.util.Arrays;
 
-/** Samples for ScalingPlanPooledSchedules Create. */
+/**
+ * Samples for ScalingPlanPooledSchedules Create.
+ */
 public final class ScalingPlanPooledSchedulesCreateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPooledSchedule_Create.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * ScalingPlanPooledSchedule_Create.json
      */
     /**
      * Sample code: ScalingPlanPooledSchedules_Create.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
     public static void scalingPlanPooledSchedulesCreate(
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        manager
-            .scalingPlanPooledSchedules()
+        manager.scalingPlanPooledSchedules()
             .define("scalingPlanScheduleWeekdays1")
             .withExistingScalingPlan("resourceGroup1", "scalingPlan1")
-            .withDaysOfWeek(
-                Arrays
-                    .asList(
-                        DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
+            .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY))
             .withRampUpStartTime(new Time().withHour(6).withMinute(0))
             .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
             .withRampUpMinimumHostsPct(20)

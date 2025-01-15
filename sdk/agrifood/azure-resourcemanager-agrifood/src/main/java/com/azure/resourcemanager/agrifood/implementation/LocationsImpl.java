@@ -21,31 +21,28 @@ public final class LocationsImpl implements Locations {
 
     private final com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
+    public LocationsImpl(LocationsClient innerClient,
+        com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest body,
+        Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(body, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest body) {
         CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(body);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest body, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

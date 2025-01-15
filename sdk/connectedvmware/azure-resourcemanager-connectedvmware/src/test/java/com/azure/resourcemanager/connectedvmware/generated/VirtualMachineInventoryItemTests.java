@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineInventoryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineInventoryItem model =
-            BinaryData
-                .fromString(
-                    "{\"inventoryType\":\"VirtualMachine\",\"osType\":\"Windows\",\"osName\":\"efdeesve\",\"ipAddresses\":[\"jpxtxsuwprtuj\",\"sawddjibabxvi\"],\"folderPath\":\"tvtzeexavoxtfg\",\"host\":{\"inventoryItemId\":\"dmdqb\",\"moName\":\"ypq\",\"inventoryType\":\"VirtualMachine\"},\"resourcePool\":{\"inventoryItemId\":\"acbslhhxu\",\"moName\":\"xvodhtnsir\",\"inventoryType\":\"Host\"},\"cluster\":{\"inventoryItemId\":\"mes\",\"moName\":\"dlpagzrcxfail\",\"inventoryType\":\"VirtualMachineTemplate\"},\"instanceUuid\":\"m\",\"smbiosUuid\":\"oxdfgsftu\",\"powerState\":\"obrjlnacgcc\",\"toolsRunningStatus\":\"nhxk\",\"toolsVersionStatus\":\"v\",\"toolsVersion\":\"nrzvuljraaer\",\"managedResourceId\":\"okqgukkjq\",\"moRefId\":\"broyla\",\"moName\":\"ulcdisdosf\",\"provisioningState\":\"Failed\"}")
-                .toObject(VirtualMachineInventoryItem.class);
+        VirtualMachineInventoryItem model = BinaryData.fromString(
+            "{\"inventoryType\":\"VirtualMachine\",\"osType\":\"Windows\",\"osName\":\"efdeesve\",\"ipAddresses\":[\"jpxtxsuwprtuj\",\"sawddjibabxvi\"],\"folderPath\":\"tvtzeexavoxtfg\",\"host\":{\"inventoryItemId\":\"dmdqb\",\"moName\":\"ypq\",\"inventoryType\":\"VirtualMachine\"},\"resourcePool\":{\"inventoryItemId\":\"acbslhhxu\",\"moName\":\"xvodhtnsir\",\"inventoryType\":\"Host\"},\"cluster\":{\"inventoryItemId\":\"mes\",\"moName\":\"dlpagzrcxfail\",\"inventoryType\":\"VirtualMachineTemplate\"},\"instanceUuid\":\"m\",\"smbiosUuid\":\"oxdfgsftu\",\"powerState\":\"obrjlnacgcc\",\"toolsRunningStatus\":\"nhxk\",\"toolsVersionStatus\":\"v\",\"toolsVersion\":\"nrzvuljraaer\",\"managedResourceId\":\"okqgukkjq\",\"moRefId\":\"broyla\",\"moName\":\"ulcdisdosf\",\"provisioningState\":\"Failed\"}")
+            .toObject(VirtualMachineInventoryItem.class);
         Assertions.assertEquals("okqgukkjq", model.managedResourceId());
         Assertions.assertEquals("broyla", model.moRefId());
         Assertions.assertEquals("ulcdisdosf", model.moName());
@@ -42,32 +40,24 @@ public final class VirtualMachineInventoryItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineInventoryItem model =
-            new VirtualMachineInventoryItem()
-                .withManagedResourceId("okqgukkjq")
-                .withMoRefId("broyla")
-                .withMoName("ulcdisdosf")
-                .withOsType(OsType.WINDOWS)
-                .withOsName("efdeesve")
-                .withIpAddresses(Arrays.asList("jpxtxsuwprtuj", "sawddjibabxvi"))
-                .withFolderPath("tvtzeexavoxtfg")
-                .withHost(
-                    new InventoryItemDetails()
-                        .withInventoryItemId("dmdqb")
-                        .withMoName("ypq")
-                        .withInventoryType(InventoryType.VIRTUAL_MACHINE))
-                .withResourcePool(
-                    new InventoryItemDetails()
-                        .withInventoryItemId("acbslhhxu")
-                        .withMoName("xvodhtnsir")
-                        .withInventoryType(InventoryType.HOST))
-                .withCluster(
-                    new InventoryItemDetails()
-                        .withInventoryItemId("mes")
-                        .withMoName("dlpagzrcxfail")
-                        .withInventoryType(InventoryType.VIRTUAL_MACHINE_TEMPLATE))
-                .withInstanceUuid("m")
-                .withSmbiosUuid("oxdfgsftu");
+        VirtualMachineInventoryItem model = new VirtualMachineInventoryItem().withManagedResourceId("okqgukkjq")
+            .withMoRefId("broyla")
+            .withMoName("ulcdisdosf")
+            .withOsType(OsType.WINDOWS)
+            .withOsName("efdeesve")
+            .withIpAddresses(Arrays.asList("jpxtxsuwprtuj", "sawddjibabxvi"))
+            .withFolderPath("tvtzeexavoxtfg")
+            .withHost(new InventoryItemDetails().withInventoryItemId("dmdqb")
+                .withMoName("ypq")
+                .withInventoryType(InventoryType.VIRTUAL_MACHINE))
+            .withResourcePool(new InventoryItemDetails().withInventoryItemId("acbslhhxu")
+                .withMoName("xvodhtnsir")
+                .withInventoryType(InventoryType.HOST))
+            .withCluster(new InventoryItemDetails().withInventoryItemId("mes")
+                .withMoName("dlpagzrcxfail")
+                .withInventoryType(InventoryType.VIRTUAL_MACHINE_TEMPLATE))
+            .withInstanceUuid("m")
+            .withSmbiosUuid("oxdfgsftu");
         model = BinaryData.fromObject(model).toObject(VirtualMachineInventoryItem.class);
         Assertions.assertEquals("okqgukkjq", model.managedResourceId());
         Assertions.assertEquals("broyla", model.moRefId());

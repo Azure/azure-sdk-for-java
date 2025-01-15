@@ -29,56 +29,54 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CreateAndAssociatePLFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CreateAndAssociatePLFiltersClient.
+ */
 public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAssociatePLFiltersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CreateAndAssociatePLFiltersService service;
 
-    /** The service client containing this operation class. */
-    private final MicrosoftElasticImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final ElasticManagementClientImpl client;
 
     /**
      * Initializes an instance of CreateAndAssociatePLFiltersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    CreateAndAssociatePLFiltersClientImpl(MicrosoftElasticImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    CreateAndAssociatePLFiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    CreateAndAssociatePLFiltersClientImpl(ElasticManagementClientImpl client) {
+        this.service = RestProxy.create(CreateAndAssociatePLFiltersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftElasticCreateAndAssociatePLFilters to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for ElasticManagementClientCreateAndAssociatePLFilters to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftElasticCrea")
+    @ServiceInterface(name = "ElasticManagementCli")
     public interface CreateAndAssociatePLFiltersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/createAndAssociatePLFilter")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/createAndAssociatePLFilter")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @QueryParam("name") String name,
-            @QueryParam("privateEndpointGuid") String privateEndpointGuid,
-            @QueryParam("privateEndpointName") String privateEndpointName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("name") String name, @QueryParam("privateEndpointGuid") String privateEndpointGuid,
+            @QueryParam("privateEndpointName") String privateEndpointName, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param name Name of the traffic filter.
      * @param privateEndpointGuid Guid of the private endpoint.
@@ -89,23 +87,15 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String name,
-        String privateEndpointGuid,
-        String privateEndpointName) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String monitorName,
+        String name, String privateEndpointGuid, String privateEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -116,27 +106,16 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            name,
-                            privateEndpointGuid,
-                            privateEndpointName,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, name, privateEndpointGuid,
+                privateEndpointName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param name Name of the traffic filter.
      * @param privateEndpointGuid Guid of the private endpoint.
@@ -148,24 +127,15 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String name,
-        String privateEndpointGuid,
-        String privateEndpointName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String monitorName,
+        String name, String privateEndpointGuid, String privateEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,24 +146,14 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                name,
-                privateEndpointGuid,
-                privateEndpointName,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName, accept, context);
     }
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param name Name of the traffic filter.
      * @param privateEndpointGuid Guid of the private endpoint.
@@ -204,24 +164,18 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String name,
-        String privateEndpointGuid,
-        String privateEndpointName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String monitorName,
+        String name, String privateEndpointGuid, String privateEndpointName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -233,18 +187,16 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
         final String name = null;
         final String privateEndpointGuid = null;
         final String privateEndpointName = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param name Name of the traffic filter.
      * @param privateEndpointGuid Guid of the private endpoint.
@@ -256,26 +208,19 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String name,
-        String privateEndpointGuid,
-        String privateEndpointName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String monitorName,
+        String name, String privateEndpointGuid, String privateEndpointName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, monitorName, name,
+            privateEndpointGuid, privateEndpointName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -287,15 +232,14 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
         final String name = null;
         final String privateEndpointGuid = null;
         final String privateEndpointName = null;
-        return this
-            .beginCreateAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName)
+        return this.beginCreateAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName)
             .getSyncPoller();
     }
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param name Name of the traffic filter.
      * @param privateEndpointGuid Guid of the private endpoint.
@@ -307,13 +251,8 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreate(
-        String resourceGroupName,
-        String monitorName,
-        String name,
-        String privateEndpointGuid,
-        String privateEndpointName,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName, String name,
+        String privateEndpointGuid, String privateEndpointName, Context context) {
         return this
             .beginCreateAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName, context)
             .getSyncPoller();
@@ -321,8 +260,8 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param name Name of the traffic filter.
      * @param privateEndpointGuid Guid of the private endpoint.
@@ -333,21 +272,16 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createAsync(
-        String resourceGroupName,
-        String monitorName,
-        String name,
-        String privateEndpointGuid,
-        String privateEndpointName) {
-        return beginCreateAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName)
-            .last()
+    private Mono<Void> createAsync(String resourceGroupName, String monitorName, String name,
+        String privateEndpointGuid, String privateEndpointName) {
+        return beginCreateAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -359,15 +293,14 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
         final String name = null;
         final String privateEndpointGuid = null;
         final String privateEndpointName = null;
-        return beginCreateAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName)
-            .last()
+        return beginCreateAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param name Name of the traffic filter.
      * @param privateEndpointGuid Guid of the private endpoint.
@@ -379,13 +312,8 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createAsync(
-        String resourceGroupName,
-        String monitorName,
-        String name,
-        String privateEndpointGuid,
-        String privateEndpointName,
-        Context context) {
+    private Mono<Void> createAsync(String resourceGroupName, String monitorName, String name,
+        String privateEndpointGuid, String privateEndpointName, Context context) {
         return beginCreateAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -393,8 +321,8 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -410,8 +338,8 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
 
     /**
      * Create and Associate private link traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param name Name of the traffic filter.
      * @param privateEndpointGuid Guid of the private endpoint.
@@ -422,13 +350,8 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(
-        String resourceGroupName,
-        String monitorName,
-        String name,
-        String privateEndpointGuid,
-        String privateEndpointName,
-        Context context) {
+    public void create(String resourceGroupName, String monitorName, String name, String privateEndpointGuid,
+        String privateEndpointName, Context context) {
         createAsync(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName, context).block();
     }
 }

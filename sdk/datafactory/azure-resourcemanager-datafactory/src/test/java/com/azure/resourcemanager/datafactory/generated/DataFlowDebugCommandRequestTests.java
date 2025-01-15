@@ -15,30 +15,30 @@ public final class DataFlowDebugCommandRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowDebugCommandRequest model = BinaryData.fromString(
-            "{\"sessionId\":\"fcbahhp\",\"command\":\"executeExpressionQuery\",\"commandPayload\":{\"streamName\":\"o\",\"rowLimits\":2134608057,\"columns\":[\"filkmkkholv\"],\"expression\":\"dviauogp\"}}")
+            "{\"sessionId\":\"afgfugsnn\",\"command\":\"executeExpressionQuery\",\"commandPayload\":{\"streamName\":\"tefypococtfjgti\",\"rowLimits\":1163986546,\"columns\":[\"uyturml\"],\"expression\":\"owolbaui\"}}")
             .toObject(DataFlowDebugCommandRequest.class);
-        Assertions.assertEquals("fcbahhp", model.sessionId());
+        Assertions.assertEquals("afgfugsnn", model.sessionId());
         Assertions.assertEquals(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY, model.command());
-        Assertions.assertEquals("o", model.commandPayload().streamName());
-        Assertions.assertEquals(2134608057, model.commandPayload().rowLimits());
-        Assertions.assertEquals("filkmkkholv", model.commandPayload().columns().get(0));
-        Assertions.assertEquals("dviauogp", model.commandPayload().expression());
+        Assertions.assertEquals("tefypococtfjgti", model.commandPayload().streamName());
+        Assertions.assertEquals(1163986546, model.commandPayload().rowLimits());
+        Assertions.assertEquals("uyturml", model.commandPayload().columns().get(0));
+        Assertions.assertEquals("owolbaui", model.commandPayload().expression());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowDebugCommandRequest model = new DataFlowDebugCommandRequest().withSessionId("fcbahhp")
+        DataFlowDebugCommandRequest model = new DataFlowDebugCommandRequest().withSessionId("afgfugsnn")
             .withCommand(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY)
-            .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("o")
-                .withRowLimits(2134608057)
-                .withColumns(Arrays.asList("filkmkkholv"))
-                .withExpression("dviauogp"));
+            .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("tefypococtfjgti")
+                .withRowLimits(1163986546)
+                .withColumns(Arrays.asList("uyturml"))
+                .withExpression("owolbaui"));
         model = BinaryData.fromObject(model).toObject(DataFlowDebugCommandRequest.class);
-        Assertions.assertEquals("fcbahhp", model.sessionId());
+        Assertions.assertEquals("afgfugsnn", model.sessionId());
         Assertions.assertEquals(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY, model.command());
-        Assertions.assertEquals("o", model.commandPayload().streamName());
-        Assertions.assertEquals(2134608057, model.commandPayload().rowLimits());
-        Assertions.assertEquals("filkmkkholv", model.commandPayload().columns().get(0));
-        Assertions.assertEquals("dviauogp", model.commandPayload().expression());
+        Assertions.assertEquals("tefypococtfjgti", model.commandPayload().streamName());
+        Assertions.assertEquals(1163986546, model.commandPayload().rowLimits());
+        Assertions.assertEquals("uyturml", model.commandPayload().columns().get(0));
+        Assertions.assertEquals("owolbaui", model.commandPayload().expression());
     }
 }

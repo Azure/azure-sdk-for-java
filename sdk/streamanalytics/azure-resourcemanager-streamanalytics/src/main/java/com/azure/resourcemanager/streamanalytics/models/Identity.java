@@ -5,39 +5,31 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes how identity is verified.
  */
 @Fluent
-public final class Identity {
+public final class Identity implements JsonSerializable<Identity> {
     /*
-     * The tenantId of the identity.
+     * The identity tenantId
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The principalId of the identity.
+     * The identity principal ID
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The type of identity, can be SystemAssigned or UserAssigned.
+     * The identity type
      */
-    @JsonProperty(value = "type")
     private String type;
-
-    /*
-     * The user assigned identities associated with the streaming job resource.
-     */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, Object> userAssignedIdentities;
 
     /**
      * Creates an instance of Identity class.
@@ -46,7 +38,7 @@ public final class Identity {
     }
 
     /**
-     * Get the tenantId property: The tenantId of the identity.
+     * Get the tenantId property: The identity tenantId.
      * 
      * @return the tenantId value.
      */
@@ -55,7 +47,7 @@ public final class Identity {
     }
 
     /**
-     * Get the principalId property: The principalId of the identity.
+     * Get the principalId property: The identity principal ID.
      * 
      * @return the principalId value.
      */
@@ -64,7 +56,7 @@ public final class Identity {
     }
 
     /**
-     * Get the type property: The type of identity, can be SystemAssigned or UserAssigned.
+     * Get the type property: The identity type.
      * 
      * @return the type value.
      */
@@ -73,7 +65,7 @@ public final class Identity {
     }
 
     /**
-     * Set the type property: The type of identity, can be SystemAssigned or UserAssigned.
+     * Set the type property: The identity type.
      * 
      * @param type the type value to set.
      * @return the Identity object itself.
@@ -84,32 +76,50 @@ public final class Identity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The user assigned identities associated with the streaming job
-     * resource.
-     * 
-     * @return the userAssignedIdentities value.
-     */
-    public Map<String, Object> userAssignedIdentities() {
-        return this.userAssignedIdentities;
-    }
-
-    /**
-     * Set the userAssignedIdentities property: The user assigned identities associated with the streaming job
-     * resource.
-     * 
-     * @param userAssignedIdentities the userAssignedIdentities value to set.
-     * @return the Identity object itself.
-     */
-    public Identity withUserAssignedIdentities(Map<String, Object> userAssignedIdentities) {
-        this.userAssignedIdentities = userAssignedIdentities;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Identity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Identity if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Identity.
+     */
+    public static Identity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Identity deserializedIdentity = new Identity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedIdentity.tenantId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedIdentity.principalId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIdentity.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentity;
+        });
     }
 }

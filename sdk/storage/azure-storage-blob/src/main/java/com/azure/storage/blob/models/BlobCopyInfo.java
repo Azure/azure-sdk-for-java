@@ -36,13 +36,12 @@ public class BlobCopyInfo {
      * @param copyStatus The status of the copy operation.
      * @param error An error message for the copy operation. {@code null} if there are no errors.
      * @param eTag If the copy is completed, contains the ETag of the destination blob. If the copy is not complete,
-     *     contains the ETag of the empty blob created.
+     * contains the ETag of the empty blob created.
      * @param lastModified The date/time that the copy operation to the destination blob completed.
-     *
      * @throws NullPointerException If {@code copyId}, {@code copySource}, {@code eTag}, or {@code copyStatus} is null.
      */
     public BlobCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
-                        OffsetDateTime lastModified, String error) {
+        OffsetDateTime lastModified, String error) {
         this(copySource, copyId, copyStatus, eTag, lastModified, error, null);
     }
 
@@ -54,14 +53,13 @@ public class BlobCopyInfo {
      * @param copyStatus The status of the copy operation.
      * @param error An error message for the copy operation. {@code null} if there are no errors.
      * @param eTag If the copy is completed, contains the ETag of the destination blob. If the copy is not complete,
-     *     contains the ETag of the empty blob created.
+     * contains the ETag of the empty blob created.
      * @param lastModified The date/time that the copy operation to the destination blob completed.
      * @param versionId The version identifier of the destination blob.
-     *
      * @throws NullPointerException If {@code copyId}, {@code copySource}, {@code eTag}, or {@code copyStatus} is null.
      */
     public BlobCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
-                        OffsetDateTime lastModified, String error, String versionId) {
+        OffsetDateTime lastModified, String error, String versionId) {
         this(copySource, copyId, copyStatus, eTag, lastModified, error, versionId, null);
     }
 
@@ -73,11 +71,10 @@ public class BlobCopyInfo {
      * @param copyStatus The status of the copy operation.
      * @param error An error message for the copy operation. {@code null} if there are no errors.
      * @param eTag If the copy is completed, contains the ETag of the destination blob. If the copy is not complete,
-     *     contains the ETag of the empty blob created.
+     * contains the ETag of the empty blob created.
      * @param lastModified The date/time that the copy operation to the destination blob completed.
      * @param versionId The version identifier of the destination blob.
      * @param encryptionScope The encryptionScope that will be applied to the destination blob.
-     *
      * @throws NullPointerException If {@code copyId}, {@code copySource}, {@code eTag}, or {@code copyStatus} is null.
      */
     public BlobCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
@@ -123,7 +120,7 @@ public class BlobCopyInfo {
      * Gets an error description associated with the copy operation.
      *
      * @return An error description associated with the copy, or {@code null} if there is no error associated with this
-     *     copy operation.
+     * copy operation.
      */
     public String getError() {
         return error;
@@ -141,7 +138,7 @@ public class BlobCopyInfo {
     /**
      * If the copy is complete, contains the ETag of the destination blob. If the copy isn't complete, contains the
      * ETag of the empty blob created at the start of the copy.
-     *
+     * <p>
      * The ETag value will be in quotes.
      *
      * @return The ETag for the copy.

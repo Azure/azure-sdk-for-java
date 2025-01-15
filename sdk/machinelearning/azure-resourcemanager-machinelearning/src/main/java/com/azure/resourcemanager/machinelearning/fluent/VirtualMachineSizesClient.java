@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.VirtualMachineSizeListResultInner;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineSizesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachineSizesClient.
+ */
 public interface VirtualMachineSizesClient {
     /**
      * Returns supported VM Sizes in a location.
-     *
+     * 
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface VirtualMachineSizesClient {
 
     /**
      * Returns supported VM Sizes in a location.
-     *
+     * 
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

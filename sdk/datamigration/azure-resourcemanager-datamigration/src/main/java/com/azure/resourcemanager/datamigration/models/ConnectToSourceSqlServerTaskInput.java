@@ -6,42 +6,46 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input for the task that validates connection to SQL Server and also validates source server requirements. */
+/**
+ * Input for the task that validates connection to SQL Server and also validates source server requirements.
+ */
 @Fluent
-public final class ConnectToSourceSqlServerTaskInput {
+public final class ConnectToSourceSqlServerTaskInput implements JsonSerializable<ConnectToSourceSqlServerTaskInput> {
     /*
      * Connection information for Source SQL Server
      */
-    @JsonProperty(value = "sourceConnectionInfo", required = true)
     private SqlConnectionInfo sourceConnectionInfo;
 
     /*
      * Permission group for validations
      */
-    @JsonProperty(value = "checkPermissionsGroup")
     private ServerLevelPermissionsGroup checkPermissionsGroup;
 
     /*
      * Flag for whether to collect logins from source server.
      */
-    @JsonProperty(value = "collectLogins")
     private Boolean collectLogins;
 
     /*
      * Flag for whether to collect agent jobs from source server.
      */
-    @JsonProperty(value = "collectAgentJobs")
     private Boolean collectAgentJobs;
 
-    /** Creates an instance of ConnectToSourceSqlServerTaskInput class. */
+    /**
+     * Creates an instance of ConnectToSourceSqlServerTaskInput class.
+     */
     public ConnectToSourceSqlServerTaskInput() {
     }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for Source SQL Server.
-     *
+     * 
      * @return the sourceConnectionInfo value.
      */
     public SqlConnectionInfo sourceConnectionInfo() {
@@ -50,7 +54,7 @@ public final class ConnectToSourceSqlServerTaskInput {
 
     /**
      * Set the sourceConnectionInfo property: Connection information for Source SQL Server.
-     *
+     * 
      * @param sourceConnectionInfo the sourceConnectionInfo value to set.
      * @return the ConnectToSourceSqlServerTaskInput object itself.
      */
@@ -61,7 +65,7 @@ public final class ConnectToSourceSqlServerTaskInput {
 
     /**
      * Get the checkPermissionsGroup property: Permission group for validations.
-     *
+     * 
      * @return the checkPermissionsGroup value.
      */
     public ServerLevelPermissionsGroup checkPermissionsGroup() {
@@ -70,19 +74,19 @@ public final class ConnectToSourceSqlServerTaskInput {
 
     /**
      * Set the checkPermissionsGroup property: Permission group for validations.
-     *
+     * 
      * @param checkPermissionsGroup the checkPermissionsGroup value to set.
      * @return the ConnectToSourceSqlServerTaskInput object itself.
      */
-    public ConnectToSourceSqlServerTaskInput withCheckPermissionsGroup(
-        ServerLevelPermissionsGroup checkPermissionsGroup) {
+    public ConnectToSourceSqlServerTaskInput
+        withCheckPermissionsGroup(ServerLevelPermissionsGroup checkPermissionsGroup) {
         this.checkPermissionsGroup = checkPermissionsGroup;
         return this;
     }
 
     /**
      * Get the collectLogins property: Flag for whether to collect logins from source server.
-     *
+     * 
      * @return the collectLogins value.
      */
     public Boolean collectLogins() {
@@ -91,7 +95,7 @@ public final class ConnectToSourceSqlServerTaskInput {
 
     /**
      * Set the collectLogins property: Flag for whether to collect logins from source server.
-     *
+     * 
      * @param collectLogins the collectLogins value to set.
      * @return the ConnectToSourceSqlServerTaskInput object itself.
      */
@@ -102,7 +106,7 @@ public final class ConnectToSourceSqlServerTaskInput {
 
     /**
      * Get the collectAgentJobs property: Flag for whether to collect agent jobs from source server.
-     *
+     * 
      * @return the collectAgentJobs value.
      */
     public Boolean collectAgentJobs() {
@@ -111,7 +115,7 @@ public final class ConnectToSourceSqlServerTaskInput {
 
     /**
      * Set the collectAgentJobs property: Flag for whether to collect agent jobs from source server.
-     *
+     * 
      * @param collectAgentJobs the collectAgentJobs value to set.
      * @return the ConnectToSourceSqlServerTaskInput object itself.
      */
@@ -122,19 +126,70 @@ public final class ConnectToSourceSqlServerTaskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceConnectionInfo in model ConnectToSourceSqlServerTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionInfo in model ConnectToSourceSqlServerTaskInput"));
         } else {
             sourceConnectionInfo().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectToSourceSqlServerTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
+        jsonWriter.writeStringField("checkPermissionsGroup",
+            this.checkPermissionsGroup == null ? null : this.checkPermissionsGroup.toString());
+        jsonWriter.writeBooleanField("collectLogins", this.collectLogins);
+        jsonWriter.writeBooleanField("collectAgentJobs", this.collectAgentJobs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToSourceSqlServerTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToSourceSqlServerTaskInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectToSourceSqlServerTaskInput.
+     */
+    public static ConnectToSourceSqlServerTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToSourceSqlServerTaskInput deserializedConnectToSourceSqlServerTaskInput
+                = new ConnectToSourceSqlServerTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceConnectionInfo".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskInput.sourceConnectionInfo
+                        = SqlConnectionInfo.fromJson(reader);
+                } else if ("checkPermissionsGroup".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskInput.checkPermissionsGroup
+                        = ServerLevelPermissionsGroup.fromString(reader.getString());
+                } else if ("collectLogins".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskInput.collectLogins
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("collectAgentJobs".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskInput.collectAgentJobs
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToSourceSqlServerTaskInput;
+        });
+    }
 }

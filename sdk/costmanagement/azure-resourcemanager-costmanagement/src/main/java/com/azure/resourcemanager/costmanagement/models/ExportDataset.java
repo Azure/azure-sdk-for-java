@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The definition for data in the export. */
+/**
+ * The definition for data in the export.
+ */
 @Fluent
-public final class ExportDataset {
+public final class ExportDataset implements JsonSerializable<ExportDataset> {
     /*
      * The granularity of rows in the export. Currently only 'Daily' is supported.
      */
-    @JsonProperty(value = "granularity")
     private GranularityType granularity;
 
     /*
      * The export dataset configuration.
      */
-    @JsonProperty(value = "configuration")
     private ExportDatasetConfiguration configuration;
 
-    /** Creates an instance of ExportDataset class. */
+    /**
+     * Creates an instance of ExportDataset class.
+     */
     public ExportDataset() {
     }
 
     /**
      * Get the granularity property: The granularity of rows in the export. Currently only 'Daily' is supported.
-     *
+     * 
      * @return the granularity value.
      */
     public GranularityType granularity() {
@@ -37,7 +43,7 @@ public final class ExportDataset {
 
     /**
      * Set the granularity property: The granularity of rows in the export. Currently only 'Daily' is supported.
-     *
+     * 
      * @param granularity the granularity value to set.
      * @return the ExportDataset object itself.
      */
@@ -48,7 +54,7 @@ public final class ExportDataset {
 
     /**
      * Get the configuration property: The export dataset configuration.
-     *
+     * 
      * @return the configuration value.
      */
     public ExportDatasetConfiguration configuration() {
@@ -57,7 +63,7 @@ public final class ExportDataset {
 
     /**
      * Set the configuration property: The export dataset configuration.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the ExportDataset object itself.
      */
@@ -68,12 +74,51 @@ public final class ExportDataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (configuration() != null) {
             configuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("granularity", this.granularity == null ? null : this.granularity.toString());
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportDataset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportDataset.
+     */
+    public static ExportDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportDataset deserializedExportDataset = new ExportDataset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("granularity".equals(fieldName)) {
+                    deserializedExportDataset.granularity = GranularityType.fromString(reader.getString());
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedExportDataset.configuration = ExportDatasetConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportDataset;
+        });
     }
 }

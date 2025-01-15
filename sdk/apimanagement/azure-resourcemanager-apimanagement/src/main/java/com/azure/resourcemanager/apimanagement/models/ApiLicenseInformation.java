@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** API license information. */
+/**
+ * API license information.
+ */
 @Fluent
-public final class ApiLicenseInformation {
+public final class ApiLicenseInformation implements JsonSerializable<ApiLicenseInformation> {
     /*
      * The license name used for the API
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A URL to the license used for the API. MUST be in the format of a URL
      */
-    @JsonProperty(value = "url")
     private String url;
 
-    /** Creates an instance of ApiLicenseInformation class. */
+    /**
+     * Creates an instance of ApiLicenseInformation class.
+     */
     public ApiLicenseInformation() {
     }
 
     /**
      * Get the name property: The license name used for the API.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ApiLicenseInformation {
 
     /**
      * Set the name property: The license name used for the API.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApiLicenseInformation object itself.
      */
@@ -48,7 +54,7 @@ public final class ApiLicenseInformation {
 
     /**
      * Get the url property: A URL to the license used for the API. MUST be in the format of a URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -57,7 +63,7 @@ public final class ApiLicenseInformation {
 
     /**
      * Set the url property: A URL to the license used for the API. MUST be in the format of a URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the ApiLicenseInformation object itself.
      */
@@ -68,9 +74,48 @@ public final class ApiLicenseInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("url", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiLicenseInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiLicenseInformation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiLicenseInformation.
+     */
+    public static ApiLicenseInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiLicenseInformation deserializedApiLicenseInformation = new ApiLicenseInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApiLicenseInformation.name = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedApiLicenseInformation.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiLicenseInformation;
+        });
     }
 }

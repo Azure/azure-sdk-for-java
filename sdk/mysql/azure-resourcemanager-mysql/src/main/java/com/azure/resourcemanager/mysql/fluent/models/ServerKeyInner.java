@@ -15,7 +15,8 @@ import java.time.OffsetDateTime;
 /** A MySQL Server key. */
 @Fluent
 public final class ServerKeyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerKeyInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerKeyInner.class);
 
     /*
      * Kind of encryption protector used to protect the key.

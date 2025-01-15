@@ -6,14 +6,8 @@ package com.azure.spring.cloud.core.implementation.util;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 
-import java.beans.PropertyDescriptor;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Predicate;
+import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
  * Util class for AzurePasswordlessProperties.
@@ -42,8 +36,10 @@ public final class AzurePasswordlessPropertiesUtils {
     }
 
     /**
-     * Copy common properties from source {@link PasswordlessProperties} object to target {@link T extends PasswordlessProperties} object. Ignore the source
-     * value if it is null.
+     * Copy common properties from source {@link PasswordlessProperties} object to target {@link T extends PasswordlessProperties} object.
+     * Ignore the source value:
+     *   1. if it is null.
+     *   2. if it's a primitive type and value is the default value.
      *
      * @param source The source {@link PasswordlessProperties} object.
      * @param target The target object.
@@ -74,34 +70,4 @@ public final class AzurePasswordlessPropertiesUtils {
         copyAzureCommonProperties(defaultProperties, target);
         copyAzureCommonPropertiesIgnoreNull(properties, target);
     }
-
-    /**
-     * Copy common properties from source object to target object. Ignore the source value if it is null.
-     *
-     * @param source The source object.
-     * @param target The target object.
-     */
-    public static void copyPropertiesIgnoreNull(Object source, Object target) {
-        BeanUtils.copyProperties(source, target, findNullPropertyNames(source));
-    }
-
-    private static String[] findPropertyNames(Object source, Predicate<Object> predicate) {
-        final Set<String> emptyNames = new HashSet<>();
-
-        final BeanWrapper beanWrapper = new BeanWrapperImpl(source);
-        PropertyDescriptor[] pds = beanWrapper.getPropertyDescriptors();
-
-        for (PropertyDescriptor pd : pds) {
-            Object srcValue = beanWrapper.getPropertyValue(pd.getName());
-            if (predicate.test(srcValue)) {
-                emptyNames.add(pd.getName());
-            }
-        }
-        return emptyNames.toArray(new String[0]);
-    }
-
-    private static String[] findNullPropertyNames(Object source) {
-        return findPropertyNames(source, Objects::isNull);
-    }
-
 }

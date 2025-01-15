@@ -40,23 +40,33 @@ public final class MonitorsUpdateSamples {
     public static void monitorsUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
         NewRelicMonitorResource resource = manager.monitors()
-            .getByResourceGroupWithResponse("rgNewRelic", "cdlymktqw", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("key164", "fakeTokenPlaceholder"))
+            .getByResourceGroupWithResponse("rgNewRelic", "cdlymktqw", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key164", "fakeTokenPlaceholder"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("key8903", new UserAssignedIdentity())))
             .withNewRelicAccountProperties(new NewRelicAccountProperties().withUserId("vcscxlncofcuduadesd")
-                .withAccountInfo(new AccountInfo()
-                    .withAccountId("xhqmg").withIngestionKey("fakeTokenPlaceholder").withRegion("ljcf"))
+                .withAccountInfo(new AccountInfo().withAccountId("xhqmg")
+                    .withIngestionKey("fakeTokenPlaceholder")
+                    .withRegion("ljcf"))
                 .withOrganizationInfo(new OrganizationInfo().withOrganizationId("k"))
-                .withSingleSignOnProperties(new NewRelicSingleSignOnProperties()
-                    .withSingleSignOnState(SingleSignOnStates.INITIAL).withEnterpriseAppId("kwiwfz")
-                    .withSingleSignOnUrl("kvseueuljsxmfwpqctz").withProvisioningState(ProvisioningState.ACCEPTED)))
+                .withSingleSignOnProperties(
+                    new NewRelicSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                        .withEnterpriseAppId("kwiwfz")
+                        .withSingleSignOnUrl("kvseueuljsxmfwpqctz")
+                        .withProvisioningState(ProvisioningState.ACCEPTED)))
             .withUserInfo(new UserInfo().withFirstName("vdftzcggirefejajwahhwhyibutramdaotvnuf")
-                .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc").withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
-                .withPhoneNumber("krf").withCountry("hslqnwdanrconqyekwbnttaetv"))
-            .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.YEARLY)
-                .withPlanDetails("tbbiaga").withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
-            .withOrgCreationSource(OrgCreationSource.LIFTR).withAccountCreationSource(AccountCreationSource.LIFTR)
+                .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc")
+                .withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
+                .withPhoneNumber("krf")
+                .withCountry("hslqnwdanrconqyekwbnttaetv"))
+            .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
+                .withBillingCycle(BillingCycle.YEARLY)
+                .withPlanDetails("tbbiaga")
+                .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
+            .withOrgCreationSource(OrgCreationSource.LIFTR)
+            .withAccountCreationSource(AccountCreationSource.LIFTR)
             .apply();
     }
 

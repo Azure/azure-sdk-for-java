@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class TriggerReferenceType extends ExpandableStringEnum<TriggerRefe
      * @param name a name to look for.
      * @return the corresponding TriggerReferenceType.
      */
-    @JsonCreator
     public static TriggerReferenceType fromString(String name) {
         return fromString(name, TriggerReferenceType.class);
     }

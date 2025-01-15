@@ -45,9 +45,10 @@ public final class DataProductsCatalogsListByResourceGroupMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DataProductsCatalog> response
             = manager.dataProductsCatalogs().listByResourceGroup("dttouwaboekqvkel", com.azure.core.util.Context.NONE);

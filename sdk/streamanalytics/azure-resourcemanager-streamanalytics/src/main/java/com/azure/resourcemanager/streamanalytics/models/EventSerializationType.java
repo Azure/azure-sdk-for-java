@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -28,19 +27,9 @@ public final class EventSerializationType extends ExpandableStringEnum<EventSeri
     public static final EventSerializationType JSON = fromString("Json");
 
     /**
-     * Static value CustomClr for EventSerializationType.
-     */
-    public static final EventSerializationType CUSTOM_CLR = fromString("CustomClr");
-
-    /**
      * Static value Parquet for EventSerializationType.
      */
     public static final EventSerializationType PARQUET = fromString("Parquet");
-
-    /**
-     * Static value Delta for EventSerializationType.
-     */
-    public static final EventSerializationType DELTA = fromString("Delta");
 
     /**
      * Creates a new instance of EventSerializationType value.
@@ -57,7 +46,6 @@ public final class EventSerializationType extends ExpandableStringEnum<EventSeri
      * @param name a name to look for.
      * @return the corresponding EventSerializationType.
      */
-    @JsonCreator
     public static EventSerializationType fromString(String name) {
         return fromString(name, EventSerializationType.class);
     }

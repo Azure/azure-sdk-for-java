@@ -15,23 +15,22 @@ public final class FileShareDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileShareDatasetTypeProperties model = BinaryData.fromString(
-            "{\"folderPath\":\"datawyopgarpfctwrapc\",\"fileName\":\"dataojqyvzes\",\"modifiedDatetimeStart\":\"dataiysnjqyowaadc\",\"modifiedDatetimeEnd\":\"dataazab\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datatsewkaupwhlz\",\"deserializer\":\"datakremgjl\",\"\":{\"kqakofaj\":\"datadorsirxxhy\",\"shixbcejopylbl\":\"datareprfvmkinwteyr\"}},\"fileFilter\":\"dataprrw\",\"compression\":{\"type\":\"datapimtc\",\"level\":\"datafx\",\"\":{\"liqemcdiiisklbo\":\"datatzfslxizhqikmgo\",\"rk\":\"dataxxupjxv\"}}}")
+            "{\"folderPath\":\"datadzauiunyev\",\"fileName\":\"datazdsytciks\",\"modifiedDatetimeStart\":\"datacamwuynfxkcgs\",\"modifiedDatetimeEnd\":\"datamvhadrpbatvy\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datajqkqws\",\"deserializer\":\"datatvjkowggxawwdm\",\"\":{\"g\":\"datankteiidlbovwbclp\",\"kjcnerek\":\"datagani\",\"gpwxtvce\":\"datajulskwwnqhql\",\"vxwve\":\"dataavv\"}},\"fileFilter\":\"datanlrjcsmwevguyfln\",\"compression\":{\"type\":\"datalr\",\"level\":\"datafzcde\",\"\":{\"csfqbirtybce\":\"datawezhyfkdilbwqlq\",\"dvuelumodpegqxso\":\"datafjnxodnjyhzfaxs\",\"hlbeqvhs\":\"datachazrqoxz\"}}}")
             .toObject(FileShareDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileShareDatasetTypeProperties model = new FileShareDatasetTypeProperties()
-            .withFolderPath("datawyopgarpfctwrapc")
-            .withFileName("dataojqyvzes")
-            .withModifiedDatetimeStart("dataiysnjqyowaadc")
-            .withModifiedDatetimeEnd("dataazab")
-            .withFormat(new DatasetStorageFormat().withSerializer("datatsewkaupwhlz")
-                .withDeserializer("datakremgjl")
+        FileShareDatasetTypeProperties model = new FileShareDatasetTypeProperties().withFolderPath("datadzauiunyev")
+            .withFileName("datazdsytciks")
+            .withModifiedDatetimeStart("datacamwuynfxkcgs")
+            .withModifiedDatetimeEnd("datamvhadrpbatvy")
+            .withFormat(new DatasetStorageFormat().withSerializer("datajqkqws")
+                .withDeserializer("datatvjkowggxawwdm")
                 .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-            .withFileFilter("dataprrw")
+            .withFileFilter("datanlrjcsmwevguyfln")
             .withCompression(
-                new DatasetCompression().withType("datapimtc").withLevel("datafx").withAdditionalProperties(mapOf()));
+                new DatasetCompression().withType("datalr").withLevel("datafzcde").withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(FileShareDatasetTypeProperties.class);
     }
 

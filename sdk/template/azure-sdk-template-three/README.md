@@ -2,7 +2,7 @@
 
 Use the guidelines in each section of this template to ensure consistency and readability of your README.
 The README resides in your package's GitHub repository at the root of its directory within the repo.
-It's also used as the package distribution page (NuGet, PyPi, npm, etc.) and as a Quickstart on docs.microsoft.com.
+It's also used as the package distribution page (NuGet, PyPi, npm, etc.) and as a Quickstart on learn.microsoft.com.
 
 **Title**: The H1 of your README should be in the format: `# [Product Name] client library for [Language]`
 
@@ -13,7 +13,7 @@ It's also used as the package distribution page (NuGet, PyPi, npm, etc.) and as 
 
 * **DO NOT** use an "Introduction" or "Overview" heading (H2) for this section.
 * First sentence: **Describe the service** briefly. You can usually use the first line of the service's docs landing page
-  for this (Example: [Cosmos DB docs landing page](https://docs.microsoft.com/azure/cosmos-db/)).
+  for this (Example: [Cosmos DB docs landing page](https://learn.microsoft.com/azure/cosmos-db/)).
 * Next, add a **bulleted list** of the **most common tasks** supported by the package or library, prefaced with
   "Use the client library for [Product Name] to:". Then, provide code snippets for these tasks in the [Examples](#examples)
   section later in the document. Keep the task list short but include those tasks most developers need to perform with your package.
@@ -36,7 +36,7 @@ Include a **Prerequisites** line after the install command that details any requ
 a developer can [authenticate](#authenticate-the-client) and test all the snippets in the [Examples](#examples) section.
 For example, for Cosmos DB:
 
-**Prerequisites**: You must have an [Azure subscription](https://azure.microsoft.com/free/), [Cosmos DB account](https://docs.microsoft.com/azure/cosmos-db/account-overview) (SQL API), and [Java Development Kit (JDK) with version 8 or above][jdk] to use this package.
+**Prerequisites**: You must have an [Azure subscription](https://azure.microsoft.com/free/), [Cosmos DB account](https://learn.microsoft.com/azure/cosmos-db/account-overview) (SQL API), and [Java Development Kit (JDK) with version 8 or above][jdk] to use this package.
 
 > TODO: Once the library has GA'ed include the instructions on how to include the BOM file directly. And the benefit of using the BOM file over adding a direct dependency to the project.
 
@@ -117,7 +117,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 ### Default HTTP Client
 
-By default, a Netty based HTTP client will be used. The [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients)
+By default, a Netty based HTTP client will be used. The [HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients)
 provides more information on configuring or changing the HTTP client.
 
 ## Next steps
@@ -146,9 +146,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[style-guide-msft]: https://learn.microsoft.com/style-guide/capitalization
+[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

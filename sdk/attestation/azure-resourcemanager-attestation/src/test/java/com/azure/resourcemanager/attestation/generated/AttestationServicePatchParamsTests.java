@@ -13,21 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AttestationServicePatchParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttestationServicePatchParams model =
-            BinaryData
-                .fromString("{\"tags\":{\"xzdmohctb\":\"uesnzwdejbavo\",\"ndnvo\":\"vudwx\"}}")
-                .toObject(AttestationServicePatchParams.class);
-        Assertions.assertEquals("uesnzwdejbavo", model.tags().get("xzdmohctb"));
+        AttestationServicePatchParams model
+            = BinaryData.fromString("{\"tags\":{\"ec\":\"mxnehmp\"}}").toObject(AttestationServicePatchParams.class);
+        Assertions.assertEquals("mxnehmp", model.tags().get("ec"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttestationServicePatchParams model =
-            new AttestationServicePatchParams().withTags(mapOf("xzdmohctb", "uesnzwdejbavo", "ndnvo", "vudwx"));
+        AttestationServicePatchParams model = new AttestationServicePatchParams().withTags(mapOf("ec", "mxnehmp"));
         model = BinaryData.fromObject(model).toObject(AttestationServicePatchParams.class);
-        Assertions.assertEquals("uesnzwdejbavo", model.tags().get("xzdmohctb"));
+        Assertions.assertEquals("mxnehmp", model.tags().get("ec"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

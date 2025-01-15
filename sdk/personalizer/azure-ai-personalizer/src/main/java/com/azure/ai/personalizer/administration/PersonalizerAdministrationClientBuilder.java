@@ -33,17 +33,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  * A builder for creating a new instance of PersonalizerAdministrationAsyncClient and PersonalizerAdministrationClient.
  */
-@ServiceClientBuilder(serviceClients = {PersonalizerAdministrationAsyncClient.class, PersonalizerAdministrationClient.class})
-public final class PersonalizerAdministrationClientBuilder implements
-    AzureKeyCredentialTrait<PersonalizerAdministrationClientBuilder>,
-    ConfigurationTrait<PersonalizerAdministrationClientBuilder>,
-    EndpointTrait<PersonalizerAdministrationClientBuilder>,
-    HttpTrait<PersonalizerAdministrationClientBuilder>,
-    TokenCredentialTrait<PersonalizerAdministrationClientBuilder> {
+@ServiceClientBuilder(
+    serviceClients = { PersonalizerAdministrationAsyncClient.class, PersonalizerAdministrationClient.class })
+public final class PersonalizerAdministrationClientBuilder
+    implements AzureKeyCredentialTrait<PersonalizerAdministrationClientBuilder>,
+    ConfigurationTrait<PersonalizerAdministrationClientBuilder>, EndpointTrait<PersonalizerAdministrationClientBuilder>,
+    HttpTrait<PersonalizerAdministrationClientBuilder>, TokenCredentialTrait<PersonalizerAdministrationClientBuilder> {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private final ClientLogger logger = new ClientLogger(PersonalizerAdministrationClientBuilder.class);
@@ -60,6 +58,12 @@ public final class PersonalizerAdministrationClientBuilder implements
     private PersonalizerServiceVersion version;
     private PersonalizerAudience audience;
 
+    /**
+     * Creates an instance of {@link PersonalizerAdministrationClientBuilder}.
+     */
+    public PersonalizerAdministrationClientBuilder() {
+    }
+
     PersonalizerClientV1Preview3Impl getService() {
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
@@ -67,32 +71,22 @@ public final class PersonalizerAdministrationClientBuilder implements
             audience = PersonalizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
         }
         // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Service Version
-        final PersonalizerServiceVersion serviceVersion =
-            version != null ? version : PersonalizerServiceVersion.getLatest();
+        final PersonalizerServiceVersion serviceVersion
+            = version != null ? version : PersonalizerServiceVersion.getLatest();
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(
-                clientOptions,
-                httpLogOptions,
-                buildConfiguration,
-                retryPolicy,
-                retryOptions,
-                azureKeyCredential,
-                tokenCredential,
-                audience,
-                perCallPolicies,
-                perRetryPolicies,
+            pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration, retryPolicy,
+                retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies,
                 httpClient);
         }
 
-        return new PersonalizerClientV1Preview3ImplBuilder()
-            .endpoint(endpoint)
+        return new PersonalizerClientV1Preview3ImplBuilder().endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(pipeline)
             .buildClient();

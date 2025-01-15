@@ -6,22 +6,37 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.billing.fluent.models.AgreementInner;
-import com.azure.resourcemanager.billing.models.Participants;
-import java.util.Arrays;
+import com.azure.resourcemanager.billing.models.AgreementProperties;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class AgreementInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgreementInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"agreementLink\":\"goo\",\"category\":\"Other\",\"acceptanceMode\":\"ClickToAccept\",\"billingProfileInfo\":{\"billingProfileId\":\"bvleorfmluiqtqzf\",\"billingProfileDisplayName\":\"yvnqqybaryeuay\",\"indirectRelationshipOrganizationName\":\"qabqgzslesjcb\"},\"effectiveDate\":\"2021-02-16T20:00:10Z\",\"expirationDate\":\"2021-04-10T08:53:01Z\",\"participants\":[{\"status\":\"w\",\"statusDate\":\"2021-08-27T00:56:15Z\",\"email\":\"bquwrbehw\"}],\"status\":\"o\"},\"id\":\"buffkmrqemvvhm\",\"name\":\"tdrjfutacoebj\",\"type\":\"ewzcjznmwcp\"}")
-                .toObject(AgreementInner.class);
+        AgreementInner model = BinaryData.fromString(
+            "{\"properties\":{\"acceptanceMode\":\"PhysicalSign\",\"agreementLink\":\"uv\",\"billingProfileInfo\":[{\"billingAccountId\":\"ybczmehmtzo\",\"billingProfileDisplayName\":\"sphrupidgs\",\"billingProfileId\":\"bejhphoycmsxa\",\"billingProfileSystemId\":\"hdxbmtqio\",\"indirectRelationshipOrganizationName\":\"zehtbmu\"}],\"category\":\"UKCloudComputeFramework\",\"displayName\":\"noi\",\"effectiveDate\":\"2021-08-05T07:19:53Z\",\"expirationDate\":\"2021-12-07T12:09:55Z\",\"participants\":[{\"email\":\"qsoqijgkd\",\"status\":\"pazlobcufpdz\",\"statusDate\":\"2021-10-17T14:34:33Z\"},{\"email\":\"cqqjnqglhqgn\",\"status\":\"ooojywifsqe\",\"statusDate\":\"2021-01-27T01:57:14Z\"},{\"email\":\"dfmglzlhjx\",\"status\":\"f\",\"statusDate\":\"2021-09-21T00:46:54Z\"}],\"status\":\"vktsizntocipao\",\"leadBillingAccountName\":\"jpsq\"},\"tags\":{\"gjofjd\":\"poyfdkfogkn\",\"zyf\":\"eqsrdeupewnwreit\"},\"id\":\"sarhmofc\",\"name\":\"hs\",\"type\":\"yurkdtmlxhekuksj\"}")
+            .toObject(AgreementInner.class);
+        Assertions.assertEquals("poyfdkfogkn", model.tags().get("gjofjd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgreementInner model = new AgreementInner().withParticipants(Arrays.asList(new Participants()));
+        AgreementInner model = new AgreementInner().withTags(mapOf("gjofjd", "poyfdkfogkn", "zyf", "eqsrdeupewnwreit"))
+            .withProperties(new AgreementProperties());
         model = BinaryData.fromObject(model).toObject(AgreementInner.class);
+        Assertions.assertEquals("poyfdkfogkn", model.tags().get("gjofjd"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

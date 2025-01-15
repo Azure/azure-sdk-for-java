@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOpenRestri
 public final class ContentKeyPolicyOpenRestrictionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyOpenRestriction model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyOpenRestriction\"}")
+        ContentKeyPolicyOpenRestriction model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyOpenRestriction\"}")
                 .toObject(ContentKeyPolicyOpenRestriction.class);
     }
 

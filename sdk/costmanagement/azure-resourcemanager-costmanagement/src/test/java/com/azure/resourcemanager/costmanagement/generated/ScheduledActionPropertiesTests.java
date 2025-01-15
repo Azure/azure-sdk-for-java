@@ -21,76 +21,67 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduledActionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduledActionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"nrvgoupmfiibfgg\",\"fileDestination\":{\"fileFormats\":[\"Csv\",\"Csv\"]},\"notification\":{\"to\":[\"wxkvtkkgll\",\"wjygvjayvblmhvk\",\"uhbxvvy\"],\"language\":\"s\",\"message\":\"byrqufeg\",\"regionalFormat\":\"vwz\",\"subject\":\"bnhlmc\"},\"notificationEmail\":\"p\",\"schedule\":{\"frequency\":\"Daily\",\"hourOfDay\":1262930280,\"daysOfWeek\":[\"Thursday\",\"Wednesday\"],\"weeksOfMonth\":[\"Fourth\",\"First\"],\"dayOfMonth\":283160638,\"startDate\":\"2021-08-25T00:52:30Z\",\"endDate\":\"2021-02-16T12:45:58Z\"},\"scope\":\"ijejvegrhbpn\",\"status\":\"Enabled\",\"viewId\":\"xexccbdreaxhcexd\"}")
-                .toObject(ScheduledActionProperties.class);
-        Assertions.assertEquals("nrvgoupmfiibfgg", model.displayName());
+        ScheduledActionProperties model = BinaryData.fromString(
+            "{\"displayName\":\"ids\",\"fileDestination\":{\"fileFormats\":[\"Csv\"]},\"notification\":{\"to\":[\"uffgllukkutvlx\",\"rpq\",\"vmblcouqe\"],\"language\":\"hbcdsziry\",\"message\":\"ndo\",\"regionalFormat\":\"mbltoo\",\"subject\":\"mkfqlwxldy\"},\"notificationEmail\":\"lsygaol\",\"schedule\":{\"frequency\":\"Weekly\",\"hourOfDay\":1481014502,\"daysOfWeek\":[\"Monday\"],\"weeksOfMonth\":[\"First\",\"Second\",\"Last\"],\"dayOfMonth\":923883370,\"startDate\":\"2021-05-08T04:16:06Z\",\"endDate\":\"2021-06-16T22:07:38Z\"},\"scope\":\"xxahmrnadzyqegxy\",\"status\":\"Expired\",\"viewId\":\"pinbmhwbjijkgqxn\"}")
+            .toObject(ScheduledActionProperties.class);
+        Assertions.assertEquals("ids", model.displayName());
         Assertions.assertEquals(FileFormat.CSV, model.fileDestination().fileFormats().get(0));
-        Assertions.assertEquals("wxkvtkkgll", model.notification().to().get(0));
-        Assertions.assertEquals("s", model.notification().language());
-        Assertions.assertEquals("byrqufeg", model.notification().message());
-        Assertions.assertEquals("vwz", model.notification().regionalFormat());
-        Assertions.assertEquals("bnhlmc", model.notification().subject());
-        Assertions.assertEquals("p", model.notificationEmail());
-        Assertions.assertEquals(ScheduleFrequency.DAILY, model.schedule().frequency());
-        Assertions.assertEquals(1262930280, model.schedule().hourOfDay());
-        Assertions.assertEquals(DaysOfWeek.THURSDAY, model.schedule().daysOfWeek().get(0));
-        Assertions.assertEquals(WeeksOfMonth.FOURTH, model.schedule().weeksOfMonth().get(0));
-        Assertions.assertEquals(283160638, model.schedule().dayOfMonth());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T00:52:30Z"), model.schedule().startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T12:45:58Z"), model.schedule().endDate());
-        Assertions.assertEquals("ijejvegrhbpn", model.scope());
-        Assertions.assertEquals(ScheduledActionStatus.ENABLED, model.status());
-        Assertions.assertEquals("xexccbdreaxhcexd", model.viewId());
+        Assertions.assertEquals("uffgllukkutvlx", model.notification().to().get(0));
+        Assertions.assertEquals("hbcdsziry", model.notification().language());
+        Assertions.assertEquals("ndo", model.notification().message());
+        Assertions.assertEquals("mbltoo", model.notification().regionalFormat());
+        Assertions.assertEquals("mkfqlwxldy", model.notification().subject());
+        Assertions.assertEquals("lsygaol", model.notificationEmail());
+        Assertions.assertEquals(ScheduleFrequency.WEEKLY, model.schedule().frequency());
+        Assertions.assertEquals(1481014502, model.schedule().hourOfDay());
+        Assertions.assertEquals(DaysOfWeek.MONDAY, model.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(WeeksOfMonth.FIRST, model.schedule().weeksOfMonth().get(0));
+        Assertions.assertEquals(923883370, model.schedule().dayOfMonth());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-08T04:16:06Z"), model.schedule().startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T22:07:38Z"), model.schedule().endDate());
+        Assertions.assertEquals("xxahmrnadzyqegxy", model.scope());
+        Assertions.assertEquals(ScheduledActionStatus.EXPIRED, model.status());
+        Assertions.assertEquals("pinbmhwbjijkgqxn", model.viewId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionProperties model =
-            new ScheduledActionProperties()
-                .withDisplayName("nrvgoupmfiibfgg")
-                .withFileDestination(
-                    new FileDestination().withFileFormats(Arrays.asList(FileFormat.CSV, FileFormat.CSV)))
-                .withNotification(
-                    new NotificationProperties()
-                        .withTo(Arrays.asList("wxkvtkkgll", "wjygvjayvblmhvk", "uhbxvvy"))
-                        .withLanguage("s")
-                        .withMessage("byrqufeg")
-                        .withRegionalFormat("vwz")
-                        .withSubject("bnhlmc"))
-                .withNotificationEmail("p")
-                .withSchedule(
-                    new ScheduleProperties()
-                        .withFrequency(ScheduleFrequency.DAILY)
-                        .withHourOfDay(1262930280)
-                        .withDaysOfWeek(Arrays.asList(DaysOfWeek.THURSDAY, DaysOfWeek.WEDNESDAY))
-                        .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FOURTH, WeeksOfMonth.FIRST))
-                        .withDayOfMonth(283160638)
-                        .withStartDate(OffsetDateTime.parse("2021-08-25T00:52:30Z"))
-                        .withEndDate(OffsetDateTime.parse("2021-02-16T12:45:58Z")))
-                .withScope("ijejvegrhbpn")
-                .withStatus(ScheduledActionStatus.ENABLED)
-                .withViewId("xexccbdreaxhcexd");
+        ScheduledActionProperties model = new ScheduledActionProperties().withDisplayName("ids")
+            .withFileDestination(new FileDestination().withFileFormats(Arrays.asList(FileFormat.CSV)))
+            .withNotification(new NotificationProperties().withTo(Arrays.asList("uffgllukkutvlx", "rpq", "vmblcouqe"))
+                .withLanguage("hbcdsziry")
+                .withMessage("ndo")
+                .withRegionalFormat("mbltoo")
+                .withSubject("mkfqlwxldy"))
+            .withNotificationEmail("lsygaol")
+            .withSchedule(new ScheduleProperties().withFrequency(ScheduleFrequency.WEEKLY)
+                .withHourOfDay(1481014502)
+                .withDaysOfWeek(Arrays.asList(DaysOfWeek.MONDAY))
+                .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FIRST, WeeksOfMonth.SECOND, WeeksOfMonth.LAST))
+                .withDayOfMonth(923883370)
+                .withStartDate(OffsetDateTime.parse("2021-05-08T04:16:06Z"))
+                .withEndDate(OffsetDateTime.parse("2021-06-16T22:07:38Z")))
+            .withScope("xxahmrnadzyqegxy")
+            .withStatus(ScheduledActionStatus.EXPIRED)
+            .withViewId("pinbmhwbjijkgqxn");
         model = BinaryData.fromObject(model).toObject(ScheduledActionProperties.class);
-        Assertions.assertEquals("nrvgoupmfiibfgg", model.displayName());
+        Assertions.assertEquals("ids", model.displayName());
         Assertions.assertEquals(FileFormat.CSV, model.fileDestination().fileFormats().get(0));
-        Assertions.assertEquals("wxkvtkkgll", model.notification().to().get(0));
-        Assertions.assertEquals("s", model.notification().language());
-        Assertions.assertEquals("byrqufeg", model.notification().message());
-        Assertions.assertEquals("vwz", model.notification().regionalFormat());
-        Assertions.assertEquals("bnhlmc", model.notification().subject());
-        Assertions.assertEquals("p", model.notificationEmail());
-        Assertions.assertEquals(ScheduleFrequency.DAILY, model.schedule().frequency());
-        Assertions.assertEquals(1262930280, model.schedule().hourOfDay());
-        Assertions.assertEquals(DaysOfWeek.THURSDAY, model.schedule().daysOfWeek().get(0));
-        Assertions.assertEquals(WeeksOfMonth.FOURTH, model.schedule().weeksOfMonth().get(0));
-        Assertions.assertEquals(283160638, model.schedule().dayOfMonth());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T00:52:30Z"), model.schedule().startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T12:45:58Z"), model.schedule().endDate());
-        Assertions.assertEquals("ijejvegrhbpn", model.scope());
-        Assertions.assertEquals(ScheduledActionStatus.ENABLED, model.status());
-        Assertions.assertEquals("xexccbdreaxhcexd", model.viewId());
+        Assertions.assertEquals("uffgllukkutvlx", model.notification().to().get(0));
+        Assertions.assertEquals("hbcdsziry", model.notification().language());
+        Assertions.assertEquals("ndo", model.notification().message());
+        Assertions.assertEquals("mbltoo", model.notification().regionalFormat());
+        Assertions.assertEquals("mkfqlwxldy", model.notification().subject());
+        Assertions.assertEquals("lsygaol", model.notificationEmail());
+        Assertions.assertEquals(ScheduleFrequency.WEEKLY, model.schedule().frequency());
+        Assertions.assertEquals(1481014502, model.schedule().hourOfDay());
+        Assertions.assertEquals(DaysOfWeek.MONDAY, model.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(WeeksOfMonth.FIRST, model.schedule().weeksOfMonth().get(0));
+        Assertions.assertEquals(923883370, model.schedule().dayOfMonth());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-08T04:16:06Z"), model.schedule().startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T22:07:38Z"), model.schedule().endDate());
+        Assertions.assertEquals("xxahmrnadzyqegxy", model.scope());
+        Assertions.assertEquals(ScheduledActionStatus.EXPIRED, model.status());
+        Assertions.assertEquals("pinbmhwbjijkgqxn", model.viewId());
     }
 }

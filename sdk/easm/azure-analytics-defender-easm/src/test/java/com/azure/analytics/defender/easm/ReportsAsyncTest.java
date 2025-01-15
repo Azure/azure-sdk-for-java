@@ -17,29 +17,22 @@ public class ReportsAsyncTest extends EasmClientTestBase {
     @Test
     public void testReportsBillableAsync() {
         Mono<ReportBillableAssetSummaryResult> reportBillableAssetSummaryResultMono = easmAsyncClient.getBillable();
-        StepVerifier.create(reportBillableAssetSummaryResultMono)
-            .assertNext(reportBillableAssetSummaryResult -> {
-                assertTrue(reportBillableAssetSummaryResult.getAssetSummaries().size() > 0);
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(reportBillableAssetSummaryResultMono).assertNext(reportBillableAssetSummaryResult -> {
+            assertTrue(reportBillableAssetSummaryResult.getAssetSummaries().size() > 0);
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testReportsSnapshotAsync() {
-        ReportAssetSnapshotRequest reportAssetSnapshotRequest = new ReportAssetSnapshotRequest()
-            .setMetric(metric)
-            .setPage(0)
-            .setSize(25);
-        Mono<ReportAssetSnapshotResult> reportAssetSnapshotResultMono = easmAsyncClient.getSnapshot(reportAssetSnapshotRequest);
-        StepVerifier.create(reportAssetSnapshotResultMono)
-            .assertNext(reportAssetSnapshotResult -> {
-                assertNotNull(reportAssetSnapshotResult.getDisplayName());
-                assertEquals(metric, reportAssetSnapshotResult.getMetric());
-                assertNotNull(reportAssetSnapshotResult.getDescription());
-                assertNotNull(reportAssetSnapshotResult.getAssets());
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        ReportAssetSnapshotRequest reportAssetSnapshotRequest
+            = new ReportAssetSnapshotRequest().setMetric(metric).setPage(0).setSize(25);
+        Mono<ReportAssetSnapshotResult> reportAssetSnapshotResultMono
+            = easmAsyncClient.getSnapshot(reportAssetSnapshotRequest);
+        StepVerifier.create(reportAssetSnapshotResultMono).assertNext(reportAssetSnapshotResult -> {
+            assertNotNull(reportAssetSnapshotResult.getDisplayName());
+            assertEquals(metric, reportAssetSnapshotResult.getMetric());
+            assertNotNull(reportAssetSnapshotResult.getDescription());
+            assertNotNull(reportAssetSnapshotResult.getAssets());
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 }

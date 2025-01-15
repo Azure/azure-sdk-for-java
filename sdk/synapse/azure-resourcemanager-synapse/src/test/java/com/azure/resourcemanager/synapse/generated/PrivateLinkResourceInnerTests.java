@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkResourceInner;
 public final class PrivateLinkResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"groupId\":\"wtgrhpdjpj\",\"requiredMembers\":[\"sxazjpq\",\"e\",\"ualhbxxhejj\",\"zvdudgwdslfhotwm\"],\"requiredZoneNames\":[\"pwlbjnpg\",\"cftadeh\",\"nltyfsoppusuesnz\"]},\"id\":\"dejbavo\",\"name\":\"xzdmohctb\",\"type\":\"vudwx\"}")
-                .toObject(PrivateLinkResourceInner.class);
+        PrivateLinkResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"groupId\":\"ftwwaezkojvdc\",\"requiredMembers\":[\"oqouicybxarzgszu\",\"oxciqopidoamcio\",\"hkh\"],\"requiredZoneNames\":[\"khnzbonlw\",\"toego\",\"dwbwhkszzcmrvexz\",\"vbtqgsfraoyzk\"]},\"id\":\"owtlmnguxawqald\",\"name\":\"yuuximerqfobwyzn\",\"type\":\"bykutw\"}")
+            .toObject(PrivateLinkResourceInner.class);
     }
 
     @org.junit.jupiter.api.Test

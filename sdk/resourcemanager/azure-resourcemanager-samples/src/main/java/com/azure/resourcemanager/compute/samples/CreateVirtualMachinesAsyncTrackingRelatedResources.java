@@ -67,9 +67,8 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
         try {
             // Create one resource group for everything for easier cleanup later
             System.out.println(String.format("Creating the resource group (`%s`)...", resourceGroupName));
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(resourceGroupName)
-                    .withRegion(region)
-                    .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(resourceGroupName).withRegion(region).create();
             System.out.println("Resource group created.");
 
             // =====================================================================
@@ -96,33 +95,37 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
 
                 // Define a network for each VM
                 String networkName = Utils.randomResourceName(azureResourceManager, "net", 14);
-                Creatable<Network> networkDefinition = azureResourceManager.networks().define(networkName)
-                        .withRegion(region)
-                        .withExistingResourceGroup(resourceGroup)
-                        .withAddressSpace("10.0." + i + ".0/29"); // Make the address space unique
+                Creatable<Network> networkDefinition = azureResourceManager.networks()
+                    .define(networkName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroup)
+                    .withAddressSpace("10.0." + i + ".0/29"); // Make the address space unique
                 relatedDefinitions.add(networkDefinition);
 
                 // Define a PIP for each VM
                 String pipName = Utils.randomResourceName(azureResourceManager, "pip", 14);
-                Creatable<PublicIpAddress> pipDefinition = azureResourceManager.publicIpAddresses().define(pipName)
-                        .withRegion(region)
-                        .withExistingResourceGroup(resourceGroup);
+                Creatable<PublicIpAddress> pipDefinition = azureResourceManager.publicIpAddresses()
+                    .define(pipName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroup);
                 relatedDefinitions.add(pipDefinition);
 
                 // Define a NIC for each VM
                 String nicName = Utils.randomResourceName(azureResourceManager, "nic", 14);
-                Creatable<NetworkInterface> nicDefinition = azureResourceManager.networkInterfaces().define(nicName)
-                        .withRegion(region)
-                        .withExistingResourceGroup(resourceGroup)
-                        .withNewPrimaryNetwork(networkDefinition)
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .withNewPrimaryPublicIPAddress(pipDefinition);
+                Creatable<NetworkInterface> nicDefinition = azureResourceManager.networkInterfaces()
+                    .define(nicName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroup)
+                    .withNewPrimaryNetwork(networkDefinition)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withNewPrimaryPublicIPAddress(pipDefinition);
 
                 // Define an availability set for each VM
                 String availabilitySetName = Utils.randomResourceName(azureResourceManager, "as", 14);
-                Creatable<AvailabilitySet> availabilitySetDefinition = azureResourceManager.availabilitySets().define(availabilitySetName)
-                        .withRegion(region)
-                        .withExistingResourceGroup(resourceGroup);
+                Creatable<AvailabilitySet> availabilitySetDefinition = azureResourceManager.availabilitySets()
+                    .define(availabilitySetName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroup);
                 relatedDefinitions.add(availabilitySetDefinition);
 
                 String vmName = Utils.randomResourceName(azureResourceManager, "vm", 14);
@@ -136,15 +139,16 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                     userName = "tester";
                 }
 
-                Creatable<VirtualMachine> vmDefinition = azureResourceManager.virtualMachines().define(vmName)
-                        .withRegion(region)
-                        .withExistingResourceGroup(resourceGroup)
-                        .withNewPrimaryNetworkInterface(nicDefinition)
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername(userName)
-                        .withRootPassword(Utils.password())
-                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                        .withNewAvailabilitySet(availabilitySetDefinition);
+                Creatable<VirtualMachine> vmDefinition = azureResourceManager.virtualMachines()
+                    .define(vmName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroup)
+                    .withNewPrimaryNetworkInterface(nicDefinition)
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername(userName)
+                    .withRootPassword(Utils.password())
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withNewAvailabilitySet(availabilitySetDefinition);
 
                 // Keep track of all the related resource definitions based on the VM definition
                 vmNonNicResourceDefinitions.put(vmDefinition.key(), relatedDefinitions);
@@ -156,8 +160,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             // Start the parallel creation of everything asynchronously
             //
             System.out.println("Creating the virtual machines and related required resources in parallel...");
-            azureResourceManager
-                .virtualMachines()
+            azureResourceManager.virtualMachines()
                 .createAsync(new ArrayList<>(vmDefinitions.values()))
                 .map(virtualMachine -> {
 
@@ -186,8 +189,9 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             System.out.println("Creation completed.");
 
             // Show any errors
-            for (Throwable error: errors) {
-                System.out.println("ERROR: Creation of virtual machines has been stopped due to a failure to create a resource.\n");
+            for (Throwable error : errors) {
+                System.out.println(
+                    "ERROR: Creation of virtual machines has been stopped due to a failure to create a resource.\n");
                 if (error instanceof ManagementException) {
                     ManagementException ce = (ManagementException) error;
                     System.out.println("Cloud Exception: " + ce.getMessage());
@@ -220,7 +224,8 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                     String createdResourceId = createdResourceIds.get(resource.key());
                     if (createdResourceId != null) {
                         // Prepare the deletion of each related resource (treating it as a generic resource) as a multi-threaded Observable
-                        deleteObservables.add(azureResourceManager.genericResources().deleteByIdAsync(createdResourceId));
+                        deleteObservables
+                            .add(azureResourceManager.genericResources().deleteByIdAsync(createdResourceId));
                     }
                 }
             }
@@ -231,20 +236,29 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             System.out.println("Number of failed/cleaned up VM creations: " + vmNonNicResourceDefinitions.size());
 
             // Verifications
-            final int actualVMCount = Utils.getSize(azureResourceManager.virtualMachines().listByResourceGroup(resourceGroupName));
+            final int actualVMCount
+                = Utils.getSize(azureResourceManager.virtualMachines().listByResourceGroup(resourceGroupName));
             System.out.println("Number of successful VMs: " + actualVMCount);
 
-            final int actualNicCount = Utils.getSize(azureResourceManager.networkInterfaces().listByResourceGroup(resourceGroupName));
-            System.out.println(String.format("Remaining network interfaces (should be %d): %d", actualVMCount, actualNicCount));
+            final int actualNicCount
+                = Utils.getSize(azureResourceManager.networkInterfaces().listByResourceGroup(resourceGroupName));
+            System.out.println(
+                String.format("Remaining network interfaces (should be %d): %d", actualVMCount, actualNicCount));
 
-            final int actualNetworkCount = Utils.getSize(azureResourceManager.networks().listByResourceGroup(resourceGroupName));
-            System.out.println(String.format("Remaining virtual networks (should be %d): %d", actualVMCount, actualNetworkCount));
+            final int actualNetworkCount
+                = Utils.getSize(azureResourceManager.networks().listByResourceGroup(resourceGroupName));
+            System.out.println(
+                String.format("Remaining virtual networks (should be %d): %d", actualVMCount, actualNetworkCount));
 
-            final int actualPipCount = Utils.getSize(azureResourceManager.publicIpAddresses().listByResourceGroup(resourceGroupName));
-            System.out.println(String.format("Remaining public IP addresses (should be %d): %d", actualVMCount, actualPipCount));
+            final int actualPipCount
+                = Utils.getSize(azureResourceManager.publicIpAddresses().listByResourceGroup(resourceGroupName));
+            System.out.println(
+                String.format("Remaining public IP addresses (should be %d): %d", actualVMCount, actualPipCount));
 
-            final int actualAvailabilitySetCount = Utils.getSize(azureResourceManager.availabilitySets().listByResourceGroup(resourceGroupName));
-            System.out.println(String.format("Remaining availability sets (should be %d): %d", actualVMCount, actualAvailabilitySetCount));
+            final int actualAvailabilitySetCount
+                = Utils.getSize(azureResourceManager.availabilitySets().listByResourceGroup(resourceGroupName));
+            System.out.println(String.format("Remaining availability sets (should be %d): %d", actualVMCount,
+                actualAvailabilitySetCount));
 
             return true;
         } finally {
@@ -274,8 +288,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

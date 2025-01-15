@@ -33,8 +33,7 @@ public class HostnameSslTests extends AppServiceTest {
     @Disabled("Need a domain and a certificate")
     public void canBindHostnameAndSsl() throws Exception {
         // hostname binding
-        appServiceManager
-            .webApps()
+        appServiceManager.webApps()
             .define(webappName)
             .withRegion(Region.US_WEST)
             .withNewResourceGroup(rgName)
@@ -64,31 +63,30 @@ public class HostnameSslTests extends AppServiceTest {
             Assertions.assertNotNull(response.getValue());
         }
         // SSL binding
-        webApp
-            .update()
+        webApp.update()
             .defineSslBinding()
             .forHostname(webappName + "." + domainName)
             .withExistingAppServiceCertificateOrder(certificateOrder)
             .withSniBasedSsl()
             .attach()
             .apply();
-//        if (!isPlaybackMode()) {
-//            Response<String> response = null;
-//            int retryCount = 3;
-//            while (response == null && retryCount > 0) {
-//                // TODO (weidxu) this probably not work after switch from okhttp to azure-core
-//                try {
-//                    response = curl("https://" + webappName + "." + domainName);
-//                } catch (SSLPeerUnverifiedException e) {
-//                    retryCount--;
-//                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
-//                }
-//            }
-//            if (retryCount == 0) {
-//                Assertions.fail();
-//            }
-//            Assertions.assertEquals(200, response.getStatusCode());
-//            Assertions.assertNotNull(response.getValue());
-//        }
+        //        if (!isPlaybackMode()) {
+        //            Response<String> response = null;
+        //            int retryCount = 3;
+        //            while (response == null && retryCount > 0) {
+        //                // TODO (weidxu) this probably not work after switch from okhttp to azure-core
+        //                try {
+        //                    response = curl("https://" + webappName + "." + domainName);
+        //                } catch (SSLPeerUnverifiedException e) {
+        //                    retryCount--;
+        //                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
+        //                }
+        //            }
+        //            if (retryCount == 0) {
+        //                Assertions.fail();
+        //            }
+        //            Assertions.assertEquals(200, response.getStatusCode());
+        //            Assertions.assertNotNull(response.getValue());
+        //        }
     }
 }

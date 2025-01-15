@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The message filter type. */
+/**
+ * The message filter type.
+ */
 public final class MessageFilterType extends ExpandableStringEnum<MessageFilterType> {
-    /** Static value NotSpecified for MessageFilterType. */
+    /**
+     * Static value NotSpecified for MessageFilterType.
+     */
     public static final MessageFilterType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Include for MessageFilterType. */
+    /**
+     * Static value Include for MessageFilterType.
+     */
     public static final MessageFilterType INCLUDE = fromString("Include");
 
-    /** Static value Exclude for MessageFilterType. */
+    /**
+     * Static value Exclude for MessageFilterType.
+     */
     public static final MessageFilterType EXCLUDE = fromString("Exclude");
 
     /**
      * Creates a new instance of MessageFilterType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class MessageFilterType extends ExpandableStringEnum<MessageFilterT
 
     /**
      * Creates or finds a MessageFilterType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MessageFilterType.
      */
-    @JsonCreator
     public static MessageFilterType fromString(String name) {
         return fromString(name, MessageFilterType.class);
     }
 
     /**
      * Gets known MessageFilterType values.
-     *
+     * 
      * @return known MessageFilterType values.
      */
     public static Collection<MessageFilterType> values() {

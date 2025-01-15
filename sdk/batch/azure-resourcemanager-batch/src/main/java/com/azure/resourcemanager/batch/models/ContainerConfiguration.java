@@ -6,36 +6,33 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The configuration for container-enabled pools.
  */
 @Fluent
-public final class ContainerConfiguration {
+public final class ContainerConfiguration implements JsonSerializable<ContainerConfiguration> {
     /*
      * The container technology to be used.
      */
-    @JsonProperty(value = "type", required = true)
     private ContainerType type;
 
     /*
-     * The collection of container image names.
-     * 
      * This is the full image reference, as would be specified to "docker pull". An image will be sourced from the
      * default Docker registry unless the image is fully qualified with an alternative registry.
      */
-    @JsonProperty(value = "containerImageNames")
     private List<String> containerImageNames;
 
     /*
-     * Additional private registries from which containers can be pulled.
-     * 
      * If any images must be downloaded from a private registry which requires credentials, then those credentials must
      * be provided here.
      */
-    @JsonProperty(value = "containerRegistries")
     private List<ContainerRegistry> containerRegistries;
 
     /**
@@ -65,10 +62,9 @@ public final class ContainerConfiguration {
     }
 
     /**
-     * Get the containerImageNames property: The collection of container image names.
-     * 
-     * This is the full image reference, as would be specified to "docker pull". An image will be sourced from the
-     * default Docker registry unless the image is fully qualified with an alternative registry.
+     * Get the containerImageNames property: This is the full image reference, as would be specified to "docker pull".
+     * An image will be sourced from the default Docker registry unless the image is fully qualified with an alternative
+     * registry.
      * 
      * @return the containerImageNames value.
      */
@@ -77,10 +73,9 @@ public final class ContainerConfiguration {
     }
 
     /**
-     * Set the containerImageNames property: The collection of container image names.
-     * 
-     * This is the full image reference, as would be specified to "docker pull". An image will be sourced from the
-     * default Docker registry unless the image is fully qualified with an alternative registry.
+     * Set the containerImageNames property: This is the full image reference, as would be specified to "docker pull".
+     * An image will be sourced from the default Docker registry unless the image is fully qualified with an alternative
+     * registry.
      * 
      * @param containerImageNames the containerImageNames value to set.
      * @return the ContainerConfiguration object itself.
@@ -91,10 +86,8 @@ public final class ContainerConfiguration {
     }
 
     /**
-     * Get the containerRegistries property: Additional private registries from which containers can be pulled.
-     * 
-     * If any images must be downloaded from a private registry which requires credentials, then those credentials must
-     * be provided here.
+     * Get the containerRegistries property: If any images must be downloaded from a private registry which requires
+     * credentials, then those credentials must be provided here.
      * 
      * @return the containerRegistries value.
      */
@@ -103,10 +96,8 @@ public final class ContainerConfiguration {
     }
 
     /**
-     * Set the containerRegistries property: Additional private registries from which containers can be pulled.
-     * 
-     * If any images must be downloaded from a private registry which requires credentials, then those credentials must
-     * be provided here.
+     * Set the containerRegistries property: If any images must be downloaded from a private registry which requires
+     * credentials, then those credentials must be provided here.
      * 
      * @param containerRegistries the containerRegistries value to set.
      * @return the ContainerConfiguration object itself.
@@ -123,8 +114,8 @@ public final class ContainerConfiguration {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ContainerConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ContainerConfiguration"));
         }
         if (containerRegistries() != null) {
             containerRegistries().forEach(e -> e.validate());
@@ -132,4 +123,52 @@ public final class ContainerConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("containerImageNames", this.containerImageNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("containerRegistries", this.containerRegistries,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerConfiguration.
+     */
+    public static ContainerConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerConfiguration deserializedContainerConfiguration = new ContainerConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedContainerConfiguration.type = ContainerType.fromString(reader.getString());
+                } else if ("containerImageNames".equals(fieldName)) {
+                    List<String> containerImageNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContainerConfiguration.containerImageNames = containerImageNames;
+                } else if ("containerRegistries".equals(fieldName)) {
+                    List<ContainerRegistry> containerRegistries
+                        = reader.readArray(reader1 -> ContainerRegistry.fromJson(reader1));
+                    deserializedContainerConfiguration.containerRegistries = containerRegistries;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerConfiguration;
+        });
+    }
 }

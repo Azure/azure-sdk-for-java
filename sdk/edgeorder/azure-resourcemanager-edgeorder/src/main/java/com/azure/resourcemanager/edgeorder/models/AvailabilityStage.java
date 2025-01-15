@@ -5,41 +5,66 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AvailabilityStage. */
+/**
+ * Current availability stage of the product. Availability stage.
+ */
 public final class AvailabilityStage extends ExpandableStringEnum<AvailabilityStage> {
-    /** Static value Available for AvailabilityStage. */
+    /**
+     * Static value Available for AvailabilityStage.
+     */
     public static final AvailabilityStage AVAILABLE = fromString("Available");
 
-    /** Static value ComingSoon for AvailabilityStage. */
+    /**
+     * Static value ComingSoon for AvailabilityStage.
+     */
     public static final AvailabilityStage COMING_SOON = fromString("ComingSoon");
 
-    /** Static value Preview for AvailabilityStage. */
+    /**
+     * Static value Preview for AvailabilityStage.
+     */
     public static final AvailabilityStage PREVIEW = fromString("Preview");
 
-    /** Static value Deprecated for AvailabilityStage. */
+    /**
+     * Static value Deprecated for AvailabilityStage.
+     */
     public static final AvailabilityStage DEPRECATED = fromString("Deprecated");
 
-    /** Static value Signup for AvailabilityStage. */
+    /**
+     * Static value Signup for AvailabilityStage.
+     */
     public static final AvailabilityStage SIGNUP = fromString("Signup");
 
-    /** Static value Unavailable for AvailabilityStage. */
+    /**
+     * Static value Unavailable for AvailabilityStage.
+     */
     public static final AvailabilityStage UNAVAILABLE = fromString("Unavailable");
 
     /**
+     * Creates a new instance of AvailabilityStage value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AvailabilityStage() {
+    }
+
+    /**
      * Creates or finds a AvailabilityStage from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AvailabilityStage.
      */
-    @JsonCreator
     public static AvailabilityStage fromString(String name) {
         return fromString(name, AvailabilityStage.class);
     }
 
-    /** @return known AvailabilityStage values. */
+    /**
+     * Gets known AvailabilityStage values.
+     * 
+     * @return known AvailabilityStage values.
+     */
     public static Collection<AvailabilityStage> values() {
         return values(AvailabilityStage.class);
     }

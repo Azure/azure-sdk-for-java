@@ -64,7 +64,7 @@ public class CallMedia {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                           PlayOptions options, Context context) {
+        PlayOptions options, Context context) {
         return callMediaAsync.playWithResponseInternal(playSource, playTo, options, context).block();
     }
 
@@ -80,9 +80,7 @@ public class CallMedia {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> playToAllWithResponse(PlaySource playSource, PlayOptions options, Context context) {
-        return callMediaAsync
-            .playWithResponseInternal(playSource, Collections.emptyList(), options, context)
-            .block();
+        return callMediaAsync.playWithResponseInternal(playSource, Collections.emptyList(), options, context).block();
     }
 
     /**
@@ -102,9 +100,7 @@ public class CallMedia {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> recognizeWithResponse(RecognizeOptions recognizeOptions, Context context) {
-        return callMediaAsync
-            .recognizeWithResponseInternal(recognizeOptions, context)
-            .block();
+        return callMediaAsync.recognizeWithResponseInternal(recognizeOptions, context).block();
     }
 
     /**

@@ -14,29 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class AudioAnalyzerPresetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AudioAnalyzerPreset model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.AudioAnalyzerPreset\",\"audioLanguage\":\"udtjuewbc\",\"mode\":\"Standard\",\"experimentalOptions\":{\"bvpa\":\"whcjyxcc\",\"px\":\"akkud\",\"stcyohpfkyrkdbd\":\"wjplma\"}}")
-                .toObject(AudioAnalyzerPreset.class);
-        Assertions.assertEquals("udtjuewbc", model.audioLanguage());
+        AudioAnalyzerPreset model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.AudioAnalyzerPreset\",\"audioLanguage\":\"vyi\",\"mode\":\"Standard\",\"experimentalOptions\":{\"p\":\"fvpgshoxgsg\",\"bqvgaqv\":\"gzdjtxvzf\"}}")
+            .toObject(AudioAnalyzerPreset.class);
+        Assertions.assertEquals("vyi", model.audioLanguage());
         Assertions.assertEquals(AudioAnalysisMode.STANDARD, model.mode());
-        Assertions.assertEquals("whcjyxcc", model.experimentalOptions().get("bvpa"));
+        Assertions.assertEquals("fvpgshoxgsg", model.experimentalOptions().get("p"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AudioAnalyzerPreset model =
-            new AudioAnalyzerPreset()
-                .withAudioLanguage("udtjuewbc")
-                .withMode(AudioAnalysisMode.STANDARD)
-                .withExperimentalOptions(mapOf("bvpa", "whcjyxcc", "px", "akkud", "stcyohpfkyrkdbd", "wjplma"));
+        AudioAnalyzerPreset model = new AudioAnalyzerPreset().withAudioLanguage("vyi")
+            .withMode(AudioAnalysisMode.STANDARD)
+            .withExperimentalOptions(mapOf("p", "fvpgshoxgsg", "bqvgaqv", "gzdjtxvzf"));
         model = BinaryData.fromObject(model).toObject(AudioAnalyzerPreset.class);
-        Assertions.assertEquals("udtjuewbc", model.audioLanguage());
+        Assertions.assertEquals("vyi", model.audioLanguage());
         Assertions.assertEquals(AudioAnalysisMode.STANDARD, model.mode());
-        Assertions.assertEquals("whcjyxcc", model.experimentalOptions().get("bvpa"));
+        Assertions.assertEquals("fvpgshoxgsg", model.experimentalOptions().get("p"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

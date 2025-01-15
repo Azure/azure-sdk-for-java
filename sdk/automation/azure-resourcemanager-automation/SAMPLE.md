@@ -296,23 +296,24 @@
 ### Activity_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Activity Get. */
+/**
+ * Samples for Activity Get.
+ */
 public final class ActivityGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getActivityInAModule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getActivityInAModule.json
      */
     /**
      * Sample code: Get Activity in a module.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getActivityInAModule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .activities()
-            .getWithResponse(
-                "rg", "myAutomationAccount33", "OmsCompositeResources", "Add-AzureRmAccount", Context.NONE);
+        manager.activities()
+            .getWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources", "Add-AzureRmAccount",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -320,20 +321,23 @@ public final class ActivityGetSamples {
 ### Activity_ListByModule
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Activity ListByModule. */
+/**
+ * Samples for Activity ListByModule.
+ */
 public final class ActivityListByModuleSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listActivitiesByModule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listActivitiesByModule.json
      */
     /**
      * Sample code: List activities by a module.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listActivitiesByAModule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.activities().listByModule("rg", "myAutomationAccount33", "OmsCompositeResources", Context.NONE);
+        manager.activities()
+            .listByModule("rg", "myAutomationAccount33", "OmsCompositeResources", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -341,21 +345,24 @@ public final class ActivityListByModuleSamples {
 ### AgentRegistrationInformation_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AgentRegistrationInformation Get. */
+/**
+ * Samples for AgentRegistrationInformation Get.
+ */
 public final class AgentRegistrationInformationGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getAgentRegistration.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getAgentRegistration.json
      */
     /**
      * Sample code: Get the agent registration information.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getTheAgentRegistrationInformation(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.agentRegistrationInformations().getWithResponse("rg", "myAutomationAccount18", Context.NONE);
+    public static void
+        getTheAgentRegistrationInformation(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.agentRegistrationInformations()
+            .getWithResponse("rg", "myAutomationAccount18", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -363,28 +370,28 @@ public final class AgentRegistrationInformationGetSamples {
 ### AgentRegistrationInformation_RegenerateKey
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.AgentRegistrationKeyName;
 import com.azure.resourcemanager.automation.models.AgentRegistrationRegenerateKeyParameter;
 
-/** Samples for AgentRegistrationInformation RegenerateKey. */
+/**
+ * Samples for AgentRegistrationInformation RegenerateKey.
+ */
 public final class AgentRegistrationInformationRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/regenerateAgentRegistrationKey.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * regenerateAgentRegistrationKey.json
      */
     /**
      * Sample code: Regenerate registration key.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void regenerateRegistrationKey(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .agentRegistrationInformations()
-            .regenerateKeyWithResponse(
-                "rg",
-                "myAutomationAccount18",
+        manager.agentRegistrationInformations()
+            .regenerateKeyWithResponse("rg", "myAutomationAccount18",
                 new AgentRegistrationRegenerateKeyParameter().withKeyName(AgentRegistrationKeyName.PRIMARY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -395,19 +402,21 @@ public final class AgentRegistrationInformationRegenerateKeySamples {
 import com.azure.resourcemanager.automation.models.Sku;
 import com.azure.resourcemanager.automation.models.SkuNameEnum;
 
-/** Samples for AutomationAccount CreateOrUpdate. */
+/**
+ * Samples for AutomationAccount CreateOrUpdate.
+ */
 public final class AutomationAccountCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/createOrUpdateAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * createOrUpdateAutomationAccount.json
      */
     /**
      * Sample code: Create or update automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .automationAccounts()
+        manager.automationAccounts()
             .define("myAutomationAccount9")
             .withExistingResourceGroup("rg")
             .withRegion("East US 2")
@@ -421,20 +430,23 @@ public final class AutomationAccountCreateOrUpdateSamples {
 ### AutomationAccount_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AutomationAccount Delete. */
+/**
+ * Samples for AutomationAccount Delete.
+ */
 public final class AutomationAccountDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/deleteAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/deleteAutomationAccount
+     * .json
      */
     /**
      * Sample code: Delete automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.automationAccounts().deleteWithResponse("rg", "myAutomationAccount9", Context.NONE);
+        manager.automationAccounts()
+            .deleteByResourceGroupWithResponse("rg", "myAutomationAccount9", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -442,20 +454,23 @@ public final class AutomationAccountDeleteSamples {
 ### AutomationAccount_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AutomationAccount GetByResourceGroup. */
+/**
+ * Samples for AutomationAccount GetByResourceGroup.
+ */
 public final class AutomationAccountGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getAutomationAccount.
+     * json
      */
     /**
      * Sample code: Get automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.automationAccounts().getByResourceGroupWithResponse("rg", "myAutomationAccount9", Context.NONE);
+        manager.automationAccounts()
+            .getByResourceGroupWithResponse("rg", "myAutomationAccount9", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -463,21 +478,22 @@ public final class AutomationAccountGetByResourceGroupSamples {
 ### AutomationAccount_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AutomationAccount List. */
+/**
+ * Samples for AutomationAccount List.
+ */
 public final class AutomationAccountListSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listAutomationAccountsBySubscription.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * listAutomationAccountsBySubscription.json
      */
     /**
      * Sample code: List automation accounts by resource group.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listAutomationAccountsByResourceGroup(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.automationAccounts().list(Context.NONE);
+    public static void
+        listAutomationAccountsByResourceGroup(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.automationAccounts().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -485,21 +501,22 @@ public final class AutomationAccountListSamples {
 ### AutomationAccount_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AutomationAccount ListByResourceGroup. */
+/**
+ * Samples for AutomationAccount ListByResourceGroup.
+ */
 public final class AutomationAccountListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listAutomationAccountsByResourceGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * listAutomationAccountsByResourceGroup.json
      */
     /**
      * Sample code: List automation accounts by resource group.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listAutomationAccountsByResourceGroup(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.automationAccounts().listByResourceGroup("rg", Context.NONE);
+    public static void
+        listAutomationAccountsByResourceGroup(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.automationAccounts().listByResourceGroup("rg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -507,27 +524,28 @@ public final class AutomationAccountListByResourceGroupSamples {
 ### AutomationAccount_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.AutomationAccount;
 import com.azure.resourcemanager.automation.models.Sku;
 import com.azure.resourcemanager.automation.models.SkuNameEnum;
 
-/** Samples for AutomationAccount Update. */
+/**
+ * Samples for AutomationAccount Update.
+ */
 public final class AutomationAccountUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/updateAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/updateAutomationAccount
+     * .json
      */
     /**
      * Sample code: Update an automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateAnAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        AutomationAccount resource =
-            manager
-                .automationAccounts()
-                .getByResourceGroupWithResponse("rg", "myAutomationAccount9", Context.NONE)
-                .getValue();
+        AutomationAccount resource = manager.automationAccounts()
+            .getByResourceGroupWithResponse("rg", "myAutomationAccount9", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withName("myAutomationAccount9").withSku(new Sku().withName(SkuNameEnum.FREE)).apply();
     }
 }
@@ -536,19 +554,22 @@ public final class AutomationAccountUpdateSamples {
 ### Certificate_CreateOrUpdate
 
 ```java
-/** Samples for Certificate CreateOrUpdate. */
+/**
+ * Samples for Certificate CreateOrUpdate.
+ */
 public final class CertificateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateCertificate.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateCertificate.json
      */
     /**
      * Sample code: Create or update a certificate.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateACertificate(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .certificates()
+        manager.certificates()
             .define("testCert")
             .withExistingAutomationAccount("rg", "myAutomationAccount18")
             .withName("testCert")
@@ -564,20 +585,23 @@ public final class CertificateCreateOrUpdateSamples {
 ### Certificate_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Certificate Delete. */
+/**
+ * Samples for Certificate Delete.
+ */
 public final class CertificateDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteCertificate.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * deleteCertificate.json
      */
     /**
      * Sample code: Delete a certificate.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteACertificate(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.certificates().deleteWithResponse("rg", "myAutomationAccount33", "testCert", Context.NONE);
+        manager.certificates()
+            .deleteWithResponse("rg", "myAutomationAccount33", "testCert", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -585,20 +609,23 @@ public final class CertificateDeleteSamples {
 ### Certificate_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Certificate Get. */
+/**
+ * Samples for Certificate Get.
+ */
 public final class CertificateGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCertificate.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCertificate
+     * .json
      */
     /**
      * Sample code: Get a certificate.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getACertificate(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.certificates().getWithResponse("rg", "myAutomationAccount33", "testCert", Context.NONE);
+        manager.certificates()
+            .getWithResponse("rg", "myAutomationAccount33", "testCert", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -606,20 +633,22 @@ public final class CertificateGetSamples {
 ### Certificate_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Certificate ListByAutomationAccount. */
+/**
+ * Samples for Certificate ListByAutomationAccount.
+ */
 public final class CertificateListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCertificatesByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listCertificatesByAutomationAccount.json
      */
     /**
      * Sample code: List certificates.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listCertificates(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.certificates().listByAutomationAccount("rg", "myAutomationAccount33", Context.NONE);
+        manager.certificates().listByAutomationAccount("rg", "myAutomationAccount33", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -627,22 +656,26 @@ public final class CertificateListByAutomationAccountSamples {
 ### Certificate_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Certificate;
 
-/** Samples for Certificate Update. */
+/**
+ * Samples for Certificate Update.
+ */
 public final class CertificateUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateCertificate.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * updateCertificate.json
      */
     /**
      * Sample code: Update a certificate.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateACertificate(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Certificate resource =
-            manager.certificates().getWithResponse("rg", "myAutomationAccount33", "testCert", Context.NONE).getValue();
+        Certificate resource = manager.certificates()
+            .getWithResponse("rg", "myAutomationAccount33", "testCert", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withName("testCert").withDescription("sample certificate. Description updated").apply();
     }
 }
@@ -655,19 +688,22 @@ import com.azure.resourcemanager.automation.models.ConnectionTypeAssociationProp
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Connection CreateOrUpdate. */
+/**
+ * Samples for Connection CreateOrUpdate.
+ */
 public final class ConnectionCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateConnection.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateConnection.json
      */
     /**
      * Sample code: Create or update connection.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateConnection(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .connections()
+        manager.connections()
             .define("mysConnection")
             .withExistingAutomationAccount("rg", "myAutomationAccount28")
             .withName("mysConnection")
@@ -678,6 +714,7 @@ public final class ConnectionCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -694,20 +731,23 @@ public final class ConnectionCreateOrUpdateSamples {
 ### Connection_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Connection Delete. */
+/**
+ * Samples for Connection Delete.
+ */
 public final class ConnectionDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteConnection.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * deleteConnection.json
      */
     /**
      * Sample code: Delete an existing connection.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteAnExistingConnection(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.connections().deleteWithResponse("rg", "myAutomationAccount28", "myConnection", Context.NONE);
+        manager.connections()
+            .deleteWithResponse("rg", "myAutomationAccount28", "myConnection", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -715,20 +755,23 @@ public final class ConnectionDeleteSamples {
 ### Connection_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Connection Get. */
+/**
+ * Samples for Connection Get.
+ */
 public final class ConnectionGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getConnection.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getConnection.
+     * json
      */
     /**
      * Sample code: Get a connection.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAConnection(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.connections().getWithResponse("rg", "myAutomationAccount28", "myConnection", Context.NONE);
+        manager.connections()
+            .getWithResponse("rg", "myAutomationAccount28", "myConnection", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -736,34 +779,38 @@ public final class ConnectionGetSamples {
 ### Connection_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Connection ListByAutomationAccount. */
+/**
+ * Samples for Connection ListByAutomationAccount.
+ */
 public final class ConnectionListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listConnectionsByAutomationAccount_First100.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listConnectionsByAutomationAccount_First100.json
      */
     /**
      * Sample code: List connections by automation account, first 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listConnectionsByAutomationAccountFirst100(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.connections().listByAutomationAccount("rg", "myAutomationAccount28", Context.NONE);
+    public static void
+        listConnectionsByAutomationAccountFirst100(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.connections().listByAutomationAccount("rg", "myAutomationAccount28", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listConnectionsByAutomationAccount_Next100.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listConnectionsByAutomationAccount_Next100.json
      */
     /**
      * Sample code: List connections by automation account, next 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listConnectionsByAutomationAccountNext100(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.connections().listByAutomationAccount("rg", "myAutomationAccount28", Context.NONE);
+    public static void
+        listConnectionsByAutomationAccountNext100(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.connections().listByAutomationAccount("rg", "myAutomationAccount28", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -771,40 +818,37 @@ public final class ConnectionListByAutomationAccountSamples {
 ### Connection_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Connection Update. */
+/**
+ * Samples for Connection Update.
+ */
 public final class ConnectionUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateConnection.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * updateConnection.json
      */
     /**
      * Sample code: Update a connection.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateAConnection(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Connection resource =
-            manager
-                .connections()
-                .getWithResponse("rg", "myAutomationAccount28", "myConnection", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Connection resource = manager.connections()
+            .getWithResponse("rg", "myAutomationAccount28", "myConnection", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withName("myConnection")
             .withDescription("my description goes here")
-            .withFieldDefinitionValues(
-                mapOf(
-                    "AutomationCertificateName",
-                    "myCertificateName",
-                    "SubscriptionID",
-                    "b5e4748c-f69a-467c-8749-e2f9c8cd3009"))
+            .withFieldDefinitionValues(mapOf("AutomationCertificateName", "myCertificateName", "SubscriptionID",
+                "b5e4748c-f69a-467c-8749-e2f9c8cd3009"))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -825,34 +869,35 @@ import com.azure.resourcemanager.automation.models.FieldDefinition;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ConnectionType CreateOrUpdate. */
+/**
+ * Samples for ConnectionType CreateOrUpdate.
+ */
 public final class ConnectionTypeCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateConnectionType.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateConnectionType.json
      */
     /**
      * Sample code: Create or update connection type.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateConnectionType(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .connectionTypes()
+        manager.connectionTypes()
             .define("myCT")
             .withExistingAutomationAccount("rg", "myAutomationAccount22")
             .withName("myCT")
-            .withFieldDefinitions(
-                mapOf(
-                    "myBoolField",
-                    new FieldDefinition().withIsEncrypted(false).withIsOptional(false).withType("bool"),
-                    "myStringField",
-                    new FieldDefinition().withIsEncrypted(false).withIsOptional(false).withType("string"),
-                    "myStringFieldEncrypted",
-                    new FieldDefinition().withIsEncrypted(true).withIsOptional(false).withType("string")))
+            .withFieldDefinitions(mapOf("myBoolField",
+                new FieldDefinition().withIsEncrypted(false).withIsOptional(false).withType("bool"), "myStringField",
+                new FieldDefinition().withIsEncrypted(false).withIsOptional(false).withType("string"),
+                "myStringFieldEncrypted",
+                new FieldDefinition().withIsEncrypted(true).withIsOptional(false).withType("string")))
             .withIsGlobal(false)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -869,20 +914,23 @@ public final class ConnectionTypeCreateOrUpdateSamples {
 ### ConnectionType_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConnectionType Delete. */
+/**
+ * Samples for ConnectionType Delete.
+ */
 public final class ConnectionTypeDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteConnectionType.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * deleteConnectionType.json
      */
     /**
      * Sample code: Delete an existing connection type.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteAnExistingConnectionType(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.connectionTypes().deleteWithResponse("rg", "myAutomationAccount22", "myCT", Context.NONE);
+        manager.connectionTypes()
+            .deleteWithResponse("rg", "myAutomationAccount22", "myCT", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -890,20 +938,23 @@ public final class ConnectionTypeDeleteSamples {
 ### ConnectionType_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConnectionType Get. */
+/**
+ * Samples for ConnectionType Get.
+ */
 public final class ConnectionTypeGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getConnectionType.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getConnectionType.json
      */
     /**
      * Sample code: Get connection type.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getConnectionType(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.connectionTypes().getWithResponse("rg", "myAutomationAccount22", "myCT", Context.NONE);
+        manager.connectionTypes()
+            .getWithResponse("rg", "myAutomationAccount22", "myCT", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -911,32 +962,38 @@ public final class ConnectionTypeGetSamples {
 ### ConnectionType_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ConnectionType ListByAutomationAccount. */
+/**
+ * Samples for ConnectionType ListByAutomationAccount.
+ */
 public final class ConnectionTypeListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getAllConnectionTypes_First100.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getAllConnectionTypes_First100.json
      */
     /**
      * Sample code: Get connection types, first 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getConnectionTypesFirst100(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.connectionTypes().listByAutomationAccount("rg", "myAutomationAccount25", Context.NONE);
+        manager.connectionTypes()
+            .listByAutomationAccount("rg", "myAutomationAccount25", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getAllConnectionTypes_Next100.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getAllConnectionTypes_Next100.json
      */
     /**
      * Sample code: Get connection types, next 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getConnectionTypesNext100(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.connectionTypes().listByAutomationAccount("rg", "myAutomationAccount25", Context.NONE);
+        manager.connectionTypes()
+            .listByAutomationAccount("rg", "myAutomationAccount25", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -944,19 +1001,22 @@ public final class ConnectionTypeListByAutomationAccountSamples {
 ### Credential_CreateOrUpdate
 
 ```java
-/** Samples for Credential CreateOrUpdate. */
+/**
+ * Samples for Credential CreateOrUpdate.
+ */
 public final class CredentialCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateCredential.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateCredential.json
      */
     /**
      * Sample code: Create a credential.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createACredential(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .credentials()
+        manager.credentials()
             .define("myCredential")
             .withExistingAutomationAccount("rg", "myAutomationAccount18")
             .withName("myCredential")
@@ -971,20 +1031,23 @@ public final class CredentialCreateOrUpdateSamples {
 ### Credential_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Credential Delete. */
+/**
+ * Samples for Credential Delete.
+ */
 public final class CredentialDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteCredentialExisting.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * deleteCredentialExisting.json
      */
     /**
      * Sample code: Delete a credential.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteACredential(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.credentials().deleteWithResponse("rg", "myAutomationAccount20", "myCredential", Context.NONE);
+        manager.credentials()
+            .deleteWithResponse("rg", "myAutomationAccount20", "myCredential", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -992,20 +1055,23 @@ public final class CredentialDeleteSamples {
 ### Credential_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Credential Get. */
+/**
+ * Samples for Credential Get.
+ */
 public final class CredentialGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCredential.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCredential.
+     * json
      */
     /**
      * Sample code: Get a credential.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getACredential(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.credentials().getWithResponse("rg", "myAutomationAccount18", "myCredential", Context.NONE);
+        manager.credentials()
+            .getWithResponse("rg", "myAutomationAccount18", "myCredential", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1013,34 +1079,38 @@ public final class CredentialGetSamples {
 ### Credential_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Credential ListByAutomationAccount. */
+/**
+ * Samples for Credential ListByAutomationAccount.
+ */
 public final class CredentialListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCredentialsByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listCredentialsByAutomationAccount.json
      */
     /**
      * Sample code: List credentials by automation account, first 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listCredentialsByAutomationAccountFirst100(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.credentials().listByAutomationAccount("rg", "myAutomationAccount20", Context.NONE);
+    public static void
+        listCredentialsByAutomationAccountFirst100(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.credentials().listByAutomationAccount("rg", "myAutomationAccount20", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCredentialsByAutomationAccount_next100_using_nextLink.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listCredentialsByAutomationAccount_next100_using_nextLink.json
      */
     /**
      * Sample code: List credentials by automation account, next 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listCredentialsByAutomationAccountNext100(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.credentials().listByAutomationAccount("rg", "myAutomationAccount20", Context.NONE);
+    public static void
+        listCredentialsByAutomationAccountNext100(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.credentials().listByAutomationAccount("rg", "myAutomationAccount20", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1048,27 +1118,27 @@ public final class CredentialListByAutomationAccountSamples {
 ### Credential_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Credential;
 
-/** Samples for Credential Update. */
+/**
+ * Samples for Credential Update.
+ */
 public final class CredentialUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateCredential_patch.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * updateCredential_patch.json
      */
     /**
      * Sample code: Update a credential.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateACredential(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Credential resource =
-            manager
-                .credentials()
-                .getWithResponse("rg", "myAutomationAccount18", "myCredential", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Credential resource = manager.credentials()
+            .getWithResponse("rg", "myAutomationAccount18", "myCredential", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withName("myCredential")
             .withUsername("mylingaiah")
             .withPassword("<password>")
@@ -1081,20 +1151,21 @@ public final class CredentialUpdateSamples {
 ### DeletedAutomationAccounts_ListBySubscription
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DeletedAutomationAccounts ListBySubscription. */
+/**
+ * Samples for DeletedAutomationAccounts ListBySubscription.
+ */
 public final class DeletedAutomationAccountsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-01-31/examples/getDeletedAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-01-31/examples/
+     * getDeletedAutomationAccount.json
      */
     /**
      * Sample code: Get deleted automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getDeletedAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.deletedAutomationAccounts().listBySubscriptionWithResponse(Context.NONE);
+        manager.deletedAutomationAccounts().listBySubscriptionWithResponse(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1104,20 +1175,23 @@ public final class DeletedAutomationAccountsListBySubscriptionSamples {
 ```java
 import com.azure.resourcemanager.automation.models.DscConfigurationAssociationProperty;
 
-/** Samples for DscCompilationJob Create. */
+/**
+ * Samples for DscCompilationJob Create.
+ */
 public final class DscCompilationJobCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createCompilationJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createCompilationJob.json
      */
     /**
      * Sample code: Create or update a DSC Compilation job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void createOrUpdateADSCCompilationJob(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscCompilationJobs()
+    public static void
+        createOrUpdateADSCCompilationJob(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.dscCompilationJobs()
             .define("TestCompilationJob")
             .withExistingAutomationAccount("rg", "myAutomationAccount33")
             .withConfiguration(new DscConfigurationAssociationProperty().withName("SetupServer"))
@@ -1129,20 +1203,23 @@ public final class DscCompilationJobCreateSamples {
 ### DscCompilationJob_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscCompilationJob Get. */
+/**
+ * Samples for DscCompilationJob Get.
+ */
 public final class DscCompilationJobGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCompilationJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getCompilationJob.json
      */
     /**
      * Sample code: Get a DSC Compilation job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getADSCCompilationJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.dscCompilationJobs().getWithResponse("rg", "myAutomationAccount33", "TestCompilationJob", Context.NONE);
+        manager.dscCompilationJobs()
+            .getWithResponse("rg", "myAutomationAccount33", "TestCompilationJob", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1150,29 +1227,29 @@ public final class DscCompilationJobGetSamples {
 ### DscCompilationJob_GetStream
 
 ```java
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for DscCompilationJob GetStream. */
+/**
+ * Samples for DscCompilationJob GetStream.
+ */
 public final class DscCompilationJobGetStreamSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/compilationJobStreamByJobStreamId.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * compilationJobStreamByJobStreamId.json
      */
     /**
      * Sample code: Get a DSC Compilation job stream by job stream id.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getADSCCompilationJobStreamByJobStreamId(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscCompilationJobs()
-            .getStreamWithResponse(
-                "rg",
-                "myAutomationAccount33",
+    public static void
+        getADSCCompilationJobStreamByJobStreamId(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.dscCompilationJobs()
+            .getStreamWithResponse("rg", "myAutomationAccount33",
                 UUID.fromString("836d4e06-2d88-46b4-8500-7febd4906838"),
                 "836d4e06-2d88-46b4-8500-7febd4906838_00636481062421684835_00000000000000000008",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1180,21 +1257,24 @@ public final class DscCompilationJobGetStreamSamples {
 ### DscCompilationJob_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscCompilationJob ListByAutomationAccount. */
+/**
+ * Samples for DscCompilationJob ListByAutomationAccount.
+ */
 public final class DscCompilationJobListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCompilationJobsByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listCompilationJobsByAutomationAccount.json
      */
     /**
      * Sample code: List DSC Compilation job in Automation Account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listDSCCompilationJobInAutomationAccount(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.dscCompilationJobs().listByAutomationAccount("rg", "myAutomationAccount33", null, Context.NONE);
+    public static void
+        listDSCCompilationJobInAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.dscCompilationJobs()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1202,24 +1282,26 @@ public final class DscCompilationJobListByAutomationAccountSamples {
 ### DscCompilationJobStream_ListByJob
 
 ```java
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for DscCompilationJobStream ListByJob. */
+/**
+ * Samples for DscCompilationJobStream ListByJob.
+ */
 public final class DscCompilationJobStreamListByJobSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/compilationJobStreamList.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * compilationJobStreamList.json
      */
     /**
      * Sample code: List DSC Compilation job streams.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listDSCCompilationJobStreams(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscCompilationJobStreams()
-            .listByJobWithResponse(
-                "rg", "myAutomationAccount33", UUID.fromString("836d4e06-2d88-46b4-8500-7febd4906838"), Context.NONE);
+        manager.dscCompilationJobStreams()
+            .listByJobWithResponse("rg", "myAutomationAccount33",
+                UUID.fromString("836d4e06-2d88-46b4-8500-7febd4906838"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1231,37 +1313,29 @@ import com.azure.resourcemanager.automation.models.ContentHash;
 import com.azure.resourcemanager.automation.models.ContentSource;
 import com.azure.resourcemanager.automation.models.ContentSourceType;
 
-/** Samples for DscConfiguration CreateOrUpdate. */
+/**
+ * Samples for DscConfiguration CreateOrUpdate.
+ */
 public final class DscConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/createOrUpdateDscConfiguration.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * createOrUpdateDscConfiguration.json
      */
     /**
      * Sample code: Create or Update Configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscConfigurations()
+        manager.dscConfigurations()
             .define("SetupServer")
             .withExistingAutomationAccount("rg", "myAutomationAccount18")
-            .withSource(
-                new ContentSource()
-                    .withHash(
-                        new ContentHash()
-                            .withAlgorithm("sha256")
-                            .withValue("A9E5DB56BA21513F61E0B3868816FDC6D4DF5131F5617D7FF0D769674BD5072F"))
-                    .withType(ContentSourceType.EMBEDDED_CONTENT)
-                    .withValue(
-                        "Configuration SetupServer {\r\n"
-                            + "    Node localhost {\r\n"
-                            + "                               WindowsFeature IIS {\r\n"
-                            + "                               Name = \"Web-Server\";\r\n"
-                            + "            Ensure = \"Present\"\r\n"
-                            + "        }\r\n"
-                            + "    }\r\n"
-                            + "}"))
+            .withSource(new ContentSource()
+                .withHash(new ContentHash().withAlgorithm("sha256")
+                    .withValue("A9E5DB56BA21513F61E0B3868816FDC6D4DF5131F5617D7FF0D769674BD5072F"))
+                .withType(ContentSourceType.EMBEDDED_CONTENT)
+                .withValue(
+                    "Configuration SetupServer {\r\n    Node localhost {\r\n                               WindowsFeature IIS {\r\n                               Name = \"Web-Server\";\r\n            Ensure = \"Present\"\r\n        }\r\n    }\r\n}"))
             .withRegion("East US 2")
             .withName("SetupServer")
             .withDescription("sample configuration")
@@ -1273,20 +1347,23 @@ public final class DscConfigurationCreateOrUpdateSamples {
 ### DscConfiguration_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscConfiguration Delete. */
+/**
+ * Samples for DscConfiguration Delete.
+ */
 public final class DscConfigurationDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/deleteDscConfiguration.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/deleteDscConfiguration.
+     * json
      */
     /**
      * Sample code: Delete DSC Configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteDSCConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.dscConfigurations().deleteWithResponse("rg", "myAutomationAccount33", "TemplateBasic", Context.NONE);
+        manager.dscConfigurations()
+            .deleteWithResponse("rg", "myAutomationAccount33", "TemplateBasic", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1294,20 +1371,23 @@ public final class DscConfigurationDeleteSamples {
 ### DscConfiguration_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscConfiguration Get. */
+/**
+ * Samples for DscConfiguration Get.
+ */
 public final class DscConfigurationGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getDscConfiguration.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getDscConfiguration.
+     * json
      */
     /**
      * Sample code: Get a DSC Configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getADSCConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.dscConfigurations().getWithResponse("rg", "myAutomationAccount33", "TemplateBasic", Context.NONE);
+        manager.dscConfigurations()
+            .getWithResponse("rg", "myAutomationAccount33", "TemplateBasic", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1315,20 +1395,22 @@ public final class DscConfigurationGetSamples {
 ### DscConfiguration_GetContent
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscConfiguration GetContent. */
+/**
+ * Samples for DscConfiguration GetContent.
+ */
 public final class DscConfigurationGetContentSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getDscConfigurationContent.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * getDscConfigurationContent.json
      */
     /**
      * Sample code: Get DSC Configuration content.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getDSCConfigurationContent(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.dscConfigurations().getContentWithResponse("rg", "myAutomationAccount33", "ConfigName", Context.NONE);
+        manager.dscConfigurations()
+            .getContentWithResponse("rg", "myAutomationAccount33", "ConfigName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1336,53 +1418,56 @@ public final class DscConfigurationGetContentSamples {
 ### DscConfiguration_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscConfiguration ListByAutomationAccount. */
+/**
+ * Samples for DscConfiguration ListByAutomationAccount.
+ */
 public final class DscConfigurationListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getAllDscConfigurations.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getAllDscConfigurations
+     * .json
      */
     /**
      * Sample code: Get DSC Configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getDSCConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscConfigurations()
-            .listByAutomationAccount("rg", "myAutomationAccount33", null, null, null, null, Context.NONE);
+        manager.dscConfigurations()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getPagedlDscConfigurationsWithNameFilter.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * getPagedlDscConfigurationsWithNameFilter.json
      */
     /**
      * Sample code: List Paged DSC Configurations with name filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listPagedDSCConfigurationsWithNameFilter(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscConfigurations()
-            .listByAutomationAccount(
-                "rg", "myAutomationAccount33", "contains(name,'server')", 0, 2, "allpages", Context.NONE);
+    public static void
+        listPagedDSCConfigurationsWithNameFilter(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.dscConfigurations()
+            .listByAutomationAccount("rg", "myAutomationAccount33", "contains(name,'server')", 0, 2, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/getPagedDscConfigurationsWithNoFilter.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * getPagedDscConfigurationsWithNoFilter.json
      */
     /**
      * Sample code: List Paged DSC Configurations with no filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listPagedDSCConfigurationsWithNoFilter(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscConfigurations()
-            .listByAutomationAccount("rg", "myAutomationAccount33", null, 0, 3, "allpages", Context.NONE);
+    public static void
+        listPagedDSCConfigurationsWithNoFilter(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.dscConfigurations()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, 0, 3, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1390,30 +1475,32 @@ public final class DscConfigurationListByAutomationAccountSamples {
 ### DscConfiguration_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.DscConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DscConfiguration Update. */
+/**
+ * Samples for DscConfiguration Update.
+ */
 public final class DscConfigurationUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/updateDscConfiguration.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/updateDscConfiguration.
+     * json
      */
     /**
      * Sample code: Create or Update Configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
-        DscConfiguration resource =
-            manager
-                .dscConfigurations()
-                .getWithResponse("rg", "myAutomationAccount18", "SetupServer", Context.NONE)
-                .getValue();
+        DscConfiguration resource = manager.dscConfigurations()
+            .getWithResponse("rg", "myAutomationAccount18", "SetupServer", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Hello", "World")).withName("SetupServer").apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1430,22 +1517,24 @@ public final class DscConfigurationUpdateSamples {
 ### DscNode_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscNode Delete. */
+/**
+ * Samples for DscNode Delete.
+ */
 public final class DscNodeDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteDscNode.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteDscNode.
+     * json
      */
     /**
      * Sample code: Delete a DSC Node.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteADSCNode(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodes()
-            .deleteWithResponse("rg", "myAutomationAccount9", "e1243a76-a9bd-432f-bde3-ad8f317ee786", Context.NONE);
+        manager.dscNodes()
+            .deleteWithResponse("rg", "myAutomationAccount9", "e1243a76-a9bd-432f-bde3-ad8f317ee786",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1453,20 +1542,22 @@ public final class DscNodeDeleteSamples {
 ### DscNode_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscNode Get. */
+/**
+ * Samples for DscNode Get.
+ */
 public final class DscNodeGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNode.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNode.
+     * json
      */
     /**
      * Sample code: Get a node.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getANode(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.dscNodes().getWithResponse("rg", "myAutomationAccount33", "nodeId", Context.NONE);
+        manager.dscNodes().getWithResponse("rg", "myAutomationAccount33", "nodeId", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1474,160 +1565,147 @@ public final class DscNodeGetSamples {
 ### DscNode_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscNode ListByAutomationAccount. */
+/**
+ * Samples for DscNode ListByAutomationAccount.
+ */
 public final class DscNodeListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listAllDscNodesByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listAllDscNodesByAutomationAccount.json
      */
     /**
      * Sample code: List DSC nodes by Automation Account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listDSCNodesByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.dscNodes().listByAutomationAccount("rg", "myAutomationAccount33", null, null, null, null, Context.NONE);
+        manager.dscNodes()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNodeConfigurationCustomFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodesByAutomationAccountWithNodeConfigurationCustomFilter.json
      */
     /**
      * Sample code: List Paged DSC nodes by Automation Account with Node Configuration Custom filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodesByAutomationAccountWithNodeConfigurationCustomFilter(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodes()
-            .listByAutomationAccount(
-                "rg",
-                "myAutomationAccount33",
+        manager.dscNodes()
+            .listByAutomationAccount("rg", "myAutomationAccount33",
                 "contains(properties/nodeConfiguration/name,'SetupServer.localhost,SetupClient.localhost,$$Not$$Configured$$')",
-                0,
-                4,
-                "allpages",
-                Context.NONE);
+                0, 4, "allpages", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNoFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodesByAutomationAccountWithNoFilter.json
      */
     /**
      * Sample code: List Paged DSC nodes by Automation Account with no filters.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodesByAutomationAccountWithNoFilters(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.dscNodes().listByAutomationAccount("rg", "myAutomationAccount33", null, 0, 2, "allpages", Context.NONE);
+        manager.dscNodes()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, 0, 2, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithStatusFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodesByAutomationAccountWithStatusFilter.json
      */
     /**
      * Sample code: List Paged DSC nodes by Automation Account with node status filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodesByAutomationAccountWithNodeStatusFilter(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodes()
-            .listByAutomationAccount(
-                "rg",
-                "myAutomationAccount33",
-                "contains(properties/status,'Compliant,NotCompliant')",
-                0,
-                4,
-                "allpages",
-                Context.NONE);
+        manager.dscNodes()
+            .listByAutomationAccount("rg", "myAutomationAccount33",
+                "contains(properties/status,'Compliant,NotCompliant')", 0, 4, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithVersionFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodesByAutomationAccountWithVersionFilter.json
      */
     /**
      * Sample code: List Paged DSC nodes by Automation Account with version filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodesByAutomationAccountWithVersionFilter(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodes()
-            .listByAutomationAccount(
-                "rg",
-                "myAutomationAccount33",
-                "properties/extensionHandler/any(eh: eh/version le '2.70')",
-                0,
-                4,
-                "allpages",
-                Context.NONE);
+        manager.dscNodes()
+            .listByAutomationAccount("rg", "myAutomationAccount33",
+                "properties/extensionHandler/any(eh: eh/version le '2.70')", 0, 4, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithCompositeFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodesByAutomationAccountWithCompositeFilter.json
      */
     /**
      * Sample code: List Paged DSC nodes with filters separated by 'and'.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listPagedDSCNodesWithFiltersSeparatedByAnd(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodes()
-            .listByAutomationAccount(
-                "rg",
-                "myAutomationAccount33",
-                "properties/extensionHandler/any(eh: eh/version gt '2.70') and contains(name,'sql') and"
-                    + " contains(properties/nodeConfiguration/name,'$$Not$$Configured$$')",
-                0,
-                10,
-                "allpages",
-                Context.NONE);
+    public static void
+        listPagedDSCNodesWithFiltersSeparatedByAnd(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.dscNodes()
+            .listByAutomationAccount("rg", "myAutomationAccount33",
+                "properties/extensionHandler/any(eh: eh/version gt '2.70') and contains(name,'sql') and contains(properties/nodeConfiguration/name,'$$Not$$Configured$$')",
+                0, 10, "allpages", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNodeConfigurationNotAssignedFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodesByAutomationAccountWithNodeConfigurationNotAssignedFilter.json
      */
     /**
      * Sample code: List Paged DSC nodes by Automation Account where Node Configurations are not assigned filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodesByAutomationAccountWhereNodeConfigurationsAreNotAssignedFilter(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodes()
-            .listByAutomationAccount(
-                "rg",
-                "myAutomationAccount33",
-                "properties/nodeConfiguration/name eq ''",
-                0,
-                20,
-                "allpages",
-                Context.NONE);
+        manager.dscNodes()
+            .listByAutomationAccount("rg", "myAutomationAccount33", "properties/nodeConfiguration/name eq ''", 0, 20,
+                "allpages", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNameFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodesByAutomationAccountWithNameFilter.json
      */
     /**
      * Sample code: List Paged DSC nodes by Automation Account with name filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodesByAutomationAccountWithNameFilter(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodes()
-            .listByAutomationAccount(
-                "rg", "myAutomationAccount33", "contains('DSCCOMP',name)", 0, 6, "allpages", Context.NONE);
+        manager.dscNodes()
+            .listByAutomationAccount("rg", "myAutomationAccount33", "contains('DSCCOMP',name)", 0, 6, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1635,31 +1713,29 @@ public final class DscNodeListByAutomationAccountSamples {
 ### DscNode_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.DscNodeUpdateParameters;
 import com.azure.resourcemanager.automation.models.DscNodeUpdateParametersProperties;
 
-/** Samples for DscNode Update. */
+/**
+ * Samples for DscNode Update.
+ */
 public final class DscNodeUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateDscNode.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateDscNode.
+     * json
      */
     /**
      * Sample code: Update a node.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateANode(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodes()
-            .updateWithResponse(
-                "rg",
-                "myAutomationAccount33",
-                "nodeId",
-                new DscNodeUpdateParameters()
-                    .withNodeId("nodeId")
+        manager.dscNodes()
+            .updateWithResponse("rg", "myAutomationAccount33", "nodeId",
+                new DscNodeUpdateParameters().withNodeId("nodeId")
                     .withProperties(new DscNodeUpdateParametersProperties().withName("SetupServer.localhost")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1672,59 +1748,32 @@ import com.azure.resourcemanager.automation.models.ContentSource;
 import com.azure.resourcemanager.automation.models.ContentSourceType;
 import com.azure.resourcemanager.automation.models.DscConfigurationAssociationProperty;
 
-/** Samples for DscNodeConfiguration CreateOrUpdate. */
+/**
+ * Samples for DscNodeConfiguration CreateOrUpdate.
+ */
 public final class DscNodeConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateDscNodeConfiguration.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateDscNodeConfiguration.json
      */
     /**
      * Sample code: Create node configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createNodeConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodeConfigurations()
+        manager.dscNodeConfigurations()
             .define("configName.nodeConfigName")
             .withExistingAutomationAccount("rg", "myAutomationAccount20")
             .withName("configName.nodeConfigName")
-            .withSource(
-                new ContentSource()
-                    .withHash(
-                        new ContentHash()
-                            .withAlgorithm("sha256")
-                            .withValue("6DE256A57F01BFA29B88696D5E77A383D6E61484C7686E8DB955FA10ACE9FFE5"))
-                    .withType(ContentSourceType.EMBEDDED_CONTENT)
-                    .withValue(
-                        "\r\n"
-                            + "instance of MSFT_RoleResource as $MSFT_RoleResource1ref\r\n"
-                            + "{\r\n"
-                            + "ResourceID = \"[WindowsFeature]IIS\";\r\n"
-                            + " Ensure = \"Present\";\r\n"
-                            + " SourceInfo = \"::3::32::WindowsFeature\";\r\n"
-                            + " Name = \"Web-Server\";\r\n"
-                            + " ModuleName = \"PsDesiredStateConfiguration\";\r\n\r\n"
-                            + "ModuleVersion = \"1.0\";\r\r\n"
-                            + " ConfigurationName = \"configName\";\r\r\n"
-                            + "};\r\n"
-                            + "instance of OMI_ConfigurationDocument\r\n\r\r\n"
-                            + "                    {\r\n"
-                            + " Version=\"2.0.0\";\r\n"
-                            + " \r\r\n"
-                            + "                        MinimumCompatibleVersion = \"1.0.0\";\r\n"
-                            + " \r\r\n"
-                            + "                        CompatibleVersionAdditionalProperties="
-                            + " {\"Omi_BaseResource:ConfigurationName\"};\r\n"
-                            + " \r\r\n"
-                            + "                        Author=\"weijiel\";\r\n"
-                            + " \r\r\n"
-                            + "                        GenerationDate=\"03/30/2017 13:40:25\";\r\n"
-                            + " \r\r\n"
-                            + "                        GenerationHost=\"TEST-BACKEND\";\r\n"
-                            + " \r\r\n"
-                            + "                        Name=\"configName\";\r\n\r\r\n"
-                            + "                    };\r\n")
-                    .withVersion("1.0"))
+            .withSource(new ContentSource()
+                .withHash(new ContentHash().withAlgorithm("sha256")
+                    .withValue("6DE256A57F01BFA29B88696D5E77A383D6E61484C7686E8DB955FA10ACE9FFE5"))
+                .withType(ContentSourceType.EMBEDDED_CONTENT)
+                .withValue(
+                    "\r\ninstance of MSFT_RoleResource as $MSFT_RoleResource1ref\r\n{\r\nResourceID = \"[WindowsFeature]IIS\";\r\n Ensure = \"Present\";\r\n SourceInfo = \"::3::32::WindowsFeature\";\r\n Name = \"Web-Server\";\r\n ModuleName = \"PsDesiredStateConfiguration\";\r\n\r\nModuleVersion = \"1.0\";\r\r\n ConfigurationName = \"configName\";\r\r\n};\r\ninstance of OMI_ConfigurationDocument\r\n\r\r\n                    {\r\n Version=\"2.0.0\";\r\n \r\r\n                        MinimumCompatibleVersion = \"1.0.0\";\r\n \r\r\n                        CompatibleVersionAdditionalProperties= {\"Omi_BaseResource:ConfigurationName\"};\r\n \r\r\n                        Author=\"weijiel\";\r\n \r\r\n                        GenerationDate=\"03/30/2017 13:40:25\";\r\n \r\r\n                        GenerationHost=\"TEST-BACKEND\";\r\n \r\r\n                        Name=\"configName\";\r\n\r\r\n                    };\r\n")
+                .withVersion("1.0"))
             .withConfiguration(new DscConfigurationAssociationProperty().withName("configName"))
             .withIncrementNodeConfigurationBuild(true)
             .create();
@@ -1735,22 +1784,24 @@ public final class DscNodeConfigurationCreateOrUpdateSamples {
 ### DscNodeConfiguration_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscNodeConfiguration Delete. */
+/**
+ * Samples for DscNodeConfiguration Delete.
+ */
 public final class DscNodeConfigurationDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteDscNodeConfiguration.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * deleteDscNodeConfiguration.json
      */
     /**
      * Sample code: Delete a DSC node configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteADSCNodeConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodeConfigurations()
-            .deleteWithResponse("rg", "myAutomationAccount20", "configName.nodeConfigName", Context.NONE);
+        manager.dscNodeConfigurations()
+            .deleteWithResponse("rg", "myAutomationAccount20", "configName.nodeConfigName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1758,22 +1809,23 @@ public final class DscNodeConfigurationDeleteSamples {
 ### DscNodeConfiguration_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscNodeConfiguration Get. */
+/**
+ * Samples for DscNodeConfiguration Get.
+ */
 public final class DscNodeConfigurationGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNodeConfiguration.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getDscNodeConfiguration.json
      */
     /**
      * Sample code: Get a DSC node configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getADSCNodeConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodeConfigurations()
-            .getWithResponse("rg", "myAutomationAccount33", "SetupServer.localhost", Context.NONE);
+        manager.dscNodeConfigurations()
+            .getWithResponse("rg", "myAutomationAccount33", "SetupServer.localhost", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1781,54 +1833,59 @@ public final class DscNodeConfigurationGetSamples {
 ### DscNodeConfiguration_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DscNodeConfiguration ListByAutomationAccount. */
+/**
+ * Samples for DscNodeConfiguration ListByAutomationAccount.
+ */
 public final class DscNodeConfigurationListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodeConfigurationsWithNoFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodeConfigurationsWithNoFilter.json
      */
     /**
      * Sample code: List Paged DSC node configurations by Automation Account with no filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodeConfigurationsByAutomationAccountWithNoFilter(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodeConfigurations()
-            .listByAutomationAccount("rg", "myAutomationAccount33", null, 0, 4, "allpages", Context.NONE);
+        manager.dscNodeConfigurations()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, 0, 4, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listDscNodeConfigurations.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listDscNodeConfigurations.json
      */
     /**
      * Sample code: List DSC node configurations by Automation Account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listDSCNodeConfigurationsByAutomationAccount(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodeConfigurations()
-            .listByAutomationAccount("rg", "myAutomationAccount33", null, null, null, null, Context.NONE);
+    public static void
+        listDSCNodeConfigurationsByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.dscNodeConfigurations()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodeConfigurationsWithNameFilter.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodeConfigurationsWithNameFilter.json
      */
     /**
      * Sample code: List Paged DSC node configurations by Automation Account with name filter.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCNodeConfigurationsByAutomationAccountWithNameFilter(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .dscNodeConfigurations()
-            .listByAutomationAccount(
-                "rg", "myAutomationAccount33", "contains('.localhost',name)", 0, 2, "allpages", Context.NONE);
+        manager.dscNodeConfigurations()
+            .listByAutomationAccount("rg", "myAutomationAccount33", "contains('.localhost',name)", 0, 2, "allpages",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1836,20 +1893,23 @@ public final class DscNodeConfigurationListByAutomationAccountSamples {
 ### Fields_ListByType
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Fields ListByType. */
+/**
+ * Samples for Fields ListByType.
+ */
 public final class FieldsListByTypeSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listFieldsByModuleAndType.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listFieldsByModuleAndType.json
      */
     /**
      * Sample code: Get a list of fields of a given type.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAListOfFieldsOfAGivenType(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.fields().listByType("rg", "MyAutomationAccount", "MyModule", "MyCustomType", Context.NONE);
+        manager.fields()
+            .listByType("rg", "MyAutomationAccount", "MyModule", "MyCustomType", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1859,19 +1919,21 @@ public final class FieldsListByTypeSamples {
 ```java
 import com.azure.resourcemanager.automation.models.RunAsCredentialAssociationProperty;
 
-/** Samples for HybridRunbookWorkerGroup Create. */
+/**
+ * Samples for HybridRunbookWorkerGroup Create.
+ */
 public final class HybridRunbookWorkerGroupCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/putHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/
+     * putHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: Create a hybrid worker group.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createAHybridWorkerGroup(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .hybridRunbookWorkerGroups()
+        manager.hybridRunbookWorkerGroups()
             .define("TestHybridGroup")
             .withExistingAutomationAccount("rg", "testaccount")
             .withCredential(new RunAsCredentialAssociationProperty().withName("myRunAsCredentialName"))
@@ -1883,20 +1945,22 @@ public final class HybridRunbookWorkerGroupCreateSamples {
 ### HybridRunbookWorkerGroup_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HybridRunbookWorkerGroup Delete. */
+/**
+ * Samples for HybridRunbookWorkerGroup Delete.
+ */
 public final class HybridRunbookWorkerGroupDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/deleteHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/
+     * deleteHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: Delete a hybrid worker group.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteAHybridWorkerGroup(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.hybridRunbookWorkerGroups().deleteWithResponse("rg", "myAutomationAccount20", "myGroup", Context.NONE);
+        manager.hybridRunbookWorkerGroups()
+            .deleteWithResponse("rg", "myAutomationAccount20", "myGroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1904,20 +1968,22 @@ public final class HybridRunbookWorkerGroupDeleteSamples {
 ### HybridRunbookWorkerGroup_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HybridRunbookWorkerGroup Get. */
+/**
+ * Samples for HybridRunbookWorkerGroup Get.
+ */
 public final class HybridRunbookWorkerGroupGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/getHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/
+     * getHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: Get a hybrid worker group.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAHybridWorkerGroup(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.hybridRunbookWorkerGroups().getWithResponse("rg", "testaccount", "TestHybridGroup", Context.NONE);
+        manager.hybridRunbookWorkerGroups()
+            .getWithResponse("rg", "testaccount", "TestHybridGroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1925,21 +1991,23 @@ public final class HybridRunbookWorkerGroupGetSamples {
 ### HybridRunbookWorkerGroup_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HybridRunbookWorkerGroup ListByAutomationAccount. */
+/**
+ * Samples for HybridRunbookWorkerGroup ListByAutomationAccount.
+ */
 public final class HybridRunbookWorkerGroupListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/listHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/
+     * listHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: List hybrid worker groups by Automation Account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listHybridWorkerGroupsByAutomationAccount(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.hybridRunbookWorkerGroups().listByAutomationAccount("rg", "testaccount", null, Context.NONE);
+    public static void
+        listHybridWorkerGroupsByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.hybridRunbookWorkerGroups()
+            .listByAutomationAccount("rg", "testaccount", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1947,28 +2015,27 @@ public final class HybridRunbookWorkerGroupListByAutomationAccountSamples {
 ### HybridRunbookWorkerGroup_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.HybridRunbookWorkerGroup;
 import com.azure.resourcemanager.automation.models.RunAsCredentialAssociationProperty;
 
-/** Samples for HybridRunbookWorkerGroup Update. */
+/**
+ * Samples for HybridRunbookWorkerGroup Update.
+ */
 public final class HybridRunbookWorkerGroupUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/updateHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/
+     * updateHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: Update hybrid worker group.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateHybridWorkerGroup(com.azure.resourcemanager.automation.AutomationManager manager) {
-        HybridRunbookWorkerGroup resource =
-            manager
-                .hybridRunbookWorkerGroups()
-                .getWithResponse("rg", "testaccount", "TestHybridGroup", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        HybridRunbookWorkerGroup resource = manager.hybridRunbookWorkerGroups()
+            .getWithResponse("rg", "testaccount", "TestHybridGroup", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withCredential(new RunAsCredentialAssociationProperty().withName("myRunAsCredentialUpdatedName"))
             .apply();
     }
@@ -1978,19 +2045,22 @@ public final class HybridRunbookWorkerGroupUpdateSamples {
 ### HybridRunbookWorkers_Create
 
 ```java
-/** Samples for HybridRunbookWorkers Create. */
+/**
+ * Samples for HybridRunbookWorkers Create.
+ */
 public final class HybridRunbookWorkersCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/putHybridRunbookWorker.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/putHybridRunbookWorker.
+     * json
      */
     /**
      * Sample code: Create a V2 hybrid runbook worker.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createAV2HybridRunbookWorker(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .hybridRunbookWorkers()
+        manager.hybridRunbookWorkers()
             .define("c010ad12-ef14-4a2a-aa9e-ef22c4745ddd")
             .withExistingHybridRunbookWorkerGroup("rg", "testaccount", "TestHybridGroup")
             .withVmResourceId(
@@ -2003,23 +2073,23 @@ public final class HybridRunbookWorkersCreateSamples {
 ### HybridRunbookWorkers_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HybridRunbookWorkers Delete. */
+/**
+ * Samples for HybridRunbookWorkers Delete.
+ */
 public final class HybridRunbookWorkersDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/deleteHybridRunbookWorker.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * deleteHybridRunbookWorker.json
      */
     /**
      * Sample code: Delete a V2 hybrid runbook worker.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteAV2HybridRunbookWorker(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .hybridRunbookWorkers()
-            .deleteWithResponse(
-                "rg", "myAutomationAccount20", "myGroup", "c010ad12-ef14-4a2a-aa9e-ef22c4745ddd", Context.NONE);
+        manager.hybridRunbookWorkers()
+            .deleteWithResponse("rg", "myAutomationAccount20", "myGroup", "c010ad12-ef14-4a2a-aa9e-ef22c4745ddd",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2027,23 +2097,24 @@ public final class HybridRunbookWorkersDeleteSamples {
 ### HybridRunbookWorkers_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HybridRunbookWorkers Get. */
+/**
+ * Samples for HybridRunbookWorkers Get.
+ */
 public final class HybridRunbookWorkersGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getHybridRunbookWorker.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getHybridRunbookWorker.
+     * json
      */
     /**
      * Sample code: Get a V2 hybrid runbook worker.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAV2HybridRunbookWorker(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .hybridRunbookWorkers()
-            .getWithResponse(
-                "rg", "testaccount", "TestHybridGroup", "c010ad12-ef14-4a2a-aa9e-ef22c4745ddd", Context.NONE);
+        manager.hybridRunbookWorkers()
+            .getWithResponse("rg", "testaccount", "TestHybridGroup", "c010ad12-ef14-4a2a-aa9e-ef22c4745ddd",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2051,23 +2122,25 @@ public final class HybridRunbookWorkersGetSamples {
 ### HybridRunbookWorkers_ListByHybridRunbookWorkerGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for HybridRunbookWorkers ListByHybridRunbookWorkerGroup. */
+/**
+ * Samples for HybridRunbookWorkers ListByHybridRunbookWorkerGroup.
+ */
 public final class HybridRunbookWorkersListByHybridRunbookWorkerGroupSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listHybridRunbookWorker.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listHybridRunbookWorker
+     * .json
      */
     /**
      * Sample code: List hybrid workers by hybrid runbook worker group.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listHybridWorkersByHybridRunbookWorkerGroup(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .hybridRunbookWorkers()
-            .listByHybridRunbookWorkerGroup("rg", "testaccount", "TestHybridGroup", null, Context.NONE);
+    public static void
+        listHybridWorkersByHybridRunbookWorkerGroup(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.hybridRunbookWorkers()
+            .listByHybridRunbookWorkerGroup("rg", "testaccount", "TestHybridGroup", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2075,30 +2148,28 @@ public final class HybridRunbookWorkersListByHybridRunbookWorkerGroupSamples {
 ### HybridRunbookWorkers_Move
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.HybridRunbookWorkerMoveParameters;
 
-/** Samples for HybridRunbookWorkers Move. */
+/**
+ * Samples for HybridRunbookWorkers Move.
+ */
 public final class HybridRunbookWorkersMoveSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/moveHybridRunbookWorker.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/moveHybridRunbookWorker
+     * .json
      */
     /**
      * Sample code: Move a V2 hybrid worker to a different group.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void moveAV2HybridWorkerToADifferentGroup(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .hybridRunbookWorkers()
-            .moveWithResponse(
-                "rg",
-                "testaccount",
-                "TestHybridGroup",
-                "c010ad12-ef14-4a2a-aa9e-ef22c4745ddd",
+    public static void
+        moveAV2HybridWorkerToADifferentGroup(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.hybridRunbookWorkers()
+            .moveWithResponse("rg", "testaccount", "TestHybridGroup", "c010ad12-ef14-4a2a-aa9e-ef22c4745ddd",
                 new HybridRunbookWorkerMoveParameters().withHybridRunbookWorkerGroupName("TestHybridGroup2"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2110,27 +2181,30 @@ import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Job Create. */
+/**
+ * Samples for Job Create.
+ */
 public final class JobCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/createJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/createJob.json
      */
     /**
      * Sample code: Create job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .jobs()
+        manager.jobs()
             .define("foo")
             .withExistingAutomationAccount("mygroup", "ContoseAutomationAccount")
             .withRunbook(new RunbookAssociationProperty().withName("TestRunbook"))
-            .withParameters(mapOf("key01", "value01", "key02", "value02"))
+            .withParameters(mapOf("key01", "fakeTokenPlaceholder", "key02", "fakeTokenPlaceholder"))
             .withRunOn("")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -2147,20 +2221,22 @@ public final class JobCreateSamples {
 ### Job_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Job Get. */
+/**
+ * Samples for Job Get.
+ */
 public final class JobGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/getJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/getJob.json
      */
     /**
      * Sample code: Get job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobs().getWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, Context.NONE);
+        manager.jobs()
+            .getWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2168,20 +2244,23 @@ public final class JobGetSamples {
 ### Job_GetOutput
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Job GetOutput. */
+/**
+ * Samples for Job GetOutput.
+ */
 public final class JobGetOutputSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/getJobOutput.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/getJobOutput.json
      */
     /**
      * Sample code: Get Job Output.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getJobOutput(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobs().getOutputWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, Context.NONE);
+        manager.jobs()
+            .getOutputWithResponse("mygroup", "ContoseAutomationAccount", "foo", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2189,20 +2268,24 @@ public final class JobGetOutputSamples {
 ### Job_GetRunbookContent
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Job GetRunbookContent. */
+/**
+ * Samples for Job GetRunbookContent.
+ */
 public final class JobGetRunbookContentSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/getJobRunbookContent.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/
+     * getJobRunbookContent.json
      */
     /**
      * Sample code: Get Job Runbook Content.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getJobRunbookContent(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobs().getRunbookContentWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, Context.NONE);
+        manager.jobs()
+            .getRunbookContentWithResponse("mygroup", "ContoseAutomationAccount", "foo", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2210,20 +2293,24 @@ public final class JobGetRunbookContentSamples {
 ### Job_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Job ListByAutomationAccount. */
+/**
+ * Samples for Job ListByAutomationAccount.
+ */
 public final class JobListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/listJobsByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/
+     * listJobsByAutomationAccount.json
      */
     /**
      * Sample code: List jobs by automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listJobsByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobs().listByAutomationAccount("mygroup", "ContoseAutomationAccount", null, null, Context.NONE);
+        manager.jobs()
+            .listByAutomationAccount("mygroup", "ContoseAutomationAccount", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2231,20 +2318,22 @@ public final class JobListByAutomationAccountSamples {
 ### Job_Resume
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Job Resume. */
+/**
+ * Samples for Job Resume.
+ */
 public final class JobResumeSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/resumeJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/resumeJob.json
      */
     /**
      * Sample code: Resume job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void resumeJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobs().resumeWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, Context.NONE);
+        manager.jobs()
+            .resumeWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2252,20 +2341,22 @@ public final class JobResumeSamples {
 ### Job_Stop
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Job Stop. */
+/**
+ * Samples for Job Stop.
+ */
 public final class JobStopSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/stopJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/stopJob.json
      */
     /**
      * Sample code: Stop job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void stopJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobs().stopWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, Context.NONE);
+        manager.jobs()
+            .stopWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2273,20 +2364,22 @@ public final class JobStopSamples {
 ### Job_Suspend
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Job Suspend. */
+/**
+ * Samples for Job Suspend.
+ */
 public final class JobSuspendSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/suspendJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/suspendJob.json
      */
     /**
      * Sample code: Suspend job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void suspendJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobs().suspendWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, Context.NONE);
+        manager.jobs()
+            .suspendWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2300,19 +2393,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Samples for JobSchedule Create. */
+/**
+ * Samples for JobSchedule Create.
+ */
 public final class JobScheduleCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createJobSchedule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createJobSchedule.json
      */
     /**
      * Sample code: Create a job schedule.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createAJobSchedule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .jobSchedules()
+        manager.jobSchedules()
             .define(UUID.fromString("0fa462ba-3aa2-4138-83ca-9ebc3bc55cdc"))
             .withExistingAutomationAccount("rg", "ContoseAutomationAccount")
             .withSchedule(
@@ -2322,6 +2418,7 @@ public final class JobScheduleCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -2338,27 +2435,26 @@ public final class JobScheduleCreateSamples {
 ### JobSchedule_Delete
 
 ```java
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for JobSchedule Delete. */
+/**
+ * Samples for JobSchedule Delete.
+ */
 public final class JobScheduleDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteJobSchedule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * deleteJobSchedule.json
      */
     /**
      * Sample code: Delete a job schedule.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteAJobSchedule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .jobSchedules()
-            .deleteWithResponse(
-                "rg",
-                "ContoseAutomationAccount",
-                UUID.fromString("0fa462ba-3aa2-4138-83ca-9ebc3bc55cdc"),
-                Context.NONE);
+        manager.jobSchedules()
+            .deleteWithResponse("rg", "ContoseAutomationAccount",
+                UUID.fromString("0fa462ba-3aa2-4138-83ca-9ebc3bc55cdc"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2366,27 +2462,26 @@ public final class JobScheduleDeleteSamples {
 ### JobSchedule_Get
 
 ```java
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for JobSchedule Get. */
+/**
+ * Samples for JobSchedule Get.
+ */
 public final class JobScheduleGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getJobSchedule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getJobSchedule
+     * .json
      */
     /**
      * Sample code: Get a job schedule.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAJobSchedule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .jobSchedules()
-            .getWithResponse(
-                "rg",
-                "ContoseAutomationAccount",
-                UUID.fromString("0fa462ba-3aa2-4138-83ca-9ebc3bc55cdc"),
-                Context.NONE);
+        manager.jobSchedules()
+            .getWithResponse("rg", "ContoseAutomationAccount", UUID.fromString("0fa462ba-3aa2-4138-83ca-9ebc3bc55cdc"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2394,21 +2489,24 @@ public final class JobScheduleGetSamples {
 ### JobSchedule_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JobSchedule ListByAutomationAccount. */
+/**
+ * Samples for JobSchedule ListByAutomationAccount.
+ */
 public final class JobScheduleListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listAllJobSchedulesByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listAllJobSchedulesByAutomationAccount.json
      */
     /**
      * Sample code: List all job schedules by automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listAllJobSchedulesByAutomationAccount(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobSchedules().listByAutomationAccount("rg", "ContoseAutomationAccount", null, Context.NONE);
+    public static void
+        listAllJobSchedulesByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.jobSchedules()
+            .listByAutomationAccount("rg", "ContoseAutomationAccount", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2416,28 +2514,24 @@ public final class JobScheduleListByAutomationAccountSamples {
 ### JobStream_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JobStream Get. */
+/**
+ * Samples for JobStream Get.
+ */
 public final class JobStreamGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/getJobStream.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/getJobStream.json
      */
     /**
      * Sample code: Get job stream.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getJobStream(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .jobStreams()
-            .getWithResponse(
-                "mygroup",
-                "ContoseAutomationAccount",
-                "foo",
-                "851b2101-686f-40e2-8a4b-5b8df08afbd1_00636535684910693884_00000000000000000001",
-                null,
-                Context.NONE);
+        manager.jobStreams()
+            .getWithResponse("mygroup", "ContoseAutomationAccount", "foo",
+                "851b2101-686f-40e2-8a4b-5b8df08afbd1_00636535684910693884_00000000000000000001", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2445,20 +2539,23 @@ public final class JobStreamGetSamples {
 ### JobStream_ListByJob
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JobStream ListByJob. */
+/**
+ * Samples for JobStream ListByJob.
+ */
 public final class JobStreamListByJobSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/listJobStreamsByJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/listJobStreamsByJob
+     * .json
      */
     /**
      * Sample code: List job streams by job name.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listJobStreamsByJobName(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobStreams().listByJob("mygroup", "ContoseAutomationAccount", "foo", null, null, Context.NONE);
+        manager.jobStreams()
+            .listByJob("mygroup", "ContoseAutomationAccount", "foo", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2466,20 +2563,22 @@ public final class JobStreamListByJobSamples {
 ### Keys_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Keys ListByAutomationAccount. */
+/**
+ * Samples for Keys ListByAutomationAccount.
+ */
 public final class KeysListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listAutomationAccountKeys.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * listAutomationAccountKeys.json
      */
     /**
      * Sample code: Get lists of an automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getListsOfAnAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.keys().listByAutomationAccountWithResponse("rg", "MyAutomationAccount", Context.NONE);
+        manager.keys()
+            .listByAutomationAccountWithResponse("rg", "MyAutomationAccount", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2487,21 +2586,23 @@ public final class KeysListByAutomationAccountSamples {
 ### LinkedWorkspace_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for LinkedWorkspace Get. */
+/**
+ * Samples for LinkedWorkspace Get.
+ */
 public final class LinkedWorkspaceGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getLinkedWorkspace.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getLinkedWorkspace.json
      */
     /**
      * Sample code: Get the linked workspace of an automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getTheLinkedWorkspaceOfAnAutomationAccount(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.linkedWorkspaces().getWithResponse("rg", "ContosoAutomationAccount", Context.NONE);
+    public static void
+        getTheLinkedWorkspaceOfAnAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.linkedWorkspaces().getWithResponse("rg", "ContosoAutomationAccount", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2509,38 +2610,33 @@ public final class LinkedWorkspaceGetSamples {
 ### Module_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.ContentHash;
 import com.azure.resourcemanager.automation.models.ContentLink;
 import com.azure.resourcemanager.automation.models.ModuleCreateOrUpdateParameters;
 
-/** Samples for Module CreateOrUpdate. */
+/**
+ * Samples for Module CreateOrUpdate.
+ */
 public final class ModuleCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateModule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateModule.json
      */
     /**
      * Sample code: Create or update a module.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateAModule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .modules()
-            .createOrUpdateWithResponse(
-                "rg",
-                "myAutomationAccount33",
-                "OmsCompositeResources",
-                new ModuleCreateOrUpdateParameters()
-                    .withContentLink(
-                        new ContentLink()
-                            .withUri("https://teststorage.blob.core.windows.net/dsccomposite/OmsCompositeResources.zip")
-                            .withContentHash(
-                                new ContentHash()
-                                    .withAlgorithm("sha265")
-                                    .withValue("07E108A962B81DD9C9BAA89BB47C0F6EE52B29E83758B07795E408D258B2B87A"))
-                            .withVersion("1.0.0.0")),
-                Context.NONE);
+        manager.modules()
+            .createOrUpdateWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources",
+                new ModuleCreateOrUpdateParameters().withContentLink(new ContentLink()
+                    .withUri("https://teststorage.blob.core.windows.net/dsccomposite/OmsCompositeResources.zip")
+                    .withContentHash(new ContentHash().withAlgorithm("sha265")
+                        .withValue("07E108A962B81DD9C9BAA89BB47C0F6EE52B29E83758B07795E408D258B2B87A"))
+                    .withVersion("1.0.0.0")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2548,20 +2644,24 @@ public final class ModuleCreateOrUpdateSamples {
 ### Module_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Module Delete. */
+/**
+ * Samples for Module Delete.
+ */
 public final class ModuleDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteModule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteModule.
+     * json
      */
     /**
      * Sample code: Delete a module.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteAModule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.modules().deleteWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources", Context.NONE);
+        manager.modules()
+            .deleteWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2569,20 +2669,22 @@ public final class ModuleDeleteSamples {
 ### Module_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Module Get. */
+/**
+ * Samples for Module Get.
+ */
 public final class ModuleGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getModule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getModule.json
      */
     /**
      * Sample code: Get a module.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAModule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.modules().getWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources", Context.NONE);
+        manager.modules()
+            .getWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2590,20 +2692,22 @@ public final class ModuleGetSamples {
 ### Module_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Module ListByAutomationAccount. */
+/**
+ * Samples for Module ListByAutomationAccount.
+ */
 public final class ModuleListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listModulesByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listModulesByAutomationAccount.json
      */
     /**
      * Sample code: List modules by automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listModulesByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.modules().listByAutomationAccount("rg", "myAutomationAccount33", Context.NONE);
+        manager.modules().listByAutomationAccount("rg", "myAutomationAccount33", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2611,38 +2715,33 @@ public final class ModuleListByAutomationAccountSamples {
 ### Module_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.ContentHash;
 import com.azure.resourcemanager.automation.models.ContentLink;
 import com.azure.resourcemanager.automation.models.ModuleUpdateParameters;
 
-/** Samples for Module Update. */
+/**
+ * Samples for Module Update.
+ */
 public final class ModuleUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateModule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateModule.
+     * json
      */
     /**
      * Sample code: Update a module.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateAModule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .modules()
-            .updateWithResponse(
-                "rg",
-                "MyAutomationAccount",
-                "MyModule",
-                new ModuleUpdateParameters()
-                    .withContentLink(
-                        new ContentLink()
-                            .withUri("https://teststorage.blob.core.windows.net/mycontainer/MyModule.zip")
-                            .withContentHash(
-                                new ContentHash()
-                                    .withAlgorithm("sha265")
-                                    .withValue("07E108A962B81DD9C9BAA89BB47C0F6EE52B29E83758B07795E408D258B2B87A"))
-                            .withVersion("1.0.0.0")),
-                Context.NONE);
+        manager.modules()
+            .updateWithResponse("rg", "MyAutomationAccount", "MyModule",
+                new ModuleUpdateParameters().withContentLink(
+                    new ContentLink().withUri("https://teststorage.blob.core.windows.net/mycontainer/MyModule.zip")
+                        .withContentHash(new ContentHash().withAlgorithm("sha265")
+                            .withValue("07E108A962B81DD9C9BAA89BB47C0F6EE52B29E83758B07795E408D258B2B87A"))
+                        .withVersion("1.0.0.0")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2650,35 +2749,41 @@ public final class ModuleUpdateSamples {
 ### NodeCountInformation_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.CountType;
 
-/** Samples for NodeCountInformation Get. */
+/**
+ * Samples for NodeCountInformation Get.
+ */
 public final class NodeCountInformationGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodeConfigurationCounts.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodeConfigurationCounts.json
      */
     /**
      * Sample code: Get node's node configuration counts.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getNodeSNodeConfigurationCounts(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .nodeCountInformations()
-            .getWithResponse("rg", "myAutomationAccount33", CountType.NODECONFIGURATION, Context.NONE);
+        manager.nodeCountInformations()
+            .getWithResponse("rg", "myAutomationAccount33", CountType.NODECONFIGURATION,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodeStatusCounts.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodeStatusCounts.json
      */
     /**
      * Sample code: Get node's status counts.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getNodeSStatusCounts(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.nodeCountInformations().getWithResponse("rg", "myAutomationAccount33", CountType.STATUS, Context.NONE);
+        manager.nodeCountInformations()
+            .getWithResponse("rg", "myAutomationAccount33", CountType.STATUS, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2686,24 +2791,25 @@ public final class NodeCountInformationGetSamples {
 ### NodeReports_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for NodeReports Get. */
+/**
+ * Samples for NodeReports Get.
+ */
 public final class NodeReportsGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNodeReport.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getDscNodeReport.json
      */
     /**
      * Sample code: Get Dsc node report data by node id and report id.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getDscNodeReportDataByNodeIdAndReportId(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .nodeReports()
-            .getWithResponse(
-                "rg", "myAutomationAccount33", "nodeId", "903a5ead-140c-11e7-a943-000d3a6140c9", Context.NONE);
+    public static void
+        getDscNodeReportDataByNodeIdAndReportId(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.nodeReports()
+            .getWithResponse("rg", "myAutomationAccount33", "nodeId", "903a5ead-140c-11e7-a943-000d3a6140c9",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2711,20 +2817,24 @@ public final class NodeReportsGetSamples {
 ### NodeReports_GetContent
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for NodeReports GetContent. */
+/**
+ * Samples for NodeReports GetContent.
+ */
 public final class NodeReportsGetContentSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNodeReportContent.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getDscNodeReportContent.json
      */
     /**
      * Sample code: Get content of node.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getContentOfNode(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.nodeReports().getContentWithResponse("rg", "myAutomationAccount33", "nodeId", "reportId", Context.NONE);
+        manager.nodeReports()
+            .getContentWithResponse("rg", "myAutomationAccount33", "nodeId", "reportId",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2732,32 +2842,38 @@ public final class NodeReportsGetContentSamples {
 ### NodeReports_ListByNode
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for NodeReports ListByNode. */
+/**
+ * Samples for NodeReports ListByNode.
+ */
 public final class NodeReportsListByNodeSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodeReportsByNode.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPagedDscNodeReportsByNode.json
      */
     /**
      * Sample code: List Paged DSC reports by node id.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listPagedDSCReportsByNodeId(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.nodeReports().listByNode("rg", "myAutomationAccount33", "nodeId", null, Context.NONE);
+        manager.nodeReports()
+            .listByNode("rg", "myAutomationAccount33", "nodeId", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listDscNodeReportsByNode.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listDscNodeReportsByNode.json
      */
     /**
      * Sample code: List DSC reports by node id.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listDSCReportsByNodeId(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.nodeReports().listByNode("rg", "myAutomationAccount33", "nodeId", null, Context.NONE);
+        manager.nodeReports()
+            .listByNode("rg", "myAutomationAccount33", "nodeId", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2765,22 +2881,24 @@ public final class NodeReportsListByNodeSamples {
 ### ObjectDataTypes_ListFieldsByModuleAndType
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ObjectDataTypes ListFieldsByModuleAndType. */
+/**
+ * Samples for ObjectDataTypes ListFieldsByModuleAndType.
+ */
 public final class ObjectDataTypesListFieldsByModuleAndTypeSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listFieldsByModuleAndType.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listFieldsByModuleAndType.json
      */
     /**
      * Sample code: Get a list of fields of a given type.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAListOfFieldsOfAGivenType(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .objectDataTypes()
-            .listFieldsByModuleAndType("rg", "MyAutomationAccount", "MyModule", "MyCustomType", Context.NONE);
+        manager.objectDataTypes()
+            .listFieldsByModuleAndType("rg", "MyAutomationAccount", "MyModule", "MyCustomType",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2788,21 +2906,24 @@ public final class ObjectDataTypesListFieldsByModuleAndTypeSamples {
 ### ObjectDataTypes_ListFieldsByType
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ObjectDataTypes ListFieldsByType. */
+/**
+ * Samples for ObjectDataTypes ListFieldsByType.
+ */
 public final class ObjectDataTypesListFieldsByTypeSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listFieldsByType.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listFieldsByType.json
      */
     /**
      * Sample code: Get a list of fields of a given type across all accessible modules.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAListOfFieldsOfAGivenTypeAcrossAllAccessibleModules(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.objectDataTypes().listFieldsByType("rg", "MyAutomationAccount", "MyCustomType", Context.NONE);
+        manager.objectDataTypes()
+            .listFieldsByType("rg", "MyAutomationAccount", "MyCustomType", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2812,25 +2933,27 @@ public final class ObjectDataTypesListFieldsByTypeSamples {
 ```java
 import com.azure.resourcemanager.automation.models.PrivateLinkServiceConnectionStateProperty;
 
-/** Samples for PrivateEndpointConnections CreateOrUpdate. */
+/**
+ * Samples for PrivateEndpointConnections CreateOrUpdate.
+ */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/PrivateEndpointConnectionUpdate.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * PrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void approveOrRejectAPrivateEndpointConnectionWithAGivenName(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .privateEndpointConnections()
+        manager.privateEndpointConnections()
             .define("privateEndpointConnectionName")
             .withExistingAutomationAccount("rg1", "ddb1")
             .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionStateProperty()
-                    .withStatus("Approved")
+                new PrivateLinkServiceConnectionStateProperty().withStatus("Approved")
                     .withDescription("Approved by johndoe@contoso.com"))
             .create();
     }
@@ -2840,21 +2963,24 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
 ### PrivateEndpointConnections_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnections Delete. */
+/**
+ * Samples for PrivateEndpointConnections Delete.
+ */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/PrivateEndpointConnectionDelete.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * PrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deletesAPrivateEndpointConnectionWithAGivenName(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.privateEndpointConnections().delete("rg1", "ddb1", "privateEndpointConnectionName", Context.NONE);
+        manager.privateEndpointConnections()
+            .delete("rg1", "ddb1", "privateEndpointConnectionName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2862,22 +2988,23 @@ public final class PrivateEndpointConnectionsDeleteSamples {
 ### PrivateEndpointConnections_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnections Get. */
+/**
+ * Samples for PrivateEndpointConnections Get.
+ */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/PrivateEndpointConnectionGet.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * PrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getsPrivateEndpointConnection(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .privateEndpointConnections()
-            .getWithResponse("rg1", "ddb1", "privateEndpointConnectionName", Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("rg1", "ddb1", "privateEndpointConnectionName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2885,20 +3012,22 @@ public final class PrivateEndpointConnectionsGetSamples {
 ### PrivateEndpointConnections_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnections ListByAutomationAccount. */
+/**
+ * Samples for PrivateEndpointConnections ListByAutomationAccount.
+ */
 public final class PrivateEndpointConnectionsListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/PrivateEndpointConnectionListGet.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * PrivateEndpointConnectionListGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getsPrivateEndpointConnection(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.privateEndpointConnections().listByAutomationAccount("rg1", "ddb1", Context.NONE);
+        manager.privateEndpointConnections().listByAutomationAccount("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2906,20 +3035,22 @@ public final class PrivateEndpointConnectionsListByAutomationAccountSamples {
 ### PrivateLinkResources_Automation
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for PrivateLinkResources Automation. */
+/**
+ * Samples for PrivateLinkResources Automation.
+ */
 public final class PrivateLinkResourcesAutomationSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/PrivateLinkResourceListGet.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * PrivateLinkResourceListGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getsPrivateEndpointConnection(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.privateLinkResources().automation("rg1", "ddb1", Context.NONE);
+        manager.privateLinkResources().automation("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2932,33 +3063,34 @@ import com.azure.resourcemanager.automation.models.ContentLink;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Python2Package CreateOrUpdate. */
+/**
+ * Samples for Python2Package CreateOrUpdate.
+ */
 public final class Python2PackageCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdatePython2Package.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdatePython2Package.json
      */
     /**
      * Sample code: Create or update a python 2 package.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateAPython2Package(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .python2Packages()
+        manager.python2Packages()
             .define("OmsCompositeResources")
             .withExistingAutomationAccount("rg", "myAutomationAccount33")
-            .withContentLink(
-                new ContentLink()
-                    .withUri("https://teststorage.blob.core.windows.net/dsccomposite/OmsCompositeResources.zip")
-                    .withContentHash(
-                        new ContentHash()
-                            .withAlgorithm("sha265")
-                            .withValue("07E108A962B81DD9C9BAA89BB47C0F6EE52B29E83758B07795E408D258B2B87A"))
-                    .withVersion("1.0.0.0"))
+            .withContentLink(new ContentLink()
+                .withUri("https://teststorage.blob.core.windows.net/dsccomposite/OmsCompositeResources.zip")
+                .withContentHash(new ContentHash().withAlgorithm("sha265")
+                    .withValue("07E108A962B81DD9C9BAA89BB47C0F6EE52B29E83758B07795E408D258B2B87A"))
+                .withVersion("1.0.0.0"))
             .withTags(mapOf())
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -2975,22 +3107,24 @@ public final class Python2PackageCreateOrUpdateSamples {
 ### Python2Package_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Python2Package Delete. */
+/**
+ * Samples for Python2Package Delete.
+ */
 public final class Python2PackageDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deletePython2Package.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * deletePython2Package.json
      */
     /**
      * Sample code: Delete a python 2 package.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteAPython2Package(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .python2Packages()
-            .deleteWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources", Context.NONE);
+        manager.python2Packages()
+            .deleteWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2998,20 +3132,23 @@ public final class Python2PackageDeleteSamples {
 ### Python2Package_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Python2Package Get. */
+/**
+ * Samples for Python2Package Get.
+ */
 public final class Python2PackageGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getPython2Package.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * getPython2Package.json
      */
     /**
      * Sample code: Get a python 2 package.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAPython2Package(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.python2Packages().getWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources", Context.NONE);
+        manager.python2Packages()
+            .getWithResponse("rg", "myAutomationAccount33", "OmsCompositeResources", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3019,21 +3156,24 @@ public final class Python2PackageGetSamples {
 ### Python2Package_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Python2Package ListByAutomationAccount. */
+/**
+ * Samples for Python2Package ListByAutomationAccount.
+ */
 public final class Python2PackageListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPython2PackagesByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listPython2PackagesByAutomationAccount.json
      */
     /**
      * Sample code: List python 2 packages by automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listPython2PackagesByAutomationAccount(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.python2Packages().listByAutomationAccount("rg", "myAutomationAccount33", Context.NONE);
+    public static void
+        listPython2PackagesByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.python2Packages()
+            .listByAutomationAccount("rg", "myAutomationAccount33", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3041,30 +3181,32 @@ public final class Python2PackageListByAutomationAccountSamples {
 ### Python2Package_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Module;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Python2Package Update. */
+/**
+ * Samples for Python2Package Update.
+ */
 public final class Python2PackageUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updatePython2Package.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * updatePython2Package.json
      */
     /**
      * Sample code: Update a module.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateAModule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Module resource =
-            manager
-                .python2Packages()
-                .getWithResponse("rg", "MyAutomationAccount", "MyPython2Package", Context.NONE)
-                .getValue();
+        Module resource = manager.python2Packages()
+            .getWithResponse("rg", "MyAutomationAccount", "MyPython2Package", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf()).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -3081,55 +3223,50 @@ public final class Python2PackageUpdateSamples {
 ### ResourceProvider_ConvertGraphRunbookContent
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.GraphicalRunbookContentInner;
 import com.azure.resourcemanager.automation.models.GraphRunbookType;
 import com.azure.resourcemanager.automation.models.RawGraphicalRunbookContent;
 
-/** Samples for ResourceProvider ConvertGraphRunbookContent. */
+/**
+ * Samples for ResourceProvider ConvertGraphRunbookContent.
+ */
 public final class ResourceProviderConvertGraphRunbookContentSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/serializeGraphRunbookContent.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * serializeGraphRunbookContent.json
      */
     /**
      * Sample code: Get Graphical raw runbook content from graphical runbook JSON object.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getGraphicalRawRunbookContentFromGraphicalRunbookJSONObject(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .resourceProviders()
-            .convertGraphRunbookContentWithResponse(
-                "rg",
-                "MyAutomationAccount",
+        manager.resourceProviders()
+            .convertGraphRunbookContentWithResponse("rg", "MyAutomationAccount",
                 new GraphicalRunbookContentInner().withGraphRunbookJson("<GraphRunbookJSON>"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/deserializeGraphRunbookContent.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * deserializeGraphRunbookContent.json
      */
     /**
      * Sample code: Get Graphical runbook content from raw content.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getGraphicalRunbookContentFromRawContent(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .resourceProviders()
-            .convertGraphRunbookContentWithResponse(
-                "rg",
-                "MyAutomationAccount",
-                new GraphicalRunbookContentInner()
-                    .withRawContent(
-                        new RawGraphicalRunbookContent()
-                            .withSchemaVersion("1.10")
-                            .withRunbookDefinition(
-                                "AAEAAADAQAAAAAAAAAMAgAAAGJPcmNoZXN0cmF0b3IuR3JhcGhSdW5ib29rLk1vZGVsLCBWZXJzaW9uPTcuMy4wLjAsIEN1bHR....")
-                            .withRunbookType(GraphRunbookType.GRAPH_POWER_SHELL)),
-                Context.NONE);
+    public static void
+        getGraphicalRunbookContentFromRawContent(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.resourceProviders()
+            .convertGraphRunbookContentWithResponse("rg", "MyAutomationAccount",
+                new GraphicalRunbookContentInner().withRawContent(new RawGraphicalRunbookContent()
+                    .withSchemaVersion("1.10")
+                    .withRunbookDefinition(
+                        "AAEAAADAQAAAAAAAAAMAgAAAGJPcmNoZXN0cmF0b3IuR3JhcGhSdW5ib29rLk1vZGVsLCBWZXJzaW9uPTcuMy4wLjAsIEN1bHR....")
+                    .withRunbookType(GraphRunbookType.GRAPH_POWER_SHELL)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3144,19 +3281,22 @@ import com.azure.resourcemanager.automation.models.RunbookTypeEnum;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Runbook CreateOrUpdate. */
+/**
+ * Samples for Runbook CreateOrUpdate.
+ */
 public final class RunbookCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createRunbookAsDraft.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createRunbookAsDraft.
+     * json
      */
     /**
      * Sample code: Create runbook as draft.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createRunbookAsDraft(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .runbooks()
+        manager.runbooks()
             .define("Get-AzureVMTutorial")
             .withExistingAutomationAccount("rg", "ContoseAutomationAccount")
             .withRunbookType(RunbookTypeEnum.POWER_SHELL_WORKFLOW)
@@ -3171,17 +3311,18 @@ public final class RunbookCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createOrUpdateRunbook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createOrUpdateRunbook.
+     * json
      */
     /**
      * Sample code: Create or update runbook and publish it.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void createOrUpdateRunbookAndPublishIt(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .runbooks()
+    public static void
+        createOrUpdateRunbookAndPublishIt(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.runbooks()
             .define("Get-AzureVMTutorial")
             .withExistingAutomationAccount("rg", "ContoseAutomationAccount")
             .withRunbookType(RunbookTypeEnum.POWER_SHELL_WORKFLOW)
@@ -3190,19 +3331,16 @@ public final class RunbookCreateOrUpdateSamples {
             .withName("Get-AzureVMTutorial")
             .withLogVerbose(false)
             .withLogProgress(true)
-            .withPublishContentLink(
-                new ContentLink()
-                    .withUri(
-                        "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-automation-runbook-getvms/Runbooks/Get-AzureVMTutorial.ps1")
-                    .withContentHash(
-                        new ContentHash()
-                            .withAlgorithm("SHA256")
-                            .withValue("115775B8FF2BE672D8A946BD0B489918C724DDE15A440373CA54461D53010A80")))
+            .withPublishContentLink(new ContentLink().withUri(
+                "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-automation-runbook-getvms/Runbooks/Get-AzureVMTutorial.ps1")
+                .withContentHash(new ContentHash().withAlgorithm("SHA256")
+                    .withValue("115775B8FF2BE672D8A946BD0B489918C724DDE15A440373CA54461D53010A80")))
             .withDescription("Description of the Runbook")
             .withLogActivityTrace(1)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -3219,20 +3357,23 @@ public final class RunbookCreateOrUpdateSamples {
 ### Runbook_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Runbook Delete. */
+/**
+ * Samples for Runbook Delete.
+ */
 public final class RunbookDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/deleteRunbook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/deleteRunbook.json
      */
     /**
      * Sample code: Delete a runbook.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteARunbook(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.runbooks().deleteWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.runbooks()
+            .deleteWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3240,20 +3381,22 @@ public final class RunbookDeleteSamples {
 ### Runbook_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Runbook Get. */
+/**
+ * Samples for Runbook Get.
+ */
 public final class RunbookGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbook.json
      */
     /**
      * Sample code: Get runbook.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getRunbook(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.runbooks().getWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.runbooks()
+            .getWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3261,22 +3404,23 @@ public final class RunbookGetSamples {
 ### Runbook_GetContent
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Runbook GetContent. */
+/**
+ * Samples for Runbook GetContent.
+ */
 public final class RunbookGetContentSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbookContent.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbookContent.json
      */
     /**
      * Sample code: Get runbook content.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getRunbookContent(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .runbooks()
-            .getContentWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.runbooks()
+            .getContentWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3284,20 +3428,21 @@ public final class RunbookGetContentSamples {
 ### Runbook_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Runbook ListByAutomationAccount. */
+/**
+ * Samples for Runbook ListByAutomationAccount.
+ */
 public final class RunbookListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/listRunbooksByAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/
+     * listRunbooksByAutomationAccount.json
      */
     /**
      * Sample code: List runbooks by automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listRunbooksByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.runbooks().listByAutomationAccount("rg", "ContoseAutomationAccount", Context.NONE);
+        manager.runbooks().listByAutomationAccount("rg", "ContoseAutomationAccount", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3305,20 +3450,22 @@ public final class RunbookListByAutomationAccountSamples {
 ### Runbook_Publish
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Runbook Publish. */
+/**
+ * Samples for Runbook Publish.
+ */
 public final class RunbookPublishSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/publishRunbook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/publishRunbook.json
      */
     /**
      * Sample code: Publish runbook draft.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void publishRunbookDraft(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.runbooks().publish("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.runbooks()
+            .publish("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3326,27 +3473,26 @@ public final class RunbookPublishSamples {
 ### Runbook_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Runbook;
 
-/** Samples for Runbook Update. */
+/**
+ * Samples for Runbook Update.
+ */
 public final class RunbookUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/updateRunbook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/updateRunbook.json
      */
     /**
      * Sample code: Update runbook.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateRunbook(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Runbook resource =
-            manager
-                .runbooks()
-                .getWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Runbook resource = manager.runbooks()
+            .getWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withDescription("Updated Description of the Runbook")
             .withLogVerbose(false)
             .withLogProgress(true)
@@ -3359,20 +3505,22 @@ public final class RunbookUpdateSamples {
 ### RunbookDraft_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for RunbookDraft Get. */
+/**
+ * Samples for RunbookDraft Get.
+ */
 public final class RunbookDraftGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbookDraft.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbookDraft.json
      */
     /**
      * Sample code: Get runbook draft.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getRunbookDraft(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.runbookDrafts().getWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.runbookDrafts()
+            .getWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3380,22 +3528,24 @@ public final class RunbookDraftGetSamples {
 ### RunbookDraft_GetContent
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for RunbookDraft GetContent. */
+/**
+ * Samples for RunbookDraft GetContent.
+ */
 public final class RunbookDraftGetContentSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbookDraftContent.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbookDraftContent.
+     * json
      */
     /**
      * Sample code: Get runbook draft content.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getRunbookDraftContent(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .runbookDrafts()
-            .getContentWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.runbookDrafts()
+            .getContentWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3403,23 +3553,24 @@ public final class RunbookDraftGetContentSamples {
 ### RunbookDraft_UndoEdit
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for RunbookDraft UndoEdit. */
+/**
+ * Samples for RunbookDraft UndoEdit.
+ */
 public final class RunbookDraftUndoEditSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/undoDraftEditToLastKnownPublishedState.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/
+     * undoDraftEditToLastKnownPublishedState.json
      */
     /**
      * Sample code: Undo draft edit to last known published state.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void undoDraftEditToLastKnownPublishedState(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .runbookDrafts()
-            .undoEditWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+    public static void
+        undoDraftEditToLastKnownPublishedState(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.runbookDrafts()
+            .undoEditWithResponse("rg", "ContoseAutomationAccount", "Get-AzureVMTutorial",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3431,19 +3582,22 @@ import com.azure.resourcemanager.automation.models.AdvancedSchedule;
 import com.azure.resourcemanager.automation.models.ScheduleFrequency;
 import java.time.OffsetDateTime;
 
-/** Samples for Schedule CreateOrUpdate. */
+/**
+ * Samples for Schedule CreateOrUpdate.
+ */
 public final class ScheduleCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateSchedule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateSchedule.json
      */
     /**
      * Sample code: Create or update a schedule.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateASchedule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .schedules()
+        manager.schedules()
             .define("mySchedule")
             .withExistingAutomationAccount("rg", "myAutomationAccount33")
             .withName("mySchedule")
@@ -3461,20 +3615,23 @@ public final class ScheduleCreateOrUpdateSamples {
 ### Schedule_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Schedule Delete. */
+/**
+ * Samples for Schedule Delete.
+ */
 public final class ScheduleDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteSchedule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteSchedule
+     * .json
      */
     /**
      * Sample code: Delete schedule.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteSchedule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.schedules().deleteWithResponse("rg", "myAutomationAccount33", "mySchedule", Context.NONE);
+        manager.schedules()
+            .deleteWithResponse("rg", "myAutomationAccount33", "mySchedule", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3482,20 +3639,23 @@ public final class ScheduleDeleteSamples {
 ### Schedule_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Schedule Get. */
+/**
+ * Samples for Schedule Get.
+ */
 public final class ScheduleGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getSchedule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getSchedule.
+     * json
      */
     /**
      * Sample code: Get a schedule.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getASchedule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.schedules().getWithResponse("rg", "myAutomationAccount33", "mySchedule", Context.NONE);
+        manager.schedules()
+            .getWithResponse("rg", "myAutomationAccount33", "mySchedule", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3503,34 +3663,38 @@ public final class ScheduleGetSamples {
 ### Schedule_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Schedule ListByAutomationAccount. */
+/**
+ * Samples for Schedule ListByAutomationAccount.
+ */
 public final class ScheduleListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listSchedulesByAutomationAccount_First100.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listSchedulesByAutomationAccount_First100.json
      */
     /**
      * Sample code: List schedules by automation account, first 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listSchedulesByAutomationAccountFirst100(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.schedules().listByAutomationAccount("rg", "myAutomationAccount33", Context.NONE);
+    public static void
+        listSchedulesByAutomationAccountFirst100(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.schedules().listByAutomationAccount("rg", "myAutomationAccount33", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listSchedulesByAutomationAccount_Next100.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listSchedulesByAutomationAccount_Next100.json
      */
     /**
      * Sample code: List schedules by automation account, next 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listSchedulesByAutomationAccountNext100(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.schedules().listByAutomationAccount("rg", "myAutomationAccount33", Context.NONE);
+    public static void
+        listSchedulesByAutomationAccountNext100(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.schedules().listByAutomationAccount("rg", "myAutomationAccount33", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3538,24 +3702,27 @@ public final class ScheduleListByAutomationAccountSamples {
 ### Schedule_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Schedule;
 
-/** Samples for Schedule Update. */
+/**
+ * Samples for Schedule Update.
+ */
 public final class ScheduleUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateSchedule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateSchedule
+     * .json
      */
     /**
      * Sample code: Update a schedule.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateASchedule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Schedule resource =
-            manager.schedules().getWithResponse("rg", "myAutomationAccount33", "mySchedule", Context.NONE).getValue();
-        resource
-            .update()
+        Schedule resource = manager.schedules()
+            .getWithResponse("rg", "myAutomationAccount33", "mySchedule", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withName("mySchedule")
             .withDescription("my updated description of schedule goes here")
             .withIsEnabled(false)
@@ -3567,25 +3734,26 @@ public final class ScheduleUpdateSamples {
 ### SoftwareUpdateConfigurationMachineRuns_GetById
 
 ```java
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for SoftwareUpdateConfigurationMachineRuns GetById. */
+/**
+ * Samples for SoftwareUpdateConfigurationMachineRuns GetById.
+ */
 public final class SoftwareUpdateConfigurationMachineRunsGetByIdSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfigurationMachineRun/getSoftwareUpdateConfigurationMachineRunById.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfigurationMachineRun/getSoftwareUpdateConfigurationMachineRunById.json
      */
     /**
      * Sample code: Get software update configuration machine run.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getSoftwareUpdateConfigurationMachineRun(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurationMachineRuns()
-            .getByIdWithResponse(
-                "mygroup", "myaccount", UUID.fromString("ca440719-34a4-4234-a1a9-3f84faf7788f"), null, Context.NONE);
+    public static void
+        getSoftwareUpdateConfigurationMachineRun(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.softwareUpdateConfigurationMachineRuns()
+            .getByIdWithResponse("mygroup", "myaccount", UUID.fromString("ca440719-34a4-4234-a1a9-3f84faf7788f"), null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3593,45 +3761,40 @@ public final class SoftwareUpdateConfigurationMachineRunsGetByIdSamples {
 ### SoftwareUpdateConfigurationMachineRuns_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SoftwareUpdateConfigurationMachineRuns List. */
+/**
+ * Samples for SoftwareUpdateConfigurationMachineRuns List.
+ */
 public final class SoftwareUpdateConfigurationMachineRunsListSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfigurationMachineRun/listSoftwareUpdateConfigurationMachineRuns.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfigurationMachineRun/listSoftwareUpdateConfigurationMachineRuns.json
      */
     /**
      * Sample code: List software update configuration machine runs.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listSoftwareUpdateConfigurationMachineRuns(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurationMachineRuns()
-            .listWithResponse("mygroup", "myaccount", null, null, null, null, Context.NONE);
+    public static void
+        listSoftwareUpdateConfigurationMachineRuns(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.softwareUpdateConfigurationMachineRuns()
+            .listWithResponse("mygroup", "myaccount", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfigurationMachineRun/listSoftwareUpdateConfigurationMachineRunsByRun.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfigurationMachineRun/listSoftwareUpdateConfigurationMachineRunsByRun.json
      */
     /**
      * Sample code: List software update configuration machine runs for a specific software update configuration run.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listSoftwareUpdateConfigurationMachineRunsForASpecificSoftwareUpdateConfigurationRun(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurationMachineRuns()
-            .listWithResponse(
-                "mygroup",
-                "myaccount",
-                null,
-                "$filter=properties/correlationId eq 0b943e57-44d3-4f05-898c-6e92aa617e59",
-                null,
-                null,
-                Context.NONE);
+        manager.softwareUpdateConfigurationMachineRuns()
+            .listWithResponse("mygroup", "myaccount", null,
+                "$filter=properties/correlationId eq 0b943e57-44d3-4f05-898c-6e92aa617e59", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3639,25 +3802,26 @@ public final class SoftwareUpdateConfigurationMachineRunsListSamples {
 ### SoftwareUpdateConfigurationRuns_GetById
 
 ```java
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for SoftwareUpdateConfigurationRuns GetById. */
+/**
+ * Samples for SoftwareUpdateConfigurationRuns GetById.
+ */
 public final class SoftwareUpdateConfigurationRunsGetByIdSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfigurationRun/getSoftwareUpdateConfigurationRunById.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfigurationRun/getSoftwareUpdateConfigurationRunById.json
      */
     /**
      * Sample code: Get software update configuration runs by Id.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getSoftwareUpdateConfigurationRunsById(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurationRuns()
-            .getByIdWithResponse(
-                "mygroup", "myaccount", UUID.fromString("2bd77cfa-2e9c-41b4-a45b-684a77cfeca9"), null, Context.NONE);
+    public static void
+        getSoftwareUpdateConfigurationRunsById(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.softwareUpdateConfigurationRuns()
+            .getByIdWithResponse("mygroup", "myaccount", UUID.fromString("2bd77cfa-2e9c-41b4-a45b-684a77cfeca9"), null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3665,38 +3829,39 @@ public final class SoftwareUpdateConfigurationRunsGetByIdSamples {
 ### SoftwareUpdateConfigurationRuns_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SoftwareUpdateConfigurationRuns List. */
+/**
+ * Samples for SoftwareUpdateConfigurationRuns List.
+ */
 public final class SoftwareUpdateConfigurationRunsListSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfigurationRun/listSoftwareUpdateConfigurationRuns.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfigurationRun/listSoftwareUpdateConfigurationRuns.json
      */
     /**
      * Sample code: List software update configuration machine runs.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listSoftwareUpdateConfigurationMachineRuns(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurationRuns()
-            .listWithResponse("mygroup", "myaccount", null, null, null, null, Context.NONE);
+    public static void
+        listSoftwareUpdateConfigurationMachineRuns(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.softwareUpdateConfigurationRuns()
+            .listWithResponse("mygroup", "myaccount", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfigurationRun/listFailedSoftwareUpdateConfigurationRuns.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfigurationRun/listFailedSoftwareUpdateConfigurationRuns.json
      */
     /**
      * Sample code: List software update configuration machine run with status equal to 'Failed'.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listSoftwareUpdateConfigurationMachineRunWithStatusEqualToFailed(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurationRuns()
-            .listWithResponse("mygroup", "myaccount", null, "properties/status eq 'Failed'", null, null, Context.NONE);
+        manager.softwareUpdateConfigurationRuns()
+            .listWithResponse("mygroup", "myaccount", null, "properties/status eq 'Failed'", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3724,86 +3889,63 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SoftwareUpdateConfigurations Create. */
+/**
+ * Samples for SoftwareUpdateConfigurations Create.
+ */
 public final class SoftwareUpdateConfigurationsCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/createSoftwareUpdateConfiguration.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfiguration/createSoftwareUpdateConfiguration.json
      */
     /**
      * Sample code: Create software update configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void createSoftwareUpdateConfiguration(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurations()
+    public static void
+        createSoftwareUpdateConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.softwareUpdateConfigurations()
             .define("testpatch")
             .withExistingAutomationAccount("mygroup", "myaccount")
-            .withUpdateConfiguration(
-                new UpdateConfiguration()
-                    .withOperatingSystem(OperatingSystemType.WINDOWS)
-                    .withWindows(
-                        new WindowsProperties()
-                            .withIncludedUpdateClassifications(WindowsUpdateClasses.CRITICAL)
-                            .withExcludedKbNumbers(Arrays.asList("168934", "168973"))
-                            .withRebootSetting("IfRequired"))
-                    .withDuration(Duration.parse("PT2H0M"))
-                    .withAzureVirtualMachines(
-                        Arrays
-                            .asList(
-                                "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-01",
-                                "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-02",
-                                "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-03"))
-                    .withNonAzureComputerNames(Arrays.asList("box1.contoso.com", "box2.contoso.com"))
-                    .withTargets(
-                        new TargetProperties()
-                            .withAzureQueries(
-                                Arrays
-                                    .asList(
-                                        new AzureQueryProperties()
-                                            .withScope(
-                                                Arrays
-                                                    .asList(
-                                                        "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources",
-                                                        "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067"))
-                                            .withLocations(Arrays.asList("Japan East", "UK South"))
-                                            .withTagSettings(
-                                                new TagSettingsProperties()
-                                                    .withTags(
-                                                        mapOf(
-                                                            "tag1",
-                                                            Arrays.asList("tag1Value1", "tag1Value2", "tag1Value3"),
-                                                            "tag2",
-                                                            Arrays.asList("tag2Value1", "tag2Value2", "tag2Value3")))
-                                                    .withFilterOperator(TagOperators.ALL))))
-                            .withNonAzureQueries(
-                                Arrays
-                                    .asList(
-                                        new NonAzureQueryProperties()
-                                            .withFunctionAlias("SavedSearch1")
-                                            .withWorkspaceId("WorkspaceId1"),
-                                        new NonAzureQueryProperties()
-                                            .withFunctionAlias("SavedSearch2")
-                                            .withWorkspaceId("WorkspaceId2")))))
+            .withUpdateConfiguration(new UpdateConfiguration().withOperatingSystem(OperatingSystemType.WINDOWS)
+                .withWindows(new WindowsProperties().withIncludedUpdateClassifications(WindowsUpdateClasses.CRITICAL)
+                    .withExcludedKbNumbers(Arrays.asList("168934", "168973"))
+                    .withRebootSetting("IfRequired"))
+                .withDuration(Duration.parse("PT2H0M"))
+                .withAzureVirtualMachines(Arrays.asList(
+                    "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-01",
+                    "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-02",
+                    "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-03"))
+                .withNonAzureComputerNames(Arrays.asList("box1.contoso.com", "box2.contoso.com"))
+                .withTargets(new TargetProperties()
+                    .withAzureQueries(Arrays.asList(new AzureQueryProperties()
+                        .withScope(Arrays.asList(
+                            "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067/resourceGroups/myresources",
+                            "/subscriptions/5ae68d89-69a4-454f-b5ce-e443cc4e0067"))
+                        .withLocations(Arrays.asList("Japan East", "UK South"))
+                        .withTagSettings(new TagSettingsProperties()
+                            .withTags(mapOf("tag1", Arrays.asList("tag1Value1", "tag1Value2", "tag1Value3"), "tag2",
+                                Arrays.asList("tag2Value1", "tag2Value2", "tag2Value3")))
+                            .withFilterOperator(TagOperators.ALL))))
+                    .withNonAzureQueries(Arrays.asList(
+                        new NonAzureQueryProperties().withFunctionAlias("SavedSearch1").withWorkspaceId("WorkspaceId1"),
+                        new NonAzureQueryProperties().withFunctionAlias("SavedSearch2")
+                            .withWorkspaceId("WorkspaceId2")))))
             .withScheduleInfo(
-                new SucScheduleProperties()
-                    .withStartTime(OffsetDateTime.parse("2017-10-19T12:22:57+00:00"))
+                new SucScheduleProperties().withStartTime(OffsetDateTime.parse("2017-10-19T12:22:57+00:00"))
                     .withExpiryTime(OffsetDateTime.parse("2018-11-09T11:22:57+00:00"))
                     .withInterval(1L)
                     .withFrequency(ScheduleFrequency.HOUR)
                     .withTimeZone("America/Los_Angeles")
                     .withAdvancedSchedule(new AdvancedSchedule().withWeekDays(Arrays.asList("Monday", "Thursday"))))
-            .withTasks(
-                new SoftwareUpdateConfigurationTasks()
-                    .withPreTask(
-                        new TaskProperties()
-                            .withParameters(mapOf("COMPUTERNAME", "Computer1"))
-                            .withSource("HelloWorld"))
-                    .withPostTask(new TaskProperties().withSource("GetCache")))
+            .withTasks(new SoftwareUpdateConfigurationTasks()
+                .withPreTask(
+                    new TaskProperties().withParameters(mapOf("COMPUTERNAME", "Computer1")).withSource("HelloWorld"))
+                .withPostTask(new TaskProperties().withSource("GetCache")))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -3820,23 +3962,23 @@ public final class SoftwareUpdateConfigurationsCreateSamples {
 ### SoftwareUpdateConfigurations_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SoftwareUpdateConfigurations Delete. */
+/**
+ * Samples for SoftwareUpdateConfigurations Delete.
+ */
 public final class SoftwareUpdateConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/deleteSoftwareUpdateConfiguration.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfiguration/deleteSoftwareUpdateConfiguration.json
      */
     /**
      * Sample code: Delete software update configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void deleteSoftwareUpdateConfiguration(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurations()
-            .deleteWithResponse("mygroup", "myaccount", "mypatch", null, Context.NONE);
+    public static void
+        deleteSoftwareUpdateConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.softwareUpdateConfigurations()
+            .deleteWithResponse("mygroup", "myaccount", "mypatch", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3844,23 +3986,23 @@ public final class SoftwareUpdateConfigurationsDeleteSamples {
 ### SoftwareUpdateConfigurations_GetByName
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SoftwareUpdateConfigurations GetByName. */
+/**
+ * Samples for SoftwareUpdateConfigurations GetByName.
+ */
 public final class SoftwareUpdateConfigurationsGetByNameSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/getSoftwareUpdateConfigurationByName.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfiguration/getSoftwareUpdateConfigurationByName.json
      */
     /**
      * Sample code: Get software update configuration by name.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getSoftwareUpdateConfigurationByName(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurations()
-            .getByNameWithResponse("mygroup", "myaccount", "mypatch", null, Context.NONE);
+    public static void
+        getSoftwareUpdateConfigurationByName(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.softwareUpdateConfigurations()
+            .getByNameWithResponse("mygroup", "myaccount", "mypatch", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3868,42 +4010,40 @@ public final class SoftwareUpdateConfigurationsGetByNameSamples {
 ### SoftwareUpdateConfigurations_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SoftwareUpdateConfigurations List. */
+/**
+ * Samples for SoftwareUpdateConfigurations List.
+ */
 public final class SoftwareUpdateConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/listSoftwareUpdateConfigurations.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfiguration/listSoftwareUpdateConfigurations.json
      */
     /**
      * Sample code: List software update configurations.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void listSoftwareUpdateConfigurations(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.softwareUpdateConfigurations().listWithResponse("mygroup", "myaccount", null, null, Context.NONE);
+    public static void
+        listSoftwareUpdateConfigurations(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.softwareUpdateConfigurations()
+            .listWithResponse("mygroup", "myaccount", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/softwareUpdateConfiguration/listSoftwareUpdateConfigurationsByVm.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/
+     * softwareUpdateConfiguration/listSoftwareUpdateConfigurationsByVm.json
      */
     /**
      * Sample code: List software update configurations Targeting a specific azure virtual machine.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listSoftwareUpdateConfigurationsTargetingASpecificAzureVirtualMachine(
         com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .softwareUpdateConfigurations()
-            .listWithResponse(
-                "mygroup",
-                "myaccount",
-                null,
-                "properties/updateConfiguration/azureVirtualMachines/any(m: m eq"
-                    + " '/subscriptions/1a7d4044-286c-4acb-969a-96639265bf2e/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-01')",
-                Context.NONE);
+        manager.softwareUpdateConfigurations()
+            .listWithResponse("mygroup", "myaccount", null,
+                "properties/updateConfiguration/azureVirtualMachines/any(m: m eq '/subscriptions/1a7d4044-286c-4acb-969a-96639265bf2e/resourceGroups/myresources/providers/Microsoft.Compute/virtualMachines/vm-01')",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3915,19 +4055,22 @@ import com.azure.resourcemanager.automation.models.SourceControlSecurityTokenPro
 import com.azure.resourcemanager.automation.models.SourceType;
 import com.azure.resourcemanager.automation.models.TokenType;
 
-/** Samples for SourceControl CreateOrUpdate. */
+/**
+ * Samples for SourceControl CreateOrUpdate.
+ */
 public final class SourceControlCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/createOrUpdateSourceControl.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/
+     * createOrUpdateSourceControl.json
      */
     /**
      * Sample code: Create or update a source control.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateASourceControl(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .sourceControls()
+        manager.sourceControls()
             .define("sampleSourceControl")
             .withExistingAutomationAccount("rg", "sampleAccount9")
             .withRepoUrl("https://sampleUser.visualstudio.com/myProject/_git/myRepository")
@@ -3936,10 +4079,8 @@ public final class SourceControlCreateOrUpdateSamples {
             .withAutoSync(true)
             .withPublishRunbook(true)
             .withSourceType(SourceType.VSO_GIT)
-            .withSecurityToken(
-                new SourceControlSecurityTokenProperties()
-                    .withAccessToken("fakeTokenPlaceholder")
-                    .withTokenType(TokenType.PERSONAL_ACCESS_TOKEN))
+            .withSecurityToken(new SourceControlSecurityTokenProperties().withAccessToken("fakeTokenPlaceholder")
+                .withTokenType(TokenType.PERSONAL_ACCESS_TOKEN))
             .withDescription("my description")
             .create();
     }
@@ -3949,20 +4090,23 @@ public final class SourceControlCreateOrUpdateSamples {
 ### SourceControl_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SourceControl Delete. */
+/**
+ * Samples for SourceControl Delete.
+ */
 public final class SourceControlDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/deleteSourceControl.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/
+     * deleteSourceControl.json
      */
     /**
      * Sample code: Delete a source control.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteASourceControl(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.sourceControls().deleteWithResponse("rg", "sampleAccount9", "sampleSourceControl", Context.NONE);
+        manager.sourceControls()
+            .deleteWithResponse("rg", "sampleAccount9", "sampleSourceControl", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3970,20 +4114,23 @@ public final class SourceControlDeleteSamples {
 ### SourceControl_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SourceControl Get. */
+/**
+ * Samples for SourceControl Get.
+ */
 public final class SourceControlGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/getSourceControl.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/
+     * getSourceControl.json
      */
     /**
      * Sample code: Get a source control.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getASourceControl(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.sourceControls().getWithResponse("rg", "sampleAccount9", "sampleSourceControl", Context.NONE);
+        manager.sourceControls()
+            .getWithResponse("rg", "sampleAccount9", "sampleSourceControl", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3991,20 +4138,23 @@ public final class SourceControlGetSamples {
 ### SourceControl_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SourceControl ListByAutomationAccount. */
+/**
+ * Samples for SourceControl ListByAutomationAccount.
+ */
 public final class SourceControlListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/getAllSourceControls.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/
+     * getAllSourceControls.json
      */
     /**
      * Sample code: List sourceControls.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listSourceControls(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.sourceControls().listByAutomationAccount("rg", "sampleAccount9", null, Context.NONE);
+        manager.sourceControls()
+            .listByAutomationAccount("rg", "sampleAccount9", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4012,37 +4162,35 @@ public final class SourceControlListByAutomationAccountSamples {
 ### SourceControl_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.SourceControl;
 import com.azure.resourcemanager.automation.models.SourceControlSecurityTokenProperties;
 import com.azure.resourcemanager.automation.models.TokenType;
 
-/** Samples for SourceControl Update. */
+/**
+ * Samples for SourceControl Update.
+ */
 public final class SourceControlUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/updateSourceControl_patch.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControl/
+     * updateSourceControl_patch.json
      */
     /**
      * Sample code: Update a source control.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateASourceControl(com.azure.resourcemanager.automation.AutomationManager manager) {
-        SourceControl resource =
-            manager
-                .sourceControls()
-                .getWithResponse("rg", "sampleAccount9", "sampleSourceControl", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        SourceControl resource = manager.sourceControls()
+            .getWithResponse("rg", "sampleAccount9", "sampleSourceControl", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withBranch("master")
             .withFolderPath("/folderOne/folderTwo")
             .withAutoSync(true)
             .withPublishRunbook(true)
-            .withSecurityToken(
-                new SourceControlSecurityTokenProperties()
-                    .withAccessToken("fakeTokenPlaceholder")
-                    .withTokenType(TokenType.PERSONAL_ACCESS_TOKEN))
+            .withSecurityToken(new SourceControlSecurityTokenProperties().withAccessToken("fakeTokenPlaceholder")
+                .withTokenType(TokenType.PERSONAL_ACCESS_TOKEN))
             .withDescription("my description")
             .apply();
     }
@@ -4054,20 +4202,23 @@ public final class SourceControlUpdateSamples {
 ```java
 import java.util.UUID;
 
-/** Samples for SourceControlSyncJob Create. */
+/**
+ * Samples for SourceControlSyncJob Create.
+ */
 public final class SourceControlSyncJobCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControlSyncJob/createSourceControlSyncJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * sourceControlSyncJob/createSourceControlSyncJob.json
      */
     /**
      * Sample code: Create or update a source control sync job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void createOrUpdateASourceControlSyncJob(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .sourceControlSyncJobs()
+    public static void
+        createOrUpdateASourceControlSyncJob(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.sourceControlSyncJobs()
             .define(UUID.fromString("ce6fe3e3-9db3-4096-a6b4-82bfb4c10a9a"))
             .withExistingSourceControl("rg", "myAutomationAccount33", "MySourceControl")
             .withCommitId("9de0980bfb45026a3d97a1b0522d98a9f604226e")
@@ -4079,28 +4230,26 @@ public final class SourceControlSyncJobCreateSamples {
 ### SourceControlSyncJob_Get
 
 ```java
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for SourceControlSyncJob Get. */
+/**
+ * Samples for SourceControlSyncJob Get.
+ */
 public final class SourceControlSyncJobGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControlSyncJob/getSourceControlSyncJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * sourceControlSyncJob/getSourceControlSyncJob.json
      */
     /**
      * Sample code: Get a source control sync job by job id.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getASourceControlSyncJobByJobId(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .sourceControlSyncJobs()
-            .getWithResponse(
-                "rg",
-                "myAutomationAccount33",
-                "MySourceControl",
-                UUID.fromString("ce6fe3e3-9db3-4096-a6b4-82bfb4c10a9a"),
-                Context.NONE);
+        manager.sourceControlSyncJobs()
+            .getWithResponse("rg", "myAutomationAccount33", "MySourceControl",
+                UUID.fromString("ce6fe3e3-9db3-4096-a6b4-82bfb4c10a9a"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4108,22 +4257,24 @@ public final class SourceControlSyncJobGetSamples {
 ### SourceControlSyncJob_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SourceControlSyncJob ListByAutomationAccount. */
+/**
+ * Samples for SourceControlSyncJob ListByAutomationAccount.
+ */
 public final class SourceControlSyncJobListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControlSyncJob/getAllSourceControlSyncJobs.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * sourceControlSyncJob/getAllSourceControlSyncJobs.json
      */
     /**
      * Sample code: Get a list of source control sync jobs.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAListOfSourceControlSyncJobs(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .sourceControlSyncJobs()
-            .listByAutomationAccount("rg", "myAutomationAccount33", "MySourceControl", null, Context.NONE);
+        manager.sourceControlSyncJobs()
+            .listByAutomationAccount("rg", "myAutomationAccount33", "MySourceControl", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4131,30 +4282,29 @@ public final class SourceControlSyncJobListByAutomationAccountSamples {
 ### SourceControlSyncJobStreams_Get
 
 ```java
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for SourceControlSyncJobStreams Get. */
+/**
+ * Samples for SourceControlSyncJobStreams Get.
+ */
 public final class SourceControlSyncJobStreamsGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControlSyncJobStreams/getSourceControlSyncJobStreamsByStreamId.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * sourceControlSyncJobStreams/getSourceControlSyncJobStreamsByStreamId.json
      */
     /**
      * Sample code: Get a sync job stream identified by sync job stream id.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getASyncJobStreamIdentifiedBySyncJobStreamId(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .sourceControlSyncJobStreams()
-            .getWithResponse(
-                "rg",
-                "myAutomationAccount33",
-                "MySourceControl",
+    public static void
+        getASyncJobStreamIdentifiedBySyncJobStreamId(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.sourceControlSyncJobStreams()
+            .getWithResponse("rg", "myAutomationAccount33", "MySourceControl",
                 UUID.fromString("ce6fe3e3-9db3-4096-a6b4-82bfb4c10a2b"),
                 "b86c5c31-e9fd-4734-8764-ddd6c101e706_00636596855139029522_00000000000000000007",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4162,30 +4312,27 @@ public final class SourceControlSyncJobStreamsGetSamples {
 ### SourceControlSyncJobStreams_ListBySyncJob
 
 ```java
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for SourceControlSyncJobStreams ListBySyncJob. */
+/**
+ * Samples for SourceControlSyncJobStreams ListBySyncJob.
+ */
 public final class SourceControlSyncJobStreamsListBySyncJobSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/sourceControlSyncJobStreams/getSourceControlSyncJobStreams.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * sourceControlSyncJobStreams/getSourceControlSyncJobStreams.json
      */
     /**
      * Sample code: Get a list of sync job streams identified by sync job id.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getAListOfSyncJobStreamsIdentifiedBySyncJobId(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .sourceControlSyncJobStreams()
-            .listBySyncJob(
-                "rg",
-                "myAutomationAccount33",
-                "MySourceControl",
-                UUID.fromString("ce6fe3e3-9db3-4096-a6b4-82bfb4c10a2b"),
-                null,
-                Context.NONE);
+    public static void
+        getAListOfSyncJobStreamsIdentifiedBySyncJobId(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.sourceControlSyncJobStreams()
+            .listBySyncJob("rg", "myAutomationAccount33", "MySourceControl",
+                UUID.fromString("ce6fe3e3-9db3-4096-a6b4-82bfb4c10a2b"), null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4193,21 +4340,23 @@ public final class SourceControlSyncJobStreamsListBySyncJobSamples {
 ### StatisticsOperation_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for StatisticsOperation ListByAutomationAccount. */
+/**
+ * Samples for StatisticsOperation ListByAutomationAccount.
+ */
 public final class StatisticsOperationListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getStatisticsOfAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * getStatisticsOfAutomationAccount.json
      */
     /**
      * Sample code: Get statistics of an automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void getStatisticsOfAnAutomationAccount(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.statisticsOperations().listByAutomationAccount("rg", "myAutomationAccount11", null, Context.NONE);
+    public static void
+        getStatisticsOfAnAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.statisticsOperations()
+            .listByAutomationAccount("rg", "myAutomationAccount11", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4215,34 +4364,33 @@ public final class StatisticsOperationListByAutomationAccountSamples {
 ### TestJob_Create
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.TestJobCreateParameters;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for TestJob Create. */
+/**
+ * Samples for TestJob Create.
+ */
 public final class TestJobCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createTestJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createTestJob.json
      */
     /**
      * Sample code: Create test job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createTestJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .testJobs()
-            .createWithResponse(
-                "mygroup",
-                "ContoseAutomationAccount",
-                "Get-AzureVMTutorial",
+        manager.testJobs()
+            .createWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial",
                 new TestJobCreateParameters()
-                    .withParameters(mapOf("key01", "value01", "key02", "value02"))
+                    .withParameters(mapOf("key01", "fakeTokenPlaceholder", "key02", "fakeTokenPlaceholder"))
                     .withRunOn(""),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -4259,20 +4407,23 @@ public final class TestJobCreateSamples {
 ### TestJob_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for TestJob Get. */
+/**
+ * Samples for TestJob Get.
+ */
 public final class TestJobGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getTestJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getTestJob.json
      */
     /**
      * Sample code: Get test job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getTestJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.testJobs().getWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.testJobs()
+            .getWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4280,22 +4431,23 @@ public final class TestJobGetSamples {
 ### TestJob_Resume
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for TestJob Resume. */
+/**
+ * Samples for TestJob Resume.
+ */
 public final class TestJobResumeSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/resumeTestJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/resumeTestJob.json
      */
     /**
      * Sample code: Resume test job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void resumeTestJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .testJobs()
-            .resumeWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.testJobs()
+            .resumeWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4303,20 +4455,23 @@ public final class TestJobResumeSamples {
 ### TestJob_Stop
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for TestJob Stop. */
+/**
+ * Samples for TestJob Stop.
+ */
 public final class TestJobStopSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/stopTestJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/stopTestJob.json
      */
     /**
      * Sample code: Stop test job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void stopTestJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.testJobs().stopWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.testJobs()
+            .stopWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4324,22 +4479,23 @@ public final class TestJobStopSamples {
 ### TestJob_Suspend
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for TestJob Suspend. */
+/**
+ * Samples for TestJob Suspend.
+ */
 public final class TestJobSuspendSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/suspendTestJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/suspendTestJob.json
      */
     /**
      * Sample code: Suspend test job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void suspendTestJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .testJobs()
-            .suspendWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial", Context.NONE);
+        manager.testJobs()
+            .suspendWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4347,27 +4503,24 @@ public final class TestJobSuspendSamples {
 ### TestJobStreams_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for TestJobStreams Get. */
+/**
+ * Samples for TestJobStreams Get.
+ */
 public final class TestJobStreamsGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getTestJobStream.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getTestJobStream.json
      */
     /**
      * Sample code: Get test job stream.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getTestJobStream(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .testJobStreams()
-            .getWithResponse(
-                "mygroup",
-                "ContoseAutomationAccount",
-                "Get-AzureVMTutorial",
+        manager.testJobStreams()
+            .getWithResponse("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial",
                 "851b2101-686f-40e2-8a4b-5b8df08afbd1_00636535684910693884_00000000000000000001",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4375,22 +4528,24 @@ public final class TestJobStreamsGetSamples {
 ### TestJobStreams_ListByTestJob
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for TestJobStreams ListByTestJob. */
+/**
+ * Samples for TestJobStreams ListByTestJob.
+ */
 public final class TestJobStreamsListByTestJobSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/listTestJobStreamsByJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/listTestJobStreamsByJob
+     * .json
      */
     /**
      * Sample code: List job streams by job name.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listJobStreamsByJobName(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .testJobStreams()
-            .listByTestJob("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial", null, Context.NONE);
+        manager.testJobStreams()
+            .listByTestJob("mygroup", "ContoseAutomationAccount", "Get-AzureVMTutorial", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4398,20 +4553,21 @@ public final class TestJobStreamsListByTestJobSamples {
 ### Usages_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Usages ListByAutomationAccount. */
+/**
+ * Samples for Usages ListByAutomationAccount.
+ */
 public final class UsagesListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getUsagesOfAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/
+     * getUsagesOfAutomationAccount.json
      */
     /**
      * Sample code: Get usages of an automation account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getUsagesOfAnAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.usages().listByAutomationAccount("rg", "myAutomationAccount11", Context.NONE);
+        manager.usages().listByAutomationAccount("rg", "myAutomationAccount11", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4419,19 +4575,22 @@ public final class UsagesListByAutomationAccountSamples {
 ### Variable_CreateOrUpdate
 
 ```java
-/** Samples for Variable CreateOrUpdate. */
+/**
+ * Samples for Variable CreateOrUpdate.
+ */
 public final class VariableCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateVariable.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateVariable.json
      */
     /**
      * Sample code: Create or update a variable.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateAVariable(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .variables()
+        manager.variables()
             .define("sampleVariable")
             .withExistingAutomationAccount("rg", "sampleAccount9")
             .withName("sampleVariable")
@@ -4446,20 +4605,23 @@ public final class VariableCreateOrUpdateSamples {
 ### Variable_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Variable Delete. */
+/**
+ * Samples for Variable Delete.
+ */
 public final class VariableDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteVariable.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteVariable
+     * .json
      */
     /**
      * Sample code: Delete a variable.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteAVariable(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.variables().deleteWithResponse("rg", "sampleAccount9", "sampleVariable", Context.NONE);
+        manager.variables()
+            .deleteWithResponse("rg", "sampleAccount9", "sampleVariable", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4467,20 +4629,22 @@ public final class VariableDeleteSamples {
 ### Variable_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Variable Get. */
+/**
+ * Samples for Variable Get.
+ */
 public final class VariableGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getVariable.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getVariable.
+     * json
      */
     /**
      * Sample code: Get a variable.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getAVariable(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.variables().getWithResponse("rg", "sampleAccount9", "sampleVariable", Context.NONE);
+        manager.variables().getWithResponse("rg", "sampleAccount9", "sampleVariable", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4488,32 +4652,36 @@ public final class VariableGetSamples {
 ### Variable_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Variable ListByAutomationAccount. */
+/**
+ * Samples for Variable ListByAutomationAccount.
+ */
 public final class VariableListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listVariables_Next100.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listVariables_Next100.json
      */
     /**
      * Sample code: List variables, Next 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listVariablesNext100(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.variables().listByAutomationAccount("rg", "sampleAccount9", Context.NONE);
+        manager.variables().listByAutomationAccount("rg", "sampleAccount9", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listVariables_First100.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listVariables_First100.json
      */
     /**
      * Sample code: List variables, First 100.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listVariablesFirst100(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.variables().listByAutomationAccount("rg", "sampleAccount9", Context.NONE);
+        manager.variables().listByAutomationAccount("rg", "sampleAccount9", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4521,22 +4689,26 @@ public final class VariableListByAutomationAccountSamples {
 ### Variable_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Variable;
 
-/** Samples for Variable Update. */
+/**
+ * Samples for Variable Update.
+ */
 public final class VariableUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateVariable_patch.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * updateVariable_patch.json
      */
     /**
      * Sample code: Update a variable.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateAVariable(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Variable resource =
-            manager.variables().getWithResponse("rg", "sampleAccount9", "sampleVariable", Context.NONE).getValue();
+        Variable resource = manager.variables()
+            .getWithResponse("rg", "sampleAccount9", "sampleVariable", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withName("sampleVariable").withValue("\"ComputerName3.domain.com\"").apply();
     }
 }
@@ -4548,19 +4720,22 @@ public final class VariableUpdateSamples {
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Watcher CreateOrUpdate. */
+/**
+ * Samples for Watcher CreateOrUpdate.
+ */
 public final class WatcherCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateWatcher.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateWatcher.json
      */
     /**
      * Sample code: Create or update watcher.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateWatcher(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .watchers()
+        manager.watchers()
             .define("MyTestWatcher")
             .withExistingAutomationAccount("rg", "MyTestAutomationAccount")
             .withTags(mapOf())
@@ -4571,6 +4746,7 @@ public final class WatcherCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -4587,20 +4763,23 @@ public final class WatcherCreateOrUpdateSamples {
 ### Watcher_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Watcher Delete. */
+/**
+ * Samples for Watcher Delete.
+ */
 public final class WatcherDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteWatcher.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteWatcher.
+     * json
      */
     /**
      * Sample code: Delete watcher.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteWatcher(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.watchers().deleteWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", Context.NONE);
+        manager.watchers()
+            .deleteWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4608,20 +4787,23 @@ public final class WatcherDeleteSamples {
 ### Watcher_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Watcher Get. */
+/**
+ * Samples for Watcher Get.
+ */
 public final class WatcherGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getWatcher.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getWatcher.
+     * json
      */
     /**
      * Sample code: Get watcher.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getWatcher(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.watchers().getWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", Context.NONE);
+        manager.watchers()
+            .getWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4629,20 +4811,23 @@ public final class WatcherGetSamples {
 ### Watcher_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Watcher ListByAutomationAccount. */
+/**
+ * Samples for Watcher ListByAutomationAccount.
+ */
 public final class WatcherListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listWatchersByAutomationAccount.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * listWatchersByAutomationAccount.json
      */
     /**
      * Sample code: List watchers by Automation Account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listWatchersByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.watchers().listByAutomationAccount("rg", "MyTestAutomationAccount", null, Context.NONE);
+        manager.watchers()
+            .listByAutomationAccount("rg", "MyTestAutomationAccount", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4650,20 +4835,23 @@ public final class WatcherListByAutomationAccountSamples {
 ### Watcher_Start
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Watcher Start. */
+/**
+ * Samples for Watcher Start.
+ */
 public final class WatcherStartSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/startWatcher.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/startWatcher.
+     * json
      */
     /**
      * Sample code: Start Watcher.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void startWatcher(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.watchers().startWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", Context.NONE);
+        manager.watchers()
+            .startWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4671,20 +4859,23 @@ public final class WatcherStartSamples {
 ### Watcher_Stop
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Watcher Stop. */
+/**
+ * Samples for Watcher Stop.
+ */
 public final class WatcherStopSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/stopWatcher.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/stopWatcher.
+     * json
      */
     /**
      * Sample code: Start Watcher.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void startWatcher(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.watchers().stopWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", Context.NONE);
+        manager.watchers()
+            .stopWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4692,25 +4883,26 @@ public final class WatcherStopSamples {
 ### Watcher_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Watcher;
 
-/** Samples for Watcher Update. */
+/**
+ * Samples for Watcher Update.
+ */
 public final class WatcherUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateWatcher.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateWatcher.
+     * json
      */
     /**
      * Sample code: Update watcher.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateWatcher(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Watcher resource =
-            manager
-                .watchers()
-                .getWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", Context.NONE)
-                .getValue();
+        Watcher resource = manager.watchers()
+            .getWithResponse("rg", "MyTestAutomationAccount", "MyTestWatcher", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withName("MyTestWatcher").withExecutionFrequencyInSeconds(600L).apply();
     }
 }
@@ -4722,19 +4914,22 @@ public final class WatcherUpdateSamples {
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
 import java.time.OffsetDateTime;
 
-/** Samples for Webhook CreateOrUpdate. */
+/**
+ * Samples for Webhook CreateOrUpdate.
+ */
 public final class WebhookCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/createOrUpdateWebhook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/createOrUpdateWebhook.
+     * json
      */
     /**
      * Sample code: Create or update webhook.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateWebhook(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .webhooks()
+        manager.webhooks()
             .define("TestWebhook")
             .withExistingAutomationAccount("rg", "myAutomationAccount33")
             .withName("TestWebhook")
@@ -4750,20 +4945,22 @@ public final class WebhookCreateOrUpdateSamples {
 ### Webhook_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Webhook Delete. */
+/**
+ * Samples for Webhook Delete.
+ */
 public final class WebhookDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/deleteWebhook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/deleteWebhook.json
      */
     /**
      * Sample code: Delete webhook.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteWebhook(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.webhooks().deleteWithResponse("rg", "myAutomationAccount33", "TestWebhook", Context.NONE);
+        manager.webhooks()
+            .deleteWithResponse("rg", "myAutomationAccount33", "TestWebhook", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4771,20 +4968,21 @@ public final class WebhookDeleteSamples {
 ### Webhook_GenerateUri
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Webhook GenerateUri. */
+/**
+ * Samples for Webhook GenerateUri.
+ */
 public final class WebhookGenerateUriSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/webhookGenerateUri.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/webhookGenerateUri.json
      */
     /**
      * Sample code: Generate webhook uri.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void generateWebhookUri(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.webhooks().generateUriWithResponse("rg", "myAutomationAccount33", Context.NONE);
+        manager.webhooks().generateUriWithResponse("rg", "myAutomationAccount33", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4792,20 +4990,22 @@ public final class WebhookGenerateUriSamples {
 ### Webhook_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Webhook Get. */
+/**
+ * Samples for Webhook Get.
+ */
 public final class WebhookGetSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/getWebhook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/getWebhook.json
      */
     /**
      * Sample code: Get webhook.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void getWebhook(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.webhooks().getWithResponse("rg", "myAutomationAccount33", "TestWebhook", Context.NONE);
+        manager.webhooks()
+            .getWithResponse("rg", "myAutomationAccount33", "TestWebhook", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4813,20 +5013,22 @@ public final class WebhookGetSamples {
 ### Webhook_ListByAutomationAccount
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Webhook ListByAutomationAccount. */
+/**
+ * Samples for Webhook ListByAutomationAccount.
+ */
 public final class WebhookListByAutomationAccountSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/listWebhooksByAutomationAccount.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/
+     * listWebhooksByAutomationAccount.json
      */
     /**
      * Sample code: List webhooks by Automation Account.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void listWebhooksByAutomationAccount(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.webhooks().listByAutomationAccount("rg", "myAutomationAccount33", null, Context.NONE);
+        manager.webhooks()
+            .listByAutomationAccount("rg", "myAutomationAccount33", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4834,22 +5036,25 @@ public final class WebhookListByAutomationAccountSamples {
 ### Webhook_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.Webhook;
 
-/** Samples for Webhook Update. */
+/**
+ * Samples for Webhook Update.
+ */
 public final class WebhookUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/updateWebhook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/examples/updateWebhook.json
      */
     /**
      * Sample code: Update webhook.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void updateWebhook(com.azure.resourcemanager.automation.AutomationManager manager) {
-        Webhook resource =
-            manager.webhooks().getWithResponse("rg", "myAutomationAccount33", "TestWebhook", Context.NONE).getValue();
+        Webhook resource = manager.webhooks()
+            .getWithResponse("rg", "myAutomationAccount33", "TestWebhook", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withName("TestWebhook").withIsEnabled(false).withDescription("updated webhook").apply();
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ClusterUpgradeCadence extends ExpandableStringEnum<ClusterUpg
      * @param name a name to look for.
      * @return the corresponding ClusterUpgradeCadence.
      */
-    @JsonCreator
     public static ClusterUpgradeCadence fromString(String name) {
         return fromString(name, ClusterUpgradeCadence.class);
     }

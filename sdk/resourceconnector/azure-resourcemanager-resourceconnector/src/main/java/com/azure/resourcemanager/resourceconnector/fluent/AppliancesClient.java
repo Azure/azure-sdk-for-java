@@ -19,11 +19,13 @@ import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceOperat
 import com.azure.resourcemanager.resourceconnector.fluent.models.UpgradeGraphInner;
 import com.azure.resourcemanager.resourceconnector.models.PatchableAppliance;
 
-/** An instance of this class provides access to all the operations defined in AppliancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AppliancesClient.
+ */
 public interface AppliancesClient {
     /**
      * Lists all available Appliances operations.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lists of Appliances operations as paginated response with {@link PagedIterable}.
@@ -33,7 +35,7 @@ public interface AppliancesClient {
 
     /**
      * Lists all available Appliances operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,9 +47,9 @@ public interface AppliancesClient {
 
     /**
      * Gets a list of Appliances in a subscription.
-     *
-     * <p>Gets a list of Appliances in the specified subscription. The operation returns properties of each Appliance.
-     *
+     * 
+     * Gets a list of Appliances in the specified subscription. The operation returns properties of each Appliance.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Appliances in the specified subscription as paginated response with {@link PagedIterable}.
@@ -57,9 +59,9 @@ public interface AppliancesClient {
 
     /**
      * Gets a list of Appliances in a subscription.
-     *
-     * <p>Gets a list of Appliances in the specified subscription. The operation returns properties of each Appliance.
-     *
+     * 
+     * Gets a list of Appliances in the specified subscription. The operation returns properties of each Appliance.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,7 +73,7 @@ public interface AppliancesClient {
 
     /**
      * Gets the telemetry config.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -83,7 +85,7 @@ public interface AppliancesClient {
 
     /**
      * Gets the telemetry config.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the telemetry config.
@@ -93,42 +95,42 @@ public interface AppliancesClient {
 
     /**
      * Gets a list of Appliances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of Appliances in the specified subscription and resource group. The operation returns properties
-     * of each Appliance.
-     *
+     * 
+     * Gets a list of Appliances in the specified subscription and resource group. The operation returns properties of
+     * each Appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Appliances in the specified subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Appliances in the specified subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApplianceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets a list of Appliances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of Appliances in the specified subscription and resource group. The operation returns properties
-     * of each Appliance.
-     *
+     * 
+     * Gets a list of Appliances in the specified subscription and resource group. The operation returns properties of
+     * each Appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Appliances in the specified subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Appliances in the specified subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApplianceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets an Appliance.
-     *
-     * <p>Gets the details of an Appliance with a specified resource group and name.
-     *
+     * 
+     * Gets the details of an Appliance with a specified resource group and name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param context The context to associate with this operation.
@@ -138,14 +140,14 @@ public interface AppliancesClient {
      * @return the details of an Appliance with a specified resource group and name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplianceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplianceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets an Appliance.
-     *
-     * <p>Gets the details of an Appliance with a specified resource group and name.
-     *
+     * 
+     * Gets the details of an Appliance with a specified resource group and name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,9 +160,9 @@ public interface AppliancesClient {
 
     /**
      * Creates or updates an Appliance.
-     *
-     * <p>Creates or updates an Appliance in the specified Subscription and Resource Group.
-     *
+     * 
+     * Creates or updates an Appliance in the specified Subscription and Resource Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param parameters Parameters supplied to create or update an Appliance.
@@ -170,14 +172,14 @@ public interface AppliancesClient {
      * @return the {@link SyncPoller} for polling of appliances definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, ApplianceInner parameters);
+    SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, ApplianceInner parameters);
 
     /**
      * Creates or updates an Appliance.
-     *
-     * <p>Creates or updates an Appliance in the specified Subscription and Resource Group.
-     *
+     * 
+     * Creates or updates an Appliance in the specified Subscription and Resource Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param parameters Parameters supplied to create or update an Appliance.
@@ -188,14 +190,14 @@ public interface AppliancesClient {
      * @return the {@link SyncPoller} for polling of appliances definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, ApplianceInner parameters, Context context);
+    SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, ApplianceInner parameters, Context context);
 
     /**
      * Creates or updates an Appliance.
-     *
-     * <p>Creates or updates an Appliance in the specified Subscription and Resource Group.
-     *
+     * 
+     * Creates or updates an Appliance in the specified Subscription and Resource Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param parameters Parameters supplied to create or update an Appliance.
@@ -209,9 +211,9 @@ public interface AppliancesClient {
 
     /**
      * Creates or updates an Appliance.
-     *
-     * <p>Creates or updates an Appliance in the specified Subscription and Resource Group.
-     *
+     * 
+     * Creates or updates an Appliance in the specified Subscription and Resource Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param parameters Parameters supplied to create or update an Appliance.
@@ -222,14 +224,14 @@ public interface AppliancesClient {
      * @return appliances definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplianceInner createOrUpdate(
-        String resourceGroupName, String resourceName, ApplianceInner parameters, Context context);
+    ApplianceInner createOrUpdate(String resourceGroupName, String resourceName, ApplianceInner parameters,
+        Context context);
 
     /**
      * Deletes an Appliance.
-     *
-     * <p>Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
-     *
+     * 
+     * Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,9 +244,9 @@ public interface AppliancesClient {
 
     /**
      * Deletes an Appliance.
-     *
-     * <p>Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
-     *
+     * 
+     * Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param context The context to associate with this operation.
@@ -258,9 +260,9 @@ public interface AppliancesClient {
 
     /**
      * Deletes an Appliance.
-     *
-     * <p>Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
-     *
+     * 
+     * Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,9 +274,9 @@ public interface AppliancesClient {
 
     /**
      * Deletes an Appliance.
-     *
-     * <p>Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
-     *
+     * 
+     * Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param context The context to associate with this operation.
@@ -287,9 +289,9 @@ public interface AppliancesClient {
 
     /**
      * Updates an Appliance.
-     *
-     * <p>Updates an Appliance with the specified Resource Name in the specified Resource Group and Subscription.
-     *
+     * 
+     * Updates an Appliance with the specified Resource Name in the specified Resource Group and Subscription.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param parameters The updatable fields of an existing Appliance.
@@ -300,14 +302,14 @@ public interface AppliancesClient {
      * @return appliances definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplianceInner> updateWithResponse(
-        String resourceGroupName, String resourceName, PatchableAppliance parameters, Context context);
+    Response<ApplianceInner> updateWithResponse(String resourceGroupName, String resourceName,
+        PatchableAppliance parameters, Context context);
 
     /**
      * Updates an Appliance.
-     *
-     * <p>Updates an Appliance with the specified Resource Name in the specified Resource Group and Subscription.
-     *
+     * 
+     * Updates an Appliance with the specified Resource Name in the specified Resource Group and Subscription.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param parameters The updatable fields of an existing Appliance.
@@ -321,9 +323,9 @@ public interface AppliancesClient {
 
     /**
      * Returns the cluster user credential.
-     *
-     * <p>Returns the cluster user credentials for the dedicated appliance.
-     *
+     * 
+     * Returns the cluster user credentials for the dedicated appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param context The context to associate with this operation.
@@ -333,14 +335,14 @@ public interface AppliancesClient {
      * @return the List Cluster User Credential appliance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplianceListCredentialResultsInner> listClusterUserCredentialWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplianceListCredentialResultsInner> listClusterUserCredentialWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns the cluster user credential.
-     *
-     * <p>Returns the cluster user credentials for the dedicated appliance.
-     *
+     * 
+     * Returns the cluster user credentials for the dedicated appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,9 +355,9 @@ public interface AppliancesClient {
 
     /**
      * Gets the management config.
-     *
-     * <p>Returns the cluster customer credentials for the dedicated appliance.
-     *
+     * 
+     * Returns the cluster customer credentials for the dedicated appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param artifactType This sets the type of artifact being returned, when empty no artifact endpoint is returned.
@@ -366,14 +368,14 @@ public interface AppliancesClient {
      * @return the List Cluster Keys Results appliance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplianceListKeysResultsInner> listKeysWithResponse(
-        String resourceGroupName, String resourceName, String artifactType, Context context);
+    Response<ApplianceListKeysResultsInner> listKeysWithResponse(String resourceGroupName, String resourceName,
+        String artifactType, Context context);
 
     /**
      * Gets the management config.
-     *
-     * <p>Returns the cluster customer credentials for the dedicated appliance.
-     *
+     * 
+     * Returns the cluster customer credentials for the dedicated appliance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -386,9 +388,9 @@ public interface AppliancesClient {
 
     /**
      * Gets an Appliance upgrade graph.
-     *
-     * <p>Gets the upgrade graph of an Appliance with a specified resource group and name and specific release train.
-     *
+     * 
+     * Gets the upgrade graph of an Appliance with a specified resource group and name and specific release train.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param upgradeGraph Upgrade graph version, ex - stable.
@@ -397,17 +399,17 @@ public interface AppliancesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the upgrade graph of an Appliance with a specified resource group and name and specific release train
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UpgradeGraphInner> getUpgradeGraphWithResponse(
-        String resourceGroupName, String resourceName, String upgradeGraph, Context context);
+    Response<UpgradeGraphInner> getUpgradeGraphWithResponse(String resourceGroupName, String resourceName,
+        String upgradeGraph, Context context);
 
     /**
      * Gets an Appliance upgrade graph.
-     *
-     * <p>Gets the upgrade graph of an Appliance with a specified resource group and name and specific release train.
-     *
+     * 
+     * Gets the upgrade graph of an Appliance with a specified resource group and name and specific release train.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
      * @param upgradeGraph Upgrade graph version, ex - stable.

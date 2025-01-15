@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.NetworkAdapter;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of network settings. */
+/**
+ * The properties of network settings.
+ */
 @Immutable
-public final class NetworkSettingsProperties {
+public final class NetworkSettingsProperties implements JsonSerializable<NetworkSettingsProperties> {
     /*
      * The network adapter list on the device.
      */
-    @JsonProperty(value = "networkAdapters", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkAdapter> networkAdapters;
 
-    /** Creates an instance of NetworkSettingsProperties class. */
+    /**
+     * Creates an instance of NetworkSettingsProperties class.
+     */
     public NetworkSettingsProperties() {
     }
 
     /**
      * Get the networkAdapters property: The network adapter list on the device.
-     *
+     * 
      * @return the networkAdapters value.
      */
     public List<NetworkAdapter> networkAdapters() {
@@ -33,12 +40,49 @@ public final class NetworkSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkAdapters() != null) {
             networkAdapters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSettingsProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSettingsProperties.
+     */
+    public static NetworkSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSettingsProperties deserializedNetworkSettingsProperties = new NetworkSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkAdapters".equals(fieldName)) {
+                    List<NetworkAdapter> networkAdapters
+                        = reader.readArray(reader1 -> NetworkAdapter.fromJson(reader1));
+                    deserializedNetworkSettingsProperties.networkAdapters = networkAdapters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSettingsProperties;
+        });
     }
 }

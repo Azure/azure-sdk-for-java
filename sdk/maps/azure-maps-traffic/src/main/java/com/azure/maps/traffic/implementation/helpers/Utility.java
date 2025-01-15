@@ -14,6 +14,7 @@ public class Utility {
         return Arrays.asList(boundingBox.getSouth(), boundingBox.getWest(), boundingBox.getNorth(),
             boundingBox.getEast());
     }
+
     public static List<Double> toCoordinates(GeoPosition geoPosition) {
         return Arrays.asList(geoPosition.getLatitude(), geoPosition.getLongitude());
     }

@@ -13,21 +13,22 @@ public final class ClusterPoolAvailableUpgradeAksPatchUpgradePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolAvailableUpgradeAksPatchUpgradeProperties model = BinaryData.fromString(
-            "{\"upgradeType\":\"AKSPatchUpgrade\",\"currentVersion\":\"lwuenvrkp\",\"currentVersionStatus\":\"Supported\",\"latestVersion\":\"ibreb\"}")
+            "{\"upgradeType\":\"AKSPatchUpgrade\",\"currentVersion\":\"kkdmfl\",\"currentVersionStatus\":\"Supported\",\"latestVersion\":\"mjlxrrilozapeewc\"}")
             .toObject(ClusterPoolAvailableUpgradeAksPatchUpgradeProperties.class);
-        Assertions.assertEquals("lwuenvrkp", model.currentVersion());
+        Assertions.assertEquals("kkdmfl", model.currentVersion());
         Assertions.assertEquals(CurrentClusterPoolAksVersionStatus.SUPPORTED, model.currentVersionStatus());
-        Assertions.assertEquals("ibreb", model.latestVersion());
+        Assertions.assertEquals("mjlxrrilozapeewc", model.latestVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterPoolAvailableUpgradeAksPatchUpgradeProperties model
-            = new ClusterPoolAvailableUpgradeAksPatchUpgradeProperties().withCurrentVersion("lwuenvrkp")
-                .withCurrentVersionStatus(CurrentClusterPoolAksVersionStatus.SUPPORTED).withLatestVersion("ibreb");
+            = new ClusterPoolAvailableUpgradeAksPatchUpgradeProperties().withCurrentVersion("kkdmfl")
+                .withCurrentVersionStatus(CurrentClusterPoolAksVersionStatus.SUPPORTED)
+                .withLatestVersion("mjlxrrilozapeewc");
         model = BinaryData.fromObject(model).toObject(ClusterPoolAvailableUpgradeAksPatchUpgradeProperties.class);
-        Assertions.assertEquals("lwuenvrkp", model.currentVersion());
+        Assertions.assertEquals("kkdmfl", model.currentVersion());
         Assertions.assertEquals(CurrentClusterPoolAksVersionStatus.SUPPORTED, model.currentVersionStatus());
-        Assertions.assertEquals("ibreb", model.latestVersion());
+        Assertions.assertEquals("mjlxrrilozapeewc", model.latestVersion());
     }
 }

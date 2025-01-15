@@ -6,55 +6,57 @@ package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** List of authorized spacecraft links per ground station and the expiration date of the authorization. */
+/**
+ * List of authorized spacecraft links per ground station and the expiration date of the authorization.
+ */
 @Fluent
-public final class SpacecraftLink {
+public final class SpacecraftLink implements JsonSerializable<SpacecraftLink> {
     /*
      * Link name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Center Frequency in MHz.
      */
-    @JsonProperty(value = "centerFrequencyMHz", required = true)
     private float centerFrequencyMHz;
 
     /*
      * Bandwidth in MHz.
      */
-    @JsonProperty(value = "bandwidthMHz", required = true)
     private float bandwidthMHz;
 
     /*
      * Direction (Uplink or Downlink).
      */
-    @JsonProperty(value = "direction", required = true)
     private Direction direction;
 
     /*
      * Polarization. e.g. (RHCP, LHCP).
      */
-    @JsonProperty(value = "polarization", required = true)
     private Polarization polarization;
 
     /*
      * Authorized Ground Stations
      */
-    @JsonProperty(value = "authorizations", access = JsonProperty.Access.WRITE_ONLY)
     private List<AuthorizedGroundstation> authorizations;
 
-    /** Creates an instance of SpacecraftLink class. */
+    /**
+     * Creates an instance of SpacecraftLink class.
+     */
     public SpacecraftLink() {
     }
 
     /**
      * Get the name property: Link name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +65,7 @@ public final class SpacecraftLink {
 
     /**
      * Set the name property: Link name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SpacecraftLink object itself.
      */
@@ -74,7 +76,7 @@ public final class SpacecraftLink {
 
     /**
      * Get the centerFrequencyMHz property: Center Frequency in MHz.
-     *
+     * 
      * @return the centerFrequencyMHz value.
      */
     public float centerFrequencyMHz() {
@@ -83,7 +85,7 @@ public final class SpacecraftLink {
 
     /**
      * Set the centerFrequencyMHz property: Center Frequency in MHz.
-     *
+     * 
      * @param centerFrequencyMHz the centerFrequencyMHz value to set.
      * @return the SpacecraftLink object itself.
      */
@@ -94,7 +96,7 @@ public final class SpacecraftLink {
 
     /**
      * Get the bandwidthMHz property: Bandwidth in MHz.
-     *
+     * 
      * @return the bandwidthMHz value.
      */
     public float bandwidthMHz() {
@@ -103,7 +105,7 @@ public final class SpacecraftLink {
 
     /**
      * Set the bandwidthMHz property: Bandwidth in MHz.
-     *
+     * 
      * @param bandwidthMHz the bandwidthMHz value to set.
      * @return the SpacecraftLink object itself.
      */
@@ -114,7 +116,7 @@ public final class SpacecraftLink {
 
     /**
      * Get the direction property: Direction (Uplink or Downlink).
-     *
+     * 
      * @return the direction value.
      */
     public Direction direction() {
@@ -123,7 +125,7 @@ public final class SpacecraftLink {
 
     /**
      * Set the direction property: Direction (Uplink or Downlink).
-     *
+     * 
      * @param direction the direction value to set.
      * @return the SpacecraftLink object itself.
      */
@@ -134,7 +136,7 @@ public final class SpacecraftLink {
 
     /**
      * Get the polarization property: Polarization. e.g. (RHCP, LHCP).
-     *
+     * 
      * @return the polarization value.
      */
     public Polarization polarization() {
@@ -143,7 +145,7 @@ public final class SpacecraftLink {
 
     /**
      * Set the polarization property: Polarization. e.g. (RHCP, LHCP).
-     *
+     * 
      * @param polarization the polarization value to set.
      * @return the SpacecraftLink object itself.
      */
@@ -154,7 +156,7 @@ public final class SpacecraftLink {
 
     /**
      * Get the authorizations property: Authorized Ground Stations.
-     *
+     * 
      * @return the authorizations value.
      */
     public List<AuthorizedGroundstation> authorizations() {
@@ -163,24 +165,21 @@ public final class SpacecraftLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SpacecraftLink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SpacecraftLink"));
         }
         if (direction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property direction in model SpacecraftLink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property direction in model SpacecraftLink"));
         }
         if (polarization() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property polarization in model SpacecraftLink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property polarization in model SpacecraftLink"));
         }
         if (authorizations() != null) {
             authorizations().forEach(e -> e.validate());
@@ -188,4 +187,57 @@ public final class SpacecraftLink {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SpacecraftLink.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeFloatField("centerFrequencyMHz", this.centerFrequencyMHz);
+        jsonWriter.writeFloatField("bandwidthMHz", this.bandwidthMHz);
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
+        jsonWriter.writeStringField("polarization", this.polarization == null ? null : this.polarization.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpacecraftLink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpacecraftLink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SpacecraftLink.
+     */
+    public static SpacecraftLink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpacecraftLink deserializedSpacecraftLink = new SpacecraftLink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSpacecraftLink.name = reader.getString();
+                } else if ("centerFrequencyMHz".equals(fieldName)) {
+                    deserializedSpacecraftLink.centerFrequencyMHz = reader.getFloat();
+                } else if ("bandwidthMHz".equals(fieldName)) {
+                    deserializedSpacecraftLink.bandwidthMHz = reader.getFloat();
+                } else if ("direction".equals(fieldName)) {
+                    deserializedSpacecraftLink.direction = Direction.fromString(reader.getString());
+                } else if ("polarization".equals(fieldName)) {
+                    deserializedSpacecraftLink.polarization = Polarization.fromString(reader.getString());
+                } else if ("authorizations".equals(fieldName)) {
+                    List<AuthorizedGroundstation> authorizations
+                        = reader.readArray(reader1 -> AuthorizedGroundstation.fromJson(reader1));
+                    deserializedSpacecraftLink.authorizations = authorizations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpacecraftLink;
+        });
+    }
 }

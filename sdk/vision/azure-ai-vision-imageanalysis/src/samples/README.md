@@ -20,17 +20,15 @@ See [Prerequisites](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vi
 
 See [Adding the package to your product](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#adding-the-package-to-your-product).
 
-## Set environment variables
-
-See [Set environment variables](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#set-environment-variables).
-
-
 ## Synchronous client samples
+
+Unless otherwise noted, clients are authenticated using API key.
 
 |**File Name**|**Description**|
 |----------------|-------------|
 |[SampleAnalyzeAllImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleAnalyzeAllImageFile.java) | Extract all 7 visual features from an image file, using a synchronous client. Logging turned on.|
 |[SampleCaptionImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFile.java), [SampleCaptionImageFileWithResponse.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileWithResponse.java) and [SampleCaptionImageUrl.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageUrl.java)| Generate a human-readable sentence that describes the content of an image file or image URL, using a synchronous client. One sample also shows how to get the HTTP [Response](https://learn.microsoft.com/java/api/com.azure.core.http.rest.response?view=azure-java-stable). |
+|[SampleCaptionImageFileEntraIdAuth.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileEntraIdAuth.java)| Generate a human-readable sentence that describes the content of an image file, using a synchronous client, with Entra ID authentication. |
 |[SampleDenseCaptionsImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleDenseCaptionsImageFile.java) | Generating a human-readable caption for up to 10 different regions in the image, including one for the whole image, using a synchronous client.|
 |[SampleOcrImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageFile.java) and [SampleOcrImageUrl.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrl.java)|  Extract printed or handwritten text from an image file or image URL, using a synchronous client. |
 |[SampleTagsImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleTagsImageFile.java) | Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in an image file, using a synchronous client. |
@@ -40,9 +38,12 @@ See [Set environment variables](https://github.com/Azure/azure-sdk-for-java/blob
 
 ## Asynchronous client samples
 
+Unless otherwise noted, clients are authenticated using API key.
+
 |**File Name**|**Description**|
 |----------------|-------------|
 |[SampleCaptionImageFileAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileAsync.java) | Generate a human-readable sentence that describes the content of an image file, using an asynchronous client. |
+|[SampleCaptionImageFileEntraIdAuthAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileEntraIdAuthAsync.java)| Generate a human-readable sentence that describes the content of an image file, using an asynchronous client, with Entra ID authentication. |
 |[SampleOcrImageUrlAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrlAsync.java) | Extract printed or handwritten text from an image URL, using an asynchronous client. |
 |[SampleOcrImageUrlWithResponseAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrlWithResponseAsync.java) | Extract printed or handwritten text from an image URL, using an asynchronous client, with HTTP [Response](https://learn.microsoft.com/java/api/com.azure.core.http.rest.response?view=azure-java-stable). |
 

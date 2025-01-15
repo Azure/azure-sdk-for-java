@@ -9,7 +9,9 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class SystemTopicsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/SystemTopics_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * SystemTopics_ListBySubscription.json
      */
     /**
      * Sample code: SystemTopics_ListBySubscription.

@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = NutrientAnalysesClientBuilder.class)
 public final class NutrientAnalysesClient {
-    @Generated private final NutrientAnalysesAsyncClient client;
+    @Generated
+    private final NutrientAnalysesAsyncClient client;
 
     /**
      * Initializes an instance of NutrientAnalysesClient class.
@@ -239,8 +240,8 @@ public final class NutrientAnalysesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String partyId, String nutrientAnalysisId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String partyId, String nutrientAnalysisId,
+        RequestOptions requestOptions) {
         return this.client.getWithResponse(partyId, nutrientAnalysisId, requestOptions).block();
     }
 
@@ -331,11 +332,10 @@ public final class NutrientAnalysesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId, String nutrientAnalysisId, BinaryData nutrientAnalysis, RequestOptions requestOptions) {
-        return this.client
-                .createOrUpdateWithResponse(partyId, nutrientAnalysisId, nutrientAnalysis, requestOptions)
-                .block();
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String nutrientAnalysisId,
+        BinaryData nutrientAnalysis, RequestOptions requestOptions) {
+        return this.client.createOrUpdateWithResponse(partyId, nutrientAnalysisId, nutrientAnalysis, requestOptions)
+            .block();
     }
 
     /**

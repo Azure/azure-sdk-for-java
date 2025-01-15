@@ -53,21 +53,22 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
             String clientSecret = options.getClientSecret();
             if (isClientIdSet && hasText(clientSecret)) {
                 return new ClientSecretCredentialBuilder().clientId(clientId)
-                        .authorityHost(authorityHost)
-                        .clientSecret(clientSecret)
-                        .tenantId(tenantId)
-                        .build();
+                    .authorityHost(authorityHost)
+                    .clientSecret(clientSecret)
+                    .tenantId(tenantId)
+                    .build();
             }
 
             String clientCertificatePath = options.getClientCertificatePath();
             if (isClientIdSet && hasText(clientCertificatePath)) {
-                ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder()
-                        .authorityHost(authorityHost)
+                ClientCertificateCredentialBuilder builder
+                    = new ClientCertificateCredentialBuilder().authorityHost(authorityHost)
                         .tenantId(tenantId)
                         .clientId(clientId);
 
                 if (hasText(options.getClientCertificatePassword())) {
-                    builder.pfxCertificate(clientCertificatePath, options.getClientCertificatePassword());
+                    builder.pfxCertificate(clientCertificatePath)
+                        .clientCertificatePassword(options.getClientCertificatePassword());
                 } else {
                     builder.pemCertificate(clientCertificatePath);
                 }
@@ -76,14 +77,13 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
             }
         }
 
-        if (isClientIdSet && hasText(options.getUsername())
-                && hasText(options.getPassword())) {
+        if (isClientIdSet && hasText(options.getUsername()) && hasText(options.getPassword())) {
             return new UsernamePasswordCredentialBuilder().username(options.getUsername())
-                    .authorityHost(authorityHost)
-                    .password(options.getPassword())
-                    .clientId(clientId)
-                    .tenantId(tenantId)
-                    .build();
+                .authorityHost(authorityHost)
+                .password(options.getPassword())
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .build();
         }
 
         if (options.isManagedIdentityEnabled()) {
@@ -94,11 +94,10 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
             return builder.build();
         }
 
-        return new DefaultAzureCredentialBuilder()
-                .authorityHost(authorityHost)
-                .tenantId(tenantId)
-                .managedIdentityClientId(clientId)
-                .build();
+        return new DefaultAzureCredentialBuilder().authorityHost(authorityHost)
+            .tenantId(tenantId)
+            .managedIdentityClientId(clientId)
+            .build();
     }
 
     private boolean hasText(@Nullable String str) {

@@ -95,22 +95,18 @@ public final class RegistrationImpl implements Registration, Registration.Defini
     }
 
     public Registration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .createOrUpdateWithResponse(resourceGroup, registrationName, createToken, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .createOrUpdateWithResponse(resourceGroup, registrationName, createToken, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Registration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .createOrUpdateWithResponse(resourceGroup, registrationName, createToken, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .createOrUpdateWithResponse(resourceGroup, registrationName, createToken, context)
+            .getValue();
         return this;
     }
 
@@ -127,50 +123,42 @@ public final class RegistrationImpl implements Registration, Registration.Defini
     }
 
     public Registration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .updateWithResponse(resourceGroup, registrationName, updateToken, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .updateWithResponse(resourceGroup, registrationName, updateToken, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Registration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .updateWithResponse(resourceGroup, registrationName, updateToken, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .updateWithResponse(resourceGroup, registrationName, updateToken, context)
+            .getValue();
         return this;
     }
 
-    RegistrationImpl(
-        RegistrationInner innerObject, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    RegistrationImpl(RegistrationInner innerObject,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroup = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.registrationName = Utils.getValueFromIdByName(innerObject.id(), "registrations");
+        this.resourceGroup = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.registrationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registrations");
     }
 
     public Registration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .getByResourceGroupWithResponse(resourceGroup, registrationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .getByResourceGroupWithResponse(resourceGroup, registrationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Registration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .getByResourceGroupWithResponse(resourceGroup, registrationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .getByResourceGroupWithResponse(resourceGroup, registrationName, context)
+            .getValue();
         return this;
     }
 
@@ -183,8 +171,7 @@ public final class RegistrationImpl implements Registration, Registration.Defini
     }
 
     public Response<Void> enableRemoteManagementWithResponse(Context context) {
-        return serviceManager
-            .registrations()
+        return serviceManager.registrations()
             .enableRemoteManagementWithResponse(resourceGroup, registrationName, context);
     }
 

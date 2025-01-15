@@ -35,16 +35,14 @@ class PublicIpPrefixImpl
     @Override
     public Mono<PublicIpPrefix> createResourceAsync() {
         PublicIpPrefixesClient client = this.manager().serviceClient().getPublicIpPrefixes();
-        return client
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<PublicIpPrefix> updateResourceAsync() {
         PublicIpPrefixesClient client = this.manager().serviceClient().getPublicIpPrefixes();
-        return client
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -66,16 +64,14 @@ class PublicIpPrefixImpl
 
     @Override
     public Mono<PublicIpPrefix> applyTagsAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getPublicIpPrefixes()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()))
-            .map(
-                inner -> {
-                    setInner(inner);
-                    return PublicIpPrefixImpl.this;
-                });
+            .map(inner -> {
+                setInner(inner);
+                return PublicIpPrefixImpl.this;
+            });
     }
 
     @Override
@@ -110,9 +106,8 @@ class PublicIpPrefixImpl
 
     @Override
     public List<ReferencedPublicIpAddress> publicIpAddresses() {
-        return Collections
-            .unmodifiableList(
-                innerModel().publicIpAddresses() == null ? new ArrayList<>() : this.innerModel().publicIpAddresses());
+        return Collections.unmodifiableList(
+            innerModel().publicIpAddresses() == null ? new ArrayList<>() : this.innerModel().publicIpAddresses());
     }
 
     @Override

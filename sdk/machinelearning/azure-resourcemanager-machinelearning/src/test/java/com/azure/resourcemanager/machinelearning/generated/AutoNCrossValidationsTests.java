@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.AutoNCrossValidations;
 public final class AutoNCrossValidationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoNCrossValidations model =
-            BinaryData.fromString("{\"mode\":\"Auto\"}").toObject(AutoNCrossValidations.class);
+        AutoNCrossValidations model
+            = BinaryData.fromString("{\"mode\":\"Auto\"}").toObject(AutoNCrossValidations.class);
     }
 
     @org.junit.jupiter.api.Test

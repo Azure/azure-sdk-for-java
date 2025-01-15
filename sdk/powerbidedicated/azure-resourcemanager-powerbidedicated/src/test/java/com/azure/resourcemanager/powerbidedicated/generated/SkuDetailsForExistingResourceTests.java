@@ -13,31 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuDetailsForExistingResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuDetailsForExistingResource model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"jysvl\",\"sku\":{\"name\":\"uvfqawrlyxwj\",\"tier\":\"AutoPremiumHost\",\"capacity\":2115233391}}")
-                .toObject(SkuDetailsForExistingResource.class);
-        Assertions.assertEquals("jysvl", model.resourceType());
-        Assertions.assertEquals("uvfqawrlyxwj", model.sku().name());
-        Assertions.assertEquals(CapacitySkuTier.AUTO_PREMIUM_HOST, model.sku().tier());
-        Assertions.assertEquals(2115233391, model.sku().capacity());
+        SkuDetailsForExistingResource model = BinaryData.fromString(
+            "{\"resourceType\":\"algbquxigjyjg\",\"sku\":{\"name\":\"aoyfhrtxilnerkuj\",\"tier\":\"Premium\",\"capacity\":709635131}}")
+            .toObject(SkuDetailsForExistingResource.class);
+        Assertions.assertEquals("algbquxigjyjg", model.resourceType());
+        Assertions.assertEquals("aoyfhrtxilnerkuj", model.sku().name());
+        Assertions.assertEquals(CapacitySkuTier.PREMIUM, model.sku().tier());
+        Assertions.assertEquals(709635131, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuDetailsForExistingResource model =
-            new SkuDetailsForExistingResource()
-                .withResourceType("jysvl")
-                .withSku(
-                    new CapacitySku()
-                        .withName("uvfqawrlyxwj")
-                        .withTier(CapacitySkuTier.AUTO_PREMIUM_HOST)
-                        .withCapacity(2115233391));
+        SkuDetailsForExistingResource model = new SkuDetailsForExistingResource().withResourceType("algbquxigjyjg")
+            .withSku(new CapacitySku().withName("aoyfhrtxilnerkuj")
+                .withTier(CapacitySkuTier.PREMIUM)
+                .withCapacity(709635131));
         model = BinaryData.fromObject(model).toObject(SkuDetailsForExistingResource.class);
-        Assertions.assertEquals("jysvl", model.resourceType());
-        Assertions.assertEquals("uvfqawrlyxwj", model.sku().name());
-        Assertions.assertEquals(CapacitySkuTier.AUTO_PREMIUM_HOST, model.sku().tier());
-        Assertions.assertEquals(2115233391, model.sku().capacity());
+        Assertions.assertEquals("algbquxigjyjg", model.resourceType());
+        Assertions.assertEquals("aoyfhrtxilnerkuj", model.sku().name());
+        Assertions.assertEquals(CapacitySkuTier.PREMIUM, model.sku().tier());
+        Assertions.assertEquals(709635131, model.sku().capacity());
     }
 }

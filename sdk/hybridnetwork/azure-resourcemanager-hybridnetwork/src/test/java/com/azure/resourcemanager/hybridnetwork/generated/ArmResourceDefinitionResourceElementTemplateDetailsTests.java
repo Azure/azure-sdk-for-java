@@ -39,10 +39,13 @@ public final class ArmResourceDefinitionResourceElementTemplateDetailsTests {
                     .withInstallDependsOn(Arrays.asList("lvfhrbbp", "eqvcwwyyurmoch", "prprsnmokay", "ejnhlbkpb"))
                     .withUninstallDependsOn(Arrays.asList("piljhahzvech", "dbn"))
                     .withUpdateDependsOn(Arrays.asList("hol")))
-                .withConfiguration(new ArmResourceDefinitionResourceElementTemplate()
-                    .withTemplateType(TemplateType.ARM_TEMPLATE).withParameterValues("q").withArtifactProfile(
-                        new NsdArtifactProfile().withArtifactStoreReference(new ReferencedResource().withId("awopqh"))
-                            .withArtifactName("jptmcgsbost").withArtifactVersion("lnd")));
+                .withConfiguration(
+                    new ArmResourceDefinitionResourceElementTemplate().withTemplateType(TemplateType.ARM_TEMPLATE)
+                        .withParameterValues("q")
+                        .withArtifactProfile(new NsdArtifactProfile()
+                            .withArtifactStoreReference(new ReferencedResource().withId("awopqh"))
+                            .withArtifactName("jptmcgsbost")
+                            .withArtifactVersion("lnd")));
         model = BinaryData.fromObject(model).toObject(ArmResourceDefinitionResourceElementTemplateDetails.class);
         Assertions.assertEquals("tutmzl", model.name());
         Assertions.assertEquals("lvfhrbbp", model.dependsOnProfile().installDependsOn().get(0));

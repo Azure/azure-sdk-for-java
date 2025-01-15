@@ -4,22 +4,24 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Incidents ListBookmarks. */
+/**
+ * Samples for Incidents ListBookmarks.
+ */
 public final class IncidentsListBookmarksSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/GetAllIncidentBookmarks.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/incidents/
+     * GetAllIncidentBookmarks.json
      */
     /**
      * Sample code: Get all incident bookmarks.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
-    public static void getAllIncidentBookmarks(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .incidents()
-            .listBookmarksWithResponse("myRg", "myWorkspace", "afbd324f-6c48-459c-8710-8d1e1cd03812", Context.NONE);
+    public static void
+        getAllIncidentBookmarks(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager.incidents()
+            .listBookmarksWithResponse("myRg", "myWorkspace", "afbd324f-6c48-459c-8710-8d1e1cd03812",
+                com.azure.core.util.Context.NONE);
     }
 }

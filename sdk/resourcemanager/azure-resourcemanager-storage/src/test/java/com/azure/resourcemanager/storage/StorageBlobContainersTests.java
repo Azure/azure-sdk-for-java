@@ -50,23 +50,19 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         metadataTest.put("a", "b");
         metadataTest.put("c", "d");
 
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .create();
 
         BlobContainers blobContainers = this.storageManager.blobContainers();
-        BlobContainer blobContainer =
-            blobContainers
-                .defineContainer("blob-test")
-                .withExistingStorageAccount(rgName, saName)
-                .withPublicAccess(PublicAccess.CONTAINER)
-                .withMetadata("a", "b")
-                .withMetadata("c", "d")
-                .create();
+        BlobContainer blobContainer = blobContainers.defineContainer("blob-test")
+            .withExistingStorageAccount(rgName, saName)
+            .withPublicAccess(PublicAccess.CONTAINER)
+            .withMetadata("a", "b")
+            .withMetadata("c", "d")
+            .create();
 
         Assertions.assertEquals("blob-test", blobContainer.name());
         Assertions.assertEquals(PublicAccess.CONTAINER, blobContainer.publicAccess());
@@ -84,25 +80,20 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         metadataTest.put("c", "d");
         metadataTest.put("e", "f");
 
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .create();
 
         BlobContainers blobContainers = this.storageManager.blobContainers();
-        BlobContainer blobContainer =
-            blobContainers
-                .defineContainer("blob-test")
-                .withExistingStorageAccount(rgName, saName)
-                .withPublicAccess(PublicAccess.CONTAINER)
-                .withMetadata(metadataInitial)
-                .create();
+        BlobContainer blobContainer = blobContainers.defineContainer("blob-test")
+            .withExistingStorageAccount(rgName, saName)
+            .withPublicAccess(PublicAccess.CONTAINER)
+            .withMetadata(metadataInitial)
+            .create();
 
-        blobContainer
-            .update()
+        blobContainer.update()
             .withPublicAccess(PublicAccess.BLOB)
             .withMetadata("c", "d")
             .withMetadata("e", "f")
@@ -121,24 +112,21 @@ public class StorageBlobContainersTests extends StorageManagementTest {
 
         String saName = generateRandomResourceName("javacmsa", 15);
         String containerName = "blob-test";
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .create();
 
         BlobContainers blobContainers = this.storageManager.blobContainers();
-        BlobContainer blobContainer =
-            blobContainers
-                .defineContainer(containerName)
-                .withExistingStorageAccount(rgName, saName)
-                .withPublicAccess(PublicAccess.CONTAINER)
-                .create();
+        BlobContainer blobContainer = blobContainers.defineContainer(containerName)
+            .withExistingStorageAccount(rgName, saName)
+            .withPublicAccess(PublicAccess.CONTAINER)
+            .create();
 
         // assign data-plane blob role
-        RoleAssignment roleAssignment = msiManager.authorizationManager().roleAssignments()
+        RoleAssignment roleAssignment = msiManager.authorizationManager()
+            .roleAssignments()
             .define(UUID.randomUUID().toString())
             .forUser(userName)
             .withBuiltInRole(BuiltInRole.STORAGE_BLOB_DATA_CONTRIBUTOR)
@@ -146,7 +134,9 @@ public class StorageBlobContainersTests extends StorageManagementTest {
             .create();
 
         // let the role assignment propagate
-        msiManager.authorizationManager().roleAssignments().getByIdAsync(roleAssignment.id())
+        msiManager.authorizationManager()
+            .roleAssignments()
+            .getByIdAsync(roleAssignment.id())
             .retryWhen(Retry
                 // 10 + 20 = 30 seconds
                 .backoff(2, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
@@ -163,8 +153,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
                 // do not convert to RetryExhaustedException
                 .onRetryExhaustedThrow((spec, signal) -> signal.failure()));
 
-        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-            .pipeline(storageManager.httpPipeline())
+        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().pipeline(storageManager.httpPipeline())
             .endpoint(storageAccount.endPoints().primary().blob())
             .buildClient();
 

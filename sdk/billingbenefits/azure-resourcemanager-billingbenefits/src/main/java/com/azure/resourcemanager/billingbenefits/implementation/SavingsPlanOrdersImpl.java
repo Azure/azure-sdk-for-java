@@ -23,21 +23,17 @@ public final class SavingsPlanOrdersImpl implements SavingsPlanOrders {
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    public SavingsPlanOrdersImpl(
-        SavingsPlanOrdersClient innerClient,
+    public SavingsPlanOrdersImpl(SavingsPlanOrdersClient innerClient,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<SavingsPlanOrderModel> getWithResponse(String savingsPlanOrderId, String expand, Context context) {
-        Response<SavingsPlanOrderModelInner> inner =
-            this.serviceClient().getWithResponse(savingsPlanOrderId, expand, context);
+        Response<SavingsPlanOrderModelInner> inner
+            = this.serviceClient().getWithResponse(savingsPlanOrderId, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SavingsPlanOrderModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -54,13 +50,10 @@ public final class SavingsPlanOrdersImpl implements SavingsPlanOrders {
     }
 
     public Response<RoleAssignmentEntity> elevateWithResponse(String savingsPlanOrderId, Context context) {
-        Response<RoleAssignmentEntityInner> inner =
-            this.serviceClient().elevateWithResponse(savingsPlanOrderId, context);
+        Response<RoleAssignmentEntityInner> inner
+            = this.serviceClient().elevateWithResponse(savingsPlanOrderId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RoleAssignmentEntityImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -78,12 +71,12 @@ public final class SavingsPlanOrdersImpl implements SavingsPlanOrders {
 
     public PagedIterable<SavingsPlanOrderModel> list() {
         PagedIterable<SavingsPlanOrderModelInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SavingsPlanOrderModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SavingsPlanOrderModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SavingsPlanOrderModel> list(Context context) {
         PagedIterable<SavingsPlanOrderModelInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SavingsPlanOrderModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SavingsPlanOrderModelImpl(inner1, this.manager()));
     }
 
     private SavingsPlanOrdersClient serviceClient() {

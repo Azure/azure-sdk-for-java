@@ -16,8 +16,8 @@ public final class GalleryImageImpl implements GalleryImage {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    GalleryImageImpl(
-        GalleryImageInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    GalleryImageImpl(GalleryImageInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

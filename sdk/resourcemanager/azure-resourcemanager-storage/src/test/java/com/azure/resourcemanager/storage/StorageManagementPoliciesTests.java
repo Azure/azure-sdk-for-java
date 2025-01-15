@@ -42,31 +42,27 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
     @Test
     public void canCreateManagementPolicies() {
         String saName = generateRandomResourceName("javacmsa", 15);
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withBlobStorageAccountKind()
-                .withAccessTier(AccessTier.COOL)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withBlobStorageAccountKind()
+            .withAccessTier(AccessTier.COOL)
+            .create();
 
         ManagementPolicies managementPolicies = this.storageManager.managementPolicies();
-        ManagementPolicy managementPolicy =
-            managementPolicies
-                .define("management-test")
-                .withExistingStorageAccount(rgName, saName)
-                .defineRule("rule1")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withPrefixToFilterFor("container1/foo")
-                .withTierToCoolActionOnBaseBlob(30)
-                .withTierToArchiveActionOnBaseBlob(90)
-                .withDeleteActionOnBaseBlob(2555)
-                .withDeleteActionOnSnapShot(90)
-                .attach()
-                .create();
+        ManagementPolicy managementPolicy = managementPolicies.define("management-test")
+            .withExistingStorageAccount(rgName, saName)
+            .defineRule("rule1")
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withPrefixToFilterFor("container1/foo")
+            .withTierToCoolActionOnBaseBlob(30)
+            .withTierToArchiveActionOnBaseBlob(90)
+            .withDeleteActionOnBaseBlob(2555)
+            .withDeleteActionOnSnapShot(90)
+            .attach()
+            .create();
 
         List<String> blobTypesToFilterFor = new ArrayList<>();
         blobTypesToFilterFor.add("blockBlob");
@@ -76,94 +72,76 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
 
         // Assertions.assertEquals("management-test", managementPolicy.policy().);
         Assertions.assertEquals("rule1", managementPolicy.policy().rules().get(0).name());
-        Assertions
-            .assertEquals(
-                blobTypesToFilterFor, managementPolicy.policy().rules().get(0).definition().filters().blobTypes());
-        Assertions
-            .assertEquals(
-                prefixesToFilterFor, managementPolicy.policy().rules().get(0).definition().filters().prefixMatch());
-        Assertions
-            .assertEquals(
-                30,
-                managementPolicy
-                    .policy()
-                    .rules()
-                    .get(0)
-                    .definition()
-                    .actions()
-                    .baseBlob()
-                    .tierToCool()
-                    .daysAfterModificationGreaterThan(),
-                0.001);
-        Assertions
-            .assertEquals(
-                90,
-                managementPolicy
-                    .policy()
-                    .rules()
-                    .get(0)
-                    .definition()
-                    .actions()
-                    .baseBlob()
-                    .tierToArchive()
-                    .daysAfterModificationGreaterThan(),
-                0.001);
-        Assertions
-            .assertEquals(
-                2555,
-                managementPolicy
-                    .policy()
-                    .rules()
-                    .get(0)
-                    .definition()
-                    .actions()
-                    .baseBlob()
-                    .delete()
-                    .daysAfterModificationGreaterThan(),
-                0.001);
-        Assertions
-            .assertEquals(
-                90,
-                managementPolicy
-                    .policy()
-                    .rules()
-                    .get(0)
-                    .definition()
-                    .actions()
-                    .snapshot()
-                    .delete()
-                    .daysAfterCreationGreaterThan(),
-                0.001);
+        Assertions.assertEquals(blobTypesToFilterFor,
+            managementPolicy.policy().rules().get(0).definition().filters().blobTypes());
+        Assertions.assertEquals(prefixesToFilterFor,
+            managementPolicy.policy().rules().get(0).definition().filters().prefixMatch());
+        Assertions.assertEquals(30,
+            managementPolicy.policy()
+                .rules()
+                .get(0)
+                .definition()
+                .actions()
+                .baseBlob()
+                .tierToCool()
+                .daysAfterModificationGreaterThan(),
+            0.001);
+        Assertions.assertEquals(90,
+            managementPolicy.policy()
+                .rules()
+                .get(0)
+                .definition()
+                .actions()
+                .baseBlob()
+                .tierToArchive()
+                .daysAfterModificationGreaterThan(),
+            0.001);
+        Assertions.assertEquals(2555,
+            managementPolicy.policy()
+                .rules()
+                .get(0)
+                .definition()
+                .actions()
+                .baseBlob()
+                .delete()
+                .daysAfterModificationGreaterThan(),
+            0.001);
+        Assertions.assertEquals(90,
+            managementPolicy.policy()
+                .rules()
+                .get(0)
+                .definition()
+                .actions()
+                .snapshot()
+                .delete()
+                .daysAfterCreationGreaterThan(),
+            0.001);
     }
 
     @Test
     public void managementPolicyGetters() {
         String saName = generateRandomResourceName("javacmsa", 15);
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withBlobStorageAccountKind()
-                .withAccessTier(AccessTier.COOL)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withBlobStorageAccountKind()
+            .withAccessTier(AccessTier.COOL)
+            .create();
 
         ManagementPolicies managementPolicies = this.storageManager.managementPolicies();
-        ManagementPolicy managementPolicy =
-            managementPolicies
-                .define("management-test")
-                .withExistingStorageAccount(rgName, saName)
-                .defineRule("rule1")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withPrefixToFilterFor("container1/foo")
-                .withTierToCoolActionOnBaseBlob(30)
-                .withTierToArchiveActionOnBaseBlob(90)
-                .withDeleteActionOnBaseBlob(2555)
-                .withDeleteActionOnSnapShot(90)
-                .attach()
-                .create();
+        ManagementPolicy managementPolicy = managementPolicies.define("management-test")
+            .withExistingStorageAccount(rgName, saName)
+            .defineRule("rule1")
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withPrefixToFilterFor("container1/foo")
+            .withTierToCoolActionOnBaseBlob(30)
+            .withTierToArchiveActionOnBaseBlob(90)
+            .withDeleteActionOnBaseBlob(2555)
+            .withDeleteActionOnSnapShot(90)
+            .attach()
+            .create();
 
         List<BlobTypes> blobTypesToFilterFor = new ArrayList<>();
         blobTypesToFilterFor.add(BlobTypes.BLOCK_BLOB);
@@ -173,14 +151,10 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
 
         List<PolicyRule> rules = managementPolicy.rules();
         Assertions.assertEquals("rule1", rules.get(0).name());
-        Assertions
-            .assertArrayEquals(
-                Collections.unmodifiableList(blobTypesToFilterFor).toArray(),
-                rules.get(0).blobTypesToFilterFor().toArray());
-        Assertions
-            .assertArrayEquals(
-                Collections.unmodifiableList(prefixesToFilterFor).toArray(),
-                rules.get(0).prefixesToFilterFor().toArray());
+        Assertions.assertArrayEquals(Collections.unmodifiableList(blobTypesToFilterFor).toArray(),
+            rules.get(0).blobTypesToFilterFor().toArray());
+        Assertions.assertArrayEquals(Collections.unmodifiableList(prefixesToFilterFor).toArray(),
+            rules.get(0).prefixesToFilterFor().toArray());
         Assertions.assertEquals(30, rules.get(0).daysAfterBaseBlobModificationUntilCooling().intValue());
         Assertions.assertTrue(rules.get(0).tierToCoolActionOnBaseBlobEnabled());
         Assertions.assertEquals(90, rules.get(0).daysAfterBaseBlobModificationUntilArchiving().intValue());
@@ -200,36 +174,31 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         List<String> prefixesToFilterFor = new ArrayList<>();
         prefixesToFilterFor.add("container1/foo");
 
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withBlobStorageAccountKind()
-                .withAccessTier(AccessTier.COOL)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withBlobStorageAccountKind()
+            .withAccessTier(AccessTier.COOL)
+            .create();
 
         ManagementPolicies managementPolicies = this.storageManager.managementPolicies();
-        ManagementPolicy managementPolicy =
-            managementPolicies
-                .define("management-test")
-                .withExistingStorageAccount(rgName, saName)
-                .defineRule("rule1")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withPrefixToFilterFor("asdf")
-                .withDeleteActionOnSnapShot(100)
-                .attach()
-                .defineRule("rule2")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withDeleteActionOnBaseBlob(30)
-                .attach()
-                .create();
+        ManagementPolicy managementPolicy = managementPolicies.define("management-test")
+            .withExistingStorageAccount(rgName, saName)
+            .defineRule("rule1")
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withPrefixToFilterFor("asdf")
+            .withDeleteActionOnSnapShot(100)
+            .attach()
+            .defineRule("rule2")
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withDeleteActionOnBaseBlob(30)
+            .attach()
+            .create();
 
-        managementPolicy
-            .update()
+        managementPolicy.update()
             .updateRule("rule1")
             .withPrefixesToFilterFor(prefixesToFilterFor)
             .withTierToCoolActionOnBaseBlob(30)
@@ -243,14 +212,10 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         List<PolicyRule> rules = managementPolicy.rules();
         Assertions.assertEquals(1, rules.size());
         Assertions.assertEquals("rule1", rules.get(0).name());
-        Assertions
-            .assertArrayEquals(
-                Collections.unmodifiableList(blobTypesToFilterFor).toArray(),
-                rules.get(0).blobTypesToFilterFor().toArray());
-        Assertions
-            .assertArrayEquals(
-                Collections.unmodifiableList(prefixesToFilterFor).toArray(),
-                rules.get(0).prefixesToFilterFor().toArray());
+        Assertions.assertArrayEquals(Collections.unmodifiableList(blobTypesToFilterFor).toArray(),
+            rules.get(0).blobTypesToFilterFor().toArray());
+        Assertions.assertArrayEquals(Collections.unmodifiableList(prefixesToFilterFor).toArray(),
+            rules.get(0).prefixesToFilterFor().toArray());
         Assertions.assertEquals(30, rules.get(0).daysAfterBaseBlobModificationUntilCooling().intValue());
         Assertions.assertTrue(rules.get(0).tierToCoolActionOnBaseBlobEnabled());
         Assertions.assertEquals(90, rules.get(0).daysAfterBaseBlobModificationUntilArchiving().intValue());
@@ -265,15 +230,13 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
     public void testLcmBaseBlobActionsWithPremiumAccount() {
         String saName = generateRandomResourceName("javacmsa", 15);
 
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withSku(StorageAccountSkuType.PREMIUM_LRS)
-                .withBlockBlobStorageAccountKind()
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withSku(StorageAccountSkuType.PREMIUM_LRS)
+            .withBlockBlobStorageAccountKind()
+            .create();
 
         Assertions.assertEquals(StorageAccountSkuType.PREMIUM_LRS.name(), storageAccount.skuType().name());
         Assertions.assertEquals(Kind.BLOCK_BLOB_STORAGE, storageAccount.kind());
@@ -289,66 +252,107 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         ManagementPolicy managementPolicy = managementPolicies.define("management-test")
             .withExistingStorageAccount(rgName, saName)
             .defineRule("tierToHotLMT")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToHot(new DateAfterModification().withDaysAfterModificationGreaterThan(50f)))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToHot(new DateAfterModification().withDaysAfterModificationGreaterThan(50f)))
+            .attach()
             .defineRule("tierToCoolLMT")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToCool(new DateAfterModification().withDaysAfterModificationGreaterThan(50f)))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToCool(new DateAfterModification().withDaysAfterModificationGreaterThan(50f)))
+            .attach()
             .defineRule("tierToArchiveLMT")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToArchive(new DateAfterModification().withDaysAfterModificationGreaterThan(50f)))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToArchive(new DateAfterModification().withDaysAfterModificationGreaterThan(50f)))
+            .attach()
             .defineRule("tierToHotCreated")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToHot(new DateAfterModification().withDaysAfterCreationGreaterThan(50f)))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToHot(new DateAfterModification().withDaysAfterCreationGreaterThan(50f)))
+            .attach()
             .defineRule("tierToCoolCreated")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToCool(new DateAfterModification().withDaysAfterCreationGreaterThan(50f)))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToCool(new DateAfterModification().withDaysAfterCreationGreaterThan(50f)))
+            .attach()
             .defineRule("tierToArchiveCreated")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToArchive(new DateAfterModification().withDaysAfterCreationGreaterThan(50f)))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToArchive(new DateAfterModification().withDaysAfterCreationGreaterThan(50f)))
+            .attach()
             .defineRule("tierToHotLAT")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToHot(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToHot(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)))
+            .attach()
             .defineRule("tierToCoolLAT")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToCool(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToCool(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)))
+            .attach()
             .defineRule("tierToArchiveLAT")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToArchive(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToArchive(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)))
+            .attach()
             .defineRule("tierToCoolAutoUpTierLAT")
-                .withLifecycleRuleType()
-                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
-                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToCool(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)).withEnableAutoTierToHotFromCool(true))
-                .attach()
+            .withLifecycleRuleType()
+            .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+            .withActionsOnBaseBlob(new ManagementPolicyBaseBlob()
+                .withTierToCool(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f))
+                .withEnableAutoTierToHotFromCool(true))
+            .attach()
             .create();
 
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> ResourceManagerUtils.toPrimitiveBoolean(rule.actionsOnBaseBlob().enableAutoTierToHotFromCool())));
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null && rule.actionsOnBaseBlob().tierToHot().daysAfterModificationGreaterThan() != null));
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null && rule.actionsOnBaseBlob().tierToCool().daysAfterModificationGreaterThan() != null));
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null && rule.actionsOnBaseBlob().tierToArchive().daysAfterModificationGreaterThan() != null));
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null && rule.actionsOnBaseBlob().tierToHot().daysAfterCreationGreaterThan() != null));
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null && rule.actionsOnBaseBlob().tierToCool().daysAfterCreationGreaterThan() != null));
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null && rule.actionsOnBaseBlob().tierToArchive().daysAfterCreationGreaterThan() != null));
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null && rule.actionsOnBaseBlob().tierToHot().daysAfterLastAccessTimeGreaterThan() != null));
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null && rule.actionsOnBaseBlob().tierToCool().daysAfterLastAccessTimeGreaterThan() != null));
-        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null && rule.actionsOnBaseBlob().tierToArchive().daysAfterLastAccessTimeGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> ResourceManagerUtils
+                .toPrimitiveBoolean(rule.actionsOnBaseBlob().enableAutoTierToHotFromCool())));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null
+                && rule.actionsOnBaseBlob().tierToHot().daysAfterModificationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null
+                && rule.actionsOnBaseBlob().tierToCool().daysAfterModificationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null
+                && rule.actionsOnBaseBlob().tierToArchive().daysAfterModificationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null
+                && rule.actionsOnBaseBlob().tierToHot().daysAfterCreationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null
+                && rule.actionsOnBaseBlob().tierToCool().daysAfterCreationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null
+                && rule.actionsOnBaseBlob().tierToArchive().daysAfterCreationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null
+                && rule.actionsOnBaseBlob().tierToHot().daysAfterLastAccessTimeGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null
+                && rule.actionsOnBaseBlob().tierToCool().daysAfterLastAccessTimeGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules()
+            .stream()
+            .anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null
+                && rule.actionsOnBaseBlob().tierToArchive().daysAfterLastAccessTimeGreaterThan() != null));
     }
 }

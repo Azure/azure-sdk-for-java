@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties that define an exchange connection. */
+/**
+ * The properties that define an exchange connection.
+ */
 @Fluent
-public final class ExchangeConnection {
+public final class ExchangeConnection implements JsonSerializable<ExchangeConnection> {
     /*
      * The PeeringDB.com ID of the facility at which the connection has to be set up.
      */
-    @JsonProperty(value = "peeringDBFacilityId")
     private Integer peeringDBFacilityId;
 
     /*
      * The state of the connection.
      */
-    @JsonProperty(value = "connectionState", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectionState connectionState;
 
     /*
      * The BGP session associated with the connection.
      */
-    @JsonProperty(value = "bgpSession")
     private BgpSession bgpSession;
 
     /*
      * The unique identifier (GUID) for the connection.
      */
-    @JsonProperty(value = "connectionIdentifier")
     private String connectionIdentifier;
 
     /*
      * The error message related to the connection state, if any.
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /** Creates an instance of ExchangeConnection class. */
+    /**
+     * Creates an instance of ExchangeConnection class.
+     */
     public ExchangeConnection() {
     }
 
     /**
      * Get the peeringDBFacilityId property: The PeeringDB.com ID of the facility at which the connection has to be set
      * up.
-     *
+     * 
      * @return the peeringDBFacilityId value.
      */
     public Integer peeringDBFacilityId() {
@@ -57,7 +60,7 @@ public final class ExchangeConnection {
     /**
      * Set the peeringDBFacilityId property: The PeeringDB.com ID of the facility at which the connection has to be set
      * up.
-     *
+     * 
      * @param peeringDBFacilityId the peeringDBFacilityId value to set.
      * @return the ExchangeConnection object itself.
      */
@@ -68,7 +71,7 @@ public final class ExchangeConnection {
 
     /**
      * Get the connectionState property: The state of the connection.
-     *
+     * 
      * @return the connectionState value.
      */
     public ConnectionState connectionState() {
@@ -77,7 +80,7 @@ public final class ExchangeConnection {
 
     /**
      * Get the bgpSession property: The BGP session associated with the connection.
-     *
+     * 
      * @return the bgpSession value.
      */
     public BgpSession bgpSession() {
@@ -86,7 +89,7 @@ public final class ExchangeConnection {
 
     /**
      * Set the bgpSession property: The BGP session associated with the connection.
-     *
+     * 
      * @param bgpSession the bgpSession value to set.
      * @return the ExchangeConnection object itself.
      */
@@ -97,7 +100,7 @@ public final class ExchangeConnection {
 
     /**
      * Get the connectionIdentifier property: The unique identifier (GUID) for the connection.
-     *
+     * 
      * @return the connectionIdentifier value.
      */
     public String connectionIdentifier() {
@@ -106,7 +109,7 @@ public final class ExchangeConnection {
 
     /**
      * Set the connectionIdentifier property: The unique identifier (GUID) for the connection.
-     *
+     * 
      * @param connectionIdentifier the connectionIdentifier value to set.
      * @return the ExchangeConnection object itself.
      */
@@ -117,7 +120,7 @@ public final class ExchangeConnection {
 
     /**
      * Get the errorMessage property: The error message related to the connection state, if any.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -126,12 +129,58 @@ public final class ExchangeConnection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (bgpSession() != null) {
             bgpSession().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("peeringDBFacilityId", this.peeringDBFacilityId);
+        jsonWriter.writeJsonField("bgpSession", this.bgpSession);
+        jsonWriter.writeStringField("connectionIdentifier", this.connectionIdentifier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExchangeConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExchangeConnection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExchangeConnection.
+     */
+    public static ExchangeConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExchangeConnection deserializedExchangeConnection = new ExchangeConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("peeringDBFacilityId".equals(fieldName)) {
+                    deserializedExchangeConnection.peeringDBFacilityId = reader.getNullable(JsonReader::getInt);
+                } else if ("connectionState".equals(fieldName)) {
+                    deserializedExchangeConnection.connectionState = ConnectionState.fromString(reader.getString());
+                } else if ("bgpSession".equals(fieldName)) {
+                    deserializedExchangeConnection.bgpSession = BgpSession.fromJson(reader);
+                } else if ("connectionIdentifier".equals(fieldName)) {
+                    deserializedExchangeConnection.connectionIdentifier = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedExchangeConnection.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExchangeConnection;
+        });
     }
 }

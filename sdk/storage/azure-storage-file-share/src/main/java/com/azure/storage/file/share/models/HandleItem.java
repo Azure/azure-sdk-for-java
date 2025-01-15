@@ -72,7 +72,8 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
     private List<ShareFileHandleAccessRights> accessRights;
 
     /** Creates an instance of HandleItem class. */
-    public HandleItem() {}
+    public HandleItem() {
+    }
 
     /**
      * Get the handleId property: XSMB service handle ID.

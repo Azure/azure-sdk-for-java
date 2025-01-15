@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.hybridkubernetes.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridkubernetes.models.CredentialResult;
 import com.azure.resourcemanager.hybridkubernetes.models.HybridConnectionConfig;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of credential result response. */
+/**
+ * The list of credential result response.
+ */
 @Immutable
-public final class CredentialResultsInner {
+public final class CredentialResultsInner implements JsonSerializable<CredentialResultsInner> {
     /*
      * Contains the REP (rendezvous endpoint) and “Sender” access token.
      */
-    @JsonProperty(value = "hybridConnectionConfig", access = JsonProperty.Access.WRITE_ONLY)
     private HybridConnectionConfig hybridConnectionConfig;
 
     /*
      * Base64-encoded Kubernetes configuration file.
      */
-    @JsonProperty(value = "kubeconfigs", access = JsonProperty.Access.WRITE_ONLY)
     private List<CredentialResult> kubeconfigs;
 
-    /** Creates an instance of CredentialResultsInner class. */
+    /**
+     * Creates an instance of CredentialResultsInner class.
+     */
     public CredentialResultsInner() {
     }
 
     /**
      * Get the hybridConnectionConfig property: Contains the REP (rendezvous endpoint) and “Sender” access token.
-     *
+     * 
      * @return the hybridConnectionConfig value.
      */
     public HybridConnectionConfig hybridConnectionConfig() {
@@ -40,7 +46,7 @@ public final class CredentialResultsInner {
 
     /**
      * Get the kubeconfigs property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @return the kubeconfigs value.
      */
     public List<CredentialResult> kubeconfigs() {
@@ -49,7 +55,7 @@ public final class CredentialResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -59,5 +65,44 @@ public final class CredentialResultsInner {
         if (kubeconfigs() != null) {
             kubeconfigs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialResultsInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CredentialResultsInner.
+     */
+    public static CredentialResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialResultsInner deserializedCredentialResultsInner = new CredentialResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hybridConnectionConfig".equals(fieldName)) {
+                    deserializedCredentialResultsInner.hybridConnectionConfig = HybridConnectionConfig.fromJson(reader);
+                } else if ("kubeconfigs".equals(fieldName)) {
+                    List<CredentialResult> kubeconfigs
+                        = reader.readArray(reader1 -> CredentialResult.fromJson(reader1));
+                    deserializedCredentialResultsInner.kubeconfigs = kubeconfigs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialResultsInner;
+        });
     }
 }

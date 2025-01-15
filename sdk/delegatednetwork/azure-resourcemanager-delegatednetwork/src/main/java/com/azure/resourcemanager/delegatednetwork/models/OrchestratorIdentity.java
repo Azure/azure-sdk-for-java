@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The OrchestratorIdentity model. */
+/**
+ * The OrchestratorIdentity model.
+ */
 @Fluent
-public class OrchestratorIdentity {
+public final class OrchestratorIdentity implements JsonSerializable<OrchestratorIdentity> {
     /*
      * The principal id of the system assigned identity which is used by orchestrator.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The tenant id of the system assigned identity which is used by orchestrator.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an implicitly created
-     * identity orchestrator clusters
+     * The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an implicitly created identity
+     * orchestrator clusters
      */
-    @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
-    /** Creates an instance of OrchestratorIdentity class. */
+    /**
+     * Creates an instance of OrchestratorIdentity class.
+     */
     public OrchestratorIdentity() {
     }
 
     /**
      * Get the principalId property: The principal id of the system assigned identity which is used by orchestrator.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -44,7 +49,7 @@ public class OrchestratorIdentity {
 
     /**
      * Get the tenantId property: The tenant id of the system assigned identity which is used by orchestrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -54,7 +59,7 @@ public class OrchestratorIdentity {
     /**
      * Get the type property: The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an
      * implicitly created identity orchestrator clusters.
-     *
+     * 
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -64,7 +69,7 @@ public class OrchestratorIdentity {
     /**
      * Set the type property: The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an
      * implicitly created identity orchestrator clusters.
-     *
+     * 
      * @param type the type value to set.
      * @return the OrchestratorIdentity object itself.
      */
@@ -75,9 +80,49 @@ public class OrchestratorIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrchestratorIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrchestratorIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrchestratorIdentity.
+     */
+    public static OrchestratorIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrchestratorIdentity deserializedOrchestratorIdentity = new OrchestratorIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedOrchestratorIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedOrchestratorIdentity.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOrchestratorIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrchestratorIdentity;
+        });
     }
 }

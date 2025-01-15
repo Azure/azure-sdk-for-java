@@ -7,9 +7,12 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdateProperties;
-import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.HostpoolPublicNetworkAccess;
+import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
@@ -19,90 +22,173 @@ import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithA
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetSku;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Represents a HostPool definition. */
+/**
+ * Represents a HostPool definition.
+ */
 @Fluent
 public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Detailed properties for HostPool
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private HostPoolPropertiesInner innerProperties = new HostPoolPropertiesInner();
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
     private SystemData systemData;
 
     /*
-     * Detailed properties for HostPool
+     * The etag field is *not* required. If it is provided in the response body, it must also be provided as a header
+     * per the normal etag convention. Entity tags are used for comparing two or more entities from the same requested
+     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section
+     * 14.26), and If-Range (section 14.27) header fields.
      */
-    @JsonProperty(value = "properties", required = true)
-    private HostPoolPropertiesInner innerProperties = new HostPoolPropertiesInner();
+    private String etag;
 
-    /** Creates an instance of HostPoolInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of HostPoolInner class.
+     */
     public HostPoolInner() {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the innerProperties property: Detailed properties for HostPool.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HostPoolPropertiesInner innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the etag property: The etag field is *not* required. If it is provided in the response body, it must also be
+     * provided as a header per the normal etag convention. Entity tags are used for comparing two or more entities from
+     * the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24),
+     * If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HostPoolInner withManagedBy(String managedBy) {
         super.withManagedBy(managedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HostPoolInner withKind(String kind) {
         super.withKind(kind);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HostPoolInner withIdentity(ResourceModelWithAllowedPropertySetIdentity identity) {
         super.withIdentity(identity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HostPoolInner withSku(ResourceModelWithAllowedPropertySetSku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HostPoolInner withPlan(ResourceModelWithAllowedPropertySetPlan plan) {
         super.withPlan(plan);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HostPoolInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HostPoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -111,7 +197,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the objectId property: ObjectId of HostPool. (internal use).
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -120,7 +206,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the friendlyName property: Friendly name of HostPool.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -129,7 +215,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the friendlyName property: Friendly name of HostPool.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the HostPoolInner object itself.
      */
@@ -143,7 +229,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the description property: Description of HostPool.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -152,7 +238,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the description property: Description of HostPool.
-     *
+     * 
      * @param description the description value to set.
      * @return the HostPoolInner object itself.
      */
@@ -166,7 +252,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the hostPoolType property: HostPool type for desktop.
-     *
+     * 
      * @return the hostPoolType value.
      */
     public HostPoolType hostPoolType() {
@@ -175,7 +261,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the hostPoolType property: HostPool type for desktop.
-     *
+     * 
      * @param hostPoolType the hostPoolType value to set.
      * @return the HostPoolInner object itself.
      */
@@ -189,7 +275,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the personalDesktopAssignmentType property: PersonalDesktopAssignment type for HostPool.
-     *
+     * 
      * @return the personalDesktopAssignmentType value.
      */
     public PersonalDesktopAssignmentType personalDesktopAssignmentType() {
@@ -198,12 +284,12 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the personalDesktopAssignmentType property: PersonalDesktopAssignment type for HostPool.
-     *
+     * 
      * @param personalDesktopAssignmentType the personalDesktopAssignmentType value to set.
      * @return the HostPoolInner object itself.
      */
-    public HostPoolInner withPersonalDesktopAssignmentType(
-        PersonalDesktopAssignmentType personalDesktopAssignmentType) {
+    public HostPoolInner
+        withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType personalDesktopAssignmentType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HostPoolPropertiesInner();
         }
@@ -213,7 +299,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the customRdpProperty property: Custom rdp property of HostPool.
-     *
+     * 
      * @return the customRdpProperty value.
      */
     public String customRdpProperty() {
@@ -222,7 +308,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the customRdpProperty property: Custom rdp property of HostPool.
-     *
+     * 
      * @param customRdpProperty the customRdpProperty value to set.
      * @return the HostPoolInner object itself.
      */
@@ -236,7 +322,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the maxSessionLimit property: The max session limit of HostPool.
-     *
+     * 
      * @return the maxSessionLimit value.
      */
     public Integer maxSessionLimit() {
@@ -245,7 +331,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the maxSessionLimit property: The max session limit of HostPool.
-     *
+     * 
      * @param maxSessionLimit the maxSessionLimit value to set.
      * @return the HostPoolInner object itself.
      */
@@ -259,7 +345,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the loadBalancerType property: The type of the load balancer.
-     *
+     * 
      * @return the loadBalancerType value.
      */
     public LoadBalancerType loadBalancerType() {
@@ -268,7 +354,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the loadBalancerType property: The type of the load balancer.
-     *
+     * 
      * @param loadBalancerType the loadBalancerType value to set.
      * @return the HostPoolInner object itself.
      */
@@ -282,7 +368,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the ring property: The ring number of HostPool.
-     *
+     * 
      * @return the ring value.
      */
     public Integer ring() {
@@ -291,7 +377,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the ring property: The ring number of HostPool.
-     *
+     * 
      * @param ring the ring value to set.
      * @return the HostPoolInner object itself.
      */
@@ -305,7 +391,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the validationEnvironment property: Is validation environment.
-     *
+     * 
      * @return the validationEnvironment value.
      */
     public Boolean validationEnvironment() {
@@ -314,7 +400,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the validationEnvironment property: Is validation environment.
-     *
+     * 
      * @param validationEnvironment the validationEnvironment value to set.
      * @return the HostPoolInner object itself.
      */
@@ -328,7 +414,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the registrationInfo property: The registration info of HostPool.
-     *
+     * 
      * @return the registrationInfo value.
      */
     public RegistrationInfoInner registrationInfo() {
@@ -337,7 +423,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the registrationInfo property: The registration info of HostPool.
-     *
+     * 
      * @param registrationInfo the registrationInfo value to set.
      * @return the HostPoolInner object itself.
      */
@@ -351,7 +437,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the vmTemplate property: VM template for sessionhosts configuration within hostpool.
-     *
+     * 
      * @return the vmTemplate value.
      */
     public String vmTemplate() {
@@ -360,7 +446,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the vmTemplate property: VM template for sessionhosts configuration within hostpool.
-     *
+     * 
      * @param vmTemplate the vmTemplate value to set.
      * @return the HostPoolInner object itself.
      */
@@ -374,7 +460,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the applicationGroupReferences property: List of applicationGroup links.
-     *
+     * 
      * @return the applicationGroupReferences value.
      */
     public List<String> applicationGroupReferences() {
@@ -382,8 +468,17 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     }
 
     /**
+     * Get the appAttachPackageReferences property: List of App Attach Package links.
+     * 
+     * @return the appAttachPackageReferences value.
+     */
+    public List<String> appAttachPackageReferences() {
+        return this.innerProperties() == null ? null : this.innerProperties().appAttachPackageReferences();
+    }
+
+    /**
      * Get the ssoadfsAuthority property: URL to customer ADFS server for signing WVD SSO certificates.
-     *
+     * 
      * @return the ssoadfsAuthority value.
      */
     public String ssoadfsAuthority() {
@@ -392,7 +487,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the ssoadfsAuthority property: URL to customer ADFS server for signing WVD SSO certificates.
-     *
+     * 
      * @param ssoadfsAuthority the ssoadfsAuthority value to set.
      * @return the HostPoolInner object itself.
      */
@@ -406,7 +501,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the ssoClientId property: ClientId for the registered Relying Party used to issue WVD SSO certificates.
-     *
+     * 
      * @return the ssoClientId value.
      */
     public String ssoClientId() {
@@ -415,7 +510,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the ssoClientId property: ClientId for the registered Relying Party used to issue WVD SSO certificates.
-     *
+     * 
      * @param ssoClientId the ssoClientId value to set.
      * @return the HostPoolInner object itself.
      */
@@ -430,7 +525,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /**
      * Get the ssoClientSecretKeyVaultPath property: Path to Azure KeyVault storing the secret used for communication to
      * ADFS.
-     *
+     * 
      * @return the ssoClientSecretKeyVaultPath value.
      */
     public String ssoClientSecretKeyVaultPath() {
@@ -440,7 +535,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /**
      * Set the ssoClientSecretKeyVaultPath property: Path to Azure KeyVault storing the secret used for communication to
      * ADFS.
-     *
+     * 
      * @param ssoClientSecretKeyVaultPath the ssoClientSecretKeyVaultPath value to set.
      * @return the HostPoolInner object itself.
      */
@@ -454,7 +549,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the ssoSecretType property: The type of single sign on Secret Type.
-     *
+     * 
      * @return the ssoSecretType value.
      */
     public SsoSecretType ssoSecretType() {
@@ -463,7 +558,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the ssoSecretType property: The type of single sign on Secret Type.
-     *
+     * 
      * @param ssoSecretType the ssoSecretType value to set.
      * @return the HostPoolInner object itself.
      */
@@ -478,7 +573,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /**
      * Get the preferredAppGroupType property: The type of preferred application group type, default to Desktop
      * Application Group.
-     *
+     * 
      * @return the preferredAppGroupType value.
      */
     public PreferredAppGroupType preferredAppGroupType() {
@@ -488,7 +583,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /**
      * Set the preferredAppGroupType property: The type of preferred application group type, default to Desktop
      * Application Group.
-     *
+     * 
      * @param preferredAppGroupType the preferredAppGroupType value to set.
      * @return the HostPoolInner object itself.
      */
@@ -502,7 +597,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the startVMOnConnect property: The flag to turn on/off StartVMOnConnect feature.
-     *
+     * 
      * @return the startVMOnConnect value.
      */
     public Boolean startVMOnConnect() {
@@ -511,7 +606,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Set the startVMOnConnect property: The flag to turn on/off StartVMOnConnect feature.
-     *
+     * 
      * @param startVMOnConnect the startVMOnConnect value to set.
      * @return the HostPoolInner object itself.
      */
@@ -525,7 +620,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Get the cloudPcResource property: Is cloud pc resource.
-     *
+     * 
      * @return the cloudPcResource value.
      */
     public Boolean cloudPcResource() {
@@ -535,7 +630,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /**
      * Get the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
      * networks, Disabled allows this resource to only be accessed via private endpoints.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public HostpoolPublicNetworkAccess publicNetworkAccess() {
@@ -545,7 +640,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /**
      * Set the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
      * networks, Disabled allows this resource to only be accessed via private endpoints.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the HostPoolInner object itself.
      */
@@ -560,7 +655,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /**
      * Get the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
      * component.
-     *
+     * 
      * @return the agentUpdate value.
      */
     public AgentUpdateProperties agentUpdate() {
@@ -570,7 +665,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /**
      * Set the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
      * component.
-     *
+     * 
      * @param agentUpdate the agentUpdate value to set.
      * @return the HostPoolInner object itself.
      */
@@ -585,7 +680,7 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -594,20 +689,97 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model HostPoolInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model HostPoolInner"));
         } else {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (plan() != null) {
+            plan().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HostPoolInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("managedBy", managedBy());
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeJsonField("plan", plan());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostPoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostPoolInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HostPoolInner.
+     */
+    public static HostPoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostPoolInner deserializedHostPoolInner = new HostPoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHostPoolInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedHostPoolInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHostPoolInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedHostPoolInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHostPoolInner.withTags(tags);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedHostPoolInner.withManagedBy(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedHostPoolInner.withKind(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedHostPoolInner.etag = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedHostPoolInner
+                        .withIdentity(ResourceModelWithAllowedPropertySetIdentity.fromJson(reader));
+                } else if ("sku".equals(fieldName)) {
+                    deserializedHostPoolInner.withSku(ResourceModelWithAllowedPropertySetSku.fromJson(reader));
+                } else if ("plan".equals(fieldName)) {
+                    deserializedHostPoolInner.withPlan(ResourceModelWithAllowedPropertySetPlan.fromJson(reader));
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedHostPoolInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHostPoolInner.innerProperties = HostPoolPropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostPoolInner;
+        });
+    }
 }

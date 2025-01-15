@@ -25,23 +25,28 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.Workflow
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowOperationStatusClient.
+ */
 public final class WorkflowOperationStatusClientImpl implements WorkflowOperationStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowOperationStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of WorkflowOperationStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowOperationStatusClientImpl(DataReplicationMgmtClientImpl client) {
-        this.service =
-            RestProxy
-                .create(WorkflowOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkflowOperationStatusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,28 +57,22 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface WorkflowOperationStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/jobs/{jobName}/operations/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/jobs/{jobName}/operations/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OperationStatusInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("jobName") String jobName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("jobName") String jobName, @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -84,19 +83,15 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
      * @return defines the operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String jobName, String operationId) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String jobName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -113,27 +108,16 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            jobName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, jobName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -145,19 +129,15 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
      * @return defines the operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String jobName, String operationId, Context context) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String jobName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -174,24 +154,15 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                jobName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            jobName, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -202,17 +173,17 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
      * @return defines the operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> getAsync(
-        String resourceGroupName, String vaultName, String jobName, String operationId) {
+    private Mono<OperationStatusInner> getAsync(String resourceGroupName, String vaultName, String jobName,
+        String operationId) {
         return getWithResponseAsync(resourceGroupName, vaultName, jobName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -224,16 +195,16 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
      * @return defines the operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getWithResponse(
-        String resourceGroupName, String vaultName, String jobName, String operationId, Context context) {
+    public Response<OperationStatusInner> getWithResponse(String resourceGroupName, String vaultName, String jobName,
+        String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, jobName, operationId, context).block();
     }
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.

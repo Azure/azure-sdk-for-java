@@ -77,20 +77,16 @@ class LoadBalancerImpl
 
     @Override
     public Mono<LoadBalancer> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                loadBalancer -> {
-                    LoadBalancerImpl impl = (LoadBalancerImpl) loadBalancer;
-                    impl.initializeChildrenFromInner();
-                    return impl;
-                });
+        return super.refreshAsync().map(loadBalancer -> {
+            LoadBalancerImpl impl = (LoadBalancerImpl) loadBalancer;
+            impl.initializeChildrenFromInner();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<LoadBalancerInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getLoadBalancers()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -98,8 +94,7 @@ class LoadBalancerImpl
 
     @Override
     protected Mono<LoadBalancerInner> applyTagsToInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getLoadBalancers()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
@@ -172,8 +167,8 @@ class LoadBalancerImpl
             return frontend;
         } else {
             // Create new frontend
-            LoadBalancerFrontendImpl fe =
-                this.ensureUniqueFrontend().withExistingSubnet(networkId, subnetName).withPrivateIpAddressDynamic();
+            LoadBalancerFrontendImpl fe
+                = this.ensureUniqueFrontend().withExistingSubnet(networkId, subnetName).withPrivateIpAddressDynamic();
             fe.attach();
             return fe;
         }
@@ -269,13 +264,11 @@ class LoadBalancerImpl
             // Clear deleted frontend references
             List<SubResource> refs = outboundRule.innerModel().frontendIpConfigurations();
             if (refs != null && !refs.isEmpty()) {
-                List<SubResource> existingFrontendIpConfigurations =
-                    refs.stream()
-                        .filter(ref ->
-                            this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))
-                        )
-                        .collect(Collectors.toList());
-                existingFrontendIpConfigurations = existingFrontendIpConfigurations.isEmpty() ? null : existingFrontendIpConfigurations;
+                List<SubResource> existingFrontendIpConfigurations = refs.stream()
+                    .filter(ref -> this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id())))
+                    .collect(Collectors.toList());
+                existingFrontendIpConfigurations
+                    = existingFrontendIpConfigurations.isEmpty() ? null : existingFrontendIpConfigurations;
                 outboundRule.innerModel().withFrontendIpConfigurations(existingFrontendIpConfigurations);
             }
             // clear deleted backend references
@@ -306,7 +299,10 @@ class LoadBalancerImpl
                 lbRule.innerModel().withBackendAddressPool(null);
             }
             if (!CoreUtils.isNullOrEmpty(lbRule.innerModel().backendAddressPools())) {
-                lbRule.innerModel().backendAddressPools().removeIf(backendRef -> backendRef != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(backendRef.id())));
+                lbRule.innerModel()
+                    .backendAddressPools()
+                    .removeIf(backendRef -> backendRef != null
+                        && !this.backends().containsKey(ResourceUtils.nameFromResourceId(backendRef.id())));
             }
 
             // Clear deleted probe references
@@ -324,51 +320,35 @@ class LoadBalancerImpl
         if (this.nicsInBackends != null) {
             List<Throwable> nicExceptions = new ArrayList<>();
 
-            return Flux
-                .fromIterable(this.nicsInBackends.entrySet())
-                .flatMap(
-                    nicInBackend -> {
-                        String nicId = nicInBackend.getKey();
-                        String backendName = nicInBackend.getValue();
-                        return this
-                            .manager()
-                            .networkInterfaces()
-                            .getByIdAsync(nicId)
-                            .flatMap(
-                                nic -> {
-                                    NicIpConfiguration nicIP = nic.primaryIPConfiguration();
-                                    return nic
-                                        .update()
-                                        .updateIPConfiguration(nicIP.name())
-                                        .withExistingLoadBalancerBackend(this, backendName)
-                                        .parent()
-                                        .applyAsync();
-                                });
-                    })
-                .onErrorResume(
-                    t -> {
-                        nicExceptions.add(t);
-                        return Mono.empty();
-                    })
-                .then(
-                    Mono
-                        .defer(
-                            () -> {
-                                if (!nicExceptions.isEmpty()) {
-                                    return Mono.error(Exceptions.multiple(nicExceptions));
-                                } else {
-                                    this.nicsInBackends.clear();
-                                    return Mono.empty();
-                                }
-                            }));
+            return Flux.fromIterable(this.nicsInBackends.entrySet()).flatMap(nicInBackend -> {
+                String nicId = nicInBackend.getKey();
+                String backendName = nicInBackend.getValue();
+                return this.manager().networkInterfaces().getByIdAsync(nicId).flatMap(nic -> {
+                    NicIpConfiguration nicIP = nic.primaryIPConfiguration();
+                    return nic.update()
+                        .updateIPConfiguration(nicIP.name())
+                        .withExistingLoadBalancerBackend(this, backendName)
+                        .parent()
+                        .applyAsync();
+                });
+            }).onErrorResume(t -> {
+                nicExceptions.add(t);
+                return Mono.empty();
+            }).then(Mono.defer(() -> {
+                if (!nicExceptions.isEmpty()) {
+                    return Mono.error(Exceptions.multiple(nicExceptions));
+                } else {
+                    this.nicsInBackends.clear();
+                    return Mono.empty();
+                }
+            }));
         }
         return Mono.empty();
     }
 
     @Override
     protected Mono<LoadBalancerInner> createInner() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getLoadBalancers()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
@@ -377,13 +357,11 @@ class LoadBalancerImpl
     @Override
     public Mono<LoadBalancer> createResourceAsync() {
         beforeCreating();
-        return createInner()
-            .flatMap(
-                inner -> {
-                    setInner(inner);
-                    initializeChildrenFromInner();
-                    return afterCreatingAsync().then(this.refreshAsync());
-                });
+        return createInner().flatMap(inner -> {
+            setInner(inner);
+            initializeChildrenFromInner();
+            return afterCreatingAsync().then(this.refreshAsync());
+        });
     }
 
     private void initializeFrontendsFromInner() {
@@ -471,8 +449,7 @@ class LoadBalancerImpl
     }
 
     String futureResourceId() {
-        return new StringBuilder()
-            .append(super.resourceIdBase())
+        return new StringBuilder().append(super.resourceIdBase())
             .append("/providers/Microsoft.Network/loadBalancers/")
             .append(this.name())
             .toString();
@@ -536,12 +513,12 @@ class LoadBalancerImpl
     // Withers (fluent)
 
     LoadBalancerImpl withNewPublicIPAddress(String dnsLeafLabel, String frontendName) {
-        PublicIpAddress.DefinitionStages.WithGroup precreatablePIP =
-            manager().publicIpAddresses().define(dnsLeafLabel).withRegion(this.regionName());
+        PublicIpAddress.DefinitionStages.WithGroup precreatablePIP
+            = manager().publicIpAddresses().define(dnsLeafLabel).withRegion(this.regionName());
         Creatable<PublicIpAddress> creatablePip;
         if (super.creatableGroup == null) {
-            creatablePip =
-                precreatablePIP.withExistingResourceGroup(this.resourceGroupName()).withLeafDomainLabel(dnsLeafLabel);
+            creatablePip
+                = precreatablePIP.withExistingResourceGroup(this.resourceGroupName()).withLeafDomainLabel(dnsLeafLabel);
         } else {
             creatablePip = precreatablePIP.withNewResourceGroup(super.creatableGroup).withLeafDomainLabel(dnsLeafLabel);
         }
@@ -565,8 +542,8 @@ class LoadBalancerImpl
             this.creatablePIPKeys.put(this.addDependency(creatablePip), frontendName);
         } else if (!existingPipFrontendName.equalsIgnoreCase(frontendName)) {
             // Existing PIP definition already in use but under a different frontend, so error
-            String exceptionMessage =
-                "This public IP address definition is already associated with a frontend under a different name.";
+            String exceptionMessage
+                = "This public IP address definition is already associated with a frontend under a different name.";
             throw logger.logExceptionAsError(new IllegalArgumentException(exceptionMessage));
         }
 

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointsList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"a\",\"value\":[{\"properties\":{\"type\":\"default\",\"resourceId\":\"hab\",\"provisioningState\":\"pikxwczbyscnpqxu\"},\"id\":\"vyq\",\"name\":\"iwbybrkxvdumjg\",\"type\":\"tfwvukxgaudc\"}]}")
-                .toObject(EndpointsList.class);
+        EndpointsList model = BinaryData.fromString(
+            "{\"nextLink\":\"a\",\"value\":[{\"properties\":{\"type\":\"default\",\"resourceId\":\"hab\",\"provisioningState\":\"pikxwczbyscnpqxu\"},\"id\":\"vyq\",\"name\":\"iwbybrkxvdumjg\",\"type\":\"tfwvukxgaudc\"}]}")
+            .toObject(EndpointsList.class);
         Assertions.assertEquals("a", model.nextLink());
         Assertions.assertEquals(Type.DEFAULT, model.value().get(0).properties().type());
         Assertions.assertEquals("hab", model.value().get(0).properties().resourceId());
@@ -27,15 +25,9 @@ public final class EndpointsListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointsList model =
-            new EndpointsList()
-                .withNextLink("a")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new EndpointResourceInner()
-                                .withProperties(
-                                    new EndpointProperties().withType(Type.DEFAULT).withResourceId("hab"))));
+        EndpointsList model = new EndpointsList().withNextLink("a")
+            .withValue(Arrays.asList(new EndpointResourceInner()
+                .withProperties(new EndpointProperties().withType(Type.DEFAULT).withResourceId("hab"))));
         model = BinaryData.fromObject(model).toObject(EndpointsList.class);
         Assertions.assertEquals("a", model.nextLink());
         Assertions.assertEquals(Type.DEFAULT, model.value().get(0).properties().type());

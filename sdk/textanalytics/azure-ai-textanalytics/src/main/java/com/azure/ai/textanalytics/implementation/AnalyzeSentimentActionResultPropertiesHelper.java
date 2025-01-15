@@ -12,7 +12,8 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 public final class AnalyzeSentimentActionResultPropertiesHelper {
     private static AnalyzeSentimentActionResultAccessor accessor;
 
-    private AnalyzeSentimentActionResultPropertiesHelper() { }
+    private AnalyzeSentimentActionResultPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AnalyzeSentimentActionResult}

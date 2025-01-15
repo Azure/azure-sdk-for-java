@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties that define a direct peering facility. */
+/**
+ * The properties that define a direct peering facility.
+ */
 @Fluent
-public final class DirectPeeringFacility {
+public final class DirectPeeringFacility implements JsonSerializable<DirectPeeringFacility> {
     /*
      * The address of the direct peering facility.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * The type of the direct peering.
      */
-    @JsonProperty(value = "directPeeringType")
     private DirectPeeringType directPeeringType;
 
     /*
      * The PeeringDB.com ID of the facility.
      */
-    @JsonProperty(value = "peeringDBFacilityId")
     private Integer peeringDBFacilityId;
 
     /*
      * The PeeringDB.com URL of the facility.
      */
-    @JsonProperty(value = "peeringDBFacilityLink")
     private String peeringDBFacilityLink;
 
-    /** Creates an instance of DirectPeeringFacility class. */
+    /**
+     * Creates an instance of DirectPeeringFacility class.
+     */
     public DirectPeeringFacility() {
     }
 
     /**
      * Get the address property: The address of the direct peering facility.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -49,7 +53,7 @@ public final class DirectPeeringFacility {
 
     /**
      * Set the address property: The address of the direct peering facility.
-     *
+     * 
      * @param address the address value to set.
      * @return the DirectPeeringFacility object itself.
      */
@@ -60,7 +64,7 @@ public final class DirectPeeringFacility {
 
     /**
      * Get the directPeeringType property: The type of the direct peering.
-     *
+     * 
      * @return the directPeeringType value.
      */
     public DirectPeeringType directPeeringType() {
@@ -69,7 +73,7 @@ public final class DirectPeeringFacility {
 
     /**
      * Set the directPeeringType property: The type of the direct peering.
-     *
+     * 
      * @param directPeeringType the directPeeringType value to set.
      * @return the DirectPeeringFacility object itself.
      */
@@ -80,7 +84,7 @@ public final class DirectPeeringFacility {
 
     /**
      * Get the peeringDBFacilityId property: The PeeringDB.com ID of the facility.
-     *
+     * 
      * @return the peeringDBFacilityId value.
      */
     public Integer peeringDBFacilityId() {
@@ -89,7 +93,7 @@ public final class DirectPeeringFacility {
 
     /**
      * Set the peeringDBFacilityId property: The PeeringDB.com ID of the facility.
-     *
+     * 
      * @param peeringDBFacilityId the peeringDBFacilityId value to set.
      * @return the DirectPeeringFacility object itself.
      */
@@ -100,7 +104,7 @@ public final class DirectPeeringFacility {
 
     /**
      * Get the peeringDBFacilityLink property: The PeeringDB.com URL of the facility.
-     *
+     * 
      * @return the peeringDBFacilityLink value.
      */
     public String peeringDBFacilityLink() {
@@ -109,7 +113,7 @@ public final class DirectPeeringFacility {
 
     /**
      * Set the peeringDBFacilityLink property: The PeeringDB.com URL of the facility.
-     *
+     * 
      * @param peeringDBFacilityLink the peeringDBFacilityLink value to set.
      * @return the DirectPeeringFacility object itself.
      */
@@ -120,9 +124,56 @@ public final class DirectPeeringFacility {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeStringField("directPeeringType",
+            this.directPeeringType == null ? null : this.directPeeringType.toString());
+        jsonWriter.writeNumberField("peeringDBFacilityId", this.peeringDBFacilityId);
+        jsonWriter.writeStringField("peeringDBFacilityLink", this.peeringDBFacilityLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DirectPeeringFacility from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DirectPeeringFacility if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DirectPeeringFacility.
+     */
+    public static DirectPeeringFacility fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DirectPeeringFacility deserializedDirectPeeringFacility = new DirectPeeringFacility();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedDirectPeeringFacility.address = reader.getString();
+                } else if ("directPeeringType".equals(fieldName)) {
+                    deserializedDirectPeeringFacility.directPeeringType
+                        = DirectPeeringType.fromString(reader.getString());
+                } else if ("peeringDBFacilityId".equals(fieldName)) {
+                    deserializedDirectPeeringFacility.peeringDBFacilityId = reader.getNullable(JsonReader::getInt);
+                } else if ("peeringDBFacilityLink".equals(fieldName)) {
+                    deserializedDirectPeeringFacility.peeringDBFacilityLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDirectPeeringFacility;
+        });
     }
 }

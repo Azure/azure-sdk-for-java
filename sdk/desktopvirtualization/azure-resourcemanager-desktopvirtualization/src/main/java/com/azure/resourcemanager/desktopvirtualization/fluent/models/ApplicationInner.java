@@ -8,41 +8,54 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Schema for Application properties. */
+/**
+ * Schema for Application properties.
+ */
 @Fluent
 public final class ApplicationInner extends ProxyResource {
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * Detailed properties for Application
      */
-    @JsonProperty(value = "properties", required = true)
     private ApplicationProperties innerProperties = new ApplicationProperties();
 
-    /** Creates an instance of ApplicationInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApplicationInner class.
+     */
     public ApplicationInner() {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the innerProperties property: Detailed properties for Application.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationProperties innerProperties() {
@@ -50,8 +63,47 @@ public final class ApplicationInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the objectId property: ObjectId of Application. (internal use).
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -60,7 +112,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the description property: Description of Application.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -69,7 +121,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the description property: Description of Application.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationInner object itself.
      */
@@ -83,7 +135,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the friendlyName property: Friendly name of Application.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -92,7 +144,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the friendlyName property: Friendly name of Application.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ApplicationInner object itself.
      */
@@ -106,7 +158,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the filePath property: Specifies a path for the executable file for the application.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -115,7 +167,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the filePath property: Specifies a path for the executable file for the application.
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the ApplicationInner object itself.
      */
@@ -129,7 +181,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the msixPackageFamilyName property: Specifies the package family name for MSIX applications.
-     *
+     * 
      * @return the msixPackageFamilyName value.
      */
     public String msixPackageFamilyName() {
@@ -138,7 +190,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the msixPackageFamilyName property: Specifies the package family name for MSIX applications.
-     *
+     * 
      * @param msixPackageFamilyName the msixPackageFamilyName value to set.
      * @return the ApplicationInner object itself.
      */
@@ -152,7 +204,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the msixPackageApplicationId property: Specifies the package application Id for MSIX applications.
-     *
+     * 
      * @return the msixPackageApplicationId value.
      */
     public String msixPackageApplicationId() {
@@ -161,7 +213,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the msixPackageApplicationId property: Specifies the package application Id for MSIX applications.
-     *
+     * 
      * @param msixPackageApplicationId the msixPackageApplicationId value to set.
      * @return the ApplicationInner object itself.
      */
@@ -175,7 +227,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the applicationType property: Resource Type of Application.
-     *
+     * 
      * @return the applicationType value.
      */
     public RemoteApplicationType applicationType() {
@@ -184,7 +236,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the applicationType property: Resource Type of Application.
-     *
+     * 
      * @param applicationType the applicationType value to set.
      * @return the ApplicationInner object itself.
      */
@@ -200,7 +252,7 @@ public final class ApplicationInner extends ProxyResource {
      * Get the commandLineSetting property: Specifies whether this published application can be launched with command
      * line arguments provided by the client, command line arguments specified at publish time, or no command line
      * arguments at all.
-     *
+     * 
      * @return the commandLineSetting value.
      */
     public CommandLineSetting commandLineSetting() {
@@ -211,7 +263,7 @@ public final class ApplicationInner extends ProxyResource {
      * Set the commandLineSetting property: Specifies whether this published application can be launched with command
      * line arguments provided by the client, command line arguments specified at publish time, or no command line
      * arguments at all.
-     *
+     * 
      * @param commandLineSetting the commandLineSetting value to set.
      * @return the ApplicationInner object itself.
      */
@@ -225,7 +277,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the commandLineArguments property: Command Line Arguments for Application.
-     *
+     * 
      * @return the commandLineArguments value.
      */
     public String commandLineArguments() {
@@ -234,7 +286,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the commandLineArguments property: Command Line Arguments for Application.
-     *
+     * 
      * @param commandLineArguments the commandLineArguments value to set.
      * @return the ApplicationInner object itself.
      */
@@ -248,7 +300,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the showInPortal property: Specifies whether to show the RemoteApp program in the RD Web Access server.
-     *
+     * 
      * @return the showInPortal value.
      */
     public Boolean showInPortal() {
@@ -257,7 +309,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the showInPortal property: Specifies whether to show the RemoteApp program in the RD Web Access server.
-     *
+     * 
      * @param showInPortal the showInPortal value to set.
      * @return the ApplicationInner object itself.
      */
@@ -271,7 +323,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the iconPath property: Path to icon.
-     *
+     * 
      * @return the iconPath value.
      */
     public String iconPath() {
@@ -280,7 +332,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the iconPath property: Path to icon.
-     *
+     * 
      * @param iconPath the iconPath value to set.
      * @return the ApplicationInner object itself.
      */
@@ -294,7 +346,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the iconIndex property: Index of the icon.
-     *
+     * 
      * @return the iconIndex value.
      */
     public Integer iconIndex() {
@@ -303,7 +355,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the iconIndex property: Index of the icon.
-     *
+     * 
      * @param iconIndex the iconIndex value to set.
      * @return the ApplicationInner object itself.
      */
@@ -317,7 +369,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the iconHash property: Hash of the icon.
-     *
+     * 
      * @return the iconHash value.
      */
     public String iconHash() {
@@ -326,28 +378,72 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the iconContent property: the icon a 64 bit string as a byte array.
-     *
+     * 
      * @return the iconContent value.
      */
     public byte[] iconContent() {
-        return this.innerProperties() == null ? new byte[0] : this.innerProperties().iconContent();
+        return this.innerProperties() == null ? EMPTY_BYTE_ARRAY : this.innerProperties().iconContent();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ApplicationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ApplicationInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationInner.
+     */
+    public static ApplicationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationInner deserializedApplicationInner = new ApplicationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationInner.innerProperties = ApplicationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedApplicationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationInner;
+        });
+    }
 }

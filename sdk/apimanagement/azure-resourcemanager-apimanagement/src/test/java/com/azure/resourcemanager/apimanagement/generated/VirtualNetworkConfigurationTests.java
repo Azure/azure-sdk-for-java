@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"vnetid\":\"nwcehaqidoyzl\",\"subnetname\":\"iomqoqpepiaea\",\"subnetResourceId\":\"sergdtpe\"}")
-                .toObject(VirtualNetworkConfiguration.class);
+        VirtualNetworkConfiguration model = BinaryData
+            .fromString(
+                "{\"vnetid\":\"nwcehaqidoyzl\",\"subnetname\":\"iomqoqpepiaea\",\"subnetResourceId\":\"sergdtpe\"}")
+            .toObject(VirtualNetworkConfiguration.class);
         Assertions.assertEquals("sergdtpe", model.subnetResourceId());
     }
 

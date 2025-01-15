@@ -5,23 +5,27 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The setting to enable usage of premium data disks. When its value is 'Enabled', creation of standard or premium data
- * disks is allowed. When its value is 'Disabled', only creation of standard data disks is allowed.
+ * The setting to enable usage of premium data disks.
+ * When its value is 'Enabled', creation of standard or premium data disks is allowed.
+ * When its value is 'Disabled', only creation of standard data disks is allowed.
  */
 public final class PremiumDataDisk extends ExpandableStringEnum<PremiumDataDisk> {
-    /** Static value Disabled for PremiumDataDisk. */
+    /**
+     * Static value Disabled for PremiumDataDisk.
+     */
     public static final PremiumDataDisk DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for PremiumDataDisk. */
+    /**
+     * Static value Enabled for PremiumDataDisk.
+     */
     public static final PremiumDataDisk ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of PremiumDataDisk value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +34,17 @@ public final class PremiumDataDisk extends ExpandableStringEnum<PremiumDataDisk>
 
     /**
      * Creates or finds a PremiumDataDisk from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PremiumDataDisk.
      */
-    @JsonCreator
     public static PremiumDataDisk fromString(String name) {
         return fromString(name, PremiumDataDisk.class);
     }
 
     /**
      * Gets known PremiumDataDisk values.
-     *
+     * 
      * @return known PremiumDataDisk values.
      */
     public static Collection<PremiumDataDisk> values() {

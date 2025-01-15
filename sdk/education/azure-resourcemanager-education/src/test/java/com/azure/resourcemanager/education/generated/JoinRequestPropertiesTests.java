@@ -8,34 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.fluent.models.JoinRequestProperties;
 import com.azure.resourcemanager.education.models.JoinRequestStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JoinRequestPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        JoinRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"firstName\":\"olniwpwcukjf\",\"lastName\":\"iawxklry\",\"email\":\"wckbasyypnd\",\"status\":\"Pending\"}")
-                .toObject(JoinRequestProperties.class);
-        Assertions.assertEquals("olniwpwcukjf", model.firstName());
-        Assertions.assertEquals("iawxklry", model.lastName());
-        Assertions.assertEquals("wckbasyypnd", model.email());
-        Assertions.assertEquals(JoinRequestStatus.PENDING, model.status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        JoinRequestProperties model = BinaryData.fromString(
+            "{\"firstName\":\"wpdappdsbdkv\",\"lastName\":\"wjfeusnhutjel\",\"email\":\"rl\",\"status\":\"Denied\"}")
+            .toObject(JoinRequestProperties.class);
+        Assertions.assertEquals("wpdappdsbdkv", model.firstName());
+        Assertions.assertEquals("wjfeusnhutjel", model.lastName());
+        Assertions.assertEquals("rl", model.email());
+        Assertions.assertEquals(JoinRequestStatus.DENIED, model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        JoinRequestProperties model =
-            new JoinRequestProperties()
-                .withFirstName("olniwpwcukjf")
-                .withLastName("iawxklry")
-                .withEmail("wckbasyypnd")
-                .withStatus(JoinRequestStatus.PENDING);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        JoinRequestProperties model = new JoinRequestProperties().withFirstName("wpdappdsbdkv")
+            .withLastName("wjfeusnhutjel")
+            .withEmail("rl")
+            .withStatus(JoinRequestStatus.DENIED);
         model = BinaryData.fromObject(model).toObject(JoinRequestProperties.class);
-        Assertions.assertEquals("olniwpwcukjf", model.firstName());
-        Assertions.assertEquals("iawxklry", model.lastName());
-        Assertions.assertEquals("wckbasyypnd", model.email());
-        Assertions.assertEquals(JoinRequestStatus.PENDING, model.status());
+        Assertions.assertEquals("wpdappdsbdkv", model.firstName());
+        Assertions.assertEquals("wjfeusnhutjel", model.lastName());
+        Assertions.assertEquals("rl", model.email());
+        Assertions.assertEquals(JoinRequestStatus.DENIED, model.status());
     }
 }

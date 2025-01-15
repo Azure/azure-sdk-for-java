@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public final class ClustersClientImpl implements ClustersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ClustersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConnectedVMwareClientImpl client;
 
     /**
      * Initializes an instance of ClustersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ClustersClientImpl(ConnectedVMwareClientImpl client) {
@@ -65,115 +71,83 @@ public final class ClustersClientImpl implements ClustersClient {
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
     public interface ClustersService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters/{clusterName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters/{clusterName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ClusterInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ClusterInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters/{clusterName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters/{clusterName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ClusterInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters/{clusterName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters/{clusterName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ClusterInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ResourcePatch body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ResourcePatch body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters/{clusterName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters/{clusterName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("force") Boolean force,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("force") Boolean force,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/clusters")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClustersList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ClustersList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ClustersList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/clusters")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClustersList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClustersList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ClustersList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClustersList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -183,19 +157,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return define the cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String clusterName,
+        ClusterInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -209,26 +179,16 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -239,19 +199,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return define the cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String clusterName, ClusterInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String clusterName,
+        ClusterInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -265,23 +221,15 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -291,20 +239,18 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of define the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateAsync(
-        String resourceGroupName, String clusterName, ClusterInner body) {
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateAsync(String resourceGroupName,
+        String clusterName, ClusterInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, clusterName, body);
-        return this
-            .client
-            .<ClusterInner, ClusterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, this.client.getContext());
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,21 +259,19 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of define the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateAsync(
-        String resourceGroupName, String clusterName) {
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateAsync(String resourceGroupName,
+        String clusterName) {
         final ClusterInner body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, clusterName, body);
-        return this
-            .client
-            .<ClusterInner, ClusterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, this.client.getContext());
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -338,21 +282,19 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of define the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateAsync(
-        String resourceGroupName, String clusterName, ClusterInner body, Context context) {
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateAsync(String resourceGroupName,
+        String clusterName, ClusterInner body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, clusterName, body, context);
-        return this
-            .client
-            .<ClusterInner, ClusterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, context);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, context);
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -361,17 +303,17 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of define the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String clusterName) {
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName,
+        String clusterName) {
         final ClusterInner body = null;
         return this.beginCreateAsync(resourceGroupName, clusterName, body).getSyncPoller();
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -382,16 +324,16 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of define the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String clusterName, ClusterInner body, Context context) {
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String clusterName,
+        ClusterInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, clusterName, body, context).getSyncPoller();
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -402,16 +344,15 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> createAsync(String resourceGroupName, String clusterName, ClusterInner body) {
-        return beginCreateAsync(resourceGroupName, clusterName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, clusterName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -422,16 +363,15 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> createAsync(String resourceGroupName, String clusterName) {
         final ClusterInner body = null;
-        return beginCreateAsync(resourceGroupName, clusterName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, clusterName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -442,18 +382,17 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return define the cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterInner> createAsync(
-        String resourceGroupName, String clusterName, ClusterInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, clusterName, body, context)
-            .last()
+    private Mono<ClusterInner> createAsync(String resourceGroupName, String clusterName, ClusterInner body,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, clusterName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -469,9 +408,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Implements cluster PUT method.
-     *
-     * <p>Create Or Update cluster.
-     *
+     * 
+     * Create Or Update cluster.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Request payload.
@@ -488,9 +427,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -499,19 +438,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return define the cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -523,24 +458,16 @@ public final class ClustersClientImpl implements ClustersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, clusterName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param context The context to associate with this operation.
@@ -550,19 +477,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return define the cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -573,22 +496,15 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -604,9 +520,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param context The context to associate with this operation.
@@ -616,16 +532,16 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return define the cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context) {
+    public Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName, context).block();
     }
 
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -640,9 +556,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Updates a cluster.
-     *
-     * <p>API to update certain properties of the cluster resource.
-     *
+     * 
+     * API to update certain properties of the cluster resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Resource properties to update.
@@ -652,19 +568,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return define the cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterInner>> updateWithResponseAsync(
-        String resourceGroupName, String clusterName, ResourcePatch body) {
+    private Mono<Response<ClusterInner>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        ResourcePatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -678,26 +590,16 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a cluster.
-     *
-     * <p>API to update certain properties of the cluster resource.
-     *
+     * 
+     * API to update certain properties of the cluster resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Resource properties to update.
@@ -708,19 +610,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return define the cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterInner>> updateWithResponseAsync(
-        String resourceGroupName, String clusterName, ResourcePatch body, Context context) {
+    private Mono<Response<ClusterInner>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        ResourcePatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -734,23 +632,15 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Updates a cluster.
-     *
-     * <p>API to update certain properties of the cluster resource.
-     *
+     * 
+     * API to update certain properties of the cluster resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -767,9 +657,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Updates a cluster.
-     *
-     * <p>API to update certain properties of the cluster resource.
-     *
+     * 
+     * API to update certain properties of the cluster resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param body Resource properties to update.
@@ -780,16 +670,16 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return define the cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClusterInner> updateWithResponse(
-        String resourceGroupName, String clusterName, ResourcePatch body, Context context) {
+    public Response<ClusterInner> updateWithResponse(String resourceGroupName, String clusterName, ResourcePatch body,
+        Context context) {
         return updateWithResponseAsync(resourceGroupName, clusterName, body, context).block();
     }
 
     /**
      * Updates a cluster.
-     *
-     * <p>API to update certain properties of the cluster resource.
-     *
+     * 
+     * API to update certain properties of the cluster resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -805,9 +695,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -817,19 +707,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, Boolean force) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        Boolean force) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -840,26 +726,16 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            force,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, this.client.getApiVersion(), force, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -870,19 +746,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, Boolean force, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        Boolean force, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -893,23 +765,15 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                force,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, this.client.getApiVersion(), force, accept, context);
     }
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -919,20 +783,18 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, Boolean force) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        Boolean force) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, force);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -944,17 +806,15 @@ public final class ClustersClientImpl implements ClustersClient {
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
         final Boolean force = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, force);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -965,20 +825,19 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, Boolean force, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        Boolean force, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, force, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -994,9 +853,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -1007,16 +866,16 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, Boolean force, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, Boolean force,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, force, context).getSyncPoller();
     }
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -1027,16 +886,15 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, clusterName, force)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1047,16 +905,15 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName) {
         final Boolean force = null;
-        return beginDeleteAsync(resourceGroupName, clusterName, force)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -1068,16 +925,15 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, force, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, force, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1092,9 +948,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -1110,9 +966,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Clusters along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1120,45 +976,27 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ClusterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1168,42 +1006,27 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Clusters as paginated response with {@link PagedFlux}.
@@ -1215,9 +1038,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1226,15 +1049,15 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ClusterInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Clusters as paginated response with {@link PagedIterable}.
@@ -1246,9 +1069,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1262,9 +1085,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1274,16 +1097,12 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1291,33 +1110,18 @@ public final class ClustersClientImpl implements ClustersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ClusterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1326,19 +1130,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return list of Clusters along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1347,29 +1147,17 @@ public final class ClustersClientImpl implements ClustersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1378,16 +1166,15 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ClusterInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1397,16 +1184,15 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ClusterInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1420,9 +1206,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1437,9 +1223,8 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1451,31 +1236,20 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ClusterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1488,31 +1262,20 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1524,32 +1287,22 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ClusterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1562,23 +1315,13 @@ public final class ClustersClientImpl implements ClustersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

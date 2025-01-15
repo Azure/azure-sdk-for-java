@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.customerinsights.fluent.models.PredictionModelStatusInner;
 
-/** Resource collection API of Predictions. */
+/**
+ * Resource collection API of Predictions.
+ */
 public interface Predictions {
     /**
      * Gets a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -23,12 +25,12 @@ public interface Predictions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Prediction in the hub along with {@link Response}.
      */
-    Response<PredictionResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    Response<PredictionResourceFormat> getWithResponse(String resourceGroupName, String hubName, String predictionName,
+        Context context);
 
     /**
      * Gets a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -41,7 +43,7 @@ public interface Predictions {
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -53,7 +55,7 @@ public interface Predictions {
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -66,7 +68,7 @@ public interface Predictions {
 
     /**
      * Gets training results.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -76,12 +78,12 @@ public interface Predictions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return training results along with {@link Response}.
      */
-    Response<PredictionTrainingResults> getTrainingResultsWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    Response<PredictionTrainingResults> getTrainingResultsWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context);
 
     /**
      * Gets training results.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -94,7 +96,7 @@ public interface Predictions {
 
     /**
      * Gets model status of the prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -104,12 +106,12 @@ public interface Predictions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return model status of the prediction along with {@link Response}.
      */
-    Response<PredictionModelStatus> getModelStatusWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    Response<PredictionModelStatus> getModelStatusWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context);
 
     /**
      * Gets model status of the prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -122,7 +124,7 @@ public interface Predictions {
 
     /**
      * Creates or updates the model status of prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -133,16 +135,12 @@ public interface Predictions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> modelStatusWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String predictionName,
-        PredictionModelStatusInner parameters,
-        Context context);
+    Response<Void> modelStatusWithResponse(String resourceGroupName, String hubName, String predictionName,
+        PredictionModelStatusInner parameters, Context context);
 
     /**
      * Creates or updates the model status of prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -151,12 +149,12 @@ public interface Predictions {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void modelStatus(
-        String resourceGroupName, String hubName, String predictionName, PredictionModelStatusInner parameters);
+    void modelStatus(String resourceGroupName, String hubName, String predictionName,
+        PredictionModelStatusInner parameters);
 
     /**
      * Gets all the predictions in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,7 +166,7 @@ public interface Predictions {
 
     /**
      * Gets all the predictions in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -181,7 +179,7 @@ public interface Predictions {
 
     /**
      * Gets a Prediction in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -192,7 +190,7 @@ public interface Predictions {
 
     /**
      * Gets a Prediction in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,7 +202,7 @@ public interface Predictions {
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -214,7 +212,7 @@ public interface Predictions {
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,7 +223,7 @@ public interface Predictions {
 
     /**
      * Begins definition for a new PredictionResourceFormat resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PredictionResourceFormat definition.
      */

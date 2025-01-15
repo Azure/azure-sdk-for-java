@@ -13,25 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SapAvailabilityZoneDetailsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapAvailabilityZoneDetailsRequest model =
-            BinaryData
-                .fromString("{\"appLocation\":\"zufcyzkohdbi\",\"sapProduct\":\"Other\",\"databaseType\":\"HANA\"}")
+        SapAvailabilityZoneDetailsRequest model
+            = BinaryData.fromString("{\"appLocation\":\"atscmd\",\"sapProduct\":\"S4HANA\",\"databaseType\":\"DB2\"}")
                 .toObject(SapAvailabilityZoneDetailsRequest.class);
-        Assertions.assertEquals("zufcyzkohdbi", model.appLocation());
-        Assertions.assertEquals(SapProductType.OTHER, model.sapProduct());
-        Assertions.assertEquals(SapDatabaseType.HANA, model.databaseType());
+        Assertions.assertEquals("atscmd", model.appLocation());
+        Assertions.assertEquals(SapProductType.S4HANA, model.sapProduct());
+        Assertions.assertEquals(SapDatabaseType.DB2, model.databaseType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapAvailabilityZoneDetailsRequest model =
-            new SapAvailabilityZoneDetailsRequest()
-                .withAppLocation("zufcyzkohdbi")
-                .withSapProduct(SapProductType.OTHER)
-                .withDatabaseType(SapDatabaseType.HANA);
+        SapAvailabilityZoneDetailsRequest model = new SapAvailabilityZoneDetailsRequest().withAppLocation("atscmd")
+            .withSapProduct(SapProductType.S4HANA)
+            .withDatabaseType(SapDatabaseType.DB2);
         model = BinaryData.fromObject(model).toObject(SapAvailabilityZoneDetailsRequest.class);
-        Assertions.assertEquals("zufcyzkohdbi", model.appLocation());
-        Assertions.assertEquals(SapProductType.OTHER, model.sapProduct());
-        Assertions.assertEquals(SapDatabaseType.HANA, model.databaseType());
+        Assertions.assertEquals("atscmd", model.appLocation());
+        Assertions.assertEquals(SapProductType.S4HANA, model.sapProduct());
+        Assertions.assertEquals(SapDatabaseType.DB2, model.databaseType());
     }
 }

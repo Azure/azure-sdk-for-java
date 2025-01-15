@@ -24,9 +24,8 @@ public class ListEntitiesWithStringsOnlyTest extends TableTestBase<PerfStressOpt
         return tableAsyncClient.createTable()
             .then(super.globalSetupAsync())
             .then(Flux.range(0, options.getCount())
-                .map(i ->
-                    new TableTransactionAction(TableTransactionActionType.UPSERT_MERGE,
-                        generateEntityWithStringsOnly(partitionKey, Integer.toString(i))))
+                .map(i -> new TableTransactionAction(TableTransactionActionType.UPSERT_MERGE,
+                    generateEntityWithStringsOnly(partitionKey, Integer.toString(i))))
                 .buffer(100)
                 .flatMap(tableAsyncClient::submitTransaction)
                 .then());
@@ -40,7 +39,6 @@ public class ListEntitiesWithStringsOnlyTest extends TableTestBase<PerfStressOpt
 
     @Override
     public Mono<Void> runAsync() {
-        return tableAsyncClient.listEntities()
-            .then();
+        return tableAsyncClient.listEntities().then();
     }
 }

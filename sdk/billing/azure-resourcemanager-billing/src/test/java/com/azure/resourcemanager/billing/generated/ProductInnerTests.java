@@ -7,33 +7,44 @@ package com.azure.resourcemanager.billing.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.billing.fluent.models.ProductInner;
 import com.azure.resourcemanager.billing.models.AutoRenew;
-import com.azure.resourcemanager.billing.models.BillingFrequency;
-import com.azure.resourcemanager.billing.models.ProductStatusType;
+import com.azure.resourcemanager.billing.models.ProductProperties;
+import com.azure.resourcemanager.billing.models.ProductPropertiesLastCharge;
+import com.azure.resourcemanager.billing.models.ProductPropertiesReseller;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProductInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"autoRenew\":\"Off\",\"displayName\":\"vithh\",\"purchaseDate\":\"2021-10-25T20:46:01Z\",\"productTypeId\":\"osggbhc\",\"productType\":\"fwdsj\",\"status\":\"Disabled\",\"endDate\":\"2021-06-21T07:46:59Z\",\"billingFrequency\":\"Monthly\",\"lastCharge\":{\"currency\":\"swacffgdkzz\",\"value\":79.305},\"lastChargeDate\":\"2021-09-11T04:06:27Z\",\"quantity\":91.20859,\"skuId\":\"railvpnppfuf\",\"skuDescription\":\"wdmhdlxyjrxs\",\"tenantId\":\"afcnih\",\"availabilityId\":\"qapnedgfbcv\",\"invoiceSectionId\":\"vq\",\"invoiceSectionDisplayName\":\"keqdcvdrhvoods\",\"billingProfileId\":\"bobzdopcjwvnhd\",\"billingProfileDisplayName\":\"wmgxcxrsl\",\"customerId\":\"utwu\",\"customerDisplayName\":\"grpkhjwniyqs\",\"reseller\":{\"resellerId\":\"cpdggkzzlvmbmp\",\"description\":\"modfvuefywsbpfvm\"}},\"id\":\"yhrfouyftaakcpw\",\"name\":\"yzvqt\",\"type\":\"nubexk\"}")
-                .toObject(ProductInner.class);
-        Assertions.assertEquals(AutoRenew.OFF, model.autoRenew());
-        Assertions.assertEquals(ProductStatusType.DISABLED, model.status());
-        Assertions.assertEquals(BillingFrequency.MONTHLY, model.billingFrequency());
+        ProductInner model = BinaryData.fromString(
+            "{\"properties\":{\"autoRenew\":\"On\",\"availabilityId\":\"tgfredmlscgrllc\",\"billingFrequency\":\"aovjow\",\"billingProfileId\":\"hpa\",\"billingProfileDisplayName\":\"comlyotgkwsx\",\"customerId\":\"rqorcgen\",\"customerDisplayName\":\"c\",\"displayName\":\"xeetq\",\"endDate\":\"xcxxqndcqjkedw\",\"invoiceSectionId\":\"rcgojmrvvx\",\"invoiceSectionDisplayName\":\"ongzsehqqrsil\",\"lastCharge\":{\"currency\":\"skx\",\"value\":60.94425},\"lastChargeDate\":\"sbvr\",\"productType\":\"qgvtojrulfu\",\"productTypeId\":\"ejrthcfjzhxlyub\",\"skuId\":\"rostvrjeqmtzz\",\"skuDescription\":\"qrztrxal\",\"purchaseDate\":\"d\",\"quantity\":5466164800327011659,\"status\":\"Deleted\",\"tenantId\":\"sn\",\"reseller\":{\"resellerId\":\"qatiwkkvyanxkvvc\",\"description\":\"msvuvdjkqxetq\"}},\"tags\":{\"p\":\"ivrjjxnwxdc\",\"gfquwz\":\"jxlehzlx\",\"ibelwcerwkw\":\"w\"},\"id\":\"jxljtxbusq\",\"name\":\"bxxn\",\"type\":\"uisdzhgbdgz\"}")
+            .toObject(ProductInner.class);
+        Assertions.assertEquals("ivrjjxnwxdc", model.tags().get("p"));
+        Assertions.assertEquals(AutoRenew.ON, model.properties().autoRenew());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductInner model =
-            new ProductInner()
-                .withAutoRenew(AutoRenew.OFF)
-                .withStatus(ProductStatusType.DISABLED)
-                .withBillingFrequency(BillingFrequency.MONTHLY);
+        ProductInner model
+            = new ProductInner().withTags(mapOf("p", "ivrjjxnwxdc", "gfquwz", "jxlehzlx", "ibelwcerwkw", "w"))
+                .withProperties(new ProductProperties().withAutoRenew(AutoRenew.ON)
+                    .withLastCharge(new ProductPropertiesLastCharge())
+                    .withReseller(new ProductPropertiesReseller()));
         model = BinaryData.fromObject(model).toObject(ProductInner.class);
-        Assertions.assertEquals(AutoRenew.OFF, model.autoRenew());
-        Assertions.assertEquals(ProductStatusType.DISABLED, model.status());
-        Assertions.assertEquals(BillingFrequency.MONTHLY, model.billingFrequency());
+        Assertions.assertEquals("ivrjjxnwxdc", model.tags().get("p"));
+        Assertions.assertEquals(AutoRenew.ON, model.properties().autoRenew());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

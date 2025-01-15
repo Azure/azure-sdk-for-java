@@ -17,7 +17,7 @@ import java.util.Random;
 public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> extends ContainerTest<TOptions> {
 
     public static final int DEFAULT_BUFFER_SIZE = 8192;
-    protected static  final String BLOB_NAME_PREFIX = "randomblobtest-";
+    protected static final String BLOB_NAME_PREFIX = "randomblobtest-";
     protected final BlobClient blobClient;
     protected final BlockBlobClient blockBlobClient;
     protected final BlobAsyncClient blobAsyncClient;
@@ -44,10 +44,9 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
                 throw new IllegalArgumentException("Encryption version not recognized");
             }
 
-
-            EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(version)
-                .blobClient(blobContainerClient.getBlobClient(blobName))
-                .key(fakeKeyEncryptionKey, KeyWrapAlgorithm.A256KW.toString());
+            EncryptedBlobClientBuilder builder
+                = new EncryptedBlobClientBuilder(version).blobClient(blobContainerClient.getBlobClient(blobName))
+                    .key(fakeKeyEncryptionKey, KeyWrapAlgorithm.A256KW.toString());
 
             blobClient = builder.buildEncryptedBlobClient();
             blobAsyncClient = builder.buildEncryptedBlobAsyncClient();

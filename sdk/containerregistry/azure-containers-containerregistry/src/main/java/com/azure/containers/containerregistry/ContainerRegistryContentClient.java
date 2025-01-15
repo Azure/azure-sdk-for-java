@@ -107,7 +107,8 @@ public final class ContainerRegistryContentClient {
     private final String repositoryName;
     private final Tracer tracer;
 
-    ContainerRegistryContentClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version, Tracer tracer) {
+    ContainerRegistryContentClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version,
+        Tracer tracer) {
         this.repositoryName = repositoryName;
         this.endpoint = endpoint;
         AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version);
@@ -156,7 +157,8 @@ public final class ContainerRegistryContentClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SetManifestResult setManifest(OciImageManifest manifest, String tag) {
         Objects.requireNonNull(manifest, "'manifest' cannot be null.");
-        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_IMAGE_MANIFEST, Context.NONE).getValue();
+        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_IMAGE_MANIFEST,
+            Context.NONE).getValue();
     }
 
     /**
@@ -182,7 +184,8 @@ public final class ContainerRegistryContentClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SetManifestResult> setManifestWithResponse(SetManifestOptions options, Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return setManifestWithResponse(options.getManifest(), options.getTag(), options.getManifestMediaType(), context);
+        return setManifestWithResponse(options.getManifest(), options.getTag(), options.getManifestMediaType(),
+            context);
     }
 
     /**
@@ -329,8 +332,8 @@ public final class ContainerRegistryContentClient {
         Objects.requireNonNull(tagOrDigest, "'tagOrDigest' cannot be null.");
 
         try {
-            Response<BinaryData> response =
-                registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest, SUPPORTED_MANIFEST_TYPES, context);
+            Response<BinaryData> response = registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
+                SUPPORTED_MANIFEST_TYPES, context);
             return toGetManifestResponse(tagOrDigest, response);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -422,8 +425,7 @@ public final class ContainerRegistryContentClient {
             if (ex.getResponse().getStatusCode() == 404) {
                 HttpResponse response = ex.getResponse();
                 // In case of 404, we still convert it to success i.e. no-op.
-                return new SimpleResponse<>(response.getRequest(), 202,
-                    response.getHeaders(), null);
+                return new SimpleResponse<>(response.getRequest(), 202, response.getHeaders(), null);
             } else {
                 throw LOGGER.logExceptionAsError(ex);
             }
@@ -475,8 +477,8 @@ public final class ContainerRegistryContentClient {
         byte[] buffer = new byte[CHUNK_SIZE];
 
         try {
-            ResponseBase<ContainerRegistryBlobsStartUploadHeaders, Void> startUploadResponse =
-                blobsImpl.startUploadWithResponse(repositoryName, context);
+            ResponseBase<ContainerRegistryBlobsStartUploadHeaders, Void> startUploadResponse
+                = blobsImpl.startUploadWithResponse(repositoryName, context);
             String location = getLocation(startUploadResponse);
 
             BinaryData chunk;
@@ -492,17 +494,18 @@ public final class ContainerRegistryContentClient {
                     break;
                 }
 
-                ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void> uploadChunkResponse =
-                    blobsImpl.uploadChunkWithResponse(location, chunk, chunk.getLength(), context);
+                ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void> uploadChunkResponse
+                    = blobsImpl.uploadChunkWithResponse(location, chunk, chunk.getLength(), context);
                 location = getLocation(uploadChunkResponse);
             }
 
             String digest = "sha256:" + bytesToHexString(sha256.digest());
 
-            ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void> completeUploadResponse =
-                blobsImpl.completeUploadWithResponse(digest, location, chunk, chunk == null ? null : chunk.getLength(), context);
+            ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void> completeUploadResponse = blobsImpl
+                .completeUploadWithResponse(digest, location, chunk, chunk == null ? null : chunk.getLength(), context);
 
-            return ConstructorAccessors.createUploadRegistryBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest(), streamLength);
+            return ConstructorAccessors.createUploadRegistryBlobResult(
+                completeUploadResponse.getDeserializedHeaders().getDockerContentDigest(), streamLength);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -532,22 +535,21 @@ public final class ContainerRegistryContentClient {
         return BinaryData.fromByteBuffer(byteBuffer);
     }
 
-    private Response<SetManifestResult> setManifestWithResponse(BinaryData manifestData, String tagOrDigest, ManifestMediaType manifestMediaType, Context context) {
+    private Response<SetManifestResult> setManifestWithResponse(BinaryData manifestData, String tagOrDigest,
+        ManifestMediaType manifestMediaType, Context context) {
         BinaryData data = manifestData.toReplayableBinaryData();
         if (tagOrDigest == null) {
             tagOrDigest = computeDigest(data.toByteBuffer());
         }
 
         try {
-            ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> response = this.registriesImpl
-                .createManifestWithResponse(repositoryName, tagOrDigest, data, data.getLength(),
+            ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> response
+                = this.registriesImpl.createManifestWithResponse(repositoryName, tagOrDigest, data, data.getLength(),
                     manifestMediaType.toString(), context);
 
             return new ResponseBase<>(
-                response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(),
-                ConstructorAccessors.createSetManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
+                response.getRequest(), response.getStatusCode(), response.getHeaders(), ConstructorAccessors
+                    .createSetManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
                 response.getDeserializedHeaders());
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -562,7 +564,8 @@ public final class ContainerRegistryContentClient {
             HttpRange range = new HttpRange(0, (long) CHUNK_SIZE);
             // TODO (limolkova) https://github.com/Azure/azure-sdk-for-java/issues/34400
             context = context.addData("azure-eagerly-read-response", true);
-            Response<BinaryData> lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
+            Response<BinaryData> lastChunk
+                = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
             long blobSize = getBlobSize(lastChunk.getHeaders());
             long length = writeChunk(lastChunk, sha256, channel);
 

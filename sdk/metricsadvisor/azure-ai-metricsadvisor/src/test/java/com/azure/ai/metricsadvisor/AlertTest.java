@@ -24,7 +24,7 @@ public final class AlertTest extends AlertTestBase {
 
         PagedIterable<AnomalyAlert> alertsIterable
             = client.listAlerts(ListAlertsInput.INSTANCE.alertConfigurationId, ListAlertsInput.INSTANCE.startTime,
-            ListAlertsInput.INSTANCE.endTime, ListAlertsInput.INSTANCE.options, Context.NONE);
+                ListAlertsInput.INSTANCE.endTime, ListAlertsInput.INSTANCE.options, Context.NONE);
 
         int[] cnt = new int[1];
         for (AnomalyAlert alert : alertsIterable) {

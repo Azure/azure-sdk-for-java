@@ -4,8 +4,8 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobsInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobState;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobsInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsSubmitJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
@@ -72,7 +72,21 @@ public final class AnalyzeTextsImpl {
         @Post("/analyze-text/jobs")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> submitJobNoCustomHeaders(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AnalyzeTextJobsInput body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/analyze-text/jobs")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> submitJobSync(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AnalyzeTextJobsInput body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/analyze-text/jobs")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> submitJobNoCustomHeadersSync(@HostParam("Endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AnalyzeTextJobsInput body,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -102,7 +116,21 @@ public final class AnalyzeTextsImpl {
         @Post("/analyze-text/jobs/{jobId}:cancel")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> cancelJobNoCustomHeaders(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") UUID jobId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/analyze-text/jobs/{jobId}:cancel")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobSync(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") UUID jobId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/analyze-text/jobs/{jobId}:cancel")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> cancelJobNoCustomHeadersSync(@HostParam("Endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") UUID jobId,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -122,9 +150,7 @@ public final class AnalyzeTextsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzeTextsSubmitJobHeaders, Void>>
         submitJobWithResponseAsync(AnalyzeTextJobsInput body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.submitJob(this.client.getEndpoint(), this.client.getApiVersion(),
-            body, accept, context));
+        return FluxUtil.withContext(context -> submitJobWithResponseAsync(body, context));
     }
 
     /**
@@ -189,6 +215,43 @@ public final class AnalyzeTextsImpl {
      * long-running operation.
      * 
      * @param body Collection of documents to analyze and one or more tasks to execute.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> submitJobNoCustomHeadersWithResponseAsync(AnalyzeTextJobsInput body) {
+        return FluxUtil.withContext(context -> submitJobNoCustomHeadersWithResponseAsync(body, context));
+    }
+
+    /**
+     * Submit text analysis job
+     * 
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * long-running operation.
+     * 
+     * @param body Collection of documents to analyze and one or more tasks to execute.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> submitJobNoCustomHeadersWithResponseAsync(AnalyzeTextJobsInput body, Context context) {
+        final String accept = "application/json";
+        return service.submitJobNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), body, accept,
+            context);
+    }
+
+    /**
+     * Submit text analysis job
+     * 
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * long-running operation.
+     * 
+     * @param body Collection of documents to analyze and one or more tasks to execute.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -219,6 +282,26 @@ public final class AnalyzeTextsImpl {
     }
 
     /**
+     * Submit text analysis job
+     * 
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * long-running operation.
+     * 
+     * @param body Collection of documents to analyze and one or more tasks to execute.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> submitJobNoCustomHeadersWithResponse(AnalyzeTextJobsInput body, Context context) {
+        final String accept = "application/json";
+        return service.submitJobNoCustomHeadersSync(this.client.getEndpoint(), this.client.getApiVersion(), body,
+            accept, context);
+    }
+
+    /**
      * Get analysis status and results
      * 
      * Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the job
@@ -236,9 +319,7 @@ public final class AnalyzeTextsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeTextJobState>> jobStatusWithResponseAsync(UUID jobId, Boolean showStats, Integer top,
         Integer skip) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.jobStatus(this.client.getEndpoint(), this.client.getApiVersion(),
-            jobId, showStats, top, skip, accept, context));
+        return FluxUtil.withContext(context -> jobStatusWithResponseAsync(jobId, showStats, top, skip, context));
     }
 
     /**
@@ -365,9 +446,7 @@ public final class AnalyzeTextsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelJobWithResponseAsync(UUID jobId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelJob(this.client.getEndpoint(), this.client.getApiVersion(),
-            jobId, accept, context));
+        return FluxUtil.withContext(context -> cancelJobWithResponseAsync(jobId, context));
     }
 
     /**
@@ -428,6 +507,41 @@ public final class AnalyzeTextsImpl {
      * Cancel a long-running Text Analysis job.
      * 
      * @param jobId Job ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelJobNoCustomHeadersWithResponseAsync(UUID jobId) {
+        return FluxUtil.withContext(context -> cancelJobNoCustomHeadersWithResponseAsync(jobId, context));
+    }
+
+    /**
+     * Cancel a long-running Text Analysis job
+     * 
+     * Cancel a long-running Text Analysis job.
+     * 
+     * @param jobId Job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelJobNoCustomHeadersWithResponseAsync(UUID jobId, Context context) {
+        final String accept = "application/json";
+        return service.cancelJobNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(), jobId, accept,
+            context);
+    }
+
+    /**
+     * Cancel a long-running Text Analysis job
+     * 
+     * Cancel a long-running Text Analysis job.
+     * 
+     * @param jobId Job ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -453,5 +567,24 @@ public final class AnalyzeTextsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelJob(UUID jobId) {
         cancelJobWithResponse(jobId, Context.NONE);
+    }
+
+    /**
+     * Cancel a long-running Text Analysis job
+     * 
+     * Cancel a long-running Text Analysis job.
+     * 
+     * @param jobId Job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelJobNoCustomHeadersWithResponse(UUID jobId, Context context) {
+        final String accept = "application/json";
+        return service.cancelJobNoCustomHeadersSync(this.client.getEndpoint(), this.client.getApiVersion(), jobId,
+            accept, context);
     }
 }

@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in DraOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DraOperationStatusClient.
+ */
 public interface DraOperationStatusClient {
     /**
      * Gets the fabric agent (Dra) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric agent.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -28,14 +30,14 @@ public interface DraOperationStatusClient {
      * @return defines the operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getWithResponse(
-        String resourceGroupName, String fabricName, String fabricAgentName, String operationId, Context context);
+    Response<OperationStatusInner> getWithResponse(String resourceGroupName, String fabricName, String fabricAgentName,
+        String operationId, Context context);
 
     /**
      * Gets the fabric agent (Dra) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric agent.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.

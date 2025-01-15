@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ScriptReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptReference model =
-            BinaryData
-                .fromString(
-                    "{\"scriptSource\":\"z\",\"scriptData\":\"blkujrllfojuidjp\",\"scriptArguments\":\"yjucejikzoeo\",\"timeout\":\"tzejetjklnt\"}")
-                .toObject(ScriptReference.class);
-        Assertions.assertEquals("z", model.scriptSource());
-        Assertions.assertEquals("blkujrllfojuidjp", model.scriptData());
-        Assertions.assertEquals("yjucejikzoeo", model.scriptArguments());
-        Assertions.assertEquals("tzejetjklnt", model.timeout());
+        ScriptReference model = BinaryData.fromString(
+            "{\"scriptSource\":\"nione\",\"scriptData\":\"zdrd\",\"scriptArguments\":\"enx\",\"timeout\":\"tlzlmtrlxcznnhz\"}")
+            .toObject(ScriptReference.class);
+        Assertions.assertEquals("nione", model.scriptSource());
+        Assertions.assertEquals("zdrd", model.scriptData());
+        Assertions.assertEquals("enx", model.scriptArguments());
+        Assertions.assertEquals("tlzlmtrlxcznnhz", model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptReference model =
-            new ScriptReference()
-                .withScriptSource("z")
-                .withScriptData("blkujrllfojuidjp")
-                .withScriptArguments("yjucejikzoeo")
-                .withTimeout("tzejetjklnt");
+        ScriptReference model = new ScriptReference().withScriptSource("nione")
+            .withScriptData("zdrd")
+            .withScriptArguments("enx")
+            .withTimeout("tlzlmtrlxcznnhz");
         model = BinaryData.fromObject(model).toObject(ScriptReference.class);
-        Assertions.assertEquals("z", model.scriptSource());
-        Assertions.assertEquals("blkujrllfojuidjp", model.scriptData());
-        Assertions.assertEquals("yjucejikzoeo", model.scriptArguments());
-        Assertions.assertEquals("tzejetjklnt", model.timeout());
+        Assertions.assertEquals("nione", model.scriptSource());
+        Assertions.assertEquals("zdrd", model.scriptData());
+        Assertions.assertEquals("enx", model.scriptArguments());
+        Assertions.assertEquals("tlzlmtrlxcznnhz", model.timeout());
     }
 }

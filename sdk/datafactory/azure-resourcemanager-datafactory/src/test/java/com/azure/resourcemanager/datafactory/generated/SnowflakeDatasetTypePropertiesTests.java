@@ -11,14 +11,14 @@ public final class SnowflakeDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeDatasetTypeProperties model
-            = BinaryData.fromString("{\"schema\":\"datarxhxmlfouqpskv\",\"table\":\"datadb\"}")
+            = BinaryData.fromString("{\"schema\":\"dataifpvrdukcdnzo\",\"table\":\"dataabux\"}")
                 .toObject(SnowflakeDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnowflakeDatasetTypeProperties model
-            = new SnowflakeDatasetTypeProperties().withSchema("datarxhxmlfouqpskv").withTable("datadb");
+            = new SnowflakeDatasetTypeProperties().withSchema("dataifpvrdukcdnzo").withTable("dataabux");
         model = BinaryData.fromObject(model).toObject(SnowflakeDatasetTypeProperties.class);
     }
 }

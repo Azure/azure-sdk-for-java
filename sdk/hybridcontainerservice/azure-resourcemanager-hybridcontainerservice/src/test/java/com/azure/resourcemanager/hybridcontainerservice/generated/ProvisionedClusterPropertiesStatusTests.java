@@ -28,9 +28,13 @@ public final class ProvisionedClusterPropertiesStatusTests {
     public void testSerialize() throws Exception {
         ProvisionedClusterPropertiesStatus model
             = new ProvisionedClusterPropertiesStatus().withControlPlaneStatus(Arrays.asList(
-                new AddonStatusProfile().withName("zb").withPhase(AddonPhase.UPGRADING).withReady(false)
+                new AddonStatusProfile().withName("zb")
+                    .withPhase(AddonPhase.UPGRADING)
+                    .withReady(false)
                     .withErrorMessage("x"),
-                new AddonStatusProfile().withName("ivyqniwbybrkxvd").withPhase(AddonPhase.DELETING).withReady(false)
+                new AddonStatusProfile().withName("ivyqniwbybrkxvd")
+                    .withPhase(AddonPhase.DELETING)
+                    .withReady(false)
                     .withErrorMessage("fwvuk")))
                 .withErrorMessage("dcc");
         model = BinaryData.fromObject(model).toObject(ProvisionedClusterPropertiesStatus.class);

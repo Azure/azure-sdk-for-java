@@ -120,8 +120,8 @@ public class AvroBlockSchema extends AvroCompositeSchema {
                 nextObjectIndex = 0;
             }
             /* Call the object handler to store this object in the AvroParser. */
-            this.onAvroObject.accept(
-                new AvroObject(this.blockOffset, this.objectIndex++, nextBlockOffset, nextObjectIndex, schema));
+            this.onAvroObject
+                .accept(new AvroObject(this.blockOffset, this.objectIndex++, nextBlockOffset, nextObjectIndex, schema));
         }
 
         if (this.hasNext()) {
@@ -130,8 +130,8 @@ public class AvroBlockSchema extends AvroCompositeSchema {
             objectSchema.pushToStack();
         } else {
             /* Otherwise, read the sync marker, call validateSync. */
-            AvroFixedSchema syncSchema = new AvroFixedSchema(AvroConstants.SYNC_MARKER_SIZE, this.state,
-                this::validateSync);
+            AvroFixedSchema syncSchema
+                = new AvroFixedSchema(AvroConstants.SYNC_MARKER_SIZE, this.state, this::validateSync);
             syncSchema.pushToStack();
         }
     }

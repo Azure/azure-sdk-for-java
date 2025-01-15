@@ -25,7 +25,7 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"ohjwzynbhltrmbh\",\"runtimeState\":\"Started\",\"annotations\":[\"datafimllradqwpu\",\"datavuphizztklkshdee\",\"datatjmdefkphs\",\"datakivyaf\"],\"\":{\"rkf\":\"datannpjulpwwmxwlwc\"}},\"name\":\"jaz\",\"type\":\"bjukikdcv\",\"etag\":\"xm\",\"id\":\"ugujiwi\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"gpt\",\"runtimeState\":\"Started\",\"annotations\":[\"datacrtpz\"],\"\":{\"hbf\":\"datahwbzrbqpzgsr\",\"nvwaxmeyjimf\":\"dataffytw\",\"vu\":\"datamhc\",\"vtypvwfllrie\":\"datawzajdxmaimwuf\"}},\"name\":\"xbcgnphen\",\"type\":\"whk\",\"etag\":\"xohqvqpwzoqtvm\",\"id\":\"l\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,16 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TriggerResource response = manager.triggers()
-            .define("mmglbxoeghordccp")
-            .withExistingFactory("jpkzmhaxtw", "imlfrkmyn")
-            .withProperties(new Trigger().withDescription("wzc")
-                .withAnnotations(Arrays.asList("dataccaiphsartyiqq", "datadgyshpvva"))
-                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Started")))
-            .withIfMatch("plhfwqdvd")
+            .define("kjaqlszlymyqpw")
+            .withExistingFactory("sbygm", "nxeyfkrcmxtbwolz")
+            .withProperties(new Trigger().withDescription("uwqmi")
+                .withAnnotations(Arrays.asList("datazmhcvrfqqmbuvt", "datawrmcym"))
+                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Disabled")))
+            .withIfMatch("vlfffymrzoupip")
             .create();
 
-        Assertions.assertEquals("ugujiwi", response.id());
-        Assertions.assertEquals("ohjwzynbhltrmbh", response.properties().description());
+        Assertions.assertEquals("l", response.id());
+        Assertions.assertEquals("gpt", response.properties().description());
     }
 
     // Use "Map.of" if available

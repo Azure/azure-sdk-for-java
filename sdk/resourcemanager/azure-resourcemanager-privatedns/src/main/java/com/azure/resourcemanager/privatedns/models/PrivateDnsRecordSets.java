@@ -16,9 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
  */
 @Fluent
 public interface PrivateDnsRecordSets<PrivateRecordSetT>
-    extends SupportsListing<PrivateRecordSetT>,
-        SupportsGettingByName<PrivateRecordSetT>,
-        HasParent<PrivateDnsZone> {
+    extends SupportsListing<PrivateRecordSetT>, SupportsGettingByName<PrivateRecordSetT>, HasParent<PrivateDnsZone> {
     /**
      * Lists all the record sets with the given suffix.
      *

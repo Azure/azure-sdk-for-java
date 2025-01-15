@@ -13,7 +13,8 @@ import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 public final class RecognizeLinkedEntitiesActionResultPropertiesHelper {
     private static RecognizeLinkedEntitiesActionResultAccessor accessor;
 
-    private RecognizeLinkedEntitiesActionResultPropertiesHelper() { }
+    private RecognizeLinkedEntitiesActionResultPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link RecognizeLinkedEntitiesActionResult}
@@ -29,8 +30,8 @@ public final class RecognizeLinkedEntitiesActionResultPropertiesHelper {
      *
      * @param recognizeLinkedEntitiesActionResultAccessor The accessor.
      */
-    public static void setAccessor(
-        final RecognizeLinkedEntitiesActionResultAccessor recognizeLinkedEntitiesActionResultAccessor) {
+    public static void
+        setAccessor(final RecognizeLinkedEntitiesActionResultAccessor recognizeLinkedEntitiesActionResultAccessor) {
         accessor = recognizeLinkedEntitiesActionResultAccessor;
     }
 

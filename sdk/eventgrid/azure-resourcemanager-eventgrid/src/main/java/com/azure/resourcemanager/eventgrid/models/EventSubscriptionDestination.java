@@ -5,46 +5,26 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the destination for an event subscription.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = EventSubscriptionDestination.class,
-    visible = true)
-@JsonTypeName("EventSubscriptionDestination")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "WebHook", value = WebhookEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "EventHub", value = EventHubEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "StorageQueue", value = StorageQueueEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "HybridConnection", value = HybridConnectionEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "ServiceBusQueue", value = ServiceBusQueueEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "ServiceBusTopic", value = ServiceBusTopicEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "PartnerDestination", value = PartnerEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "MonitorAlert", value = MonitorAlertEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "NamespaceTopic", value = NamespaceTopicEventSubscriptionDestination.class) })
 @Immutable
-public class EventSubscriptionDestination {
+public class EventSubscriptionDestination implements JsonSerializable<EventSubscriptionDestination> {
     /*
      * Type of the endpoint for the event subscription destination.
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
-    private EndpointType endpointType;
+    private EndpointType endpointType = EndpointType.fromString("EventSubscriptionDestination");
 
     /**
      * Creates an instance of EventSubscriptionDestination class.
      */
     public EventSubscriptionDestination() {
-        this.endpointType = EndpointType.fromString("EventSubscriptionDestination");
     }
 
     /**
@@ -62,5 +42,84 @@ public class EventSubscriptionDestination {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventSubscriptionDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventSubscriptionDestination if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventSubscriptionDestination.
+     */
+    public static EventSubscriptionDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("endpointType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("WebHook".equals(discriminatorValue)) {
+                    return WebhookEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("EventHub".equals(discriminatorValue)) {
+                    return EventHubEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("StorageQueue".equals(discriminatorValue)) {
+                    return StorageQueueEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("HybridConnection".equals(discriminatorValue)) {
+                    return HybridConnectionEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("ServiceBusQueue".equals(discriminatorValue)) {
+                    return ServiceBusQueueEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("ServiceBusTopic".equals(discriminatorValue)) {
+                    return ServiceBusTopicEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("AzureFunction".equals(discriminatorValue)) {
+                    return AzureFunctionEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("PartnerDestination".equals(discriminatorValue)) {
+                    return PartnerEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("MonitorAlert".equals(discriminatorValue)) {
+                    return MonitorAlertEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("NamespaceTopic".equals(discriminatorValue)) {
+                    return NamespaceTopicEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EventSubscriptionDestination fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventSubscriptionDestination deserializedEventSubscriptionDestination = new EventSubscriptionDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedEventSubscriptionDestination.endpointType = EndpointType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventSubscriptionDestination;
+        });
     }
 }

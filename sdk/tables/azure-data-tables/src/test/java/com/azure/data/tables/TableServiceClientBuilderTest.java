@@ -36,7 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TableServiceClientBuilderTest {
 
     private static final String ENDPOINT = "https://myAccount.table.core.windows.net";
-    private static final String CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=myAccount;AccountKey=myKey;EndpointSuffix=core.windows.net";
+    private static final String CONNECTION_STRING
+        = "DefaultEndpointsProtocol=https;AccountName=myAccount;AccountKey=myKey;EndpointSuffix=core.windows.net";
     private static final TokenCredential CREDENTIAL = new MockTokenCredential();
 
     private String tableName;
@@ -50,8 +51,7 @@ public class TableServiceClientBuilderTest {
 
     @Test
     public void buildSyncClientTest() {
-        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        TableServiceClient tableServiceClient = new TableServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIAL)
             .serviceVersion(serviceVersion)
             .buildClient();
@@ -62,10 +62,8 @@ public class TableServiceClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIAL)
-            .buildClient();
+        TableServiceClient tableServiceClient
+            = new TableServiceClientBuilder().endpoint(ENDPOINT).credential(CREDENTIAL).buildClient();
 
         assertNotNull(tableServiceClient);
         assertEquals(TableServiceClient.class.getSimpleName(), tableServiceClient.getClass().getSimpleName());
@@ -73,8 +71,7 @@ public class TableServiceClientBuilderTest {
 
     @Test
     public void buildAsyncClientTest() {
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIAL)
             .serviceVersion(serviceVersion)
             .buildAsyncClient();
@@ -85,10 +82,8 @@ public class TableServiceClientBuilderTest {
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIAL)
-            .buildAsyncClient();
+        TableServiceAsyncClient tableServiceAsyncClient
+            = new TableServiceClientBuilder().endpoint(ENDPOINT).credential(CREDENTIAL).buildAsyncClient();
 
         assertNotNull(tableServiceAsyncClient);
         assertEquals(TableServiceAsyncClient.class.getSimpleName(), tableServiceAsyncClient.getClass().getSimpleName());
@@ -101,8 +96,10 @@ public class TableServiceClientBuilderTest {
 
     @Test
     public void nullCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((AzureSasCredential) null));
-        assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((AzureNamedKeyCredential) null));
+        assertThrows(NullPointerException.class,
+            () -> new TableServiceClientBuilder().credential((AzureSasCredential) null));
+        assertThrows(NullPointerException.class,
+            () -> new TableServiceClientBuilder().credential((AzureNamedKeyCredential) null));
     }
 
     @Test
@@ -110,23 +107,22 @@ public class TableServiceClientBuilderTest {
         byte[] randomData = new byte[256];
         new SecureRandom().nextBytes(randomData);
 
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIAL)
             .httpClient(new TestUtils.FreshDateTestClient())
             .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .buildAsyncClient();
 
-        StepVerifier.create(tableServiceAsyncClient.getHttpPipeline().send(
-            TestUtils.request(tableServiceAsyncClient.getServiceEndpoint())))
+        StepVerifier
+            .create(tableServiceAsyncClient.getHttpPipeline()
+                .send(TestUtils.request(tableServiceAsyncClient.getServiceEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        TableServiceClient tableServiceClient = new TableServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIAL)
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
@@ -141,8 +137,7 @@ public class TableServiceClientBuilderTest {
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        TableServiceClient tableServiceClient = new TableServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIAL)
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .httpClient(httpRequest -> {
@@ -156,11 +151,10 @@ public class TableServiceClientBuilderTest {
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        TableServiceClient tableServiceClient = new TableServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIAL)
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
@@ -174,8 +168,7 @@ public class TableServiceClientBuilderTest {
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIAL)
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())
@@ -206,106 +199,106 @@ public class TableServiceClientBuilderTest {
 
     @Test
     public void singleFormOfAuthenticationPresent() {
-        assertDoesNotThrow(() -> new TableServiceClientBuilder()
-            .sasToken("sasToken")
+        assertDoesNotThrow(() -> new TableServiceClientBuilder().sasToken("sasToken")
             .endpoint("https://myAccount.table.core.windows.net")
             .buildAsyncClient());
 
-        assertDoesNotThrow(() -> new TableServiceClientBuilder()
-            .credential(new AzureSasCredential("sasToken"))
+        assertDoesNotThrow(() -> new TableServiceClientBuilder().credential(new AzureSasCredential("sasToken"))
             .endpoint("https://myAccount.table.core.windows.net")
             .buildAsyncClient());
 
-        assertDoesNotThrow(() -> new TableServiceClientBuilder()
-            .credential(new AzureNamedKeyCredential("name", "key"))
+        assertDoesNotThrow(() -> new TableServiceClientBuilder().credential(new AzureNamedKeyCredential("name", "key"))
             .endpoint("https://myAccount.table.core.windows.net")
             .buildAsyncClient());
 
         // Should internally create an AzureNamedKeyCredential and not throw when building a client.
         assertDoesNotThrow(() -> new TableServiceClientBuilder()
-            .connectionString("DefaultEndpointsProtocol=https;AccountName=myAccount;AccountKey=myKey;EndpointSuffix=core.windows.net")
+            .connectionString(
+                "DefaultEndpointsProtocol=https;AccountName=myAccount;AccountKey=myKey;EndpointSuffix=core.windows.net")
             .endpoint("https://myAccount.table.core.windows.net")
             .buildAsyncClient());
 
         // Should internally create an AzureSasCredential and not throw when building a client.
-        assertDoesNotThrow(() -> new TableServiceClientBuilder()
-            .connectionString("TableEndpoint=https://myAccount.table.core.windows.net;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+        assertDoesNotThrow(() -> new TableServiceClientBuilder().connectionString(
+            "TableEndpoint=https://myAccount.table.core.windows.net;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
             .endpoint("https://myAccount.table.core.windows.net")
             .buildAsyncClient());
     }
 
     @Test
     public void multipleFormsOfAuthenticationPresent() {
-        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
-            .sasToken("sasToken")
-            .credential(new AzureNamedKeyCredential("name", "key"))
-            .endpoint("https://myAccount.table.core.windows.net")
-            .buildAsyncClient());
+        assertThrows(IllegalStateException.class,
+            () -> new TableServiceClientBuilder().sasToken("sasToken")
+                .credential(new AzureNamedKeyCredential("name", "key"))
+                .endpoint("https://myAccount.table.core.windows.net")
+                .buildAsyncClient());
 
-        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
-            .sasToken("sasToken")
-            .credential(new AzureSasCredential("sasToken"))
-            .endpoint("https://myAccount.table.core.windows.net")
-            .buildAsyncClient());
+        assertThrows(IllegalStateException.class,
+            () -> new TableServiceClientBuilder().sasToken("sasToken")
+                .credential(new AzureSasCredential("sasToken"))
+                .endpoint("https://myAccount.table.core.windows.net")
+                .buildAsyncClient());
 
-        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
-            .credential(new AzureNamedKeyCredential("name", "key"))
-            .credential(new AzureSasCredential("sasToken"))
-            .endpoint("https://myAccount.table.core.windows.net")
-            .buildAsyncClient());
+        assertThrows(IllegalStateException.class,
+            () -> new TableServiceClientBuilder().credential(new AzureNamedKeyCredential("name", "key"))
+                .credential(new AzureSasCredential("sasToken"))
+                .endpoint("https://myAccount.table.core.windows.net")
+                .buildAsyncClient());
 
-        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
-            .sasToken("sasToken")
-            .credential(new AzureNamedKeyCredential("name", "key"))
-            .credential(new AzureSasCredential("sasToken"))
-            .endpoint("https://myAccount.table.core.windows.net")
-            .buildAsyncClient());
+        assertThrows(IllegalStateException.class,
+            () -> new TableServiceClientBuilder().sasToken("sasToken")
+                .credential(new AzureNamedKeyCredential("name", "key"))
+                .credential(new AzureSasCredential("sasToken"))
+                .endpoint("https://myAccount.table.core.windows.net")
+                .buildAsyncClient());
     }
 
     @Test
     public void bothRetryOptionsAndRetryPolicyPresent() {
-        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .serviceVersion(serviceVersion)
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new TableServiceClientBuilder().connectionString(CONNECTION_STRING)
+                .serviceVersion(serviceVersion)
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .buildClient());
     }
 
     @Test
     public void buildWithSameSasTokenInConnectionStringDoesNotThrow() {
-        assertDoesNotThrow(() -> new TableServiceClientBuilder()
-            .sasToken("sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
-            .connectionString("TableEndpoint=https://myAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+        assertDoesNotThrow(() -> new TableServiceClientBuilder().sasToken(
+            "sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .connectionString(
+                "TableEndpoint=https://myAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
             .buildAsyncClient());
     }
 
     @Test
     public void buildWithDifferentSasTokenInConnectionStringThrows() {
-        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
-            .sasToken("sv=2020-02-10&ss=t&srt=o&sp=rwd&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
-            .connectionString("TableEndpoint=https://myAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=anotherSignature")
+        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder().sasToken(
+            "sv=2020-02-10&ss=t&srt=o&sp=rwd&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .connectionString(
+                "TableEndpoint=https://myAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=anotherSignature")
             .buildAsyncClient());
     }
 
     @Test
     public void buildWithSameEndpointInConnectionStringDoesNotThrow() {
-        assertDoesNotThrow(() -> new TableServiceClientBuilder()
-            .endpoint("https://myAccount.table.core.windows.net/")
-            .connectionString("TableEndpoint=https://myAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+        assertDoesNotThrow(() -> new TableServiceClientBuilder().endpoint("https://myAccount.table.core.windows.net/")
+            .connectionString(
+                "TableEndpoint=https://myAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
             .buildAsyncClient());
     }
 
     @Test
     public void buildWithWithTrailingSlashInEndpointOrConnectionStringDoesNotThrow() {
-        assertDoesNotThrow(() -> new TableServiceClientBuilder()
-            .endpoint("https://myAccount.table.core.windows.net")
-            .connectionString("TableEndpoint=https://myAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+        assertDoesNotThrow(() -> new TableServiceClientBuilder().endpoint("https://myAccount.table.core.windows.net")
+            .connectionString(
+                "TableEndpoint=https://myAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
             .buildAsyncClient());
 
-        assertDoesNotThrow(() -> new TableServiceClientBuilder()
-            .endpoint("https://myAccount.table.core.windows.net/")
-            .connectionString("TableEndpoint=https://myAccount.table.core.windows.net;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+        assertDoesNotThrow(() -> new TableServiceClientBuilder().endpoint("https://myAccount.table.core.windows.net/")
+            .connectionString(
+                "TableEndpoint=https://myAccount.table.core.windows.net;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
             .buildAsyncClient());
     }
 
@@ -313,12 +306,14 @@ public class TableServiceClientBuilderTest {
     public void buildWithDifferentEndpointInConnectionStringThrows() {
         assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
             .endpoint("https://myAccount.table.core.windows.net/")
-            .connectionString("TableEndpoint=https://myOtherAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .connectionString(
+                "TableEndpoint=https://myOtherAccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
             .buildAsyncClient());
 
         assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
             .endpoint("https://myAccount.table.core.windows.net/")
-            .connectionString("DefaultEndpointsProtocol=https;AccountName=myOtherAccount;AccountKey=myKey;EndpointSuffix=core.windows.net")
+            .connectionString(
+                "DefaultEndpointsProtocol=https;AccountName=myOtherAccount;AccountKey=myKey;EndpointSuffix=core.windows.net")
             .buildAsyncClient());
     }
 }

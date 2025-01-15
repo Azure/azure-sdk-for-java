@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.DataSourcePrecedence;
 import com.azure.resourcemanager.customerinsights.models.DataSourceType;
 import com.azure.resourcemanager.customerinsights.models.EntityTypeDefinition;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
 import com.azure.resourcemanager.customerinsights.models.Participant;
 import com.azure.resourcemanager.customerinsights.models.PropertyDefinition;
+import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The Interaction Type Definition. */
+/**
+ * The Interaction Type Definition.
+ */
 @Fluent
 public final class InteractionTypeDefinition extends EntityTypeDefinition {
     /*
      * The id property names. Properties which uniquely identify an interaction instance.
      */
-    @JsonProperty(value = "idPropertyNames")
     private List<String> idPropertyNames;
 
     /*
      * Profiles that participated in the interaction.
      */
-    @JsonProperty(value = "participantProfiles")
     private List<Participant> participantProfiles;
 
     /*
      * The primary participant property name for an interaction ,This is used to logically represent the agent of the
      * interaction, Specify the participant name here from ParticipantName.
      */
-    @JsonProperty(value = "primaryParticipantProfilePropertyName")
     private String primaryParticipantProfilePropertyName;
 
     /*
      * This is specific to interactions modeled as activities. Data sources are used to determine where data is stored
      * and also in precedence rules.
      */
-    @JsonProperty(value = "dataSourcePrecedenceRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataSourcePrecedence> dataSourcePrecedenceRules;
 
     /*
      * Default data source is specifically used in cases where data source is not specified in an instance.
      */
-    @JsonProperty(value = "defaultDataSource")
     private DataSource innerDefaultDataSource;
 
     /*
@@ -56,17 +59,33 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
      * can enable merging of properties from multiple data sources based on precedence, which is defined at a link
      * level.
      */
-    @JsonProperty(value = "isActivity")
     private Boolean isActivity;
 
-    /** Creates an instance of InteractionTypeDefinition class. */
+    /*
+     * The hub name.
+     */
+    private String tenantId;
+
+    /*
+     * Provisioning state.
+     */
+    private ProvisioningStates provisioningState;
+
+    /*
+     * The last changed time for the type definition.
+     */
+    private OffsetDateTime lastChangedUtc;
+
+    /**
+     * Creates an instance of InteractionTypeDefinition class.
+     */
     public InteractionTypeDefinition() {
     }
 
     /**
      * Get the idPropertyNames property: The id property names. Properties which uniquely identify an interaction
      * instance.
-     *
+     * 
      * @return the idPropertyNames value.
      */
     public List<String> idPropertyNames() {
@@ -76,7 +95,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
     /**
      * Set the idPropertyNames property: The id property names. Properties which uniquely identify an interaction
      * instance.
-     *
+     * 
      * @param idPropertyNames the idPropertyNames value to set.
      * @return the InteractionTypeDefinition object itself.
      */
@@ -87,7 +106,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Get the participantProfiles property: Profiles that participated in the interaction.
-     *
+     * 
      * @return the participantProfiles value.
      */
     public List<Participant> participantProfiles() {
@@ -96,7 +115,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Set the participantProfiles property: Profiles that participated in the interaction.
-     *
+     * 
      * @param participantProfiles the participantProfiles value to set.
      * @return the InteractionTypeDefinition object itself.
      */
@@ -109,7 +128,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
      * Get the primaryParticipantProfilePropertyName property: The primary participant property name for an interaction
      * ,This is used to logically represent the agent of the interaction, Specify the participant name here from
      * ParticipantName.
-     *
+     * 
      * @return the primaryParticipantProfilePropertyName value.
      */
     public String primaryParticipantProfilePropertyName() {
@@ -120,12 +139,12 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
      * Set the primaryParticipantProfilePropertyName property: The primary participant property name for an interaction
      * ,This is used to logically represent the agent of the interaction, Specify the participant name here from
      * ParticipantName.
-     *
+     * 
      * @param primaryParticipantProfilePropertyName the primaryParticipantProfilePropertyName value to set.
      * @return the InteractionTypeDefinition object itself.
      */
-    public InteractionTypeDefinition withPrimaryParticipantProfilePropertyName(
-        String primaryParticipantProfilePropertyName) {
+    public InteractionTypeDefinition
+        withPrimaryParticipantProfilePropertyName(String primaryParticipantProfilePropertyName) {
         this.primaryParticipantProfilePropertyName = primaryParticipantProfilePropertyName;
         return this;
     }
@@ -133,7 +152,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
     /**
      * Get the dataSourcePrecedenceRules property: This is specific to interactions modeled as activities. Data sources
      * are used to determine where data is stored and also in precedence rules.
-     *
+     * 
      * @return the dataSourcePrecedenceRules value.
      */
     public List<DataSourcePrecedence> dataSourcePrecedenceRules() {
@@ -143,7 +162,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
     /**
      * Get the innerDefaultDataSource property: Default data source is specifically used in cases where data source is
      * not specified in an instance.
-     *
+     * 
      * @return the innerDefaultDataSource value.
      */
     private DataSource innerDefaultDataSource() {
@@ -154,7 +173,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
      * Get the isActivity property: An interaction can be tagged as an activity only during create. This enables the
      * interaction to be editable and can enable merging of properties from multiple data sources based on precedence,
      * which is defined at a link level.
-     *
+     * 
      * @return the isActivity value.
      */
     public Boolean isActivity() {
@@ -165,7 +184,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
      * Set the isActivity property: An interaction can be tagged as an activity only during create. This enables the
      * interaction to be editable and can enable merging of properties from multiple data sources based on precedence,
      * which is defined at a link level.
-     *
+     * 
      * @param isActivity the isActivity value to set.
      * @return the InteractionTypeDefinition object itself.
      */
@@ -174,98 +193,156 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the tenantId property: The hub name.
+     * 
+     * @return the tenantId value.
+     */
+    @Override
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningStates provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the lastChangedUtc property: The last changed time for the type definition.
+     * 
+     * @return the lastChangedUtc value.
+     */
+    @Override
+    public OffsetDateTime lastChangedUtc() {
+        return this.lastChangedUtc;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withApiEntitySetName(String apiEntitySetName) {
         super.withApiEntitySetName(apiEntitySetName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withEntityType(EntityTypes entityType) {
         super.withEntityType(entityType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withFields(List<PropertyDefinition> fields) {
         super.withFields(fields);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withInstancesCount(Integer instancesCount) {
         super.withInstancesCount(instancesCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withSchemaItemTypeLink(String schemaItemTypeLink) {
         super.withSchemaItemTypeLink(schemaItemTypeLink);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withTimestampFieldName(String timestampFieldName) {
         super.withTimestampFieldName(timestampFieldName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withTypeName(String typeName) {
         super.withTypeName(typeName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withAttributes(Map<String, List<String>> attributes) {
         super.withAttributes(attributes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withDescription(Map<String, String> description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withDisplayName(Map<String, String> displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes) {
         super.withLocalizedAttributes(localizedAttributes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withSmallImage(String smallImage) {
         super.withSmallImage(smallImage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withMediumImage(String mediumImage) {
         super.withMediumImage(mediumImage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InteractionTypeDefinition withLargeImage(String largeImage) {
         super.withLargeImage(largeImage);
@@ -274,7 +351,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Get the name property: The data source name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -283,7 +360,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Get the dataSourceType property: The data source type.
-     *
+     * 
      * @return the dataSourceType value.
      */
     public DataSourceType dataSourceType() {
@@ -292,7 +369,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Get the status property: The data source status.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -301,7 +378,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Get the id property: The data source ID.
-     *
+     * 
      * @return the id value.
      */
     public Integer id() {
@@ -310,7 +387,7 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Get the dataSourceReferenceId property: The data source reference id.
-     *
+     * 
      * @return the dataSourceReferenceId value.
      */
     public String dataSourceReferenceId() {
@@ -319,12 +396,11 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (participantProfiles() != null) {
             participantProfiles().forEach(e -> e.validate());
         }
@@ -334,5 +410,124 @@ public final class InteractionTypeDefinition extends EntityTypeDefinition {
         if (innerDefaultDataSource() != null) {
             innerDefaultDataSource().validate();
         }
+        if (fields() != null) {
+            fields().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("attributes", attributes(),
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeMapField("description", description(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("displayName", displayName(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("localizedAttributes", localizedAttributes(),
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeStringField("smallImage", smallImage());
+        jsonWriter.writeStringField("mediumImage", mediumImage());
+        jsonWriter.writeStringField("largeImage", largeImage());
+        jsonWriter.writeStringField("apiEntitySetName", apiEntitySetName());
+        jsonWriter.writeStringField("entityType", entityType() == null ? null : entityType().toString());
+        jsonWriter.writeArrayField("fields", fields(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("instancesCount", instancesCount());
+        jsonWriter.writeStringField("schemaItemTypeLink", schemaItemTypeLink());
+        jsonWriter.writeStringField("timestampFieldName", timestampFieldName());
+        jsonWriter.writeStringField("typeName", typeName());
+        jsonWriter.writeArrayField("idPropertyNames", this.idPropertyNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("participantProfiles", this.participantProfiles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("primaryParticipantProfilePropertyName",
+            this.primaryParticipantProfilePropertyName);
+        jsonWriter.writeJsonField("defaultDataSource", this.innerDefaultDataSource);
+        jsonWriter.writeBooleanField("isActivity", this.isActivity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InteractionTypeDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InteractionTypeDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InteractionTypeDefinition.
+     */
+    public static InteractionTypeDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InteractionTypeDefinition deserializedInteractionTypeDefinition = new InteractionTypeDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attributes".equals(fieldName)) {
+                    Map<String, List<String>> attributes
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedInteractionTypeDefinition.withAttributes(attributes);
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInteractionTypeDefinition.withDescription(description);
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInteractionTypeDefinition.withDisplayName(displayName);
+                } else if ("localizedAttributes".equals(fieldName)) {
+                    Map<String, Map<String, String>> localizedAttributes
+                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2.getString()));
+                    deserializedInteractionTypeDefinition.withLocalizedAttributes(localizedAttributes);
+                } else if ("smallImage".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.withSmallImage(reader.getString());
+                } else if ("mediumImage".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.withMediumImage(reader.getString());
+                } else if ("largeImage".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.withLargeImage(reader.getString());
+                } else if ("apiEntitySetName".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.withApiEntitySetName(reader.getString());
+                } else if ("entityType".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.withEntityType(EntityTypes.fromString(reader.getString()));
+                } else if ("fields".equals(fieldName)) {
+                    List<PropertyDefinition> fields = reader.readArray(reader1 -> PropertyDefinition.fromJson(reader1));
+                    deserializedInteractionTypeDefinition.withFields(fields);
+                } else if ("instancesCount".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.withInstancesCount(reader.getNullable(JsonReader::getInt));
+                } else if ("lastChangedUtc".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.lastChangedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("schemaItemTypeLink".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.withSchemaItemTypeLink(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.tenantId = reader.getString();
+                } else if ("timestampFieldName".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.withTimestampFieldName(reader.getString());
+                } else if ("typeName".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.withTypeName(reader.getString());
+                } else if ("idPropertyNames".equals(fieldName)) {
+                    List<String> idPropertyNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInteractionTypeDefinition.idPropertyNames = idPropertyNames;
+                } else if ("participantProfiles".equals(fieldName)) {
+                    List<Participant> participantProfiles = reader.readArray(reader1 -> Participant.fromJson(reader1));
+                    deserializedInteractionTypeDefinition.participantProfiles = participantProfiles;
+                } else if ("primaryParticipantProfilePropertyName".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.primaryParticipantProfilePropertyName = reader.getString();
+                } else if ("dataSourcePrecedenceRules".equals(fieldName)) {
+                    List<DataSourcePrecedence> dataSourcePrecedenceRules
+                        = reader.readArray(reader1 -> DataSourcePrecedence.fromJson(reader1));
+                    deserializedInteractionTypeDefinition.dataSourcePrecedenceRules = dataSourcePrecedenceRules;
+                } else if ("defaultDataSource".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.innerDefaultDataSource = DataSource.fromJson(reader);
+                } else if ("isActivity".equals(fieldName)) {
+                    deserializedInteractionTypeDefinition.isActivity = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInteractionTypeDefinition;
+        });
     }
 }

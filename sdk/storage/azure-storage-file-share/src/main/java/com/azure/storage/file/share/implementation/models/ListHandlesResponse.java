@@ -105,7 +105,6 @@ public final class ListHandlesResponse implements XmlSerializable<ListHandlesRes
      * @param xmlReader The XmlReader being read.
      * @return An instance of ListHandlesResponse if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ListHandlesResponse.
      */
     public static ListHandlesResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -120,7 +119,6 @@ public final class ListHandlesResponse implements XmlSerializable<ListHandlesRes
      * cases where the model can deserialize from different root element names.
      * @return An instance of ListHandlesResponse if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ListHandlesResponse.
      */
     public static ListHandlesResponse fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

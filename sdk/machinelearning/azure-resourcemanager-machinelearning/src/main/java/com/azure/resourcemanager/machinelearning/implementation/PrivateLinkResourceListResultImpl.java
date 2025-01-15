@@ -15,8 +15,7 @@ public final class PrivateLinkResourceListResultImpl implements PrivateLinkResou
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    PrivateLinkResourceListResultImpl(
-        PrivateLinkResourceListResultInner innerObject,
+    PrivateLinkResourceListResultImpl(PrivateLinkResourceListResultInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

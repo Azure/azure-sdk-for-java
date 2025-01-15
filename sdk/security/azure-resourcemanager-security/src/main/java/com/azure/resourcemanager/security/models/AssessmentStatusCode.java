@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class AssessmentStatusCode extends ExpandableStringEnum<AssessmentS
      * @param name a name to look for.
      * @return the corresponding AssessmentStatusCode.
      */
-    @JsonCreator
     public static AssessmentStatusCode fromString(String name) {
         return fromString(name, AssessmentStatusCode.class);
     }

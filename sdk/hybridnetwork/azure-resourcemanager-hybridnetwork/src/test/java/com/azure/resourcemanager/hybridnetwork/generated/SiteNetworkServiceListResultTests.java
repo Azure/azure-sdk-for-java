@@ -25,7 +25,7 @@ public final class SiteNetworkServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SiteNetworkServiceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"managedResourceGroupConfiguration\":{\"name\":\"wzqa\",\"location\":\"lgzurig\"},\"siteReference\":{\"id\":\"cx\"},\"publisherName\":\"t\",\"publisherScope\":\"Unknown\",\"networkServiceDesignGroupName\":\"pvz\",\"networkServiceDesignVersionName\":\"qtmldgxo\",\"networkServiceDesignVersionOfferingLocation\":\"irclnpk\",\"networkServiceDesignVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"desiredStateConfigurationGroupValueReferences\":{\"vkjlmxhom\":{\"id\":\"riykhyawfvjlbox\"},\"uzzptjazysdz\":{\"id\":\"nhdwdigumbnra\"}},\"lastStateNetworkServiceDesignVersionName\":\"zwwva\",\"lastStateConfigurationGroupValueReferences\":{\"onkp\":{\"id\":\"vv\"},\"auy\":{\"id\":\"qyikvy\"},\"ijf\":{\"id\":\"luwmncst\"}}},\"identity\":{\"principalId\":\"792395bf-283c-4bcf-b77b-5c9dcf8e8d9e\",\"tenantId\":\"486cadd5-d18c-41e9-975f-1e94ad9016e9\",\"type\":\"None\",\"userAssignedIdentities\":{\"gsgbdhuzq\":{\"principalId\":\"96edbb6e-597d-403e-bab9-b32c650a3a9b\",\"clientId\":\"098f6630-4597-4e58-9901-e9dc6871d39c\"},\"dgkynscliqhzvhxn\":{\"principalId\":\"51e1ed28-2a34-4fad-878c-8365ccbe5c54\",\"clientId\":\"777fe985-9f5f-40bc-b153-45bd88dce2bf\"}}},\"sku\":{\"name\":\"Basic\",\"tier\":\"Standard\"},\"location\":\"bo\",\"tags\":{\"vqagtltdhlf\":\"nvdxzxhihfrbbc\",\"vgtrdcnifmzzs\":\"qojpy\"},\"id\":\"ymbrnysuxmpraf\",\"name\":\"g\",\"type\":\"khocxvdfffwaf\"},{\"properties\":{\"provisioningState\":\"Failed\",\"managedResourceGroupConfiguration\":{\"name\":\"spave\",\"location\":\"r\"},\"siteReference\":{\"id\":\"unzo\"},\"publisherName\":\"dhcxgkmoy\",\"publisherScope\":\"Unknown\",\"networkServiceDesignGroupName\":\"uibhmfdnbzydvfv\",\"networkServiceDesignVersionName\":\"jnaeois\",\"networkServiceDesignVersionOfferingLocation\":\"hmgorffukiscv\",\"networkServiceDesignVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"desiredStateConfigurationGroupValueReferences\":{\"xvxilcbtg\":{\"id\":\"plef\"},\"zqlqhyc\":{\"id\":\"nzeyqxtjj\"},\"beesmieknlra\":{\"id\":\"odggx\"}},\"lastStateNetworkServiceDesignVersionName\":\"aawiuagydwqfb\",\"lastStateConfigurationGroupValueReferences\":{\"fnzjvusfzldm\":{\"id\":\"fgiagtcojocqwo\"}}},\"identity\":{\"principalId\":\"31a9718f-5726-4b36-bb70-ea401c557289\",\"tenantId\":\"e6fe6811-55da-48be-bd01-4f440fb89d7e\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tkad\":{\"principalId\":\"3cb628aa-157f-40df-9ad9-c3c56a0521f1\",\"clientId\":\"f748b1ae-1769-4678-bf95-a4f10365267c\"},\"own\":{\"principalId\":\"5bead87a-a0a7-48e0-ba68-190327adf53e\",\"clientId\":\"cd4c50b0-e65d-4f8f-b259-a0c82de77313\"}}},\"sku\":{\"name\":\"Standard\",\"tier\":\"Basic\"},\"location\":\"grjqctojcmi\",\"tags\":{\"jy\":\"ieypef\",\"u\":\"dh\",\"khihihlhzds\":\"lcplc\",\"mvec\":\"tzbsrgnowcjhf\"},\"id\":\"ctxmwoteyowcluq\",\"name\":\"vekqvgqo\",\"type\":\"wifzmp\"}],\"nextLink\":\"yivqikfxcvhrfsp\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"managedResourceGroupConfiguration\":{\"name\":\"wzqa\",\"location\":\"lgzurig\"},\"siteReference\":{\"id\":\"cx\"},\"publisherName\":\"t\",\"publisherScope\":\"Unknown\",\"networkServiceDesignGroupName\":\"pvz\",\"networkServiceDesignVersionName\":\"qtmldgxo\",\"networkServiceDesignVersionOfferingLocation\":\"irclnpk\",\"networkServiceDesignVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"desiredStateConfigurationGroupValueReferences\":{\"vkjlmxhom\":{\"id\":\"riykhyawfvjlbox\"},\"uzzptjazysdz\":{\"id\":\"nhdwdigumbnra\"}},\"lastStateNetworkServiceDesignVersionName\":\"zwwva\",\"lastStateConfigurationGroupValueReferences\":{\"onkp\":{\"id\":\"vv\"},\"auy\":{\"id\":\"qyikvy\"},\"ijf\":{\"id\":\"luwmncst\"}}},\"identity\":{\"principalId\":\"b9dc8d51-4196-4e1d-9482-4d2d0bca74c3\",\"tenantId\":\"ca05be92-f75d-48ca-ab72-c70933f7b426\",\"type\":\"None\",\"userAssignedIdentities\":{\"gsgbdhuzq\":{\"principalId\":\"5450cf7f-3cab-4905-9094-e3ac81a3ebcd\",\"clientId\":\"e19dc0bb-05c2-41bf-ba33-85d8c378bae2\"},\"dgkynscliqhzvhxn\":{\"principalId\":\"af292965-0bf2-42b3-a89d-7a06663d8792\",\"clientId\":\"1a56564c-0b42-49d1-a151-e11dfb7be5ab\"}}},\"sku\":{\"name\":\"Basic\",\"tier\":\"Standard\"},\"location\":\"bo\",\"tags\":{\"vqagtltdhlf\":\"nvdxzxhihfrbbc\",\"vgtrdcnifmzzs\":\"qojpy\"},\"id\":\"ymbrnysuxmpraf\",\"name\":\"g\",\"type\":\"khocxvdfffwaf\"},{\"properties\":{\"provisioningState\":\"Failed\",\"managedResourceGroupConfiguration\":{\"name\":\"spave\",\"location\":\"r\"},\"siteReference\":{\"id\":\"unzo\"},\"publisherName\":\"dhcxgkmoy\",\"publisherScope\":\"Unknown\",\"networkServiceDesignGroupName\":\"uibhmfdnbzydvfv\",\"networkServiceDesignVersionName\":\"jnaeois\",\"networkServiceDesignVersionOfferingLocation\":\"hmgorffukiscv\",\"networkServiceDesignVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"desiredStateConfigurationGroupValueReferences\":{\"xvxilcbtg\":{\"id\":\"plef\"},\"zqlqhyc\":{\"id\":\"nzeyqxtjj\"},\"beesmieknlra\":{\"id\":\"odggx\"}},\"lastStateNetworkServiceDesignVersionName\":\"aawiuagydwqfb\",\"lastStateConfigurationGroupValueReferences\":{\"fnzjvusfzldm\":{\"id\":\"fgiagtcojocqwo\"}}},\"identity\":{\"principalId\":\"927da8dd-06c5-461a-a2cb-462420bb6561\",\"tenantId\":\"0500c8c3-23db-4670-9858-44f4e25bbd6e\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tkad\":{\"principalId\":\"1ed0e611-0852-4731-9887-159a8814638a\",\"clientId\":\"e9608363-a762-4747-9178-7877fbffb7a8\"},\"own\":{\"principalId\":\"8254a9ed-d8de-4f23-afe9-2300d28d933c\",\"clientId\":\"e117530b-400c-4ba6-8f92-d00b1b34e6aa\"}}},\"sku\":{\"name\":\"Standard\",\"tier\":\"Basic\"},\"location\":\"grjqctojcmi\",\"tags\":{\"jy\":\"ieypef\",\"u\":\"dh\",\"khihihlhzds\":\"lcplc\",\"mvec\":\"tzbsrgnowcjhf\"},\"id\":\"ctxmwoteyowcluq\",\"name\":\"vekqvgqo\",\"type\":\"wifzmp\"}],\"nextLink\":\"yivqikfxcvhrfsp\"}")
             .toObject(SiteNetworkServiceListResult.class);
         Assertions.assertEquals("bo", model.value().get(0).location());
         Assertions.assertEquals("nvdxzxhihfrbbc", model.value().get(0).tags().get("vqagtltdhlf"));
@@ -42,47 +42,37 @@ public final class SiteNetworkServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SiteNetworkServiceListResult model
-            = new SiteNetworkServiceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SiteNetworkServiceInner().withLocation("bo")
-                                .withTags(mapOf("vqagtltdhlf", "nvdxzxhihfrbbc", "vgtrdcnifmzzs", "qojpy"))
-                                .withProperties(new SiteNetworkServicePropertiesFormat()
-                                    .withManagedResourceGroupConfiguration(new ManagedResourceGroupConfiguration()
-                                        .withName("wzqa").withLocation("lgzurig"))
-                                    .withSiteReference(new ReferencedResource().withId("cx"))
-                                    .withNetworkServiceDesignVersionResourceReference(
-                                        new DeploymentResourceIdReference())
-                                    .withDesiredStateConfigurationGroupValueReferences(
-                                        mapOf("vkjlmxhom", new ReferencedResource().withId("riykhyawfvjlbox"),
-                                            "uzzptjazysdz", new ReferencedResource().withId("nhdwdigumbnra"))))
-                                .withIdentity(new ManagedServiceIdentity()
-                                    .withType(ManagedServiceIdentityType.NONE)
-                                    .withUserAssignedIdentities(
-                                        mapOf(
-                                            "gsgbdhuzq", new UserAssignedIdentity(), "dgkynscliqhzvhxn",
-                                            new UserAssignedIdentity())))
-                                .withSku(new Sku().withName(SkuName.BASIC)),
-                            new SiteNetworkServiceInner()
-                                .withLocation("grjqctojcmi")
-                                .withTags(
-                                    mapOf("jy", "ieypef", "u", "dh", "khihihlhzds", "lcplc", "mvec", "tzbsrgnowcjhf"))
-                                .withProperties(new SiteNetworkServicePropertiesFormat()
-                                    .withManagedResourceGroupConfiguration(
-                                        new ManagedResourceGroupConfiguration().withName("spave").withLocation("r"))
-                                    .withSiteReference(new ReferencedResource().withId("unzo"))
-                                    .withNetworkServiceDesignVersionResourceReference(
-                                        new DeploymentResourceIdReference())
-                                    .withDesiredStateConfigurationGroupValueReferences(
-                                        mapOf("xvxilcbtg", new ReferencedResource().withId("plef"), "zqlqhyc",
-                                            new ReferencedResource().withId("nzeyqxtjj"), "beesmieknlra",
-                                            new ReferencedResource().withId("odggx"))))
-                                .withIdentity(
-                                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf("tkad", new UserAssignedIdentity(), "own",
-                                            new UserAssignedIdentity())))
-                                .withSku(new Sku().withName(SkuName.STANDARD))));
+            = new SiteNetworkServiceListResult().withValue(Arrays.asList(
+                new SiteNetworkServiceInner()
+                    .withLocation("bo")
+                    .withTags(mapOf("vqagtltdhlf", "nvdxzxhihfrbbc", "vgtrdcnifmzzs", "qojpy"))
+                    .withProperties(new SiteNetworkServicePropertiesFormat()
+                        .withManagedResourceGroupConfiguration(
+                            new ManagedResourceGroupConfiguration().withName("wzqa").withLocation("lgzurig"))
+                        .withSiteReference(new ReferencedResource().withId("cx"))
+                        .withNetworkServiceDesignVersionResourceReference(new DeploymentResourceIdReference())
+                        .withDesiredStateConfigurationGroupValueReferences(
+                            mapOf("vkjlmxhom", new ReferencedResource().withId("riykhyawfvjlbox"), "uzzptjazysdz",
+                                new ReferencedResource().withId("nhdwdigumbnra"))))
+                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                        .withUserAssignedIdentities(mapOf("gsgbdhuzq", new UserAssignedIdentity(), "dgkynscliqhzvhxn",
+                            new UserAssignedIdentity())))
+                    .withSku(new Sku().withName(SkuName.BASIC)),
+                new SiteNetworkServiceInner().withLocation("grjqctojcmi")
+                    .withTags(mapOf("jy", "ieypef", "u", "dh", "khihihlhzds", "lcplc", "mvec", "tzbsrgnowcjhf"))
+                    .withProperties(new SiteNetworkServicePropertiesFormat()
+                        .withManagedResourceGroupConfiguration(
+                            new ManagedResourceGroupConfiguration().withName("spave").withLocation("r"))
+                        .withSiteReference(new ReferencedResource().withId("unzo"))
+                        .withNetworkServiceDesignVersionResourceReference(new DeploymentResourceIdReference())
+                        .withDesiredStateConfigurationGroupValueReferences(
+                            mapOf("xvxilcbtg", new ReferencedResource().withId("plef"), "zqlqhyc",
+                                new ReferencedResource().withId("nzeyqxtjj"), "beesmieknlra",
+                                new ReferencedResource().withId("odggx"))))
+                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(
+                            mapOf("tkad", new UserAssignedIdentity(), "own", new UserAssignedIdentity())))
+                    .withSku(new Sku().withName(SkuName.STANDARD))));
         model = BinaryData.fromObject(model).toObject(SiteNetworkServiceListResult.class);
         Assertions.assertEquals("bo", model.value().get(0).location());
         Assertions.assertEquals("nvdxzxhihfrbbc", model.value().get(0).tags().get("vqagtltdhlf"));

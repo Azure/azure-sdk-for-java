@@ -31,6 +31,11 @@ public class RestoreParametersBase implements JsonSerializable<RestoreParameters
      */
     private OffsetDateTime restoreTimestampInUtc;
 
+    /*
+     * Specifies whether the restored account will have Time-To-Live disabled upon the successful restore.
+     */
+    private Boolean restoreWithTtlDisabled;
+
     /**
      * Creates an instance of RestoreParametersBase class.
      */
@@ -82,6 +87,28 @@ public class RestoreParametersBase implements JsonSerializable<RestoreParameters
     }
 
     /**
+     * Get the restoreWithTtlDisabled property: Specifies whether the restored account will have Time-To-Live disabled
+     * upon the successful restore.
+     * 
+     * @return the restoreWithTtlDisabled value.
+     */
+    public Boolean restoreWithTtlDisabled() {
+        return this.restoreWithTtlDisabled;
+    }
+
+    /**
+     * Set the restoreWithTtlDisabled property: Specifies whether the restored account will have Time-To-Live disabled
+     * upon the successful restore.
+     * 
+     * @param restoreWithTtlDisabled the restoreWithTtlDisabled value to set.
+     * @return the RestoreParametersBase object itself.
+     */
+    public RestoreParametersBase withRestoreWithTtlDisabled(Boolean restoreWithTtlDisabled) {
+        this.restoreWithTtlDisabled = restoreWithTtlDisabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -100,6 +127,7 @@ public class RestoreParametersBase implements JsonSerializable<RestoreParameters
             this.restoreTimestampInUtc == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.restoreTimestampInUtc));
+        jsonWriter.writeBooleanField("restoreWithTtlDisabled", this.restoreWithTtlDisabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,6 +151,9 @@ public class RestoreParametersBase implements JsonSerializable<RestoreParameters
                 } else if ("restoreTimestampInUtc".equals(fieldName)) {
                     deserializedRestoreParametersBase.restoreTimestampInUtc = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("restoreWithTtlDisabled".equals(fieldName)) {
+                    deserializedRestoreParametersBase.restoreWithTtlDisabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

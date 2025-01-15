@@ -100,24 +100,8 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<QueriesQueryTwinsHeaders, QueryResult>>
         queryTwinsWithResponseAsync(QuerySpecification querySpecification, QueryTwinsOptions queryTwinsOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (queryTwinsOptions != null) {
-            traceparentInternal = queryTwinsOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (queryTwinsOptions != null) {
-            tracestateInternal = queryTwinsOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        Integer maxItemsPerPageInternal = null;
-        if (queryTwinsOptions != null) {
-            maxItemsPerPageInternal = queryTwinsOptions.getMaxItemsPerPage();
-        }
-        Integer maxItemsPerPage = maxItemsPerPageInternal;
-        return FluxUtil.withContext(context -> service.queryTwins(this.client.getHost(), traceparent, tracestate,
-            maxItemsPerPage, this.client.getApiVersion(), querySpecification, accept, context));
+        return FluxUtil
+            .withContext(context -> queryTwinsWithResponseAsync(querySpecification, queryTwinsOptions, context));
     }
 
     /**
@@ -242,24 +226,8 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResult>> queryTwinsNoCustomHeadersWithResponseAsync(QuerySpecification querySpecification,
         QueryTwinsOptions queryTwinsOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (queryTwinsOptions != null) {
-            traceparentInternal = queryTwinsOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (queryTwinsOptions != null) {
-            tracestateInternal = queryTwinsOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        Integer maxItemsPerPageInternal = null;
-        if (queryTwinsOptions != null) {
-            maxItemsPerPageInternal = queryTwinsOptions.getMaxItemsPerPage();
-        }
-        Integer maxItemsPerPage = maxItemsPerPageInternal;
-        return FluxUtil.withContext(context -> service.queryTwinsNoCustomHeaders(this.client.getHost(), traceparent,
-            tracestate, maxItemsPerPage, this.client.getApiVersion(), querySpecification, accept, context));
+        return FluxUtil.withContext(
+            context -> queryTwinsNoCustomHeadersWithResponseAsync(querySpecification, queryTwinsOptions, context));
     }
 
     /**

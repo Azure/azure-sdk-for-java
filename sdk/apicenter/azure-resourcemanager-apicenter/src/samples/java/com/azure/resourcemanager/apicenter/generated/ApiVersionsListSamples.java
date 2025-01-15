@@ -18,7 +18,7 @@ public final class ApiVersionsListSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiVersionsListByApi(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiVersions().list("contoso-resources", "contoso", "default", "echo-api", null,
-            com.azure.core.util.Context.NONE);
+        manager.apiVersions()
+            .list("contoso-resources", "contoso", "default", "echo-api", null, com.azure.core.util.Context.NONE);
     }
 }

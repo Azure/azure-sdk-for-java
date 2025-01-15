@@ -37,14 +37,13 @@ public final class ManageLinuxWebAppBasic {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
-        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
-        final String rg1Name        = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
-        final String rg2Name        = Utils.randomResourceName(azureResourceManager, "rg2NEMV_", 24);
+        final String app1Name = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String rg1Name = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String rg2Name = Utils.randomResourceName(azureResourceManager, "rg2NEMV_", 24);
 
         try {
-
 
             //============================================================
             // Create a web app with a new app service plan
@@ -52,12 +51,12 @@ public final class ManageLinuxWebAppBasic {
             System.out.println("Creating web app " + app1Name + " in resource group " + rg1Name + "...");
 
             WebApp app1 = azureResourceManager.webApps()
-                    .define(app1Name)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rg1Name)
-                    .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
-                    .create();
+                .define(app1Name)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rg1Name)
+                .withNewLinuxPlan(PricingTier.STANDARD_S1)
+                .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
+                .create();
 
             System.out.println("Created web app " + app1.name());
             Utils.print(app1);
@@ -68,11 +67,11 @@ public final class ManageLinuxWebAppBasic {
             System.out.println("Creating another web app " + app2Name + " in resource group " + rg1Name + "...");
             AppServicePlan plan = azureResourceManager.appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azureResourceManager.webApps()
-                    .define(app2Name)
-                    .withExistingLinuxPlan(plan)
-                    .withExistingResourceGroup(rg1Name)
-                    .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
-                    .create();
+                .define(app2Name)
+                .withExistingLinuxPlan(plan)
+                .withExistingResourceGroup(rg1Name)
+                .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
+                .create();
 
             System.out.println("Created web app " + app2.name());
             Utils.print(app2);
@@ -83,11 +82,11 @@ public final class ManageLinuxWebAppBasic {
 
             System.out.println("Creating another web app " + app3Name + " in resource group " + rg2Name + "...");
             WebApp app3 = azureResourceManager.webApps()
-                    .define(app3Name)
-                    .withExistingLinuxPlan(plan)
-                    .withNewResourceGroup(rg2Name)
-                    .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
-                    .create();
+                .define(app3Name)
+                .withExistingLinuxPlan(plan)
+                .withNewResourceGroup(rg2Name)
+                .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
+                .create();
 
             System.out.println("Created web app " + app3.name());
             Utils.print(app3);
@@ -111,9 +110,9 @@ public final class ManageLinuxWebAppBasic {
             // Configure app 3 to have Java 8 enabled
             System.out.println("Adding Java support to web app " + app3Name + "...");
             app3.update()
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                    .apply();
+                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                .apply();
             System.out.println("Java supported on web app " + app3Name + "...");
 
             //=============================================================
@@ -174,8 +173,7 @@ public final class ManageLinuxWebAppBasic {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class AS2EnvelopeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AS2EnvelopeSettings model =
-            BinaryData
-                .fromString(
-                    "{\"messageContentType\":\"cvizqzdwlvw\",\"transmitFileNameInMimeHeader\":true,\"fileNameTemplate\":\"oupfgfb\",\"suspendMessageOnFileNameGenerationError\":false,\"autogenerateFileName\":false}")
-                .toObject(AS2EnvelopeSettings.class);
-        Assertions.assertEquals("cvizqzdwlvw", model.messageContentType());
-        Assertions.assertEquals(true, model.transmitFileNameInMimeHeader());
-        Assertions.assertEquals("oupfgfb", model.fileNameTemplate());
-        Assertions.assertEquals(false, model.suspendMessageOnFileNameGenerationError());
+        AS2EnvelopeSettings model = BinaryData.fromString(
+            "{\"messageContentType\":\"jptmcgsbost\",\"transmitFileNameInMimeHeader\":false,\"fileNameTemplate\":\"lnd\",\"suspendMessageOnFileNameGenerationError\":true,\"autogenerateFileName\":false}")
+            .toObject(AS2EnvelopeSettings.class);
+        Assertions.assertEquals("jptmcgsbost", model.messageContentType());
+        Assertions.assertEquals(false, model.transmitFileNameInMimeHeader());
+        Assertions.assertEquals("lnd", model.fileNameTemplate());
+        Assertions.assertEquals(true, model.suspendMessageOnFileNameGenerationError());
         Assertions.assertEquals(false, model.autogenerateFileName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AS2EnvelopeSettings model =
-            new AS2EnvelopeSettings()
-                .withMessageContentType("cvizqzdwlvw")
-                .withTransmitFileNameInMimeHeader(true)
-                .withFileNameTemplate("oupfgfb")
-                .withSuspendMessageOnFileNameGenerationError(false)
-                .withAutogenerateFileName(false);
+        AS2EnvelopeSettings model = new AS2EnvelopeSettings().withMessageContentType("jptmcgsbost")
+            .withTransmitFileNameInMimeHeader(false)
+            .withFileNameTemplate("lnd")
+            .withSuspendMessageOnFileNameGenerationError(true)
+            .withAutogenerateFileName(false);
         model = BinaryData.fromObject(model).toObject(AS2EnvelopeSettings.class);
-        Assertions.assertEquals("cvizqzdwlvw", model.messageContentType());
-        Assertions.assertEquals(true, model.transmitFileNameInMimeHeader());
-        Assertions.assertEquals("oupfgfb", model.fileNameTemplate());
-        Assertions.assertEquals(false, model.suspendMessageOnFileNameGenerationError());
+        Assertions.assertEquals("jptmcgsbost", model.messageContentType());
+        Assertions.assertEquals(false, model.transmitFileNameInMimeHeader());
+        Assertions.assertEquals("lnd", model.fileNameTemplate());
+        Assertions.assertEquals(true, model.suspendMessageOnFileNameGenerationError());
         Assertions.assertEquals(false, model.autogenerateFileName());
     }
 }

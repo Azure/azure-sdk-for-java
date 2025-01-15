@@ -6,30 +6,37 @@ package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.fluent.models.AddressProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Address details for an order item. */
+/**
+ * Address details for an order item.
+ */
 @Fluent
-public final class AddressDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressDetails.class);
-
+public final class AddressDetails implements JsonSerializable<AddressDetails> {
     /*
      * Customer address and contact details. It should be address resource
      */
-    @JsonProperty(value = "forwardAddress", required = true)
     private AddressProperties forwardAddress;
 
     /*
      * Return shipping address
      */
-    @JsonProperty(value = "returnAddress", access = JsonProperty.Access.WRITE_ONLY)
     private AddressProperties returnAddress;
 
     /**
+     * Creates an instance of AddressDetails class.
+     */
+    public AddressDetails() {
+    }
+
+    /**
      * Get the forwardAddress property: Customer address and contact details. It should be address resource.
-     *
+     * 
      * @return the forwardAddress value.
      */
     public AddressProperties forwardAddress() {
@@ -38,7 +45,7 @@ public final class AddressDetails {
 
     /**
      * Set the forwardAddress property: Customer address and contact details. It should be address resource.
-     *
+     * 
      * @param forwardAddress the forwardAddress value to set.
      * @return the AddressDetails object itself.
      */
@@ -49,7 +56,7 @@ public final class AddressDetails {
 
     /**
      * Get the returnAddress property: Return shipping address.
-     *
+     * 
      * @return the returnAddress value.
      */
     public AddressProperties returnAddress() {
@@ -58,19 +65,59 @@ public final class AddressDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (forwardAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property forwardAddress in model AddressDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property forwardAddress in model AddressDetails"));
         } else {
             forwardAddress().validate();
         }
         if (returnAddress() != null) {
             returnAddress().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AddressDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("forwardAddress", this.forwardAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddressDetails.
+     */
+    public static AddressDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressDetails deserializedAddressDetails = new AddressDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("forwardAddress".equals(fieldName)) {
+                    deserializedAddressDetails.forwardAddress = AddressProperties.fromJson(reader);
+                } else if ("returnAddress".equals(fieldName)) {
+                    deserializedAddressDetails.returnAddress = AddressProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressDetails;
+        });
     }
 }

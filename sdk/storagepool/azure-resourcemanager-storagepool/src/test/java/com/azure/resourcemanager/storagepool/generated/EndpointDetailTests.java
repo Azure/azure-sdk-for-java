@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDetail model =
-            BinaryData
-                .fromString(
-                    "{\"ipAddress\":\"gx\",\"port\":557104558,\"latency\":54.54992137874519,\"isAccessible\":false}")
-                .toObject(EndpointDetail.class);
-        Assertions.assertEquals("gx", model.ipAddress());
-        Assertions.assertEquals(557104558, model.port());
-        Assertions.assertEquals(54.54992137874519D, model.latency());
-        Assertions.assertEquals(false, model.isAccessible());
+        EndpointDetail model = BinaryData
+            .fromString("{\"ipAddress\":\"w\",\"port\":38783234,\"latency\":63.64323497212544,\"isAccessible\":true}")
+            .toObject(EndpointDetail.class);
+        Assertions.assertEquals("w", model.ipAddress());
+        Assertions.assertEquals(38783234, model.port());
+        Assertions.assertEquals(63.64323497212544D, model.latency());
+        Assertions.assertEquals(true, model.isAccessible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDetail model =
-            new EndpointDetail()
-                .withIpAddress("gx")
-                .withPort(557104558)
-                .withLatency(54.54992137874519D)
-                .withIsAccessible(false);
+        EndpointDetail model = new EndpointDetail().withIpAddress("w")
+            .withPort(38783234)
+            .withLatency(63.64323497212544D)
+            .withIsAccessible(true);
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
-        Assertions.assertEquals("gx", model.ipAddress());
-        Assertions.assertEquals(557104558, model.port());
-        Assertions.assertEquals(54.54992137874519D, model.latency());
-        Assertions.assertEquals(false, model.isAccessible());
+        Assertions.assertEquals("w", model.ipAddress());
+        Assertions.assertEquals(38783234, model.port());
+        Assertions.assertEquals(63.64323497212544D, model.latency());
+        Assertions.assertEquals(true, model.isAccessible());
     }
 }

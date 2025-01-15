@@ -10,11 +10,9 @@ import com.azure.resourcemanager.machinelearning.models.ListAmlUserFeatureResult
 public final class ListAmlUserFeatureResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListAmlUserFeatureResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"cvclxynpdk\",\"displayName\":\"fabuiyjibu\",\"description\":\"hdugneiknpg\"},{\"id\":\"gjiuqhibto\",\"displayName\":\"pqwjedm\",\"description\":\"r\"}],\"nextLink\":\"g\"}")
-                .toObject(ListAmlUserFeatureResult.class);
+        ListAmlUserFeatureResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"zczfkiceevs\",\"displayName\":\"xwspcaxikhfjq\",\"description\":\"glcxkxg\"},{\"id\":\"romv\",\"displayName\":\"ysemtmesrfsvpin\",\"description\":\"pat\"},{\"id\":\"diswxspvckojazb\",\"displayName\":\"spftesubzpv\",\"description\":\"dylytcovq\"},{\"id\":\"usrf\",\"displayName\":\"d\",\"description\":\"fxnxml\"}],\"nextLink\":\"uoswkjmdih\"}")
+            .toObject(ListAmlUserFeatureResult.class);
     }
 
     @org.junit.jupiter.api.Test

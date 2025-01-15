@@ -6,66 +6,68 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters supplied to the Create subscription operation. */
+/**
+ * Parameters supplied to the Create subscription operation.
+ */
 @Fluent
-public final class SubscriptionCreateParameterProperties {
+public final class SubscriptionCreateParameterProperties
+    implements JsonSerializable<SubscriptionCreateParameterProperties> {
     /*
      * User (user id path) for whom subscription is being created in form /users/{userId}
      */
-    @JsonProperty(value = "ownerId")
     private String ownerId;
 
     /*
      * Scope like /products/{productId} or /apis or /apis/{apiId}.
      */
-    @JsonProperty(value = "scope", required = true)
     private String scope;
 
     /*
      * Subscription name.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Primary subscription key. If not specified during request key will be generated automatically.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * Secondary subscription key. If not specified during request key will be generated automatically.
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
      * Initial subscription state. If no value is specified, subscription is created with Submitted state. Possible
      * states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber
      * cannot call any APIs of the product, * submitted – the subscription request has been made by the developer, but
-     * has not yet been approved or rejected, * rejected – the subscription request has been denied by an
-     * administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired –
-     * the subscription reached its expiration date and was deactivated.
+     * has not yet been approved or rejected, * rejected – the subscription request has been denied by an administrator,
+     * * cancelled – the subscription has been cancelled by the developer or administrator, * expired – the subscription
+     * reached its expiration date and was deactivated.
      */
-    @JsonProperty(value = "state")
     private SubscriptionState state;
 
     /*
      * Determines whether tracing can be enabled
      */
-    @JsonProperty(value = "allowTracing")
     private Boolean allowTracing;
 
-    /** Creates an instance of SubscriptionCreateParameterProperties class. */
+    /**
+     * Creates an instance of SubscriptionCreateParameterProperties class.
+     */
     public SubscriptionCreateParameterProperties() {
     }
 
     /**
      * Get the ownerId property: User (user id path) for whom subscription is being created in form /users/{userId}.
-     *
+     * 
      * @return the ownerId value.
      */
     public String ownerId() {
@@ -74,7 +76,7 @@ public final class SubscriptionCreateParameterProperties {
 
     /**
      * Set the ownerId property: User (user id path) for whom subscription is being created in form /users/{userId}.
-     *
+     * 
      * @param ownerId the ownerId value to set.
      * @return the SubscriptionCreateParameterProperties object itself.
      */
@@ -85,7 +87,7 @@ public final class SubscriptionCreateParameterProperties {
 
     /**
      * Get the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -94,7 +96,7 @@ public final class SubscriptionCreateParameterProperties {
 
     /**
      * Set the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the SubscriptionCreateParameterProperties object itself.
      */
@@ -105,7 +107,7 @@ public final class SubscriptionCreateParameterProperties {
 
     /**
      * Get the displayName property: Subscription name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -114,7 +116,7 @@ public final class SubscriptionCreateParameterProperties {
 
     /**
      * Set the displayName property: Subscription name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SubscriptionCreateParameterProperties object itself.
      */
@@ -126,7 +128,7 @@ public final class SubscriptionCreateParameterProperties {
     /**
      * Get the primaryKey property: Primary subscription key. If not specified during request key will be generated
      * automatically.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -136,7 +138,7 @@ public final class SubscriptionCreateParameterProperties {
     /**
      * Set the primaryKey property: Primary subscription key. If not specified during request key will be generated
      * automatically.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the SubscriptionCreateParameterProperties object itself.
      */
@@ -148,7 +150,7 @@ public final class SubscriptionCreateParameterProperties {
     /**
      * Get the secondaryKey property: Secondary subscription key. If not specified during request key will be generated
      * automatically.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -158,7 +160,7 @@ public final class SubscriptionCreateParameterProperties {
     /**
      * Set the secondaryKey property: Secondary subscription key. If not specified during request key will be generated
      * automatically.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the SubscriptionCreateParameterProperties object itself.
      */
@@ -174,7 +176,7 @@ public final class SubscriptionCreateParameterProperties {
      * made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been
      * denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator,
      * * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -188,7 +190,7 @@ public final class SubscriptionCreateParameterProperties {
      * made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been
      * denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator,
      * * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @param state the state value to set.
      * @return the SubscriptionCreateParameterProperties object itself.
      */
@@ -199,7 +201,7 @@ public final class SubscriptionCreateParameterProperties {
 
     /**
      * Get the allowTracing property: Determines whether tracing can be enabled.
-     *
+     * 
      * @return the allowTracing value.
      */
     public Boolean allowTracing() {
@@ -208,7 +210,7 @@ public final class SubscriptionCreateParameterProperties {
 
     /**
      * Set the allowTracing property: Determines whether tracing can be enabled.
-     *
+     * 
      * @param allowTracing the allowTracing value to set.
      * @return the SubscriptionCreateParameterProperties object itself.
      */
@@ -219,23 +221,79 @@ public final class SubscriptionCreateParameterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scope() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scope in model SubscriptionCreateParameterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scope in model SubscriptionCreateParameterProperties"));
         }
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model SubscriptionCreateParameterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model SubscriptionCreateParameterProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SubscriptionCreateParameterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("ownerId", this.ownerId);
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeBooleanField("allowTracing", this.allowTracing);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionCreateParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionCreateParameterProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubscriptionCreateParameterProperties.
+     */
+    public static SubscriptionCreateParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionCreateParameterProperties deserializedSubscriptionCreateParameterProperties
+                = new SubscriptionCreateParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedSubscriptionCreateParameterProperties.scope = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSubscriptionCreateParameterProperties.displayName = reader.getString();
+                } else if ("ownerId".equals(fieldName)) {
+                    deserializedSubscriptionCreateParameterProperties.ownerId = reader.getString();
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedSubscriptionCreateParameterProperties.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedSubscriptionCreateParameterProperties.secondaryKey = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedSubscriptionCreateParameterProperties.state
+                        = SubscriptionState.fromString(reader.getString());
+                } else if ("allowTracing".equals(fieldName)) {
+                    deserializedSubscriptionCreateParameterProperties.allowTracing
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionCreateParameterProperties;
+        });
+    }
 }

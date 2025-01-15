@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -45,8 +46,8 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
     }
 
     /**
-     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the
-     * thread properties.
+     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
+     * properties.
      * 
      * @return the editedByCommunicationIdentifier value.
      */
@@ -55,8 +56,8 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
     }
 
     /**
-     * Set the editedByCommunicationIdentifier property: The communication identifier of the user who updated the
-     * thread properties.
+     * Set the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
+     * properties.
      * 
      * @param editedByCommunicationIdentifier the editedByCommunicationIdentifier value to set.
      * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
@@ -163,6 +164,9 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -200,8 +204,8 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
                 } else if ("threadId".equals(fieldName)) {
                     deserializedAcsChatThreadPropertiesUpdatedEventData.setThreadId(reader.getString());
                 } else if ("createTime".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedEventData.setCreateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.setCreateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatThreadPropertiesUpdatedEventData
                         .setVersion(reader.getNullable(JsonReader::getLong));
@@ -209,8 +213,8 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
                     deserializedAcsChatThreadPropertiesUpdatedEventData.editedByCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("editTime".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedEventData.editTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.editTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("properties".equals(fieldName)) {
                     Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedAcsChatThreadPropertiesUpdatedEventData.properties = properties;

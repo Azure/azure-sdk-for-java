@@ -4,45 +4,48 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
-
 /**
  * Type of managed service identity.
  */
-public final class ManagedServiceIdentityType extends ExpandableStringEnum<ManagedServiceIdentityType> {
+public enum ManagedServiceIdentityType {
     /**
-     * Static value UserAssigned for ManagedServiceIdentityType.
+     * Enum value UserAssigned.
      */
-    public static final ManagedServiceIdentityType USER_ASSIGNED = fromString("UserAssigned");
+    USER_ASSIGNED("UserAssigned");
 
     /**
-     * Creates a new instance of ManagedServiceIdentityType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a ManagedServiceIdentityType instance.
      */
-    @Deprecated
-    public ManagedServiceIdentityType() {
+    private final String value;
+
+    ManagedServiceIdentityType(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a ManagedServiceIdentityType from its string representation.
+     * Parses a serialized value to a ManagedServiceIdentityType instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding ManagedServiceIdentityType.
+     * @param value the serialized value to parse.
+     * @return the parsed ManagedServiceIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
-    public static ManagedServiceIdentityType fromString(String name) {
-        return fromString(name, ManagedServiceIdentityType.class);
+    public static ManagedServiceIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        ManagedServiceIdentityType[] items = ManagedServiceIdentityType.values();
+        for (ManagedServiceIdentityType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known ManagedServiceIdentityType values.
-     * 
-     * @return known ManagedServiceIdentityType values.
+     * {@inheritDoc}
      */
-    public static Collection<ManagedServiceIdentityType> values() {
-        return values(ManagedServiceIdentityType.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

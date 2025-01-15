@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The managed resources in customer subscription. */
+/**
+ * The managed resources in customer subscription.
+ */
 @Immutable
-public class ManagedResources {
+public class ManagedResources implements JsonSerializable<ManagedResources> {
     /*
      * Gets the managed event hub namespace resource identifier.
      */
-    @JsonProperty(value = "eventHubNamespace", access = JsonProperty.Access.WRITE_ONLY)
     private String eventHubNamespace;
 
     /*
      * Gets the managed resource group resource identifier. This resource group will host resource dependencies for the
      * account.
      */
-    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
     /*
      * Gets the managed storage account resource identifier.
      */
-    @JsonProperty(value = "storageAccount", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccount;
 
-    /** Creates an instance of ManagedResources class. */
+    /**
+     * Creates an instance of ManagedResources class.
+     */
     public ManagedResources() {
     }
 
     /**
      * Get the eventHubNamespace property: Gets the managed event hub namespace resource identifier.
-     *
+     * 
      * @return the eventHubNamespace value.
      */
     public String eventHubNamespace() {
@@ -43,9 +48,20 @@ public class ManagedResources {
     }
 
     /**
+     * Set the eventHubNamespace property: Gets the managed event hub namespace resource identifier.
+     * 
+     * @param eventHubNamespace the eventHubNamespace value to set.
+     * @return the ManagedResources object itself.
+     */
+    ManagedResources withEventHubNamespace(String eventHubNamespace) {
+        this.eventHubNamespace = eventHubNamespace;
+        return this;
+    }
+
+    /**
      * Get the resourceGroup property: Gets the managed resource group resource identifier. This resource group will
      * host resource dependencies for the account.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -53,8 +69,20 @@ public class ManagedResources {
     }
 
     /**
+     * Set the resourceGroup property: Gets the managed resource group resource identifier. This resource group will
+     * host resource dependencies for the account.
+     * 
+     * @param resourceGroup the resourceGroup value to set.
+     * @return the ManagedResources object itself.
+     */
+    ManagedResources withResourceGroup(String resourceGroup) {
+        this.resourceGroup = resourceGroup;
+        return this;
+    }
+
+    /**
      * Get the storageAccount property: Gets the managed storage account resource identifier.
-     *
+     * 
      * @return the storageAccount value.
      */
     public String storageAccount() {
@@ -62,10 +90,60 @@ public class ManagedResources {
     }
 
     /**
+     * Set the storageAccount property: Gets the managed storage account resource identifier.
+     * 
+     * @param storageAccount the storageAccount value to set.
+     * @return the ManagedResources object itself.
+     */
+    ManagedResources withStorageAccount(String storageAccount) {
+        this.storageAccount = storageAccount;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedResources from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedResources if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedResources.
+     */
+    public static ManagedResources fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedResources deserializedManagedResources = new ManagedResources();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventHubNamespace".equals(fieldName)) {
+                    deserializedManagedResources.eventHubNamespace = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedManagedResources.resourceGroup = reader.getString();
+                } else if ("storageAccount".equals(fieldName)) {
+                    deserializedManagedResources.storageAccount = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedResources;
+        });
     }
 }

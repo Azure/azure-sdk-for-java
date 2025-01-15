@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ExpandMsixImageInner;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixImageUri;
 
-/** An instance of this class provides access to all the operations defined in MsixImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MsixImagesClient.
+ */
 public interface MsixImagesClient {
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -26,12 +28,12 @@ public interface MsixImagesClient {
      * @return expandMsixImageList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ExpandMsixImageInner> expandAsync(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri);
+    PagedFlux<ExpandMsixImageInner> expandAsync(String resourceGroupName, String hostPoolName,
+        MsixImageUri msixImageUri);
 
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -41,12 +43,12 @@ public interface MsixImagesClient {
      * @return expandMsixImageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpandMsixImageInner> expand(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri);
+    PagedIterable<ExpandMsixImageInner> expand(String resourceGroupName, String hostPoolName,
+        MsixImageUri msixImageUri);
 
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -57,6 +59,6 @@ public interface MsixImagesClient {
      * @return expandMsixImageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpandMsixImageInner> expand(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri, Context context);
+    PagedIterable<ExpandMsixImageInner> expand(String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri,
+        Context context);
 }

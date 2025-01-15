@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** A list of unstructured historical data for v1 compatibility. */
+/**
+ * A list of unstructured historical data for v1 compatibility.
+ */
 @Fluent
 public final class History implements JsonSerializable<History> {
     /*
@@ -19,12 +21,15 @@ public final class History implements JsonSerializable<History> {
      */
     private String v1Compatibility;
 
-    /** Creates an instance of History class. */
-    public History() {}
+    /**
+     * Creates an instance of History class.
+     */
+    public History() {
+    }
 
     /**
      * Get the v1Compatibility property: The raw v1 compatibility information.
-     *
+     * 
      * @return the v1Compatibility value.
      */
     public String getV1Compatibility() {
@@ -33,7 +38,7 @@ public final class History implements JsonSerializable<History> {
 
     /**
      * Set the v1Compatibility property: The raw v1 compatibility information.
-     *
+     * 
      * @param v1Compatibility the v1Compatibility value to set.
      * @return the History object itself.
      */
@@ -42,6 +47,9 @@ public final class History implements JsonSerializable<History> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -51,28 +59,27 @@ public final class History implements JsonSerializable<History> {
 
     /**
      * Reads an instance of History from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of History if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IOException If an error occurs while reading the History.
      */
     public static History fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    History deserializedHistory = new History();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            History deserializedHistory = new History();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("v1Compatibility".equals(fieldName)) {
-                            deserializedHistory.v1Compatibility = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("v1Compatibility".equals(fieldName)) {
+                    deserializedHistory.v1Compatibility = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedHistory;
-                });
+            return deserializedHistory;
+        });
     }
 }

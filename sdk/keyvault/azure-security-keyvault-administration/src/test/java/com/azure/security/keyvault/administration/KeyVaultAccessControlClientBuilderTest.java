@@ -3,6 +3,7 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
@@ -41,48 +42,56 @@ public class KeyVaultAccessControlClientBuilderTest {
 
     @Test
     public void buildSyncClientTest() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient
+            = new KeyVaultAccessControlClientBuilder().vaultUrl(vaultUrl)
+                .serviceVersion(serviceVersion)
+                .credential(new TestUtils.TestCredential())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildClient();
 
         assertNotNull(keyVaultAccessControlClient);
-        assertEquals(KeyVaultAccessControlClient.class.getSimpleName(), keyVaultAccessControlClient.getClass().getSimpleName());
+        assertEquals(KeyVaultAccessControlClient.class.getSimpleName(),
+            keyVaultAccessControlClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new TestUtils.TestCredential())
-            .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient
+            = new KeyVaultAccessControlClientBuilder().vaultUrl(vaultUrl)
+                .credential(new TestUtils.TestCredential())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildClient();
 
         assertNotNull(keyVaultAccessControlClient);
-        assertEquals(KeyVaultAccessControlClient.class.getSimpleName(), keyVaultAccessControlClient.getClass().getSimpleName());
+        assertEquals(KeyVaultAccessControlClient.class.getSimpleName(),
+            keyVaultAccessControlClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientTest() {
-        KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .buildAsyncClient();
+        KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient
+            = new KeyVaultAccessControlClientBuilder().vaultUrl(vaultUrl)
+                .serviceVersion(serviceVersion)
+                .credential(new TestUtils.TestCredential())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildAsyncClient();
 
         assertNotNull(keyVaultAccessControlAsyncClient);
-        assertEquals(KeyVaultAccessControlAsyncClient.class.getSimpleName(), keyVaultAccessControlAsyncClient.getClass().getSimpleName());
+        assertEquals(KeyVaultAccessControlAsyncClient.class.getSimpleName(),
+            keyVaultAccessControlAsyncClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new TestUtils.TestCredential())
-            .buildAsyncClient();
+        KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient
+            = new KeyVaultAccessControlClientBuilder().vaultUrl(vaultUrl)
+                .credential(new TestUtils.TestCredential())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildAsyncClient();
 
         assertNotNull(keyVaultAccessControlAsyncClient);
-        assertEquals(KeyVaultAccessControlAsyncClient.class.getSimpleName(), keyVaultAccessControlAsyncClient.getClass().getSimpleName());
+        assertEquals(KeyVaultAccessControlAsyncClient.class.getSimpleName(),
+            keyVaultAccessControlAsyncClient.getClass().getSimpleName());
     }
 
     @Test
@@ -97,66 +106,68 @@ public class KeyVaultAccessControlClientBuilderTest {
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new TestUtils.TestCredential())
-            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-            .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ZERO)))
-            .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
-            })
-            .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient
+            = new KeyVaultAccessControlClientBuilder().vaultUrl(vaultUrl)
+                .credential(new TestUtils.TestCredential())
+                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+                .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+                .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ZERO)))
+                .httpClient(httpRequest -> {
+                    assertTrue(
+                        httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("aNewApplication"));
+                    return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                })
+                .buildClient();
 
-        assertThrows(RuntimeException.class, () ->
-            keyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
+        assertThrows(RuntimeException.class, () -> keyVaultAccessControlClient
+            .createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
     }
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new TestUtils.TestCredential())
-            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ZERO)))
-            .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
-            })
-            .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient
+            = new KeyVaultAccessControlClientBuilder().vaultUrl(vaultUrl)
+                .credential(new TestUtils.TestCredential())
+                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+                .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ZERO)))
+                .httpClient(httpRequest -> {
+                    assertTrue(
+                        httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("anOldApplication"));
+                    return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                })
+                .buildClient();
 
-        assertThrows(RuntimeException.class, () ->
-            keyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
+        assertThrows(RuntimeException.class, () -> keyVaultAccessControlClient
+            .createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
     }
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new TestUtils.TestCredential())
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ZERO)))
-            .httpClient(httpRequest -> {
-                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
-            })
-            .buildClient();
+        KeyVaultAccessControlClient keyVaultAccessControlClient
+            = new KeyVaultAccessControlClientBuilder().vaultUrl(vaultUrl)
+                .credential(new TestUtils.TestCredential())
+                .clientOptions(
+                    new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+                .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ZERO)))
+                .httpClient(httpRequest -> {
+                    assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
+                    return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                })
+                .buildClient();
 
-        assertThrows(RuntimeException.class, () ->
-            keyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
+        assertThrows(RuntimeException.class, () -> keyVaultAccessControlClient
+            .createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
     }
 
     @Test
     public void bothRetryOptionsAndRetryPolicySpecified() {
-        assertThrows(RuntimeException.class, () ->
-            new KeyVaultAccessControlClientBuilder()
-                .vaultUrl(vaultUrl)
+        assertThrows(RuntimeException.class,
+            () -> new KeyVaultAccessControlClientBuilder().vaultUrl(vaultUrl)
                 .serviceVersion(serviceVersion)
                 .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
                 .retryPolicy(new RetryPolicy())
                 .credential(new TestUtils.TestCredential())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
                 .buildClient());
     }
 
@@ -164,12 +175,13 @@ public class KeyVaultAccessControlClientBuilderTest {
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new TestUtils.TestCredential())
-            .addPolicy(new TestUtils.PerCallPolicy())
-            .addPolicy(new TestUtils.PerRetryPolicy())
-            .buildAsyncClient();
+        KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient
+            = new KeyVaultAccessControlClientBuilder().vaultUrl(vaultUrl)
+                .credential(new TestUtils.TestCredential())
+                .addPolicy(new TestUtils.PerCallPolicy())
+                .addPolicy(new TestUtils.PerRetryPolicy())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildAsyncClient();
 
         HttpPipeline pipeline = keyVaultAccessControlAsyncClient.getHttpPipeline();
 

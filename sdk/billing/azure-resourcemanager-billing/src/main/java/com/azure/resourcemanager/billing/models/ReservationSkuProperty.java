@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The property of reservation sku object. */
+/**
+ * The property of reservation sku object.
+ */
 @Immutable
-public final class ReservationSkuProperty {
+public final class ReservationSkuProperty implements JsonSerializable<ReservationSkuProperty> {
     /*
      * The name of the reservation sku.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    /** Creates an instance of ReservationSkuProperty class. */
+    /**
+     * Creates an instance of ReservationSkuProperty class.
+     */
     public ReservationSkuProperty() {
     }
 
     /**
      * Get the name property: The name of the reservation sku.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -31,9 +38,44 @@ public final class ReservationSkuProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationSkuProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationSkuProperty if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationSkuProperty.
+     */
+    public static ReservationSkuProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationSkuProperty deserializedReservationSkuProperty = new ReservationSkuProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedReservationSkuProperty.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationSkuProperty;
+        });
     }
 }

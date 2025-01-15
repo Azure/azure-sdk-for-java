@@ -29,15 +29,11 @@ public class JsonGeneratorDelegate extends JsonGenerator {
      * /**********************************************************************
      */
 
-    public JsonGeneratorDelegate(JsonGenerator d) {
-        this(d, true);
-    }
-
     /**
      * @param d Underlying generator to delegate calls to
      * @param delegateCopyMethods Flag assigned to <code>delagateCopyMethod</code>
      *   and which defines whether copy methods are handled locally (false), or
-     *   delegated to configured 
+     *   delegated to configured
      */
     public JsonGeneratorDelegate(JsonGenerator d, boolean delegateCopyMethods) {
         delegate = d;
@@ -204,23 +200,6 @@ public class JsonGeneratorDelegate extends JsonGenerator {
      * /* Configuring generator
      * /**********************************************************************
      */
-
-    @Override
-    public JsonGenerator setPrettyPrinter(PrettyPrinter pp) {
-        delegate.setPrettyPrinter(pp);
-        return this;
-    }
-
-    @Override
-    public PrettyPrinter getPrettyPrinter() {
-        return delegate.getPrettyPrinter();
-    }
-
-    @Override
-    public JsonGenerator useDefaultPrettyPrinter() {
-        delegate.useDefaultPrettyPrinter();
-        return this;
-    }
 
     @Override
     public JsonGenerator setHighestNonEscapedChar(int charCode) {
@@ -550,11 +529,6 @@ public class JsonGeneratorDelegate extends JsonGenerator {
      * /**********************************************************************
      */
 
-    @Override // since 2.13
-    public void writePOJO(Object pojo) throws IOException {
-        writeObject(pojo);
-    }
-
     @Override
     public void writeObject(Object pojo) throws IOException {
         if (delegateCopyMethods) {
@@ -664,12 +638,4 @@ public class JsonGeneratorDelegate extends JsonGenerator {
         return delegate;
     }
 
-    /**
-     * @return Underlying generator that calls are delegated to
-     *
-     * @since 2.11
-     */
-    public JsonGenerator delegate() {
-        return delegate;
-    }
 }

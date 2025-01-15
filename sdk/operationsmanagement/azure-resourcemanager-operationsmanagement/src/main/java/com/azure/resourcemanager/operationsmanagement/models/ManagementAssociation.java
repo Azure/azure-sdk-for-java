@@ -6,32 +6,34 @@ package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAssociationInner;
 
-/** An immutable client-side representation of ManagementAssociation. */
+/**
+ * An immutable client-side representation of ManagementAssociation.
+ */
 public interface ManagementAssociation {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     String location();
@@ -39,14 +41,14 @@ public interface ManagementAssociation {
     /**
      * Gets the properties property: Properties for ManagementAssociation object supported by the OperationsManagement
      * resource provider.
-     *
+     * 
      * @return the properties value.
      */
     ManagementAssociationProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAssociationInner object.
-     *
+     * 
      * @return the inner object.
      */
     ManagementAssociationInner innerModel();

@@ -14,28 +14,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MetricSeriesDefinitionTransforms {
-    public static PagedResponse<MetricSeriesDefinition> fromInnerResponse(
-        PagedResponse<MetricSeriesItem> innerResponse) {
+    public static PagedResponse<MetricSeriesDefinition>
+        fromInnerResponse(PagedResponse<MetricSeriesItem> innerResponse) {
         final List<MetricSeriesItem> innerMetricSeriesDefinitionList = innerResponse.getValue();
         if (innerMetricSeriesDefinitionList == null) {
-            return new PagedResponseBase<>(
-                innerResponse.getRequest(),
-                innerResponse.getStatusCode(),
-                innerResponse.getHeaders(),
-                new ArrayList<>(),
-                innerResponse.getContinuationToken(),
-                null);
+            return new PagedResponseBase<>(innerResponse.getRequest(), innerResponse.getStatusCode(),
+                innerResponse.getHeaders(), new ArrayList<>(), innerResponse.getContinuationToken(), null);
         } else {
             final List<MetricSeriesDefinition> metricSeriesDefinitionList = innerMetricSeriesDefinitionList.stream()
                 .map(inner -> MetricSeriesDefinitionTransforms.fromInner(inner))
                 .collect(Collectors.toList());
-            return new PagedResponseBase<>(
-                innerResponse.getRequest(),
-                innerResponse.getStatusCode(),
-                innerResponse.getHeaders(),
-                metricSeriesDefinitionList,
-                innerResponse.getContinuationToken(),
-                null);
+            return new PagedResponseBase<>(innerResponse.getRequest(), innerResponse.getStatusCode(),
+                innerResponse.getHeaders(), metricSeriesDefinitionList, innerResponse.getContinuationToken(), null);
         }
     }
 

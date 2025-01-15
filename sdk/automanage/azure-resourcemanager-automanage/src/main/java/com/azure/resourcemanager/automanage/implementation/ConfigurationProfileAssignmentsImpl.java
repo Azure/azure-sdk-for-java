@@ -21,17 +21,28 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
 
     private final com.azure.resourcemanager.automanage.AutomanageManager serviceManager;
 
-    public ConfigurationProfileAssignmentsImpl(
-        ConfigurationProfileAssignmentsClient innerClient,
+    public ConfigurationProfileAssignmentsImpl(ConfigurationProfileAssignmentsClient innerClient,
         com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ConfigurationProfileAssignment get(
-        String resourceGroupName, String configurationProfileAssignmentName, String vmName) {
-        ConfigurationProfileAssignmentInner inner =
-            this.serviceClient().get(resourceGroupName, configurationProfileAssignmentName, vmName);
+    public Response<ConfigurationProfileAssignment> getWithResponse(String resourceGroupName,
+        String configurationProfileAssignmentName, String vmName, Context context) {
+        Response<ConfigurationProfileAssignmentInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigurationProfileAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConfigurationProfileAssignment get(String resourceGroupName, String configurationProfileAssignmentName,
+        String vmName) {
+        ConfigurationProfileAssignmentInner inner
+            = this.serviceClient().get(resourceGroupName, configurationProfileAssignmentName, vmName);
         if (inner != null) {
             return new ConfigurationProfileAssignmentImpl(inner, this.manager());
         } else {
@@ -39,221 +50,168 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         }
     }
 
-    public Response<ConfigurationProfileAssignment> getWithResponse(
-        String resourceGroupName, String configurationProfileAssignmentName, String vmName, Context context) {
-        Response<ConfigurationProfileAssignmentInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ConfigurationProfileAssignmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String configurationProfileAssignmentName,
+        String vmName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, context);
     }
 
     public void delete(String resourceGroupName, String configurationProfileAssignmentName, String vmName) {
         this.serviceClient().delete(resourceGroupName, configurationProfileAssignmentName, vmName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String configurationProfileAssignmentName, String vmName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, context);
+    public PagedIterable<ConfigurationProfileAssignment> listByVirtualMachines(String resourceGroupName,
+        String vmName) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner
+            = this.serviceClient().listByVirtualMachines(resourceGroupName, vmName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ConfigurationProfileAssignment> listByVirtualMachines(
-        String resourceGroupName, String vmName) {
-        PagedIterable<ConfigurationProfileAssignmentInner> inner =
-            this.serviceClient().listByVirtualMachines(resourceGroupName, vmName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<ConfigurationProfileAssignment> listByVirtualMachines(
-        String resourceGroupName, String vmName, Context context) {
-        PagedIterable<ConfigurationProfileAssignmentInner> inner =
-            this.serviceClient().listByVirtualMachines(resourceGroupName, vmName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    public PagedIterable<ConfigurationProfileAssignment> listByVirtualMachines(String resourceGroupName, String vmName,
+        Context context) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner
+            = this.serviceClient().listByVirtualMachines(resourceGroupName, vmName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationProfileAssignment> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ConfigurationProfileAssignmentInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+        PagedIterable<ConfigurationProfileAssignmentInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ConfigurationProfileAssignment> listByResourceGroup(
-        String resourceGroupName, Context context) {
-        PagedIterable<ConfigurationProfileAssignmentInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    public PagedIterable<ConfigurationProfileAssignment> listByResourceGroup(String resourceGroupName,
+        Context context) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationProfileAssignment> list() {
         PagedIterable<ConfigurationProfileAssignmentInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationProfileAssignment> list(Context context) {
         PagedIterable<ConfigurationProfileAssignmentInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ConfigurationProfileAssignment> listByMachineName(
-        String resourceGroupName, String machineName) {
-        PagedIterable<ConfigurationProfileAssignmentInner> inner =
-            this.serviceClient().listByMachineName(resourceGroupName, machineName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    public PagedIterable<ConfigurationProfileAssignment> listByMachineName(String resourceGroupName,
+        String machineName) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner
+            = this.serviceClient().listByMachineName(resourceGroupName, machineName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ConfigurationProfileAssignment> listByMachineName(
-        String resourceGroupName, String machineName, Context context) {
-        PagedIterable<ConfigurationProfileAssignmentInner> inner =
-            this.serviceClient().listByMachineName(resourceGroupName, machineName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    public PagedIterable<ConfigurationProfileAssignment> listByMachineName(String resourceGroupName, String machineName,
+        Context context) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner
+            = this.serviceClient().listByMachineName(resourceGroupName, machineName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ConfigurationProfileAssignment> listByClusterName(
-        String resourceGroupName, String clusterName) {
-        PagedIterable<ConfigurationProfileAssignmentInner> inner =
-            this.serviceClient().listByClusterName(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    public PagedIterable<ConfigurationProfileAssignment> listByClusterName(String resourceGroupName,
+        String clusterName) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner
+            = this.serviceClient().listByClusterName(resourceGroupName, clusterName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ConfigurationProfileAssignment> listByClusterName(
-        String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<ConfigurationProfileAssignmentInner> inner =
-            this.serviceClient().listByClusterName(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    public PagedIterable<ConfigurationProfileAssignment> listByClusterName(String resourceGroupName, String clusterName,
+        Context context) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner
+            = this.serviceClient().listByClusterName(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
     public ConfigurationProfileAssignment getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationProfileAssignmentName = Utils.getValueFromIdByName(id, "configurationProfileAssignments");
+        String configurationProfileAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "configurationProfileAssignments");
         if (configurationProfileAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'configurationProfileAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'configurationProfileAssignments'.", id)));
         }
-        String vmName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String vmName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (vmName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, Context.NONE)
             .getValue();
     }
 
     public Response<ConfigurationProfileAssignment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationProfileAssignmentName = Utils.getValueFromIdByName(id, "configurationProfileAssignments");
+        String configurationProfileAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "configurationProfileAssignments");
         if (configurationProfileAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'configurationProfileAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'configurationProfileAssignments'.", id)));
         }
-        String vmName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String vmName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (vmName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
         return this.getWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationProfileAssignmentName = Utils.getValueFromIdByName(id, "configurationProfileAssignments");
+        String configurationProfileAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "configurationProfileAssignments");
         if (configurationProfileAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'configurationProfileAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'configurationProfileAssignments'.", id)));
         }
-        String vmName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String vmName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (vmName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationProfileAssignmentName = Utils.getValueFromIdByName(id, "configurationProfileAssignments");
+        String configurationProfileAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "configurationProfileAssignments");
         if (configurationProfileAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'configurationProfileAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'configurationProfileAssignments'.", id)));
         }
-        String vmName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String vmName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (vmName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, context);
     }

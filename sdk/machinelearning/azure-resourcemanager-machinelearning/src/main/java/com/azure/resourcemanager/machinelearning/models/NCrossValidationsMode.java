@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Determines how N-Cross validations value is determined. */
+/**
+ * Determines how N-Cross validations value is determined.
+ */
 public final class NCrossValidationsMode extends ExpandableStringEnum<NCrossValidationsMode> {
-    /** Static value Auto for NCrossValidationsMode. */
+    /**
+     * Static value Auto for NCrossValidationsMode.
+     */
     public static final NCrossValidationsMode AUTO = fromString("Auto");
 
-    /** Static value Custom for NCrossValidationsMode. */
+    /**
+     * Static value Custom for NCrossValidationsMode.
+     */
     public static final NCrossValidationsMode CUSTOM = fromString("Custom");
 
     /**
      * Creates a new instance of NCrossValidationsMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class NCrossValidationsMode extends ExpandableStringEnum<NCrossVali
 
     /**
      * Creates or finds a NCrossValidationsMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NCrossValidationsMode.
      */
-    @JsonCreator
     public static NCrossValidationsMode fromString(String name) {
         return fromString(name, NCrossValidationsMode.class);
     }
 
     /**
      * Gets known NCrossValidationsMode values.
-     *
+     * 
      * @return known NCrossValidationsMode values.
      */
     public static Collection<NCrossValidationsMode> values() {

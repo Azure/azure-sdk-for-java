@@ -24,8 +24,11 @@ public final class DocumentSelectionMarkHelper {
      */
     public interface DocumentSelectionMarkAccessor {
         void setState(DocumentSelectionMark documentSelectionMark, DocumentSelectionMarkState state);
+
         void setBoundingPolygon(DocumentSelectionMark documentSelectionMark, List<Point> boundingPolygon);
+
         void setSpan(DocumentSelectionMark documentSelectionMark, DocumentSpan span);
+
         void setConfidence(DocumentSelectionMark documentSelectionMark, float confidence);
 
     }

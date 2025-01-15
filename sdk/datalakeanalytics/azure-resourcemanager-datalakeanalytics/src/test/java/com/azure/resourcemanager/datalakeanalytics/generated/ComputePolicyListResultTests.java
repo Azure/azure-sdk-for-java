@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakeanalytics.models.ComputePolicyListResul
 public final class ComputePolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputePolicyListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"objectId\":\"50258881-83a4-432e-8ede-a4518c38ab5d\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":1979421186,\"minPriorityPerJob\":1468269047},\"name\":\"lfplp\",\"type\":\"xus\",\"id\":\"pabgyeps\"},{\"properties\":{\"objectId\":\"f378345f-bec9-427c-ac48-779521733dff\",\"objectType\":\"ServicePrincipal\",\"maxDegreeOfParallelismPerJob\":610868240,\"minPriorityPerJob\":2003590668},\"name\":\"wpmueefj\",\"type\":\"fqkquj\",\"id\":\"suyonobglaocq\"},{\"properties\":{\"objectId\":\"4aa3de16-48e1-4883-ad04-40afe653f4a4\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":528280521,\"minPriorityPerJob\":1054992005},\"name\":\"ytlmoyrxvwfud\",\"type\":\"zntxhdz\",\"id\":\"rqjbhckfrl\"},{\"properties\":{\"objectId\":\"2afa3854-c6f3-412c-844a-e3d62bd65b1c\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":1085647312,\"minPriorityPerJob\":475839278},\"name\":\"ca\",\"type\":\"z\",\"id\":\"zka\"}],\"nextLink\":\"uwbc\"}")
-                .toObject(ComputePolicyListResult.class);
+        ComputePolicyListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"objectId\":\"292c2cb8-f6f7-4b43-99c4-c328ff4d25a3\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":1103023268,\"minPriorityPerJob\":1901169400},\"name\":\"nljky\",\"type\":\"j\",\"id\":\"ujqgidok\"},{\"properties\":{\"objectId\":\"64833640-0084-4119-b537-fc9e7cec7abc\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":1125977089,\"minPriorityPerJob\":649555961},\"name\":\"ltbgsncghkj\",\"type\":\"zz\",\"id\":\"ijhtxf\"},{\"properties\":{\"objectId\":\"b11eec8b-9008-4169-b44e-a01c553d5228\",\"objectType\":\"ServicePrincipal\",\"maxDegreeOfParallelismPerJob\":1787736845,\"minPriorityPerJob\":215474399},\"name\":\"hmpvecx\",\"type\":\"debfqkkrbmpukgri\",\"id\":\"lzlfbxzpuz\"},{\"properties\":{\"objectId\":\"06d7085a-9b54-4b39-a426-26c267949844\",\"objectType\":\"ServicePrincipal\",\"maxDegreeOfParallelismPerJob\":315992042,\"minPriorityPerJob\":2071345899},\"name\":\"mgkbrpyydhibn\",\"type\":\"qkpikadrgvtqagnb\",\"id\":\"nhijggmebfsi\"}],\"nextLink\":\"butr\"}")
+            .toObject(ComputePolicyListResult.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -41,7 +41,8 @@ public class LockContainer<T> implements AutoCloseable {
             }
 
             final OffsetDateTime now = OffsetDateTime.now();
-            lockTokenExpirationMap.entrySet().stream()
+            lockTokenExpirationMap.entrySet()
+                .stream()
                 .filter(entry -> entry.getValue() != null && entry.getValue().isBefore(now))
                 .map(Map.Entry::getKey)
                 .forEach(this::remove);
@@ -68,14 +69,11 @@ public class LockContainer<T> implements AutoCloseable {
         Objects.requireNonNull(item, "'item' cannot be null.");
         Objects.requireNonNull(lockTokenExpiration, "'lockTokenExpiration' cannot be null.");
 
-
         final OffsetDateTime computed = lockTokenExpirationMap.compute(lockToken, (key, existing) -> {
             if (existing == null) {
                 return lockTokenExpiration;
             } else {
-                return existing.isBefore(lockTokenExpiration)
-                    ? lockTokenExpiration
-                    : existing;
+                return existing.isBefore(lockTokenExpiration) ? lockTokenExpiration : existing;
             }
         });
 

@@ -19,11 +19,11 @@ public class LocksTests extends ResourceManagementTest {
         String rgName = generateRandomResourceName("rgloc", 15);
         String lockName = generateRandomResourceName("lock", 15);
 
-        ResourceGroup resourceGroup = resourceClient.resourceGroups().define(rgName)
-            .withRegion(Region.US_WEST)
-            .create();
+        ResourceGroup resourceGroup
+            = resourceClient.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
-        ManagementLock lock = resourceClient.managementLocks().define(lockName)
+        ManagementLock lock = resourceClient.managementLocks()
+            .define(lockName)
             .withLockedResourceGroup(resourceGroup)
             .withLevel(LockLevel.CAN_NOT_DELETE)
             .create();
@@ -49,11 +49,11 @@ public class LocksTests extends ResourceManagementTest {
         String rgName = generateRandomResourceName("rgloc", 15);
         String lockName = generateRandomResourceName("lock", 15);
 
-        ResourceGroup resourceGroup = resourceClient.resourceGroups().define(rgName)
-            .withRegion(Region.US_WEST)
-            .create();
+        ResourceGroup resourceGroup
+            = resourceClient.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
-        ManagementLock lock = resourceClient.managementLocks().define(lockName)
+        ManagementLock lock = resourceClient.managementLocks()
+            .define(lockName)
             .withLockedResourceGroup(resourceGroup)
             .withLevel(LockLevel.CAN_NOT_DELETE)
             .create();
@@ -72,10 +72,7 @@ public class LocksTests extends ResourceManagementTest {
         }
         Assertions.assertNotNull(foundLock);
 
-        foundLock.update()
-            .withLockedResourceGroup(rgName)
-            .withLevel(LockLevel.READ_ONLY)
-            .apply();
+        foundLock.update().withLockedResourceGroup(rgName).withLevel(LockLevel.READ_ONLY).apply();
 
         ManagementLock updatedLock = resourceClient.managementLocks().getByResourceGroup(rgName, lockName);
         Assertions.assertNotNull(updatedLock);

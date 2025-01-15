@@ -26,12 +26,12 @@ public final class SkusImpl implements Skus {
 
     public PagedIterable<LabServicesSku> list() {
         PagedIterable<LabServicesSkuInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new LabServicesSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabServicesSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LabServicesSku> list(String filter, Context context) {
         PagedIterable<LabServicesSkuInner> inner = this.serviceClient().list(filter, context);
-        return Utils.mapPage(inner, inner1 -> new LabServicesSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabServicesSkuImpl(inner1, this.manager()));
     }
 
     private SkusClient serviceClient() {

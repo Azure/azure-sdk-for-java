@@ -97,25 +97,21 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningServices()
-                .createOrUpdate(resourceGroupName, workspaceName, serviceName, createProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningServices()
+            .createOrUpdate(resourceGroupName, workspaceName, serviceName, createProperties, Context.NONE);
         return this;
     }
 
     public ServiceResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningServices()
-                .createOrUpdate(resourceGroupName, workspaceName, serviceName, createProperties, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningServices()
+            .createOrUpdate(resourceGroupName, workspaceName, serviceName, createProperties, context);
         return this;
     }
 
-    ServiceResourceImpl(
-        String name, com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
+    ServiceResourceImpl(String name,
+        com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerObject = new ServiceResourceInner();
         this.serviceManager = serviceManager;
         this.serviceName = name;
@@ -128,25 +124,20 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningServices()
-                .createOrUpdate(resourceGroupName, workspaceName, serviceName, updateProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningServices()
+            .createOrUpdate(resourceGroupName, workspaceName, serviceName, updateProperties, Context.NONE);
         return this;
     }
 
     public ServiceResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningServices()
-                .createOrUpdate(resourceGroupName, workspaceName, serviceName, updateProperties, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningServices()
+            .createOrUpdate(resourceGroupName, workspaceName, serviceName, updateProperties, context);
         return this;
     }
 
-    ServiceResourceImpl(
-        ServiceResourceInner innerObject,
+    ServiceResourceImpl(ServiceResourceInner innerObject,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -157,23 +148,19 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
 
     public ServiceResource refresh() {
         Boolean localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningServices()
-                .getWithResponse(resourceGroupName, workspaceName, serviceName, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningServices()
+            .getWithResponse(resourceGroupName, workspaceName, serviceName, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceResource refresh(Context context) {
         Boolean localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningServices()
-                .getWithResponse(resourceGroupName, workspaceName, serviceName, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningServices()
+            .getWithResponse(resourceGroupName, workspaceName, serviceName, localExpand, context)
+            .getValue();
         return this;
     }
 
@@ -227,8 +214,8 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         }
     }
 
-    public ServiceResourceImpl withEnvironmentImageRequest(
-        CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
+    public ServiceResourceImpl
+        withEnvironmentImageRequest(CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
         if (isInCreateMode()) {
             this.createProperties.withEnvironmentImageRequest(environmentImageRequest);
             return this;

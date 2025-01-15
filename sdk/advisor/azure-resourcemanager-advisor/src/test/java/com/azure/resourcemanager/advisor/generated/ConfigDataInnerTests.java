@@ -6,6 +6,7 @@ package com.azure.resourcemanager.advisor.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.advisor.fluent.models.ConfigDataInner;
+import com.azure.resourcemanager.advisor.models.Category;
 import com.azure.resourcemanager.advisor.models.CpuThreshold;
 import com.azure.resourcemanager.advisor.models.DigestConfig;
 import com.azure.resourcemanager.advisor.models.DigestConfigState;
@@ -15,50 +16,37 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigDataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigDataInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"exclude\":false,\"lowCpuThreshold\":\"10\",\"digests\":[{\"name\":\"hanufhfcbjysagi\",\"actionGroupResourceId\":\"xqhabi\",\"frequency\":1105410727,\"categories\":[],\"language\":\"wczbys\",\"state\":\"Active\"},{\"name\":\"x\",\"actionGroupResourceId\":\"ivyqniwbybrkxvd\",\"frequency\":920256064,\"categories\":[],\"language\":\"tfwvukxgaudc\",\"state\":\"Disabled\"}]},\"id\":\"h\",\"name\":\"jcny\",\"type\":\"j\"}")
-                .toObject(ConfigDataInner.class);
-        Assertions.assertEquals(false, model.exclude());
-        Assertions.assertEquals(CpuThreshold.ONE_ZERO, model.lowCpuThreshold());
-        Assertions.assertEquals("hanufhfcbjysagi", model.digests().get(0).name());
-        Assertions.assertEquals("xqhabi", model.digests().get(0).actionGroupResourceId());
-        Assertions.assertEquals(1105410727, model.digests().get(0).frequency());
-        Assertions.assertEquals("wczbys", model.digests().get(0).language());
+        ConfigDataInner model = BinaryData.fromString(
+            "{\"properties\":{\"exclude\":true,\"lowCpuThreshold\":\"15\",\"digests\":[{\"name\":\"suuv\",\"actionGroupResourceId\":\"jozkrwfndiod\",\"frequency\":230645799,\"categories\":[\"Security\"],\"language\":\"dpvwryoqpsoaccta\",\"state\":\"Active\"}]},\"id\":\"ljlahbcryf\",\"name\":\"dfdosygexp\",\"type\":\"ojakhmsbzjhcrze\"}")
+            .toObject(ConfigDataInner.class);
+        Assertions.assertEquals(true, model.exclude());
+        Assertions.assertEquals(CpuThreshold.ONE_FIVE, model.lowCpuThreshold());
+        Assertions.assertEquals("suuv", model.digests().get(0).name());
+        Assertions.assertEquals("jozkrwfndiod", model.digests().get(0).actionGroupResourceId());
+        Assertions.assertEquals(230645799, model.digests().get(0).frequency());
+        Assertions.assertEquals(Category.SECURITY, model.digests().get(0).categories().get(0));
+        Assertions.assertEquals("dpvwryoqpsoaccta", model.digests().get(0).language());
         Assertions.assertEquals(DigestConfigState.ACTIVE, model.digests().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigDataInner model =
-            new ConfigDataInner()
-                .withExclude(false)
-                .withLowCpuThreshold(CpuThreshold.ONE_ZERO)
-                .withDigests(
-                    Arrays
-                        .asList(
-                            new DigestConfig()
-                                .withName("hanufhfcbjysagi")
-                                .withActionGroupResourceId("xqhabi")
-                                .withFrequency(1105410727)
-                                .withCategories(Arrays.asList())
-                                .withLanguage("wczbys")
-                                .withState(DigestConfigState.ACTIVE),
-                            new DigestConfig()
-                                .withName("x")
-                                .withActionGroupResourceId("ivyqniwbybrkxvd")
-                                .withFrequency(920256064)
-                                .withCategories(Arrays.asList())
-                                .withLanguage("tfwvukxgaudc")
-                                .withState(DigestConfigState.DISABLED)));
+        ConfigDataInner model = new ConfigDataInner().withExclude(true)
+            .withLowCpuThreshold(CpuThreshold.ONE_FIVE)
+            .withDigests(Arrays.asList(new DigestConfig().withName("suuv")
+                .withActionGroupResourceId("jozkrwfndiod")
+                .withFrequency(230645799)
+                .withCategories(Arrays.asList(Category.SECURITY))
+                .withLanguage("dpvwryoqpsoaccta")
+                .withState(DigestConfigState.ACTIVE)));
         model = BinaryData.fromObject(model).toObject(ConfigDataInner.class);
-        Assertions.assertEquals(false, model.exclude());
-        Assertions.assertEquals(CpuThreshold.ONE_ZERO, model.lowCpuThreshold());
-        Assertions.assertEquals("hanufhfcbjysagi", model.digests().get(0).name());
-        Assertions.assertEquals("xqhabi", model.digests().get(0).actionGroupResourceId());
-        Assertions.assertEquals(1105410727, model.digests().get(0).frequency());
-        Assertions.assertEquals("wczbys", model.digests().get(0).language());
+        Assertions.assertEquals(true, model.exclude());
+        Assertions.assertEquals(CpuThreshold.ONE_FIVE, model.lowCpuThreshold());
+        Assertions.assertEquals("suuv", model.digests().get(0).name());
+        Assertions.assertEquals("jozkrwfndiod", model.digests().get(0).actionGroupResourceId());
+        Assertions.assertEquals(230645799, model.digests().get(0).frequency());
+        Assertions.assertEquals(Category.SECURITY, model.digests().get(0).categories().get(0));
+        Assertions.assertEquals("dpvwryoqpsoaccta", model.digests().get(0).language());
         Assertions.assertEquals(DigestConfigState.ACTIVE, model.digests().get(0).state());
     }
 }

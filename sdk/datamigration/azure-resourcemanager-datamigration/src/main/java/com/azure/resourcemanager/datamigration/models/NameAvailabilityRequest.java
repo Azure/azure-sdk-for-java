@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A resource type and proposed name. */
+/**
+ * A resource type and proposed name.
+ */
 @Fluent
-public final class NameAvailabilityRequest {
+public final class NameAvailabilityRequest implements JsonSerializable<NameAvailabilityRequest> {
     /*
      * The proposed resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The resource type chain (e.g. virtualMachines/extensions)
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of NameAvailabilityRequest class. */
+    /**
+     * Creates an instance of NameAvailabilityRequest class.
+     */
     public NameAvailabilityRequest() {
     }
 
     /**
      * Get the name property: The proposed resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class NameAvailabilityRequest {
 
     /**
      * Set the name property: The proposed resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the NameAvailabilityRequest object itself.
      */
@@ -48,7 +54,7 @@ public final class NameAvailabilityRequest {
 
     /**
      * Get the type property: The resource type chain (e.g. virtualMachines/extensions).
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -57,7 +63,7 @@ public final class NameAvailabilityRequest {
 
     /**
      * Set the type property: The resource type chain (e.g. virtualMachines/extensions).
-     *
+     * 
      * @param type the type value to set.
      * @return the NameAvailabilityRequest object itself.
      */
@@ -68,9 +74,48 @@ public final class NameAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityRequest.
+     */
+    public static NameAvailabilityRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityRequest deserializedNameAvailabilityRequest = new NameAvailabilityRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNameAvailabilityRequest.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNameAvailabilityRequest.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityRequest;
+        });
     }
 }

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"itjz\",\"display\":{\"provider\":\"usarhmofc\",\"resource\":\"smy\",\"operation\":\"kdtmlxhekuk\",\"description\":\"txukcdmp\"},\"origin\":\"cryuan\"}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"itjz\",\"display\":{\"provider\":\"usarhmofc\",\"resource\":\"smy\",\"operation\":\"kdtmlxhekuk\",\"description\":\"txukcdmp\"},\"origin\":\"cryuan\"}")
+            .toObject(OperationInner.class);
         Assertions.assertEquals("itjz", model.name());
         Assertions.assertEquals("usarhmofc", model.display().provider());
         Assertions.assertEquals("smy", model.display().resource());
@@ -27,16 +25,12 @@ public final class OperationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withName("itjz")
-                .withDisplay(
-                    new Display()
-                        .withProvider("usarhmofc")
-                        .withResource("smy")
-                        .withOperation("kdtmlxhekuk")
-                        .withDescription("txukcdmp"))
-                .withOrigin("cryuan");
+        OperationInner model = new OperationInner().withName("itjz")
+            .withDisplay(new Display().withProvider("usarhmofc")
+                .withResource("smy")
+                .withOperation("kdtmlxhekuk")
+                .withDescription("txukcdmp"))
+            .withOrigin("cryuan");
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
         Assertions.assertEquals("itjz", model.name());
         Assertions.assertEquals("usarhmofc", model.display().provider());

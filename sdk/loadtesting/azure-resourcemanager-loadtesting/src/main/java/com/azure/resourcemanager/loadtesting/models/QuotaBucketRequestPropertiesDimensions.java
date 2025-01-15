@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.loadtesting.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Dimensions for new quota request. */
+/**
+ * Dimensions for new quota request.
+ */
 @Fluent
-public final class QuotaBucketRequestPropertiesDimensions {
+public final class QuotaBucketRequestPropertiesDimensions
+    implements JsonSerializable<QuotaBucketRequestPropertiesDimensions> {
     /*
      * Subscription Id dimension for new quota request of the quota bucket.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * Location dimension for new quota request of the quota bucket.
      */
-    @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of QuotaBucketRequestPropertiesDimensions class. */
+    /**
+     * Creates an instance of QuotaBucketRequestPropertiesDimensions class.
+     */
     public QuotaBucketRequestPropertiesDimensions() {
     }
 
     /**
      * Get the subscriptionId property: Subscription Id dimension for new quota request of the quota bucket.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -37,7 +44,7 @@ public final class QuotaBucketRequestPropertiesDimensions {
 
     /**
      * Set the subscriptionId property: Subscription Id dimension for new quota request of the quota bucket.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the QuotaBucketRequestPropertiesDimensions object itself.
      */
@@ -48,7 +55,7 @@ public final class QuotaBucketRequestPropertiesDimensions {
 
     /**
      * Get the location property: Location dimension for new quota request of the quota bucket.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -57,7 +64,7 @@ public final class QuotaBucketRequestPropertiesDimensions {
 
     /**
      * Set the location property: Location dimension for new quota request of the quota bucket.
-     *
+     * 
      * @param location the location value to set.
      * @return the QuotaBucketRequestPropertiesDimensions object itself.
      */
@@ -68,9 +75,49 @@ public final class QuotaBucketRequestPropertiesDimensions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaBucketRequestPropertiesDimensions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaBucketRequestPropertiesDimensions if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaBucketRequestPropertiesDimensions.
+     */
+    public static QuotaBucketRequestPropertiesDimensions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaBucketRequestPropertiesDimensions deserializedQuotaBucketRequestPropertiesDimensions
+                = new QuotaBucketRequestPropertiesDimensions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedQuotaBucketRequestPropertiesDimensions.subscriptionId = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedQuotaBucketRequestPropertiesDimensions.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaBucketRequestPropertiesDimensions;
+        });
     }
 }

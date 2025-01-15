@@ -69,8 +69,8 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
             .setTimestamp(null)
             .setDaylightSavingsTime(null)
             .setDaylightSavingsTimeLastingYears(null);
-        final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getTimezoneById(options));
+        final HttpResponseException httpResponseException
+            = assertThrows(HttpResponseException.class, () -> client.getTimezoneById(options));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
@@ -80,8 +80,8 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
     public void testGetTimezoneByCoordinates(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         client = getTimeZoneClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(
-            TimeZoneOptions.ALL);
+        TimeZoneCoordinateOptions options
+            = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimeZoneOptions.ALL);
         TimeZoneResult actualResult = client.getTimezoneByCoordinates(options);
         TimeZoneResult expectedResult = TestUtils.getExpectedTimezoneByCoordinates();
         validateGetTimezoneByCoordinates(actualResult, expectedResult);
@@ -94,8 +94,8 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
     public void testGetTimezoneByCoordinatesWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         client = getTimeZoneClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(
-            TimeZoneOptions.ALL);
+        TimeZoneCoordinateOptions options
+            = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimeZoneOptions.ALL);
         validateGetTimezoneByCoordinatesWithResponse(TestUtils.getExpectedTimezoneByCoordinates(),
             client.getTimezoneByCoordinatesWithResponse(options, null));
     }
@@ -107,8 +107,8 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
         TimeZoneServiceVersion serviceVersion) {
         client = getTimeZoneClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-1000000, 47.0);
-        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(
-            TimeZoneOptions.ALL);
+        TimeZoneCoordinateOptions options
+            = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimeZoneOptions.ALL);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTimezoneByCoordinatesWithResponse(options, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());

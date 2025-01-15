@@ -443,31 +443,19 @@ public final class LoadTestRunsImpl {
 
     /**
      * Create and start a new test run with the given name.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>oldTestRunId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Existing test run identifier that should be rerun, if this is provided, the test will run with the JMX file,
-     * configuration and app components from the existing test run. You can override the configuration values for new
-     * test run in the request body.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>oldTestRunId</td><td>String</td><td>No</td><td>Existing test run identifier that should be rerun, if this
+     * is provided, the test will run with the JMX file, configuration and app components from the existing test run.
+     * You can override the configuration values for new test run in the request body.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -571,11 +559,13 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -679,7 +669,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -701,31 +692,19 @@ public final class LoadTestRunsImpl {
 
     /**
      * Create and start a new test run with the given name.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>oldTestRunId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Existing test run identifier that should be rerun, if this is provided, the test will run with the JMX file,
-     * configuration and app components from the existing test run. You can override the configuration values for new
-     * test run in the request body.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>oldTestRunId</td><td>String</td><td>No</td><td>Existing test run identifier that should be rerun, if this
+     * is provided, the test will run with the JMX file, configuration and app components from the existing test run.
+     * You can override the configuration values for new test run in the request body.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -829,11 +808,13 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -937,7 +918,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -959,10 +941,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get test run details by name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -1066,7 +1048,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -1086,10 +1069,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get test run details by name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -1193,7 +1176,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -1251,10 +1235,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get test run file by file name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     url: String (Optional)
      *     fileName: String (Optional)
@@ -1263,7 +1247,8 @@ public final class LoadTestRunsImpl {
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -1285,10 +1270,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get test run file by file name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     url: String (Optional)
      *     fileName: String (Optional)
@@ -1297,7 +1282,8 @@ public final class LoadTestRunsImpl {
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -1319,67 +1305,28 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get all test runs with given filters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields -
-     * executedDateTime</td>
-     * </tr>
-     * <tr>
-     * <td>search</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Prefix based, case sensitive search on searchable fields - description, executedUser. For example, to search
-     * for a test run, with description 500 VUs, the search parameter can be 500.</td>
-     * </tr>
-     * <tr>
-     * <td>testId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Unique name of an existing load test.</td>
-     * </tr>
-     * <tr>
-     * <td>executionFrom</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>executionTo</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Comma separated list of test run status.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of results in response.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg:
+     * executedDateTime asc. Supported fields - executedDateTime</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields -
+     * description, executedUser. For example, to search for a test run, with description 500 VUs, the search parameter
+     * can be 500.</td></tr>
+     * <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
+     * <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of
+     * test-run execution time filter range.</td></tr>
+     * <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run
+     * execution time filter range.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Comma separated list of test run status.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -1483,7 +1430,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1505,67 +1453,28 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get all test runs with given filters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields -
-     * executedDateTime</td>
-     * </tr>
-     * <tr>
-     * <td>search</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Prefix based, case sensitive search on searchable fields - description, executedUser. For example, to search
-     * for a test run, with description 500 VUs, the search parameter can be 500.</td>
-     * </tr>
-     * <tr>
-     * <td>testId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Unique name of an existing load test.</td>
-     * </tr>
-     * <tr>
-     * <td>executionFrom</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>executionTo</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Comma separated list of test run status.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of results in response.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg:
+     * executedDateTime asc. Supported fields - executedDateTime</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields -
+     * description, executedUser. For example, to search for a test run, with description 500 VUs, the search parameter
+     * can be 500.</td></tr>
+     * <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
+     * <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of
+     * test-run execution time filter range.</td></tr>
+     * <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run
+     * execution time filter range.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Comma separated list of test run status.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -1669,7 +1578,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1709,67 +1619,28 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get all test runs with given filters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields -
-     * executedDateTime</td>
-     * </tr>
-     * <tr>
-     * <td>search</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Prefix based, case sensitive search on searchable fields - description, executedUser. For example, to search
-     * for a test run, with description 500 VUs, the search parameter can be 500.</td>
-     * </tr>
-     * <tr>
-     * <td>testId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Unique name of an existing load test.</td>
-     * </tr>
-     * <tr>
-     * <td>executionFrom</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>executionTo</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Comma separated list of test run status.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of results in response.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg:
+     * executedDateTime asc. Supported fields - executedDateTime</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields -
+     * description, executedUser. For example, to search for a test run, with description 500 VUs, the search parameter
+     * can be 500.</td></tr>
+     * <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
+     * <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of
+     * test-run execution time filter range.</td></tr>
+     * <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run
+     * execution time filter range.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Comma separated list of test run status.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -1873,7 +1744,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1893,67 +1765,28 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get all test runs with given filters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields -
-     * executedDateTime</td>
-     * </tr>
-     * <tr>
-     * <td>search</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Prefix based, case sensitive search on searchable fields - description, executedUser. For example, to search
-     * for a test run, with description 500 VUs, the search parameter can be 500.</td>
-     * </tr>
-     * <tr>
-     * <td>testId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Unique name of an existing load test.</td>
-     * </tr>
-     * <tr>
-     * <td>executionFrom</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>executionTo</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Comma separated list of test run status.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of results in response.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg:
+     * executedDateTime asc. Supported fields - executedDateTime</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields -
+     * description, executedUser. For example, to search for a test run, with description 500 VUs, the search parameter
+     * can be 500.</td></tr>
+     * <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
+     * <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of
+     * test-run execution time filter range.</td></tr>
+     * <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run
+     * execution time filter range.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Comma separated list of test run status.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -2057,7 +1890,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2097,10 +1931,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Stop test run by name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -2204,7 +2038,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2224,10 +2059,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Stop test run by name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -2331,7 +2166,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2351,10 +2187,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the metric namespaces for a load test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2363,7 +2199,8 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2385,10 +2222,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the metric namespaces for a load test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2397,7 +2234,8 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2417,10 +2255,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the metric definitions for a load test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2446,7 +2284,8 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2469,10 +2308,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the metric definitions for a load test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2498,7 +2337,8 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2520,54 +2360,27 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the metric values for a load test run.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>aggregation</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The aggregation</td>
-     * </tr>
-     * <tr>
-     * <td>interval</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>Content-Type</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The content type. Allowed values: "application/json".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     filters (Optional): [
      *          (Optional){
@@ -2578,11 +2391,13 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     data (Optional): [
      *          (Optional){
@@ -2597,7 +2412,8 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2633,54 +2449,27 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the metric values for a load test run.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>aggregation</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The aggregation</td>
-     * </tr>
-     * <tr>
-     * <td>interval</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>Content-Type</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The content type. Allowed values: "application/json".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     filters (Optional): [
      *          (Optional){
@@ -2691,11 +2480,13 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     data (Optional): [
      *          (Optional){
@@ -2710,7 +2501,8 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2738,54 +2530,27 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the metric values for a load test run.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>aggregation</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The aggregation</td>
-     * </tr>
-     * <tr>
-     * <td>interval</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>Content-Type</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The content type. Allowed values: "application/json".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     filters (Optional): [
      *          (Optional){
@@ -2796,11 +2561,13 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     data (Optional): [
      *          (Optional){
@@ -2815,7 +2582,8 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2849,54 +2617,27 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the metric values for a load test run.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>aggregation</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The aggregation</td>
-     * </tr>
-     * <tr>
-     * <td>interval</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>Content-Type</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The content type. Allowed values: "application/json".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     filters (Optional): [
      *          (Optional){
@@ -2907,11 +2648,13 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     data (Optional): [
      *          (Optional){
@@ -2926,7 +2669,8 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -2954,31 +2698,21 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the dimension values for the given metric dimension name.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>interval</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3008,31 +2742,21 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the dimension values for the given metric dimension name.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>interval</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3062,31 +2786,21 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the dimension values for the given metric dimension name.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>interval</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3115,31 +2829,21 @@ public final class LoadTestRunsImpl {
 
     /**
      * List the dimension values for the given metric dimension name.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>interval</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3169,10 +2873,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Associate an app component (collection of azure resources) to a test run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -3191,11 +2895,13 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -3214,7 +2920,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3236,10 +2943,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Associate an app component (collection of azure resources) to a test run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -3258,11 +2965,13 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -3281,7 +2990,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3303,10 +3013,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get associated app component (collection of azure resources) for the given test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -3325,7 +3035,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3347,10 +3058,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get associated app component (collection of azure resources) for the given test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -3369,7 +3080,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3390,10 +3102,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Configure server metrics for a test run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
@@ -3413,11 +3125,13 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
@@ -3437,7 +3151,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3460,10 +3175,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Configure server metrics for a test run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
@@ -3483,11 +3198,13 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
@@ -3507,7 +3224,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3529,10 +3247,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * List server metrics configuration for the given test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
@@ -3552,7 +3270,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3574,10 +3293,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * List server metrics configuration for the given test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
@@ -3597,7 +3316,8 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -3617,10 +3337,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -3724,11 +3444,10 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3748,10 +3467,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -3855,11 +3574,10 @@ public final class LoadTestRunsImpl {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3878,10 +3596,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     data (Optional): [
      *          (Optional){
@@ -3896,11 +3614,10 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3921,10 +3638,10 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     data (Optional): [
      *          (Optional){
@@ -3939,11 +3656,10 @@ public final class LoadTestRunsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3962,16 +3678,15 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3992,16 +3707,15 @@ public final class LoadTestRunsImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

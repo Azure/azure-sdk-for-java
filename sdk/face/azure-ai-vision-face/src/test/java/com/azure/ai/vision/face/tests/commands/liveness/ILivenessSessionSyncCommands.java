@@ -9,6 +9,8 @@ import com.azure.ai.vision.face.models.LivenessSession;
 
 public interface ILivenessSessionSyncCommands {
     CreateLivenessSessionResult createLivenessSessionSync(CreateLivenessSessionContent content);
+
     LivenessSession getLivenessSessionResultSync(String sessionId);
+
     void deleteLivenessSessionSync(String sessionId);
 }

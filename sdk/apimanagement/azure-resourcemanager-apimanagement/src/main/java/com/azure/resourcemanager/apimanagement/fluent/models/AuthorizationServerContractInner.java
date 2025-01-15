@@ -6,30 +6,51 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationMethod;
 import com.azure.resourcemanager.apimanagement.models.BearerTokenSendingMethod;
 import com.azure.resourcemanager.apimanagement.models.ClientAuthenticationMethod;
 import com.azure.resourcemanager.apimanagement.models.GrantType;
 import com.azure.resourcemanager.apimanagement.models.TokenBodyParameterContract;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** External OAuth authorization server settings. */
+/**
+ * External OAuth authorization server settings.
+ */
 @Fluent
 public final class AuthorizationServerContractInner extends ProxyResource {
     /*
      * Properties of the External OAuth authorization server Contract.
      */
-    @JsonProperty(value = "properties")
     private AuthorizationServerContractProperties innerProperties;
 
-    /** Creates an instance of AuthorizationServerContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AuthorizationServerContractInner class.
+     */
     public AuthorizationServerContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the External OAuth authorization server Contract.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AuthorizationServerContractProperties innerProperties() {
@@ -37,8 +58,38 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: User-friendly authorization server name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -47,7 +98,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Set the displayName property: User-friendly authorization server name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -62,7 +113,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the useInTestConsole property: If true, the authorization server may be used in the developer portal test
      * console. True by default if no value is provided.
-     *
+     * 
      * @return the useInTestConsole value.
      */
     public Boolean useInTestConsole() {
@@ -72,7 +123,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the useInTestConsole property: If true, the authorization server may be used in the developer portal test
      * console. True by default if no value is provided.
-     *
+     * 
      * @param useInTestConsole the useInTestConsole value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -87,7 +138,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the useInApiDocumentation property: If true, the authorization server will be used in the API documentation
      * in the developer portal. False by default if no value is provided.
-     *
+     * 
      * @return the useInApiDocumentation value.
      */
     public Boolean useInApiDocumentation() {
@@ -97,7 +148,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the useInApiDocumentation property: If true, the authorization server will be used in the API documentation
      * in the developer portal. False by default if no value is provided.
-     *
+     * 
      * @param useInApiDocumentation the useInApiDocumentation value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -112,7 +163,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
      * this authorization server is performed. Contains absolute URL to entity being referenced.
-     *
+     * 
      * @return the clientRegistrationEndpoint value.
      */
     public String clientRegistrationEndpoint() {
@@ -122,7 +173,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
      * this authorization server is performed. Contains absolute URL to entity being referenced.
-     *
+     * 
      * @param clientRegistrationEndpoint the clientRegistrationEndpoint value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -137,7 +188,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the authorizationEndpoint property: OAuth authorization endpoint. See
      * http://tools.ietf.org/html/rfc6749#section-3.2.
-     *
+     * 
      * @return the authorizationEndpoint value.
      */
     public String authorizationEndpoint() {
@@ -147,7 +198,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the authorizationEndpoint property: OAuth authorization endpoint. See
      * http://tools.ietf.org/html/rfc6749#section-3.2.
-     *
+     * 
      * @param authorizationEndpoint the authorizationEndpoint value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -161,7 +212,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Get the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
-     *
+     * 
      * @return the grantTypes value.
      */
     public List<GrantType> grantTypes() {
@@ -170,7 +221,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Set the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
-     *
+     * 
      * @param grantTypes the grantTypes value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -184,7 +235,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Get the clientId property: Client or app id registered with this authorization server.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -193,7 +244,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Set the clientId property: Client or app id registered with this authorization server.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -208,7 +259,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the clientSecret property: Client or app secret registered with this authorization server. This property will
      * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -218,7 +269,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the clientSecret property: Client or app secret registered with this authorization server. This property will
      * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -232,7 +283,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the authorization server. Can contain HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -241,7 +292,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Set the description property: Description of the authorization server. Can contain HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -256,7 +307,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the authorizationMethods property: HTTP verbs supported by the authorization endpoint. GET must be always
      * present. POST is optional.
-     *
+     * 
      * @return the authorizationMethods value.
      */
     public List<AuthorizationMethod> authorizationMethods() {
@@ -266,7 +317,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the authorizationMethods property: HTTP verbs supported by the authorization endpoint. GET must be always
      * present. POST is optional.
-     *
+     * 
      * @param authorizationMethods the authorizationMethods value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -282,7 +333,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
      * Get the clientAuthenticationMethod property: Method of authentication supported by the token endpoint of this
      * authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other
      * parameters are passed within the request body in the application/x-www-form-urlencoded format.
-     *
+     * 
      * @return the clientAuthenticationMethod value.
      */
     public List<ClientAuthenticationMethod> clientAuthenticationMethod() {
@@ -293,12 +344,12 @@ public final class AuthorizationServerContractInner extends ProxyResource {
      * Set the clientAuthenticationMethod property: Method of authentication supported by the token endpoint of this
      * authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other
      * parameters are passed within the request body in the application/x-www-form-urlencoded format.
-     *
+     * 
      * @param clientAuthenticationMethod the clientAuthenticationMethod value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
-    public AuthorizationServerContractInner withClientAuthenticationMethod(
-        List<ClientAuthenticationMethod> clientAuthenticationMethod) {
+    public AuthorizationServerContractInner
+        withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationServerContractProperties();
         }
@@ -310,7 +361,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
      * Get the tokenBodyParameters property: Additional parameters required by the token endpoint of this authorization
      * server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name
      * value", "value": "a value"}.
-     *
+     * 
      * @return the tokenBodyParameters value.
      */
     public List<TokenBodyParameterContract> tokenBodyParameters() {
@@ -321,12 +372,12 @@ public final class AuthorizationServerContractInner extends ProxyResource {
      * Set the tokenBodyParameters property: Additional parameters required by the token endpoint of this authorization
      * server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name
      * value", "value": "a value"}.
-     *
+     * 
      * @param tokenBodyParameters the tokenBodyParameters value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
-    public AuthorizationServerContractInner withTokenBodyParameters(
-        List<TokenBodyParameterContract> tokenBodyParameters) {
+    public AuthorizationServerContractInner
+        withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationServerContractProperties();
         }
@@ -336,7 +387,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Get the tokenEndpoint property: OAuth token endpoint. Contains absolute URI to entity being referenced.
-     *
+     * 
      * @return the tokenEndpoint value.
      */
     public String tokenEndpoint() {
@@ -345,7 +396,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Set the tokenEndpoint property: OAuth token endpoint. Contains absolute URI to entity being referenced.
-     *
+     * 
      * @param tokenEndpoint the tokenEndpoint value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -360,7 +411,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the supportState property: If true, authorization server will include state parameter from the authorization
      * request to its response. Client may use state parameter to raise protocol security.
-     *
+     * 
      * @return the supportState value.
      */
     public Boolean supportState() {
@@ -370,7 +421,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the supportState property: If true, authorization server will include state parameter from the authorization
      * request to its response. Client may use state parameter to raise protocol security.
-     *
+     * 
      * @param supportState the supportState value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -385,7 +436,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the defaultScope property: Access token scope that is going to be requested by default. Can be overridden at
      * the API level. Should be provided in the form of a string containing space-delimited values.
-     *
+     * 
      * @return the defaultScope value.
      */
     public String defaultScope() {
@@ -395,7 +446,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the defaultScope property: Access token scope that is going to be requested by default. Can be overridden at
      * the API level. Should be provided in the form of a string containing space-delimited values.
-     *
+     * 
      * @param defaultScope the defaultScope value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -409,7 +460,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Get the bearerTokenSendingMethods property: Specifies the mechanism by which access token is passed to the API.
-     *
+     * 
      * @return the bearerTokenSendingMethods value.
      */
     public List<BearerTokenSendingMethod> bearerTokenSendingMethods() {
@@ -418,12 +469,12 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Set the bearerTokenSendingMethods property: Specifies the mechanism by which access token is passed to the API.
-     *
+     * 
      * @param bearerTokenSendingMethods the bearerTokenSendingMethods value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
-    public AuthorizationServerContractInner withBearerTokenSendingMethods(
-        List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
+    public AuthorizationServerContractInner
+        withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationServerContractProperties();
         }
@@ -434,7 +485,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the resourceOwnerUsername property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner username.
-     *
+     * 
      * @return the resourceOwnerUsername value.
      */
     public String resourceOwnerUsername() {
@@ -444,7 +495,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the resourceOwnerUsername property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner username.
-     *
+     * 
      * @param resourceOwnerUsername the resourceOwnerUsername value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -459,7 +510,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Get the resourceOwnerPassword property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner password.
-     *
+     * 
      * @return the resourceOwnerPassword value.
      */
     public String resourceOwnerPassword() {
@@ -469,7 +520,7 @@ public final class AuthorizationServerContractInner extends ProxyResource {
     /**
      * Set the resourceOwnerPassword property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner password.
-     *
+     * 
      * @param resourceOwnerPassword the resourceOwnerPassword value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
@@ -483,12 +534,57 @@ public final class AuthorizationServerContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationServerContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationServerContractInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthorizationServerContractInner.
+     */
+    public static AuthorizationServerContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationServerContractInner deserializedAuthorizationServerContractInner
+                = new AuthorizationServerContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAuthorizationServerContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAuthorizationServerContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAuthorizationServerContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAuthorizationServerContractInner.innerProperties
+                        = AuthorizationServerContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationServerContractInner;
+        });
     }
 }

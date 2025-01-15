@@ -5,32 +5,107 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ScheduleActionBase model. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "actionType",
-    defaultImpl = ScheduleActionBase.class)
-@JsonTypeName("ScheduleActionBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "InvokeBatchEndpoint", value = EndpointScheduleAction.class),
-    @JsonSubTypes.Type(name = "CreateJob", value = JobScheduleAction.class)
-})
+/**
+ * The ScheduleActionBase model.
+ */
 @Immutable
-public class ScheduleActionBase {
-    /** Creates an instance of ScheduleActionBase class. */
+public class ScheduleActionBase implements JsonSerializable<ScheduleActionBase> {
+    /*
+     * [Required] Specifies the action type of the schedule
+     */
+    private ScheduleActionType actionType = ScheduleActionType.fromString("ScheduleActionBase");
+
+    /**
+     * Creates an instance of ScheduleActionBase class.
+     */
     public ScheduleActionBase() {
     }
 
     /**
+     * Get the actionType property: [Required] Specifies the action type of the schedule.
+     * 
+     * @return the actionType value.
+     */
+    public ScheduleActionType actionType() {
+        return this.actionType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleActionBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleActionBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleActionBase.
+     */
+    public static ScheduleActionBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("actionType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("CreateMonitor".equals(discriminatorValue)) {
+                    return CreateMonitorAction.fromJson(readerToUse.reset());
+                } else if ("InvokeBatchEndpoint".equals(discriminatorValue)) {
+                    return EndpointScheduleAction.fromJson(readerToUse.reset());
+                } else if ("CreateJob".equals(discriminatorValue)) {
+                    return JobScheduleAction.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ScheduleActionBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleActionBase deserializedScheduleActionBase = new ScheduleActionBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionType".equals(fieldName)) {
+                    deserializedScheduleActionBase.actionType = ScheduleActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleActionBase;
+        });
     }
 }

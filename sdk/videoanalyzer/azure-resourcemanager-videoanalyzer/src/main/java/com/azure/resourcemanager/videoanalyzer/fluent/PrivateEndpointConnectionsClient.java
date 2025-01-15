@@ -39,8 +39,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return all private endpoint connections under video analyzer account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionListResultInner> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateEndpointConnectionListResultInner> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get private endpoint connection under video analyzer account.
@@ -69,8 +69,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return private endpoint connection under video analyzer account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String accountName, String name, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String accountName, String name,
+        Context context);
 
     /**
      * Update private endpoint connection state under video analyzer account.
@@ -85,8 +85,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName, String accountName, String name, PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String accountName, String name,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Update private endpoint connection state under video analyzer account.
@@ -102,12 +102,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String name,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    PrivateEndpointConnectionsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String accountName, String name, PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Delete private endpoint connection under video analyzer account.

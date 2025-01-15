@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the device model to use. */
+/**
+ * The type of the device model to use.
+ */
 public final class VirtualMachineDeviceModelType extends ExpandableStringEnum<VirtualMachineDeviceModelType> {
-    /** Static value T1 for VirtualMachineDeviceModelType. */
+    /**
+     * Static value T1 for VirtualMachineDeviceModelType.
+     */
     public static final VirtualMachineDeviceModelType T1 = fromString("T1");
 
-    /** Static value T2 for VirtualMachineDeviceModelType. */
+    /**
+     * Static value T2 for VirtualMachineDeviceModelType.
+     */
     public static final VirtualMachineDeviceModelType T2 = fromString("T2");
 
     /**
      * Creates a new instance of VirtualMachineDeviceModelType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class VirtualMachineDeviceModelType extends ExpandableStringEnum<Vi
 
     /**
      * Creates or finds a VirtualMachineDeviceModelType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualMachineDeviceModelType.
      */
-    @JsonCreator
     public static VirtualMachineDeviceModelType fromString(String name) {
         return fromString(name, VirtualMachineDeviceModelType.class);
     }
 
     /**
      * Gets known VirtualMachineDeviceModelType values.
-     *
+     * 
      * @return known VirtualMachineDeviceModelType values.
      */
     public static Collection<VirtualMachineDeviceModelType> values() {

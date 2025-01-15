@@ -126,8 +126,7 @@ interface ConnectionSettingsFilter {
         };
     }
 
-    static boolean matchesSpecification(ConnectionSettings settings,
-                                        ConnectionSettingsFilter... constraints) {
+    static boolean matchesSpecification(ConnectionSettings settings, ConnectionSettingsFilter... constraints) {
         for (ConnectionSettingsFilter constraint : constraints) {
             ConnectionSettings remainingSettings = constraint.apply(settings);
 

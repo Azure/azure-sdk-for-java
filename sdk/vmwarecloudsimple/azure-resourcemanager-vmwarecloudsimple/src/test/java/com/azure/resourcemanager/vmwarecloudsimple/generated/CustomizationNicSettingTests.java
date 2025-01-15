@@ -15,39 +15,31 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomizationNicSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomizationNicSetting model =
-            BinaryData
-                .fromString(
-                    "{\"adapter\":{\"gateway\":[\"dgssofwqmzqal\"],\"ip\":{\"argument\":\"njijpxacqqudf\",\"ipAddress\":\"yxbaaabjyvayf\",\"type\":\"CUSTOM\"},\"subnetMask\":\"zrtuzq\"},\"macAddress\":\"sexnevfdnw\"}")
-                .toObject(CustomizationNicSetting.class);
-        Assertions.assertEquals("dgssofwqmzqal", model.adapter().gateway().get(0));
-        Assertions.assertEquals("njijpxacqqudf", model.adapter().ip().argument());
-        Assertions.assertEquals("yxbaaabjyvayf", model.adapter().ip().ipAddress());
-        Assertions.assertEquals(CustomizationIpAddressType.CUSTOM, model.adapter().ip().type());
-        Assertions.assertEquals("zrtuzq", model.adapter().subnetMask());
-        Assertions.assertEquals("sexnevfdnw", model.macAddress());
+        CustomizationNicSetting model = BinaryData.fromString(
+            "{\"adapter\":{\"gateway\":[\"kq\"],\"ip\":{\"argument\":\"gzslesjcbhernnti\",\"ipAddress\":\"djc\",\"type\":\"FIXED_IP\"},\"subnetMask\":\"wr\"},\"macAddress\":\"hwagohbuffkmrqe\"}")
+            .toObject(CustomizationNicSetting.class);
+        Assertions.assertEquals("kq", model.adapter().gateway().get(0));
+        Assertions.assertEquals("gzslesjcbhernnti", model.adapter().ip().argument());
+        Assertions.assertEquals("djc", model.adapter().ip().ipAddress());
+        Assertions.assertEquals(CustomizationIpAddressType.FIXED_IP, model.adapter().ip().type());
+        Assertions.assertEquals("wr", model.adapter().subnetMask());
+        Assertions.assertEquals("hwagohbuffkmrqe", model.macAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomizationNicSetting model =
-            new CustomizationNicSetting()
-                .withAdapter(
-                    new CustomizationIpSettings()
-                        .withGateway(Arrays.asList("dgssofwqmzqal"))
-                        .withIp(
-                            new CustomizationIpAddress()
-                                .withArgument("njijpxacqqudf")
-                                .withIpAddress("yxbaaabjyvayf")
-                                .withType(CustomizationIpAddressType.CUSTOM))
-                        .withSubnetMask("zrtuzq"))
-                .withMacAddress("sexnevfdnw");
+        CustomizationNicSetting model
+            = new CustomizationNicSetting().withAdapter(new CustomizationIpSettings().withGateway(Arrays.asList("kq"))
+                .withIp(new CustomizationIpAddress().withArgument("gzslesjcbhernnti")
+                    .withIpAddress("djc")
+                    .withType(CustomizationIpAddressType.FIXED_IP))
+                .withSubnetMask("wr")).withMacAddress("hwagohbuffkmrqe");
         model = BinaryData.fromObject(model).toObject(CustomizationNicSetting.class);
-        Assertions.assertEquals("dgssofwqmzqal", model.adapter().gateway().get(0));
-        Assertions.assertEquals("njijpxacqqudf", model.adapter().ip().argument());
-        Assertions.assertEquals("yxbaaabjyvayf", model.adapter().ip().ipAddress());
-        Assertions.assertEquals(CustomizationIpAddressType.CUSTOM, model.adapter().ip().type());
-        Assertions.assertEquals("zrtuzq", model.adapter().subnetMask());
-        Assertions.assertEquals("sexnevfdnw", model.macAddress());
+        Assertions.assertEquals("kq", model.adapter().gateway().get(0));
+        Assertions.assertEquals("gzslesjcbhernnti", model.adapter().ip().argument());
+        Assertions.assertEquals("djc", model.adapter().ip().ipAddress());
+        Assertions.assertEquals(CustomizationIpAddressType.FIXED_IP, model.adapter().ip().type());
+        Assertions.assertEquals("wr", model.adapter().subnetMask());
+        Assertions.assertEquals("hwagohbuffkmrqe", model.macAddress());
     }
 }

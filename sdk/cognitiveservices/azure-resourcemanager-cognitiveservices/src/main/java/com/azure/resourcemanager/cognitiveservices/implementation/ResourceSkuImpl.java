@@ -15,8 +15,7 @@ public final class ResourceSkuImpl implements ResourceSku {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    ResourceSkuImpl(
-        ResourceSkuInner innerObject,
+    ResourceSkuImpl(ResourceSkuInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

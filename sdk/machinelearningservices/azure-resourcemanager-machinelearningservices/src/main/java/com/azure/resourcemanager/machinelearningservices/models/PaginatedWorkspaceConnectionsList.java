@@ -14,7 +14,8 @@ import java.util.List;
 /** Paginated list of Workspace connection objects. */
 @Fluent
 public final class PaginatedWorkspaceConnectionsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PaginatedWorkspaceConnectionsList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PaginatedWorkspaceConnectionsList.class);
 
     /*
      * An array of Workspace connection objects.

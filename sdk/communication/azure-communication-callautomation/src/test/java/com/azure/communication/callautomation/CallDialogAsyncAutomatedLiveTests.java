@@ -44,9 +44,10 @@ public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLi
          * 6. hang up the call.
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("dialogActionInACallAutomatedTest", next))
-            .buildAsyncClient();
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("dialogActionInACallAutomatedTest", next))
+                .buildAsyncClient();
 
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
 
@@ -69,9 +70,10 @@ public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLi
 
             // create a call
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
 
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -85,9 +87,11 @@ public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLi
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             String receiverConnectionId = answerCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
@@ -101,22 +105,26 @@ public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLi
             // start dialog
             String dialogId = "92e08834-b6ee-4ede-8956-9fefa27a691c";
             Map<String, Object> dialogContext = new HashMap<>();
-            StartDialogOptions options = new StartDialogOptions(dialogId, DialogInputType.POWER_VIRTUAL_AGENTS, dialogContext);
+            StartDialogOptions options
+                = new StartDialogOptions(dialogId, DialogInputType.POWER_VIRTUAL_AGENTS, dialogContext);
             options.setBotId(BOT_APP_ID);
 
             CallDialogAsync callDialogAsync = answerCallResult.getCallConnectionAsync().getCallDialogAsync();
-            Response<DialogStateResult> dialogStateResultResponse = callDialogAsync.startDialogWithResponse(options).block();
+            Response<DialogStateResult> dialogStateResultResponse
+                = callDialogAsync.startDialogWithResponse(options).block();
             assertNotNull(dialogStateResultResponse);
             assertEquals(201, dialogStateResultResponse.getStatusCode());
             DialogStateResult dialogStateResult = dialogStateResultResponse.getValue();
             assertNotNull(dialogStateResult);
             assertEquals(dialogId, dialogStateResult.getDialogId());
-            DialogStarted dialogStarted = waitForEvent(DialogStarted.class, receiverConnectionId, Duration.ofSeconds(20));
+            DialogStarted dialogStarted
+                = waitForEvent(DialogStarted.class, receiverConnectionId, Duration.ofSeconds(20));
             assertNotNull(dialogStarted);
 
             // stop dialog
             callDialogAsync.stopDialog(dialogId).block();
-            DialogCompleted dialogCompleted = waitForEvent(DialogCompleted.class, receiverConnectionId, Duration.ofSeconds(20));
+            DialogCompleted dialogCompleted
+                = waitForEvent(DialogCompleted.class, receiverConnectionId, Duration.ofSeconds(20));
             assertNotNull(dialogCompleted);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);

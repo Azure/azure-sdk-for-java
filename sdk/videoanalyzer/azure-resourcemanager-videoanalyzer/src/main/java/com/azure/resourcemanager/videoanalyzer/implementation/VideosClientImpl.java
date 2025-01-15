@@ -61,113 +61,80 @@ public final class VideosClientImpl implements VideosClient {
     @Host("{$host}")
     @ServiceInterface(name = "VideoAnalyzerManagem")
     private interface VideosService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/videos")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/videos")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoEntityCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VideoEntityCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/videos/{videoName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VideoEntityInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("videoName") String videoName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/videos/{videoName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VideoEntityInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("videoName") String videoName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VideoEntityInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/videos/{videoName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/videos/{videoName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoEntityInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("videoName") String videoName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("videoName") String videoName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/videos/{videoName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VideoEntityInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("videoName") String videoName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VideoEntityInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/videos/{videoName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/videos/{videoName}/listContentToken")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoEntityInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VideoContentTokenInner>> listContentToken(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("videoName") String videoName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VideoEntityInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("videoName") String videoName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/videos/{videoName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("videoName") String videoName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/videos/{videoName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoEntityInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("videoName") String videoName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VideoEntityInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/videos/{videoName}/listContentToken")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoContentTokenInner>> listContentToken(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("videoName") String videoName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoEntityCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VideoEntityCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -184,19 +151,15 @@ public final class VideosClientImpl implements VideosClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VideoEntityInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, Integer top) {
+    private Mono<PagedResponse<VideoEntityInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -207,27 +170,10 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<VideoEntityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), top, accept, context))
+            .<PagedResponse<VideoEntityInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -246,19 +192,15 @@ public final class VideosClientImpl implements VideosClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VideoEntityInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, Integer top, Context context) {
+    private Mono<PagedResponse<VideoEntityInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -270,24 +212,10 @@ public final class VideosClientImpl implements VideosClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                this.client.getApiVersion(), top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -304,8 +232,7 @@ public final class VideosClientImpl implements VideosClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VideoEntityInner> listAsync(String resourceGroupName, String accountName, Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, top),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -322,8 +249,7 @@ public final class VideosClientImpl implements VideosClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VideoEntityInner> listAsync(String resourceGroupName, String accountName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, top),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -341,10 +267,9 @@ public final class VideosClientImpl implements VideosClient {
      * @return a collection of VideoEntity items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VideoEntityInner> listAsync(
-        String resourceGroupName, String accountName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, top, context),
+    private PagedFlux<VideoEntityInner> listAsync(String resourceGroupName, String accountName, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -378,8 +303,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return a collection of VideoEntity items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VideoEntityInner> list(
-        String resourceGroupName, String accountName, Integer top, Context context) {
+    public PagedIterable<VideoEntityInner> list(String resourceGroupName, String accountName, Integer top,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, top, context));
     }
 
@@ -396,19 +321,15 @@ public final class VideosClientImpl implements VideosClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoEntityInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName) {
+    private Mono<Response<VideoEntityInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String videoName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -422,18 +343,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            videoName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, videoName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -451,19 +362,15 @@ public final class VideosClientImpl implements VideosClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoEntityInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName, Context context) {
+    private Mono<Response<VideoEntityInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String videoName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -477,16 +384,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                videoName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            videoName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -535,8 +434,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VideoEntityInner> getWithResponse(
-        String resourceGroupName, String accountName, String videoName, Context context) {
+    public Response<VideoEntityInner> getWithResponse(String resourceGroupName, String accountName, String videoName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, videoName, context).block();
     }
 
@@ -554,19 +453,15 @@ public final class VideosClientImpl implements VideosClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoEntityInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters) {
+    private Mono<Response<VideoEntityInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String videoName, VideoEntityInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -585,19 +480,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            videoName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, videoName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -616,19 +500,15 @@ public final class VideosClientImpl implements VideosClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoEntityInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters, Context context) {
+    private Mono<Response<VideoEntityInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String videoName, VideoEntityInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -647,17 +527,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                videoName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, videoName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -673,8 +544,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return represents a video resource within Azure Video Analyzer on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoEntityInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters) {
+    private Mono<VideoEntityInner> createOrUpdateAsync(String resourceGroupName, String accountName, String videoName,
+        VideoEntityInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, videoName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -692,8 +563,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return represents a video resource within Azure Video Analyzer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VideoEntityInner createOrUpdate(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters) {
+    public VideoEntityInner createOrUpdate(String resourceGroupName, String accountName, String videoName,
+        VideoEntityInner parameters) {
         return createOrUpdateAsync(resourceGroupName, accountName, videoName, parameters).block();
     }
 
@@ -711,8 +582,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VideoEntityInner> createOrUpdateWithResponse(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters, Context context) {
+    public Response<VideoEntityInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String videoName, VideoEntityInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, videoName, parameters, context).block();
     }
 
@@ -728,19 +599,15 @@ public final class VideosClientImpl implements VideosClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String videoName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -754,18 +621,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            videoName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, videoName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -782,19 +639,15 @@ public final class VideosClientImpl implements VideosClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, String videoName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -808,16 +661,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                videoName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, videoName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -864,8 +709,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String videoName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String videoName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, videoName, context).block();
     }
 
@@ -883,19 +728,15 @@ public final class VideosClientImpl implements VideosClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoEntityInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters) {
+    private Mono<Response<VideoEntityInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String videoName, VideoEntityInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -914,19 +755,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            videoName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, videoName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -945,19 +775,15 @@ public final class VideosClientImpl implements VideosClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoEntityInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters, Context context) {
+    private Mono<Response<VideoEntityInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String videoName, VideoEntityInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -976,17 +802,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                videoName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, videoName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -1002,8 +819,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return represents a video resource within Azure Video Analyzer on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoEntityInner> updateAsync(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters) {
+    private Mono<VideoEntityInner> updateAsync(String resourceGroupName, String accountName, String videoName,
+        VideoEntityInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, videoName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1021,8 +838,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return represents a video resource within Azure Video Analyzer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VideoEntityInner update(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters) {
+    public VideoEntityInner update(String resourceGroupName, String accountName, String videoName,
+        VideoEntityInner parameters) {
         return updateAsync(resourceGroupName, accountName, videoName, parameters).block();
     }
 
@@ -1040,8 +857,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VideoEntityInner> updateWithResponse(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters, Context context) {
+    public Response<VideoEntityInner> updateWithResponse(String resourceGroupName, String accountName, String videoName,
+        VideoEntityInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, videoName, parameters, context).block();
     }
 
@@ -1059,19 +876,15 @@ public final class VideosClientImpl implements VideosClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoContentTokenInner>> listContentTokenWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName) {
+    private Mono<Response<VideoContentTokenInner>> listContentTokenWithResponseAsync(String resourceGroupName,
+        String accountName, String videoName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1085,18 +898,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listContentToken(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            videoName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listContentToken(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, videoName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1115,19 +918,15 @@ public final class VideosClientImpl implements VideosClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoContentTokenInner>> listContentTokenWithResponseAsync(
-        String resourceGroupName, String accountName, String videoName, Context context) {
+    private Mono<Response<VideoContentTokenInner>> listContentTokenWithResponseAsync(String resourceGroupName,
+        String accountName, String videoName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1141,16 +940,8 @@ public final class VideosClientImpl implements VideosClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listContentToken(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                videoName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listContentToken(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, videoName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1166,8 +957,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return "Video content token grants access to the video content URLs." on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoContentTokenInner> listContentTokenAsync(
-        String resourceGroupName, String accountName, String videoName) {
+    private Mono<VideoContentTokenInner> listContentTokenAsync(String resourceGroupName, String accountName,
+        String videoName) {
         return listContentTokenWithResponseAsync(resourceGroupName, accountName, videoName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1203,8 +994,8 @@ public final class VideosClientImpl implements VideosClient {
      * @return "Video content token grants access to the video content URLs." along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VideoContentTokenInner> listContentTokenWithResponse(
-        String resourceGroupName, String accountName, String videoName, Context context) {
+    public Response<VideoContentTokenInner> listContentTokenWithResponse(String resourceGroupName, String accountName,
+        String videoName, Context context) {
         return listContentTokenWithResponseAsync(resourceGroupName, accountName, videoName, context).block();
     }
 
@@ -1224,23 +1015,13 @@ public final class VideosClientImpl implements VideosClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VideoEntityInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<VideoEntityInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1261,23 +1042,13 @@ public final class VideosClientImpl implements VideosClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

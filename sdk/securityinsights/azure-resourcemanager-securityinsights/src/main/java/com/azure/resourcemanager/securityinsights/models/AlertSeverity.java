@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The severity of the alert. */
+/**
+ * The severity of the alert.
+ */
 public final class AlertSeverity extends ExpandableStringEnum<AlertSeverity> {
-    /** Static value High for AlertSeverity. */
+    /**
+     * Static value High for AlertSeverity.
+     */
     public static final AlertSeverity HIGH = fromString("High");
 
-    /** Static value Medium for AlertSeverity. */
+    /**
+     * Static value Medium for AlertSeverity.
+     */
     public static final AlertSeverity MEDIUM = fromString("Medium");
 
-    /** Static value Low for AlertSeverity. */
+    /**
+     * Static value Low for AlertSeverity.
+     */
     public static final AlertSeverity LOW = fromString("Low");
 
-    /** Static value Informational for AlertSeverity. */
+    /**
+     * Static value Informational for AlertSeverity.
+     */
     public static final AlertSeverity INFORMATIONAL = fromString("Informational");
 
     /**
+     * Creates a new instance of AlertSeverity value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertSeverity() {
+    }
+
+    /**
      * Creates or finds a AlertSeverity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertSeverity.
      */
-    @JsonCreator
     public static AlertSeverity fromString(String name) {
         return fromString(name, AlertSeverity.class);
     }
 
     /**
      * Gets known AlertSeverity values.
-     *
+     * 
      * @return known AlertSeverity values.
      */
     public static Collection<AlertSeverity> values() {

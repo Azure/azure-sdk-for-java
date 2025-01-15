@@ -5,37 +5,41 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The AssetContainer model. */
+/**
+ * The AssetContainer model.
+ */
 @Fluent
 public class AssetContainer extends ResourceBase {
     /*
      * Is the asset archived?
      */
-    @JsonProperty(value = "isArchived")
     private Boolean isArchived;
 
     /*
      * The latest version inside this container.
      */
-    @JsonProperty(value = "latestVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String latestVersion;
 
     /*
      * The next auto incremental version
      */
-    @JsonProperty(value = "nextVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String nextVersion;
 
-    /** Creates an instance of AssetContainer class. */
+    /**
+     * Creates an instance of AssetContainer class.
+     */
     public AssetContainer() {
     }
 
     /**
      * Get the isArchived property: Is the asset archived?.
-     *
+     * 
      * @return the isArchived value.
      */
     public Boolean isArchived() {
@@ -44,7 +48,7 @@ public class AssetContainer extends ResourceBase {
 
     /**
      * Set the isArchived property: Is the asset archived?.
-     *
+     * 
      * @param isArchived the isArchived value to set.
      * @return the AssetContainer object itself.
      */
@@ -55,7 +59,7 @@ public class AssetContainer extends ResourceBase {
 
     /**
      * Get the latestVersion property: The latest version inside this container.
-     *
+     * 
      * @return the latestVersion value.
      */
     public String latestVersion() {
@@ -63,29 +67,48 @@ public class AssetContainer extends ResourceBase {
     }
 
     /**
+     * Set the latestVersion property: The latest version inside this container.
+     * 
+     * @param latestVersion the latestVersion value to set.
+     * @return the AssetContainer object itself.
+     */
+    AssetContainer withLatestVersion(String latestVersion) {
+        this.latestVersion = latestVersion;
+        return this;
+    }
+
+    /**
      * Get the nextVersion property: The next auto incremental version.
-     *
+     * 
      * @return the nextVersion value.
      */
     public String nextVersion() {
         return this.nextVersion;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the nextVersion property: The next auto incremental version.
+     * 
+     * @param nextVersion the nextVersion value to set.
+     * @return the AssetContainer object itself.
+     */
+    AssetContainer withNextVersion(String nextVersion) {
+        this.nextVersion = nextVersion;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssetContainer withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public AssetContainer withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssetContainer withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -93,12 +116,72 @@ public class AssetContainer extends ResourceBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetContainer withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchived", this.isArchived);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetContainer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssetContainer.
+     */
+    public static AssetContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetContainer deserializedAssetContainer = new AssetContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedAssetContainer.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAssetContainer.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAssetContainer.withProperties(properties);
+                } else if ("isArchived".equals(fieldName)) {
+                    deserializedAssetContainer.isArchived = reader.getNullable(JsonReader::getBoolean);
+                } else if ("latestVersion".equals(fieldName)) {
+                    deserializedAssetContainer.latestVersion = reader.getString();
+                } else if ("nextVersion".equals(fieldName)) {
+                    deserializedAssetContainer.nextVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssetContainer;
+        });
     }
 }

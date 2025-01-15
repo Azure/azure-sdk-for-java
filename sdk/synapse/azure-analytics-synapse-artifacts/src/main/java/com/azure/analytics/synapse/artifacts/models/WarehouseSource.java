@@ -28,22 +28,27 @@ public final class WarehouseSource extends TabularSource {
     private Object sqlReaderQuery;
 
     /*
-     * Name of the stored procedure for a Microsoft Fabric Warehouse source. This cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
+     * Name of the stored procedure for a Microsoft Fabric Warehouse source. This cannot be used at the same time as
+     * SqlReaderQuery. Type: string (or Expression with resultType string).
      */
     private Object sqlReaderStoredProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}". Type: object (or Expression with resultType object), itemType: StoredProcedureParameter.
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}". Type:
+     * object (or Expression with resultType object), itemType: StoredProcedureParameter.
      */
     private Object storedProcedureParameters;
 
     /*
-     * Specifies the transaction locking behavior for the Microsoft Fabric Warehouse source. Allowed values: ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type: string (or Expression with resultType string).
+     * Specifies the transaction locking behavior for the Microsoft Fabric Warehouse source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
      */
     private Object isolationLevel;
 
     /*
-     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "DynamicRange".
      */
     private Object partitionOption;
 

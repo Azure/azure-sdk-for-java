@@ -9,18 +9,27 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInn
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of AccountModel. */
+/**
+ * An immutable client-side representation of AccountModel.
+ */
 public interface AccountModel {
     /**
+     * Gets the publisher property: Deployment model publisher.
+     * 
+     * @return the publisher value.
+     */
+    String publisher();
+
+    /**
      * Gets the format property: Deployment model format.
-     *
+     * 
      * @return the format value.
      */
     String format();
 
     /**
      * Gets the name property: Deployment model name.
-     *
+     * 
      * @return the name value.
      */
     String name();
@@ -29,91 +38,99 @@ public interface AccountModel {
      * Gets the version property: Optional. Deployment model version. If version is not specified, a default version
      * will be assigned. The default version is different for different models and might change when there is new
      * version available for a model. Default version for a model could be found from list models API.
-     *
+     * 
      * @return the version value.
      */
     String version();
 
     /**
      * Gets the source property: Optional. Deployment model source ARM resource ID.
-     *
+     * 
      * @return the source value.
      */
     String source();
 
     /**
+     * Gets the sourceAccount property: Optional. Source of the model, another Microsoft.CognitiveServices accounts ARM
+     * resource ID.
+     * 
+     * @return the sourceAccount value.
+     */
+    String sourceAccount();
+
+    /**
      * Gets the callRateLimit property: The call rate limit Cognitive Services account.
-     *
+     * 
      * @return the callRateLimit value.
      */
     CallRateLimit callRateLimit();
 
     /**
-     * Gets the baseModel property: Base Model Identifier.
-     *
+     * Gets the baseModel property: Properties of Cognitive Services account deployment model.
+     * 
      * @return the baseModel value.
      */
     DeploymentModel baseModel();
 
     /**
      * Gets the isDefaultVersion property: If the model is default version.
-     *
+     * 
      * @return the isDefaultVersion value.
      */
     Boolean isDefaultVersion();
 
     /**
      * Gets the skus property: The list of Model Sku.
-     *
+     * 
      * @return the skus value.
      */
     List<ModelSku> skus();
 
     /**
      * Gets the maxCapacity property: The max capacity.
-     *
+     * 
      * @return the maxCapacity value.
      */
     Integer maxCapacity();
 
     /**
      * Gets the capabilities property: The capabilities.
-     *
+     * 
      * @return the capabilities value.
      */
     Map<String, String> capabilities();
 
     /**
      * Gets the finetuneCapabilities property: The capabilities for finetune models.
-     *
+     * 
      * @return the finetuneCapabilities value.
      */
     Map<String, String> finetuneCapabilities();
 
     /**
      * Gets the deprecation property: Cognitive Services account ModelDeprecationInfo.
-     *
+     * 
      * @return the deprecation value.
      */
     ModelDeprecationInfo deprecation();
 
     /**
      * Gets the lifecycleStatus property: Model lifecycle status.
-     *
+     * 
      * @return the lifecycleStatus value.
      */
     ModelLifecycleStatus lifecycleStatus();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner object.
-     *
+     * 
      * @return the inner object.
      */
     AccountModelInner innerModel();

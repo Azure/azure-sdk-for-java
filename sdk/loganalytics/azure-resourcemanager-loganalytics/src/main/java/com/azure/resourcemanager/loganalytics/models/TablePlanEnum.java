@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Instruct the system how to handle and charge the logs ingested to this table. */
+/**
+ * Instruct the system how to handle and charge the logs ingested to this table.
+ */
 public final class TablePlanEnum extends ExpandableStringEnum<TablePlanEnum> {
-    /** Static value Basic for TablePlanEnum. */
+    /**
+     * Static value Basic for TablePlanEnum.
+     */
     public static final TablePlanEnum BASIC = fromString("Basic");
 
-    /** Static value Analytics for TablePlanEnum. */
+    /**
+     * Static value Analytics for TablePlanEnum.
+     */
     public static final TablePlanEnum ANALYTICS = fromString("Analytics");
 
     /**
      * Creates a new instance of TablePlanEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class TablePlanEnum extends ExpandableStringEnum<TablePlanEnum> {
 
     /**
      * Creates or finds a TablePlanEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TablePlanEnum.
      */
-    @JsonCreator
     public static TablePlanEnum fromString(String name) {
         return fromString(name, TablePlanEnum.class);
     }
 
     /**
      * Gets known TablePlanEnum values.
-     *
+     * 
      * @return known TablePlanEnum values.
      */
     public static Collection<TablePlanEnum> values() {

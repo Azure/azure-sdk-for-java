@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.AgentPoolSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
@@ -37,6 +38,13 @@ import java.util.Map;
 @Fluent
 public class ManagedClusterAgentPoolProfileProperties
     implements JsonSerializable<ManagedClusterAgentPoolProfileProperties> {
+    /*
+     * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
+     * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
+     * optimistic concurrency per the normal etag convention.
+     */
+    private String etag;
+
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive)
      * for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1.
@@ -297,10 +305,39 @@ public class ManagedClusterAgentPoolProfileProperties
      */
     private AgentPoolWindowsProfile windowsProfile;
 
+    /*
+     * The security settings of an agent pool.
+     */
+    private AgentPoolSecurityProfile securityProfile;
+
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
      */
     public ManagedClusterAgentPoolProfileProperties() {
+    }
+
+    /**
+     * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
+     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
+     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * 
+     * @param etag the etag value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    ManagedClusterAgentPoolProfileProperties withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -1285,6 +1322,26 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the securityProfile property: The security settings of an agent pool.
+     * 
+     * @return the securityProfile value.
+     */
+    public AgentPoolSecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: The security settings of an agent pool.
+     * 
+     * @param securityProfile the securityProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withSecurityProfile(AgentPoolSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1310,6 +1367,9 @@ public class ManagedClusterAgentPoolProfileProperties
         }
         if (windowsProfile() != null) {
             windowsProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
     }
 
@@ -1366,6 +1426,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeStringField("hostGroupID", this.hostGroupId);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("windowsProfile", this.windowsProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1385,7 +1446,9 @@ public class ManagedClusterAgentPoolProfileProperties
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("count".equals(fieldName)) {
+                if ("eTag".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.etag = reader.getString();
+                } else if ("count".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.count = reader.getNullable(JsonReader::getInt);
                 } else if ("vmSize".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.vmSize = reader.getString();
@@ -1501,6 +1564,9 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("windowsProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.windowsProfile
                         = AgentPoolWindowsProfile.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.securityProfile
+                        = AgentPoolSecurityProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

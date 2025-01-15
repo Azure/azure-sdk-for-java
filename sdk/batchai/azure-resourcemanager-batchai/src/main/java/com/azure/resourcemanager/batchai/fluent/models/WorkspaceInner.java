@@ -18,7 +18,8 @@ import java.util.Map;
 @JsonFlatten
 @Immutable
 public class WorkspaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceInner.class);
 
     /*
      * Time when the Workspace was created.

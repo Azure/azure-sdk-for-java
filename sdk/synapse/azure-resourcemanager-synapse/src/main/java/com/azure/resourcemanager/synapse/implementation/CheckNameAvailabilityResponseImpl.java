@@ -12,8 +12,7 @@ public final class CheckNameAvailabilityResponseImpl implements CheckNameAvailab
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    CheckNameAvailabilityResponseImpl(
-        CheckNameAvailabilityResponseInner innerObject,
+    CheckNameAvailabilityResponseImpl(CheckNameAvailabilityResponseInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

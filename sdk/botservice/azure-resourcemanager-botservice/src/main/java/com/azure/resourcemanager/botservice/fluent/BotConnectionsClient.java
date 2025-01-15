@@ -12,21 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.botservice.fluent.models.ConnectionSettingInner;
 import com.azure.resourcemanager.botservice.fluent.models.ServiceProviderResponseListInner;
 
-/** An instance of this class provides access to all the operations defined in BotConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BotConnectionsClient.
+ */
 public interface BotConnectionsClient {
     /**
      * Lists the available Service Providers for creating Connection Settings.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceProviderResponseListInner listServiceProviders();
-
-    /**
-     * Lists the available Service Providers for creating Connection Settings.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,8 +29,34 @@ public interface BotConnectionsClient {
     Response<ServiceProviderResponseListInner> listServiceProvidersWithResponse(Context context);
 
     /**
+     * Lists the available Service Providers for creating Connection Settings.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of bot service providers response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceProviderResponseListInner listServiceProviders();
+
+    /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectionSettingInner> listWithSecretsWithResponse(String resourceGroupName, String resourceName,
+        String connectionName, Context context);
+
+    /**
+     * Get a Connection Setting registration for a Bot Service.
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -51,8 +69,74 @@ public interface BotConnectionsClient {
     ConnectionSettingInner listWithSecrets(String resourceGroupName, String resourceName, String connectionName);
 
     /**
+     * Register a new Auth Connection for a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @param parameters The parameters to provide for creating the Connection Setting.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectionSettingInner> createWithResponse(String resourceGroupName, String resourceName,
+        String connectionName, ConnectionSettingInner parameters, Context context);
+
+    /**
+     * Register a new Auth Connection for a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @param parameters The parameters to provide for creating the Connection Setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionSettingInner create(String resourceGroupName, String resourceName, String connectionName,
+        ConnectionSettingInner parameters);
+
+    /**
+     * Updates a Connection Setting registration for a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @param parameters The parameters to provide for updating the Connection Setting.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectionSettingInner> updateWithResponse(String resourceGroupName, String resourceName,
+        String connectionName, ConnectionSettingInner parameters, Context context);
+
+    /**
+     * Updates a Connection Setting registration for a Bot Service.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @param parameters The parameters to provide for updating the Connection Setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionSettingInner update(String resourceGroupName, String resourceName, String connectionName,
+        ConnectionSettingInner parameters);
+
+    /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -63,86 +147,12 @@ public interface BotConnectionsClient {
      * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionSettingInner> listWithSecretsWithResponse(
-        String resourceGroupName, String resourceName, String connectionName, Context context);
-
-    /**
-     * Register a new Auth Connection for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @param parameters The parameters to provide for creating the Connection Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionSettingInner create(
-        String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters);
-
-    /**
-     * Register a new Auth Connection for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @param parameters The parameters to provide for creating the Connection Setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionSettingInner> createWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String connectionName,
-        ConnectionSettingInner parameters,
-        Context context);
-
-    /**
-     * Updates a Connection Setting registration for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @param parameters The parameters to provide for updating the Connection Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionSettingInner update(
-        String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters);
-
-    /**
-     * Updates a Connection Setting registration for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @param parameters The parameters to provide for updating the Connection Setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionSettingInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String connectionName,
-        ConnectionSettingInner parameters,
-        Context context);
+    Response<ConnectionSettingInner> getWithResponse(String resourceGroupName, String resourceName,
+        String connectionName, Context context);
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -155,8 +165,8 @@ public interface BotConnectionsClient {
     ConnectionSettingInner get(String resourceGroupName, String resourceName, String connectionName);
 
     /**
-     * Get a Connection Setting registration for a Bot Service.
-     *
+     * Deletes a Connection Setting registration for a Bot Service.
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -164,15 +174,15 @@ public interface BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionSettingInner> getWithResponse(
-        String resourceGroupName, String resourceName, String connectionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String connectionName,
+        Context context);
 
     /**
      * Deletes a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -184,24 +194,8 @@ public interface BotConnectionsClient {
     void delete(String resourceGroupName, String resourceName, String connectionName);
 
     /**
-     * Deletes a Connection Setting registration for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String connectionName, Context context);
-
-    /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,7 +208,7 @@ public interface BotConnectionsClient {
 
     /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param context The context to associate with this operation.
@@ -224,6 +218,6 @@ public interface BotConnectionsClient {
      * @return the list of bot service connection settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectionSettingInner> listByBotService(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<ConnectionSettingInner> listByBotService(String resourceGroupName, String resourceName,
+        Context context);
 }

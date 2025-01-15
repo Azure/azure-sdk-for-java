@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties that define connectivity to the Peering Service. */
+/**
+ * The properties that define connectivity to the Peering Service.
+ */
 @Fluent
-public final class PeeringServiceProperties {
+public final class PeeringServiceProperties implements JsonSerializable<PeeringServiceProperties> {
     /*
      * The location (state/province) of the customer.
      */
-    @JsonProperty(value = "peeringServiceLocation")
     private String peeringServiceLocation;
 
     /*
      * The name of the service provider.
      */
-    @JsonProperty(value = "peeringServiceProvider")
     private String peeringServiceProvider;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The primary peering (Microsoft/service provider) location to be used for customer traffic.
      */
-    @JsonProperty(value = "providerPrimaryPeeringLocation")
     private String providerPrimaryPeeringLocation;
 
     /*
      * The backup peering (Microsoft/service provider) location to be used for customer traffic.
      */
-    @JsonProperty(value = "providerBackupPeeringLocation")
     private String providerBackupPeeringLocation;
 
-    /** Creates an instance of PeeringServiceProperties class. */
+    /**
+     * Creates an instance of PeeringServiceProperties class.
+     */
     public PeeringServiceProperties() {
     }
 
     /**
      * Get the peeringServiceLocation property: The location (state/province) of the customer.
-     *
+     * 
      * @return the peeringServiceLocation value.
      */
     public String peeringServiceLocation() {
@@ -56,7 +59,7 @@ public final class PeeringServiceProperties {
 
     /**
      * Set the peeringServiceLocation property: The location (state/province) of the customer.
-     *
+     * 
      * @param peeringServiceLocation the peeringServiceLocation value to set.
      * @return the PeeringServiceProperties object itself.
      */
@@ -67,7 +70,7 @@ public final class PeeringServiceProperties {
 
     /**
      * Get the peeringServiceProvider property: The name of the service provider.
-     *
+     * 
      * @return the peeringServiceProvider value.
      */
     public String peeringServiceProvider() {
@@ -76,7 +79,7 @@ public final class PeeringServiceProperties {
 
     /**
      * Set the peeringServiceProvider property: The name of the service provider.
-     *
+     * 
      * @param peeringServiceProvider the peeringServiceProvider value to set.
      * @return the PeeringServiceProperties object itself.
      */
@@ -87,7 +90,7 @@ public final class PeeringServiceProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -97,7 +100,7 @@ public final class PeeringServiceProperties {
     /**
      * Get the providerPrimaryPeeringLocation property: The primary peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @return the providerPrimaryPeeringLocation value.
      */
     public String providerPrimaryPeeringLocation() {
@@ -107,7 +110,7 @@ public final class PeeringServiceProperties {
     /**
      * Set the providerPrimaryPeeringLocation property: The primary peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @param providerPrimaryPeeringLocation the providerPrimaryPeeringLocation value to set.
      * @return the PeeringServiceProperties object itself.
      */
@@ -119,7 +122,7 @@ public final class PeeringServiceProperties {
     /**
      * Get the providerBackupPeeringLocation property: The backup peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @return the providerBackupPeeringLocation value.
      */
     public String providerBackupPeeringLocation() {
@@ -129,7 +132,7 @@ public final class PeeringServiceProperties {
     /**
      * Set the providerBackupPeeringLocation property: The backup peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @param providerBackupPeeringLocation the providerBackupPeeringLocation value to set.
      * @return the PeeringServiceProperties object itself.
      */
@@ -140,9 +143,57 @@ public final class PeeringServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("peeringServiceLocation", this.peeringServiceLocation);
+        jsonWriter.writeStringField("peeringServiceProvider", this.peeringServiceProvider);
+        jsonWriter.writeStringField("providerPrimaryPeeringLocation", this.providerPrimaryPeeringLocation);
+        jsonWriter.writeStringField("providerBackupPeeringLocation", this.providerBackupPeeringLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringServiceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringServiceProperties.
+     */
+    public static PeeringServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringServiceProperties deserializedPeeringServiceProperties = new PeeringServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("peeringServiceLocation".equals(fieldName)) {
+                    deserializedPeeringServiceProperties.peeringServiceLocation = reader.getString();
+                } else if ("peeringServiceProvider".equals(fieldName)) {
+                    deserializedPeeringServiceProperties.peeringServiceProvider = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPeeringServiceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("providerPrimaryPeeringLocation".equals(fieldName)) {
+                    deserializedPeeringServiceProperties.providerPrimaryPeeringLocation = reader.getString();
+                } else if ("providerBackupPeeringLocation".equals(fieldName)) {
+                    deserializedPeeringServiceProperties.providerBackupPeeringLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringServiceProperties;
+        });
     }
 }

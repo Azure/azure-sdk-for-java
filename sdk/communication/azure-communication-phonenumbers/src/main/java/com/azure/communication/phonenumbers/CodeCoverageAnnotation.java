@@ -17,4 +17,10 @@ public class CodeCoverageAnnotation {
     @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR })
     public @interface Generated {
     }
+
+    /**
+     * Creates a new instance of {@link CodeCoverageAnnotation}.
+     */
+    public CodeCoverageAnnotation() {
+    }
 }

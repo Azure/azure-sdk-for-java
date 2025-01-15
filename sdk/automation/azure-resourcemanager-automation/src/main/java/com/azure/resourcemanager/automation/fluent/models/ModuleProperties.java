@@ -5,84 +5,87 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ContentLink;
 import com.azure.resourcemanager.automation.models.ModuleErrorInfo;
 import com.azure.resourcemanager.automation.models.ModuleProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Definition of the module property type. */
+/**
+ * Definition of the module property type.
+ */
 @Fluent
-public final class ModuleProperties {
+public final class ModuleProperties implements JsonSerializable<ModuleProperties> {
     /*
      * Gets or sets the isGlobal flag of the module.
      */
-    @JsonProperty(value = "isGlobal")
     private Boolean isGlobal;
 
     /*
      * Gets or sets the version of the module.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Gets or sets the size in bytes of the module.
      */
-    @JsonProperty(value = "sizeInBytes")
     private Long sizeInBytes;
 
     /*
      * Gets or sets the activity count of the module.
      */
-    @JsonProperty(value = "activityCount")
     private Integer activityCount;
 
     /*
      * Gets or sets the provisioning state of the module.
      */
-    @JsonProperty(value = "provisioningState")
     private ModuleProvisioningState provisioningState;
 
     /*
      * Gets or sets the contentLink of the module.
      */
-    @JsonProperty(value = "contentLink")
     private ContentLink contentLink;
 
     /*
      * Gets or sets the error info of the module.
      */
-    @JsonProperty(value = "error")
     private ModuleErrorInfo error;
 
     /*
      * Gets or sets the creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Gets or sets type of module, if its composite or not.
      */
-    @JsonProperty(value = "isComposite")
     private Boolean isComposite;
 
     /**
+     * Creates an instance of ModuleProperties class.
+     */
+    public ModuleProperties() {
+    }
+
+    /**
      * Get the isGlobal property: Gets or sets the isGlobal flag of the module.
-     *
+     * 
      * @return the isGlobal value.
      */
     public Boolean isGlobal() {
@@ -91,7 +94,7 @@ public final class ModuleProperties {
 
     /**
      * Set the isGlobal property: Gets or sets the isGlobal flag of the module.
-     *
+     * 
      * @param isGlobal the isGlobal value to set.
      * @return the ModuleProperties object itself.
      */
@@ -102,7 +105,7 @@ public final class ModuleProperties {
 
     /**
      * Get the version property: Gets or sets the version of the module.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -111,7 +114,7 @@ public final class ModuleProperties {
 
     /**
      * Set the version property: Gets or sets the version of the module.
-     *
+     * 
      * @param version the version value to set.
      * @return the ModuleProperties object itself.
      */
@@ -122,7 +125,7 @@ public final class ModuleProperties {
 
     /**
      * Get the sizeInBytes property: Gets or sets the size in bytes of the module.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long sizeInBytes() {
@@ -131,7 +134,7 @@ public final class ModuleProperties {
 
     /**
      * Set the sizeInBytes property: Gets or sets the size in bytes of the module.
-     *
+     * 
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the ModuleProperties object itself.
      */
@@ -142,7 +145,7 @@ public final class ModuleProperties {
 
     /**
      * Get the activityCount property: Gets or sets the activity count of the module.
-     *
+     * 
      * @return the activityCount value.
      */
     public Integer activityCount() {
@@ -151,7 +154,7 @@ public final class ModuleProperties {
 
     /**
      * Set the activityCount property: Gets or sets the activity count of the module.
-     *
+     * 
      * @param activityCount the activityCount value to set.
      * @return the ModuleProperties object itself.
      */
@@ -162,7 +165,7 @@ public final class ModuleProperties {
 
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the module.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ModuleProvisioningState provisioningState() {
@@ -171,7 +174,7 @@ public final class ModuleProperties {
 
     /**
      * Set the provisioningState property: Gets or sets the provisioning state of the module.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ModuleProperties object itself.
      */
@@ -182,7 +185,7 @@ public final class ModuleProperties {
 
     /**
      * Get the contentLink property: Gets or sets the contentLink of the module.
-     *
+     * 
      * @return the contentLink value.
      */
     public ContentLink contentLink() {
@@ -191,7 +194,7 @@ public final class ModuleProperties {
 
     /**
      * Set the contentLink property: Gets or sets the contentLink of the module.
-     *
+     * 
      * @param contentLink the contentLink value to set.
      * @return the ModuleProperties object itself.
      */
@@ -202,7 +205,7 @@ public final class ModuleProperties {
 
     /**
      * Get the error property: Gets or sets the error info of the module.
-     *
+     * 
      * @return the error value.
      */
     public ModuleErrorInfo error() {
@@ -211,7 +214,7 @@ public final class ModuleProperties {
 
     /**
      * Set the error property: Gets or sets the error info of the module.
-     *
+     * 
      * @param error the error value to set.
      * @return the ModuleProperties object itself.
      */
@@ -222,7 +225,7 @@ public final class ModuleProperties {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -231,7 +234,7 @@ public final class ModuleProperties {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the ModuleProperties object itself.
      */
@@ -242,7 +245,7 @@ public final class ModuleProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -251,7 +254,7 @@ public final class ModuleProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the ModuleProperties object itself.
      */
@@ -262,7 +265,7 @@ public final class ModuleProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -271,7 +274,7 @@ public final class ModuleProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ModuleProperties object itself.
      */
@@ -282,7 +285,7 @@ public final class ModuleProperties {
 
     /**
      * Get the isComposite property: Gets or sets type of module, if its composite or not.
-     *
+     * 
      * @return the isComposite value.
      */
     public Boolean isComposite() {
@@ -291,7 +294,7 @@ public final class ModuleProperties {
 
     /**
      * Set the isComposite property: Gets or sets type of module, if its composite or not.
-     *
+     * 
      * @param isComposite the isComposite value to set.
      * @return the ModuleProperties object itself.
      */
@@ -302,7 +305,7 @@ public final class ModuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -312,5 +315,79 @@ public final class ModuleProperties {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isGlobal", this.isGlobal);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeNumberField("sizeInBytes", this.sizeInBytes);
+        jsonWriter.writeNumberField("activityCount", this.activityCount);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeJsonField("contentLink", this.contentLink);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("isComposite", this.isComposite);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ModuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ModuleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ModuleProperties.
+     */
+    public static ModuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ModuleProperties deserializedModuleProperties = new ModuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isGlobal".equals(fieldName)) {
+                    deserializedModuleProperties.isGlobal = reader.getNullable(JsonReader::getBoolean);
+                } else if ("version".equals(fieldName)) {
+                    deserializedModuleProperties.version = reader.getString();
+                } else if ("sizeInBytes".equals(fieldName)) {
+                    deserializedModuleProperties.sizeInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("activityCount".equals(fieldName)) {
+                    deserializedModuleProperties.activityCount = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedModuleProperties.provisioningState
+                        = ModuleProvisioningState.fromString(reader.getString());
+                } else if ("contentLink".equals(fieldName)) {
+                    deserializedModuleProperties.contentLink = ContentLink.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedModuleProperties.error = ModuleErrorInfo.fromJson(reader);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedModuleProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedModuleProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedModuleProperties.description = reader.getString();
+                } else if ("isComposite".equals(fieldName)) {
+                    deserializedModuleProperties.isComposite = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedModuleProperties;
+        });
     }
 }

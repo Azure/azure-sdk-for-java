@@ -18,8 +18,7 @@ public class App {
             OpenInputStream.class,
             Upload.class,
             UploadFromFile.class,
-            UploadRange.class,
-            UploadRangeFromUrl.class
+            UploadRange.class
         }, args);
     }
 }

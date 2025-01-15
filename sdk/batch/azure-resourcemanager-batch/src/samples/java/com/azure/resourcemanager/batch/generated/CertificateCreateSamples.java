@@ -12,7 +12,7 @@ import com.azure.resourcemanager.batch.models.CertificateFormat;
 public final class CertificateCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateCreate_Full.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/CertificateCreate_Full.json
      */
     /**
      * Sample code: CreateCertificate - Full.
@@ -20,15 +20,19 @@ public final class CertificateCreateSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void createCertificateFull(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.certificates().define("sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e")
-            .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct").withPassword("<ExamplePassword>")
-            .withThumbprintAlgorithm("sha1").withThumbprint("0a0e4f50d51beadeac1d35afc5116098e7902e6e")
-            .withFormat(CertificateFormat.PFX).create();
+        manager.certificates()
+            .define("sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e")
+            .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
+            .withPassword("<ExamplePassword>")
+            .withThumbprintAlgorithm("sha1")
+            .withThumbprint("0a0e4f50d51beadeac1d35afc5116098e7902e6e")
+            .withFormat(CertificateFormat.PFX)
+            .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateCreate_Minimal.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/CertificateCreate_Minimal.json
      */
     /**
      * Sample code: CreateCertificate - Minimal Pfx.
@@ -36,14 +40,16 @@ public final class CertificateCreateSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void createCertificateMinimalPfx(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.certificates().define("sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e")
-            .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct").withPassword("<ExamplePassword>")
+        manager.certificates()
+            .define("sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e")
+            .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
+            .withPassword("<ExamplePassword>")
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateCreate_MinimalCer.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/CertificateCreate_MinimalCer.json
      */
     /**
      * Sample code: CreateCertificate - Minimal Cer.
@@ -51,8 +57,10 @@ public final class CertificateCreateSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void createCertificateMinimalCer(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.certificates().define("sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e")
-            .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct").withFormat(CertificateFormat.CER)
+        manager.certificates()
+            .define("sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e")
+            .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
+            .withFormat(CertificateFormat.CER)
             .create();
     }
 }

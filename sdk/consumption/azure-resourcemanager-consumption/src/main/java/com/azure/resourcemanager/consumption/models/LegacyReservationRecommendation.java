@@ -6,180 +6,242 @@ package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.consumption.fluent.models.LegacyReservationRecommendationProperties;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationRecommendationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.io.IOException;
+import java.util.Map;
 
-/** Legacy reservation recommendation. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("legacy")
+/**
+ * Legacy reservation recommendation.
+ */
 @Fluent
 public final class LegacyReservationRecommendation extends ReservationRecommendationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyReservationRecommendation.class);
+    /*
+     * Specifies the kind of reservation recommendation.
+     */
+    private ReservationRecommendationKind kind = ReservationRecommendationKind.LEGACY;
 
     /*
      * Properties for legacy reservation recommendation
      */
-    @JsonProperty(value = "properties", required = true)
-    private LegacyReservationRecommendationProperties innerProperties = new LegacyReservationRecommendationProperties();
+    private LegacyReservationRecommendationProperties properties;
+
+    /*
+     * Resource sku
+     */
+    private String sku;
+
+    /*
+     * Resource location
+     */
+    private String location;
+
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
+
+    /*
+     * The etag for the resource.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
-     * Get the innerProperties property: Properties for legacy reservation recommendation.
-     *
-     * @return the innerProperties value.
+     * Creates an instance of LegacyReservationRecommendation class.
      */
-    private LegacyReservationRecommendationProperties innerProperties() {
-        return this.innerProperties;
+    public LegacyReservationRecommendation() {
     }
 
     /**
-     * Get the lookBackPeriod property: The number of days of usage to look back for recommendation.
-     *
-     * @return the lookBackPeriod value.
+     * Get the kind property: Specifies the kind of reservation recommendation.
+     * 
+     * @return the kind value.
      */
-    public String lookBackPeriod() {
-        return this.innerProperties() == null ? null : this.innerProperties().lookBackPeriod();
+    @Override
+    public ReservationRecommendationKind kind() {
+        return this.kind;
     }
 
     /**
-     * Get the instanceFlexibilityRatio property: The instance Flexibility Ratio.
-     *
-     * @return the instanceFlexibilityRatio value.
+     * Get the properties property: Properties for legacy reservation recommendation.
+     * 
+     * @return the properties value.
      */
-    public Float instanceFlexibilityRatio() {
-        return this.innerProperties() == null ? null : this.innerProperties().instanceFlexibilityRatio();
+    public LegacyReservationRecommendationProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the instanceFlexibilityGroup property: The instance Flexibility Group.
-     *
-     * @return the instanceFlexibilityGroup value.
+     * Set the properties property: Properties for legacy reservation recommendation.
+     * 
+     * @param properties the properties value to set.
+     * @return the LegacyReservationRecommendation object itself.
      */
-    public String instanceFlexibilityGroup() {
-        return this.innerProperties() == null ? null : this.innerProperties().instanceFlexibilityGroup();
+    public LegacyReservationRecommendation withProperties(LegacyReservationRecommendationProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
-     * Get the normalizedSize property: The normalized Size.
-     *
-     * @return the normalizedSize value.
+     * Get the sku property: Resource sku.
+     * 
+     * @return the sku value.
      */
-    public String normalizedSize() {
-        return this.innerProperties() == null ? null : this.innerProperties().normalizedSize();
+    @Override
+    public String sku() {
+        return this.sku;
     }
 
     /**
-     * Get the recommendedQuantityNormalized property: The recommended Quantity Normalized.
-     *
-     * @return the recommendedQuantityNormalized value.
+     * Get the location property: Resource location.
+     * 
+     * @return the location value.
      */
-    public Float recommendedQuantityNormalized() {
-        return this.innerProperties() == null ? null : this.innerProperties().recommendedQuantityNormalized();
+    @Override
+    public String location() {
+        return this.location;
     }
 
     /**
-     * Get the meterId property: The meter id (GUID).
-     *
-     * @return the meterId value.
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
      */
-    public UUID meterId() {
-        return this.innerProperties() == null ? null : this.innerProperties().meterId();
+    @Override
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
-     * Get the resourceType property: The azure resource type.
-     *
-     * @return the resourceType value.
+     * Get the etag property: The etag for the resource.
+     * 
+     * @return the etag value.
      */
-    public String resourceType() {
-        return this.innerProperties() == null ? null : this.innerProperties().resourceType();
+    @Override
+    public String etag() {
+        return this.etag;
     }
 
     /**
-     * Get the term property: RI recommendations in one or three year terms.
-     *
-     * @return the term value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String term() {
-        return this.innerProperties() == null ? null : this.innerProperties().term();
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the costWithNoReservedInstances property: The total amount of cost without reserved instances.
-     *
-     * @return the costWithNoReservedInstances value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public BigDecimal costWithNoReservedInstances() {
-        return this.innerProperties() == null ? null : this.innerProperties().costWithNoReservedInstances();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the recommendedQuantity property: Recommended quality for reserved instances.
-     *
-     * @return the recommendedQuantity value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public BigDecimal recommendedQuantity() {
-        return this.innerProperties() == null ? null : this.innerProperties().recommendedQuantity();
-    }
-
-    /**
-     * Get the totalCostWithReservedInstances property: The total amount of cost with reserved instances.
-     *
-     * @return the totalCostWithReservedInstances value.
-     */
-    public BigDecimal totalCostWithReservedInstances() {
-        return this.innerProperties() == null ? null : this.innerProperties().totalCostWithReservedInstances();
-    }
-
-    /**
-     * Get the netSavings property: Total estimated savings with reserved instances.
-     *
-     * @return the netSavings value.
-     */
-    public BigDecimal netSavings() {
-        return this.innerProperties() == null ? null : this.innerProperties().netSavings();
-    }
-
-    /**
-     * Get the firstUsageDate property: The usage date for looking back.
-     *
-     * @return the firstUsageDate value.
-     */
-    public OffsetDateTime firstUsageDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().firstUsageDate();
-    }
-
-    /**
-     * Get the skuProperties property: List of sku properties.
-     *
-     * @return the skuProperties value.
-     */
-    public List<SkuProperty> skuProperties() {
-        return this.innerProperties() == null ? null : this.innerProperties().skuProperties();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LegacyReservationRecommendation"));
+        if (properties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model LegacyReservationRecommendation"));
         } else {
-            innerProperties().validate();
+            properties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LegacyReservationRecommendation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LegacyReservationRecommendation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LegacyReservationRecommendation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LegacyReservationRecommendation.
+     */
+    public static LegacyReservationRecommendation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LegacyReservationRecommendation deserializedLegacyReservationRecommendation
+                = new LegacyReservationRecommendation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLegacyReservationRecommendation.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLegacyReservationRecommendation.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLegacyReservationRecommendation.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedLegacyReservationRecommendation.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLegacyReservationRecommendation.tags = tags;
+                } else if ("location".equals(fieldName)) {
+                    deserializedLegacyReservationRecommendation.location = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedLegacyReservationRecommendation.sku = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLegacyReservationRecommendation.properties
+                        = LegacyReservationRecommendationProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedLegacyReservationRecommendation.kind
+                        = ReservationRecommendationKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLegacyReservationRecommendation;
+        });
     }
 }

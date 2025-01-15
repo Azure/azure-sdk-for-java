@@ -8,44 +8,63 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billingbenefits.models.BillingPlan;
 import com.azure.resourcemanager.billingbenefits.models.BillingPlanInformation;
 import com.azure.resourcemanager.billingbenefits.models.ExtendedStatusInfo;
 import com.azure.resourcemanager.billingbenefits.models.ProvisioningState;
 import com.azure.resourcemanager.billingbenefits.models.Sku;
 import com.azure.resourcemanager.billingbenefits.models.Term;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Savings plan order. */
+/**
+ * Savings plan order.
+ */
 @Fluent
 public final class SavingsPlanOrderModelInner extends ProxyResource {
     /*
      * Savings plan SKU
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Savings plan order properties
      */
-    @JsonProperty(value = "properties")
     private SavingsPlanOrderModelProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SavingsPlanOrderModelInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SavingsPlanOrderModelInner class.
+     */
     public SavingsPlanOrderModelInner() {
     }
 
     /**
      * Get the sku property: Savings plan SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -54,7 +73,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Set the sku property: Savings plan SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SavingsPlanOrderModelInner object itself.
      */
@@ -65,7 +84,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Savings plan order properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SavingsPlanOrderModelProperties innerProperties() {
@@ -74,7 +93,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -82,8 +101,38 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -92,7 +141,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SavingsPlanOrderModelInner object itself.
      */
@@ -106,7 +155,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -115,7 +164,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -124,7 +173,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the SavingsPlanOrderModelInner object itself.
      */
@@ -139,7 +188,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
     /**
      * Get the billingProfileId property: Fully-qualified identifier of the billing profile where the savings plan is
      * applied. Present only for Field-led or Customer-led customers.
-     *
+     * 
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
@@ -149,7 +198,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
     /**
      * Get the customerId property: Fully-qualified identifier of the customer where the savings plan is applied.
      * Present only for Partner-led customers.
-     *
+     * 
      * @return the customerId value.
      */
     public String customerId() {
@@ -159,7 +208,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
     /**
      * Get the billingAccountId property: Fully-qualified identifier of the billing account where the savings plan is
      * applied. Present only for Enterprise Agreement customers.
-     *
+     * 
      * @return the billingAccountId value.
      */
     public String billingAccountId() {
@@ -168,7 +217,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @return the term value.
      */
     public Term term() {
@@ -177,7 +226,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Set the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @param term the term value to set.
      * @return the SavingsPlanOrderModelInner object itself.
      */
@@ -192,7 +241,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
     /**
      * Get the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public BillingPlan billingPlan() {
@@ -202,7 +251,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
     /**
      * Set the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the SavingsPlanOrderModelInner object itself.
      */
@@ -216,7 +265,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the expiryDateTime property: Expiry date time.
-     *
+     * 
      * @return the expiryDateTime value.
      */
     public OffsetDateTime expiryDateTime() {
@@ -225,7 +274,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the benefitStartTime property: This is the DateTime when the savings plan benefit started.
-     *
+     * 
      * @return the benefitStartTime value.
      */
     public OffsetDateTime benefitStartTime() {
@@ -234,7 +283,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Set the benefitStartTime property: This is the DateTime when the savings plan benefit started.
-     *
+     * 
      * @param benefitStartTime the benefitStartTime value to set.
      * @return the SavingsPlanOrderModelInner object itself.
      */
@@ -248,7 +297,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the planInformation property: Information describing the type of billing plan for this savings plan.
-     *
+     * 
      * @return the planInformation value.
      */
     public BillingPlanInformation planInformation() {
@@ -257,7 +306,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Set the planInformation property: Information describing the type of billing plan for this savings plan.
-     *
+     * 
      * @param planInformation the planInformation value to set.
      * @return the SavingsPlanOrderModelInner object itself.
      */
@@ -271,7 +320,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the savingsPlans property: The savingsPlans property.
-     *
+     * 
      * @return the savingsPlans value.
      */
     public List<String> savingsPlans() {
@@ -280,7 +329,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Set the savingsPlans property: The savingsPlans property.
-     *
+     * 
      * @param savingsPlans the savingsPlans value to set.
      * @return the SavingsPlanOrderModelInner object itself.
      */
@@ -294,7 +343,7 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Get the extendedStatusInfo property: The extendedStatusInfo property.
-     *
+     * 
      * @return the extendedStatusInfo value.
      */
     public ExtendedStatusInfo extendedStatusInfo() {
@@ -303,14 +352,13 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model SavingsPlanOrderModelInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model SavingsPlanOrderModelInner"));
         } else {
             sku().validate();
         }
@@ -320,4 +368,53 @@ public final class SavingsPlanOrderModelInner extends ProxyResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SavingsPlanOrderModelInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanOrderModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanOrderModelInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SavingsPlanOrderModelInner.
+     */
+    public static SavingsPlanOrderModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanOrderModelInner deserializedSavingsPlanOrderModelInner = new SavingsPlanOrderModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelInner.type = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelInner.innerProperties
+                        = SavingsPlanOrderModelProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanOrderModelInner;
+        });
+    }
 }

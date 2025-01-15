@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectedSubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectedSubnet model =
-            BinaryData
-                .fromString("{\"prefix\":\"nymmqgwokmikpa\",\"annotation\":\"bmjxuvjipf\"}")
-                .toObject(ConnectedSubnet.class);
-        Assertions.assertEquals("bmjxuvjipf", model.annotation());
-        Assertions.assertEquals("nymmqgwokmikpa", model.prefix());
+        ConnectedSubnet model = BinaryData.fromString("{\"prefix\":\"fsuqtaazyqbxy\",\"annotation\":\"yfp\"}")
+            .toObject(ConnectedSubnet.class);
+        Assertions.assertEquals("yfp", model.annotation());
+        Assertions.assertEquals("fsuqtaazyqbxy", model.prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectedSubnet model = new ConnectedSubnet().withAnnotation("bmjxuvjipf").withPrefix("nymmqgwokmikpa");
+        ConnectedSubnet model = new ConnectedSubnet().withAnnotation("yfp").withPrefix("fsuqtaazyqbxy");
         model = BinaryData.fromObject(model).toObject(ConnectedSubnet.class);
-        Assertions.assertEquals("bmjxuvjipf", model.annotation());
-        Assertions.assertEquals("nymmqgwokmikpa", model.prefix());
+        Assertions.assertEquals("yfp", model.annotation());
+        Assertions.assertEquals("fsuqtaazyqbxy", model.prefix());
     }
 }

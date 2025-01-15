@@ -14,11 +14,14 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
+import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
+import com.azure.resourcemanager.hybridcompute.models.StorageProfile;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -45,6 +48,21 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
      * Statuses of dependent services that are reported back to ARM.
      */
     private ServiceStatuses serviceStatuses;
+
+    /*
+     * Information about the machine's hardware
+     */
+    private HardwareProfile hardwareProfile;
+
+    /*
+     * Information about the machine's storage
+     */
+    private StorageProfile storageProfile;
+
+    /*
+     * Information about the machine's firmware
+     */
+    private FirmwareProfile firmwareProfile;
 
     /*
      * The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
@@ -240,6 +258,33 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
     public MachinePropertiesInner withServiceStatuses(ServiceStatuses serviceStatuses) {
         this.serviceStatuses = serviceStatuses;
         return this;
+    }
+
+    /**
+     * Get the hardwareProfile property: Information about the machine's hardware.
+     * 
+     * @return the hardwareProfile value.
+     */
+    public HardwareProfile hardwareProfile() {
+        return this.hardwareProfile;
+    }
+
+    /**
+     * Get the storageProfile property: Information about the machine's storage.
+     * 
+     * @return the storageProfile value.
+     */
+    public StorageProfile storageProfile() {
+        return this.storageProfile;
+    }
+
+    /**
+     * Get the firmwareProfile property: Information about the machine's firmware.
+     * 
+     * @return the firmwareProfile value.
+     */
+    public FirmwareProfile firmwareProfile() {
+        return this.firmwareProfile;
     }
 
     /**
@@ -636,6 +681,15 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
         if (serviceStatuses() != null) {
             serviceStatuses().validate();
         }
+        if (hardwareProfile() != null) {
+            hardwareProfile().validate();
+        }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+        if (firmwareProfile() != null) {
+            firmwareProfile().validate();
+        }
         if (cloudMetadata() != null) {
             cloudMetadata().validate();
         }
@@ -699,6 +753,12 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
                     deserializedMachinePropertiesInner.agentConfiguration = AgentConfiguration.fromJson(reader);
                 } else if ("serviceStatuses".equals(fieldName)) {
                     deserializedMachinePropertiesInner.serviceStatuses = ServiceStatuses.fromJson(reader);
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("firmwareProfile".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.firmwareProfile = FirmwareProfile.fromJson(reader);
                 } else if ("cloudMetadata".equals(fieldName)) {
                     deserializedMachinePropertiesInner.cloudMetadata = CloudMetadata.fromJson(reader);
                 } else if ("agentUpgrade".equals(fieldName)) {

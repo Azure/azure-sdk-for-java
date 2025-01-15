@@ -5,28 +5,37 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Primary metrics for Regression task. */
+/**
+ * Primary metrics for Regression task.
+ */
 public final class RegressionPrimaryMetrics extends ExpandableStringEnum<RegressionPrimaryMetrics> {
-    /** Static value SpearmanCorrelation for RegressionPrimaryMetrics. */
+    /**
+     * Static value SpearmanCorrelation for RegressionPrimaryMetrics.
+     */
     public static final RegressionPrimaryMetrics SPEARMAN_CORRELATION = fromString("SpearmanCorrelation");
 
-    /** Static value NormalizedRootMeanSquaredError for RegressionPrimaryMetrics. */
-    public static final RegressionPrimaryMetrics NORMALIZED_ROOT_MEAN_SQUARED_ERROR =
-        fromString("NormalizedRootMeanSquaredError");
+    /**
+     * Static value NormalizedRootMeanSquaredError for RegressionPrimaryMetrics.
+     */
+    public static final RegressionPrimaryMetrics NORMALIZED_ROOT_MEAN_SQUARED_ERROR
+        = fromString("NormalizedRootMeanSquaredError");
 
-    /** Static value R2Score for RegressionPrimaryMetrics. */
+    /**
+     * Static value R2Score for RegressionPrimaryMetrics.
+     */
     public static final RegressionPrimaryMetrics R2SCORE = fromString("R2Score");
 
-    /** Static value NormalizedMeanAbsoluteError for RegressionPrimaryMetrics. */
-    public static final RegressionPrimaryMetrics NORMALIZED_MEAN_ABSOLUTE_ERROR =
-        fromString("NormalizedMeanAbsoluteError");
+    /**
+     * Static value NormalizedMeanAbsoluteError for RegressionPrimaryMetrics.
+     */
+    public static final RegressionPrimaryMetrics NORMALIZED_MEAN_ABSOLUTE_ERROR
+        = fromString("NormalizedMeanAbsoluteError");
 
     /**
      * Creates a new instance of RegressionPrimaryMetrics value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,18 +44,17 @@ public final class RegressionPrimaryMetrics extends ExpandableStringEnum<Regress
 
     /**
      * Creates or finds a RegressionPrimaryMetrics from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RegressionPrimaryMetrics.
      */
-    @JsonCreator
     public static RegressionPrimaryMetrics fromString(String name) {
         return fromString(name, RegressionPrimaryMetrics.class);
     }
 
     /**
      * Gets known RegressionPrimaryMetrics values.
-     *
+     * 
      * @return known RegressionPrimaryMetrics values.
      */
     public static Collection<RegressionPrimaryMetrics> values() {

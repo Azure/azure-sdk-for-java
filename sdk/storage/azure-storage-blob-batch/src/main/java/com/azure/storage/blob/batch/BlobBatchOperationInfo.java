@@ -99,7 +99,8 @@ final class BlobBatchOperationInfo {
          * 'x-ms-version' used in the batch request. This header is illegal and will fail the batch request if present
          * in any operation.
          */
-        request.getHeaders().stream()
+        request.getHeaders()
+            .stream()
             .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()))
             .forEach(header -> appendWithNewline(batchRequestBuilder, header.getName() + ": " + header.getValue()));
 
@@ -113,8 +114,8 @@ final class BlobBatchOperationInfo {
      * Completes the batch by adding the final boundary identifier to the request body.
      */
     void finalizeBatchOperations() {
-        batchOperations.add(ByteBuffer.wrap(
-            ("--" + batchBoundary + "--" + BlobBatchHelper.HTTP_NEWLINE).getBytes(StandardCharsets.UTF_8)));
+        batchOperations.add(ByteBuffer
+            .wrap(("--" + batchBoundary + "--" + BlobBatchHelper.HTTP_NEWLINE).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*

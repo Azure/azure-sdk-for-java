@@ -27,7 +27,7 @@ public final class DiagnosticsPackagesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.diagnosticsPackages().delete("zqcyknap", "ofyuicd", "zb", com.azure.core.util.Context.NONE);
+        manager.diagnosticsPackages().delete("srlsmd", "sqplpvmjcd", "ewbidyvteowxv", com.azure.core.util.Context.NONE);
 
     }
 }

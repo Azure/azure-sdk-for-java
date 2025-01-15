@@ -20,8 +20,8 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -29,10 +29,7 @@ public final class OperationsImpl implements Operations {
     public Response<OperationResult> getWithResponse(String locationName, String name, Context context) {
         Response<OperationResultInner> inner = this.serviceClient().getWithResponse(locationName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

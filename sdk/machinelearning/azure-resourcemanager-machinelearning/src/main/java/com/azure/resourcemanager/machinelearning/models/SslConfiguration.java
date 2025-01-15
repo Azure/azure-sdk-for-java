@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ssl configuration for scoring. */
+/**
+ * The ssl configuration for scoring.
+ */
 @Fluent
-public final class SslConfiguration {
+public final class SslConfiguration implements JsonSerializable<SslConfiguration> {
     /*
      * Enable or disable ssl for scoring
      */
-    @JsonProperty(value = "status")
     private SslConfigStatus status;
 
     /*
      * Cert data
      */
-    @JsonProperty(value = "cert")
     private String cert;
 
     /*
      * Key data
      */
-    @JsonProperty(value = "key")
     private String key;
 
     /*
      * CNAME of the cert
      */
-    @JsonProperty(value = "cname")
     private String cname;
 
     /*
      * Leaf domain label of public endpoint
      */
-    @JsonProperty(value = "leafDomainLabel")
     private String leafDomainLabel;
 
     /*
      * Indicates whether to overwrite existing domain label.
      */
-    @JsonProperty(value = "overwriteExistingDomain")
     private Boolean overwriteExistingDomain;
 
-    /** Creates an instance of SslConfiguration class. */
+    /**
+     * Creates an instance of SslConfiguration class.
+     */
     public SslConfiguration() {
     }
 
     /**
      * Get the status property: Enable or disable ssl for scoring.
-     *
+     * 
      * @return the status value.
      */
     public SslConfigStatus status() {
@@ -61,7 +63,7 @@ public final class SslConfiguration {
 
     /**
      * Set the status property: Enable or disable ssl for scoring.
-     *
+     * 
      * @param status the status value to set.
      * @return the SslConfiguration object itself.
      */
@@ -72,7 +74,7 @@ public final class SslConfiguration {
 
     /**
      * Get the cert property: Cert data.
-     *
+     * 
      * @return the cert value.
      */
     public String cert() {
@@ -81,7 +83,7 @@ public final class SslConfiguration {
 
     /**
      * Set the cert property: Cert data.
-     *
+     * 
      * @param cert the cert value to set.
      * @return the SslConfiguration object itself.
      */
@@ -92,7 +94,7 @@ public final class SslConfiguration {
 
     /**
      * Get the key property: Key data.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -101,7 +103,7 @@ public final class SslConfiguration {
 
     /**
      * Set the key property: Key data.
-     *
+     * 
      * @param key the key value to set.
      * @return the SslConfiguration object itself.
      */
@@ -112,7 +114,7 @@ public final class SslConfiguration {
 
     /**
      * Get the cname property: CNAME of the cert.
-     *
+     * 
      * @return the cname value.
      */
     public String cname() {
@@ -121,7 +123,7 @@ public final class SslConfiguration {
 
     /**
      * Set the cname property: CNAME of the cert.
-     *
+     * 
      * @param cname the cname value to set.
      * @return the SslConfiguration object itself.
      */
@@ -132,7 +134,7 @@ public final class SslConfiguration {
 
     /**
      * Get the leafDomainLabel property: Leaf domain label of public endpoint.
-     *
+     * 
      * @return the leafDomainLabel value.
      */
     public String leafDomainLabel() {
@@ -141,7 +143,7 @@ public final class SslConfiguration {
 
     /**
      * Set the leafDomainLabel property: Leaf domain label of public endpoint.
-     *
+     * 
      * @param leafDomainLabel the leafDomainLabel value to set.
      * @return the SslConfiguration object itself.
      */
@@ -152,7 +154,7 @@ public final class SslConfiguration {
 
     /**
      * Get the overwriteExistingDomain property: Indicates whether to overwrite existing domain label.
-     *
+     * 
      * @return the overwriteExistingDomain value.
      */
     public Boolean overwriteExistingDomain() {
@@ -161,7 +163,7 @@ public final class SslConfiguration {
 
     /**
      * Set the overwriteExistingDomain property: Indicates whether to overwrite existing domain label.
-     *
+     * 
      * @param overwriteExistingDomain the overwriteExistingDomain value to set.
      * @return the SslConfiguration object itself.
      */
@@ -172,9 +174,60 @@ public final class SslConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("cert", this.cert);
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("cname", this.cname);
+        jsonWriter.writeStringField("leafDomainLabel", this.leafDomainLabel);
+        jsonWriter.writeBooleanField("overwriteExistingDomain", this.overwriteExistingDomain);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SslConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SslConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SslConfiguration.
+     */
+    public static SslConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SslConfiguration deserializedSslConfiguration = new SslConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedSslConfiguration.status = SslConfigStatus.fromString(reader.getString());
+                } else if ("cert".equals(fieldName)) {
+                    deserializedSslConfiguration.cert = reader.getString();
+                } else if ("key".equals(fieldName)) {
+                    deserializedSslConfiguration.key = reader.getString();
+                } else if ("cname".equals(fieldName)) {
+                    deserializedSslConfiguration.cname = reader.getString();
+                } else if ("leafDomainLabel".equals(fieldName)) {
+                    deserializedSslConfiguration.leafDomainLabel = reader.getString();
+                } else if ("overwriteExistingDomain".equals(fieldName)) {
+                    deserializedSslConfiguration.overwriteExistingDomain = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSslConfiguration;
+        });
     }
 }

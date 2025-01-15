@@ -47,15 +47,16 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
      * @param clientId the client ID
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azure, String clientId) throws IOException, InterruptedException {
+    public static boolean runSample(AzureResourceManager azure, String clientId)
+        throws IOException, InterruptedException {
         // New resources
-        final Region region         = Region.US_WEST;
-        final String acrName        = Utils.randomResourceName(azure, "acr", 20);
-        final String appName        = Utils.randomResourceName(azure, "webapp1-", 20);
-        final String password       = Utils.password();
-        final String rgName         = Utils.randomResourceName(azure, "rg1NEMV_", 24);
-        final String vaultName      = Utils.randomResourceName(azure, "vault", 20);
-        final String cosmosName     = Utils.randomResourceName(azure, "cosmosdb", 20);
+        final Region region = Region.US_WEST;
+        final String acrName = Utils.randomResourceName(azure, "acr", 20);
+        final String appName = Utils.randomResourceName(azure, "webapp1-", 20);
+        final String password = Utils.password();
+        final String rgName = Utils.randomResourceName(azure, "rg1NEMV_", 24);
+        final String vaultName = Utils.randomResourceName(azure, "vault", 20);
+        final String cosmosName = Utils.randomResourceName(azure, "cosmosdb", 20);
 
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
 
@@ -64,12 +65,13 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
             // Create a CosmosDB
 
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azure.cosmosDBAccounts().define(cosmosName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withDataModelSql()
-                    .withStrongConsistency()
-                    .create();
+            CosmosDBAccount cosmosDBAccount = azure.cosmosDBAccounts()
+                .define(cosmosName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDataModelSql()
+                .withStrongConsistency()
+                .create();
 
             System.out.println("Created CosmosDB");
             Utils.print(cosmosDBAccount);
@@ -77,12 +79,13 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
             //============================================================
             // Create a service principal
 
-            ServicePrincipal servicePrincipal = azure.accessManagement().servicePrincipals()
-                    .define(appName)
-                    .withNewApplication()
-                    .definePasswordCredential("password")
-                        .attach()
-                    .create();
+            ServicePrincipal servicePrincipal = azure.accessManagement()
+                .servicePrincipals()
+                .define(appName)
+                .withNewApplication()
+                .definePasswordCredential("password")
+                .attach()
+                .create();
 
             //=============================================================
             // If service principal client id and secret are not set via the local variables, attempt to read the service
@@ -95,7 +98,9 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
                 if (servicePrincipalClientId == null || servicePrincipalClientId.isEmpty()) {
                     String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
 
-                    if (envSecondaryServicePrincipal == null || !envSecondaryServicePrincipal.isEmpty() || !Files.exists(Paths.get(envSecondaryServicePrincipal))) {
+                    if (envSecondaryServicePrincipal == null
+                        || !envSecondaryServicePrincipal.isEmpty()
+                        || !Files.exists(Paths.get(envSecondaryServicePrincipal))) {
                         envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
                     }
 
@@ -107,33 +112,30 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
             // Create a key vault
 
             Vault vault = azure.vaults()
-                    .define(vaultName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .defineAccessPolicy()
-                        .forServicePrincipal(servicePrincipalClientId)
-                        .allowSecretAllPermissions()
-                        .attach()
-                    .defineAccessPolicy()
-                        .forServicePrincipal(servicePrincipal)
-                        .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.LIST)
-                        .attach()
-                    .create();
+                .define(vaultName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .defineAccessPolicy()
+                .forServicePrincipal(servicePrincipalClientId)
+                .allowSecretAllPermissions()
+                .attach()
+                .defineAccessPolicy()
+                .forServicePrincipal(servicePrincipal)
+                .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.LIST)
+                .attach()
+                .create();
 
-//            SdkContext.sleep(10000);
+            //            SdkContext.sleep(10000);
 
             //============================================================
             // Store Cosmos DB credentials in Key Vault
 
-            vault.secrets().define("azure-documentdb-uri")
-                .withValue(cosmosDBAccount.documentEndpoint())
-                .create();
-            vault.secrets().define("azure-documentdb-key")
+            vault.secrets().define("azure-documentdb-uri").withValue(cosmosDBAccount.documentEndpoint()).create();
+            vault.secrets()
+                .define("azure-documentdb-key")
                 .withValue(cosmosDBAccount.listKeys().primaryMasterKey())
                 .create();
-            vault.secrets().define("azure-documentdb-database")
-                .withValue("tododb")
-                .create();
+            vault.secrets().define("azure-documentdb-database").withValue("tododb").create();
 
             //=============================================================
             // Create an Azure Container Registry to store and manage private Docker container images
@@ -142,23 +144,26 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 
             long t1 = System.currentTimeMillis();
 
-            Registry azureRegistry = azure.containerRegistries().define(acrName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withBasicSku()
-                    .withRegistryNameAsAdminUser()
-                    .create();
+            Registry azureRegistry = azure.containerRegistries()
+                .define(acrName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .withRegistryNameAsAdminUser()
+                .create();
 
             long t2 = System.currentTimeMillis();
-            System.out.println("Created Azure Container Registry: (took " + ((t2 - t1) / 1000) + " seconds) " + azureRegistry.id());
+            System.out.println(
+                "Created Azure Container Registry: (took " + ((t2 - t1) / 1000) + " seconds) " + azureRegistry.id());
             Utils.print(azureRegistry);
 
             //=============================================================
             // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
 
             RegistryCredentials acrCredentials = azureRegistry.getCredentials();
-            DockerClient dockerClient = DockerUtils.createDockerClient(azure, rgName, region,
-                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
+            DockerClient dockerClient
+                = DockerUtils.createDockerClient(azure, rgName, region, azureRegistry.loginServerUrl(),
+                    acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             String imageName = "tomcat:7.0-slim";
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/todoapp";
@@ -170,8 +175,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
             String imageId = dockerClient.inspectImageCmd(imageName).exec().getId();
             dockerClient.tagImageCmd(imageId, privateRepoUrl, "latest").exec();
 
-            dockerClient.pushImageCmd(privateRepoUrl)
-                    .exec(new PushImageResultCallback()).awaitCompletion();
+            dockerClient.pushImageCmd(privateRepoUrl).exec(new PushImageResultCallback()).awaitCompletion();
 
             //============================================================
             // Create a web app with a new app service plan
@@ -179,16 +183,16 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
             WebApp app1 = azure.webApps()
-                    .define(appName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withPrivateRegistryImage(privateRepoUrl, azureRegistry.loginServerUrl())
-                    .withCredentials(acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
-                    .withAppSetting("AZURE_KEYVAULT_URI", vault.vaultUri())
-                    .withAppSetting("AZURE_KEYVAULT_CLIENT_ID", servicePrincipal.applicationId())
-                    .withAppSetting("AZURE_KEYVAULT_CLIENT_KEY", password)
-                    .create();
+                .define(appName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withNewLinuxPlan(PricingTier.STANDARD_S1)
+                .withPrivateRegistryImage(privateRepoUrl, azureRegistry.loginServerUrl())
+                .withCredentials(acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
+                .withAppSetting("AZURE_KEYVAULT_URI", vault.vaultUri())
+                .withAppSetting("AZURE_KEYVAULT_CLIENT_ID", servicePrincipal.applicationId())
+                .withAppSetting("AZURE_KEYVAULT_CLIENT_KEY", password)
+                .create();
 
             System.out.println("Created web app " + app1.name());
             Utils.print(app1);
@@ -222,8 +226,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

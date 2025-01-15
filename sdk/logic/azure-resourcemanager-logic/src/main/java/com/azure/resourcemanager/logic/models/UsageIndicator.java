@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The usage indicator. */
+/**
+ * The usage indicator.
+ */
 public final class UsageIndicator extends ExpandableStringEnum<UsageIndicator> {
-    /** Static value NotSpecified for UsageIndicator. */
+    /**
+     * Static value NotSpecified for UsageIndicator.
+     */
     public static final UsageIndicator NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Test for UsageIndicator. */
+    /**
+     * Static value Test for UsageIndicator.
+     */
     public static final UsageIndicator TEST = fromString("Test");
 
-    /** Static value Information for UsageIndicator. */
+    /**
+     * Static value Information for UsageIndicator.
+     */
     public static final UsageIndicator INFORMATION = fromString("Information");
 
-    /** Static value Production for UsageIndicator. */
+    /**
+     * Static value Production for UsageIndicator.
+     */
     public static final UsageIndicator PRODUCTION = fromString("Production");
 
     /**
      * Creates a new instance of UsageIndicator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class UsageIndicator extends ExpandableStringEnum<UsageIndicator> {
 
     /**
      * Creates or finds a UsageIndicator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UsageIndicator.
      */
-    @JsonCreator
     public static UsageIndicator fromString(String name) {
         return fromString(name, UsageIndicator.class);
     }
 
     /**
      * Gets known UsageIndicator values.
-     *
+     * 
      * @return known UsageIndicator values.
      */
     public static Collection<UsageIndicator> values() {

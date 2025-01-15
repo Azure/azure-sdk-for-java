@@ -11,7 +11,7 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"mohctb\",\"display\":{\"provider\":\"dwxdndnv\",\"resource\":\"gujjugwdkcglh\",\"operation\":\"azjdyggd\",\"description\":\"ixhbkuofqweykhm\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}],\"metricSpecifications\":[{},{}]}},\"isDataAction\":true},{\"name\":\"hybcibv\",\"display\":{\"provider\":\"c\",\"resource\":\"tynnaamdectehfi\",\"operation\":\"cj\",\"description\":\"pvhez\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}],\"metricSpecifications\":[{},{},{},{}]}},\"isDataAction\":false},{\"name\":\"o\",\"display\":{\"provider\":\"kqsleyyvxy\",\"resource\":\"pkc\",\"operation\":\"tpngjcrcczsqpjh\",\"description\":\"daj\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}],\"metricSpecifications\":[{},{},{}]}},\"isDataAction\":false}],\"nextLink\":\"a\"}")
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"display\":{\"provider\":\"zopbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\"}},{\"name\":\"zehtbmu\",\"display\":{\"provider\":\"wnoi\",\"resource\":\"wlrxyb\",\"operation\":\"oqijgkdmbpaz\"}},{\"name\":\"bc\",\"display\":{\"provider\":\"dznrbtcqq\",\"resource\":\"qglhq\",\"operation\":\"ufo\"}}],\"nextLink\":\"jywif\"}")
             .toObject(OperationListResult.class);
     }
 

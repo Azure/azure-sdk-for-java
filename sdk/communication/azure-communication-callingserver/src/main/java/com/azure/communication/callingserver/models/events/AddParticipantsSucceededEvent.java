@@ -7,15 +7,12 @@ import com.azure.communication.callingserver.implementation.converters.Communica
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /** The AddParticipantsSucceededEvent model. */
 @Immutable
@@ -23,35 +20,19 @@ public final class AddParticipantsSucceededEvent extends CallAutomationEventBase
     /*
      * Operation context
      */
-    @JsonProperty(value = "operationContext")
-    private final String operationContext;
+    private String operationContext;
 
     /*
      * The resultInfo property.
      */
-    @JsonProperty(value = "resultInfo")
-    private final ResultInfo resultInfo;
+    private ResultInfo resultInfo;
 
     /*
      * Participants added
      */
-    @JsonIgnore
-    private final List<CommunicationIdentifier> participants;
+    private List<CommunicationIdentifier> participants;
 
-    @JsonCreator
-    private AddParticipantsSucceededEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
-        this.operationContext = null;
-        this.resultInfo = null;
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.participants = participants
-            .stream()
-            .map(item -> mapper.convertValue(item, CommunicationIdentifierModel.class))
-            .collect(Collectors.toList())
-            .stream()
-            .map(CommunicationIdentifierConverter::convert)
-            .collect(Collectors.toList());
+    private AddParticipantsSucceededEvent() {
     }
 
     /**
@@ -79,5 +60,48 @@ public final class AddParticipantsSucceededEvent extends CallAutomationEventBase
      */
     public List<CommunicationIdentifier> getParticipants() {
         return this.participants;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return toJsonShared(jsonWriter.writeStartObject()).writeStringField("operationContext", operationContext)
+            .writeJsonField("resultInfo", resultInfo)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link AddParticipantsSucceededEvent} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read from.
+     * @return An instance of {@link AddParticipantsSucceededEvent}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static AddParticipantsSucceededEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddParticipantsSucceededEvent event = new AddParticipantsSucceededEvent();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if (fromJsonShared(event, fieldName, reader)) {
+                    continue;
+                }
+
+                if ("operationContext".equals(fieldName)) {
+                    event.operationContext = reader.getString();
+                } else if ("resultInfo".equals(fieldName)) {
+                    event.resultInfo = ResultInfo.fromJson(reader);
+                } else if ("participants".equals(fieldName)) {
+                    event.participants = reader.readArray(
+                        r -> CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(r)));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return event;
+        });
     }
 }

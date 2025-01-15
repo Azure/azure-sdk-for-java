@@ -17,60 +17,62 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"vtz\",\"timeStamp\":\"2021-09-18T00:19:24Z\",\"initiatedByList\":[\"bljofxqeof\",\"aeqjhqjbasvms\",\"jqul\"],\"changeType\":\"Add\",\"propertyChanges\":[{\"changeType\":\"Add\",\"changeCategory\":\"System\",\"jsonPath\":\"zgcwrw\",\"displayName\":\"xxwr\",\"level\":\"Important\",\"description\":\"uskcqvkocrcj\",\"oldValue\":\"wtnhxbnjbiksqr\",\"newValue\":\"ssainqpjwnzll\",\"isDataMasked\":true}]}")
-                .toObject(ChangeProperties.class);
-        Assertions.assertEquals("vtz", model.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T00:19:24Z"), model.timestamp());
-        Assertions.assertEquals("bljofxqeof", model.initiatedByList().get(0));
+        ChangeProperties model = BinaryData.fromString(
+            "{\"resourceId\":\"wrlyxwjkcprb\",\"timeStamp\":\"2021-11-21T19:55:14Z\",\"initiatedByList\":[\"jvtbvpyss\",\"dnrujqguhmuouqfp\"],\"changeType\":\"Add\",\"propertyChanges\":[{\"changeType\":\"Update\",\"changeCategory\":\"System\",\"jsonPath\":\"nwui\",\"displayName\":\"a\",\"level\":\"Normal\",\"description\":\"izuckyfihrfidfvz\",\"oldValue\":\"zuhtymwisdkfthwx\",\"newValue\":\"t\",\"isDataMasked\":true},{\"changeType\":\"Add\",\"changeCategory\":\"System\",\"jsonPath\":\"mijcmmxdcufufs\",\"displayName\":\"ymzidn\",\"level\":\"Important\",\"description\":\"xtbzsgfyccsne\",\"oldValue\":\"dwzjeiach\",\"newValue\":\"osfln\",\"isDataMasked\":true}]}")
+            .toObject(ChangeProperties.class);
+        Assertions.assertEquals("wrlyxwjkcprb", model.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T19:55:14Z"), model.timestamp());
+        Assertions.assertEquals("jvtbvpyss", model.initiatedByList().get(0));
         Assertions.assertEquals(ChangeType.ADD, model.changeType());
-        Assertions.assertEquals(ChangeType.ADD, model.propertyChanges().get(0).changeType());
+        Assertions.assertEquals(ChangeType.UPDATE, model.propertyChanges().get(0).changeType());
         Assertions.assertEquals(ChangeCategory.SYSTEM, model.propertyChanges().get(0).changeCategory());
-        Assertions.assertEquals("zgcwrw", model.propertyChanges().get(0).jsonPath());
-        Assertions.assertEquals("xxwr", model.propertyChanges().get(0).displayName());
-        Assertions.assertEquals(Level.IMPORTANT, model.propertyChanges().get(0).level());
-        Assertions.assertEquals("uskcqvkocrcj", model.propertyChanges().get(0).description());
-        Assertions.assertEquals("wtnhxbnjbiksqr", model.propertyChanges().get(0).oldValue());
-        Assertions.assertEquals("ssainqpjwnzll", model.propertyChanges().get(0).newValue());
+        Assertions.assertEquals("nwui", model.propertyChanges().get(0).jsonPath());
+        Assertions.assertEquals("a", model.propertyChanges().get(0).displayName());
+        Assertions.assertEquals(Level.NORMAL, model.propertyChanges().get(0).level());
+        Assertions.assertEquals("izuckyfihrfidfvz", model.propertyChanges().get(0).description());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.propertyChanges().get(0).oldValue());
+        Assertions.assertEquals("t", model.propertyChanges().get(0).newValue());
         Assertions.assertEquals(true, model.propertyChanges().get(0).isDataMasked());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeProperties model =
-            new ChangeProperties()
-                .withResourceId("vtz")
-                .withTimestamp(OffsetDateTime.parse("2021-09-18T00:19:24Z"))
-                .withInitiatedByList(Arrays.asList("bljofxqeof", "aeqjhqjbasvms", "jqul"))
-                .withChangeType(ChangeType.ADD)
-                .withPropertyChanges(
-                    Arrays
-                        .asList(
-                            new PropertyChange()
-                                .withChangeType(ChangeType.ADD)
-                                .withChangeCategory(ChangeCategory.SYSTEM)
-                                .withJsonPath("zgcwrw")
-                                .withDisplayName("xxwr")
-                                .withLevel(Level.IMPORTANT)
-                                .withDescription("uskcqvkocrcj")
-                                .withOldValue("wtnhxbnjbiksqr")
-                                .withNewValue("ssainqpjwnzll")
-                                .withIsDataMasked(true)));
+        ChangeProperties model = new ChangeProperties().withResourceId("wrlyxwjkcprb")
+            .withTimestamp(OffsetDateTime.parse("2021-11-21T19:55:14Z"))
+            .withInitiatedByList(Arrays.asList("jvtbvpyss", "dnrujqguhmuouqfp"))
+            .withChangeType(ChangeType.ADD)
+            .withPropertyChanges(Arrays.asList(
+                new PropertyChange().withChangeType(ChangeType.UPDATE)
+                    .withChangeCategory(ChangeCategory.SYSTEM)
+                    .withJsonPath("nwui")
+                    .withDisplayName("a")
+                    .withLevel(Level.NORMAL)
+                    .withDescription("izuckyfihrfidfvz")
+                    .withOldValue("zuhtymwisdkfthwx")
+                    .withNewValue("t")
+                    .withIsDataMasked(true),
+                new PropertyChange().withChangeType(ChangeType.ADD)
+                    .withChangeCategory(ChangeCategory.SYSTEM)
+                    .withJsonPath("mijcmmxdcufufs")
+                    .withDisplayName("ymzidn")
+                    .withLevel(Level.IMPORTANT)
+                    .withDescription("xtbzsgfyccsne")
+                    .withOldValue("dwzjeiach")
+                    .withNewValue("osfln")
+                    .withIsDataMasked(true)));
         model = BinaryData.fromObject(model).toObject(ChangeProperties.class);
-        Assertions.assertEquals("vtz", model.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T00:19:24Z"), model.timestamp());
-        Assertions.assertEquals("bljofxqeof", model.initiatedByList().get(0));
+        Assertions.assertEquals("wrlyxwjkcprb", model.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T19:55:14Z"), model.timestamp());
+        Assertions.assertEquals("jvtbvpyss", model.initiatedByList().get(0));
         Assertions.assertEquals(ChangeType.ADD, model.changeType());
-        Assertions.assertEquals(ChangeType.ADD, model.propertyChanges().get(0).changeType());
+        Assertions.assertEquals(ChangeType.UPDATE, model.propertyChanges().get(0).changeType());
         Assertions.assertEquals(ChangeCategory.SYSTEM, model.propertyChanges().get(0).changeCategory());
-        Assertions.assertEquals("zgcwrw", model.propertyChanges().get(0).jsonPath());
-        Assertions.assertEquals("xxwr", model.propertyChanges().get(0).displayName());
-        Assertions.assertEquals(Level.IMPORTANT, model.propertyChanges().get(0).level());
-        Assertions.assertEquals("uskcqvkocrcj", model.propertyChanges().get(0).description());
-        Assertions.assertEquals("wtnhxbnjbiksqr", model.propertyChanges().get(0).oldValue());
-        Assertions.assertEquals("ssainqpjwnzll", model.propertyChanges().get(0).newValue());
+        Assertions.assertEquals("nwui", model.propertyChanges().get(0).jsonPath());
+        Assertions.assertEquals("a", model.propertyChanges().get(0).displayName());
+        Assertions.assertEquals(Level.NORMAL, model.propertyChanges().get(0).level());
+        Assertions.assertEquals("izuckyfihrfidfvz", model.propertyChanges().get(0).description());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.propertyChanges().get(0).oldValue());
+        Assertions.assertEquals("t", model.propertyChanges().get(0).newValue());
         Assertions.assertEquals(true, model.propertyChanges().get(0).isDataMasked());
     }
 }

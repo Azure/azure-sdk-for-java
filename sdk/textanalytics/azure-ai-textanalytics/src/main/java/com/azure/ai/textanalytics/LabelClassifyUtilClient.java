@@ -105,38 +105,25 @@ class LabelClassifyUtilClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final String displayName = options.getDisplayName();
 
-            return new PollerFlux<>(
-                DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    service.submitJobWithResponseAsync(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(displayName)
-                            .setAnalysisInput(
-                                new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(
-                                new CustomSingleLabelClassificationLROTask().setParameters(
-                                    new CustomSingleLabelClassificationTaskParameters()
-                                        .setProjectName(projectName)
-                                        .setDeploymentName(deploymentName)
-                                        .setLoggingOptOut(finalLoggingOptOut)))),
-                        finalContext)
-                        .map(responseBase -> {
-                            final ClassifyDocumentOperationDetail operationDetail =
-                                new ClassifyDocumentOperationDetail();
-                            ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
-                            return operationDetail;
-                        })
-                ),
-                pollingOperationTextJob(
-                    operationId -> service.jobStatusWithResponseAsync(operationId,
-                        finalIncludeStatistics, null, null, finalContext)),
-                cancelOperationTextJob(
-                    operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperationTextJob(
-                    operationId -> Mono.just(getClassifyDocumentPagedFlux(operationId, null, null,
-                        finalIncludeStatistics, finalContext)))
-            );
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
+                activationOperation(service.submitJobWithResponseAsync(new AnalyzeTextJobsInput()
+                    .setDisplayName(displayName)
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(Arrays.asList(new CustomSingleLabelClassificationLROTask()
+                        .setParameters(new CustomSingleLabelClassificationTaskParameters().setProjectName(projectName)
+                            .setDeploymentName(deploymentName)
+                            .setLoggingOptOut(finalLoggingOptOut)))),
+                    finalContext).map(responseBase -> {
+                        final ClassifyDocumentOperationDetail operationDetail = new ClassifyDocumentOperationDetail();
+                        ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                            parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
+                        return operationDetail;
+                    })),
+                pollingOperationTextJob(operationId -> service.jobStatusWithResponseAsync(operationId,
+                    finalIncludeStatistics, null, null, finalContext)),
+                cancelOperationTextJob(operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
+                fetchingOperationTextJob(operationId -> Mono.just(
+                    getClassifyDocumentPagedFlux(operationId, null, null, finalIncludeStatistics, finalContext))));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -156,23 +143,18 @@ class LabelClassifyUtilClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final String displayName = options.getDisplayName();
-            final CustomSingleLabelClassificationLROTask task =
-                new CustomSingleLabelClassificationLROTask().setParameters(
-                    new CustomSingleLabelClassificationTaskParameters()
-                        .setProjectName(projectName)
-                        .setDeploymentName(deploymentName)
-                        .setLoggingOptOut(finalLoggingOptOut));
-            return SyncPoller.createPoller(
-                DEFAULT_POLL_INTERVAL,
+            final CustomSingleLabelClassificationLROTask task = new CustomSingleLabelClassificationLROTask()
+                .setParameters(new CustomSingleLabelClassificationTaskParameters().setProjectName(projectName)
+                    .setDeploymentName(deploymentName)
+                    .setLoggingOptOut(finalLoggingOptOut));
+            return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                 cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     activationOperationSync(documents, task, displayName, finalContext).apply(cxt)),
                 pollingOperationTextJobSync(operationId -> service.jobStatusWithResponse(operationId,
                     finalIncludeStatistics, null, null, finalContext)),
                 cancelOperationTextJobSync(operationId -> service.cancelJobWithResponse(operationId, finalContext)),
-                fetchingOperationSync(
-                    operationId -> getClassifyDocumentPagedIterable(operationId, null, null,
-                        finalIncludeStatistics, finalContext))
-            );
+                fetchingOperationSync(operationId -> getClassifyDocumentPagedIterable(operationId, null, null,
+                    finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
@@ -193,38 +175,25 @@ class LabelClassifyUtilClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final String displayName = options.getDisplayName();
 
-            return new PollerFlux<>(
-                DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    service.submitJobWithResponseAsync(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(displayName)
-                            .setAnalysisInput(
-                                new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(
-                                new CustomMultiLabelClassificationLROTask().setParameters(
-                                    new CustomMultiLabelClassificationTaskParameters()
-                                        .setProjectName(projectName)
-                                        .setDeploymentName(deploymentName)
-                                        .setLoggingOptOut(finalLoggingOptOut)))),
-                        finalContext)
-                        .map(responseBase -> {
-                            final ClassifyDocumentOperationDetail operationDetail =
-                                new ClassifyDocumentOperationDetail();
-                            ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
-                            return operationDetail;
-                        })
-                ),
-                pollingOperationTextJob(
-                    operationId -> service.jobStatusWithResponseAsync(operationId,
-                        finalIncludeStatistics, null, null, finalContext)),
-                cancelOperationTextJob(
-                    operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperationTextJob(
-                    operationId -> Mono.just(getClassifyDocumentPagedFlux(operationId, null, null,
-                        finalIncludeStatistics, finalContext)))
-            );
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
+                activationOperation(service.submitJobWithResponseAsync(new AnalyzeTextJobsInput()
+                    .setDisplayName(displayName)
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(Arrays.asList(new CustomMultiLabelClassificationLROTask()
+                        .setParameters(new CustomMultiLabelClassificationTaskParameters().setProjectName(projectName)
+                            .setDeploymentName(deploymentName)
+                            .setLoggingOptOut(finalLoggingOptOut)))),
+                    finalContext).map(responseBase -> {
+                        final ClassifyDocumentOperationDetail operationDetail = new ClassifyDocumentOperationDetail();
+                        ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                            parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
+                        return operationDetail;
+                    })),
+                pollingOperationTextJob(operationId -> service.jobStatusWithResponseAsync(operationId,
+                    finalIncludeStatistics, null, null, finalContext)),
+                cancelOperationTextJob(operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
+                fetchingOperationTextJob(operationId -> Mono.just(
+                    getClassifyDocumentPagedFlux(operationId, null, null, finalIncludeStatistics, finalContext))));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -245,42 +214,36 @@ class LabelClassifyUtilClient {
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final String displayName = options.getDisplayName();
             final CustomMultiLabelClassificationLROTask task = new CustomMultiLabelClassificationLROTask()
-                .setParameters(
-                    new CustomMultiLabelClassificationTaskParameters()
-                        .setProjectName(projectName)
-                        .setDeploymentName(deploymentName)
-                        .setLoggingOptOut(finalLoggingOptOut));
-            return SyncPoller.createPoller(
-                DEFAULT_POLL_INTERVAL,
+                .setParameters(new CustomMultiLabelClassificationTaskParameters().setProjectName(projectName)
+                    .setDeploymentName(deploymentName)
+                    .setLoggingOptOut(finalLoggingOptOut));
+            return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                 cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     activationOperationSync(documents, task, displayName, finalContext).apply(cxt)),
                 pollingOperationTextJobSync(operationId -> service.jobStatusWithResponse(operationId,
                     finalIncludeStatistics, null, null, finalContext)),
                 cancelOperationTextJobSync(operationId -> service.cancelJobWithResponse(operationId, finalContext)),
-                fetchingOperationSync(
-                    operationId -> getClassifyDocumentPagedIterable(operationId, null, null,
-                        finalIncludeStatistics, finalContext)));
+                fetchingOperationSync(operationId -> getClassifyDocumentPagedIterable(operationId, null, null,
+                    finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
-    ClassifyDocumentPagedFlux getClassifyDocumentPagedFlux(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new ClassifyDocumentPagedFlux(
-            () -> (continuationToken, pageSize) ->
-                getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
+    ClassifyDocumentPagedFlux getClassifyDocumentPagedFlux(UUID operationId, Integer top, Integer skip,
+        boolean showStats, Context context) {
+        return new ClassifyDocumentPagedFlux(() -> (continuationToken,
+            pageSize) -> getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
     }
 
-    ClassifyDocumentPagedIterable getClassifyDocumentPagedIterable(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new ClassifyDocumentPagedIterable(
-            () -> (continuationToken, pageSize) ->
-                getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
+    ClassifyDocumentPagedIterable getClassifyDocumentPagedIterable(UUID operationId, Integer top, Integer skip,
+        boolean showStats, Context context) {
+        return new ClassifyDocumentPagedIterable(() -> (continuationToken,
+            pageSize) -> getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
     }
 
-    Mono<PagedResponse<ClassifyDocumentResultCollection>> getPagedResult(String continuationToken,
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
+    Mono<PagedResponse<ClassifyDocumentResultCollection>> getPagedResult(String continuationToken, UUID operationId,
+        Integer top, Integer skip, boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
                 final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
@@ -289,27 +252,27 @@ class LabelClassifyUtilClient {
                 showStats = getShowStatsContinuesToken(continuationTokenMap);
             }
             return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
-                    .map(this::toClassifyDocumentResultCollectionPagedResponse)
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                .map(this::toClassifyDocumentResultCollectionPagedResponse)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    PagedResponse<ClassifyDocumentResultCollection> getPagedResultSync(String continuationToken,
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
+    PagedResponse<ClassifyDocumentResultCollection> getPagedResultSync(String continuationToken, UUID operationId,
+        Integer top, Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
             top = getTopContinuesToken(continuationTokenMap);
             skip = getSkipContinuesToken(continuationTokenMap);
             showStats = getShowStatsContinuesToken(continuationTokenMap);
         }
-        return toClassifyDocumentResultCollectionPagedResponse(service.jobStatusWithResponse(
-            operationId, showStats, top, skip, context));
+        return toClassifyDocumentResultCollectionPagedResponse(
+            service.jobStatusWithResponse(operationId, showStats, top, skip, context));
     }
 
-    private PagedResponse<ClassifyDocumentResultCollection> toClassifyDocumentResultCollectionPagedResponse(
-        Response<AnalyzeTextJobState> response) {
+    private PagedResponse<ClassifyDocumentResultCollection>
+        toClassifyDocumentResultCollectionPagedResponse(Response<AnalyzeTextJobState> response) {
 
         final AnalyzeTextJobState jobState = response.getValue();
         final List<AnalyzeTextLROResult> lroResults = jobState.getTasks().getItems();
@@ -317,53 +280,48 @@ class LabelClassifyUtilClient {
         final CustomLabelClassificationResult customLabelClassificationResult;
         final AnalyzeTextLROResult lroResult = lroResults.get(0);
         if (lroResult instanceof CustomSingleLabelClassificationLROResult) {
-            CustomSingleLabelClassificationLROResult customSingleLabelClassificationLROResult =
-                (CustomSingleLabelClassificationLROResult) lroResults.get(0);
+            CustomSingleLabelClassificationLROResult customSingleLabelClassificationLROResult
+                = (CustomSingleLabelClassificationLROResult) lroResults.get(0);
             customLabelClassificationResult = customSingleLabelClassificationLROResult.getResults();
         } else if (lroResult instanceof CustomMultiLabelClassificationLROResult) {
-            CustomMultiLabelClassificationLROResult customMultiLabelClassificationLROResult =
-                (CustomMultiLabelClassificationLROResult) lroResults.get(0);
+            CustomMultiLabelClassificationLROResult customMultiLabelClassificationLROResult
+                = (CustomMultiLabelClassificationLROResult) lroResults.get(0);
             customLabelClassificationResult = customMultiLabelClassificationLROResult.getResults();
         } else {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("Invalid class type returned: " + lroResult.getClass().getName()));
         }
 
-        final ClassifyDocumentResultCollection classifyDocumentResultCollection =
-            toLabelClassificationResultCollection(customLabelClassificationResult);
+        final ClassifyDocumentResultCollection classifyDocumentResultCollection
+            = toLabelClassificationResultCollection(customLabelClassificationResult);
         final RequestStatistics requestStatistics = customLabelClassificationResult.getStatistics();
         if (requestStatistics != null) {
             final TextDocumentBatchStatistics batchStatistic = new TextDocumentBatchStatistics(
                 requestStatistics.getDocumentsCount(), requestStatistics.getValidDocumentsCount(),
                 requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount());
-            ClassifyDocumentResultCollectionPropertiesHelper.setStatistics(
-                classifyDocumentResultCollection, batchStatistic);
+            ClassifyDocumentResultCollectionPropertiesHelper.setStatistics(classifyDocumentResultCollection,
+                batchStatistic);
         }
 
         final List<Error> errors = jobState.getErrors();
 
         if (!CoreUtils.isNullOrEmpty(errors)) {
-            final TextAnalyticsException textAnalyticsException = new TextAnalyticsException(
-                "Classify label operation failed", null, null);
-            final IterableStream<TextAnalyticsError> textAnalyticsErrors =
-                IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
+            final TextAnalyticsException textAnalyticsException
+                = new TextAnalyticsException("Classify label operation failed", null, null);
+            final IterableStream<TextAnalyticsError> textAnalyticsErrors
+                = IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
             TextAnalyticsExceptionPropertiesHelper.setErrors(textAnalyticsException, textAnalyticsErrors);
             throw LOGGER.logExceptionAsError(textAnalyticsException);
         }
 
-        return new PagedResponseBase<Void, ClassifyDocumentResultCollection>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            Arrays.asList(classifyDocumentResultCollection),
-            jobState.getNextLink(),
-            null);
+        return new PagedResponseBase<Void, ClassifyDocumentResultCollection>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), Arrays.asList(classifyDocumentResultCollection),
+            jobState.getNextLink(), null);
     }
 
     // Activation operation
-    private Function<PollingContext<ClassifyDocumentOperationDetail>,
-        Mono<ClassifyDocumentOperationDetail>> activationOperation(
-        Mono<ClassifyDocumentOperationDetail> operationResult) {
+    private Function<PollingContext<ClassifyDocumentOperationDetail>, Mono<ClassifyDocumentOperationDetail>>
+        activationOperation(Mono<ClassifyDocumentOperationDetail> operationResult) {
         return pollingContext -> {
             try {
                 return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -377,14 +335,10 @@ class LabelClassifyUtilClient {
         activationOperationSync(Iterable<TextDocumentInput> documents, AnalyzeTextLROTask task, String displayName,
             Context context) {
         return pollingContext -> {
-            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
-                service.submitJobWithResponse(
-                    new AnalyzeTextJobsInput()
-                        .setDisplayName(displayName)
-                        .setAnalysisInput(new MultiLanguageAnalysisInput()
-                            .setDocuments(toMultiLanguageInput(documents)))
-                        .setTasks(Arrays.asList(task)),
-                    context);
+            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse
+                = service.submitJobWithResponse(new AnalyzeTextJobsInput().setDisplayName(displayName)
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(Arrays.asList(task)), context);
             final ClassifyDocumentOperationDetail operationDetail = new ClassifyDocumentOperationDetail();
             ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
                 parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
@@ -393,17 +347,17 @@ class LabelClassifyUtilClient {
     }
 
     // Polling operation
-    private Function<PollingContext<ClassifyDocumentOperationDetail>,
-        Mono<PollResponse<ClassifyDocumentOperationDetail>>> pollingOperationTextJob(
-        Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
+    private
+        Function<PollingContext<ClassifyDocumentOperationDetail>, Mono<PollResponse<ClassifyDocumentOperationDetail>>>
+        pollingOperationTextJob(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<ClassifyDocumentOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                final PollResponse<ClassifyDocumentOperationDetail> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                    .flatMap(modelResponse ->
-                        Mono.just(processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse)))
+                    .flatMap(modelResponse -> Mono
+                        .just(processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse)))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
@@ -411,21 +365,19 @@ class LabelClassifyUtilClient {
         };
     }
 
-    private Function<PollingContext<ClassifyDocumentOperationDetail>,
-        PollResponse<ClassifyDocumentOperationDetail>> pollingOperationTextJobSync(
-        Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
+    private Function<PollingContext<ClassifyDocumentOperationDetail>, PollResponse<ClassifyDocumentOperationDetail>>
+        pollingOperationTextJobSync(Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
         return pollingContext -> {
-            final PollResponse<ClassifyDocumentOperationDetail> operationResultPollResponse =
-                pollingContext.getLatestResponse();
+            final PollResponse<ClassifyDocumentOperationDetail> operationResultPollResponse
+                = pollingContext.getLatestResponse();
             final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
             return processAnalyzeTextModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
         };
     }
 
     // Fetching operation
-    private Function<PollingContext<ClassifyDocumentOperationDetail>,
-        Mono<ClassifyDocumentPagedFlux>> fetchingOperationTextJob(
-        Function<UUID, Mono<ClassifyDocumentPagedFlux>> fetchingFunction) {
+    private Function<PollingContext<ClassifyDocumentOperationDetail>, Mono<ClassifyDocumentPagedFlux>>
+        fetchingOperationTextJob(Function<UUID, Mono<ClassifyDocumentPagedFlux>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
@@ -436,9 +388,8 @@ class LabelClassifyUtilClient {
         };
     }
 
-    private Function<PollingContext<ClassifyDocumentOperationDetail>,
-        ClassifyDocumentPagedIterable> fetchingOperationSync(
-        final Function<UUID, ClassifyDocumentPagedIterable> fetchingFunction) {
+    private Function<PollingContext<ClassifyDocumentOperationDetail>, ClassifyDocumentPagedIterable>
+        fetchingOperationSync(final Function<UUID, ClassifyDocumentPagedIterable> fetchingFunction) {
         return pollingContext -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
             return fetchingFunction.apply(resultUuid);
@@ -446,30 +397,27 @@ class LabelClassifyUtilClient {
     }
 
     // Cancel operation
-    private BiFunction<PollingContext<ClassifyDocumentOperationDetail>,
-        PollResponse<ClassifyDocumentOperationDetail>,
-        Mono<ClassifyDocumentOperationDetail>> cancelOperationTextJob(
-        Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
+    private
+        BiFunction<PollingContext<ClassifyDocumentOperationDetail>, PollResponse<ClassifyDocumentOperationDetail>, Mono<ClassifyDocumentOperationDetail>>
+        cancelOperationTextJob(Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             try {
-                return cancelFunction.apply(resultUuid)
-                    .map(cancelJobResponse -> {
-                        final ClassifyDocumentOperationDetail operationResult = new ClassifyDocumentOperationDetail();
-                        ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationResult,
-                            parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
-                        return operationResult;
-                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                return cancelFunction.apply(resultUuid).map(cancelJobResponse -> {
+                    final ClassifyDocumentOperationDetail operationResult = new ClassifyDocumentOperationDetail();
+                    ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationResult,
+                        parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
+                    return operationResult;
+                }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
         };
     }
 
-    private BiFunction<PollingContext<ClassifyDocumentOperationDetail>,
-        PollResponse<ClassifyDocumentOperationDetail>,
-        ClassifyDocumentOperationDetail> cancelOperationTextJobSync(
-        Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
+    private
+        BiFunction<PollingContext<ClassifyDocumentOperationDetail>, PollResponse<ClassifyDocumentOperationDetail>, ClassifyDocumentOperationDetail>
+        cancelOperationTextJobSync(Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobResponse = cancelFunction.apply(resultUuid);
@@ -492,15 +440,15 @@ class LabelClassifyUtilClient {
         } else if (CANCELLED.equals(state)) {
             status = LongRunningOperationStatus.USER_CANCELLED;
         } else {
-            status = LongRunningOperationStatus.fromString(
-                analyzeOperationResultResponse.getValue().getStatus().toString(), true);
+            status = LongRunningOperationStatus
+                .fromString(analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
         ClassifyDocumentOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getDisplayName());
         ClassifyDocumentOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
-        ClassifyDocumentOperationDetailPropertiesHelper.setLastModifiedAt(
-            operationResultPollResponse.getValue(), analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
+        ClassifyDocumentOperationDetailPropertiesHelper.setLastModifiedAt(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
         ClassifyDocumentOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getExpirationDateTime());
         return new PollResponse<>(status, operationResultPollResponse.getValue());

@@ -14,7 +14,8 @@ import java.util.List;
 /** List of skus with features. */
 @Fluent
 public final class SkuListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SkuListResult.class);
 
     /*
      * The value property.

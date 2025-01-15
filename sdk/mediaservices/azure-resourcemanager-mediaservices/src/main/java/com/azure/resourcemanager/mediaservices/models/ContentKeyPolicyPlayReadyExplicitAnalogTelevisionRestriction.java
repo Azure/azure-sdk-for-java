@@ -5,33 +5,38 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Configures the Explicit Analog Television Output Restriction control bits. For further details see the PlayReady
  * Compliance Rules.
  */
 @Fluent
-public final class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction {
+public final class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction
+    implements JsonSerializable<ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction> {
     /*
      * Indicates whether this restriction is enforced on a Best Effort basis.
      */
-    @JsonProperty(value = "bestEffort", required = true)
     private boolean bestEffort;
 
     /*
      * Configures the restriction control bits. Must be between 0 and 3 inclusive.
      */
-    @JsonProperty(value = "configurationData", required = true)
     private int configurationData;
 
-    /** Creates an instance of ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction class. */
+    /**
+     * Creates an instance of ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction class.
+     */
     public ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction() {
     }
 
     /**
      * Get the bestEffort property: Indicates whether this restriction is enforced on a Best Effort basis.
-     *
+     * 
      * @return the bestEffort value.
      */
     public boolean bestEffort() {
@@ -40,7 +45,7 @@ public final class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction 
 
     /**
      * Set the bestEffort property: Indicates whether this restriction is enforced on a Best Effort basis.
-     *
+     * 
      * @param bestEffort the bestEffort value to set.
      * @return the ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction object itself.
      */
@@ -51,7 +56,7 @@ public final class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction 
 
     /**
      * Get the configurationData property: Configures the restriction control bits. Must be between 0 and 3 inclusive.
-     *
+     * 
      * @return the configurationData value.
      */
     public int configurationData() {
@@ -60,7 +65,7 @@ public final class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction 
 
     /**
      * Set the configurationData property: Configures the restriction control bits. Must be between 0 and 3 inclusive.
-     *
+     * 
      * @param configurationData the configurationData value to set.
      * @return the ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction object itself.
      */
@@ -71,9 +76,54 @@ public final class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("bestEffort", this.bestEffort);
+        jsonWriter.writeIntField("configurationData", this.configurationData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the
+     * ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction.
+     */
+    public static ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction deserializedContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction
+                = new ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bestEffort".equals(fieldName)) {
+                    deserializedContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction.bestEffort
+                        = reader.getBoolean();
+                } else if ("configurationData".equals(fieldName)) {
+                    deserializedContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction.configurationData
+                        = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction;
+        });
     }
 }

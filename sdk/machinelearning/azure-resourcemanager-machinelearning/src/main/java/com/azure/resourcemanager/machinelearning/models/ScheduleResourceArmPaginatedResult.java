@@ -5,52 +5,38 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.fluent.models.ScheduleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A paginated list of Schedule entities. */
+/**
+ * A paginated list of Schedule entities.
+ */
 @Fluent
-public final class ScheduleResourceArmPaginatedResult {
-    /*
-     * The link to the next page of Schedule objects. If null, there are no additional pages.
-     */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
-
+public final class ScheduleResourceArmPaginatedResult implements JsonSerializable<ScheduleResourceArmPaginatedResult> {
     /*
      * An array of objects of type Schedule.
      */
-    @JsonProperty(value = "value")
     private List<ScheduleInner> value;
 
-    /** Creates an instance of ScheduleResourceArmPaginatedResult class. */
+    /*
+     * The link to the next page of Schedule objects. If null, there are no additional pages.
+     */
+    private String nextLink;
+
+    /**
+     * Creates an instance of ScheduleResourceArmPaginatedResult class.
+     */
     public ScheduleResourceArmPaginatedResult() {
     }
 
     /**
-     * Get the nextLink property: The link to the next page of Schedule objects. If null, there are no additional pages.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link to the next page of Schedule objects. If null, there are no additional pages.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the ScheduleResourceArmPaginatedResult object itself.
-     */
-    public ScheduleResourceArmPaginatedResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Get the value property: An array of objects of type Schedule.
-     *
+     * 
      * @return the value value.
      */
     public List<ScheduleInner> value() {
@@ -59,7 +45,7 @@ public final class ScheduleResourceArmPaginatedResult {
 
     /**
      * Set the value property: An array of objects of type Schedule.
-     *
+     * 
      * @param value the value value to set.
      * @return the ScheduleResourceArmPaginatedResult object itself.
      */
@@ -69,13 +55,74 @@ public final class ScheduleResourceArmPaginatedResult {
     }
 
     /**
+     * Get the nextLink property: The link to the next page of Schedule objects. If null, there are no additional pages.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of Schedule objects. If null, there are no additional pages.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the ScheduleResourceArmPaginatedResult object itself.
+     */
+    public ScheduleResourceArmPaginatedResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleResourceArmPaginatedResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleResourceArmPaginatedResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleResourceArmPaginatedResult.
+     */
+    public static ScheduleResourceArmPaginatedResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleResourceArmPaginatedResult deserializedScheduleResourceArmPaginatedResult
+                = new ScheduleResourceArmPaginatedResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ScheduleInner> value = reader.readArray(reader1 -> ScheduleInner.fromJson(reader1));
+                    deserializedScheduleResourceArmPaginatedResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedScheduleResourceArmPaginatedResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleResourceArmPaginatedResult;
+        });
     }
 }

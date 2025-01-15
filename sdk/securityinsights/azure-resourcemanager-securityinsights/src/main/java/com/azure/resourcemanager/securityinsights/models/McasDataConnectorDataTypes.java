@@ -5,20 +5,30 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The available data types for MCAS (Microsoft Cloud App Security) data connector. */
+/**
+ * The available data types for MCAS (Microsoft Cloud App Security) data connector.
+ */
 @Fluent
 public final class McasDataConnectorDataTypes extends AlertsDataTypeOfDataConnector {
     /*
      * Discovery log data type connection.
      */
-    @JsonProperty(value = "discoveryLogs")
     private DataConnectorDataTypeCommon discoveryLogs;
 
     /**
+     * Creates an instance of McasDataConnectorDataTypes class.
+     */
+    public McasDataConnectorDataTypes() {
+    }
+
+    /**
      * Get the discoveryLogs property: Discovery log data type connection.
-     *
+     * 
      * @return the discoveryLogs value.
      */
     public DataConnectorDataTypeCommon discoveryLogs() {
@@ -27,7 +37,7 @@ public final class McasDataConnectorDataTypes extends AlertsDataTypeOfDataConnec
 
     /**
      * Set the discoveryLogs property: Discovery log data type connection.
-     *
+     * 
      * @param discoveryLogs the discoveryLogs value to set.
      * @return the McasDataConnectorDataTypes object itself.
      */
@@ -36,7 +46,9 @@ public final class McasDataConnectorDataTypes extends AlertsDataTypeOfDataConnec
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public McasDataConnectorDataTypes withAlerts(DataConnectorDataTypeCommon alerts) {
         super.withAlerts(alerts);
@@ -45,14 +57,55 @@ public final class McasDataConnectorDataTypes extends AlertsDataTypeOfDataConnec
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (discoveryLogs() != null) {
             discoveryLogs().validate();
         }
+        if (alerts() != null) {
+            alerts().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("alerts", alerts());
+        jsonWriter.writeJsonField("discoveryLogs", this.discoveryLogs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of McasDataConnectorDataTypes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of McasDataConnectorDataTypes if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the McasDataConnectorDataTypes.
+     */
+    public static McasDataConnectorDataTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            McasDataConnectorDataTypes deserializedMcasDataConnectorDataTypes = new McasDataConnectorDataTypes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alerts".equals(fieldName)) {
+                    deserializedMcasDataConnectorDataTypes.withAlerts(DataConnectorDataTypeCommon.fromJson(reader));
+                } else if ("discoveryLogs".equals(fieldName)) {
+                    deserializedMcasDataConnectorDataTypes.discoveryLogs = DataConnectorDataTypeCommon.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMcasDataConnectorDataTypes;
+        });
     }
 }

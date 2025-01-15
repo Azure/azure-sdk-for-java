@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The encryption properties. */
 @Immutable
 public final class AciServiceCreateRequestEncryptionProperties extends EncryptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AciServiceCreateRequestEncryptionProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AciServiceCreateRequestEncryptionProperties.class);
 
     /** {@inheritDoc} */
     @Override

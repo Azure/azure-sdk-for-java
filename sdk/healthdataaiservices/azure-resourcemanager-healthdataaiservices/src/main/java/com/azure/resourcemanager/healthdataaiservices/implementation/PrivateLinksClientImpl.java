@@ -69,7 +69,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         Mono<Response<PrivateLinkResourceListResult>> listByDeidService(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("accept") String accept,
+            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -78,7 +78,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResult>> listByDeidServiceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

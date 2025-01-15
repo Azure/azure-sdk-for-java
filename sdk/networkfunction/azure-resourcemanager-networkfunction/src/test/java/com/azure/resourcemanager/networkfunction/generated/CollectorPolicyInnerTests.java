@@ -6,56 +6,62 @@ package com.azure.resourcemanager.networkfunction.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkfunction.fluent.models.CollectorPolicyInner;
+import com.azure.resourcemanager.networkfunction.models.DestinationType;
 import com.azure.resourcemanager.networkfunction.models.EmissionPoliciesPropertiesFormat;
+import com.azure.resourcemanager.networkfunction.models.EmissionPolicyDestination;
 import com.azure.resourcemanager.networkfunction.models.EmissionType;
 import com.azure.resourcemanager.networkfunction.models.IngestionPolicyPropertiesFormat;
+import com.azure.resourcemanager.networkfunction.models.IngestionSourcesPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.IngestionType;
+import com.azure.resourcemanager.networkfunction.models.SourceType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CollectorPolicyInnerTests {
-    @Test
-    public void testDeserialize() {
-        CollectorPolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"ingestionPolicy\":{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[]},\"emissionPolicies\":[{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[]}],\"provisioningState\":\"Updating\"},\"etag\":\"wckbasyypnd\",\"location\":\"sgcbac\",\"tags\":{\"nqgoulzndli\":\"jkot\"},\"id\":\"wyqkgfgibm\",\"name\":\"dgak\",\"type\":\"qsrxybzqqed\"}")
-                .toObject(CollectorPolicyInner.class);
-        Assertions.assertEquals("sgcbac", model.location());
-        Assertions.assertEquals("jkot", model.tags().get("nqgoulzndli"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CollectorPolicyInner model = BinaryData.fromString(
+            "{\"properties\":{\"ingestionPolicy\":{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[{\"sourceType\":\"Resource\",\"resourceId\":\"byxqabn\"}]},\"emissionPolicies\":[{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{\"destinationType\":\"AzureMonitor\"},{\"destinationType\":\"AzureMonitor\"},{\"destinationType\":\"AzureMonitor\"},{\"destinationType\":\"AzureMonitor\"}]}],\"provisioningState\":\"Succeeded\"},\"etag\":\"pbtoqcjmkl\",\"location\":\"vbqid\",\"tags\":{\"dj\":\"jzyulpk\",\"xzlocxscp\":\"rlkhbzhfepgzgq\"},\"id\":\"ierhhbcsglummaj\",\"name\":\"j\",\"type\":\"odxobnbdxkqpxok\"}")
+            .toObject(CollectorPolicyInner.class);
+        Assertions.assertEquals("vbqid", model.location());
+        Assertions.assertEquals("jzyulpk", model.tags().get("dj"));
         Assertions.assertEquals(IngestionType.IPFIX, model.ingestionPolicy().ingestionType());
+        Assertions.assertEquals(SourceType.RESOURCE, model.ingestionPolicy().ingestionSources().get(0).sourceType());
+        Assertions.assertEquals("byxqabn", model.ingestionPolicy().ingestionSources().get(0).resourceId());
         Assertions.assertEquals(EmissionType.IPFIX, model.emissionPolicies().get(0).emissionType());
+        Assertions.assertEquals(DestinationType.AZURE_MONITOR,
+            model.emissionPolicies().get(0).emissionDestinations().get(0).destinationType());
     }
 
-    @Test
-    public void testSerialize() {
-        CollectorPolicyInner model =
-            new CollectorPolicyInner()
-                .withLocation("sgcbac")
-                .withTags(mapOf("nqgoulzndli", "jkot"))
-                .withIngestionPolicy(
-                    new IngestionPolicyPropertiesFormat()
-                        .withIngestionType(IngestionType.IPFIX)
-                        .withIngestionSources(Arrays.asList()))
-                .withEmissionPolicies(
-                    Arrays
-                        .asList(
-                            new EmissionPoliciesPropertiesFormat()
-                                .withEmissionType(EmissionType.IPFIX)
-                                .withEmissionDestinations(Arrays.asList()),
-                            new EmissionPoliciesPropertiesFormat()
-                                .withEmissionType(EmissionType.IPFIX)
-                                .withEmissionDestinations(Arrays.asList())));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CollectorPolicyInner model = new CollectorPolicyInner().withLocation("vbqid")
+            .withTags(mapOf("dj", "jzyulpk", "xzlocxscp", "rlkhbzhfepgzgq"))
+            .withIngestionPolicy(new IngestionPolicyPropertiesFormat().withIngestionType(IngestionType.IPFIX)
+                .withIngestionSources(
+                    Arrays.asList(new IngestionSourcesPropertiesFormat().withSourceType(SourceType.RESOURCE)
+                        .withResourceId("byxqabn"))))
+            .withEmissionPolicies(
+                Arrays.asList(new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                    .withEmissionDestinations(Arrays.asList(
+                        new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR),
+                        new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR),
+                        new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR),
+                        new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR)))));
         model = BinaryData.fromObject(model).toObject(CollectorPolicyInner.class);
-        Assertions.assertEquals("sgcbac", model.location());
-        Assertions.assertEquals("jkot", model.tags().get("nqgoulzndli"));
+        Assertions.assertEquals("vbqid", model.location());
+        Assertions.assertEquals("jzyulpk", model.tags().get("dj"));
         Assertions.assertEquals(IngestionType.IPFIX, model.ingestionPolicy().ingestionType());
+        Assertions.assertEquals(SourceType.RESOURCE, model.ingestionPolicy().ingestionSources().get(0).sourceType());
+        Assertions.assertEquals("byxqabn", model.ingestionPolicy().ingestionSources().get(0).resourceId());
         Assertions.assertEquals(EmissionType.IPFIX, model.emissionPolicies().get(0).emissionType());
+        Assertions.assertEquals(DestinationType.AZURE_MONITOR,
+            model.emissionPolicies().get(0).emissionDestinations().get(0).destinationType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

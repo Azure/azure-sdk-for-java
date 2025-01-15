@@ -29,10 +29,14 @@ public final class HyperVReplicaBasePolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaBasePolicyDetails model = new HyperVReplicaBasePolicyDetails().withRecoveryPoints(656606105)
-            .withApplicationConsistentSnapshotFrequencyInHours(287145648).withCompression("icghfl")
-            .withInitialReplicationMethod("fss").withOnlineReplicationStartTime("ghsfxrkbhammgmqf")
-            .withOfflineReplicationImportPath("fgvqcpdw").withOfflineReplicationExportPath("quxweyslandkd")
-            .withReplicationPort(27796894).withAllowedAuthenticationType(654444535)
+            .withApplicationConsistentSnapshotFrequencyInHours(287145648)
+            .withCompression("icghfl")
+            .withInitialReplicationMethod("fss")
+            .withOnlineReplicationStartTime("ghsfxrkbhammgmqf")
+            .withOfflineReplicationImportPath("fgvqcpdw")
+            .withOfflineReplicationExportPath("quxweyslandkd")
+            .withReplicationPort(27796894)
+            .withAllowedAuthenticationType(654444535)
             .withReplicaDeletionOption("hghcgawnrrnqu");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaBasePolicyDetails.class);
         Assertions.assertEquals(656606105, model.recoveryPoints());

@@ -6,73 +6,72 @@ package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the return address information for the job. */
+/**
+ * Specifies the return address information for the job.
+ */
 @Fluent
-public final class ReturnAddress {
+public final class ReturnAddress implements JsonSerializable<ReturnAddress> {
     /*
      * The name of the recipient who will receive the hard drives when they are returned.
      */
-    @JsonProperty(value = "recipientName", required = true)
     private String recipientName;
 
     /*
      * The first line of the street address to use when returning the drives.
      */
-    @JsonProperty(value = "streetAddress1", required = true)
     private String streetAddress1;
 
     /*
      * The second line of the street address to use when returning the drives.
      */
-    @JsonProperty(value = "streetAddress2")
     private String streetAddress2;
 
     /*
      * The city name to use when returning the drives.
      */
-    @JsonProperty(value = "city", required = true)
     private String city;
 
     /*
      * The state or province to use when returning the drives.
      */
-    @JsonProperty(value = "stateOrProvince")
     private String stateOrProvince;
 
     /*
      * The postal code to use when returning the drives.
      */
-    @JsonProperty(value = "postalCode", required = true)
     private String postalCode;
 
     /*
      * The country or region to use when returning the drives.
      */
-    @JsonProperty(value = "countryOrRegion", required = true)
     private String countryOrRegion;
 
     /*
      * Phone number of the recipient of the returned drives.
      */
-    @JsonProperty(value = "phone", required = true)
     private String phone;
 
     /*
      * Email address of the recipient of the returned drives.
      */
-    @JsonProperty(value = "email", required = true)
     private String email;
 
-    /** Creates an instance of ReturnAddress class. */
+    /**
+     * Creates an instance of ReturnAddress class.
+     */
     public ReturnAddress() {
     }
 
     /**
      * Get the recipientName property: The name of the recipient who will receive the hard drives when they are
      * returned.
-     *
+     * 
      * @return the recipientName value.
      */
     public String recipientName() {
@@ -82,7 +81,7 @@ public final class ReturnAddress {
     /**
      * Set the recipientName property: The name of the recipient who will receive the hard drives when they are
      * returned.
-     *
+     * 
      * @param recipientName the recipientName value to set.
      * @return the ReturnAddress object itself.
      */
@@ -93,7 +92,7 @@ public final class ReturnAddress {
 
     /**
      * Get the streetAddress1 property: The first line of the street address to use when returning the drives.
-     *
+     * 
      * @return the streetAddress1 value.
      */
     public String streetAddress1() {
@@ -102,7 +101,7 @@ public final class ReturnAddress {
 
     /**
      * Set the streetAddress1 property: The first line of the street address to use when returning the drives.
-     *
+     * 
      * @param streetAddress1 the streetAddress1 value to set.
      * @return the ReturnAddress object itself.
      */
@@ -113,7 +112,7 @@ public final class ReturnAddress {
 
     /**
      * Get the streetAddress2 property: The second line of the street address to use when returning the drives.
-     *
+     * 
      * @return the streetAddress2 value.
      */
     public String streetAddress2() {
@@ -122,7 +121,7 @@ public final class ReturnAddress {
 
     /**
      * Set the streetAddress2 property: The second line of the street address to use when returning the drives.
-     *
+     * 
      * @param streetAddress2 the streetAddress2 value to set.
      * @return the ReturnAddress object itself.
      */
@@ -133,7 +132,7 @@ public final class ReturnAddress {
 
     /**
      * Get the city property: The city name to use when returning the drives.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -142,7 +141,7 @@ public final class ReturnAddress {
 
     /**
      * Set the city property: The city name to use when returning the drives.
-     *
+     * 
      * @param city the city value to set.
      * @return the ReturnAddress object itself.
      */
@@ -153,7 +152,7 @@ public final class ReturnAddress {
 
     /**
      * Get the stateOrProvince property: The state or province to use when returning the drives.
-     *
+     * 
      * @return the stateOrProvince value.
      */
     public String stateOrProvince() {
@@ -162,7 +161,7 @@ public final class ReturnAddress {
 
     /**
      * Set the stateOrProvince property: The state or province to use when returning the drives.
-     *
+     * 
      * @param stateOrProvince the stateOrProvince value to set.
      * @return the ReturnAddress object itself.
      */
@@ -173,7 +172,7 @@ public final class ReturnAddress {
 
     /**
      * Get the postalCode property: The postal code to use when returning the drives.
-     *
+     * 
      * @return the postalCode value.
      */
     public String postalCode() {
@@ -182,7 +181,7 @@ public final class ReturnAddress {
 
     /**
      * Set the postalCode property: The postal code to use when returning the drives.
-     *
+     * 
      * @param postalCode the postalCode value to set.
      * @return the ReturnAddress object itself.
      */
@@ -193,7 +192,7 @@ public final class ReturnAddress {
 
     /**
      * Get the countryOrRegion property: The country or region to use when returning the drives.
-     *
+     * 
      * @return the countryOrRegion value.
      */
     public String countryOrRegion() {
@@ -202,7 +201,7 @@ public final class ReturnAddress {
 
     /**
      * Set the countryOrRegion property: The country or region to use when returning the drives.
-     *
+     * 
      * @param countryOrRegion the countryOrRegion value to set.
      * @return the ReturnAddress object itself.
      */
@@ -213,7 +212,7 @@ public final class ReturnAddress {
 
     /**
      * Get the phone property: Phone number of the recipient of the returned drives.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -222,7 +221,7 @@ public final class ReturnAddress {
 
     /**
      * Set the phone property: Phone number of the recipient of the returned drives.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the ReturnAddress object itself.
      */
@@ -233,7 +232,7 @@ public final class ReturnAddress {
 
     /**
      * Get the email property: Email address of the recipient of the returned drives.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -242,7 +241,7 @@ public final class ReturnAddress {
 
     /**
      * Set the email property: Email address of the recipient of the returned drives.
-     *
+     * 
      * @param email the email value to set.
      * @return the ReturnAddress object itself.
      */
@@ -253,46 +252,100 @@ public final class ReturnAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recipientName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property recipientName in model ReturnAddress"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property recipientName in model ReturnAddress"));
         }
         if (streetAddress1() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property streetAddress1 in model ReturnAddress"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property streetAddress1 in model ReturnAddress"));
         }
         if (city() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property city in model ReturnAddress"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property city in model ReturnAddress"));
         }
         if (postalCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property postalCode in model ReturnAddress"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property postalCode in model ReturnAddress"));
         }
         if (countryOrRegion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property countryOrRegion in model ReturnAddress"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property countryOrRegion in model ReturnAddress"));
         }
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phone in model ReturnAddress"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property phone in model ReturnAddress"));
         }
         if (email() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property email in model ReturnAddress"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property email in model ReturnAddress"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReturnAddress.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recipientName", this.recipientName);
+        jsonWriter.writeStringField("streetAddress1", this.streetAddress1);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeStringField("countryOrRegion", this.countryOrRegion);
+        jsonWriter.writeStringField("phone", this.phone);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("streetAddress2", this.streetAddress2);
+        jsonWriter.writeStringField("stateOrProvince", this.stateOrProvince);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReturnAddress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReturnAddress if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReturnAddress.
+     */
+    public static ReturnAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReturnAddress deserializedReturnAddress = new ReturnAddress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recipientName".equals(fieldName)) {
+                    deserializedReturnAddress.recipientName = reader.getString();
+                } else if ("streetAddress1".equals(fieldName)) {
+                    deserializedReturnAddress.streetAddress1 = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedReturnAddress.city = reader.getString();
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedReturnAddress.postalCode = reader.getString();
+                } else if ("countryOrRegion".equals(fieldName)) {
+                    deserializedReturnAddress.countryOrRegion = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedReturnAddress.phone = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedReturnAddress.email = reader.getString();
+                } else if ("streetAddress2".equals(fieldName)) {
+                    deserializedReturnAddress.streetAddress2 = reader.getString();
+                } else if ("stateOrProvince".equals(fieldName)) {
+                    deserializedReturnAddress.stateOrProvince = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReturnAddress;
+        });
+    }
 }

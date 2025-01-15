@@ -15,20 +15,19 @@ public final class StoreWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoreWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"databkorpu\",\"disableMetricsCollection\":\"datarppnjzbuvmfsfr\",\"copyBehavior\":\"datanqfnz\",\"metadata\":[{\"name\":\"datanularnupprdjfeps\",\"value\":\"datauzxoyanlhjeue\"},{\"name\":\"dataauxkvruryyqytaqj\",\"value\":\"datakhijghp\"},{\"name\":\"dataqpxkikd\",\"value\":\"databwyar\"},{\"name\":\"datahbjbl\",\"value\":\"datafqw\"}],\"\":{\"lnbxoucsddplgjfh\":\"dataxtpzdgyilwuiklb\",\"t\":\"dataiahokeacmadyo\",\"cctwbe\":\"datadauo\"}}")
+            "{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataekbpqghxdpg\",\"disableMetricsCollection\":\"datafimlyx\",\"copyBehavior\":\"dataixjudbiac\",\"metadata\":[{\"name\":\"datacmfuvuslvbujwpnz\",\"value\":\"datapyyvecruhq\"},{\"name\":\"datawdsthktsaljk\",\"value\":\"datapgtpgxkkoyp\"},{\"name\":\"datalvthivapuax\",\"value\":\"datawqwbhlrzlg\"},{\"name\":\"datanpdkwerx\",\"value\":\"datazlmzsekvsuzyowra\"}],\"\":{\"nuvpkplt\":\"datafr\",\"atfpbxnretpg\":\"datayyey\"}}")
             .toObject(StoreWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoreWriteSettings model = new StoreWriteSettings().withMaxConcurrentConnections("databkorpu")
-            .withDisableMetricsCollection("datarppnjzbuvmfsfr")
-            .withCopyBehavior("datanqfnz")
-            .withMetadata(
-                Arrays.asList(new MetadataItem().withName("datanularnupprdjfeps").withValue("datauzxoyanlhjeue"),
-                    new MetadataItem().withName("dataauxkvruryyqytaqj").withValue("datakhijghp"),
-                    new MetadataItem().withName("dataqpxkikd").withValue("databwyar"),
-                    new MetadataItem().withName("datahbjbl").withValue("datafqw")))
+        StoreWriteSettings model = new StoreWriteSettings().withMaxConcurrentConnections("dataekbpqghxdpg")
+            .withDisableMetricsCollection("datafimlyx")
+            .withCopyBehavior("dataixjudbiac")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datacmfuvuslvbujwpnz").withValue("datapyyvecruhq"),
+                new MetadataItem().withName("datawdsthktsaljk").withValue("datapgtpgxkkoyp"),
+                new MetadataItem().withName("datalvthivapuax").withValue("datawqwbhlrzlg"),
+                new MetadataItem().withName("datanpdkwerx").withValue("datazlmzsekvsuzyowra")))
             .withAdditionalProperties(mapOf("type", "StoreWriteSettings"));
         model = BinaryData.fromObject(model).toObject(StoreWriteSettings.class);
     }

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The integration account sku name. */
+/**
+ * The integration account sku name.
+ */
 public final class IntegrationAccountSkuName extends ExpandableStringEnum<IntegrationAccountSkuName> {
-    /** Static value NotSpecified for IntegrationAccountSkuName. */
+    /**
+     * Static value NotSpecified for IntegrationAccountSkuName.
+     */
     public static final IntegrationAccountSkuName NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Free for IntegrationAccountSkuName. */
+    /**
+     * Static value Free for IntegrationAccountSkuName.
+     */
     public static final IntegrationAccountSkuName FREE = fromString("Free");
 
-    /** Static value Basic for IntegrationAccountSkuName. */
+    /**
+     * Static value Basic for IntegrationAccountSkuName.
+     */
     public static final IntegrationAccountSkuName BASIC = fromString("Basic");
 
-    /** Static value Standard for IntegrationAccountSkuName. */
+    /**
+     * Static value Standard for IntegrationAccountSkuName.
+     */
     public static final IntegrationAccountSkuName STANDARD = fromString("Standard");
 
     /**
      * Creates a new instance of IntegrationAccountSkuName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class IntegrationAccountSkuName extends ExpandableStringEnum<Integr
 
     /**
      * Creates or finds a IntegrationAccountSkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationAccountSkuName.
      */
-    @JsonCreator
     public static IntegrationAccountSkuName fromString(String name) {
         return fromString(name, IntegrationAccountSkuName.class);
     }
 
     /**
      * Gets known IntegrationAccountSkuName values.
-     *
+     * 
      * @return known IntegrationAccountSkuName values.
      */
     public static Collection<IntegrationAccountSkuName> values() {

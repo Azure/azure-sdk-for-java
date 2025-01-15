@@ -18,8 +18,8 @@ public final class SapLandscapeMonitorImpl implements SapLandscapeMonitor {
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    SapLandscapeMonitorImpl(
-        SapLandscapeMonitorInner innerObject, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
+    SapLandscapeMonitorImpl(SapLandscapeMonitorInner innerObject,
+        com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

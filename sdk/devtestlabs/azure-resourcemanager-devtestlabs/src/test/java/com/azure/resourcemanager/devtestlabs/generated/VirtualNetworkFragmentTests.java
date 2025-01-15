@@ -13,28 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkFragment model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"klsbsbqqqagw\":\"zw\",\"k\":\"rxaomzisglrrcze\",\"yueayfbpcmsp\":\"hltnjadhqoawjq\",\"mg\":\"byrrueqth\"}}")
-                .toObject(VirtualNetworkFragment.class);
+        VirtualNetworkFragment model = BinaryData.fromString(
+            "{\"tags\":{\"klsbsbqqqagw\":\"zw\",\"k\":\"rxaomzisglrrcze\",\"yueayfbpcmsp\":\"hltnjadhqoawjq\",\"mg\":\"byrrueqth\"}}")
+            .toObject(VirtualNetworkFragment.class);
         Assertions.assertEquals("zw", model.tags().get("klsbsbqqqagw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkFragment model =
-            new VirtualNetworkFragment()
-                .withTags(
-                    mapOf(
-                        "klsbsbqqqagw",
-                        "zw",
-                        "k",
-                        "rxaomzisglrrcze",
-                        "yueayfbpcmsp",
-                        "hltnjadhqoawjq",
-                        "mg",
-                        "byrrueqth"));
+        VirtualNetworkFragment model = new VirtualNetworkFragment().withTags(
+            mapOf("klsbsbqqqagw", "zw", "k", "rxaomzisglrrcze", "yueayfbpcmsp", "hltnjadhqoawjq", "mg", "byrrueqth"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkFragment.class);
         Assertions.assertEquals("zw", model.tags().get("klsbsbqqqagw"));
     }

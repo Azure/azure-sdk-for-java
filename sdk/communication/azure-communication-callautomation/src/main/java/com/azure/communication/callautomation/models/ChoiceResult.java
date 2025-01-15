@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,6 +24,12 @@ public final class ChoiceResult extends RecognizeResult {
      * choice detected and phrases will be set to null
      */
     private String recognizedPhrase;
+
+    /**
+     * Creates an instance of {@link ChoiceResult}.
+     */
+    public ChoiceResult() {
+    }
 
     /**
      * Get the label property: Label is the primary identifier for the choice detected.

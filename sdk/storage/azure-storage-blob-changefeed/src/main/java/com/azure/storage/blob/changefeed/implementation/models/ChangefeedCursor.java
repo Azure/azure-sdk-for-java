@@ -41,7 +41,8 @@ public class ChangefeedCursor implements JsonSerializable<ChangefeedCursor> {
     /**
      * Constructor for use by to*Cursor methods.
      */
-    public ChangefeedCursor(int cursorVersion, String urlHost, OffsetDateTime endTime, SegmentCursor currentSegmentCursor) {
+    public ChangefeedCursor(int cursorVersion, String urlHost, OffsetDateTime endTime,
+        SegmentCursor currentSegmentCursor) {
         this.cursorVersion = cursorVersion;
         this.urlHost = urlHost;
         this.endTime = endTime;
@@ -218,7 +219,7 @@ public class ChangefeedCursor implements JsonSerializable<ChangefeedCursor> {
                     changefeedCursor.urlHost = reader.getString();
                 } else if ("EndTime".equals(fieldName)) {
                     changefeedCursor.endTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
-                }  else if ("CurrentSegmentCursor".equals(fieldName)) {
+                } else if ("CurrentSegmentCursor".equals(fieldName)) {
                     changefeedCursor.currentSegmentCursor = SegmentCursor.fromJson(reader);
                 } else {
                     reader.skipChildren();

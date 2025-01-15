@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The CustomizationNicSetting model. */
+/**
+ * The CustomizationNicSetting model.
+ */
 @Fluent
-public final class CustomizationNicSetting {
+public final class CustomizationNicSetting implements JsonSerializable<CustomizationNicSetting> {
     /*
      * The list of adapters' settings
      */
-    @JsonProperty(value = "adapter")
     private CustomizationIpSettings adapter;
 
     /*
      * NIC mac address
      */
-    @JsonProperty(value = "macAddress")
     private String macAddress;
 
-    /** Creates an instance of CustomizationNicSetting class. */
+    /**
+     * Creates an instance of CustomizationNicSetting class.
+     */
     public CustomizationNicSetting() {
     }
 
     /**
      * Get the adapter property: The list of adapters' settings.
-     *
+     * 
      * @return the adapter value.
      */
     public CustomizationIpSettings adapter() {
@@ -37,7 +43,7 @@ public final class CustomizationNicSetting {
 
     /**
      * Set the adapter property: The list of adapters' settings.
-     *
+     * 
      * @param adapter the adapter value to set.
      * @return the CustomizationNicSetting object itself.
      */
@@ -48,7 +54,7 @@ public final class CustomizationNicSetting {
 
     /**
      * Get the macAddress property: NIC mac address.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -57,7 +63,7 @@ public final class CustomizationNicSetting {
 
     /**
      * Set the macAddress property: NIC mac address.
-     *
+     * 
      * @param macAddress the macAddress value to set.
      * @return the CustomizationNicSetting object itself.
      */
@@ -68,12 +74,51 @@ public final class CustomizationNicSetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adapter() != null) {
             adapter().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("adapter", this.adapter);
+        jsonWriter.writeStringField("macAddress", this.macAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomizationNicSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomizationNicSetting if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomizationNicSetting.
+     */
+    public static CustomizationNicSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomizationNicSetting deserializedCustomizationNicSetting = new CustomizationNicSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adapter".equals(fieldName)) {
+                    deserializedCustomizationNicSetting.adapter = CustomizationIpSettings.fromJson(reader);
+                } else if ("macAddress".equals(fieldName)) {
+                    deserializedCustomizationNicSetting.macAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomizationNicSetting;
+        });
     }
 }

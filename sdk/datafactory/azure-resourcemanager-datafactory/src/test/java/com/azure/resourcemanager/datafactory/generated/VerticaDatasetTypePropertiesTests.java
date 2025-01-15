@@ -10,16 +10,17 @@ import com.azure.resourcemanager.datafactory.fluent.models.VerticaDatasetTypePro
 public final class VerticaDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VerticaDatasetTypeProperties model = BinaryData.fromString(
-            "{\"tableName\":\"datafofkbcjzzwweob\",\"table\":\"datatdqzhixccnkfso\",\"schema\":\"datayoxmyqzyqepg\"}")
+        VerticaDatasetTypeProperties model = BinaryData
+            .fromString(
+                "{\"tableName\":\"datafhlzzgaps\",\"table\":\"datawwblscrmzqu\",\"schema\":\"dataywkgouxnroy\"}")
             .toObject(VerticaDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VerticaDatasetTypeProperties model = new VerticaDatasetTypeProperties().withTableName("datafofkbcjzzwweob")
-            .withTable("datatdqzhixccnkfso")
-            .withSchema("datayoxmyqzyqepg");
+        VerticaDatasetTypeProperties model = new VerticaDatasetTypeProperties().withTableName("datafhlzzgaps")
+            .withTable("datawwblscrmzqu")
+            .withSchema("dataywkgouxnroy");
         model = BinaryData.fromObject(model).toObject(VerticaDatasetTypeProperties.class);
     }
 }

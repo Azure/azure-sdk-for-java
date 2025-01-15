@@ -11,6 +11,13 @@ import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
  */
 public interface Replication {
     /**
+     * Gets the replicationId property: UUID v4 used to identify the replication.
+     * 
+     * @return the replicationId value.
+     */
+    String replicationId();
+
+    /**
      * Gets the endpointType property: Indicates whether the local volume is the source or destination for the Volume
      * Replication.
      * 

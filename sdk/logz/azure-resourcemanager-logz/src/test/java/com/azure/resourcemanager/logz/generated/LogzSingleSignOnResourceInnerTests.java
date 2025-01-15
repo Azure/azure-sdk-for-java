@@ -13,28 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class LogzSingleSignOnResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogzSingleSignOnResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"wska\",\"singleSignOnUrl\":\"ktzlcuiywg\",\"provisioningState\":\"Deleting\"},\"id\":\"gndrvynh\",\"name\":\"gpphrcgyn\",\"type\":\"ocpecfvmmco\"}")
-                .toObject(LogzSingleSignOnResourceInner.class);
-        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.properties().singleSignOnState());
-        Assertions.assertEquals("wska", model.properties().enterpriseAppId());
-        Assertions.assertEquals("ktzlcuiywg", model.properties().singleSignOnUrl());
+        LogzSingleSignOnResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"canoaeupf\",\"singleSignOnUrl\":\"hltrpmopjmcmatuo\",\"provisioningState\":\"Deleted\"},\"id\":\"fu\",\"name\":\"uaodsfcpk\",\"type\":\"xodpuozmyzydagfu\"}")
+            .toObject(LogzSingleSignOnResourceInner.class);
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.properties().singleSignOnState());
+        Assertions.assertEquals("canoaeupf", model.properties().enterpriseAppId());
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.properties().singleSignOnUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogzSingleSignOnResourceInner model =
-            new LogzSingleSignOnResourceInner()
-                .withProperties(
-                    new LogzSingleSignOnProperties()
-                        .withSingleSignOnState(SingleSignOnStates.ENABLE)
-                        .withEnterpriseAppId("wska")
-                        .withSingleSignOnUrl("ktzlcuiywg"));
+        LogzSingleSignOnResourceInner model = new LogzSingleSignOnResourceInner()
+            .withProperties(new LogzSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                .withEnterpriseAppId("canoaeupf")
+                .withSingleSignOnUrl("hltrpmopjmcmatuo"));
         model = BinaryData.fromObject(model).toObject(LogzSingleSignOnResourceInner.class);
-        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.properties().singleSignOnState());
-        Assertions.assertEquals("wska", model.properties().enterpriseAppId());
-        Assertions.assertEquals("ktzlcuiywg", model.properties().singleSignOnUrl());
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.properties().singleSignOnState());
+        Assertions.assertEquals("canoaeupf", model.properties().enterpriseAppId());
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.properties().singleSignOnUrl());
     }
 }

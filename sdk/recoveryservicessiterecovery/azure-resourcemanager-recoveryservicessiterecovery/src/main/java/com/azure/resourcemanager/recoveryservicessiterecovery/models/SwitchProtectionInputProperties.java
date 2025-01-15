@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Switch protection input properties.
  */
 @Fluent
-public final class SwitchProtectionInputProperties {
+public final class SwitchProtectionInputProperties implements JsonSerializable<SwitchProtectionInputProperties> {
     /*
      * The unique replication protected item name.
      */
-    @JsonProperty(value = "replicationProtectedItemName")
     private String replicationProtectedItemName;
 
     /*
      * Provider specific switch protection input.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private SwitchProtectionProviderSpecificInput providerSpecificDetails;
 
     /**
@@ -80,5 +82,46 @@ public final class SwitchProtectionInputProperties {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("replicationProtectedItemName", this.replicationProtectedItemName);
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwitchProtectionInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwitchProtectionInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwitchProtectionInputProperties.
+     */
+    public static SwitchProtectionInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwitchProtectionInputProperties deserializedSwitchProtectionInputProperties
+                = new SwitchProtectionInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("replicationProtectedItemName".equals(fieldName)) {
+                    deserializedSwitchProtectionInputProperties.replicationProtectedItemName = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedSwitchProtectionInputProperties.providerSpecificDetails
+                        = SwitchProtectionProviderSpecificInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwitchProtectionInputProperties;
+        });
     }
 }

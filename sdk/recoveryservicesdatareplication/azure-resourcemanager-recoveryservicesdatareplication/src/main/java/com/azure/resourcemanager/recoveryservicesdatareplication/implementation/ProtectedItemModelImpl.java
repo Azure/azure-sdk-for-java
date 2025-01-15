@@ -15,13 +15,10 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.Protecte
 public final class ProtectedItemModelImpl implements ProtectedItemModel, ProtectedItemModel.Definition {
     private ProtectedItemModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    ProtectedItemModelImpl(
-        ProtectedItemModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    ProtectedItemModelImpl(ProtectedItemModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -67,49 +64,39 @@ public final class ProtectedItemModelImpl implements ProtectedItemModel, Protect
     }
 
     public ProtectedItemModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .create(resourceGroupName, vaultName, protectedItemName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .create(resourceGroupName, vaultName, protectedItemName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ProtectedItemModel create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .create(resourceGroupName, vaultName, protectedItemName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .create(resourceGroupName, vaultName, protectedItemName, this.innerModel(), context);
         return this;
     }
 
-    ProtectedItemModelImpl(
-        String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    ProtectedItemModelImpl(String name,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = new ProtectedItemModelInner();
         this.serviceManager = serviceManager;
         this.protectedItemName = name;
     }
 
     public ProtectedItemModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .getWithResponse(resourceGroupName, vaultName, protectedItemName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .getWithResponse(resourceGroupName, vaultName, protectedItemName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectedItemModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .getWithResponse(resourceGroupName, vaultName, protectedItemName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .getWithResponse(resourceGroupName, vaultName, protectedItemName, context)
+            .getValue();
         return this;
     }
 
@@ -118,8 +105,7 @@ public final class ProtectedItemModelImpl implements ProtectedItemModel, Protect
     }
 
     public PlannedFailoverModel plannedFailover(PlannedFailoverModelInner body, Context context) {
-        return serviceManager
-            .protectedItems()
+        return serviceManager.protectedItems()
             .plannedFailover(resourceGroupName, vaultName, protectedItemName, body, context);
     }
 

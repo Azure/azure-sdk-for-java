@@ -11,19 +11,19 @@ public final class AzurePostgreSqlSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePostgreSqlSink model = BinaryData.fromString(
-            "{\"type\":\"AzurePostgreSqlSink\",\"preCopyScript\":\"dataromeawthycbigpi\",\"writeBatchSize\":\"datapxhzjnparsulmuwl\",\"writeBatchTimeout\":\"dataakheox\",\"sinkRetryCount\":\"datagoavzycxpzat\",\"sinkRetryWait\":\"dataloo\",\"maxConcurrentConnections\":\"datatm\",\"disableMetricsCollection\":\"datatwzslrprftq\",\"\":{\"emhohxabmxoow\":\"dataouyqzhoi\",\"p\":\"dataoogozerccz\",\"uj\":\"datankgk\",\"j\":\"dataqqjqafjk\"}}")
+            "{\"type\":\"AzurePostgreSqlSink\",\"preCopyScript\":\"dataxtkmknacnfzcy\",\"writeBatchSize\":\"datahdjpagwszm\",\"writeBatchTimeout\":\"datagzfeyexbg\",\"sinkRetryCount\":\"datayo\",\"sinkRetryWait\":\"datawigvqgc\",\"maxConcurrentConnections\":\"datacqjg\",\"disableMetricsCollection\":\"dataxpbpj\",\"\":{\"ohehhtl\":\"datanvdabaodiytxq\"}}")
             .toObject(AzurePostgreSqlSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlSink model = new AzurePostgreSqlSink().withWriteBatchSize("datapxhzjnparsulmuwl")
-            .withWriteBatchTimeout("dataakheox")
-            .withSinkRetryCount("datagoavzycxpzat")
-            .withSinkRetryWait("dataloo")
-            .withMaxConcurrentConnections("datatm")
-            .withDisableMetricsCollection("datatwzslrprftq")
-            .withPreCopyScript("dataromeawthycbigpi");
+        AzurePostgreSqlSink model = new AzurePostgreSqlSink().withWriteBatchSize("datahdjpagwszm")
+            .withWriteBatchTimeout("datagzfeyexbg")
+            .withSinkRetryCount("datayo")
+            .withSinkRetryWait("datawigvqgc")
+            .withMaxConcurrentConnections("datacqjg")
+            .withDisableMetricsCollection("dataxpbpj")
+            .withPreCopyScript("dataxtkmknacnfzcy");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlSink.class);
     }
 }

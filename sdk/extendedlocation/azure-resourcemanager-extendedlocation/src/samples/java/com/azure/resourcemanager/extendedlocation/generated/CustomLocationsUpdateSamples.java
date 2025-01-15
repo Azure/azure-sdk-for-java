@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.extendedlocation.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.extendedlocation.models.CustomLocation;
 import com.azure.resourcemanager.extendedlocation.models.Identity;
 import com.azure.resourcemanager.extendedlocation.models.ResourceIdentityType;
@@ -12,34 +11,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for CustomLocations Update. */
+/**
+ * Samples for CustomLocations Update.
+ */
 public final class CustomLocationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsPatch.json
+     * x-ms-original-file:
+     * specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/
+     * CustomLocationsPatch.json
      */
     /**
      * Sample code: Update Custom Location.
-     *
+     * 
      * @param manager Entry point to CustomLocationsManager.
      */
     public static void updateCustomLocation(com.azure.resourcemanager.extendedlocation.CustomLocationsManager manager) {
-        CustomLocation resource =
-            manager
-                .customLocations()
-                .getByResourceGroupWithResponse("testresourcegroup", "customLocation01", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        CustomLocation resource = manager.customLocations()
+            .getByResourceGroupWithResponse("testresourcegroup", "customLocation01", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("archv3", "", "tier", "testing"))
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withClusterExtensionIds(
-                Arrays
-                    .asList(
-                        "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ContainerService/managedClusters/cluster01/Microsoft.KubernetesConfiguration/clusterExtensions/fooExtension",
-                        "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ContainerService/managedClusters/cluster01/Microsoft.KubernetesConfiguration/clusterExtensions/barExtension"))
+            .withClusterExtensionIds(Arrays.asList(
+                "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ContainerService/managedClusters/cluster01/Microsoft.KubernetesConfiguration/clusterExtensions/fooExtension",
+                "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ContainerService/managedClusters/cluster01/Microsoft.KubernetesConfiguration/clusterExtensions/barExtension"))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

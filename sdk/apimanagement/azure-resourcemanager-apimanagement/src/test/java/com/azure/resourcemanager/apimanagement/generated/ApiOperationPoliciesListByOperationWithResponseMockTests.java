@@ -6,70 +6,38 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PolicyCollection;
 import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ApiOperationPoliciesListByOperationWithResponseMockTests {
     @Test
     public void testListByOperationWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"value\":\"vjelei\",\"format\":\"xml\"},\"id\":\"d\",\"name\":\"twwulkrybpaev\",\"type\":\"kbyje\"},{\"properties\":{\"value\":\"qkwakkchsfoulb\",\"format\":\"xml\"},\"id\":\"xuibsdq\",\"name\":\"dyblpe\",\"type\":\"t\"}],\"count\":1743405341403451489,\"nextLink\":\"weoqhb\"}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"value\":\"kpsbqsbbmitaftaz\",\"format\":\"rawxml\"},\"id\":\"svqlcqufyl\",\"name\":\"mxow\",\"type\":\"gc\"}],\"count\":8289303517343276352,\"nextLink\":\"ehlkarvti\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PolicyCollection response = manager.apiOperationPolicies()
+            .listByOperationWithResponse("uoi", "dlpsx", "tug", "wimqnryclocfm", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PolicyCollection response =
-            manager
-                .apiOperationPolicies()
-                .listByOperationWithResponse(
-                    "vtvodqxxpqhmlqi", "tbl", "c", "rjaznotdofqvpb", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("kpsbqsbbmitaftaz", response.value().get(0).value());
-        Assertions.assertEquals(PolicyContentFormat.RAWXML, response.value().get(0).format());
-        Assertions.assertEquals(8289303517343276352L, response.count());
-        Assertions.assertEquals("ehlkarvti", response.nextLink());
+        Assertions.assertEquals("vjelei", response.value().get(0).value());
+        Assertions.assertEquals(PolicyContentFormat.XML, response.value().get(0).format());
+        Assertions.assertEquals(1743405341403451489L, response.count());
+        Assertions.assertEquals("weoqhb", response.nextLink());
     }
 }

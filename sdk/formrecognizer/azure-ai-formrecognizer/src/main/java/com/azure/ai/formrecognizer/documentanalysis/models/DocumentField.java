@@ -175,7 +175,7 @@ public final class DocumentField extends TypedDocumentField<Object> {
 
             @Override
             public <T> void setBoundingRegions(TypedDocumentField<T> typedDocumentField,
-                                               List<BoundingRegion> boundingRegions) {
+                List<BoundingRegion> boundingRegions) {
                 typedDocumentField.setBoundingRegions(boundingRegions);
             }
 

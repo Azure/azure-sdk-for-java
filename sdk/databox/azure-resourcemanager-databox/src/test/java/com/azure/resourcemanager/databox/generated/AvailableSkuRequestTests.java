@@ -14,35 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableSkuRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableSkuRequest model =
-            BinaryData
-                .fromString(
-                    "{\"transferType\":\"ExportFromAzure\",\"country\":\"jttgzf\",\"location\":\"ishc\",\"skuNames\":[\"DataBoxCustomerDisk\",\"DataBoxHeavy\",\"DataBoxCustomerDisk\",\"DataBoxDisk\"]}")
-                .toObject(AvailableSkuRequest.class);
-        Assertions.assertEquals(TransferType.EXPORT_FROM_AZURE, model.transferType());
-        Assertions.assertEquals("jttgzf", model.country());
-        Assertions.assertEquals("ishc", model.location());
-        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.skuNames().get(0));
+        AvailableSkuRequest model = BinaryData.fromString(
+            "{\"transferType\":\"ImportToAzure\",\"country\":\"w\",\"location\":\"fsj\",\"skuNames\":[\"DataBoxHeavy\",\"DataBoxHeavy\",\"DataBoxCustomerDisk\"]}")
+            .toObject(AvailableSkuRequest.class);
+        Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
+        Assertions.assertEquals("w", model.country());
+        Assertions.assertEquals("fsj", model.location());
+        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableSkuRequest model =
-            new AvailableSkuRequest()
-                .withTransferType(TransferType.EXPORT_FROM_AZURE)
-                .withCountry("jttgzf")
-                .withLocation("ishc")
-                .withSkuNames(
-                    Arrays
-                        .asList(
-                            SkuName.DATA_BOX_CUSTOMER_DISK,
-                            SkuName.DATA_BOX_HEAVY,
-                            SkuName.DATA_BOX_CUSTOMER_DISK,
-                            SkuName.DATA_BOX_DISK));
+        AvailableSkuRequest model = new AvailableSkuRequest().withTransferType(TransferType.IMPORT_TO_AZURE)
+            .withCountry("w")
+            .withLocation("fsj")
+            .withSkuNames(
+                Arrays.asList(SkuName.DATA_BOX_HEAVY, SkuName.DATA_BOX_HEAVY, SkuName.DATA_BOX_CUSTOMER_DISK));
         model = BinaryData.fromObject(model).toObject(AvailableSkuRequest.class);
-        Assertions.assertEquals(TransferType.EXPORT_FROM_AZURE, model.transferType());
-        Assertions.assertEquals("jttgzf", model.country());
-        Assertions.assertEquals("ishc", model.location());
-        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.skuNames().get(0));
+        Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
+        Assertions.assertEquals("w", model.country());
+        Assertions.assertEquals("fsj", model.location());
+        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuNames().get(0));
     }
 }

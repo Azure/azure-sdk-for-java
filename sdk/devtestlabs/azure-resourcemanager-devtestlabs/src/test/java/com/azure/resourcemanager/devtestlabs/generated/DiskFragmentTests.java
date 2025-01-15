@@ -13,10 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskFragment model =
-            BinaryData
-                .fromString("{\"tags\":{\"bphbqzmizakakank\":\"etpwbralll\",\"n\":\"p\"}}")
-                .toObject(DiskFragment.class);
+        DiskFragment model = BinaryData.fromString("{\"tags\":{\"bphbqzmizakakank\":\"etpwbralll\",\"n\":\"p\"}}")
+            .toObject(DiskFragment.class);
         Assertions.assertEquals("etpwbralll", model.tags().get("bphbqzmizakakank"));
     }
 

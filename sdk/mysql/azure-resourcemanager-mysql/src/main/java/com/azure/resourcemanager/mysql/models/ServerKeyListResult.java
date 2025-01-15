@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of MySQL Server keys. */
 @Immutable
 public final class ServerKeyListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerKeyListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerKeyListResult.class);
 
     /*
      * A list of MySQL Server keys.

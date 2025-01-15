@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the detailed report. By default ActualCost is provided. */
+/**
+ * The type of the detailed report. By default ActualCost is provided.
+ */
 public final class CostDetailsMetricType extends ExpandableStringEnum<CostDetailsMetricType> {
-    /** Static value ActualCost for CostDetailsMetricType. */
+    /**
+     * Static value ActualCost for CostDetailsMetricType.
+     */
     public static final CostDetailsMetricType ACTUAL_COST = fromString("ActualCost");
 
-    /** Static value AmortizedCost for CostDetailsMetricType. */
+    /**
+     * Static value AmortizedCost for CostDetailsMetricType.
+     */
     public static final CostDetailsMetricType AMORTIZED_COST = fromString("AmortizedCost");
 
     /**
      * Creates a new instance of CostDetailsMetricType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class CostDetailsMetricType extends ExpandableStringEnum<CostDetail
 
     /**
      * Creates or finds a CostDetailsMetricType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CostDetailsMetricType.
      */
-    @JsonCreator
     public static CostDetailsMetricType fromString(String name) {
         return fromString(name, CostDetailsMetricType.class);
     }
 
     /**
      * Gets known CostDetailsMetricType values.
-     *
+     * 
      * @return known CostDetailsMetricType values.
      */
     public static Collection<CostDetailsMetricType> values() {

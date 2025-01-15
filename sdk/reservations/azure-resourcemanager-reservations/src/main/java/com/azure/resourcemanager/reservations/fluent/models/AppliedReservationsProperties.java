@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.AppliedReservationList;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties for applied reservations returned. */
+/**
+ * Properties for applied reservations returned.
+ */
 @Fluent
-public final class AppliedReservationsProperties {
+public final class AppliedReservationsProperties implements JsonSerializable<AppliedReservationsProperties> {
     /*
      * Paginated list of applied reservations
      */
-    @JsonProperty(value = "reservationOrderIds")
     private AppliedReservationList reservationOrderIds;
 
-    /** Creates an instance of AppliedReservationsProperties class. */
+    /**
+     * Creates an instance of AppliedReservationsProperties class.
+     */
     public AppliedReservationsProperties() {
     }
 
     /**
      * Get the reservationOrderIds property: Paginated list of applied reservations.
-     *
+     * 
      * @return the reservationOrderIds value.
      */
     public AppliedReservationList reservationOrderIds() {
@@ -32,7 +39,7 @@ public final class AppliedReservationsProperties {
 
     /**
      * Set the reservationOrderIds property: Paginated list of applied reservations.
-     *
+     * 
      * @param reservationOrderIds the reservationOrderIds value to set.
      * @return the AppliedReservationsProperties object itself.
      */
@@ -43,12 +50,50 @@ public final class AppliedReservationsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (reservationOrderIds() != null) {
             reservationOrderIds().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("reservationOrderIds", this.reservationOrderIds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppliedReservationsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppliedReservationsProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppliedReservationsProperties.
+     */
+    public static AppliedReservationsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppliedReservationsProperties deserializedAppliedReservationsProperties
+                = new AppliedReservationsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reservationOrderIds".equals(fieldName)) {
+                    deserializedAppliedReservationsProperties.reservationOrderIds
+                        = AppliedReservationList.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppliedReservationsProperties;
+        });
     }
 }

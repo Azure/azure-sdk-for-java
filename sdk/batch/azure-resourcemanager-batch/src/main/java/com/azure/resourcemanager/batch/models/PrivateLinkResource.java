@@ -6,6 +6,7 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.resourcemanager.batch.fluent.models.PrivateLinkResourceInner;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of PrivateLinkResource.
@@ -40,9 +41,14 @@ public interface PrivateLinkResource {
     String etag();
 
     /**
-     * Gets the groupId property: The group id of the private link resource.
+     * Gets the tags property: The tags of the resource.
      * 
-     * The group id is used to establish the private link connection.
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * Gets the groupId property: The group id is used to establish the private link connection.
      * 
      * @return the groupId value.
      */

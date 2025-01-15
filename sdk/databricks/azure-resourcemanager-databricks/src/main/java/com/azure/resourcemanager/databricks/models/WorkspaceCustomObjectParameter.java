@@ -6,30 +6,36 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The value which should be used for this field. */
+/**
+ * The value which should be used for this field.
+ */
 @Fluent
-public final class WorkspaceCustomObjectParameter {
+public final class WorkspaceCustomObjectParameter implements JsonSerializable<WorkspaceCustomObjectParameter> {
     /*
      * The type of variable that this is
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private CustomParameterType type;
 
     /*
      * The value which should be used for this field.
      */
-    @JsonProperty(value = "value", required = true)
     private Object value;
 
-    /** Creates an instance of WorkspaceCustomObjectParameter class. */
+    /**
+     * Creates an instance of WorkspaceCustomObjectParameter class.
+     */
     public WorkspaceCustomObjectParameter() {
     }
 
     /**
      * Get the type property: The type of variable that this is.
-     *
+     * 
      * @return the type value.
      */
     public CustomParameterType type() {
@@ -38,7 +44,7 @@ public final class WorkspaceCustomObjectParameter {
 
     /**
      * Get the value property: The value which should be used for this field.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -47,7 +53,7 @@ public final class WorkspaceCustomObjectParameter {
 
     /**
      * Set the value property: The value which should be used for this field.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceCustomObjectParameter object itself.
      */
@@ -58,17 +64,57 @@ public final class WorkspaceCustomObjectParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model WorkspaceCustomObjectParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model WorkspaceCustomObjectParameter"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkspaceCustomObjectParameter.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceCustomObjectParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceCustomObjectParameter if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspaceCustomObjectParameter.
+     */
+    public static WorkspaceCustomObjectParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceCustomObjectParameter deserializedWorkspaceCustomObjectParameter
+                = new WorkspaceCustomObjectParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedWorkspaceCustomObjectParameter.value = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkspaceCustomObjectParameter.type
+                        = CustomParameterType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceCustomObjectParameter;
+        });
+    }
 }

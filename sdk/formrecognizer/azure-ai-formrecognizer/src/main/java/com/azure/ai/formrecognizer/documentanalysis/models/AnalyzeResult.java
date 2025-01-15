@@ -67,6 +67,7 @@ public final class AnalyzeResult {
      * API version used to create this document classifier.
      */
     private String serviceVersion;
+
     /**
      * Get the paragraphs property: Extracted paragraphs.
      *
@@ -174,11 +175,12 @@ public final class AnalyzeResult {
     private void setKeyValuePairs(List<DocumentKeyValuePair> keyValuePairs) {
         this.keyValuePairs = keyValuePairs;
     }
-        /**
-     * Get the styles property: Extracted font styles.
-     *
-     * @return the styles value.
-     */
+
+    /**
+    * Get the styles property: Extracted font styles.
+    *
+    * @return the styles value.
+    */
     public List<DocumentStyle> getStyles() {
         return this.styles;
     }

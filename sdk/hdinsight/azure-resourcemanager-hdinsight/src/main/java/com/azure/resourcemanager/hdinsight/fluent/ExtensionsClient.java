@@ -17,11 +17,13 @@ import com.azure.resourcemanager.hdinsight.models.AzureMonitorRequest;
 import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringRequest;
 import com.azure.resourcemanager.hdinsight.models.Extension;
 
-/** An instance of this class provides access to all the operations defined in ExtensionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExtensionsClient.
+ */
 public interface ExtensionsClient {
     /**
      * Enables the Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Operations Management Suite (OMS) workspace parameters.
@@ -31,12 +33,12 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(
-        String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters);
+    SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(String resourceGroupName, String clusterName,
+        ClusterMonitoringRequest parameters);
 
     /**
      * Enables the Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Operations Management Suite (OMS) workspace parameters.
@@ -47,12 +49,12 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(
-        String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(String resourceGroupName, String clusterName,
+        ClusterMonitoringRequest parameters, Context context);
 
     /**
      * Enables the Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Operations Management Suite (OMS) workspace parameters.
@@ -65,7 +67,7 @@ public interface ExtensionsClient {
 
     /**
      * Enables the Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Operations Management Suite (OMS) workspace parameters.
@@ -75,12 +77,12 @@ public interface ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableMonitoring(
-        String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters, Context context);
+    void enableMonitoring(String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters,
+        Context context);
 
     /**
      * Gets the status of Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -90,12 +92,12 @@ public interface ExtensionsClient {
      * @return the status of Operations Management Suite (OMS) on the HDInsight cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterMonitoringResponseInner> getMonitoringStatusWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ClusterMonitoringResponseInner> getMonitoringStatusWithResponse(String resourceGroupName,
+        String clusterName, Context context);
 
     /**
      * Gets the status of Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,7 +110,7 @@ public interface ExtensionsClient {
 
     /**
      * Disables the Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,7 +123,7 @@ public interface ExtensionsClient {
 
     /**
      * Disables the Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -131,12 +133,12 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisableMonitoring(
-        String resourceGroupName, String clusterName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDisableMonitoring(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Disables the Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface ExtensionsClient {
 
     /**
      * Disables the Operations Management Suite (OMS) on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -161,7 +163,7 @@ public interface ExtensionsClient {
 
     /**
      * Enables the Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
@@ -171,12 +173,12 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(
-        String resourceGroupName, String clusterName, AzureMonitorRequest parameters);
+    SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(String resourceGroupName, String clusterName,
+        AzureMonitorRequest parameters);
 
     /**
      * Enables the Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
@@ -187,12 +189,12 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(
-        String resourceGroupName, String clusterName, AzureMonitorRequest parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(String resourceGroupName, String clusterName,
+        AzureMonitorRequest parameters, Context context);
 
     /**
      * Enables the Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
@@ -205,7 +207,7 @@ public interface ExtensionsClient {
 
     /**
      * Enables the Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The Log Analytics workspace parameters.
@@ -215,12 +217,12 @@ public interface ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableAzureMonitor(
-        String resourceGroupName, String clusterName, AzureMonitorRequest parameters, Context context);
+    void enableAzureMonitor(String resourceGroupName, String clusterName, AzureMonitorRequest parameters,
+        Context context);
 
     /**
      * Gets the status of Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -230,12 +232,12 @@ public interface ExtensionsClient {
      * @return the status of Azure Monitor on the HDInsight cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureMonitorResponseInner> getAzureMonitorStatusWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<AzureMonitorResponseInner> getAzureMonitorStatusWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets the status of Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,7 +250,7 @@ public interface ExtensionsClient {
 
     /**
      * Disables the Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +263,7 @@ public interface ExtensionsClient {
 
     /**
      * Disables the Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -271,12 +273,12 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(
-        String resourceGroupName, String clusterName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Disables the Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,7 +290,7 @@ public interface ExtensionsClient {
 
     /**
      * Disables the Azure Monitor on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -300,8 +302,148 @@ public interface ExtensionsClient {
     void disableAzureMonitor(String resourceGroupName, String clusterName, Context context);
 
     /**
+     * Enables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitorAgent(String resourceGroupName, String clusterName,
+        AzureMonitorRequest parameters);
+
+    /**
+     * Enables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitorAgent(String resourceGroupName, String clusterName,
+        AzureMonitorRequest parameters, Context context);
+
+    /**
+     * Enables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void enableAzureMonitorAgent(String resourceGroupName, String clusterName, AzureMonitorRequest parameters);
+
+    /**
+     * Enables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void enableAzureMonitorAgent(String resourceGroupName, String clusterName, AzureMonitorRequest parameters,
+        Context context);
+
+    /**
+     * Gets the status of Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of Azure Monitor Agent on the HDInsight cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AzureMonitorResponseInner> getAzureMonitorAgentStatusWithResponse(String resourceGroupName,
+        String clusterName, Context context);
+
+    /**
+     * Gets the status of Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of Azure Monitor Agent on the HDInsight cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureMonitorResponseInner getAzureMonitorAgentStatus(String resourceGroupName, String clusterName);
+
+    /**
+     * Disables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitorAgent(String resourceGroupName, String clusterName);
+
+    /**
+     * Disables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitorAgent(String resourceGroupName, String clusterName,
+        Context context);
+
+    /**
+     * Disables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableAzureMonitorAgent(String resourceGroupName, String clusterName);
+
+    /**
+     * Disables the Azure Monitor Agent on the HDInsight cluster.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableAzureMonitorAgent(String resourceGroupName, String clusterName, Context context);
+
+    /**
      * Creates an HDInsight cluster extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -312,12 +454,12 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreate(
-        String resourceGroupName, String clusterName, String extensionName, Extension parameters);
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String clusterName, String extensionName,
+        Extension parameters);
 
     /**
      * Creates an HDInsight cluster extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -329,12 +471,12 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreate(
-        String resourceGroupName, String clusterName, String extensionName, Extension parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String clusterName, String extensionName,
+        Extension parameters, Context context);
 
     /**
      * Creates an HDInsight cluster extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -348,7 +490,7 @@ public interface ExtensionsClient {
 
     /**
      * Creates an HDInsight cluster extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -359,12 +501,12 @@ public interface ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void create(
-        String resourceGroupName, String clusterName, String extensionName, Extension parameters, Context context);
+    void create(String resourceGroupName, String clusterName, String extensionName, Extension parameters,
+        Context context);
 
     /**
      * Gets the extension properties for the specified HDInsight cluster extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -375,12 +517,12 @@ public interface ExtensionsClient {
      * @return the extension properties for the specified HDInsight cluster extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterMonitoringResponseInner> getWithResponse(
-        String resourceGroupName, String clusterName, String extensionName, Context context);
+    Response<ClusterMonitoringResponseInner> getWithResponse(String resourceGroupName, String clusterName,
+        String extensionName, Context context);
 
     /**
      * Gets the extension properties for the specified HDInsight cluster extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -394,7 +536,7 @@ public interface ExtensionsClient {
 
     /**
      * Deletes the specified extension for HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -408,7 +550,7 @@ public interface ExtensionsClient {
 
     /**
      * Deletes the specified extension for HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -419,12 +561,12 @@ public interface ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String extensionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String extensionName,
+        Context context);
 
     /**
      * Deletes the specified extension for HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -437,7 +579,7 @@ public interface ExtensionsClient {
 
     /**
      * Deletes the specified extension for HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -451,7 +593,7 @@ public interface ExtensionsClient {
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -463,12 +605,12 @@ public interface ExtensionsClient {
      * @return the async operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(
-        String resourceGroupName, String clusterName, String extensionName, String operationId, Context context);
+    Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(String resourceGroupName,
+        String clusterName, String extensionName, String operationId, Context context);
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param extensionName The name of the cluster extension.
@@ -479,6 +621,6 @@ public interface ExtensionsClient {
      * @return the async operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AsyncOperationResultInner getAzureAsyncOperationStatus(
-        String resourceGroupName, String clusterName, String extensionName, String operationId);
+    AsyncOperationResultInner getAzureAsyncOperationStatus(String resourceGroupName, String clusterName,
+        String extensionName, String operationId);
 }

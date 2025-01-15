@@ -36,19 +36,23 @@ public final class A2AFabricSpecificLocationDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AFabricSpecificLocationDetails model = new A2AFabricSpecificLocationDetails()
-            .withInitialPrimaryZone("eatkdbmwnrdj").withInitialRecoveryZone("bqbnaomhjrmkuh")
-            .withInitialPrimaryExtendedLocation(
-                new ExtendedLocation().withName("xljalfihc").withType(ExtendedLocationType.EDGE_ZONE))
-            .withInitialRecoveryExtendedLocation(
-                new ExtendedLocation().withName("bc").withType(ExtendedLocationType.EDGE_ZONE))
-            .withInitialPrimaryFabricLocation("de").withInitialRecoveryFabricLocation("qcwgaxfgvaknokz")
-            .withPrimaryZone("jzrltixldzy").withRecoveryZone("ytpqsixymmpujiv")
-            .withPrimaryExtendedLocation(
-                new ExtendedLocation().withName("lkjuvsmbmslzoyov").withType(ExtendedLocationType.EDGE_ZONE))
-            .withRecoveryExtendedLocation(
-                new ExtendedLocation().withName("bpqvybefg").withType(ExtendedLocationType.EDGE_ZONE))
-            .withPrimaryFabricLocation("nokcv").withRecoveryFabricLocation("ubseskvcuartr");
+        A2AFabricSpecificLocationDetails model
+            = new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("eatkdbmwnrdj")
+                .withInitialRecoveryZone("bqbnaomhjrmkuh")
+                .withInitialPrimaryExtendedLocation(
+                    new ExtendedLocation().withName("xljalfihc").withType(ExtendedLocationType.EDGE_ZONE))
+                .withInitialRecoveryExtendedLocation(
+                    new ExtendedLocation().withName("bc").withType(ExtendedLocationType.EDGE_ZONE))
+                .withInitialPrimaryFabricLocation("de")
+                .withInitialRecoveryFabricLocation("qcwgaxfgvaknokz")
+                .withPrimaryZone("jzrltixldzy")
+                .withRecoveryZone("ytpqsixymmpujiv")
+                .withPrimaryExtendedLocation(
+                    new ExtendedLocation().withName("lkjuvsmbmslzoyov").withType(ExtendedLocationType.EDGE_ZONE))
+                .withRecoveryExtendedLocation(
+                    new ExtendedLocation().withName("bpqvybefg").withType(ExtendedLocationType.EDGE_ZONE))
+                .withPrimaryFabricLocation("nokcv")
+                .withRecoveryFabricLocation("ubseskvcuartr");
         model = BinaryData.fromObject(model).toObject(A2AFabricSpecificLocationDetails.class);
         Assertions.assertEquals("eatkdbmwnrdj", model.initialPrimaryZone());
         Assertions.assertEquals("bqbnaomhjrmkuh", model.initialRecoveryZone());

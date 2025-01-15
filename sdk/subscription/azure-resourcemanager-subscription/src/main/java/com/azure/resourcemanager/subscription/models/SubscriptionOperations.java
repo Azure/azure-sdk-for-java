@@ -7,11 +7,13 @@ package com.azure.resourcemanager.subscription.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SubscriptionOperations. */
+/**
+ * Resource collection API of SubscriptionOperations.
+ */
 public interface SubscriptionOperations {
     /**
      * The operation to cancel a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface SubscriptionOperations {
 
     /**
      * The operation to cancel a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -34,7 +36,7 @@ public interface SubscriptionOperations {
 
     /**
      * The operation to rename a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @param body Subscription Name.
      * @param context The context to associate with this operation.
@@ -47,7 +49,7 @@ public interface SubscriptionOperations {
 
     /**
      * The operation to rename a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @param body Subscription Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,7 +61,7 @@ public interface SubscriptionOperations {
 
     /**
      * The operation to enable a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +73,7 @@ public interface SubscriptionOperations {
 
     /**
      * The operation to enable a subscription.
-     *
+     * 
      * @param subscriptionId Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

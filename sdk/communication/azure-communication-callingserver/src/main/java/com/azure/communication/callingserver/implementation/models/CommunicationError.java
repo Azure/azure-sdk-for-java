@@ -5,40 +5,40 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** The CommunicationError model. */
 @Fluent
-public final class CommunicationError {
+public final class CommunicationError implements JsonSerializable<CommunicationError> {
     /*
      * The code property.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The message property.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The target property.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * The details property.
      */
-    @JsonProperty(value = "details")
     private List<CommunicationError> details;
 
     /*
      * The innererror property.
      */
-    @JsonProperty(value = "innererror")
     private CommunicationError innererror;
 
     /**
@@ -139,5 +139,51 @@ public final class CommunicationError {
     public CommunicationError setInnererror(CommunicationError innererror) {
         this.innererror = innererror;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("code", code)
+            .writeStringField("message", message)
+            .writeStringField("target", target)
+            .writeArrayField("details", details, JsonWriter::writeJson)
+            .writeJsonField("innererror", innererror)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link CommunicationError} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link CommunicationError}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static CommunicationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationError error = new CommunicationError();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    error.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    error.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    error.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    error.details = reader.readArray(CommunicationError::fromJson);
+                } else if ("innererror".equals(fieldName)) {
+                    error.innererror = CommunicationError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return error;
+        });
     }
 }

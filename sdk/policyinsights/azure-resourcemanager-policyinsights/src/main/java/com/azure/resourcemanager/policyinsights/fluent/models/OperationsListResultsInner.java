@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.models.Operation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of available operations. */
+/**
+ * List of available operations.
+ */
 @Fluent
-public final class OperationsListResultsInner {
+public final class OperationsListResultsInner implements JsonSerializable<OperationsListResultsInner> {
     /*
      * OData entity count; represents the number of operations returned.
      */
-    @JsonProperty(value = "@odata.count")
     private Integer odataCount;
 
     /*
      * List of available operations.
      */
-    @JsonProperty(value = "value")
     private List<Operation> value;
 
-    /** Creates an instance of OperationsListResultsInner class. */
+    /**
+     * Creates an instance of OperationsListResultsInner class.
+     */
     public OperationsListResultsInner() {
     }
 
     /**
      * Get the odataCount property: OData entity count; represents the number of operations returned.
-     *
+     * 
      * @return the odataCount value.
      */
     public Integer odataCount() {
@@ -39,7 +45,7 @@ public final class OperationsListResultsInner {
 
     /**
      * Set the odataCount property: OData entity count; represents the number of operations returned.
-     *
+     * 
      * @param odataCount the odataCount value to set.
      * @return the OperationsListResultsInner object itself.
      */
@@ -50,7 +56,7 @@ public final class OperationsListResultsInner {
 
     /**
      * Get the value property: List of available operations.
-     *
+     * 
      * @return the value value.
      */
     public List<Operation> value() {
@@ -59,7 +65,7 @@ public final class OperationsListResultsInner {
 
     /**
      * Set the value property: List of available operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationsListResultsInner object itself.
      */
@@ -70,12 +76,52 @@ public final class OperationsListResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("@odata.count", this.odataCount);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationsListResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationsListResultsInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationsListResultsInner.
+     */
+    public static OperationsListResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationsListResultsInner deserializedOperationsListResultsInner = new OperationsListResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.count".equals(fieldName)) {
+                    deserializedOperationsListResultsInner.odataCount = reader.getNullable(JsonReader::getInt);
+                } else if ("value".equals(fieldName)) {
+                    List<Operation> value = reader.readArray(reader1 -> Operation.fromJson(reader1));
+                    deserializedOperationsListResultsInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationsListResultsInner;
+        });
     }
 }

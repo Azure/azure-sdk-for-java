@@ -8,25 +8,27 @@ import com.azure.resourcemanager.databricks.models.Workspace;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workspaces Update. */
+/**
+ * Samples for Workspaces Update.
+ */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceUpdate.json
+     * x-ms-original-file:
+     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceUpdate.json
      */
     /**
      * Sample code: Update a workspace's tags.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void updateAWorkspaceSTags(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        Workspace resource =
-            manager
-                .workspaces()
-                .getByResourceGroupWithResponse("rg", "myWorkspace", com.azure.core.util.Context.NONE)
-                .getValue();
+        Workspace resource = manager.workspaces()
+            .getByResourceGroupWithResponse("rg", "myWorkspace", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("mytag1", "myvalue1")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

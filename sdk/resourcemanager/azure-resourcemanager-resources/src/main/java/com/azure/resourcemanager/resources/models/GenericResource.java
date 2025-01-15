@@ -18,56 +18,74 @@ import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
  * An immutable client-side representation of an Azure generic resource.
  */
 @Fluent
-public interface GenericResource extends
-        GroupableResource<ResourceManager, GenericResourceInner>,
-        Refreshable<GenericResource>,
-        Updatable<GenericResource.Update> {
+public interface GenericResource extends GroupableResource<ResourceManager, GenericResourceInner>,
+    Refreshable<GenericResource>, Updatable<GenericResource.Update> {
     /**
+     * Gets the namespace of the resource provider.
+     *
      * @return the namespace of the resource provider
      */
     String resourceProviderNamespace();
 
     /**
+     * Gets the id of the parent resource if this is a child resource.
+     *
      * @return the id of the parent resource if this is a child resource
      */
     String parentResourcePath();
 
     /**
+     * Gets the type of the resource.
+     *
      * @return the type of the resource
      */
     String resourceType();
 
     /**
+     * Gets the api version of the resource.
+     *
      * @return the api version of the resource
      */
     String apiVersion();
 
     /**
+     * Gets the plan of the resource.
+     *
      * @return the plan of the resource
      */
     Plan plan();
 
     /**
+     * Gets other properties of the resource.
+     *
      * @return other properties of the resource
      */
     Object properties();
 
     /**
+     * Gets the kind of the resource.
+     *
      * @return the kind of the resource
      */
     String kind();
 
     /**
+     * Gets the SKU of the resource.
+     *
      * @return the SKU of the resource
      */
     Sku sku();
 
     /**
+     * Gets the managed identity of the resource.
+     *
      * @return the managed identity of the resource
      */
     Identity identity();
 
     /**
+     * Gets the ID of the resource that manages this resource.
+     *
      * @return the ID of the resource that manages this resource
      */
     String managedBy();
@@ -75,15 +93,9 @@ public interface GenericResource extends
     /**
      * The entirety of the generic resource definition.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithResourceType,
-            DefinitionStages.WithProviderNamespace,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithPlan,
-            DefinitionStages.WithApiVersion,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithResourceType,
+        DefinitionStages.WithProviderNamespace, DefinitionStages.WithParentResource, DefinitionStages.WithPlan,
+        DefinitionStages.WithApiVersion, DefinitionStages.WithCreate {
     }
 
     /**
@@ -198,11 +210,8 @@ public interface GenericResource extends
          * resource in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends
-                WithParentResource,
-                WithApiVersion,
-                Creatable<GenericResource>,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends WithParentResource, WithApiVersion, Creatable<GenericResource>,
+            Resource.DefinitionWithTags<WithCreate> {
             /**
              * Specifies other properties.
              *
@@ -376,15 +385,8 @@ public interface GenericResource extends
     /**
      * The template for a generic resource update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-            Appliable<GenericResource>,
-            UpdateStages.WithApiVersion,
-            UpdateStages.WithPlan,
-            UpdateStages.WithParentResource,
-            UpdateStages.WithProperties,
-            UpdateStages.WithKind,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<GenericResource>, UpdateStages.WithApiVersion, UpdateStages.WithPlan,
+        UpdateStages.WithParentResource, UpdateStages.WithProperties, UpdateStages.WithKind, UpdateStages.WithSku,
+        UpdateStages.WithIdentity, Resource.UpdateWithTags<Update> {
     }
 }

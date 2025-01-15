@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The value which should be used for this field. */
+/**
+ * The value which should be used for this field.
+ */
 @Fluent
-public final class WorkspaceCustomBooleanParameter {
+public final class WorkspaceCustomBooleanParameter implements JsonSerializable<WorkspaceCustomBooleanParameter> {
     /*
      * The type of variable that this is
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private CustomParameterType type;
 
     /*
      * The value which should be used for this field.
      */
-    @JsonProperty(value = "value", required = true)
     private boolean value;
 
-    /** Creates an instance of WorkspaceCustomBooleanParameter class. */
+    /**
+     * Creates an instance of WorkspaceCustomBooleanParameter class.
+     */
     public WorkspaceCustomBooleanParameter() {
     }
 
     /**
      * Get the type property: The type of variable that this is.
-     *
+     * 
      * @return the type value.
      */
     public CustomParameterType type() {
@@ -37,7 +43,7 @@ public final class WorkspaceCustomBooleanParameter {
 
     /**
      * Get the value property: The value which should be used for this field.
-     *
+     * 
      * @return the value value.
      */
     public boolean value() {
@@ -46,7 +52,7 @@ public final class WorkspaceCustomBooleanParameter {
 
     /**
      * Set the value property: The value which should be used for this field.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceCustomBooleanParameter object itself.
      */
@@ -57,9 +63,50 @@ public final class WorkspaceCustomBooleanParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceCustomBooleanParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceCustomBooleanParameter if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspaceCustomBooleanParameter.
+     */
+    public static WorkspaceCustomBooleanParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceCustomBooleanParameter deserializedWorkspaceCustomBooleanParameter
+                = new WorkspaceCustomBooleanParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedWorkspaceCustomBooleanParameter.value = reader.getBoolean();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkspaceCustomBooleanParameter.type
+                        = CustomParameterType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceCustomBooleanParameter;
+        });
     }
 }

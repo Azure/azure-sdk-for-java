@@ -30,21 +30,33 @@ public final class ConfluentAgreementResourceListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfluentAgreementResourceListResponse model = new ConfluentAgreementResourceListResponse().withValue(
-            Arrays.asList(
-                new ConfluentAgreementResourceInner().withPublisher("vgjxpybczm").withProduct("mtz")
-                    .withPlan("bsphrupidgsybbe").withLicenseTextLink("ph").withPrivacyPolicyLink("cmsxaobhdxbm")
-                    .withRetrieveDatetime(OffsetDateTime.parse("2021-07-17T05:00:46Z")).withSignature("qj")
+        ConfluentAgreementResourceListResponse model
+            = new ConfluentAgreementResourceListResponse().withValue(Arrays.asList(
+                new ConfluentAgreementResourceInner().withPublisher("vgjxpybczm")
+                    .withProduct("mtz")
+                    .withPlan("bsphrupidgsybbe")
+                    .withLicenseTextLink("ph")
+                    .withPrivacyPolicyLink("cmsxaobhdxbm")
+                    .withRetrieveDatetime(OffsetDateTime.parse("2021-07-17T05:00:46Z"))
+                    .withSignature("qj")
                     .withAccepted(false),
-                new ConfluentAgreementResourceInner().withPublisher("oqijgkdmbpaz").withProduct("bc")
-                    .withPlan("pdznrbtcqqjnqgl").withLicenseTextLink("gnufoooj").withPrivacyPolicyLink("ifsqesaagdfmg")
-                    .withRetrieveDatetime(OffsetDateTime.parse("2021-05-15T08:16:53Z")).withSignature("j")
+                new ConfluentAgreementResourceInner().withPublisher("oqijgkdmbpaz")
+                    .withProduct("bc")
+                    .withPlan("pdznrbtcqqjnqgl")
+                    .withLicenseTextLink("gnufoooj")
+                    .withPrivacyPolicyLink("ifsqesaagdfmg")
+                    .withRetrieveDatetime(OffsetDateTime.parse("2021-05-15T08:16:53Z"))
+                    .withSignature("j")
                     .withAccepted(true),
-                new ConfluentAgreementResourceInner().withPublisher("fdkfogk").withProduct("gjofjd").withPlan("qs")
-                    .withLicenseTextLink("eupewnwreitjz").withPrivacyPolicyLink("lusarh")
-                    .withRetrieveDatetime(OffsetDateTime.parse("2021-11-04T00:37:18Z")).withSignature("qhsmyurkdtml")
+                new ConfluentAgreementResourceInner().withPublisher("fdkfogk")
+                    .withProduct("gjofjd")
+                    .withPlan("qs")
+                    .withLicenseTextLink("eupewnwreitjz")
+                    .withPrivacyPolicyLink("lusarh")
+                    .withRetrieveDatetime(OffsetDateTime.parse("2021-11-04T00:37:18Z"))
+                    .withSignature("qhsmyurkdtml")
                     .withAccepted(false)))
-            .withNextLink("kknryrtihf");
+                .withNextLink("kknryrtihf");
         model = BinaryData.fromObject(model).toObject(ConfluentAgreementResourceListResponse.class);
         Assertions.assertEquals("vgjxpybczm", model.value().get(0).publisher());
         Assertions.assertEquals("mtz", model.value().get(0).product());

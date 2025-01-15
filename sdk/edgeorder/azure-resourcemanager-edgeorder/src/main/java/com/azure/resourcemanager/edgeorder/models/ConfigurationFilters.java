@@ -6,30 +6,37 @@ package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Configuration filters. */
+/**
+ * Configuration filters.
+ */
 @Fluent
-public final class ConfigurationFilters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationFilters.class);
-
+public final class ConfigurationFilters implements JsonSerializable<ConfigurationFilters> {
     /*
      * Product hierarchy information
      */
-    @JsonProperty(value = "hierarchyInformation", required = true)
     private HierarchyInformation hierarchyInformation;
 
     /*
      * Filters specific to product
      */
-    @JsonProperty(value = "filterableProperty")
     private List<FilterableProperty> filterableProperty;
 
     /**
+     * Creates an instance of ConfigurationFilters class.
+     */
+    public ConfigurationFilters() {
+    }
+
+    /**
      * Get the hierarchyInformation property: Product hierarchy information.
-     *
+     * 
      * @return the hierarchyInformation value.
      */
     public HierarchyInformation hierarchyInformation() {
@@ -38,7 +45,7 @@ public final class ConfigurationFilters {
 
     /**
      * Set the hierarchyInformation property: Product hierarchy information.
-     *
+     * 
      * @param hierarchyInformation the hierarchyInformation value to set.
      * @return the ConfigurationFilters object itself.
      */
@@ -49,7 +56,7 @@ public final class ConfigurationFilters {
 
     /**
      * Get the filterableProperty property: Filters specific to product.
-     *
+     * 
      * @return the filterableProperty value.
      */
     public List<FilterableProperty> filterableProperty() {
@@ -58,7 +65,7 @@ public final class ConfigurationFilters {
 
     /**
      * Set the filterableProperty property: Filters specific to product.
-     *
+     * 
      * @param filterableProperty the filterableProperty value to set.
      * @return the ConfigurationFilters object itself.
      */
@@ -69,20 +76,64 @@ public final class ConfigurationFilters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hierarchyInformation() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hierarchyInformation in model ConfigurationFilters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hierarchyInformation in model ConfigurationFilters"));
         } else {
             hierarchyInformation().validate();
         }
         if (filterableProperty() != null) {
             filterableProperty().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationFilters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hierarchyInformation", this.hierarchyInformation);
+        jsonWriter.writeArrayField("filterableProperty", this.filterableProperty,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationFilters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationFilters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConfigurationFilters.
+     */
+    public static ConfigurationFilters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationFilters deserializedConfigurationFilters = new ConfigurationFilters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hierarchyInformation".equals(fieldName)) {
+                    deserializedConfigurationFilters.hierarchyInformation = HierarchyInformation.fromJson(reader);
+                } else if ("filterableProperty".equals(fieldName)) {
+                    List<FilterableProperty> filterableProperty
+                        = reader.readArray(reader1 -> FilterableProperty.fromJson(reader1));
+                    deserializedConfigurationFilters.filterableProperty = filterableProperty;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationFilters;
+        });
     }
 }

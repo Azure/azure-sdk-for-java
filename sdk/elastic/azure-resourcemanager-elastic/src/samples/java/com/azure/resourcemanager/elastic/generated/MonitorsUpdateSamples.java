@@ -6,22 +6,23 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.resourcemanager.elastic.models.ElasticMonitorResource;
 
-/** Samples for Monitors Update. */
+/**
+ * Samples for Monitors Update.
+ */
 public final class MonitorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/Monitors_Update.json
+     * x-ms-original-file:
+     * specification/elastic/resource-manager/Microsoft.Elastic/stable/2024-03-01/examples/Monitors_Update.json
      */
     /**
      * Sample code: Monitors_Update.
-     *
+     * 
      * @param manager Entry point to ElasticManager.
      */
     public static void monitorsUpdate(com.azure.resourcemanager.elastic.ElasticManager manager) {
-        ElasticMonitorResource resource =
-            manager
-                .monitors()
-                .getByResourceGroupWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE)
-                .getValue();
+        ElasticMonitorResource resource = manager.monitors()
+            .getByResourceGroupWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

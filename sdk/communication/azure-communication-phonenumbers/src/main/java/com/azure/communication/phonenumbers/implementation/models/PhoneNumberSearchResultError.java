@@ -5,7 +5,7 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for PhoneNumberSearchResultError. */
@@ -41,8 +41,8 @@ public final class PhoneNumberSearchResultError extends ExpandableStringEnum<Pho
     public static final PhoneNumberSearchResultError NOT_ENOUGH_CREDIT = fromString("NotEnoughCredit");
 
     /** Static value NumbersPartiallyAcquired for PhoneNumberSearchResultError. */
-    public static final PhoneNumberSearchResultError NUMBERS_PARTIALLY_ACQUIRED =
-            fromString("NumbersPartiallyAcquired");
+    public static final PhoneNumberSearchResultError NUMBERS_PARTIALLY_ACQUIRED
+        = fromString("NumbersPartiallyAcquired");
 
     /** Static value AllNumbersNotAcquired for PhoneNumberSearchResultError. */
     public static final PhoneNumberSearchResultError ALL_NUMBERS_NOT_ACQUIRED = fromString("AllNumbersNotAcquired");
@@ -63,12 +63,21 @@ public final class PhoneNumberSearchResultError extends ExpandableStringEnum<Pho
     public static final PhoneNumberSearchResultError UNKNOWN_SEARCH_ERROR = fromString("UnknownSearchError");
 
     /**
+     * Creates an instance of {@link PhoneNumberSearchResultError} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link PhoneNumberSearchResultError}
+     * instead.
+     */
+    @Deprecated
+    public PhoneNumberSearchResultError() {
+    }
+
+    /**
      * Creates or finds a PhoneNumberSearchResultError from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding PhoneNumberSearchResultError.
      */
-    @JsonCreator
     public static PhoneNumberSearchResultError fromString(String name) {
         return fromString(name, PhoneNumberSearchResultError.class);
     }

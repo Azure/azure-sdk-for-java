@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class InternetGatewayPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternetGatewayPatchableProperties model =
-            BinaryData
-                .fromString("{\"internetGatewayRuleId\":\"tdacarvvlfn\"}")
-                .toObject(InternetGatewayPatchableProperties.class);
-        Assertions.assertEquals("tdacarvvlfn", model.internetGatewayRuleId());
+        InternetGatewayPatchableProperties model = BinaryData.fromString("{\"internetGatewayRuleId\":\"qhnlbqnbld\"}")
+            .toObject(InternetGatewayPatchableProperties.class);
+        Assertions.assertEquals("qhnlbqnbld", model.internetGatewayRuleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayPatchableProperties model =
-            new InternetGatewayPatchableProperties().withInternetGatewayRuleId("tdacarvvlfn");
+        InternetGatewayPatchableProperties model
+            = new InternetGatewayPatchableProperties().withInternetGatewayRuleId("qhnlbqnbld");
         model = BinaryData.fromObject(model).toObject(InternetGatewayPatchableProperties.class);
-        Assertions.assertEquals("tdacarvvlfn", model.internetGatewayRuleId());
+        Assertions.assertEquals("qhnlbqnbld", model.internetGatewayRuleId());
     }
 }

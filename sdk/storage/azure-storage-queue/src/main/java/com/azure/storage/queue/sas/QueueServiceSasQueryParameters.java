@@ -44,7 +44,6 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
             removeSasParametersFromMap);
     }
 
-
     /**
      * Creates a new {@link QueueServiceSasQueryParameters} object. These objects are only created internally by
      * SASSignatureValues classes.

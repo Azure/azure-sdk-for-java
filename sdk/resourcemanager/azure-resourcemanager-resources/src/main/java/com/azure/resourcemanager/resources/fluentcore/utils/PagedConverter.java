@@ -70,12 +70,12 @@ public final class PagedConverter {
      * @return the PagedFlux with elements in PagedResponse transformed.
      */
     public static <T, S> PagedFlux<S> flatMapPage(PagedFlux<T> pagedFlux,
-            Function<? super T, ? extends Publisher<? extends S>> mapper) {
+        Function<? super T, ? extends Publisher<? extends S>> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             // retrieve single page
             Flux<PagedResponse<T>> flux = (continuationToken == null)
-                    ? pagedFlux.byPage().take(1)
-                    : pagedFlux.byPage(continuationToken).take(1);
+                ? pagedFlux.byPage().take(1)
+                : pagedFlux.byPage(continuationToken).take(1);
             return flux.concatMap(PagedConverter.flatMapPagedResponse(mapper));
         };
         return PagedFlux.create(provider);
@@ -91,14 +91,13 @@ public final class PagedConverter {
      * @return the merged PagedFlux.
      */
     public static <T, S> PagedFlux<S> mergePagedFlux(PagedFlux<T> pagedFlux,
-            Function<? super T, PagedFlux<S>> transformer) {
+        Function<? super T, PagedFlux<S>> transformer) {
         // one possible issue is that when inner PagedFlux ends, that PagedResponse will have continuationToken == null
 
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             // here retrieve all pages, as the continuationToken in mergePagedFluxPagedResponse would confuse this outer paging
-            Flux<PagedResponse<T>> flux = (continuationToken == null)
-                ? pagedFlux.byPage()
-                : pagedFlux.byPage(continuationToken);
+            Flux<PagedResponse<T>> flux
+                = (continuationToken == null) ? pagedFlux.byPage() : pagedFlux.byPage(continuationToken);
             return flux.concatMap(PagedConverter.mergePagedFluxPagedResponse(transformer));
         };
         return PagedFlux.create(provider);
@@ -106,11 +105,9 @@ public final class PagedConverter {
 
     private static <T, S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
         return pagedResponse -> new PagedResponseBase<Void, S>(pagedResponse.getRequest(),
-            pagedResponse.getStatusCode(),
-            pagedResponse.getHeaders(),
+            pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
             pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
-            pagedResponse.getContinuationToken(),
-            null);
+            pagedResponse.getContinuationToken(), null);
     }
 
     /**
@@ -121,18 +118,13 @@ public final class PagedConverter {
      * @param <S> return type of pagedFlux.
      * @return the lifted transform on PagedResponse.
      */
-    private static <T, S> Function<PagedResponse<T>, Mono<PagedResponse<S>>> flatMapPagedResponse(
-            Function<? super T, ? extends Publisher<? extends S>> mapper) {
-        return pagedResponse ->
-                Flux.fromIterable(pagedResponse.getValue())
-                        .flatMapSequential(mapper)
-                        .collectList()
-                        .map(values -> new PagedResponseBase<Void, S>(pagedResponse.getRequest(),
-                                pagedResponse.getStatusCode(),
-                                pagedResponse.getHeaders(),
-                                values,
-                                pagedResponse.getContinuationToken(),
-                                null));
+    private static <T, S> Function<PagedResponse<T>, Mono<PagedResponse<S>>>
+        flatMapPagedResponse(Function<? super T, ? extends Publisher<? extends S>> mapper) {
+        return pagedResponse -> Flux.fromIterable(pagedResponse.getValue())
+            .flatMapSequential(mapper)
+            .collectList()
+            .map(values -> new PagedResponseBase<Void, S>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
+                pagedResponse.getHeaders(), values, pagedResponse.getContinuationToken(), null));
     }
 
     /**
@@ -143,13 +135,14 @@ public final class PagedConverter {
      * @param <S> return type of pagedFlux.
      * @return the the merged PagedFlux.
      */
-    private static <T, S> Function<PagedResponse<T>, Flux<PagedResponse<S>>> mergePagedFluxPagedResponse(
-        Function<? super T, PagedFlux<S>> transformer) {
+    private static <T, S> Function<PagedResponse<T>, Flux<PagedResponse<S>>>
+        mergePagedFluxPagedResponse(Function<? super T, PagedFlux<S>> transformer) {
         return pagedResponse -> {
-            List<Flux<PagedResponse<S>>> fluxList = pagedResponse.getValue().stream()
-                .map(item -> transformer.apply(item).byPage()).collect(Collectors.toList());
-            return Flux.concat(fluxList)
-                .filter(p -> !p.getValue().isEmpty());
+            List<Flux<PagedResponse<S>>> fluxList = pagedResponse.getValue()
+                .stream()
+                .map(item -> transformer.apply(item).byPage())
+                .collect(Collectors.toList());
+            return Flux.concat(fluxList).filter(p -> !p.getValue().isEmpty());
         };
     }
 
@@ -161,14 +154,8 @@ public final class PagedConverter {
      * @return the PagedFlux.
      */
     public static <T> PagedFlux<T> convertListToPagedFlux(Mono<Response<List<T>>> responseMono) {
-        return new PagedFlux<>(() -> responseMono.map(response -> new PagedResponseBase<Void, T>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            response.getValue(),
-            null,
-            null
-        )));
+        return new PagedFlux<>(() -> responseMono.map(response -> new PagedResponseBase<Void, T>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), response.getValue(), null, null)));
     }
 
     private static final class PagedIterableImpl<T, S> extends PagedIterable<S> {
@@ -178,20 +165,16 @@ public final class PagedConverter {
         private final Function<PagedResponse<T>, PagedResponse<S>> pageMapper;
 
         private PagedIterableImpl(PagedIterable<T> pagedIterable, Function<T, S> mapper) {
-            super(PagedFlux.create(() -> (continuationToken, pageSize)
-                -> Flux.fromStream(pagedIterable.streamByPage().map(getPageMapper(mapper)))));
+            super(PagedFlux.create(() -> (continuationToken, pageSize) -> Flux
+                .fromStream(pagedIterable.streamByPage().map(getPageMapper(mapper)))));
             this.pagedIterable = pagedIterable;
             this.mapper = mapper;
             this.pageMapper = getPageMapper(mapper);
         }
 
         private static <T, S> Function<PagedResponse<T>, PagedResponse<S>> getPageMapper(Function<T, S> mapper) {
-            return page -> new PagedResponseBase<Void, S>(
-                page.getRequest(),
-                page.getStatusCode(),
-                page.getHeaders(),
-                page.getElements().stream().map(mapper).collect(Collectors.toList()),
-                page.getContinuationToken(),
+            return page -> new PagedResponseBase<Void, S>(page.getRequest(), page.getStatusCode(), page.getHeaders(),
+                page.getElements().stream().map(mapper).collect(Collectors.toList()), page.getContinuationToken(),
                 null);
         }
 
@@ -227,20 +210,19 @@ public final class PagedConverter {
 
         @Override
         public Iterable<PagedResponse<S>> iterableByPage() {
-            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
-                pagedIterable.iterableByPage(), pageMapper);
+            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(pagedIterable.iterableByPage(), pageMapper);
         }
 
         @Override
         public Iterable<PagedResponse<S>> iterableByPage(String continuationToken) {
-            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
-                pagedIterable.iterableByPage(continuationToken), pageMapper);
+            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(pagedIterable.iterableByPage(continuationToken),
+                pageMapper);
         }
 
         @Override
         public Iterable<PagedResponse<S>> iterableByPage(int preferredPageSize) {
-            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
-                pagedIterable.iterableByPage(preferredPageSize), pageMapper);
+            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(pagedIterable.iterableByPage(preferredPageSize),
+                pageMapper);
         }
 
         @Override

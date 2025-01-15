@@ -44,8 +44,8 @@ public interface PipelineJobsClient {
      * @return a collection of PipelineJob items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PipelineJobInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context);
+    PagedIterable<PipelineJobInner> list(String resourceGroupName, String accountName, String filter, Integer top,
+        Context context);
 
     /**
      * Retrieves a specific pipeline job by name. If a pipeline job with that name has been previously created, the call
@@ -78,8 +78,8 @@ public interface PipelineJobsClient {
      *     portions of archived content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineJobInner> getWithResponse(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context);
+    Response<PipelineJobInner> getWithResponse(String resourceGroupName, String accountName, String pipelineJobName,
+        Context context);
 
     /**
      * Creates a new pipeline job or updates an existing one, with the given name.
@@ -95,8 +95,8 @@ public interface PipelineJobsClient {
      *     portions of archived content.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineJobInner createOrUpdate(
-        String resourceGroupName, String accountName, String pipelineJobName, PipelineJobInner parameters);
+    PipelineJobInner createOrUpdate(String resourceGroupName, String accountName, String pipelineJobName,
+        PipelineJobInner parameters);
 
     /**
      * Creates a new pipeline job or updates an existing one, with the given name.
@@ -113,12 +113,8 @@ public interface PipelineJobsClient {
      *     portions of archived content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineJobInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String pipelineJobName,
-        PipelineJobInner parameters,
-        Context context);
+    Response<PipelineJobInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String pipelineJobName, PipelineJobInner parameters, Context context);
 
     /**
      * Deletes a pipeline job with the given name.
@@ -146,8 +142,8 @@ public interface PipelineJobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String pipelineJobName,
+        Context context);
 
     /**
      * Updates an existing pipeline job with the given name. Properties that can be updated include: description.
@@ -163,8 +159,8 @@ public interface PipelineJobsClient {
      *     portions of archived content.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineJobInner update(
-        String resourceGroupName, String accountName, String pipelineJobName, PipelineJobUpdate parameters);
+    PipelineJobInner update(String resourceGroupName, String accountName, String pipelineJobName,
+        PipelineJobUpdate parameters);
 
     /**
      * Updates an existing pipeline job with the given name. Properties that can be updated include: description.
@@ -181,12 +177,8 @@ public interface PipelineJobsClient {
      *     portions of archived content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineJobInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String pipelineJobName,
-        PipelineJobUpdate parameters,
-        Context context);
+    Response<PipelineJobInner> updateWithResponse(String resourceGroupName, String accountName, String pipelineJobName,
+        PipelineJobUpdate parameters, Context context);
 
     /**
      * Cancels a pipeline job with the given name.
@@ -200,8 +192,8 @@ public interface PipelineJobsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancel(
-        String resourceGroupName, String accountName, String pipelineJobName);
+    SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String accountName,
+        String pipelineJobName);
 
     /**
      * Cancels a pipeline job with the given name.
@@ -216,8 +208,8 @@ public interface PipelineJobsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancel(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String accountName, String pipelineJobName,
+        Context context);
 
     /**
      * Cancels a pipeline job with the given name.

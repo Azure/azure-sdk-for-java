@@ -10,11 +10,9 @@ import com.azure.resourcemanager.storagepool.models.DiskPoolZoneListResult;
 public final class DiskPoolZoneListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskPoolZoneListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"availabilityZones\":[\"y\",\"enjbdlwtgrhp\"],\"additionalCapabilities\":[\"jumasx\"],\"sku\":{\"name\":\"jpqyegu\",\"tier\":\"hb\"}},{\"availabilityZones\":[\"e\",\"jzzvdud\"],\"additionalCapabilities\":[\"slfhotwm\",\"ynpwlbj\",\"pgacftadehxnlty\"],\"sku\":{\"name\":\"oppusuesnzw\",\"tier\":\"jbavorxzdm\"}}],\"nextLink\":\"ctbqvudwx\"}")
-                .toObject(DiskPoolZoneListResult.class);
+        DiskPoolZoneListResult model = BinaryData.fromString(
+            "{\"value\":[{\"availabilityZones\":[\"qvudwxdndnvowgu\",\"jugwdkcglhsl\",\"zj\"],\"additionalCapabilities\":[\"gdtjixhbkuofqwey\"],\"sku\":{\"name\":\"menevfyexfwh\",\"tier\":\"cibvyvdcsitynn\"}},{\"availabilityZones\":[\"dectehfiqsc\",\"eypvhezrkg\",\"hcjrefovgmk\",\"sle\"],\"additionalCapabilities\":[\"xyqj\",\"k\",\"attpngjcrcczsq\",\"jh\"],\"sku\":{\"name\":\"daj\",\"tier\":\"ysou\"}},{\"availabilityZones\":[\"canoaeupf\"],\"additionalCapabilities\":[\"ltrpmopj\",\"cma\",\"u\",\"kthfui\"],\"sku\":{\"name\":\"odsfcpkvxodpuozm\",\"tier\":\"ydagfuaxbe\"}}],\"nextLink\":\"iu\"}")
+            .toObject(DiskPoolZoneListResult.class);
     }
 
     @org.junit.jupiter.api.Test

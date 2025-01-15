@@ -6,46 +6,101 @@ package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.EnvironmentPermission;
 import com.azure.resourcemanager.devtestlabs.models.LabAnnouncementProperties;
 import com.azure.resourcemanager.devtestlabs.models.LabSupportProperties;
 import com.azure.resourcemanager.devtestlabs.models.PremiumDataDisk;
 import com.azure.resourcemanager.devtestlabs.models.StorageType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A lab. */
+/**
+ * A lab.
+ */
 @Fluent
 public final class LabInner extends Resource {
     /*
      * The properties of the resource.
      */
-    @JsonProperty(value = "properties")
     private LabProperties innerProperties;
 
-    /** Creates an instance of LabInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LabInner class.
+     */
     public LabInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LabProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -54,7 +109,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the defaultStorageAccount property: The lab's default storage account.
-     *
+     * 
      * @return the defaultStorageAccount value.
      */
     public String defaultStorageAccount() {
@@ -63,7 +118,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the defaultPremiumStorageAccount property: The lab's default premium storage account.
-     *
+     * 
      * @return the defaultPremiumStorageAccount value.
      */
     public String defaultPremiumStorageAccount() {
@@ -72,7 +127,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the artifactsStorageAccount property: The lab's artifact storage account.
-     *
+     * 
      * @return the artifactsStorageAccount value.
      */
     public String artifactsStorageAccount() {
@@ -81,7 +136,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the premiumDataDiskStorageAccount property: The lab's premium data disk storage account.
-     *
+     * 
      * @return the premiumDataDiskStorageAccount value.
      */
     public String premiumDataDiskStorageAccount() {
@@ -90,7 +145,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the vaultName property: The lab's Key vault.
-     *
+     * 
      * @return the vaultName value.
      */
     public String vaultName() {
@@ -100,7 +155,7 @@ public final class LabInner extends Resource {
     /**
      * Get the labStorageType property: Type of storage used by the lab. It can be either Premium or Standard. Default
      * is Premium.
-     *
+     * 
      * @return the labStorageType value.
      */
     public StorageType labStorageType() {
@@ -110,7 +165,7 @@ public final class LabInner extends Resource {
     /**
      * Set the labStorageType property: Type of storage used by the lab. It can be either Premium or Standard. Default
      * is Premium.
-     *
+     * 
      * @param labStorageType the labStorageType value to set.
      * @return the LabInner object itself.
      */
@@ -125,7 +180,7 @@ public final class LabInner extends Resource {
     /**
      * Get the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that should be
      * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @return the mandatoryArtifactsResourceIdsLinux value.
      */
     public List<String> mandatoryArtifactsResourceIdsLinux() {
@@ -135,7 +190,7 @@ public final class LabInner extends Resource {
     /**
      * Set the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that should be
      * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @param mandatoryArtifactsResourceIdsLinux the mandatoryArtifactsResourceIdsLinux value to set.
      * @return the LabInner object itself.
      */
@@ -150,7 +205,7 @@ public final class LabInner extends Resource {
     /**
      * Get the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs that should be
      * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @return the mandatoryArtifactsResourceIdsWindows value.
      */
     public List<String> mandatoryArtifactsResourceIdsWindows() {
@@ -160,7 +215,7 @@ public final class LabInner extends Resource {
     /**
      * Set the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs that should be
      * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @param mandatoryArtifactsResourceIdsWindows the mandatoryArtifactsResourceIdsWindows value to set.
      * @return the LabInner object itself.
      */
@@ -174,7 +229,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the createdDate property: The creation date of the lab.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -182,10 +237,10 @@ public final class LabInner extends Resource {
     }
 
     /**
-     * Get the premiumDataDisks property: The setting to enable usage of premium data disks. When its value is
-     * 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
-     * standard data disks is allowed.
-     *
+     * Get the premiumDataDisks property: The setting to enable usage of premium data disks.
+     * When its value is 'Enabled', creation of standard or premium data disks is allowed.
+     * When its value is 'Disabled', only creation of standard data disks is allowed.
+     * 
      * @return the premiumDataDisks value.
      */
     public PremiumDataDisk premiumDataDisks() {
@@ -193,10 +248,10 @@ public final class LabInner extends Resource {
     }
 
     /**
-     * Set the premiumDataDisks property: The setting to enable usage of premium data disks. When its value is
-     * 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
-     * standard data disks is allowed.
-     *
+     * Set the premiumDataDisks property: The setting to enable usage of premium data disks.
+     * When its value is 'Enabled', creation of standard or premium data disks is allowed.
+     * When its value is 'Disabled', only creation of standard data disks is allowed.
+     * 
      * @param premiumDataDisks the premiumDataDisks value to set.
      * @return the LabInner object itself.
      */
@@ -211,7 +266,7 @@ public final class LabInner extends Resource {
     /**
      * Get the environmentPermission property: The access rights to be granted to the user when provisioning an
      * environment.
-     *
+     * 
      * @return the environmentPermission value.
      */
     public EnvironmentPermission environmentPermission() {
@@ -221,7 +276,7 @@ public final class LabInner extends Resource {
     /**
      * Set the environmentPermission property: The access rights to be granted to the user when provisioning an
      * environment.
-     *
+     * 
      * @param environmentPermission the environmentPermission value to set.
      * @return the LabInner object itself.
      */
@@ -235,7 +290,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the announcement property: The properties of any lab announcement associated with this lab.
-     *
+     * 
      * @return the announcement value.
      */
     public LabAnnouncementProperties announcement() {
@@ -244,7 +299,7 @@ public final class LabInner extends Resource {
 
     /**
      * Set the announcement property: The properties of any lab announcement associated with this lab.
-     *
+     * 
      * @param announcement the announcement value to set.
      * @return the LabInner object itself.
      */
@@ -258,7 +313,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the support property: The properties of any lab support message associated with this lab.
-     *
+     * 
      * @return the support value.
      */
     public LabSupportProperties support() {
@@ -267,7 +322,7 @@ public final class LabInner extends Resource {
 
     /**
      * Set the support property: The properties of any lab support message associated with this lab.
-     *
+     * 
      * @param support the support value to set.
      * @return the LabInner object itself.
      */
@@ -282,7 +337,7 @@ public final class LabInner extends Resource {
     /**
      * Get the vmCreationResourceGroup property: The resource group in which all new lab virtual machines will be
      * created. To let DevTest Labs manage resource group creation, set this value to null.
-     *
+     * 
      * @return the vmCreationResourceGroup value.
      */
     public String vmCreationResourceGroup() {
@@ -291,7 +346,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the publicIpId property: The public IP address for the lab's load balancer.
-     *
+     * 
      * @return the publicIpId value.
      */
     public String publicIpId() {
@@ -300,7 +355,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the loadBalancerId property: The load balancer used to for lab VMs that use shared IP address.
-     *
+     * 
      * @return the loadBalancerId value.
      */
     public String loadBalancerId() {
@@ -310,7 +365,7 @@ public final class LabInner extends Resource {
     /**
      * Get the networkSecurityGroupId property: The Network Security Group attached to the lab VMs Network interfaces to
      * restrict open ports.
-     *
+     * 
      * @return the networkSecurityGroupId value.
      */
     public String networkSecurityGroupId() {
@@ -319,7 +374,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the extendedProperties property: Extended properties of the lab used for experimental features.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -328,7 +383,7 @@ public final class LabInner extends Resource {
 
     /**
      * Set the extendedProperties property: Extended properties of the lab used for experimental features.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the LabInner object itself.
      */
@@ -342,7 +397,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -351,7 +406,7 @@ public final class LabInner extends Resource {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -360,12 +415,62 @@ public final class LabInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LabInner.
+     */
+    public static LabInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabInner deserializedLabInner = new LabInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLabInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLabInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLabInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedLabInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLabInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLabInner.innerProperties = LabProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabInner;
+        });
     }
 }

@@ -19,8 +19,7 @@ import java.util.List;
 @Immutable
 public final class DocumentLanguage implements JsonSerializable<DocumentLanguage> {
     /*
-     * Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47 language tag (ex.
-     * "zh-Hans").
+     * Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47 language tag (ex. "zh-Hans").
      */
     private final String locale;
 
@@ -75,6 +74,9 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -6,69 +6,38 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentBillingFeatures;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ComponentCurrentBillingFeaturesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"DataVolumeCap\":{\"Cap\":39.890907,\"ResetTime\":1058689711,\"WarningThreshold\":698504930,\"StopSendNotificationWhenHitThreshold\":false,\"StopSendNotificationWhenHitCap\":true,\"MaxHistoryCap\":53.721916},\"CurrentBillingFeatures\":[\"twkuziycs\",\"evufuztck\",\"yhjtqedcgzu\"]}";
 
-        String responseStr =
-            "{\"DataVolumeCap\":{\"Cap\":72.29011,\"ResetTime\":2015224761,\"WarningThreshold\":142407954,\"StopSendNotificationWhenHitThreshold\":false,\"StopSendNotificationWhenHitCap\":false,\"MaxHistoryCap\":0.78641176},\"CurrentBillingFeatures\":[\"ozqyzh\",\"tw\",\"sgogczhonnxk\",\"lgnyhmo\"]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ApplicationInsightsComponentBillingFeatures response = manager.componentCurrentBillingFeatures()
+            .getWithResponse("est", "jlxr", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ApplicationInsightsComponentBillingFeatures response =
-            manager
-                .componentCurrentBillingFeatures()
-                .getWithResponse("jlpijnkrx", "rddh", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(72.29011F, response.dataVolumeCap().cap());
-        Assertions.assertEquals(142407954, response.dataVolumeCap().warningThreshold());
+        Assertions.assertEquals(39.890907F, response.dataVolumeCap().cap());
+        Assertions.assertEquals(698504930, response.dataVolumeCap().warningThreshold());
         Assertions.assertEquals(false, response.dataVolumeCap().stopSendNotificationWhenHitThreshold());
-        Assertions.assertEquals(false, response.dataVolumeCap().stopSendNotificationWhenHitCap());
-        Assertions.assertEquals("ozqyzh", response.currentBillingFeatures().get(0));
+        Assertions.assertEquals(true, response.dataVolumeCap().stopSendNotificationWhenHitCap());
+        Assertions.assertEquals("twkuziycs", response.currentBillingFeatures().get(0));
     }
 }

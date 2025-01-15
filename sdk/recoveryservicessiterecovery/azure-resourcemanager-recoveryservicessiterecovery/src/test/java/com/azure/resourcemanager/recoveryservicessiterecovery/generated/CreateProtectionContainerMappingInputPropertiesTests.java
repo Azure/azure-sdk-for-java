@@ -21,9 +21,10 @@ public final class CreateProtectionContainerMappingInputPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateProtectionContainerMappingInputProperties model = new CreateProtectionContainerMappingInputProperties()
-            .withTargetProtectionContainerId("qbmfpjbabwidf").withPolicyId("sspuunnoxyhkx")
-            .withProviderSpecificInput(new ReplicationProviderSpecificContainerMappingInput());
+        CreateProtectionContainerMappingInputProperties model
+            = new CreateProtectionContainerMappingInputProperties().withTargetProtectionContainerId("qbmfpjbabwidf")
+                .withPolicyId("sspuunnoxyhkx")
+                .withProviderSpecificInput(new ReplicationProviderSpecificContainerMappingInput());
         model = BinaryData.fromObject(model).toObject(CreateProtectionContainerMappingInputProperties.class);
         Assertions.assertEquals("qbmfpjbabwidf", model.targetProtectionContainerId());
         Assertions.assertEquals("sspuunnoxyhkx", model.policyId());

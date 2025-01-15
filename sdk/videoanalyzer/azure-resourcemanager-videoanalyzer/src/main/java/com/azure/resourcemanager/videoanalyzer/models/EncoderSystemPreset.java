@@ -50,9 +50,8 @@ public final class EncoderSystemPreset extends EncoderPresetBase {
     public void validate() {
         super.validate();
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model EncoderSystemPreset"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model EncoderSystemPreset"));
         }
     }
 

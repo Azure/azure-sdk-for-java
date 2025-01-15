@@ -6,37 +6,43 @@ package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Properties from the Kubernetes data controller. */
+/**
+ * Properties from the Kubernetes data controller.
+ */
 @Fluent
-public final class OnPremiseProperty {
+public final class OnPremiseProperty implements JsonSerializable<OnPremiseProperty> {
     /*
      * A globally unique ID identifying the associated Kubernetes cluster
      */
-    @JsonProperty(value = "id", required = true)
     private UUID id;
 
     /*
      * Certificate that contains the Kubernetes cluster public key used to verify signing
      */
-    @JsonProperty(value = "publicSigningKey", required = true)
     private String publicSigningKey;
 
     /*
      * Unique thumbprint returned to customer to verify the certificate being uploaded
      */
-    @JsonProperty(value = "signingCertificateThumbprint")
     private String signingCertificateThumbprint;
 
-    /** Creates an instance of OnPremiseProperty class. */
+    /**
+     * Creates an instance of OnPremiseProperty class.
+     */
     public OnPremiseProperty() {
     }
 
     /**
      * Get the id property: A globally unique ID identifying the associated Kubernetes cluster.
-     *
+     * 
      * @return the id value.
      */
     public UUID id() {
@@ -45,7 +51,7 @@ public final class OnPremiseProperty {
 
     /**
      * Set the id property: A globally unique ID identifying the associated Kubernetes cluster.
-     *
+     * 
      * @param id the id value to set.
      * @return the OnPremiseProperty object itself.
      */
@@ -57,7 +63,7 @@ public final class OnPremiseProperty {
     /**
      * Get the publicSigningKey property: Certificate that contains the Kubernetes cluster public key used to verify
      * signing.
-     *
+     * 
      * @return the publicSigningKey value.
      */
     public String publicSigningKey() {
@@ -67,7 +73,7 @@ public final class OnPremiseProperty {
     /**
      * Set the publicSigningKey property: Certificate that contains the Kubernetes cluster public key used to verify
      * signing.
-     *
+     * 
      * @param publicSigningKey the publicSigningKey value to set.
      * @return the OnPremiseProperty object itself.
      */
@@ -79,7 +85,7 @@ public final class OnPremiseProperty {
     /**
      * Get the signingCertificateThumbprint property: Unique thumbprint returned to customer to verify the certificate
      * being uploaded.
-     *
+     * 
      * @return the signingCertificateThumbprint value.
      */
     public String signingCertificateThumbprint() {
@@ -89,7 +95,7 @@ public final class OnPremiseProperty {
     /**
      * Set the signingCertificateThumbprint property: Unique thumbprint returned to customer to verify the certificate
      * being uploaded.
-     *
+     * 
      * @param signingCertificateThumbprint the signingCertificateThumbprint value to set.
      * @return the OnPremiseProperty object itself.
      */
@@ -100,22 +106,64 @@ public final class OnPremiseProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model OnPremiseProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model OnPremiseProperty"));
         }
         if (publicSigningKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicSigningKey in model OnPremiseProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicSigningKey in model OnPremiseProperty"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OnPremiseProperty.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("publicSigningKey", this.publicSigningKey);
+        jsonWriter.writeStringField("signingCertificateThumbprint", this.signingCertificateThumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnPremiseProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnPremiseProperty if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OnPremiseProperty.
+     */
+    public static OnPremiseProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OnPremiseProperty deserializedOnPremiseProperty = new OnPremiseProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOnPremiseProperty.id
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("publicSigningKey".equals(fieldName)) {
+                    deserializedOnPremiseProperty.publicSigningKey = reader.getString();
+                } else if ("signingCertificateThumbprint".equals(fieldName)) {
+                    deserializedOnPremiseProperty.signingCertificateThumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOnPremiseProperty;
+        });
+    }
 }

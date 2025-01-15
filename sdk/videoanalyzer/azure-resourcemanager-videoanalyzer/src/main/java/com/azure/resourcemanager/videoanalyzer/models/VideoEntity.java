@@ -109,11 +109,13 @@ public interface VideoEntity {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The VideoEntity definition stages. */
     interface DefinitionStages {
         /** The first stage of the VideoEntity definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the VideoEntity definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -125,15 +127,13 @@ public interface VideoEntity {
              */
             WithCreate withExistingVideoAnalyzer(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the VideoEntity definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTitle,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithMediaInfo,
-                DefinitionStages.WithArchival {
+        interface WithCreate extends DefinitionStages.WithTitle, DefinitionStages.WithDescription,
+            DefinitionStages.WithMediaInfo, DefinitionStages.WithArchival {
             /**
              * Executes the create request.
              *
@@ -149,6 +149,7 @@ public interface VideoEntity {
              */
             VideoEntity create(Context context);
         }
+
         /** The stage of the VideoEntity definition allowing to specify title. */
         interface WithTitle {
             /**
@@ -160,6 +161,7 @@ public interface VideoEntity {
              */
             WithCreate withTitle(String title);
         }
+
         /** The stage of the VideoEntity definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -172,6 +174,7 @@ public interface VideoEntity {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the VideoEntity definition allowing to specify mediaInfo. */
         interface WithMediaInfo {
             /**
@@ -182,6 +185,7 @@ public interface VideoEntity {
              */
             WithCreate withMediaInfo(VideoMediaInfo mediaInfo);
         }
+
         /** The stage of the VideoEntity definition allowing to specify archival. */
         interface WithArchival {
             /**
@@ -193,6 +197,7 @@ public interface VideoEntity {
             WithCreate withArchival(VideoArchival archival);
         }
     }
+
     /**
      * Begins update for the VideoEntity resource.
      *
@@ -201,11 +206,8 @@ public interface VideoEntity {
     VideoEntity.Update update();
 
     /** The template for VideoEntity update. */
-    interface Update
-        extends UpdateStages.WithTitle,
-            UpdateStages.WithDescription,
-            UpdateStages.WithMediaInfo,
-            UpdateStages.WithArchival {
+    interface Update extends UpdateStages.WithTitle, UpdateStages.WithDescription, UpdateStages.WithMediaInfo,
+        UpdateStages.WithArchival {
         /**
          * Executes the update request.
          *
@@ -221,6 +223,7 @@ public interface VideoEntity {
          */
         VideoEntity apply(Context context);
     }
+
     /** The VideoEntity update stages. */
     interface UpdateStages {
         /** The stage of the VideoEntity update allowing to specify title. */
@@ -234,6 +237,7 @@ public interface VideoEntity {
              */
             Update withTitle(String title);
         }
+
         /** The stage of the VideoEntity update allowing to specify description. */
         interface WithDescription {
             /**
@@ -246,6 +250,7 @@ public interface VideoEntity {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the VideoEntity update allowing to specify mediaInfo. */
         interface WithMediaInfo {
             /**
@@ -256,6 +261,7 @@ public interface VideoEntity {
              */
             Update withMediaInfo(VideoMediaInfo mediaInfo);
         }
+
         /** The stage of the VideoEntity update allowing to specify archival. */
         interface WithArchival {
             /**
@@ -267,6 +273,7 @@ public interface VideoEntity {
             Update withArchival(VideoArchival archival);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

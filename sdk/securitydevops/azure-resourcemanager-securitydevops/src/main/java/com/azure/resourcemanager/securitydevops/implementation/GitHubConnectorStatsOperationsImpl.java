@@ -20,22 +20,18 @@ public final class GitHubConnectorStatsOperationsImpl implements GitHubConnector
 
     private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
-    public GitHubConnectorStatsOperationsImpl(
-        GitHubConnectorStatsOperationsClient innerClient,
+    public GitHubConnectorStatsOperationsImpl(GitHubConnectorStatsOperationsClient innerClient,
         com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<GitHubConnectorStatsListResponse> getWithResponse(
-        String resourceGroupName, String gitHubConnectorName, Context context) {
-        Response<GitHubConnectorStatsListResponseInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, gitHubConnectorName, context);
+    public Response<GitHubConnectorStatsListResponse> getWithResponse(String resourceGroupName,
+        String gitHubConnectorName, Context context) {
+        Response<GitHubConnectorStatsListResponseInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, gitHubConnectorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GitHubConnectorStatsListResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

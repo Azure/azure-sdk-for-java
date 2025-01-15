@@ -8,60 +8,62 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.ServiceConfigurationResourceInner;
 
-/** An immutable client-side representation of ServiceConfigurationResource. */
+/**
+ * An immutable client-side representation of ServiceConfigurationResource.
+ */
 public interface ServiceConfigurationResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the serviceName property: Name of the service.
-     *
+     * 
      * @return the serviceName value.
      */
     ServiceName serviceName();
 
     /**
      * Gets the resourceId property: The resource Id of the connectivity endpoint (optional).
-     *
+     * 
      * @return the resourceId value.
      */
     String resourceId();
 
     /**
      * Gets the port property: The port on which service is enabled.
-     *
+     * 
      * @return the port value.
      */
     Long port();
 
     /**
      * Gets the provisioningState property: The resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -69,27 +71,35 @@ public interface ServiceConfigurationResource {
     /**
      * Gets the inner com.azure.resourcemanager.hybridconnectivity.fluent.models.ServiceConfigurationResourceInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ServiceConfigurationResourceInner innerModel();
 
-    /** The entirety of the ServiceConfigurationResource definition. */
+    /**
+     * The entirety of the ServiceConfigurationResource definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The ServiceConfigurationResource definition stages. */
+    /**
+     * The ServiceConfigurationResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ServiceConfigurationResource definition. */
+        /**
+         * The first stage of the ServiceConfigurationResource definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the ServiceConfigurationResource definition allowing to specify parent resource. */
+        /**
+         * The stage of the ServiceConfigurationResource definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceUri, endpointName.
-             *
+             * 
              * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
              * @param endpointName The endpoint name.
              * @return the next definition stage.
@@ -105,47 +115,53 @@ public interface ServiceConfigurationResource {
             extends DefinitionStages.WithServiceName, DefinitionStages.WithResourceId, DefinitionStages.WithPort {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ServiceConfigurationResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ServiceConfigurationResource create(Context context);
         }
 
-        /** The stage of the ServiceConfigurationResource definition allowing to specify serviceName. */
+        /**
+         * The stage of the ServiceConfigurationResource definition allowing to specify serviceName.
+         */
         interface WithServiceName {
             /**
              * Specifies the serviceName property: Name of the service..
-             *
+             * 
              * @param serviceName Name of the service.
              * @return the next definition stage.
              */
             WithCreate withServiceName(ServiceName serviceName);
         }
 
-        /** The stage of the ServiceConfigurationResource definition allowing to specify resourceId. */
+        /**
+         * The stage of the ServiceConfigurationResource definition allowing to specify resourceId.
+         */
         interface WithResourceId {
             /**
              * Specifies the resourceId property: The resource Id of the connectivity endpoint (optional)..
-             *
+             * 
              * @param resourceId The resource Id of the connectivity endpoint (optional).
              * @return the next definition stage.
              */
             WithCreate withResourceId(String resourceId);
         }
 
-        /** The stage of the ServiceConfigurationResource definition allowing to specify port. */
+        /**
+         * The stage of the ServiceConfigurationResource definition allowing to specify port.
+         */
         interface WithPort {
             /**
              * Specifies the port property: The port on which service is enabled..
-             *
+             * 
              * @param port The port on which service is enabled.
              * @return the next definition stage.
              */
@@ -155,36 +171,42 @@ public interface ServiceConfigurationResource {
 
     /**
      * Begins update for the ServiceConfigurationResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ServiceConfigurationResource.Update update();
 
-    /** The template for ServiceConfigurationResource update. */
+    /**
+     * The template for ServiceConfigurationResource update.
+     */
     interface Update extends UpdateStages.WithPort {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ServiceConfigurationResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ServiceConfigurationResource apply(Context context);
     }
 
-    /** The ServiceConfigurationResource update stages. */
+    /**
+     * The ServiceConfigurationResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ServiceConfigurationResource update allowing to specify port. */
+        /**
+         * The stage of the ServiceConfigurationResource update allowing to specify port.
+         */
         interface WithPort {
             /**
              * Specifies the port property: The port on which service is enabled..
-             *
+             * 
              * @param port The port on which service is enabled.
              * @return the next definition stage.
              */
@@ -194,14 +216,14 @@ public interface ServiceConfigurationResource {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ServiceConfigurationResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

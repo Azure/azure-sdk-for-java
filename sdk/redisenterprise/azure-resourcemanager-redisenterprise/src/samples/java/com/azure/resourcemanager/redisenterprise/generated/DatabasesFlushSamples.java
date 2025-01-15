@@ -12,7 +12,9 @@ import java.util.Arrays;
  */
 public final class DatabasesFlushSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/RedisEnterpriseDatabasesFlush.json
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
+     * RedisEnterpriseDatabasesFlush.json
      */
     /**
      * Sample code: How to flush all the keys in the database.
@@ -23,7 +25,7 @@ public final class DatabasesFlushSamples {
         howToFlushAllTheKeysInTheDatabase(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases()
             .flush("rg1", "cache1", "default", new FlushParameters().withIds(Arrays.asList(
-                "/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")),
+                "/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")),
                 com.azure.core.util.Context.NONE);
     }
 }

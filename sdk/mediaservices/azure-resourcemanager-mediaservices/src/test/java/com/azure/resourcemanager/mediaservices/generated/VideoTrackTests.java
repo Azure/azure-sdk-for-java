@@ -10,8 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.VideoTrack;
 public final class VideoTrackTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VideoTrack model =
-            BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.VideoTrack\"}").toObject(VideoTrack.class);
+        VideoTrack model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.VideoTrack\"}").toObject(VideoTrack.class);
     }
 
     @org.junit.jupiter.api.Test

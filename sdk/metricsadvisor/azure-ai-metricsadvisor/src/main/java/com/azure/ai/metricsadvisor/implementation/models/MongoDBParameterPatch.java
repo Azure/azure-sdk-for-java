@@ -97,6 +97,9 @@ public final class MongoDBParameterPatch implements JsonSerializable<MongoDBPara
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for updating the properties of a Batch pool.
  */
 public class ReplaceBatchPoolPropertiesOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link ReplaceBatchPoolPropertiesOptions}.
+     */
+    public ReplaceBatchPoolPropertiesOptions() {
+    }
 }

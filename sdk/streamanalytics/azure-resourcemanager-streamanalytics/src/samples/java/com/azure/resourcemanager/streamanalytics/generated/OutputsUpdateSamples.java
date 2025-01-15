@@ -10,7 +10,6 @@ import com.azure.resourcemanager.streamanalytics.models.AzureSqlDatabaseOutputDa
 import com.azure.resourcemanager.streamanalytics.models.AzureTableOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.BlobOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
-import com.azure.resourcemanager.streamanalytics.models.DeltaSerialization;
 import com.azure.resourcemanager.streamanalytics.models.DocumentDbOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.EventHubOutputDataSource;
@@ -20,7 +19,6 @@ import com.azure.resourcemanager.streamanalytics.models.Output;
 import com.azure.resourcemanager.streamanalytics.models.PowerBIOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusQueueOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusTopicOutputDataSource;
-import java.util.Arrays;
 
 /**
  * Samples for Outputs Update.
@@ -28,7 +26,7 @@ import java.util.Arrays;
 public final class OutputsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_ServiceBusQueue.json
      */
     /**
@@ -39,8 +37,10 @@ public final class OutputsUpdateSamples {
     public static void updateAServiceBusQueueOutputWithAvroSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg3410", "sj5095", "output3456", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDatasource(new ServiceBusQueueOutputDataSource().withQueueName("differentQueueName"))
+            .getWithResponse("sjrg3410", "sj5095", "output3456", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDatasource(new ServiceBusQueueOutputDataSource().withQueueName("differentQueueName"))
             .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8)
                 .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED))
             .apply();
@@ -48,7 +48,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_DataWarehouse.json
      */
     /**
@@ -59,13 +59,14 @@ public final class OutputsUpdateSamples {
     public static void
         updateAnAzureDataWarehouseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg", "sjName", "dwOutput", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("sjrg", "sjName", "dwOutput", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withDatasource(new AzureSqlDatabaseOutputDataSource().withTable("differentTable")).apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_ServiceBusTopic.json
      */
     /**
@@ -76,14 +77,17 @@ public final class OutputsUpdateSamples {
     public static void updateAServiceBusTopicOutputWithCSVSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg6450", "sj7094", "output7886", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDatasource(new ServiceBusTopicOutputDataSource().withTopicName("differentTopicName"))
-            .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8)).apply();
+            .getWithResponse("sjrg6450", "sj7094", "output7886", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDatasource(new ServiceBusTopicOutputDataSource().withTopicName("differentTopicName"))
+            .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
+            .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_AzureDataLakeStore.json
      */
     /**
@@ -94,8 +98,10 @@ public final class OutputsUpdateSamples {
     public static void updateAnAzureDataLakeStoreOutputWithJSONSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg6912", "sj3310", "output5195", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDatasource(new AzureDataLakeStoreOutputDataSource().withAccountName("differentaccount"))
+            .getWithResponse("sjrg6912", "sj3310", "output5195", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDatasource(new AzureDataLakeStoreOutputDataSource().withAccountName("differentaccount"))
             .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8)
                 .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED))
             .apply();
@@ -103,7 +109,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_AzureFunction.json
      */
     /**
@@ -114,34 +120,16 @@ public final class OutputsUpdateSamples {
     public static void
         updateAnAzureFunctionOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg", "sjName", "azureFunction1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDatasource(new AzureFunctionOutputDataSource().withFunctionName("differentFunctionName"))
+            .getWithResponse("sjrg", "sjName", "azureFunction1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDatasource(new AzureFunctionOutputDataSource().withFunctionName("differentFunctionName"))
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Output_Update_DeltaLake.json
-     */
-    /**
-     * Sample code: Update a Delta Lake output.
-     * 
-     * @param manager Entry point to StreamAnalyticsManager.
-     */
-    public static void
-        updateADeltaLakeOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource = manager.outputs()
-            .getWithResponse("sjrg", "sjName", "output1221", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDatasource(new BlobOutputDataSource().withContainer("deltaoutput2"))
-            .withSerialization(new DeltaSerialization().withDeltaTablePath("/folder1/table2")
-                .withPartitionColumns(Arrays.asList("column2")))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_AzureTable.json
      */
     /**
@@ -152,14 +140,16 @@ public final class OutputsUpdateSamples {
     public static void
         updateAnAzureTableOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg5176", "sj2790", "output958", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDatasource(new AzureTableOutputDataSource().withPartitionKey("fakeTokenPlaceholder"))
+            .getWithResponse("sjrg5176", "sj2790", "output958", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDatasource(new AzureTableOutputDataSource().withPartitionKey("fakeTokenPlaceholder"))
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_PowerBI.json
      */
     /**
@@ -169,13 +159,14 @@ public final class OutputsUpdateSamples {
      */
     public static void updateAPowerBIOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg7983", "sj2331", "output3022", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("sjrg7983", "sj2331", "output3022", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withDatasource(new PowerBIOutputDataSource().withDataset("differentDataset")).apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_Blob.json
      */
     /**
@@ -186,14 +177,17 @@ public final class OutputsUpdateSamples {
     public static void updateABlobOutputWithCSVSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg5023", "sj900", "output1623", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDatasource(new BlobOutputDataSource().withContainer("differentContainer"))
-            .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8)).apply();
+            .getWithResponse("sjrg5023", "sj900", "output1623", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDatasource(new BlobOutputDataSource().withContainer("differentContainer"))
+            .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
+            .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_AzureSQL.json
      */
     /**
@@ -204,13 +198,14 @@ public final class OutputsUpdateSamples {
     public static void
         updateAnAzureSQLDatabaseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg2157", "sj6458", "output1755", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("sjrg2157", "sj6458", "output1755", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withDatasource(new AzureSqlDatabaseOutputDataSource().withTable("differentTable")).apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_EventHub.json
      */
     /**
@@ -221,8 +216,10 @@ public final class OutputsUpdateSamples {
     public static void updateAnEventHubOutputWithJSONSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg6912", "sj3310", "output5195", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDatasource(new EventHubOutputDataSource().withPartitionKey("fakeTokenPlaceholder"))
+            .getWithResponse("sjrg6912", "sj3310", "output5195", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDatasource(new EventHubOutputDataSource().withPartitionKey("fakeTokenPlaceholder"))
             .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8)
                 .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED))
             .apply();
@@ -230,7 +227,7 @@ public final class OutputsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Output_Update_DocumentDB.json
      */
     /**
@@ -241,8 +238,10 @@ public final class OutputsUpdateSamples {
     public static void
         updateADocumentDBOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Output resource = manager.outputs()
-            .getWithResponse("sjrg7983", "sj2331", "output3022", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDatasource(new DocumentDbOutputDataSource().withPartitionKey("fakeTokenPlaceholder"))
+            .getWithResponse("sjrg7983", "sj2331", "output3022", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDatasource(new DocumentDbOutputDataSource().withPartitionKey("fakeTokenPlaceholder"))
             .apply();
     }
 }

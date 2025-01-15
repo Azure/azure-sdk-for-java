@@ -6,82 +6,80 @@ package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.azure.resourcemanager.connectedvmware.models.VICredential;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a VCenter. */
+/**
+ * Describes the properties of a VCenter.
+ */
 @Fluent
-public final class VCenterProperties {
+public final class VCenterProperties implements JsonSerializable<VCenterProperties> {
     /*
      * Gets or sets a unique identifier for this resource.
      */
-    @JsonProperty(value = "uuid", access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
 
     /*
      * Gets or sets the FQDN/IPAddress of the vCenter.
      */
-    @JsonProperty(value = "fqdn", required = true)
     private String fqdn;
 
     /*
      * Gets or sets the port of the vCenter.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * Gets or sets the version of the vCenter.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Gets or sets the instance UUID of the vCenter.
      */
-    @JsonProperty(value = "instanceUuid", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceUuid;
 
     /*
      * Gets or sets the connection status to the vCenter.
      */
-    @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String connectionStatus;
 
     /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
-    @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
 
     /*
      * Username / Password Credentials to connect to vcenter.
      */
-    @JsonProperty(value = "credentials")
     private VICredential credentials;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceStatus> statuses;
 
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VCenterProperties class. */
+    /**
+     * Creates an instance of VCenterProperties class.
+     */
     public VCenterProperties() {
     }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
-     *
+     * 
      * @return the uuid value.
      */
     public String uuid() {
@@ -90,7 +88,7 @@ public final class VCenterProperties {
 
     /**
      * Get the fqdn property: Gets or sets the FQDN/IPAddress of the vCenter.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -99,7 +97,7 @@ public final class VCenterProperties {
 
     /**
      * Set the fqdn property: Gets or sets the FQDN/IPAddress of the vCenter.
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the VCenterProperties object itself.
      */
@@ -110,7 +108,7 @@ public final class VCenterProperties {
 
     /**
      * Get the port property: Gets or sets the port of the vCenter.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -119,7 +117,7 @@ public final class VCenterProperties {
 
     /**
      * Set the port property: Gets or sets the port of the vCenter.
-     *
+     * 
      * @param port the port value to set.
      * @return the VCenterProperties object itself.
      */
@@ -130,7 +128,7 @@ public final class VCenterProperties {
 
     /**
      * Get the version property: Gets or sets the version of the vCenter.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -139,7 +137,7 @@ public final class VCenterProperties {
 
     /**
      * Get the instanceUuid property: Gets or sets the instance UUID of the vCenter.
-     *
+     * 
      * @return the instanceUuid value.
      */
     public String instanceUuid() {
@@ -148,7 +146,7 @@ public final class VCenterProperties {
 
     /**
      * Get the connectionStatus property: Gets or sets the connection status to the vCenter.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public String connectionStatus() {
@@ -157,7 +155,7 @@ public final class VCenterProperties {
 
     /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
-     *
+     * 
      * @return the customResourceName value.
      */
     public String customResourceName() {
@@ -166,7 +164,7 @@ public final class VCenterProperties {
 
     /**
      * Get the credentials property: Username / Password Credentials to connect to vcenter.
-     *
+     * 
      * @return the credentials value.
      */
     public VICredential credentials() {
@@ -175,7 +173,7 @@ public final class VCenterProperties {
 
     /**
      * Set the credentials property: Username / Password Credentials to connect to vcenter.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the VCenterProperties object itself.
      */
@@ -186,7 +184,7 @@ public final class VCenterProperties {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -195,7 +193,7 @@ public final class VCenterProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -204,14 +202,13 @@ public final class VCenterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fqdn() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fqdn in model VCenterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property fqdn in model VCenterProperties"));
         }
         if (credentials() != null) {
             credentials().validate();
@@ -222,4 +219,62 @@ public final class VCenterProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VCenterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fqdn", this.fqdn);
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VCenterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VCenterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VCenterProperties.
+     */
+    public static VCenterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VCenterProperties deserializedVCenterProperties = new VCenterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fqdn".equals(fieldName)) {
+                    deserializedVCenterProperties.fqdn = reader.getString();
+                } else if ("uuid".equals(fieldName)) {
+                    deserializedVCenterProperties.uuid = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedVCenterProperties.port = reader.getNullable(JsonReader::getInt);
+                } else if ("version".equals(fieldName)) {
+                    deserializedVCenterProperties.version = reader.getString();
+                } else if ("instanceUuid".equals(fieldName)) {
+                    deserializedVCenterProperties.instanceUuid = reader.getString();
+                } else if ("connectionStatus".equals(fieldName)) {
+                    deserializedVCenterProperties.connectionStatus = reader.getString();
+                } else if ("customResourceName".equals(fieldName)) {
+                    deserializedVCenterProperties.customResourceName = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedVCenterProperties.credentials = VICredential.fromJson(reader);
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceStatus> statuses = reader.readArray(reader1 -> ResourceStatus.fromJson(reader1));
+                    deserializedVCenterProperties.statuses = statuses;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVCenterProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVCenterProperties;
+        });
+    }
 }

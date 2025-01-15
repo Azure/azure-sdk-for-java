@@ -5,66 +5,72 @@
 package com.azure.resourcemanager.servicelinker.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicelinker.models.AuthType;
 import com.azure.resourcemanager.servicelinker.models.ValidationResultItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The validation result for a linker. */
+/**
+ * The validation result for a linker.
+ */
 @Fluent
-public final class ValidateResult {
+public final class ValidateResult implements JsonSerializable<ValidateResult> {
     /*
      * The linker name.
      */
-    @JsonProperty(value = "linkerName")
     private String linkerName;
 
     /*
      * A boolean value indicating whether the connection is available or not
      */
-    @JsonProperty(value = "isConnectionAvailable")
     private Boolean isConnectionAvailable;
 
     /*
      * The start time of the validation report.
      */
-    @JsonProperty(value = "reportStartTimeUtc")
     private OffsetDateTime reportStartTimeUtc;
 
     /*
      * The end time of the validation report.
      */
-    @JsonProperty(value = "reportEndTimeUtc")
     private OffsetDateTime reportEndTimeUtc;
 
     /*
      * The resource id of the linker source application.
      */
-    @JsonProperty(value = "sourceId")
     private String sourceId;
 
     /*
      * The resource Id of target service.
      */
-    @JsonProperty(value = "targetId")
     private String targetId;
 
     /*
      * The authentication type.
      */
-    @JsonProperty(value = "authType")
     private AuthType authType;
 
     /*
      * The detail of validation result
      */
-    @JsonProperty(value = "validationDetail")
     private List<ValidationResultItem> validationDetail;
 
     /**
+     * Creates an instance of ValidateResult class.
+     */
+    public ValidateResult() {
+    }
+
+    /**
      * Get the linkerName property: The linker name.
-     *
+     * 
      * @return the linkerName value.
      */
     public String linkerName() {
@@ -73,7 +79,7 @@ public final class ValidateResult {
 
     /**
      * Set the linkerName property: The linker name.
-     *
+     * 
      * @param linkerName the linkerName value to set.
      * @return the ValidateResult object itself.
      */
@@ -84,7 +90,7 @@ public final class ValidateResult {
 
     /**
      * Get the isConnectionAvailable property: A boolean value indicating whether the connection is available or not.
-     *
+     * 
      * @return the isConnectionAvailable value.
      */
     public Boolean isConnectionAvailable() {
@@ -93,7 +99,7 @@ public final class ValidateResult {
 
     /**
      * Set the isConnectionAvailable property: A boolean value indicating whether the connection is available or not.
-     *
+     * 
      * @param isConnectionAvailable the isConnectionAvailable value to set.
      * @return the ValidateResult object itself.
      */
@@ -104,7 +110,7 @@ public final class ValidateResult {
 
     /**
      * Get the reportStartTimeUtc property: The start time of the validation report.
-     *
+     * 
      * @return the reportStartTimeUtc value.
      */
     public OffsetDateTime reportStartTimeUtc() {
@@ -113,7 +119,7 @@ public final class ValidateResult {
 
     /**
      * Set the reportStartTimeUtc property: The start time of the validation report.
-     *
+     * 
      * @param reportStartTimeUtc the reportStartTimeUtc value to set.
      * @return the ValidateResult object itself.
      */
@@ -124,7 +130,7 @@ public final class ValidateResult {
 
     /**
      * Get the reportEndTimeUtc property: The end time of the validation report.
-     *
+     * 
      * @return the reportEndTimeUtc value.
      */
     public OffsetDateTime reportEndTimeUtc() {
@@ -133,7 +139,7 @@ public final class ValidateResult {
 
     /**
      * Set the reportEndTimeUtc property: The end time of the validation report.
-     *
+     * 
      * @param reportEndTimeUtc the reportEndTimeUtc value to set.
      * @return the ValidateResult object itself.
      */
@@ -144,7 +150,7 @@ public final class ValidateResult {
 
     /**
      * Get the sourceId property: The resource id of the linker source application.
-     *
+     * 
      * @return the sourceId value.
      */
     public String sourceId() {
@@ -153,7 +159,7 @@ public final class ValidateResult {
 
     /**
      * Set the sourceId property: The resource id of the linker source application.
-     *
+     * 
      * @param sourceId the sourceId value to set.
      * @return the ValidateResult object itself.
      */
@@ -164,7 +170,7 @@ public final class ValidateResult {
 
     /**
      * Get the targetId property: The resource Id of target service.
-     *
+     * 
      * @return the targetId value.
      */
     public String targetId() {
@@ -173,7 +179,7 @@ public final class ValidateResult {
 
     /**
      * Set the targetId property: The resource Id of target service.
-     *
+     * 
      * @param targetId the targetId value to set.
      * @return the ValidateResult object itself.
      */
@@ -184,7 +190,7 @@ public final class ValidateResult {
 
     /**
      * Get the authType property: The authentication type.
-     *
+     * 
      * @return the authType value.
      */
     public AuthType authType() {
@@ -193,7 +199,7 @@ public final class ValidateResult {
 
     /**
      * Set the authType property: The authentication type.
-     *
+     * 
      * @param authType the authType value to set.
      * @return the ValidateResult object itself.
      */
@@ -204,7 +210,7 @@ public final class ValidateResult {
 
     /**
      * Get the validationDetail property: The detail of validation result.
-     *
+     * 
      * @return the validationDetail value.
      */
     public List<ValidationResultItem> validationDetail() {
@@ -213,7 +219,7 @@ public final class ValidateResult {
 
     /**
      * Set the validationDetail property: The detail of validation result.
-     *
+     * 
      * @param validationDetail the validationDetail value to set.
      * @return the ValidateResult object itself.
      */
@@ -224,12 +230,80 @@ public final class ValidateResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validationDetail() != null) {
             validationDetail().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("linkerName", this.linkerName);
+        jsonWriter.writeBooleanField("isConnectionAvailable", this.isConnectionAvailable);
+        jsonWriter.writeStringField("reportStartTimeUtc",
+            this.reportStartTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.reportStartTimeUtc));
+        jsonWriter.writeStringField("reportEndTimeUtc",
+            this.reportEndTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.reportEndTimeUtc));
+        jsonWriter.writeStringField("sourceId", this.sourceId);
+        jsonWriter.writeStringField("targetId", this.targetId);
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
+        jsonWriter.writeArrayField("validationDetail", this.validationDetail,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidateResult.
+     */
+    public static ValidateResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateResult deserializedValidateResult = new ValidateResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkerName".equals(fieldName)) {
+                    deserializedValidateResult.linkerName = reader.getString();
+                } else if ("isConnectionAvailable".equals(fieldName)) {
+                    deserializedValidateResult.isConnectionAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reportStartTimeUtc".equals(fieldName)) {
+                    deserializedValidateResult.reportStartTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("reportEndTimeUtc".equals(fieldName)) {
+                    deserializedValidateResult.reportEndTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sourceId".equals(fieldName)) {
+                    deserializedValidateResult.sourceId = reader.getString();
+                } else if ("targetId".equals(fieldName)) {
+                    deserializedValidateResult.targetId = reader.getString();
+                } else if ("authType".equals(fieldName)) {
+                    deserializedValidateResult.authType = AuthType.fromString(reader.getString());
+                } else if ("validationDetail".equals(fieldName)) {
+                    List<ValidationResultItem> validationDetail
+                        = reader.readArray(reader1 -> ValidationResultItem.fromJson(reader1));
+                    deserializedValidateResult.validationDetail = validationDetail;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateResult;
+        });
     }
 }

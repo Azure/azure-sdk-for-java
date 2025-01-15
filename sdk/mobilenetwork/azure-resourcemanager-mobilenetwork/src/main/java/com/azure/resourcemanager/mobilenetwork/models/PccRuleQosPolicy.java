@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Data flow policy rule QoS policy.
@@ -13,9 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PccRuleQosPolicy extends QosPolicy {
     /*
-     * The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the data flow policy rule that uses this QoS definition.
+     * The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an optional
+     * setting. If you do not provide a value, there will be no GBR set for the data flow policy rule that uses this QoS
+     * definition.
      */
-    @JsonProperty(value = "guaranteedBitRate")
     private Ambr guaranteedBitRate;
 
     /**
@@ -100,9 +105,74 @@ public final class PccRuleQosPolicy extends QosPolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (guaranteedBitRate() != null) {
             guaranteedBitRate().validate();
         }
+        if (maximumBitRate() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property maximumBitRate in model PccRuleQosPolicy"));
+        } else {
+            maximumBitRate().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PccRuleQosPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("maximumBitRate", maximumBitRate());
+        jsonWriter.writeNumberField("5qi", fiveQi());
+        jsonWriter.writeNumberField("allocationAndRetentionPriorityLevel", allocationAndRetentionPriorityLevel());
+        jsonWriter.writeStringField("preemptionCapability",
+            preemptionCapability() == null ? null : preemptionCapability().toString());
+        jsonWriter.writeStringField("preemptionVulnerability",
+            preemptionVulnerability() == null ? null : preemptionVulnerability().toString());
+        jsonWriter.writeJsonField("guaranteedBitRate", this.guaranteedBitRate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PccRuleQosPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PccRuleQosPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PccRuleQosPolicy.
+     */
+    public static PccRuleQosPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PccRuleQosPolicy deserializedPccRuleQosPolicy = new PccRuleQosPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maximumBitRate".equals(fieldName)) {
+                    deserializedPccRuleQosPolicy.withMaximumBitRate(Ambr.fromJson(reader));
+                } else if ("5qi".equals(fieldName)) {
+                    deserializedPccRuleQosPolicy.withFiveQi(reader.getNullable(JsonReader::getInt));
+                } else if ("allocationAndRetentionPriorityLevel".equals(fieldName)) {
+                    deserializedPccRuleQosPolicy
+                        .withAllocationAndRetentionPriorityLevel(reader.getNullable(JsonReader::getInt));
+                } else if ("preemptionCapability".equals(fieldName)) {
+                    deserializedPccRuleQosPolicy
+                        .withPreemptionCapability(PreemptionCapability.fromString(reader.getString()));
+                } else if ("preemptionVulnerability".equals(fieldName)) {
+                    deserializedPccRuleQosPolicy
+                        .withPreemptionVulnerability(PreemptionVulnerability.fromString(reader.getString()));
+                } else if ("guaranteedBitRate".equals(fieldName)) {
+                    deserializedPccRuleQosPolicy.guaranteedBitRate = Ambr.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPccRuleQosPolicy;
+        });
     }
 }

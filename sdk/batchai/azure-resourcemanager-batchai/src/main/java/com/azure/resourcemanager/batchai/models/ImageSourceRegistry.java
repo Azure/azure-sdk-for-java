@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Information about docker image for the job. */
 @Fluent
 public final class ImageSourceRegistry {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageSourceRegistry.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ImageSourceRegistry.class);
 
     /*
      * URL for image repository.
@@ -99,9 +100,8 @@ public final class ImageSourceRegistry {
      */
     public void validate() {
         if (image() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property image in model ImageSourceRegistry"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property image in model ImageSourceRegistry"));
         }
         if (credentials() != null) {
             credentials().validate();

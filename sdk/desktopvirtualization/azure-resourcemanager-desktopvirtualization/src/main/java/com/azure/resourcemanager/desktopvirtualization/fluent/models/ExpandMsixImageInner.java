@@ -6,28 +6,55 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageDependencies;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Represents the definition of contents retrieved after expanding the MSIX Image. */
+/**
+ * Represents the definition of contents retrieved after expanding the MSIX Image.
+ */
 @Fluent
 public final class ExpandMsixImageInner extends ProxyResource {
     /*
      * Detailed properties for ExpandMsixImage
      */
-    @JsonProperty(value = "properties")
     private ExpandMsixImageProperties innerProperties;
 
-    /** Creates an instance of ExpandMsixImageInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ExpandMsixImageInner class.
+     */
     public ExpandMsixImageInner() {
     }
 
     /**
      * Get the innerProperties property: Detailed properties for ExpandMsixImage.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExpandMsixImageProperties innerProperties() {
@@ -35,8 +62,47 @@ public final class ExpandMsixImageInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the packageAlias property: Alias of MSIX Package.
-     *
+     * 
      * @return the packageAlias value.
      */
     public String packageAlias() {
@@ -45,7 +111,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the packageAlias property: Alias of MSIX Package.
-     *
+     * 
      * @param packageAlias the packageAlias value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -59,7 +125,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the imagePath property: VHD/CIM image path on Network Share.
-     *
+     * 
      * @return the imagePath value.
      */
     public String imagePath() {
@@ -68,7 +134,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the imagePath property: VHD/CIM image path on Network Share.
-     *
+     * 
      * @param imagePath the imagePath value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -82,7 +148,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the packageName property: Package Name from appxmanifest.xml.
-     *
+     * 
      * @return the packageName value.
      */
     public String packageName() {
@@ -91,7 +157,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the packageName property: Package Name from appxmanifest.xml.
-     *
+     * 
      * @param packageName the packageName value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -106,7 +172,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
     /**
      * Get the packageFamilyName property: Package Family Name from appxmanifest.xml. Contains Package Name and
      * Publisher name.
-     *
+     * 
      * @return the packageFamilyName value.
      */
     public String packageFamilyName() {
@@ -116,7 +182,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
     /**
      * Set the packageFamilyName property: Package Family Name from appxmanifest.xml. Contains Package Name and
      * Publisher name.
-     *
+     * 
      * @param packageFamilyName the packageFamilyName value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -130,7 +196,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the packageFullName property: Package Full Name from appxmanifest.xml.
-     *
+     * 
      * @return the packageFullName value.
      */
     public String packageFullName() {
@@ -139,7 +205,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the packageFullName property: Package Full Name from appxmanifest.xml.
-     *
+     * 
      * @param packageFullName the packageFullName value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -153,7 +219,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the displayName property: User friendly Name to be displayed in the portal.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -162,7 +228,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the displayName property: User friendly Name to be displayed in the portal.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -176,7 +242,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the packageRelativePath property: Relative Path to the package inside the image.
-     *
+     * 
      * @return the packageRelativePath value.
      */
     public String packageRelativePath() {
@@ -185,7 +251,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the packageRelativePath property: Relative Path to the package inside the image.
-     *
+     * 
      * @param packageRelativePath the packageRelativePath value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -199,7 +265,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the isRegularRegistration property: Specifies how to register Package in feed.
-     *
+     * 
      * @return the isRegularRegistration value.
      */
     public Boolean isRegularRegistration() {
@@ -208,7 +274,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the isRegularRegistration property: Specifies how to register Package in feed.
-     *
+     * 
      * @param isRegularRegistration the isRegularRegistration value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -222,7 +288,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the isActive property: Make this version of the package the active one across the hostpool.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -231,7 +297,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the isActive property: Make this version of the package the active one across the hostpool.
-     *
+     * 
      * @param isActive the isActive value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -245,7 +311,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the packageDependencies property: List of package dependencies.
-     *
+     * 
      * @return the packageDependencies value.
      */
     public List<MsixPackageDependencies> packageDependencies() {
@@ -254,7 +320,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the packageDependencies property: List of package dependencies.
-     *
+     * 
      * @param packageDependencies the packageDependencies value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -267,8 +333,8 @@ public final class ExpandMsixImageInner extends ProxyResource {
     }
 
     /**
-     * Get the version property: Package Version found in the appxmanifest.xml.
-     *
+     * Get the version property: Package version found in the appxmanifest.xml.
+     * 
      * @return the version value.
      */
     public String version() {
@@ -276,8 +342,8 @@ public final class ExpandMsixImageInner extends ProxyResource {
     }
 
     /**
-     * Set the version property: Package Version found in the appxmanifest.xml.
-     *
+     * Set the version property: Package version found in the appxmanifest.xml.
+     * 
      * @param version the version value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -291,7 +357,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the lastUpdated property: Date Package was last updated, found in the appxmanifest.xml.
-     *
+     * 
      * @return the lastUpdated value.
      */
     public OffsetDateTime lastUpdated() {
@@ -300,7 +366,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the lastUpdated property: Date Package was last updated, found in the appxmanifest.xml.
-     *
+     * 
      * @param lastUpdated the lastUpdated value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -314,7 +380,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Get the packageApplications property: List of package applications.
-     *
+     * 
      * @return the packageApplications value.
      */
     public List<MsixPackageApplications> packageApplications() {
@@ -323,7 +389,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
 
     /**
      * Set the packageApplications property: List of package applications.
-     *
+     * 
      * @param packageApplications the packageApplications value to set.
      * @return the ExpandMsixImageInner object itself.
      */
@@ -336,13 +402,104 @@ public final class ExpandMsixImageInner extends ProxyResource {
     }
 
     /**
+     * Get the certificateName property: Certificate name found in the appxmanifest.xml.
+     * 
+     * @return the certificateName value.
+     */
+    public String certificateName() {
+        return this.innerProperties() == null ? null : this.innerProperties().certificateName();
+    }
+
+    /**
+     * Set the certificateName property: Certificate name found in the appxmanifest.xml.
+     * 
+     * @param certificateName the certificateName value to set.
+     * @return the ExpandMsixImageInner object itself.
+     */
+    public ExpandMsixImageInner withCertificateName(String certificateName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpandMsixImageProperties();
+        }
+        this.innerProperties().withCertificateName(certificateName);
+        return this;
+    }
+
+    /**
+     * Get the certificateExpiry property: Date certificate expires, found in the appxmanifest.xml.
+     * 
+     * @return the certificateExpiry value.
+     */
+    public OffsetDateTime certificateExpiry() {
+        return this.innerProperties() == null ? null : this.innerProperties().certificateExpiry();
+    }
+
+    /**
+     * Set the certificateExpiry property: Date certificate expires, found in the appxmanifest.xml.
+     * 
+     * @param certificateExpiry the certificateExpiry value to set.
+     * @return the ExpandMsixImageInner object itself.
+     */
+    public ExpandMsixImageInner withCertificateExpiry(OffsetDateTime certificateExpiry) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpandMsixImageProperties();
+        }
+        this.innerProperties().withCertificateExpiry(certificateExpiry);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpandMsixImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpandMsixImageInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExpandMsixImageInner.
+     */
+    public static ExpandMsixImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpandMsixImageInner deserializedExpandMsixImageInner = new ExpandMsixImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExpandMsixImageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExpandMsixImageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExpandMsixImageInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExpandMsixImageInner.innerProperties = ExpandMsixImageProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedExpandMsixImageInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpandMsixImageInner;
+        });
     }
 }

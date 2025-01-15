@@ -30,22 +30,28 @@ import com.azure.resourcemanager.customerinsights.fluent.models.WidgetTypeResour
 import com.azure.resourcemanager.customerinsights.models.WidgetTypeListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WidgetTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WidgetTypesClient.
+ */
 public final class WidgetTypesClientImpl implements WidgetTypesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WidgetTypesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CustomerInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of WidgetTypesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WidgetTypesClientImpl(CustomerInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(WidgetTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WidgetTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,67 +62,50 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
     public interface WidgetTypesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/widgetTypes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/widgetTypes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WidgetTypeListResult>> listByHub(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WidgetTypeListResult>> listByHub(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/widgetTypes/{widgetTypeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/widgetTypes/{widgetTypeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WidgetTypeResourceFormatInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("widgetTypeName") String widgetTypeName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WidgetTypeResourceFormatInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("widgetTypeName") String widgetTypeName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WidgetTypeListResult>> listByHubNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all available widget types in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available widget types in the specified hub along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WidgetTypeResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName) {
+    private Mono<PagedResponse<WidgetTypeResourceFormatInner>> listByHubSinglePageAsync(String resourceGroupName,
+        String hubName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -126,39 +115,21 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByHub(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<WidgetTypeResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByHub(this.client.getEndpoint(), resourceGroupName, hubName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<WidgetTypeResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all available widget types in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -166,16 +137,14 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available widget types in the specified hub along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WidgetTypeResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName, Context context) {
+    private Mono<PagedResponse<WidgetTypeResourceFormatInner>> listByHubSinglePageAsync(String resourceGroupName,
+        String hubName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,36 +154,21 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByHub(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByHub(this.client.getEndpoint(), resourceGroupName, hubName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all available widget types in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,14 +178,13 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WidgetTypeResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName),
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName),
             nextLink -> listByHubNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all available widget types in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -241,16 +194,15 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
      * @return all available widget types in the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WidgetTypeResourceFormatInner> listByHubAsync(
-        String resourceGroupName, String hubName, Context context) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName, context),
+    private PagedFlux<WidgetTypeResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName,
+        Context context) {
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName, context),
             nextLink -> listByHubNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all available widget types in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,7 +217,7 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
 
     /**
      * Gets all available widget types in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -275,14 +227,14 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
      * @return all available widget types in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WidgetTypeResourceFormatInner> listByHub(
-        String resourceGroupName, String hubName, Context context) {
+    public PagedIterable<WidgetTypeResourceFormatInner> listByHub(String resourceGroupName, String hubName,
+        Context context) {
         return new PagedIterable<>(listByHubAsync(resourceGroupName, hubName, context));
     }
 
     /**
      * Gets a widget type in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param widgetTypeName The name of the widget type.
@@ -292,13 +244,11 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
      * @return a widget type in the specified hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WidgetTypeResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String widgetTypeName) {
+    private Mono<Response<WidgetTypeResourceFormatInner>> getWithResponseAsync(String resourceGroupName, String hubName,
+        String widgetTypeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -311,31 +261,19 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
             return Mono.error(new IllegalArgumentException("Parameter widgetTypeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            widgetTypeName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, hubName, widgetTypeName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a widget type in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param widgetTypeName The name of the widget type.
@@ -346,13 +284,11 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
      * @return a widget type in the specified hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WidgetTypeResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String widgetTypeName, Context context) {
+    private Mono<Response<WidgetTypeResourceFormatInner>> getWithResponseAsync(String resourceGroupName, String hubName,
+        String widgetTypeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -365,28 +301,18 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
             return Mono.error(new IllegalArgumentException("Parameter widgetTypeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                widgetTypeName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, hubName, widgetTypeName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a widget type in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param widgetTypeName The name of the widget type.
@@ -396,15 +322,15 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
      * @return a widget type in the specified hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WidgetTypeResourceFormatInner> getAsync(
-        String resourceGroupName, String hubName, String widgetTypeName) {
+    private Mono<WidgetTypeResourceFormatInner> getAsync(String resourceGroupName, String hubName,
+        String widgetTypeName) {
         return getWithResponseAsync(resourceGroupName, hubName, widgetTypeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a widget type in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param widgetTypeName The name of the widget type.
@@ -415,14 +341,14 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
      * @return a widget type in the specified hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WidgetTypeResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String widgetTypeName, Context context) {
+    public Response<WidgetTypeResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String widgetTypeName, Context context) {
         return getWithResponseAsync(resourceGroupName, hubName, widgetTypeName, context).block();
     }
 
     /**
      * Gets a widget type in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param widgetTypeName The name of the widget type.
@@ -438,14 +364,13 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list widget type operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WidgetTypeResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -453,62 +378,42 @@ public final class WidgetTypesClientImpl implements WidgetTypesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WidgetTypeResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<WidgetTypeResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list widget type operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WidgetTypeResourceFormatInner>> listByHubNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<WidgetTypeResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -12,8 +12,7 @@ public final class LiveTokenResponseImpl implements LiveTokenResponse {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    LiveTokenResponseImpl(
-        LiveTokenResponseInner innerObject,
+    LiveTokenResponseImpl(LiveTokenResponseInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

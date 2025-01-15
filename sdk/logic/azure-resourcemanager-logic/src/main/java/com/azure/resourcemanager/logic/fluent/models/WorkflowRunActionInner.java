@@ -6,42 +6,46 @@ package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.RetryHistory;
 import com.azure.resourcemanager.logic.models.RunActionCorrelation;
 import com.azure.resourcemanager.logic.models.WorkflowStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The workflow run action. */
+/**
+ * The workflow run action.
+ */
 @Fluent
 public final class WorkflowRunActionInner extends SubResource {
     /*
      * The workflow run action properties.
      */
-    @JsonProperty(value = "properties")
     private WorkflowRunActionProperties innerProperties;
 
     /*
      * Gets the workflow run action name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Gets the workflow run action type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of WorkflowRunActionInner class. */
+    /**
+     * Creates an instance of WorkflowRunActionInner class.
+     */
     public WorkflowRunActionInner() {
     }
 
     /**
      * Get the innerProperties property: The workflow run action properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkflowRunActionProperties innerProperties() {
@@ -50,7 +54,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the name property: Gets the workflow run action name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,14 +63,16 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the type property: Gets the workflow run action type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunActionInner withId(String id) {
         super.withId(id);
@@ -75,7 +81,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -84,7 +90,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -93,7 +99,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -102,7 +108,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -111,7 +117,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -120,7 +126,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -129,7 +135,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the correlation property: The correlation properties.
-     *
+     * 
      * @return the correlation value.
      */
     public RunActionCorrelation correlation() {
@@ -138,7 +144,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Set the correlation property: The correlation properties.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowRunActionInner object itself.
      */
@@ -152,7 +158,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the inputsLink property: Gets the link to inputs.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -161,7 +167,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the outputsLink property: Gets the link to outputs.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -170,7 +176,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the trackedProperties property: Gets the tracked properties.
-     *
+     * 
      * @return the trackedProperties value.
      */
     public Object trackedProperties() {
@@ -179,7 +185,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Get the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @return the retryHistory value.
      */
     public List<RetryHistory> retryHistory() {
@@ -188,7 +194,7 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Set the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @param retryHistory the retryHistory value to set.
      * @return the WorkflowRunActionInner object itself.
      */
@@ -202,12 +208,55 @@ public final class WorkflowRunActionInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowRunActionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowRunActionInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowRunActionInner.
+     */
+    public static WorkflowRunActionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowRunActionInner deserializedWorkflowRunActionInner = new WorkflowRunActionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkflowRunActionInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkflowRunActionInner.innerProperties = WorkflowRunActionProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkflowRunActionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkflowRunActionInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowRunActionInner;
+        });
     }
 }

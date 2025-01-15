@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class WindowsOsInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WindowsOsInfo model =
-            BinaryData.fromString("{\"windowsOsState\":\"NonSysprepped\"}").toObject(WindowsOsInfo.class);
+        WindowsOsInfo model
+            = BinaryData.fromString("{\"windowsOsState\":\"NonSysprepped\"}").toObject(WindowsOsInfo.class);
         Assertions.assertEquals(WindowsOsState.NON_SYSPREPPED, model.windowsOsState());
     }
 

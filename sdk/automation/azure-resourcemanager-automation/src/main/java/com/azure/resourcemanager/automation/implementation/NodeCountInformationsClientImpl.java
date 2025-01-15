@@ -26,23 +26,28 @@ import com.azure.resourcemanager.automation.fluent.models.NodeCountsInner;
 import com.azure.resourcemanager.automation.models.CountType;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NodeCountInformationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NodeCountInformationsClient.
+ */
 public final class NodeCountInformationsClientImpl implements NodeCountInformationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NodeCountInformationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of NodeCountInformationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NodeCountInformationsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy
-                .create(NodeCountInformationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(NodeCountInformationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,44 +57,36 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientNode")
-    private interface NodeCountInformationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodecounts/{countType}")
-        @ExpectedResponses({200})
+    public interface NodeCountInformationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodecounts/{countType}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NodeCountsInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NodeCountsInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("countType") CountType countType,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("countType") CountType countType, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve counts for Dsc Nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param countType The type of counts to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets the count of nodes by count type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return gets the count of nodes by count type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NodeCountsInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, CountType countType) {
+    private Mono<Response<NodeCountsInner>> getWithResponseAsync(String resourceGroupName, String automationAccountName,
+        CountType countType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -103,32 +100,20 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
             return Mono.error(new IllegalArgumentException("Parameter countType is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            countType,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                countType, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve counts for Dsc Nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param countType The type of counts to retrieve.
@@ -136,17 +121,15 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets the count of nodes by count type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return gets the count of nodes by count type along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NodeCountsInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, CountType countType, Context context) {
+    private Mono<Response<NodeCountsInner>> getWithResponseAsync(String resourceGroupName, String automationAccountName,
+        CountType countType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -160,29 +143,19 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
             return Mono.error(new IllegalArgumentException("Parameter countType is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                countType,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName, countType,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve counts for Dsc Nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param countType The type of counts to retrieve.
@@ -192,31 +165,15 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
      * @return gets the count of nodes by count type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NodeCountsInner> getAsync(
-        String resourceGroupName, String automationAccountName, CountType countType) {
+    private Mono<NodeCountsInner> getAsync(String resourceGroupName, String automationAccountName,
+        CountType countType) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, countType)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve counts for Dsc Nodes.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param countType The type of counts to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets the count of nodes by count type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NodeCountsInner get(String resourceGroupName, String automationAccountName, CountType countType) {
-        return getAsync(resourceGroupName, automationAccountName, countType).block();
-    }
-
-    /**
-     * Retrieve counts for Dsc Nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param countType The type of counts to retrieve.
@@ -227,8 +184,24 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
      * @return gets the count of nodes by count type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NodeCountsInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, CountType countType, Context context) {
+    public Response<NodeCountsInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        CountType countType, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, countType, context).block();
+    }
+
+    /**
+     * Retrieve counts for Dsc Nodes.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param countType The type of counts to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gets the count of nodes by count type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NodeCountsInner get(String resourceGroupName, String automationAccountName, CountType countType) {
+        return getWithResponse(resourceGroupName, automationAccountName, countType, Context.NONE).getValue();
     }
 }

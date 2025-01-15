@@ -13,27 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class SuppressionContractListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SuppressionContractListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"ys\",\"value\":[{\"properties\":{\"suppressionId\":\"xhqyudxorrqnb\",\"ttl\":\"czvyifq\",\"expirationTimeStamp\":\"2020-12-25T17:33:53Z\"},\"id\":\"dvjsllrmvvdf\",\"name\":\"atkpnp\",\"type\":\"lexxbczwtru\"}]}")
-                .toObject(SuppressionContractListResult.class);
-        Assertions.assertEquals("ys", model.nextLink());
-        Assertions.assertEquals("xhqyudxorrqnb", model.value().get(0).suppressionId());
-        Assertions.assertEquals("czvyifq", model.value().get(0).ttl());
+        SuppressionContractListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"xpsiebtfhvpes\",\"value\":[{\"properties\":{\"suppressionId\":\"dqmh\",\"ttl\":\"dhtldwkyz\",\"expirationTimeStamp\":\"2021-08-29T07:48:34Z\"},\"id\":\"tkncwsc\",\"name\":\"svlxotogtwrup\",\"type\":\"sx\"},{\"properties\":{\"suppressionId\":\"i\",\"ttl\":\"kvceoveilovnotyf\",\"expirationTimeStamp\":\"2021-11-08T07:56:07Z\"},\"id\":\"njbkcnxdhbttkph\",\"name\":\"wpn\",\"type\":\"jtoqne\"},{\"properties\":{\"suppressionId\":\"lfplp\",\"ttl\":\"xus\",\"expirationTimeStamp\":\"2021-02-26T20:34:01Z\"},\"id\":\"abgy\",\"name\":\"psbjta\",\"type\":\"qugxywpmueefjzwf\"}]}")
+            .toObject(SuppressionContractListResult.class);
+        Assertions.assertEquals("xpsiebtfhvpes", model.nextLink());
+        Assertions.assertEquals("dqmh", model.value().get(0).suppressionId());
+        Assertions.assertEquals("dhtldwkyz", model.value().get(0).ttl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SuppressionContractListResult model =
-            new SuppressionContractListResult()
-                .withNextLink("ys")
-                .withValue(
-                    Arrays
-                        .asList(new SuppressionContractInner().withSuppressionId("xhqyudxorrqnb").withTtl("czvyifq")));
+        SuppressionContractListResult model = new SuppressionContractListResult().withNextLink("xpsiebtfhvpes")
+            .withValue(Arrays.asList(new SuppressionContractInner().withSuppressionId("dqmh").withTtl("dhtldwkyz"),
+                new SuppressionContractInner().withSuppressionId("i").withTtl("kvceoveilovnotyf"),
+                new SuppressionContractInner().withSuppressionId("lfplp").withTtl("xus")));
         model = BinaryData.fromObject(model).toObject(SuppressionContractListResult.class);
-        Assertions.assertEquals("ys", model.nextLink());
-        Assertions.assertEquals("xhqyudxorrqnb", model.value().get(0).suppressionId());
-        Assertions.assertEquals("czvyifq", model.value().get(0).ttl());
+        Assertions.assertEquals("xpsiebtfhvpes", model.nextLink());
+        Assertions.assertEquals("dqmh", model.value().get(0).suppressionId());
+        Assertions.assertEquals("dhtldwkyz", model.value().get(0).ttl());
     }
 }

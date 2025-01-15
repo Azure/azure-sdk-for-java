@@ -6,11 +6,9 @@ package com.azure.analytics.purview.scanning;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.StringReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,9 +33,9 @@ public class ListAllSystemScanRulesets {
         System.out.println(list.size());
 
         for (BinaryData systemScanRuleSet : list) {
-            JsonReader jsonReader = Json.createReader(new StringReader(systemScanRuleSet.toString()));
-            JsonObject ruleset = jsonReader.readObject();
-            System.out.println(ruleset.getString("name") + ": " + ruleset.getString("status"));
+            JsonObject ruleset = systemScanRuleSet.toObject(JsonObject.class);
+            System.out.println(((JsonString) ruleset.getProperty("name")).getValue() + ": "
+                + ((JsonString) ruleset.getProperty("status")).getValue());
         }
 
     }

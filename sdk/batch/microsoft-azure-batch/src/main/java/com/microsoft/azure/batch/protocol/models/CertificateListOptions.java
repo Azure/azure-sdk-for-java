@@ -20,7 +20,7 @@ public class CertificateListOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-certificates.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -69,7 +69,7 @@ public class CertificateListOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-certificates.
      *
      * @return the filter value
      */
@@ -78,7 +78,7 @@ public class CertificateListOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-certificates.
      *
      * @param filter the filter value to set
      * @return the CertificateListOptions object itself.

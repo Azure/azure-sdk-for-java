@@ -8,38 +8,40 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Tables. */
+/**
+ * Resource collection API of Tables.
+ */
 public interface Tables {
     /**
      * Gets all the tables for the specified Log Analytics workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the tables for the specified Log Analytics workspace as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the tables for the specified Log Analytics workspace as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Table> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
      * Gets all the tables for the specified Log Analytics workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the tables for the specified Log Analytics workspace as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the tables for the specified Log Analytics workspace as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Table> listByWorkspace(String resourceGroupName, String workspaceName, Context context);
 
     /**
      * Gets a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -53,7 +55,7 @@ public interface Tables {
 
     /**
      * Gets a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -66,7 +68,7 @@ public interface Tables {
 
     /**
      * Delete a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -78,7 +80,7 @@ public interface Tables {
 
     /**
      * Delete a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -92,7 +94,7 @@ public interface Tables {
     /**
      * Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
      * Data Collection Rule-based Custom Logs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -102,13 +104,13 @@ public interface Tables {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> migrateWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<Void> migrateWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
      * Data Collection Rule-based Custom Logs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -120,7 +122,7 @@ public interface Tables {
 
     /**
      * Cancel a log analytics workspace search results table query run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -130,12 +132,12 @@ public interface Tables {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> cancelSearchWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<Void> cancelSearchWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Cancel a log analytics workspace search results table query run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -147,7 +149,7 @@ public interface Tables {
 
     /**
      * Gets a Log Analytics workspace table.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,7 +160,7 @@ public interface Tables {
 
     /**
      * Gets a Log Analytics workspace table.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +172,7 @@ public interface Tables {
 
     /**
      * Delete a Log Analytics workspace table.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,7 +182,7 @@ public interface Tables {
 
     /**
      * Delete a Log Analytics workspace table.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +193,7 @@ public interface Tables {
 
     /**
      * Begins definition for a new Table resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Table definition.
      */

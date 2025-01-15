@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class WebTestPropertiesConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebTestPropertiesConfiguration model =
-            BinaryData.fromString("{\"WebTest\":\"noae\"}").toObject(WebTestPropertiesConfiguration.class);
-        Assertions.assertEquals("noae", model.webTest());
+        WebTestPropertiesConfiguration model
+            = BinaryData.fromString("{\"WebTest\":\"qjsdpydnfyhxdeo\"}").toObject(WebTestPropertiesConfiguration.class);
+        Assertions.assertEquals("qjsdpydnfyhxdeo", model.webTest());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebTestPropertiesConfiguration model = new WebTestPropertiesConfiguration().withWebTest("noae");
+        WebTestPropertiesConfiguration model = new WebTestPropertiesConfiguration().withWebTest("qjsdpydnfyhxdeo");
         model = BinaryData.fromObject(model).toObject(WebTestPropertiesConfiguration.class);
-        Assertions.assertEquals("noae", model.webTest());
+        Assertions.assertEquals("qjsdpydnfyhxdeo", model.webTest());
     }
 }

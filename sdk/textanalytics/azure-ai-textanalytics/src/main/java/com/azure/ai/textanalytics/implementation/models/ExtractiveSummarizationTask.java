@@ -92,7 +92,8 @@ public final class ExtractiveSummarizationTask implements JsonSerializable<Extra
                 reader.nextToken();
 
                 if ("parameters".equals(fieldName)) {
-                    deserializedExtractiveSummarizationTask.parameters = ExtractiveSummarizationTaskParameters.fromJson(reader);
+                    deserializedExtractiveSummarizationTask.parameters
+                        = ExtractiveSummarizationTaskParameters.fromJson(reader);
                 } else if ("taskName".equals(fieldName)) {
                     deserializedExtractiveSummarizationTask.taskName = reader.getString();
                 } else {

@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RawCertificateDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RawCertificateData model =
-            BinaryData
-                .fromString("{\"authenticationType\":\"AzureActiveDirectory\",\"certificate\":\"cnqxwbpokulpi\"}")
+        RawCertificateData model
+            = BinaryData.fromString("{\"authenticationType\":\"AzureActiveDirectory\",\"certificate\":\"idb\"}")
                 .toObject(RawCertificateData.class);
         Assertions.assertEquals(AuthenticationType.AZURE_ACTIVE_DIRECTORY, model.authenticationType());
-        Assertions.assertEquals("cnqxwbpokulpi", model.certificate());
+        Assertions.assertEquals("idb", model.certificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RawCertificateData model =
-            new RawCertificateData()
-                .withAuthenticationType(AuthenticationType.AZURE_ACTIVE_DIRECTORY)
-                .withCertificate("cnqxwbpokulpi");
+        RawCertificateData model
+            = new RawCertificateData().withAuthenticationType(AuthenticationType.AZURE_ACTIVE_DIRECTORY)
+                .withCertificate("idb");
         model = BinaryData.fromObject(model).toObject(RawCertificateData.class);
         Assertions.assertEquals(AuthenticationType.AZURE_ACTIVE_DIRECTORY, model.authenticationType());
-        Assertions.assertEquals("cnqxwbpokulpi", model.certificate());
+        Assertions.assertEquals("idb", model.certificate());
     }
 }

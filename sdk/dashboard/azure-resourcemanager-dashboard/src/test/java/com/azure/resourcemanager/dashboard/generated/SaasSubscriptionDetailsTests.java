@@ -27,9 +27,11 @@ public final class SaasSubscriptionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SaasSubscriptionDetails model = new SaasSubscriptionDetails().withPlanId("jnxqbzvddntwn")
-            .withOfferId("icbtwnpzao").withPublisherId("uhrhcffcyddgl").withTerm(
-                new SubscriptionTerm().withTermUnit("hjq").withStartDate(OffsetDateTime.parse("2021-03-29T20:34:14Z"))
-                    .withEndDate(OffsetDateTime.parse("2021-11-24T17:43:24Z")));
+            .withOfferId("icbtwnpzao")
+            .withPublisherId("uhrhcffcyddgl")
+            .withTerm(new SubscriptionTerm().withTermUnit("hjq")
+                .withStartDate(OffsetDateTime.parse("2021-03-29T20:34:14Z"))
+                .withEndDate(OffsetDateTime.parse("2021-11-24T17:43:24Z")));
         model = BinaryData.fromObject(model).toObject(SaasSubscriptionDetails.class);
         Assertions.assertEquals("jnxqbzvddntwn", model.planId());
         Assertions.assertEquals("icbtwnpzao", model.offerId());

@@ -14,29 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class SelectAudioTrackByAttributeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelectAudioTrackByAttribute model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.SelectAudioTrackByAttribute\",\"attribute\":\"Bitrate\",\"filter\":\"Bottom\",\"filterValue\":\"yiopi\",\"channelMapping\":\"Center\"}")
-                .toObject(SelectAudioTrackByAttribute.class);
-        Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
-        Assertions.assertEquals(TrackAttribute.BITRATE, model.attribute());
-        Assertions.assertEquals(AttributeFilter.BOTTOM, model.filter());
-        Assertions.assertEquals("yiopi", model.filterValue());
+        SelectAudioTrackByAttribute model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.SelectAudioTrackByAttribute\",\"attribute\":\"Language\",\"filter\":\"Top\",\"filterValue\":\"djhlimm\",\"channelMapping\":\"FrontLeft\"}")
+            .toObject(SelectAudioTrackByAttribute.class);
+        Assertions.assertEquals(ChannelMapping.FRONT_LEFT, model.channelMapping());
+        Assertions.assertEquals(TrackAttribute.LANGUAGE, model.attribute());
+        Assertions.assertEquals(AttributeFilter.TOP, model.filter());
+        Assertions.assertEquals("djhlimm", model.filterValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelectAudioTrackByAttribute model =
-            new SelectAudioTrackByAttribute()
-                .withChannelMapping(ChannelMapping.CENTER)
-                .withAttribute(TrackAttribute.BITRATE)
-                .withFilter(AttributeFilter.BOTTOM)
-                .withFilterValue("yiopi");
+        SelectAudioTrackByAttribute model
+            = new SelectAudioTrackByAttribute().withChannelMapping(ChannelMapping.FRONT_LEFT)
+                .withAttribute(TrackAttribute.LANGUAGE)
+                .withFilter(AttributeFilter.TOP)
+                .withFilterValue("djhlimm");
         model = BinaryData.fromObject(model).toObject(SelectAudioTrackByAttribute.class);
-        Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
-        Assertions.assertEquals(TrackAttribute.BITRATE, model.attribute());
-        Assertions.assertEquals(AttributeFilter.BOTTOM, model.filter());
-        Assertions.assertEquals("yiopi", model.filterValue());
+        Assertions.assertEquals(ChannelMapping.FRONT_LEFT, model.channelMapping());
+        Assertions.assertEquals(TrackAttribute.LANGUAGE, model.attribute());
+        Assertions.assertEquals(AttributeFilter.TOP, model.filter());
+        Assertions.assertEquals("djhlimm", model.filterValue());
     }
 }

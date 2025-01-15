@@ -46,12 +46,12 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.AssertJUnit.fail;
@@ -65,9 +65,8 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private DatabaseAccount databaseAccount;
-
+    private List<String> preferredReadRegions;
     private Map<String, String> readRegionMap;
-    private Map<String, String> writeRegionMap;
 
     @Factory(dataProvider = "clientBuildersWithGateway")
     public FaultInjectionServerErrorRuleOnGatewayTests(CosmosClientBuilder clientBuilder) {
@@ -84,8 +83,14 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
         this.databaseAccount = databaseAccount;
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
-        this.readRegionMap = this.getRegionMap(databaseAccount, false);
-        this.writeRegionMap = this.getRegionMap(databaseAccount, true);
+
+        AccountLevelLocationContext accountLevelReadableRegionsLocationContext
+            = getAccountLevelLocationContext(databaseAccount, false);
+
+        validate(accountLevelReadableRegionsLocationContext, false);
+
+        this.preferredReadRegions = accountLevelReadableRegionsLocationContext.serviceOrderedReadableRegions;
+        this.readRegionMap = accountLevelReadableRegionsLocationContext.regionNameToEndpoint;
     }
 
     @DataProvider(name = "operationTypeProvider")
@@ -116,18 +121,24 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
     @DataProvider(name = "faultInjectionServerErrorResponseProvider")
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
-            // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
-            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
-            { FaultInjectionServerErrorType.RETRY_WITH, false, 449, 0 },
-            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
-            { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
-            { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 }
+            // faultInjectionServerError, will SDK retry, check for multi-region setup, errorStatusCode, errorSubStatusCode
+            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, false, 500, 0 },
+            { FaultInjectionServerErrorType.RETRY_WITH, false, false, 449, 0 },
+            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, false, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
+            { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, false, 404, 1002 },
+            { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, true, true, 503, 21008 }
         };
     }
 
-    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_Region() throws JsonProcessingException {
-        List<String> preferredLocations = this.readRegionMap.keySet().stream().collect(Collectors.toList());
+    @DataProvider(name = "preferredRegionsConfigProvider")
+    public static Object[] preferredRegionsConfigProvider() {
+        // shouldInjectPreferredRegionsOnClient
+        return new Object[] {true, false};
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_Region(boolean shouldUsePreferredRegionsOnClient) throws JsonProcessingException {
+        List<String> preferredLocations = this.preferredReadRegions;
 
         CosmosAsyncClient clientWithPreferredRegion = null;
         // set local region rule
@@ -174,7 +185,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
-                .preferredRegions(preferredLocations)
+                .preferredRegions(shouldUsePreferredRegionsOnClient ? preferredLocations : Collections.emptyList())
                 .gatewayMode()
                 .buildAsyncClient();
 
@@ -408,8 +419,15 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
     public void faultInjectionServerErrorRuleTests_ServerErrorResponse(
         FaultInjectionServerErrorType serverErrorType,
         boolean canRetry,
+        boolean isMultiRegionCheckRequired,
         int errorStatusCode,
         int errorSubStatusCode) throws JsonProcessingException {
+
+        if (isMultiRegionCheckRequired) {
+            if (this.preferredReadRegions.size() == 1) {
+                canRetry = false;
+            }
+        }
 
         // simulate high channel acquisition/connectionTimeout
         String ruleId = "serverErrorRule-" + serverErrorType + "-" + UUID.randomUUID();
@@ -631,6 +649,60 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
         if (totalHitCount > 0) {
             assertThat(rule.getHitCountDetails().size()).isGreaterThanOrEqualTo(1);
             assertThat(rule.getHitCountDetails().get(operationType.toString() + "-" + resourceType.toString())).isEqualTo(totalHitCount);
+        }
+    }
+
+    private static AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
+        Iterator<DatabaseAccountLocation> locationIterator =
+            writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+
+        List<String> serviceOrderedReadableRegions = new ArrayList<>();
+        List<String> serviceOrderedWriteableRegions = new ArrayList<>();
+        Map<String, String> regionMap = new ConcurrentHashMap<>();
+
+        while (locationIterator.hasNext()) {
+            DatabaseAccountLocation accountLocation = locationIterator.next();
+            regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+
+            if (writeOnly) {
+                serviceOrderedWriteableRegions.add(accountLocation.getName());
+            } else {
+                serviceOrderedReadableRegions.add(accountLocation.getName());
+            }
+        }
+
+        return new AccountLevelLocationContext(
+            serviceOrderedReadableRegions,
+            serviceOrderedWriteableRegions,
+            regionMap);
+    }
+
+    private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
+
+        assertThat(accountLevelLocationContext).isNotNull();
+
+        if (isWriteOnly) {
+            assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions).isNotNull();
+            assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThanOrEqualTo(1);
+        } else {
+            assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
+            assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
+        }
+    }
+
+    private static class AccountLevelLocationContext {
+        private final List<String> serviceOrderedReadableRegions;
+        private final List<String> serviceOrderedWriteableRegions;
+        private final Map<String, String> regionNameToEndpoint;
+
+        public AccountLevelLocationContext(
+            List<String> serviceOrderedReadableRegions,
+            List<String> serviceOrderedWriteableRegions,
+            Map<String, String> regionNameToEndpoint) {
+
+            this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
+            this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
+            this.regionNameToEndpoint = regionNameToEndpoint;
         }
     }
 }

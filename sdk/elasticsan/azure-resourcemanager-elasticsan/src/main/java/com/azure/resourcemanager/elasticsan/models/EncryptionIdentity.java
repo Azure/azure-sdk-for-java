@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Encryption identity for the volume group.
  */
 @Fluent
-public final class EncryptionIdentity {
+public final class EncryptionIdentity implements JsonSerializable<EncryptionIdentity> {
     /*
      * Resource identifier of the UserAssigned identity to be associated with server-side encryption on the volume
      * group.
      */
-    @JsonProperty(value = "userAssignedIdentity")
     private String encryptionUserAssignedIdentity;
 
     /**
@@ -53,5 +56,41 @@ public final class EncryptionIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userAssignedIdentity", this.encryptionUserAssignedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionIdentity.
+     */
+    public static EncryptionIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionIdentity deserializedEncryptionIdentity = new EncryptionIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedEncryptionIdentity.encryptionUserAssignedIdentity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionIdentity;
+        });
     }
 }

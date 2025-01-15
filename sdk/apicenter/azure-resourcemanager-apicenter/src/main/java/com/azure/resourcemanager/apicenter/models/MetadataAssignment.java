@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Assignment metadata.
  */
 @Fluent
-public final class MetadataAssignment {
+public final class MetadataAssignment implements JsonSerializable<MetadataAssignment> {
     /*
      * The entities this metadata schema component gets applied to.
      */
-    @JsonProperty(value = "entity")
     private MetadataAssignmentEntity entity;
 
     /*
      * Required assignment
      */
-    @JsonProperty(value = "required")
     private Boolean required;
 
     /*
      * Deprecated assignment
      */
-    @JsonProperty(value = "deprecated")
     private Boolean deprecated;
 
     /**
@@ -102,5 +103,47 @@ public final class MetadataAssignment {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entity", this.entity == null ? null : this.entity.toString());
+        jsonWriter.writeBooleanField("required", this.required);
+        jsonWriter.writeBooleanField("deprecated", this.deprecated);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataAssignment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataAssignment if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataAssignment.
+     */
+    public static MetadataAssignment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataAssignment deserializedMetadataAssignment = new MetadataAssignment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entity".equals(fieldName)) {
+                    deserializedMetadataAssignment.entity = MetadataAssignmentEntity.fromString(reader.getString());
+                } else if ("required".equals(fieldName)) {
+                    deserializedMetadataAssignment.required = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deprecated".equals(fieldName)) {
+                    deserializedMetadataAssignment.deprecated = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataAssignment;
+        });
     }
 }

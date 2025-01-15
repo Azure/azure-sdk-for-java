@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class ApiProperties implements JsonSerializable<ApiProperties> {
     /*
-     * Describes the ServerVersion of an a MongoDB account.
+     * Describes the version of the MongoDB account.
      */
     private ServerVersion serverVersion;
 
@@ -28,7 +28,7 @@ public final class ApiProperties implements JsonSerializable<ApiProperties> {
     }
 
     /**
-     * Get the serverVersion property: Describes the ServerVersion of an a MongoDB account.
+     * Get the serverVersion property: Describes the version of the MongoDB account.
      * 
      * @return the serverVersion value.
      */
@@ -37,7 +37,7 @@ public final class ApiProperties implements JsonSerializable<ApiProperties> {
     }
 
     /**
-     * Set the serverVersion property: Describes the ServerVersion of an a MongoDB account.
+     * Set the serverVersion property: Describes the version of the MongoDB account.
      * 
      * @param serverVersion the serverVersion value to set.
      * @return the ApiProperties object itself.

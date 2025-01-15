@@ -12,7 +12,8 @@ import com.azure.communication.callautomation.models.TransferCallResult;
 public final class TransferCallResponseConstructorProxy {
     private static TransferCallResponseConstructorAccessor accessor;
 
-    private TransferCallResponseConstructorProxy() { }
+    private TransferCallResponseConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link TransferCallResponseConstructorAccessor}

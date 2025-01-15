@@ -43,48 +43,53 @@ public final class WebAppPerformanceMonitoringAlerts {
             // Create an App Service plan
             System.out.println("Creating App Service plan");
 
-            AppServicePlan servicePlan = azureResourceManager.appServicePlans().define("HighlyAvailableWebApps")
-                    .withRegion(Region.US_SOUTH_CENTRAL)
-                    .withNewResourceGroup(rgName)
-                    .withPricingTier(PricingTier.PREMIUM_P1)
-                    .withOperatingSystem(OperatingSystem.WINDOWS)
-                    .create();
+            AppServicePlan servicePlan = azureResourceManager.appServicePlans()
+                .define("HighlyAvailableWebApps")
+                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withPricingTier(PricingTier.PREMIUM_P1)
+                .withOperatingSystem(OperatingSystem.WINDOWS)
+                .create();
 
             System.out.println("App Service plan created:");
             Utils.print(servicePlan);
 
             // ============================================================
             // Create an action group to send notifications in case metric alert condition will be triggered
-            ActionGroup ag = azureResourceManager.actionGroups().define("criticalPerformanceActionGroup")
-                    .withExistingResourceGroup(rgName)
-                    .defineReceiver("tierOne")
-                        .withPushNotification("ops_on_duty@performancemonitoring.com")
-                        .withEmail("ops_on_duty@performancemonitoring.com")
-                        .withSms("1", "4255655665")
-                        .withVoice("1", "2062066050")
-                        .withWebhook("https://www.weeneedmorepower.performancemonitoring.com")
-                    .attach()
-                    .defineReceiver("tierTwo")
-                        .withEmail("ceo@performancemonitoring.com")
-                        .attach()
-                    .create();
+            ActionGroup ag = azureResourceManager.actionGroups()
+                .define("criticalPerformanceActionGroup")
+                .withExistingResourceGroup(rgName)
+                .defineReceiver("tierOne")
+                .withPushNotification("ops_on_duty@performancemonitoring.com")
+                .withEmail("ops_on_duty@performancemonitoring.com")
+                .withSms("1", "4255655665")
+                .withVoice("1", "2062066050")
+                .withWebhook("https://www.weeneedmorepower.performancemonitoring.com")
+                .attach()
+                .defineReceiver("tierTwo")
+                .withEmail("ceo@performancemonitoring.com")
+                .attach()
+                .create();
             Utils.print(ag);
 
             // ============================================================
             // Set a trigger to fire each time
-            MetricAlert ma = azureResourceManager.alertRules().metricAlerts().define("Critical performance alert")
-                    .withExistingResourceGroup(rgName)
-                    .withTargetResource(servicePlan.id())
-                    .withPeriod(Duration.ofMinutes(5))
-                    .withFrequency(Duration.ofMinutes(1))
-                    .withAlertDetails(3, "This alert rule is for U5 - Single resource-multiple criteria - with dimensions - with star")
-                    .withActionGroups(ag.id())
-                    .defineAlertCriteria("Metric1")
-                        .withMetricName("CPUPercentage", "Microsoft.Web/serverfarms")
-                        .withCondition(MetricAlertRuleTimeAggregation.TOTAL, MetricAlertRuleCondition.GREATER_THAN, 80)
-                        .withDimension("Instance", "*")
-                        .attach()
-                    .create();
+            MetricAlert ma = azureResourceManager.alertRules()
+                .metricAlerts()
+                .define("Critical performance alert")
+                .withExistingResourceGroup(rgName)
+                .withTargetResource(servicePlan.id())
+                .withPeriod(Duration.ofMinutes(5))
+                .withFrequency(Duration.ofMinutes(1))
+                .withAlertDetails(3,
+                    "This alert rule is for U5 - Single resource-multiple criteria - with dimensions - with star")
+                .withActionGroups(ag.id())
+                .defineAlertCriteria("Metric1")
+                .withMetricName("CPUPercentage", "Microsoft.Web/serverfarms")
+                .withCondition(MetricAlertRuleTimeAggregation.TOTAL, MetricAlertRuleCondition.GREATER_THAN, 80)
+                .withDimension("Instance", "*")
+                .attach()
+                .create();
             Utils.print(ma);
 
             return true;
@@ -111,8 +116,7 @@ public final class WebAppPerformanceMonitoringAlerts {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

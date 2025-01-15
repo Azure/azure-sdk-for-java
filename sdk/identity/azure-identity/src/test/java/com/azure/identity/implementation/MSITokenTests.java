@@ -3,9 +3,8 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MSITokenTests {
     private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 3, 28, 0, ZoneOffset.UTC);
-
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Test
     public void canParseLong() {
@@ -36,31 +33,30 @@ public class MSITokenTests {
 
     @Test
     public void canDeserialize() {
-        String json = "{\n"
-            + "  \"access_token\": \"fake_token\",\n"
-            + "  \"refresh_token\": \"\",\n"
-            + "  \"expires_in\": \"3599\",\n"
-            + "  \"expires_on\": \"1506484173\",\n"
-            + "  \"not_before\": \"1506480273\",\n"
-            + "  \"resource\": \"https://managementazurecom/\",\n"
-            + "  \"token_type\": \"Bearer\"\n"
-            + "}";
+        // this is the shape of a payload from the IMDS endpoint.
+        // we only ever deserialize these like this.
+        String json = "{\n" + "  \"access_token\": \"fake_token\",\n" + "  \"refresh_token\": \"\",\n"
+            + "  \"expires_in\": \"3599\",\n" + "  \"expires_on\": \"1506484173\",\n"
+            + "  \"not_before\": \"1506480273\",\n" + "  \"resource\": \"https://managementazurecom/\",\n"
+            + "  \"token_type\": \"Bearer\"\n" + "}";
         MSIToken token;
         try {
-            token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
+            try (JsonReader reader = JsonProviders.createReader(json)) {
+                token = MSIToken.fromJson(reader);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
+        assertEquals("fake_token", token.getToken());
     }
 
     @Test
     public void canParseDateTime24Hr() {
         MSIToken token = new MSIToken("fake_token", "01/10/2020 15:03:28 +00:00", null);
         MSIToken token2 = new MSIToken("fake_token", null, "01/10/2020 15:03:28 +00:00");
-        MSIToken token3 = new MSIToken("fake_token", "01/10/2020 15:03:28 +00:00",
-            "86500");
+        MSIToken token3 = new MSIToken("fake_token", "01/10/2020 15:03:28 +00:00", "86500");
         MSIToken token4 = new MSIToken("fake_token", null, "43219");
 
         assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
@@ -74,8 +70,7 @@ public class MSITokenTests {
     public void canParseDateTime12Hr() {
         MSIToken token = new MSIToken("fake_token", "1/10/2020 3:03:28 PM +00:00", null);
         MSIToken token2 = new MSIToken("fake_token", null, "1/10/2020 3:03:28 PM +00:00");
-        MSIToken token3 = new MSIToken("fake_token", "1/10/2020 3:03:28 PM +00:00",
-            "86500");
+        MSIToken token3 = new MSIToken("fake_token", "1/10/2020 3:03:28 PM +00:00", "86500");
         MSIToken token4 = new MSIToken("fake_token", null, "86500");
 
         assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
@@ -86,8 +81,7 @@ public class MSITokenTests {
 
         token = new MSIToken("fake_token", "12/20/2019 4:58:20 AM +00:00", null);
         token2 = new MSIToken("fake_token", null, "12/20/2019 4:58:20 AM +00:00");
-        token3 = new MSIToken("fake_token", "12/20/2019 4:58:20 AM +00:00",
-            "105500");
+        token3 = new MSIToken("fake_token", "12/20/2019 4:58:20 AM +00:00", "105500");
         token4 = new MSIToken("fake_token", null, "105500");
         expected = OffsetDateTime.of(2019, 12, 20, 4, 58, 20, 0, ZoneOffset.UTC);
 
@@ -99,8 +93,7 @@ public class MSITokenTests {
 
         token = new MSIToken("fake_token", "1/1/2020 0:00:00 PM +00:00", null);
         token2 = new MSIToken("fake_token", null, "1/1/2020 0:00:00 PM +00:00");
-        token3 = new MSIToken("fake_token", "1/1/2020 0:00:00 PM +00:00",
-            "220800");
+        token3 = new MSIToken("fake_token", "1/1/2020 0:00:00 PM +00:00", "220800");
         token4 = new MSIToken("fake_token", null, "220800");
 
         expected = OffsetDateTime.of(2020, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC);

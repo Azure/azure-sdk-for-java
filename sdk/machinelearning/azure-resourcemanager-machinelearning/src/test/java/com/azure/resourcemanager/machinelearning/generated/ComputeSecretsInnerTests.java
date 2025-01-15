@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.fluent.models.ComputeSecretsInn
 public final class ComputeSecretsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeSecretsInner model =
-            BinaryData.fromString("{\"computeType\":\"ComputeSecrets\"}").toObject(ComputeSecretsInner.class);
+        ComputeSecretsInner model
+            = BinaryData.fromString("{\"computeType\":\"ComputeSecrets\"}").toObject(ComputeSecretsInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -18,9 +18,9 @@ import com.azure.resourcemanager.network.models.VpnGatewayTunnelingProtocol;
 import com.azure.resourcemanager.network.models.VpnPolicyMemberAttributeType;
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusClientRootCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusServerRootCertificate;
-import com.azure.resourcemanager.network.models.VpnServerConfigurationPolicyGroupMember;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRevokedCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRootCertificate;
+import com.azure.resourcemanager.network.models.VpnServerConfigurationPolicyGroupMember;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,7 @@ import java.util.Map;
 public final class VpnServerConfigurationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnServerConfigurationPut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VpnServerConfigurationPut.
      * json
      */
     /**

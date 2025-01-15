@@ -28,7 +28,8 @@ public final class ManagedPrivateEndpointsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.managedPrivateEndpoints()
-            .deleteWithResponse("qnsigrqcxhwvzd", "ujmuka", "zu", "txf", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ba", "ycnjxyproqebsuij", "mwbshqpjueo", "htltooikzouv",
+                com.azure.core.util.Context.NONE);
 
     }
 }

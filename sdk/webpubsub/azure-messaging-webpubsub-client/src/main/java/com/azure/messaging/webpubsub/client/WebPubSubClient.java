@@ -269,8 +269,8 @@ public final class WebPubSubClient implements Closeable {
      *
      * @param onRejoinGroupFailedEventHandler the event handler for RejoinGroupFailedEvent.
      */
-    public void removeOnRejoinGroupFailedEventHandler(
-        Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
+    public void
+        removeOnRejoinGroupFailedEventHandler(Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
         eventHandlerCollection.removeEventHandler(REJOIN_GROUP_FAILED_EVENT, onRejoinGroupFailedEventHandler);
     }
 

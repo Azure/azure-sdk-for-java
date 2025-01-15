@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Turning this on will apply the reservation discount to other VMs in the same VM size group. */
+/**
+ * Turning this on will apply the reservation discount to other VMs in the same VM size group.
+ */
 public final class InstanceFlexibility extends ExpandableStringEnum<InstanceFlexibility> {
-    /** Static value On for InstanceFlexibility. */
+    /**
+     * Static value On for InstanceFlexibility.
+     */
     public static final InstanceFlexibility ON = fromString("On");
 
-    /** Static value Off for InstanceFlexibility. */
+    /**
+     * Static value Off for InstanceFlexibility.
+     */
     public static final InstanceFlexibility OFF = fromString("Off");
 
     /**
      * Creates a new instance of InstanceFlexibility value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class InstanceFlexibility extends ExpandableStringEnum<InstanceFlex
 
     /**
      * Creates or finds a InstanceFlexibility from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InstanceFlexibility.
      */
-    @JsonCreator
     public static InstanceFlexibility fromString(String name) {
         return fromString(name, InstanceFlexibility.class);
     }
 
     /**
      * Gets known InstanceFlexibility values.
-     *
+     * 
      * @return known InstanceFlexibility values.
      */
     public static Collection<InstanceFlexibility> values() {

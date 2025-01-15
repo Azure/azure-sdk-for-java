@@ -6,97 +6,58 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSchema;
 import com.azure.resourcemanager.logic.models.SchemaType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationAccountSchemasCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"schemaType\":\"NotSpecified\",\"targetNamespace\":\"ykezoxhazafmqmb\",\"documentName\":\"pciammpeakdhebz\",\"fileName\":\"qggjxklojdydh\",\"createdTime\":\"2021-11-01T09:25:01Z\",\"changedTime\":\"2021-05-21T20:50:11Z\",\"metadata\":\"dataisxgjihnxoxjghum\",\"content\":\"tbhogllvfe\",\"contentType\":\"cjuzzzil\",\"contentLink\":{\"uri\":\"rnovbgdba\",\"contentVersion\":\"nxsyh\",\"contentSize\":3351397072115102659,\"contentHash\":{\"algorithm\":\"dmzejcp\",\"value\":\"qjinrymzlqircivx\"},\"metadata\":\"datazmvgxqtkc\"}},\"location\":\"nyikyexwfsi\",\"tags\":{\"ztns\":\"elzuvd\"},\"id\":\"tesq\",\"name\":\"klzyhavtivefsrlt\",\"type\":\"xhpntewv\"}";
 
-        String responseStr =
-            "{\"properties\":{\"schemaType\":\"Xml\",\"targetNamespace\":\"ftteh\",\"documentName\":\"boujstkfvv\",\"fileName\":\"hxcd\",\"createdTime\":\"2020-12-22T05:34:09Z\",\"changedTime\":\"2021-03-14T15:19:04Z\",\"metadata\":\"dataygnxcgjtfrnqukt\",\"content\":\"nslnlrxsmyltrwnt\",\"contentType\":\"tbgwjdxwnazkur\",\"contentLink\":{\"uri\":\"eyz\",\"contentVersion\":\"hsetwwj\",\"contentSize\":3302215545380544215,\"metadata\":\"datauzu\"}},\"location\":\"kykcyqhyqqzz\",\"tags\":{\"ewfopazdazg\":\"keys\",\"mdpv\":\"sqgpewqcfu\"},\"id\":\"zgl\",\"name\":\"jbkn\",\"type\":\"zcl\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IntegrationAccountSchema response = manager.integrationAccountSchemas()
+            .define("es")
+            .withRegion("kgyuviqeskindgm")
+            .withExistingIntegrationAccount("ozjzhixcivjoka", "jjpclm")
+            .withSchemaType(SchemaType.NOT_SPECIFIED)
+            .withTags(mapOf("huliflxrnsyvmue", "uvyuzzw", "rx", "kwvcogqjimxcth", "vjez", "kinutdhbmizb"))
+            .withTargetNamespace("hfcnceo")
+            .withDocumentName("irbshy")
+            .withFileName("khe")
+            .withMetadata("datazcpoydaifxmbxqzc")
+            .withContent("cmlp")
+            .withContentType("pzpldaoiidxknsq")
+            .create();
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IntegrationAccountSchema response =
-            manager
-                .integrationAccountSchemas()
-                .define("ybmx")
-                .withRegion("wtaznkcqw")
-                .withExistingIntegrationAccount("vdwtfxptpqayamk", "cf")
-                .withSchemaType(SchemaType.NOT_SPECIFIED)
-                .withTags(
-                    mapOf(
-                        "tlwljssmcts",
-                        "jyofgwhnk",
-                        "xbteogfgfiijryk",
-                        "ldkpwolgisu",
-                        "eazfpxgnmqvzvlu",
-                        "lefksxq",
-                        "aiossscyvaifp",
-                        "q"))
-                .withTargetNamespace("ocuullojkpoyhgww")
-                .withDocumentName("uxdbdljzgdyrcvuq")
-                .withFileName("gzlrqhbj")
-                .withMetadata("databsfp")
-                .withContent("x")
-                .withContentType("lflec")
-                .create();
-
-        Assertions.assertEquals("kykcyqhyqqzz", response.location());
-        Assertions.assertEquals("keys", response.tags().get("ewfopazdazg"));
-        Assertions.assertEquals(SchemaType.XML, response.schemaType());
-        Assertions.assertEquals("ftteh", response.targetNamespace());
-        Assertions.assertEquals("boujstkfvv", response.documentName());
-        Assertions.assertEquals("hxcd", response.fileName());
-        Assertions.assertEquals("nslnlrxsmyltrwnt", response.content());
-        Assertions.assertEquals("tbgwjdxwnazkur", response.contentType());
+        Assertions.assertEquals("nyikyexwfsi", response.location());
+        Assertions.assertEquals("elzuvd", response.tags().get("ztns"));
+        Assertions.assertEquals(SchemaType.NOT_SPECIFIED, response.schemaType());
+        Assertions.assertEquals("ykezoxhazafmqmb", response.targetNamespace());
+        Assertions.assertEquals("pciammpeakdhebz", response.documentName());
+        Assertions.assertEquals("qggjxklojdydh", response.fileName());
+        Assertions.assertEquals("tbhogllvfe", response.content());
+        Assertions.assertEquals("cjuzzzil", response.contentType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -73,24 +73,20 @@ public final class CredentialImpl implements Credential, Credential.Definition, 
     }
 
     public Credential create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentials()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, credentialName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentials()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, credentialName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Credential create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentials()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, credentialName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentials()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, credentialName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -107,51 +103,43 @@ public final class CredentialImpl implements Credential, Credential.Definition, 
     }
 
     public Credential apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentials()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, credentialName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentials()
+            .updateWithResponse(resourceGroupName, automationAccountName, credentialName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Credential apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentials()
-                .updateWithResponse(resourceGroupName, automationAccountName, credentialName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentials()
+            .updateWithResponse(resourceGroupName, automationAccountName, credentialName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     CredentialImpl(CredentialInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.credentialName = Utils.getValueFromIdByName(innerObject.id(), "credentials");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.credentialName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "credentials");
     }
 
     public Credential refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentials()
-                .getWithResponse(resourceGroupName, automationAccountName, credentialName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentials()
+            .getWithResponse(resourceGroupName, automationAccountName, credentialName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Credential refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentials()
-                .getWithResponse(resourceGroupName, automationAccountName, credentialName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentials()
+            .getWithResponse(resourceGroupName, automationAccountName, credentialName, context)
+            .getValue();
         return this;
     }
 

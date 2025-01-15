@@ -30,23 +30,28 @@ import com.azure.resourcemanager.workloads.fluent.models.SapLandscapeMonitorInne
 import com.azure.resourcemanager.workloads.fluent.models.SapLandscapeMonitorListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SapLandscapeMonitorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SapLandscapeMonitorsClient.
+ */
 public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SapLandscapeMonitorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WorkloadsClientImpl client;
 
     /**
      * Initializes an instance of SapLandscapeMonitorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SapLandscapeMonitorsClientImpl(WorkloadsClientImpl client) {
-        this.service =
-            RestProxy
-                .create(SapLandscapeMonitorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SapLandscapeMonitorsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,107 +62,78 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
     @Host("{$host}")
     @ServiceInterface(name = "WorkloadsClientSapLa")
     public interface SapLandscapeMonitorsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor/default")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor/default")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SapLandscapeMonitorInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SapLandscapeMonitorInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor/default")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor/default")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SapLandscapeMonitorInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
+        Mono<Response<SapLandscapeMonitorInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
             @BodyParam("application/json") SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor/default")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor/default")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor/default")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor/default")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SapLandscapeMonitorInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
+        Mono<Response<SapLandscapeMonitorInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
             @BodyParam("application/json") SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/sapLandscapeMonitor")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SapLandscapeMonitorListResultInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SapLandscapeMonitorListResultInner>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapLandscapeMonitorInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName) {
+    private Mono<Response<SapLandscapeMonitorInner>> getWithResponseAsync(String resourceGroupName,
+        String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,26 +144,17 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -195,22 +162,18 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapLandscapeMonitorInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<Response<SapLandscapeMonitorInner>> getWithResponseAsync(String resourceGroupName, String monitorName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -221,30 +184,23 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, accept, context);
     }
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name on successful completion of {@link Mono}.
+     * group, and resource name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapLandscapeMonitorInner> getAsync(String resourceGroupName, String monitorName) {
@@ -253,10 +209,10 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -264,27 +220,27 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response}.
+     * group, and resource name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SapLandscapeMonitorInner> getWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
+    public Response<SapLandscapeMonitorInner> getWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, monitorName, context).block();
     }
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name.
+     * group, and resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SapLandscapeMonitorInner get(String resourceGroupName, String monitorName) {
@@ -293,33 +249,29 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapLandscapeMonitorInner>> createWithResponseAsync(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
+    private Mono<Response<SapLandscapeMonitorInner>> createWithResponseAsync(String resourceGroupName,
+        String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -329,63 +281,45 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (sapLandscapeMonitorParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sapLandscapeMonitorParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sapLandscapeMonitorParameter is required and cannot be null."));
         } else {
             sapLandscapeMonitorParameter.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            sapLandscapeMonitorParameter,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, sapLandscapeMonitorParameter, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapLandscapeMonitorInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context) {
+    private Mono<Response<SapLandscapeMonitorInner>> createWithResponseAsync(String resourceGroupName,
+        String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -395,57 +329,47 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (sapLandscapeMonitorParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sapLandscapeMonitorParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sapLandscapeMonitorParameter is required and cannot be null."));
         } else {
             sapLandscapeMonitorParameter.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                sapLandscapeMonitorParameter,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, sapLandscapeMonitorParameter, accept, context);
     }
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SapLandscapeMonitorInner> createAsync(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
+    private Mono<SapLandscapeMonitorInner> createAsync(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
         return createWithResponseAsync(resourceGroupName, monitorName, sapLandscapeMonitorParameter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -453,41 +377,37 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SapLandscapeMonitorInner> createWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context) {
+    public Response<SapLandscapeMonitorInner> createWithResponse(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context) {
         return createWithResponseAsync(resourceGroupName, monitorName, sapLandscapeMonitorParameter, context).block();
     }
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SapLandscapeMonitorInner create(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
+    public SapLandscapeMonitorInner create(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
         return createWithResponse(resourceGroupName, monitorName, sapLandscapeMonitorParameter, Context.NONE)
             .getValue();
     }
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -498,16 +418,12 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -518,26 +434,16 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -547,19 +453,15 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -570,23 +472,15 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, accept, context);
     }
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -601,10 +495,9 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -620,10 +513,9 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -637,34 +529,29 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapLandscapeMonitorInner>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
+    private Mono<Response<SapLandscapeMonitorInner>> updateWithResponseAsync(String resourceGroupName,
+        String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -674,64 +561,45 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (sapLandscapeMonitorParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sapLandscapeMonitorParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sapLandscapeMonitorParameter is required and cannot be null."));
         } else {
             sapLandscapeMonitorParameter.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            sapLandscapeMonitorParameter,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, sapLandscapeMonitorParameter, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapLandscapeMonitorInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context) {
+    private Mono<Response<SapLandscapeMonitorInner>> updateWithResponseAsync(String resourceGroupName,
+        String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -741,59 +609,47 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (sapLandscapeMonitorParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sapLandscapeMonitorParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sapLandscapeMonitorParameter is required and cannot be null."));
         } else {
             sapLandscapeMonitorParameter.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                sapLandscapeMonitorParameter,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, sapLandscapeMonitorParameter, accept, context);
     }
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SapLandscapeMonitorInner> updateAsync(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
+    private Mono<SapLandscapeMonitorInner> updateAsync(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
         return updateWithResponseAsync(resourceGroupName, monitorName, sapLandscapeMonitorParameter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -801,64 +657,56 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SapLandscapeMonitorInner> updateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context) {
+    public Response<SapLandscapeMonitorInner> updateWithResponse(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context) {
         return updateWithResponseAsync(resourceGroupName, monitorName, sapLandscapeMonitorParameter, context).block();
     }
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SapLandscapeMonitorInner update(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
+    public SapLandscapeMonitorInner update(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
         return updateWithResponse(resourceGroupName, monitorName, sapLandscapeMonitorParameter, Context.NONE)
             .getValue();
     }
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapLandscapeMonitorListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String monitorName) {
+    private Mono<Response<SapLandscapeMonitorListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -869,26 +717,17 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -896,22 +735,18 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapLandscapeMonitorListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<Response<SapLandscapeMonitorListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String monitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -922,30 +757,23 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, accept, context);
     }
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name on successful completion of {@link Mono}.
+     * group, and resource name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapLandscapeMonitorListResultInner> listAsync(String resourceGroupName, String monitorName) {
@@ -954,10 +782,10 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -965,27 +793,27 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response}.
+     * group, and resource name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SapLandscapeMonitorListResultInner> listWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
+    public Response<SapLandscapeMonitorListResultInner> listWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
         return listWithResponseAsync(resourceGroupName, monitorName, context).block();
     }
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name.
+     * group, and resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SapLandscapeMonitorListResultInner list(String resourceGroupName, String monitorName) {

@@ -6,10 +6,12 @@ package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.costmanagement.models.ForecastAggregation;
+import com.azure.resourcemanager.costmanagement.models.ForecastComparisonExpression;
 import com.azure.resourcemanager.costmanagement.models.ForecastDataset;
 import com.azure.resourcemanager.costmanagement.models.ForecastDatasetConfiguration;
 import com.azure.resourcemanager.costmanagement.models.ForecastDefinition;
 import com.azure.resourcemanager.costmanagement.models.ForecastFilter;
+import com.azure.resourcemanager.costmanagement.models.ForecastOperatorType;
 import com.azure.resourcemanager.costmanagement.models.ForecastTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ForecastTimeframe;
 import com.azure.resourcemanager.costmanagement.models.ForecastType;
@@ -25,61 +27,114 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Usage\",\"timeframe\":\"Custom\",\"timePeriod\":{\"from\":\"2021-06-07T11:11Z\",\"to\":\"2021-03-08T00:26:17Z\"},\"dataset\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"bovpl\",\"zbhvgyuguosv\",\"kfssxqukkf\",\"l\"]},\"aggregation\":{\"xnkjzkdesl\":{\"name\":\"PreTaxCost\",\"function\":\"Sum\"}},\"filter\":{\"and\":[],\"or\":[]}},\"includeActualCost\":false,\"includeFreshPartialCost\":false}")
-                .toObject(ForecastDefinition.class);
-        Assertions.assertEquals(ForecastType.USAGE, model.type());
+        ForecastDefinition model = BinaryData.fromString(
+            "{\"type\":\"AmortizedCost\",\"timeframe\":\"Custom\",\"timePeriod\":{\"from\":\"2021-09-17T04:04:44Z\",\"to\":\"2021-04-01T21:28:03Z\"},\"dataset\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"hyjsvfycx\",\"bfvoowvrv\"]},\"aggregation\":{\"qp\":{\"name\":\"Cost\",\"function\":\"Sum\"}},\"filter\":{\"and\":[{\"and\":[{},{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"myhgfipnsxkmc\",\"operator\":\"In\",\"values\":[\"krrjrea\",\"xt\"]},\"tags\":{\"name\":\"umh\",\"operator\":\"In\",\"values\":[\"ikkx\"]}}],\"or\":[{\"and\":[{},{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"vuzlm\",\"operator\":\"In\",\"values\":[\"lfktgplcrpwjxe\"]},\"tags\":{\"name\":\"oi\",\"operator\":\"In\",\"values\":[\"njwmwkpnbsazejj\",\"qkagfhsxt\"]}}],\"dimensions\":{\"name\":\"ugzxnf\",\"operator\":\"In\",\"values\":[\"pxdtnkdmkq\",\"jlwuenvrkp\"]},\"tags\":{\"name\":\"uaibrebqaaysj\",\"operator\":\"In\",\"values\":[\"qtnqtt\",\"zlwfffiakp\"]}}},\"includeActualCost\":true,\"includeFreshPartialCost\":false}")
+            .toObject(ForecastDefinition.class);
+        Assertions.assertEquals(ForecastType.AMORTIZED_COST, model.type());
         Assertions.assertEquals(ForecastTimeframe.CUSTOM, model.timeframe());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T11:11Z"), model.timePeriod().from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T00:26:17Z"), model.timePeriod().to());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T04:04:44Z"), model.timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T21:28:03Z"), model.timePeriod().to());
         Assertions.assertEquals(GranularityType.DAILY, model.dataset().granularity());
-        Assertions.assertEquals("bovpl", model.dataset().configuration().columns().get(0));
-        Assertions.assertEquals(FunctionName.PRE_TAX_COST, model.dataset().aggregation().get("xnkjzkdesl").name());
-        Assertions.assertEquals(FunctionType.SUM, model.dataset().aggregation().get("xnkjzkdesl").function());
-        Assertions.assertEquals(false, model.includeActualCost());
+        Assertions.assertEquals("hyjsvfycx", model.dataset().configuration().columns().get(0));
+        Assertions.assertEquals(FunctionName.COST, model.dataset().aggregation().get("qp").name());
+        Assertions.assertEquals(FunctionType.SUM, model.dataset().aggregation().get("qp").function());
+        Assertions.assertEquals("myhgfipnsxkmc", model.dataset().filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("krrjrea", model.dataset().filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("umh", model.dataset().filter().and().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().and().get(0).tags().operator());
+        Assertions.assertEquals("ikkx", model.dataset().filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("vuzlm", model.dataset().filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("lfktgplcrpwjxe", model.dataset().filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("oi", model.dataset().filter().or().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().or().get(0).tags().operator());
+        Assertions.assertEquals("njwmwkpnbsazejj", model.dataset().filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("ugzxnf", model.dataset().filter().dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().dimensions().operator());
+        Assertions.assertEquals("pxdtnkdmkq", model.dataset().filter().dimensions().values().get(0));
+        Assertions.assertEquals("uaibrebqaaysj", model.dataset().filter().tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().tags().operator());
+        Assertions.assertEquals("qtnqtt", model.dataset().filter().tags().values().get(0));
+        Assertions.assertEquals(true, model.includeActualCost());
         Assertions.assertEquals(false, model.includeFreshPartialCost());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastDefinition model =
-            new ForecastDefinition()
-                .withType(ForecastType.USAGE)
+        ForecastDefinition model
+            = new ForecastDefinition().withType(ForecastType.AMORTIZED_COST)
                 .withTimeframe(ForecastTimeframe.CUSTOM)
-                .withTimePeriod(
-                    new ForecastTimePeriod()
-                        .withFrom(OffsetDateTime.parse("2021-06-07T11:11Z"))
-                        .withTo(OffsetDateTime.parse("2021-03-08T00:26:17Z")))
+                .withTimePeriod(new ForecastTimePeriod().withFrom(OffsetDateTime.parse("2021-09-17T04:04:44Z"))
+                    .withTo(OffsetDateTime.parse("2021-04-01T21:28:03Z")))
                 .withDataset(
-                    new ForecastDataset()
-                        .withGranularity(GranularityType.DAILY)
+                    new ForecastDataset().withGranularity(GranularityType.DAILY)
                         .withConfiguration(
-                            new ForecastDatasetConfiguration()
-                                .withColumns(Arrays.asList("bovpl", "zbhvgyuguosv", "kfssxqukkf", "l")))
-                        .withAggregation(
-                            mapOf(
-                                "xnkjzkdesl",
-                                new ForecastAggregation()
-                                    .withName(FunctionName.PRE_TAX_COST)
-                                    .withFunction(FunctionType.SUM)))
-                        .withFilter(new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                .withIncludeActualCost(false)
+                            new ForecastDatasetConfiguration().withColumns(Arrays.asList("hyjsvfycx", "bfvoowvrv")))
+                        .withAggregation(mapOf("qp",
+                            new ForecastAggregation().withName(FunctionName.COST).withFunction(FunctionType.SUM)))
+                        .withFilter(new ForecastFilter()
+                            .withAnd(
+                                Arrays.asList(new ForecastFilter()
+                                    .withAnd(
+                                        Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                                    .withOr(Arrays.asList(new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("myhgfipnsxkmc")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("krrjrea", "xt")))
+                                    .withTags(new ForecastComparisonExpression().withName("umh")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("ikkx")))))
+                            .withOr(Arrays.asList(new ForecastFilter()
+                                .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter(),
+                                    new ForecastFilter()))
+                                .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                                .withDimensions(new ForecastComparisonExpression().withName("vuzlm")
+                                    .withOperator(ForecastOperatorType.IN)
+                                    .withValues(Arrays.asList("lfktgplcrpwjxe")))
+                                .withTags(new ForecastComparisonExpression().withName("oi")
+                                    .withOperator(ForecastOperatorType.IN)
+                                    .withValues(Arrays.asList("njwmwkpnbsazejj", "qkagfhsxt")))))
+                            .withDimensions(new ForecastComparisonExpression().withName("ugzxnf")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("pxdtnkdmkq", "jlwuenvrkp")))
+                            .withTags(new ForecastComparisonExpression().withName("uaibrebqaaysj")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("qtnqtt", "zlwfffiakp")))))
+                .withIncludeActualCost(true)
                 .withIncludeFreshPartialCost(false);
         model = BinaryData.fromObject(model).toObject(ForecastDefinition.class);
-        Assertions.assertEquals(ForecastType.USAGE, model.type());
+        Assertions.assertEquals(ForecastType.AMORTIZED_COST, model.type());
         Assertions.assertEquals(ForecastTimeframe.CUSTOM, model.timeframe());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T11:11Z"), model.timePeriod().from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T00:26:17Z"), model.timePeriod().to());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T04:04:44Z"), model.timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T21:28:03Z"), model.timePeriod().to());
         Assertions.assertEquals(GranularityType.DAILY, model.dataset().granularity());
-        Assertions.assertEquals("bovpl", model.dataset().configuration().columns().get(0));
-        Assertions.assertEquals(FunctionName.PRE_TAX_COST, model.dataset().aggregation().get("xnkjzkdesl").name());
-        Assertions.assertEquals(FunctionType.SUM, model.dataset().aggregation().get("xnkjzkdesl").function());
-        Assertions.assertEquals(false, model.includeActualCost());
+        Assertions.assertEquals("hyjsvfycx", model.dataset().configuration().columns().get(0));
+        Assertions.assertEquals(FunctionName.COST, model.dataset().aggregation().get("qp").name());
+        Assertions.assertEquals(FunctionType.SUM, model.dataset().aggregation().get("qp").function());
+        Assertions.assertEquals("myhgfipnsxkmc", model.dataset().filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("krrjrea", model.dataset().filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("umh", model.dataset().filter().and().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().and().get(0).tags().operator());
+        Assertions.assertEquals("ikkx", model.dataset().filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("vuzlm", model.dataset().filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("lfktgplcrpwjxe", model.dataset().filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("oi", model.dataset().filter().or().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().or().get(0).tags().operator());
+        Assertions.assertEquals("njwmwkpnbsazejj", model.dataset().filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("ugzxnf", model.dataset().filter().dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().dimensions().operator());
+        Assertions.assertEquals("pxdtnkdmkq", model.dataset().filter().dimensions().values().get(0));
+        Assertions.assertEquals("uaibrebqaaysj", model.dataset().filter().tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.dataset().filter().tags().operator());
+        Assertions.assertEquals("qtnqtt", model.dataset().filter().tags().values().get(0));
+        Assertions.assertEquals(true, model.includeActualCost());
         Assertions.assertEquals(false, model.includeFreshPartialCost());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

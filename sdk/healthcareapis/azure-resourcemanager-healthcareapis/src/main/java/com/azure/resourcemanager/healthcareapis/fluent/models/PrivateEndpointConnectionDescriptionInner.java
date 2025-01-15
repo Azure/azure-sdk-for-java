@@ -6,10 +6,14 @@ package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpoint;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PrivateLinkServiceConnectionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The Private Endpoint Connection resource.
@@ -19,8 +23,27 @@ public final class PrivateEndpointConnectionDescriptionInner extends PrivateEndp
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Resource properties.
+     */
+    private PrivateEndpointConnectionProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of PrivateEndpointConnectionDescriptionInner class.
@@ -38,22 +61,100 @@ public final class PrivateEndpointConnectionDescriptionInner extends PrivateEndp
     }
 
     /**
-     * {@inheritDoc}
+     * Get the innerProperties property: Resource properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private PrivateEndpointConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
     @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the privateEndpoint property: The resource of private end point.
+     * 
+     * @return the privateEndpoint value.
+     */
+    public PrivateEndpoint privateEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoint();
+    }
+
+    /**
+     * Set the privateEndpoint property: The resource of private end point.
+     * 
+     * @param privateEndpoint the privateEndpoint value to set.
+     * @return the PrivateEndpointConnectionDescriptionInner object itself.
+     */
     public PrivateEndpointConnectionDescriptionInner withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
-        super.withPrivateEndpoint(privateEndpoint);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withPrivateEndpoint(privateEndpoint);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
+     * between service consumer and provider.
+     * 
+     * @return the privateLinkServiceConnectionState value.
      */
-    @Override
+    public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
+    }
+
+    /**
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
+     * between service consumer and provider.
+     * 
+     * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
+     * @return the PrivateEndpointConnectionDescriptionInner object itself.
+     */
     public PrivateEndpointConnectionDescriptionInner
         withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        super.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public PrivateEndpointConnectionProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -63,6 +164,55 @@ public final class PrivateEndpointConnectionDescriptionInner extends PrivateEndp
      */
     @Override
     public void validate() {
-        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", innerProperties());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionDescriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionDescriptionInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionDescriptionInner.
+     */
+    public static PrivateEndpointConnectionDescriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionDescriptionInner deserializedPrivateEndpointConnectionDescriptionInner
+                = new PrivateEndpointConnectionDescriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionDescriptionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionDescriptionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionDescriptionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionDescriptionInner.innerProperties
+                        = PrivateEndpointConnectionProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionDescriptionInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionDescriptionInner;
+        });
     }
 }

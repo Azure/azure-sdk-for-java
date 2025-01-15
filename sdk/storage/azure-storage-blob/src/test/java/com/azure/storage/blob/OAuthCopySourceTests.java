@@ -55,8 +55,8 @@ public class OAuthCopySourceTests extends BlobTestBase {
             BlobClient sourceBlob = cc.getBlobClient(generateBlobName());
             sourceBlob.upload(DATA.getDefaultBinaryData());
             String oauthHeader = getAuthToken();
-            appendBlobClient.appendBlockFromUrlWithResponse(
-                new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
+            appendBlobClient
+                .appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
                     .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE);
             TestUtils.assertArraysEqual(appendBlobClient.downloadContent().toBytes(), DATA.getDefaultBytes());
         });
@@ -68,10 +68,10 @@ public class OAuthCopySourceTests extends BlobTestBase {
         sourceBlob.upload(DATA.getDefaultBinaryData());
         String oauthHeader = "garbage";
 
-        assertThrows(BlobStorageException.class, () -> appendBlobClient.appendBlockFromUrlWithResponse(
-            new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE));
+        assertThrows(BlobStorageException.class,
+            () -> appendBlobClient
+                .appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
+                    .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE));
     }
 
     // RBAC replication lag
@@ -79,8 +79,8 @@ public class OAuthCopySourceTests extends BlobTestBase {
     public void blockBlobUploadFromURLSourceOauth() {
         liveTestScenarioWithRetry(() -> {
             String oauthHeader = getAuthToken();
-            blockBlobClient.uploadFromUrlWithResponse(
-                new BlobUploadFromUrlOptions(defaultDataSourceBlobClient.getBlobUrl())
+            blockBlobClient
+                .uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(defaultDataSourceBlobClient.getBlobUrl())
                     .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE);
             TestUtils.assertArraysEqual(blockBlobClient.downloadContent().toBytes(), DATA.getDefaultBytes());
         });
@@ -92,10 +92,9 @@ public class OAuthCopySourceTests extends BlobTestBase {
         sourceBlob.upload(DATA.getDefaultBinaryData());
         String oauthHeader = "garbage";
 
-        assertThrows(BlobStorageException.class, () -> blockBlobClient.uploadFromUrlWithResponse(
-            new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE));
+        assertThrows(BlobStorageException.class,
+            () -> blockBlobClient.uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl())
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE));
     }
 
     // RBAC replication lag
@@ -121,11 +120,10 @@ public class OAuthCopySourceTests extends BlobTestBase {
         String oauthHeader = "garbage";
         String blockId = Base64.getEncoder().encodeToString("myBlockId".getBytes());
 
-        assertThrows(BlobStorageException.class, () -> blockBlobClient.stageBlockFromUrlWithResponse(
-            new BlockBlobStageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE));
-
+        assertThrows(BlobStorageException.class,
+            () -> blockBlobClient
+                .stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
+                    .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE));
 
     }
 
@@ -136,9 +134,10 @@ public class OAuthCopySourceTests extends BlobTestBase {
             PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
             String oauthHeader = getAuthToken();
 
-            pageBlobClient.uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(pageRange,
-                    pageBlobDataSourceBlobClient.getBlobUrl()).setSourceAuthorization(
-                        new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE);
+            pageBlobClient.uploadPagesFromUrlWithResponse(
+                new PageBlobUploadPagesFromUrlOptions(pageRange, pageBlobDataSourceBlobClient.getBlobUrl())
+                    .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
+                null, Context.NONE);
 
             TestUtils.assertArraysEqual(pageBlobClient.downloadContent().toBytes(),
                 pageBlobDataSourceBlobClient.downloadContent().toBytes());
@@ -150,9 +149,10 @@ public class OAuthCopySourceTests extends BlobTestBase {
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         String oauthHeader = "garbage";
 
-        assertThrows(BlobStorageException.class, () -> pageBlobClient.uploadPagesFromUrlWithResponse(
-            new PageBlobUploadPagesFromUrlOptions(pageRange, pageBlobDataSourceBlobClient.getBlobUrl())
-                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
-            null, Context.NONE));
+        assertThrows(BlobStorageException.class,
+            () -> pageBlobClient.uploadPagesFromUrlWithResponse(
+                new PageBlobUploadPagesFromUrlOptions(pageRange, pageBlobDataSourceBlobClient.getBlobUrl())
+                    .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
+                null, Context.NONE));
     }
 }

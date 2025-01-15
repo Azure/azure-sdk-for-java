@@ -1,6 +1,6 @@
 # Release History
 
-## 4.24.0-beta.1 (Unreleased)
+## 4.28.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,56 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.27.0 (2024-11-18)
+
+### Features Added
+- New `ResourceNotificationsContainerServiceEventResourcesScheduledEventData` event, new `StorageLifecyclePolicyrunSummary` field on `StorageLifecyclePolicyCompletedEventData`. [#42966](https://github.com/Azure/azure-sdk-for-java/pull/42966)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+
+## 4.26.0 (2024-10-10)
+
+### Features Added
+
+- Added `onBehalfOfCommunicationIdentifier` field to `AcsIncomingCallEventData`. [#42211](https://github.com/azure/azure-sdk-for-java/issues/42211)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+## 4.25.0 (2024-09-20)
+
+### Features Added
+- Added `WithResponse` methods to sender and receiver clients, allowing for more control of requests and more inspection of responses. [#41879](https://github.com/Azure/azure-sdk-for-java/pull/41879)
+- Added new field on `StorageLifecyclePolicyCompletedEventData` for details of a policy action. [#41886](https://github.com/Azure/azure-sdk-for-java/pull/41886)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+## 4.24.0 (2024-08-20)
+
+### Features Added
+- Added `StorageBlobAccessTier` metadata to `StorageBlobCreatedEventData` and `StorageBlobTierChangedEventData` [#41398](https://github.com/Azure/azure-sdk-for-java/pull/41398)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 
 ## 4.23.0 (2024-07-30)
 

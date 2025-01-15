@@ -5,68 +5,68 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the network interface ip settings. */
+/**
+ * Defines the network interface ip settings.
+ */
 @Fluent
-public final class NicIpSettings {
+public final class NicIpSettings implements JsonSerializable<NicIpSettings> {
     /*
      * Gets or sets the nic allocation method.
      */
-    @JsonProperty(value = "allocationMethod")
     private IpAddressAllocationMethod allocationMethod;
 
     /*
      * Gets or sets the dns servers.
      */
-    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /*
      * Gets or sets the gateway.
      */
-    @JsonProperty(value = "gateway")
     private List<String> gateway;
 
     /*
      * Gets or sets the ip address for the nic.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * Gets or sets the mask.
      */
-    @JsonProperty(value = "subnetMask")
     private String subnetMask;
 
     /*
      * Gets or sets the primary server.
      */
-    @JsonProperty(value = "primaryWinsServer", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryWinsServer;
 
     /*
      * Gets or sets the secondary server.
      */
-    @JsonProperty(value = "secondaryWinsServer", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryWinsServer;
 
     /*
      * Gets or sets the IP address information being reported for this NIC. This contains the same IPv4 information
      * above plus IPV6 information.
      */
-    @JsonProperty(value = "ipAddressInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<NicIpAddressSettings> ipAddressInfo;
 
-    /** Creates an instance of NicIpSettings class. */
+    /**
+     * Creates an instance of NicIpSettings class.
+     */
     public NicIpSettings() {
     }
 
     /**
      * Get the allocationMethod property: Gets or sets the nic allocation method.
-     *
+     * 
      * @return the allocationMethod value.
      */
     public IpAddressAllocationMethod allocationMethod() {
@@ -75,7 +75,7 @@ public final class NicIpSettings {
 
     /**
      * Set the allocationMethod property: Gets or sets the nic allocation method.
-     *
+     * 
      * @param allocationMethod the allocationMethod value to set.
      * @return the NicIpSettings object itself.
      */
@@ -86,7 +86,7 @@ public final class NicIpSettings {
 
     /**
      * Get the dnsServers property: Gets or sets the dns servers.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -95,7 +95,7 @@ public final class NicIpSettings {
 
     /**
      * Set the dnsServers property: Gets or sets the dns servers.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the NicIpSettings object itself.
      */
@@ -106,7 +106,7 @@ public final class NicIpSettings {
 
     /**
      * Get the gateway property: Gets or sets the gateway.
-     *
+     * 
      * @return the gateway value.
      */
     public List<String> gateway() {
@@ -115,7 +115,7 @@ public final class NicIpSettings {
 
     /**
      * Set the gateway property: Gets or sets the gateway.
-     *
+     * 
      * @param gateway the gateway value to set.
      * @return the NicIpSettings object itself.
      */
@@ -126,7 +126,7 @@ public final class NicIpSettings {
 
     /**
      * Get the ipAddress property: Gets or sets the ip address for the nic.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -135,7 +135,7 @@ public final class NicIpSettings {
 
     /**
      * Set the ipAddress property: Gets or sets the ip address for the nic.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the NicIpSettings object itself.
      */
@@ -146,7 +146,7 @@ public final class NicIpSettings {
 
     /**
      * Get the subnetMask property: Gets or sets the mask.
-     *
+     * 
      * @return the subnetMask value.
      */
     public String subnetMask() {
@@ -155,7 +155,7 @@ public final class NicIpSettings {
 
     /**
      * Set the subnetMask property: Gets or sets the mask.
-     *
+     * 
      * @param subnetMask the subnetMask value to set.
      * @return the NicIpSettings object itself.
      */
@@ -166,7 +166,7 @@ public final class NicIpSettings {
 
     /**
      * Get the primaryWinsServer property: Gets or sets the primary server.
-     *
+     * 
      * @return the primaryWinsServer value.
      */
     public String primaryWinsServer() {
@@ -175,7 +175,7 @@ public final class NicIpSettings {
 
     /**
      * Get the secondaryWinsServer property: Gets or sets the secondary server.
-     *
+     * 
      * @return the secondaryWinsServer value.
      */
     public String secondaryWinsServer() {
@@ -185,7 +185,7 @@ public final class NicIpSettings {
     /**
      * Get the ipAddressInfo property: Gets or sets the IP address information being reported for this NIC. This
      * contains the same IPv4 information above plus IPV6 information.
-     *
+     * 
      * @return the ipAddressInfo value.
      */
     public List<NicIpAddressSettings> ipAddressInfo() {
@@ -194,12 +194,72 @@ public final class NicIpSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipAddressInfo() != null) {
             ipAddressInfo().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("allocationMethod",
+            this.allocationMethod == null ? null : this.allocationMethod.toString());
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("gateway", this.gateway, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("subnetMask", this.subnetMask);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NicIpSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NicIpSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NicIpSettings.
+     */
+    public static NicIpSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NicIpSettings deserializedNicIpSettings = new NicIpSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allocationMethod".equals(fieldName)) {
+                    deserializedNicIpSettings.allocationMethod
+                        = IpAddressAllocationMethod.fromString(reader.getString());
+                } else if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNicIpSettings.dnsServers = dnsServers;
+                } else if ("gateway".equals(fieldName)) {
+                    List<String> gateway = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNicIpSettings.gateway = gateway;
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedNicIpSettings.ipAddress = reader.getString();
+                } else if ("subnetMask".equals(fieldName)) {
+                    deserializedNicIpSettings.subnetMask = reader.getString();
+                } else if ("primaryWinsServer".equals(fieldName)) {
+                    deserializedNicIpSettings.primaryWinsServer = reader.getString();
+                } else if ("secondaryWinsServer".equals(fieldName)) {
+                    deserializedNicIpSettings.secondaryWinsServer = reader.getString();
+                } else if ("ipAddressInfo".equals(fieldName)) {
+                    List<NicIpAddressSettings> ipAddressInfo
+                        = reader.readArray(reader1 -> NicIpAddressSettings.fromJson(reader1));
+                    deserializedNicIpSettings.ipAddressInfo = ipAddressInfo;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNicIpSettings;
+        });
     }
 }

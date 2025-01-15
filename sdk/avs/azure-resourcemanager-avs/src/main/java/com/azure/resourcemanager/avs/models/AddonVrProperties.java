@@ -83,7 +83,6 @@ public final class AddonVrProperties extends AddonProperties {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

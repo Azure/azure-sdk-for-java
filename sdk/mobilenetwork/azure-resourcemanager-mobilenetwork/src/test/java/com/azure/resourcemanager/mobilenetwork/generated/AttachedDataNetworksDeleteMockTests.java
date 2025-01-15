@@ -27,8 +27,7 @@ public final class AttachedDataNetworksDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.attachedDataNetworks()
-            .delete("snkq", "hsyrqunj", "hdenxaulk", "akdkifmjnnawtqab", com.azure.core.util.Context.NONE);
+        manager.attachedDataNetworks().delete("m", "toebnf", "o", "vcjkgd", com.azure.core.util.Context.NONE);
 
     }
 }

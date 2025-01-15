@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
+import com.azure.resourcemanager.privatedns.models.ResolutionPolicy;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinkState;
 import java.io.IOException;
 
@@ -28,6 +29,13 @@ public final class VirtualNetworkLinkProperties implements JsonSerializable<Virt
      * Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?
      */
     private Boolean registrationEnabled;
+
+    /*
+     * The resolution policy on the virtual network link. Only applicable for virtual network links to privatelink
+     * zones, and for A,AAAA,CNAME queries. When set to 'NxDomainRedirect', Azure DNS resolver falls back to public
+     * resolution if private dns query resolution results in non-existent domain response.
+     */
+    private ResolutionPolicy resolutionPolicy;
 
     /*
      * The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'. This
@@ -90,6 +98,30 @@ public final class VirtualNetworkLinkProperties implements JsonSerializable<Virt
     }
 
     /**
+     * Get the resolutionPolicy property: The resolution policy on the virtual network link. Only applicable for virtual
+     * network links to privatelink zones, and for A,AAAA,CNAME queries. When set to 'NxDomainRedirect', Azure DNS
+     * resolver falls back to public resolution if private dns query resolution results in non-existent domain response.
+     * 
+     * @return the resolutionPolicy value.
+     */
+    public ResolutionPolicy resolutionPolicy() {
+        return this.resolutionPolicy;
+    }
+
+    /**
+     * Set the resolutionPolicy property: The resolution policy on the virtual network link. Only applicable for virtual
+     * network links to privatelink zones, and for A,AAAA,CNAME queries. When set to 'NxDomainRedirect', Azure DNS
+     * resolver falls back to public resolution if private dns query resolution results in non-existent domain response.
+     * 
+     * @param resolutionPolicy the resolutionPolicy value to set.
+     * @return the VirtualNetworkLinkProperties object itself.
+     */
+    public VirtualNetworkLinkProperties withResolutionPolicy(ResolutionPolicy resolutionPolicy) {
+        this.resolutionPolicy = resolutionPolicy;
+        return this;
+    }
+
+    /**
      * Get the virtualNetworkLinkState property: The status of the virtual network link to the Private DNS zone.
      * Possible values are 'InProgress' and 'Done'. This is a read-only property and any attempt to set this value will
      * be ignored.
@@ -126,6 +158,8 @@ public final class VirtualNetworkLinkProperties implements JsonSerializable<Virt
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("virtualNetwork", this.virtualNetwork);
         jsonWriter.writeBooleanField("registrationEnabled", this.registrationEnabled);
+        jsonWriter.writeStringField("resolutionPolicy",
+            this.resolutionPolicy == null ? null : this.resolutionPolicy.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +183,9 @@ public final class VirtualNetworkLinkProperties implements JsonSerializable<Virt
                 } else if ("registrationEnabled".equals(fieldName)) {
                     deserializedVirtualNetworkLinkProperties.registrationEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resolutionPolicy".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkProperties.resolutionPolicy
+                        = ResolutionPolicy.fromString(reader.getString());
                 } else if ("virtualNetworkLinkState".equals(fieldName)) {
                     deserializedVirtualNetworkLinkProperties.virtualNetworkLinkState
                         = VirtualNetworkLinkState.fromString(reader.getString());

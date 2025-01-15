@@ -15,7 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the VideoAnalyzerManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {VideoAnalyzerManagementClientImpl.class})
+@ServiceClientBuilder(serviceClients = { VideoAnalyzerManagementClientImpl.class })
 public final class VideoAnalyzerManagementClientBuilder {
     /*
      * The ID of the target subscription.
@@ -134,9 +134,8 @@ public final class VideoAnalyzerManagementClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        VideoAnalyzerManagementClientImpl client =
-            new VideoAnalyzerManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        VideoAnalyzerManagementClientImpl client = new VideoAnalyzerManagementClientImpl(pipeline, serializerAdapter,
+            defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

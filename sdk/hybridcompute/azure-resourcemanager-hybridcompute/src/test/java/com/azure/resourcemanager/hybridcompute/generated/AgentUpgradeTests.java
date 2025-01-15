@@ -13,21 +13,21 @@ public final class AgentUpgradeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentUpgrade model = BinaryData.fromString(
-            "{\"desiredVersion\":\"seiphe\",\"correlationId\":\"ea0ed09e-8ff9-4c40-9f77-b42c5a7d8586\",\"enableAutomaticUpgrade\":true,\"lastAttemptDesiredVersion\":\"eyy\",\"lastAttemptTimestamp\":\"2021-09-18T17:01:56Z\",\"lastAttemptStatus\":\"Failed\",\"lastAttemptMessage\":\"lwtgrhpdj\"}")
+            "{\"desiredVersion\":\"dobpxjmflbvvn\",\"correlationId\":\"ef918254-0dd3-4a1b-9ad9-120def04830c\",\"enableAutomaticUpgrade\":true,\"lastAttemptDesiredVersion\":\"ciwwzjuqkhr\",\"lastAttemptTimestamp\":\"2021-05-22T18:36:22Z\",\"lastAttemptStatus\":\"Failed\",\"lastAttemptMessage\":\"uo\"}")
             .toObject(AgentUpgrade.class);
-        Assertions.assertEquals("seiphe", model.desiredVersion());
-        Assertions.assertEquals(UUID.fromString("ea0ed09e-8ff9-4c40-9f77-b42c5a7d8586"), model.correlationId());
+        Assertions.assertEquals("dobpxjmflbvvn", model.desiredVersion());
+        Assertions.assertEquals(UUID.fromString("ef918254-0dd3-4a1b-9ad9-120def04830c"), model.correlationId());
         Assertions.assertEquals(true, model.enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentUpgrade model = new AgentUpgrade().withDesiredVersion("seiphe")
-            .withCorrelationId(UUID.fromString("ea0ed09e-8ff9-4c40-9f77-b42c5a7d8586"))
+        AgentUpgrade model = new AgentUpgrade().withDesiredVersion("dobpxjmflbvvn")
+            .withCorrelationId(UUID.fromString("ef918254-0dd3-4a1b-9ad9-120def04830c"))
             .withEnableAutomaticUpgrade(true);
         model = BinaryData.fromObject(model).toObject(AgentUpgrade.class);
-        Assertions.assertEquals("seiphe", model.desiredVersion());
-        Assertions.assertEquals(UUID.fromString("ea0ed09e-8ff9-4c40-9f77-b42c5a7d8586"), model.correlationId());
+        Assertions.assertEquals("dobpxjmflbvvn", model.desiredVersion());
+        Assertions.assertEquals(UUID.fromString("ef918254-0dd3-4a1b-9ad9-120def04830c"), model.correlationId());
         Assertions.assertEquals(true, model.enableAutomaticUpgrade());
     }
 }

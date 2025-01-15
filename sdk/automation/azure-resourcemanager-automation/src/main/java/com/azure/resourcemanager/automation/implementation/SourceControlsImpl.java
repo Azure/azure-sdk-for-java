@@ -21,26 +21,37 @@ public final class SourceControlsImpl implements SourceControls {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public SourceControlsImpl(
-        SourceControlsClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public SourceControlsImpl(SourceControlsClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, automationAccountName, sourceControlName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String sourceControlName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, sourceControlName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String sourceControlName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, automationAccountName, sourceControlName, context);
+    public Response<SourceControl> getWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, Context context) {
+        Response<SourceControlInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, sourceControlName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SourceControlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SourceControl get(String resourceGroupName, String automationAccountName, String sourceControlName) {
-        SourceControlInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, sourceControlName);
+        SourceControlInner inner
+            = this.serviceClient().get(resourceGroupName, automationAccountName, sourceControlName);
         if (inner != null) {
             return new SourceControlImpl(inner, this.manager());
         } else {
@@ -48,149 +59,93 @@ public final class SourceControlsImpl implements SourceControls {
         }
     }
 
-    public Response<SourceControl> getWithResponse(
-        String resourceGroupName, String automationAccountName, String sourceControlName, Context context) {
-        Response<SourceControlInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, sourceControlName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SourceControlImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<SourceControl> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
+        PagedIterable<SourceControlInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SourceControlImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SourceControl> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
-        PagedIterable<SourceControlInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new SourceControlImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<SourceControl> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
-        PagedIterable<SourceControlInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new SourceControlImpl(inner1, this.manager()));
+    public PagedIterable<SourceControl> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Context context) {
+        PagedIterable<SourceControlInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SourceControlImpl(inner1, this.manager()));
     }
 
     public SourceControl getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String sourceControlName = Utils.getValueFromIdByName(id, "sourceControls");
+        String sourceControlName = ResourceManagerUtils.getValueFromIdByName(id, "sourceControls");
         if (sourceControlName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'sourceControls'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sourceControls'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE)
             .getValue();
     }
 
     public Response<SourceControl> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String sourceControlName = Utils.getValueFromIdByName(id, "sourceControls");
+        String sourceControlName = ResourceManagerUtils.getValueFromIdByName(id, "sourceControls");
         if (sourceControlName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'sourceControls'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sourceControls'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, sourceControlName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String sourceControlName = Utils.getValueFromIdByName(id, "sourceControls");
+        String sourceControlName = ResourceManagerUtils.getValueFromIdByName(id, "sourceControls");
         if (sourceControlName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'sourceControls'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sourceControls'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String sourceControlName = Utils.getValueFromIdByName(id, "sourceControls");
+        String sourceControlName = ResourceManagerUtils.getValueFromIdByName(id, "sourceControls");
         if (sourceControlName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'sourceControls'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sourceControls'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, sourceControlName, context);
     }

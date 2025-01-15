@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
  */
 @Fluent
-public final class GroupQuotasEntityBasePatch {
+public final class GroupQuotasEntityBasePatch implements JsonSerializable<GroupQuotasEntityBasePatch> {
     /*
      * Display name of the GroupQuota entity.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Additional attributes to filter/restrict the subscriptions, which can be added to the subscriptionIds.
      */
-    @JsonProperty(value = "additionalAttributes")
     private AdditionalAttributesPatch additionalAttributes;
 
     /*
      * Provisioning state of the operation.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private RequestState provisioningState;
 
     /**
@@ -96,5 +97,48 @@ public final class GroupQuotasEntityBasePatch {
         if (additionalAttributes() != null) {
             additionalAttributes().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("additionalAttributes", this.additionalAttributes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupQuotasEntityBasePatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupQuotasEntityBasePatch if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupQuotasEntityBasePatch.
+     */
+    public static GroupQuotasEntityBasePatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupQuotasEntityBasePatch deserializedGroupQuotasEntityBasePatch = new GroupQuotasEntityBasePatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedGroupQuotasEntityBasePatch.displayName = reader.getString();
+                } else if ("additionalAttributes".equals(fieldName)) {
+                    deserializedGroupQuotasEntityBasePatch.additionalAttributes
+                        = AdditionalAttributesPatch.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGroupQuotasEntityBasePatch.provisioningState
+                        = RequestState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupQuotasEntityBasePatch;
+        });
     }
 }

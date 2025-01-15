@@ -42,16 +42,18 @@ public final class AccountSasResourceType {
                 case 's':
                     resourceType.service = true;
                     break;
+
                 case 'c':
                     resourceType.container = true;
                     break;
+
                 case 'o':
                     resourceType.object = true;
                     break;
+
                 default:
-                    throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Resource Types",
-                            resourceTypesString, c));
+                    throw new IllegalArgumentException(String.format(Locale.ROOT,
+                        Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Resource Types", resourceTypesString, c));
             }
         }
         return resourceType;

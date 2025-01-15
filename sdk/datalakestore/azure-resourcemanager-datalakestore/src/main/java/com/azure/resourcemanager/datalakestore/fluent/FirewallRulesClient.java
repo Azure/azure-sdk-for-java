@@ -13,11 +13,13 @@ import com.azure.resourcemanager.datalakestore.fluent.models.FirewallRuleInner;
 import com.azure.resourcemanager.datalakestore.models.CreateOrUpdateFirewallRuleParameters;
 import com.azure.resourcemanager.datalakestore.models.UpdateFirewallRuleParameters;
 
-/** An instance of this class provides access to all the operations defined in FirewallRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FirewallRulesClient.
+ */
 public interface FirewallRulesClient {
     /**
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface FirewallRulesClient {
 
     /**
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -45,7 +47,7 @@ public interface FirewallRulesClient {
     /**
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
      * replaced with this new firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to create or update.
@@ -57,17 +59,13 @@ public interface FirewallRulesClient {
      * @return data Lake Store firewall rule information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        CreateOrUpdateFirewallRuleParameters parameters,
-        Context context);
+    Response<FirewallRuleInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String firewallRuleName, CreateOrUpdateFirewallRuleParameters parameters, Context context);
 
     /**
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
      * replaced with this new firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to create or update.
@@ -78,15 +76,12 @@ public interface FirewallRulesClient {
      * @return data Lake Store firewall rule information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FirewallRuleInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
+    FirewallRuleInner createOrUpdate(String resourceGroupName, String accountName, String firewallRuleName,
         CreateOrUpdateFirewallRuleParameters parameters);
 
     /**
      * Gets the specified Data Lake Store firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -97,12 +92,12 @@ public interface FirewallRulesClient {
      * @return the specified Data Lake Store firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallRuleInner> getWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context);
+    Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String accountName, String firewallRuleName,
+        Context context);
 
     /**
      * Gets the specified Data Lake Store firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -116,7 +111,7 @@ public interface FirewallRulesClient {
 
     /**
      * Updates the specified firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to update.
@@ -128,16 +123,12 @@ public interface FirewallRulesClient {
      * @return data Lake Store firewall rule information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallRuleInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        UpdateFirewallRuleParameters parameters,
-        Context context);
+    Response<FirewallRuleInner> updateWithResponse(String resourceGroupName, String accountName,
+        String firewallRuleName, UpdateFirewallRuleParameters parameters, Context context);
 
     /**
      * Updates the specified firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to update.
@@ -151,7 +142,7 @@ public interface FirewallRulesClient {
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to delete.
@@ -162,12 +153,12 @@ public interface FirewallRulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String firewallRuleName,
+        Context context);
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to delete.

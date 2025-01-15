@@ -7,74 +7,76 @@ package com.azure.resourcemanager.edgeorder.models;
 import com.azure.resourcemanager.edgeorder.fluent.models.ConfigurationInner;
 import java.util.List;
 
-/** An immutable client-side representation of Configuration. */
+/**
+ * An immutable client-side representation of Configuration.
+ */
 public interface Configuration {
     /**
      * Gets the specifications property: Specifications of the configuration.
-     *
+     * 
      * @return the specifications value.
      */
     List<Specification> specifications();
 
     /**
      * Gets the dimensions property: Dimensions of the configuration.
-     *
+     * 
      * @return the dimensions value.
      */
     Dimensions dimensions();
 
     /**
      * Gets the filterableProperties property: list of filters supported for a product.
-     *
+     * 
      * @return the filterableProperties value.
      */
     List<FilterableProperty> filterableProperties();
 
     /**
      * Gets the displayName property: Display Name for the product system.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the description property: Description related to the product system.
-     *
+     * 
      * @return the description value.
      */
     Description description();
 
     /**
      * Gets the imageInformation property: Image information for the product system.
-     *
+     * 
      * @return the imageInformation value.
      */
     List<ImageInformation> imageInformation();
 
     /**
      * Gets the costInformation property: Cost information for the product system.
-     *
+     * 
      * @return the costInformation value.
      */
     CostInformation costInformation();
 
     /**
      * Gets the availabilityInformation property: Availability information of the product system.
-     *
+     * 
      * @return the availabilityInformation value.
      */
     AvailabilityInformation availabilityInformation();
 
     /**
      * Gets the hierarchyInformation property: Hierarchy information of a product.
-     *
+     * 
      * @return the hierarchyInformation value.
      */
     HierarchyInformation hierarchyInformation();
 
     /**
      * Gets the inner com.azure.resourcemanager.edgeorder.fluent.models.ConfigurationInner object.
-     *
+     * 
      * @return the inner object.
      */
     ConfigurationInner innerModel();

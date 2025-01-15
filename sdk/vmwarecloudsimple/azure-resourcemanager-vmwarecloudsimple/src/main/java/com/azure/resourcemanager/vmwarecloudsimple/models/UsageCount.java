@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The usages' unit. */
+/**
+ * The usages' unit.
+ */
 public enum UsageCount {
-    /** Enum value Count. */
+    /**
+     * Enum value Count.
+     */
     COUNT("Count"),
 
-    /** Enum value Bytes. */
+    /**
+     * Enum value Bytes.
+     */
     BYTES("Bytes"),
 
-    /** Enum value Seconds. */
+    /**
+     * Enum value Seconds.
+     */
     SECONDS("Seconds"),
 
-    /** Enum value Percent. */
+    /**
+     * Enum value Percent.
+     */
     PERCENT("Percent"),
 
-    /** Enum value CountPerSecond. */
+    /**
+     * Enum value CountPerSecond.
+     */
     COUNT_PER_SECOND("CountPerSecond"),
 
-    /** Enum value BytesPerSecond. */
+    /**
+     * Enum value BytesPerSecond.
+     */
     BYTES_PER_SECOND("BytesPerSecond");
 
-    /** The actual serialized value for a UsageCount instance. */
+    /**
+     * The actual serialized value for a UsageCount instance.
+     */
     private final String value;
 
     UsageCount(String value) {
@@ -36,11 +49,10 @@ public enum UsageCount {
 
     /**
      * Parses a serialized value to a UsageCount instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed UsageCount object, or null if unable to parse.
      */
-    @JsonCreator
     public static UsageCount fromString(String value) {
         if (value == null) {
             return null;
@@ -54,8 +66,9 @@ public enum UsageCount {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

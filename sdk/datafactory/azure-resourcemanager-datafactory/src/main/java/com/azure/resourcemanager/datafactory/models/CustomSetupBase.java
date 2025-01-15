@@ -5,29 +5,20 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The base definition of the custom setup.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CustomSetupBase.class, visible = true)
-@JsonTypeName("CustomSetupBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "CmdkeySetup", value = CmdkeySetup.class),
-    @JsonSubTypes.Type(name = "EnvironmentVariableSetup", value = EnvironmentVariableSetup.class),
-    @JsonSubTypes.Type(name = "ComponentSetup", value = ComponentSetup.class),
-    @JsonSubTypes.Type(name = "AzPowerShellSetup", value = AzPowerShellSetup.class) })
 @Immutable
-public class CustomSetupBase {
+public class CustomSetupBase implements JsonSerializable<CustomSetupBase> {
     /*
      * The type of custom setup.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "CustomSetupBase";
 
     /**
@@ -51,5 +42,72 @@ public class CustomSetupBase {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomSetupBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomSetupBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomSetupBase.
+     */
+    public static CustomSetupBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("CmdkeySetup".equals(discriminatorValue)) {
+                    return CmdkeySetup.fromJson(readerToUse.reset());
+                } else if ("EnvironmentVariableSetup".equals(discriminatorValue)) {
+                    return EnvironmentVariableSetup.fromJson(readerToUse.reset());
+                } else if ("ComponentSetup".equals(discriminatorValue)) {
+                    return ComponentSetup.fromJson(readerToUse.reset());
+                } else if ("AzPowerShellSetup".equals(discriminatorValue)) {
+                    return AzPowerShellSetup.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static CustomSetupBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomSetupBase deserializedCustomSetupBase = new CustomSetupBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedCustomSetupBase.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomSetupBase;
+        });
     }
 }

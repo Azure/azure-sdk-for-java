@@ -5,52 +5,60 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.DscConfigurationAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Properties for the DscNodeConfiguration. */
+/**
+ * Properties for the DscNodeConfiguration.
+ */
 @Fluent
-public final class DscNodeConfigurationProperties {
+public final class DscNodeConfigurationProperties implements JsonSerializable<DscNodeConfigurationProperties> {
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the configuration of the node.
      */
-    @JsonProperty(value = "configuration")
     private DscConfigurationAssociationProperty configuration;
 
     /*
      * Source of node configuration.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Number of nodes with this node configuration assigned
      */
-    @JsonProperty(value = "nodeCount")
     private Long nodeCount;
 
     /*
      * If a new build version of NodeConfiguration is required.
      */
-    @JsonProperty(value = "incrementNodeConfigurationBuild")
     private Boolean incrementNodeConfigurationBuild;
 
     /**
+     * Creates an instance of DscNodeConfigurationProperties class.
+     */
+    public DscNodeConfigurationProperties() {
+    }
+
+    /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -59,7 +67,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the DscNodeConfigurationProperties object itself.
      */
@@ -70,7 +78,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Get the creationTime property: Gets or sets creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -79,7 +87,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Set the creationTime property: Gets or sets creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the DscNodeConfigurationProperties object itself.
      */
@@ -90,7 +98,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Get the configuration property: Gets or sets the configuration of the node.
-     *
+     * 
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
@@ -99,7 +107,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Set the configuration property: Gets or sets the configuration of the node.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the DscNodeConfigurationProperties object itself.
      */
@@ -110,7 +118,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Get the source property: Source of node configuration.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -119,7 +127,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Set the source property: Source of node configuration.
-     *
+     * 
      * @param source the source value to set.
      * @return the DscNodeConfigurationProperties object itself.
      */
@@ -130,7 +138,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Get the nodeCount property: Number of nodes with this node configuration assigned.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Long nodeCount() {
@@ -139,7 +147,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Set the nodeCount property: Number of nodes with this node configuration assigned.
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the DscNodeConfigurationProperties object itself.
      */
@@ -150,7 +158,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Get the incrementNodeConfigurationBuild property: If a new build version of NodeConfiguration is required.
-     *
+     * 
      * @return the incrementNodeConfigurationBuild value.
      */
     public Boolean incrementNodeConfigurationBuild() {
@@ -159,7 +167,7 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Set the incrementNodeConfigurationBuild property: If a new build version of NodeConfiguration is required.
-     *
+     * 
      * @param incrementNodeConfigurationBuild the incrementNodeConfigurationBuild value to set.
      * @return the DscNodeConfigurationProperties object itself.
      */
@@ -170,12 +178,72 @@ public final class DscNodeConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (configuration() != null) {
             configuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+        jsonWriter.writeBooleanField("incrementNodeConfigurationBuild", this.incrementNodeConfigurationBuild);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscNodeConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscNodeConfigurationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscNodeConfigurationProperties.
+     */
+    public static DscNodeConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscNodeConfigurationProperties deserializedDscNodeConfigurationProperties
+                = new DscNodeConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedDscNodeConfigurationProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedDscNodeConfigurationProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedDscNodeConfigurationProperties.configuration
+                        = DscConfigurationAssociationProperty.fromJson(reader);
+                } else if ("source".equals(fieldName)) {
+                    deserializedDscNodeConfigurationProperties.source = reader.getString();
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedDscNodeConfigurationProperties.nodeCount = reader.getNullable(JsonReader::getLong);
+                } else if ("incrementNodeConfigurationBuild".equals(fieldName)) {
+                    deserializedDscNodeConfigurationProperties.incrementNodeConfigurationBuild
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscNodeConfigurationProperties;
+        });
     }
 }

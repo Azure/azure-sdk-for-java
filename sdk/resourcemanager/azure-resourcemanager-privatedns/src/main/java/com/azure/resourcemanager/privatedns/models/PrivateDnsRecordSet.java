@@ -15,33 +15,46 @@ import java.util.Map;
 /** An immutable client-side representation of a record set in Azure Private DNS Zone. */
 @Fluent
 public interface PrivateDnsRecordSet
-    extends ExternalChildResource<PrivateDnsRecordSet, PrivateDnsZone>,
-        HasInnerModel<RecordSetInner> {
+    extends ExternalChildResource<PrivateDnsRecordSet, PrivateDnsZone>, HasInnerModel<RecordSetInner> {
     /**
+     * Gets the type of the record set.
+     *
      * @return the type of the record set.
      */
     RecordType recordType();
+
     /**
+     * Gets the ETag of the record set.
+     *
      * @return the ETag of the record set.
      */
     String etag();
 
     /**
+     * Gets the metadata attached to the record set.
+     *
      * @return the metadata attached to the record set.
      */
     Map<String, String> metadata();
 
     /**
+     * Gets the time-to-live of the records in the record set.
+     *
      * @return the time-to-live of the records in the record set.
      */
     long timeToLive();
 
     /**
+     * Gets the fully qualified domain name of the record set.
+     *
      * @return the fully qualified domain name of the record set.
      */
     String fqdn();
 
     /**
+     * Gets the property whether the record set is auto-registered in the private DNS zone
+     * through a virtual network link.
+     *
      * @return the property whether the record set is auto-registered in the private DNS zone
      * through a virtual network link.
      */
@@ -53,31 +66,20 @@ public interface PrivateDnsRecordSet
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT>
-        extends DefinitionStages.AaaaRecordSetBlank<ParentT>,
-            DefinitionStages.WithAaaaRecordIPv6Address<ParentT>,
-            DefinitionStages.WithAaaaRecordIPv6AddressOrAttachable<ParentT>,
-            DefinitionStages.ARecordSetBlank<ParentT>,
-            DefinitionStages.WithARecordIPv4Address<ParentT>,
-            DefinitionStages.WithARecordIPv4AddressOrAttachable<ParentT>,
-            DefinitionStages.CNameRecordSetBlank<ParentT>,
-            DefinitionStages.WithCNameRecordAlias<ParentT>,
-            DefinitionStages.WithCNameRecordSetAttachable<ParentT>,
-            DefinitionStages.MXRecordSetBlank<ParentT>,
-            DefinitionStages.WithMXRecordMailExchange<ParentT>,
-            DefinitionStages.WithMXRecordMailExchangeOrAttachable<ParentT>,
-            DefinitionStages.PtrRecordSetBlank<ParentT>,
-            DefinitionStages.WithPtrRecordTargetDomainName<ParentT>,
-            DefinitionStages.WithPtrRecordTargetDomainNameOrAttachable<ParentT>,
-            DefinitionStages.SoaRecordSetBlank<ParentT>,
-            DefinitionStages.WithSoaRecordAttributes<ParentT>,
-            DefinitionStages.WithSoaRecordAttributesOrAttachable<ParentT>,
-            DefinitionStages.SrvRecordSetBlank<ParentT>,
-            DefinitionStages.WithSrvRecordEntry<ParentT>,
-            DefinitionStages.WithSrvRecordEntryOrAttachable<ParentT>,
-            DefinitionStages.TxtRecordSetBlank<ParentT>,
-            DefinitionStages.WithTxtRecordTextValue<ParentT>,
-            DefinitionStages.WithTxtRecordTextValueOrAttachable<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+        extends DefinitionStages.AaaaRecordSetBlank<ParentT>, DefinitionStages.WithAaaaRecordIPv6Address<ParentT>,
+        DefinitionStages.WithAaaaRecordIPv6AddressOrAttachable<ParentT>, DefinitionStages.ARecordSetBlank<ParentT>,
+        DefinitionStages.WithARecordIPv4Address<ParentT>, DefinitionStages.WithARecordIPv4AddressOrAttachable<ParentT>,
+        DefinitionStages.CNameRecordSetBlank<ParentT>, DefinitionStages.WithCNameRecordAlias<ParentT>,
+        DefinitionStages.WithCNameRecordSetAttachable<ParentT>, DefinitionStages.MXRecordSetBlank<ParentT>,
+        DefinitionStages.WithMXRecordMailExchange<ParentT>,
+        DefinitionStages.WithMXRecordMailExchangeOrAttachable<ParentT>, DefinitionStages.PtrRecordSetBlank<ParentT>,
+        DefinitionStages.WithPtrRecordTargetDomainName<ParentT>,
+        DefinitionStages.WithPtrRecordTargetDomainNameOrAttachable<ParentT>,
+        DefinitionStages.SoaRecordSetBlank<ParentT>, DefinitionStages.WithSoaRecordAttributes<ParentT>,
+        DefinitionStages.WithSoaRecordAttributesOrAttachable<ParentT>, DefinitionStages.SrvRecordSetBlank<ParentT>,
+        DefinitionStages.WithSrvRecordEntry<ParentT>, DefinitionStages.WithSrvRecordEntryOrAttachable<ParentT>,
+        DefinitionStages.TxtRecordSetBlank<ParentT>, DefinitionStages.WithTxtRecordTextValue<ParentT>,
+        DefinitionStages.WithTxtRecordTextValueOrAttachable<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of DNS zone record set definition stages as a part of parent DNS zone definition. */
@@ -314,8 +316,8 @@ public interface PrivateDnsRecordSet
              * @param negativeCachingTimeToLive the time-to-live for cached negative response
              * @return the next stage of the definition
              */
-            WithSoaRecordAttributesOrAttachable<ParentT> withNegativeResponseCachingTimeToLiveInSeconds(
-                long negativeCachingTimeToLive);
+            WithSoaRecordAttributesOrAttachable<ParentT>
+                withNegativeResponseCachingTimeToLiveInSeconds(long negativeCachingTimeToLive);
         }
 
         /**
@@ -452,11 +454,8 @@ public interface PrivateDnsRecordSet
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-            DefinitionStages.WithTtl<ParentT>,
-            DefinitionStages.WithMetadata<ParentT>,
-            DefinitionStages.WithETagCheck<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, DefinitionStages.WithTtl<ParentT>,
+            DefinitionStages.WithMetadata<ParentT>, DefinitionStages.WithETagCheck<ParentT> {
         }
     }
 
@@ -465,32 +464,24 @@ public interface PrivateDnsRecordSet
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.AaaaRecordSetBlank<ParentT>,
-            UpdateDefinitionStages.WithAaaaRecordIPv6Address<ParentT>,
-            UpdateDefinitionStages.WithAaaaRecordIPv6AddressOrAttachable<ParentT>,
-            UpdateDefinitionStages.ARecordSetBlank<ParentT>,
-            UpdateDefinitionStages.WithARecordIPv4Address<ParentT>,
-            UpdateDefinitionStages.WithARecordIPv4AddressOrAttachable<ParentT>,
-            UpdateDefinitionStages.CNameRecordSetBlank<ParentT>,
-            UpdateDefinitionStages.WithCNameRecordAlias<ParentT>,
-            UpdateDefinitionStages.WithCNameRecordSetAttachable<ParentT>,
-            UpdateDefinitionStages.MXRecordSetBlank<ParentT>,
-            UpdateDefinitionStages.WithMXRecordMailExchange<ParentT>,
-            UpdateDefinitionStages.WithMXRecordMailExchangeOrAttachable<ParentT>,
-            UpdateDefinitionStages.PtrRecordSetBlank<ParentT>,
-            UpdateDefinitionStages.WithPtrRecordTargetDomainName<ParentT>,
-            UpdateDefinitionStages.WithPtrRecordTargetDomainNameOrAttachable<ParentT>,
-            UpdateDefinitionStages.SoaRecordSetBlank<ParentT>,
-            UpdateDefinitionStages.WithSoaRecordAttributes<ParentT>,
-            UpdateDefinitionStages.WithSoaRecordAttributesOrAttachable<ParentT>,
-            UpdateDefinitionStages.SrvRecordSetBlank<ParentT>,
-            UpdateDefinitionStages.WithSrvRecordEntry<ParentT>,
-            UpdateDefinitionStages.WithSrvRecordEntryOrAttachable<ParentT>,
-            UpdateDefinitionStages.TxtRecordSetBlank<ParentT>,
-            UpdateDefinitionStages.WithTxtRecordTextValue<ParentT>,
-            UpdateDefinitionStages.WithTxtRecordTextValueOrAttachable<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.AaaaRecordSetBlank<ParentT>,
+        UpdateDefinitionStages.WithAaaaRecordIPv6Address<ParentT>,
+        UpdateDefinitionStages.WithAaaaRecordIPv6AddressOrAttachable<ParentT>,
+        UpdateDefinitionStages.ARecordSetBlank<ParentT>, UpdateDefinitionStages.WithARecordIPv4Address<ParentT>,
+        UpdateDefinitionStages.WithARecordIPv4AddressOrAttachable<ParentT>,
+        UpdateDefinitionStages.CNameRecordSetBlank<ParentT>, UpdateDefinitionStages.WithCNameRecordAlias<ParentT>,
+        UpdateDefinitionStages.WithCNameRecordSetAttachable<ParentT>, UpdateDefinitionStages.MXRecordSetBlank<ParentT>,
+        UpdateDefinitionStages.WithMXRecordMailExchange<ParentT>,
+        UpdateDefinitionStages.WithMXRecordMailExchangeOrAttachable<ParentT>,
+        UpdateDefinitionStages.PtrRecordSetBlank<ParentT>,
+        UpdateDefinitionStages.WithPtrRecordTargetDomainName<ParentT>,
+        UpdateDefinitionStages.WithPtrRecordTargetDomainNameOrAttachable<ParentT>,
+        UpdateDefinitionStages.SoaRecordSetBlank<ParentT>, UpdateDefinitionStages.WithSoaRecordAttributes<ParentT>,
+        UpdateDefinitionStages.WithSoaRecordAttributesOrAttachable<ParentT>,
+        UpdateDefinitionStages.SrvRecordSetBlank<ParentT>, UpdateDefinitionStages.WithSrvRecordEntry<ParentT>,
+        UpdateDefinitionStages.WithSrvRecordEntryOrAttachable<ParentT>,
+        UpdateDefinitionStages.TxtRecordSetBlank<ParentT>, UpdateDefinitionStages.WithTxtRecordTextValue<ParentT>,
+        UpdateDefinitionStages.WithTxtRecordTextValueOrAttachable<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of DNS zone record set definition stages as a part of parent DNS zone update. */
@@ -727,8 +718,8 @@ public interface PrivateDnsRecordSet
              * @param negativeCachingTimeToLive the time-to-live for cached negative response
              * @return the next stage of the definition
              */
-            WithSoaRecordAttributesOrAttachable<ParentT> withNegativeResponseCachingTimeToLiveInSeconds(
-                long negativeCachingTimeToLive);
+            WithSoaRecordAttributesOrAttachable<ParentT>
+                withNegativeResponseCachingTimeToLiveInSeconds(long negativeCachingTimeToLive);
         }
 
         /**
@@ -865,25 +856,14 @@ public interface PrivateDnsRecordSet
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-            UpdateDefinitionStages.WithTtl<ParentT>,
-            UpdateDefinitionStages.WithMetadata<ParentT>,
-            UpdateDefinitionStages.WithETagCheck<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>, UpdateDefinitionStages.WithTtl<ParentT>,
+            UpdateDefinitionStages.WithMetadata<ParentT>, UpdateDefinitionStages.WithETagCheck<ParentT> {
         }
     }
 
     /** The entirety of a record sets update as a part of parent DNS zone update. */
-    interface UpdateCombined
-        extends UpdateAaaaRecordSet,
-            UpdateARecordSet,
-            UpdateCNameRecordSet,
-            UpdateMXRecordSet,
-            UpdatePtrRecordSet,
-            UpdateSoaRecord,
-            UpdateSrvRecordSet,
-            UpdateTxtRecordSet,
-            Update {
+    interface UpdateCombined extends UpdateAaaaRecordSet, UpdateARecordSet, UpdateCNameRecordSet, UpdateMXRecordSet,
+        UpdatePtrRecordSet, UpdateSoaRecord, UpdateSrvRecordSet, UpdateTxtRecordSet, Update {
     }
 
     /** The entirety of an AAAA record set update as a part of parent DNS zone update. */
@@ -921,11 +901,8 @@ public interface PrivateDnsRecordSet
     /**
      * the set of configurations that can be updated for DNS record set irrespective of their type {@link RecordType}.
      */
-    interface Update
-        extends Settable<PrivateDnsZone.Update>,
-            UpdateStages.WithTtl,
-            UpdateStages.WithMetadata,
-            UpdateStages.WithETagCheck {
+    interface Update extends Settable<PrivateDnsZone.Update>, UpdateStages.WithTtl, UpdateStages.WithMetadata,
+        UpdateStages.WithETagCheck {
     }
 
     /** Grouping of DNS zone record set update stages. */

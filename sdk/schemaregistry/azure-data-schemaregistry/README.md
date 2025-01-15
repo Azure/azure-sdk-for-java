@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,7 +75,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.14.2</version>
 </dependency>
 ```
 
@@ -201,18 +201,18 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples_code]: src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://azure.github.io/azure-sdk-for-java/
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [event_hubs_namespace]: https://learn.microsoft.com/azure/event-hubs/create-schema-registry
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [product_documentation]: https://aka.ms/schemaregistry
-[custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[aad_grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[aad_grant_access]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [schema_properties]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry/src/main/java/com/azure/data/schemaregistry/models/SchemaProperties.java
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

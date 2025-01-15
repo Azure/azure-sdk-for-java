@@ -11,8 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.MetricsConfigurationsClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterMetricsConfigurationInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfiguration;
 import com.azure.resourcemanager.networkcloud.models.MetricsConfigurations;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 
 public final class MetricsConfigurationsImpl implements MetricsConfigurations {
     private static final ClientLogger LOGGER = new ClientLogger(MetricsConfigurationsImpl.class);
@@ -21,45 +23,43 @@ public final class MetricsConfigurationsImpl implements MetricsConfigurations {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public MetricsConfigurationsImpl(
-        MetricsConfigurationsClient innerClient,
+    public MetricsConfigurationsImpl(MetricsConfigurationsClient innerClient,
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ClusterMetricsConfiguration> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<ClusterMetricsConfigurationInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new ClusterMetricsConfigurationImpl(inner1, this.manager()));
+        PagedIterable<ClusterMetricsConfigurationInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClusterMetricsConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ClusterMetricsConfiguration> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<ClusterMetricsConfigurationInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new ClusterMetricsConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<ClusterMetricsConfiguration> listByCluster(String resourceGroupName, String clusterName,
+        Context context) {
+        PagedIterable<ClusterMetricsConfigurationInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClusterMetricsConfigurationImpl(inner1, this.manager()));
     }
 
-    public Response<ClusterMetricsConfiguration> getWithResponse(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
-        Response<ClusterMetricsConfigurationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, context);
+    public Response<ClusterMetricsConfiguration> getWithResponse(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context) {
+        Response<ClusterMetricsConfigurationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterMetricsConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ClusterMetricsConfiguration get(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
-        ClusterMetricsConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, metricsConfigurationName);
+    public ClusterMetricsConfiguration get(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
+        ClusterMetricsConfigurationInner inner
+            = this.serviceClient().get(resourceGroupName, clusterName, metricsConfigurationName);
         if (inner != null) {
             return new ClusterMetricsConfigurationImpl(inner, this.manager());
         } else {
@@ -67,128 +67,101 @@ public final class MetricsConfigurationsImpl implements MetricsConfigurations {
         }
     }
 
-    public void delete(String resourceGroupName, String clusterName, String metricsConfigurationName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, metricsConfigurationName);
+    public OperationStatusResult delete(String resourceGroupName, String clusterName, String metricsConfigurationName) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, clusterName, metricsConfigurationName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
-        this.serviceClient().delete(resourceGroupName, clusterName, metricsConfigurationName, context);
+    public OperationStatusResult delete(String resourceGroupName, String clusterName, String metricsConfigurationName,
+        Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, clusterName, metricsConfigurationName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public ClusterMetricsConfiguration getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String metricsConfigurationName = Utils.getValueFromIdByName(id, "metricsConfigurations");
+        String metricsConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "metricsConfigurations");
         if (metricsConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'metricsConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'metricsConfigurations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, Context.NONE).getValue();
     }
 
     public Response<ClusterMetricsConfiguration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String metricsConfigurationName = Utils.getValueFromIdByName(id, "metricsConfigurations");
+        String metricsConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "metricsConfigurations");
         if (metricsConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'metricsConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'metricsConfigurations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, context);
     }
 
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String metricsConfigurationName = Utils.getValueFromIdByName(id, "metricsConfigurations");
+        String metricsConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "metricsConfigurations");
         if (metricsConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'metricsConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'metricsConfigurations'.", id)));
         }
-        this.delete(resourceGroupName, clusterName, metricsConfigurationName, Context.NONE);
+        return this.delete(resourceGroupName, clusterName, metricsConfigurationName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String metricsConfigurationName = Utils.getValueFromIdByName(id, "metricsConfigurations");
+        String metricsConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "metricsConfigurations");
         if (metricsConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'metricsConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'metricsConfigurations'.", id)));
         }
-        this.delete(resourceGroupName, clusterName, metricsConfigurationName, context);
+        return this.delete(resourceGroupName, clusterName, metricsConfigurationName, context);
     }
 
     private MetricsConfigurationsClient serviceClient() {

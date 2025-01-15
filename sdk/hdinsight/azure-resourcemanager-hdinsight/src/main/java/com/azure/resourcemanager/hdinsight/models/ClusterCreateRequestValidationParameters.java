@@ -5,44 +5,47 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The cluster create request specification. */
+/**
+ * The cluster create request specification.
+ */
 @Fluent
 public final class ClusterCreateRequestValidationParameters extends ClusterCreateParametersExtended {
     /*
      * The cluster name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The tenant id.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * This indicates whether fetch Aadds resource or not.
      */
-    @JsonProperty(value = "fetchAaddsResource")
     private Boolean fetchAaddsResource;
 
-    /** Creates an instance of ClusterCreateRequestValidationParameters class. */
+    /**
+     * Creates an instance of ClusterCreateRequestValidationParameters class.
+     */
     public ClusterCreateRequestValidationParameters() {
     }
 
     /**
      * Get the name property: The cluster name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +54,7 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
 
     /**
      * Set the name property: The cluster name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClusterCreateRequestValidationParameters object itself.
      */
@@ -62,7 +65,7 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -71,7 +74,7 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
 
     /**
      * Set the type property: The resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ClusterCreateRequestValidationParameters object itself.
      */
@@ -82,7 +85,7 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
 
     /**
      * Get the tenantId property: The tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -91,7 +94,7 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
 
     /**
      * Set the tenantId property: The tenant id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ClusterCreateRequestValidationParameters object itself.
      */
@@ -102,7 +105,7 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
 
     /**
      * Get the fetchAaddsResource property: This indicates whether fetch Aadds resource or not.
-     *
+     * 
      * @return the fetchAaddsResource value.
      */
     public Boolean fetchAaddsResource() {
@@ -111,7 +114,7 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
 
     /**
      * Set the fetchAaddsResource property: This indicates whether fetch Aadds resource or not.
-     *
+     * 
      * @param fetchAaddsResource the fetchAaddsResource value to set.
      * @return the ClusterCreateRequestValidationParameters object itself.
      */
@@ -120,35 +123,45 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterCreateRequestValidationParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterCreateRequestValidationParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterCreateRequestValidationParameters withZones(List<String> zones) {
         super.withZones(zones);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterCreateRequestValidationParameters withProperties(ClusterCreateProperties properties) {
         super.withProperties(properties);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterCreateRequestValidationParameters withIdentity(ClusterIdentity identity) {
         super.withIdentity(identity);
@@ -157,11 +170,76 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("zones", zones(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", properties());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeBooleanField("fetchAaddsResource", this.fetchAaddsResource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterCreateRequestValidationParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterCreateRequestValidationParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterCreateRequestValidationParameters.
+     */
+    public static ClusterCreateRequestValidationParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterCreateRequestValidationParameters deserializedClusterCreateRequestValidationParameters
+                = new ClusterCreateRequestValidationParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedClusterCreateRequestValidationParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterCreateRequestValidationParameters.withTags(tags);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterCreateRequestValidationParameters.withZones(zones);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterCreateRequestValidationParameters
+                        .withProperties(ClusterCreateProperties.fromJson(reader));
+                } else if ("identity".equals(fieldName)) {
+                    deserializedClusterCreateRequestValidationParameters.withIdentity(ClusterIdentity.fromJson(reader));
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterCreateRequestValidationParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterCreateRequestValidationParameters.type = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedClusterCreateRequestValidationParameters.tenantId = reader.getString();
+                } else if ("fetchAaddsResource".equals(fieldName)) {
+                    deserializedClusterCreateRequestValidationParameters.fetchAaddsResource
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterCreateRequestValidationParameters;
+        });
     }
 }

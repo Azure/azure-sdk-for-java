@@ -6,6 +6,9 @@ package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeAnalyticsAccountState;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeAnalyticsAccountStatus;
 import com.azure.resourcemanager.datalakeanalytics.models.DebugDataAccessLevel;
@@ -14,7 +17,7 @@ import com.azure.resourcemanager.datalakeanalytics.models.FirewallState;
 import com.azure.resourcemanager.datalakeanalytics.models.HiveMetastore;
 import com.azure.resourcemanager.datalakeanalytics.models.TierType;
 import com.azure.resourcemanager.datalakeanalytics.models.VirtualNetworkRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -29,31 +32,81 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
     /*
      * The properties defined by Data Lake Analytics all properties are specific to each resource provider.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private DataLakeAnalyticsAccountProperties innerProperties;
 
-    /** Creates an instance of DataLakeAnalyticsAccountInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DataLakeAnalyticsAccountInner class.
+     */
     public DataLakeAnalyticsAccountInner() {
     }
 
     /**
      * Get the innerProperties property: The properties defined by Data Lake Analytics all properties are specific to
      * each resource provider.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DataLakeAnalyticsAccountProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeAnalyticsAccountInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeAnalyticsAccountInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -62,7 +115,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the defaultDataLakeStoreAccount property: The default Data Lake Store account associated with this account.
-     *
+     * 
      * @return the defaultDataLakeStoreAccount value.
      */
     public String defaultDataLakeStoreAccount() {
@@ -71,7 +124,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the dataLakeStoreAccounts property: The list of Data Lake Store accounts associated with this account.
-     *
+     * 
      * @return the dataLakeStoreAccounts value.
      */
     public List<DataLakeStoreAccountInformationInner> dataLakeStoreAccounts() {
@@ -80,7 +133,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the publicDataLakeStoreAccounts property: The list of Data Lake Store accounts associated with this account.
-     *
+     * 
      * @return the publicDataLakeStoreAccounts value.
      */
     public List<DataLakeStoreAccountInformationInner> publicDataLakeStoreAccounts() {
@@ -89,12 +142,12 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Set the publicDataLakeStoreAccounts property: The list of Data Lake Store accounts associated with this account.
-     *
+     * 
      * @param publicDataLakeStoreAccounts the publicDataLakeStoreAccounts value to set.
      * @return the DataLakeAnalyticsAccountInner object itself.
      */
-    public DataLakeAnalyticsAccountInner withPublicDataLakeStoreAccounts(
-        List<DataLakeStoreAccountInformationInner> publicDataLakeStoreAccounts) {
+    public DataLakeAnalyticsAccountInner
+        withPublicDataLakeStoreAccounts(List<DataLakeStoreAccountInformationInner> publicDataLakeStoreAccounts) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DataLakeAnalyticsAccountProperties();
         }
@@ -104,7 +157,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the storageAccounts property: The list of Azure Blob Storage accounts associated with this account.
-     *
+     * 
      * @return the storageAccounts value.
      */
     public List<StorageAccountInformationInner> storageAccounts() {
@@ -113,7 +166,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the computePolicies property: The list of compute policies associated with this account.
-     *
+     * 
      * @return the computePolicies value.
      */
     public List<ComputePolicyInner> computePolicies() {
@@ -122,7 +175,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the hiveMetastores property: The list of hiveMetastores associated with this account.
-     *
+     * 
      * @return the hiveMetastores value.
      */
     public List<HiveMetastore> hiveMetastores() {
@@ -131,7 +184,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the virtualNetworkRules property: The list of virtualNetwork rules associated with this account.
-     *
+     * 
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
@@ -140,7 +193,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the firewallRules property: The list of firewall rules associated with this account.
-     *
+     * 
      * @return the firewallRules value.
      */
     public List<FirewallRuleInner> firewallRules() {
@@ -149,7 +202,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the firewallState property: The current state of the IP address firewall for this account.
-     *
+     * 
      * @return the firewallState value.
      */
     public FirewallState firewallState() {
@@ -158,7 +211,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Set the firewallState property: The current state of the IP address firewall for this account.
-     *
+     * 
      * @param firewallState the firewallState value to set.
      * @return the DataLakeAnalyticsAccountInner object itself.
      */
@@ -173,7 +226,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
     /**
      * Get the firewallAllowAzureIps property: The current state of allowing or disallowing IPs originating within Azure
      * through the firewall. If the firewall is disabled, this is not enforced.
-     *
+     * 
      * @return the firewallAllowAzureIps value.
      */
     public FirewallAllowAzureIpsState firewallAllowAzureIps() {
@@ -183,7 +236,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
     /**
      * Set the firewallAllowAzureIps property: The current state of allowing or disallowing IPs originating within Azure
      * through the firewall. If the firewall is disabled, this is not enforced.
-     *
+     * 
      * @param firewallAllowAzureIps the firewallAllowAzureIps value to set.
      * @return the DataLakeAnalyticsAccountInner object itself.
      */
@@ -197,7 +250,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the newTier property: The commitment tier for the next month.
-     *
+     * 
      * @return the newTier value.
      */
     public TierType newTier() {
@@ -206,7 +259,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Set the newTier property: The commitment tier for the next month.
-     *
+     * 
      * @param newTier the newTier value to set.
      * @return the DataLakeAnalyticsAccountInner object itself.
      */
@@ -220,7 +273,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the currentTier property: The commitment tier in use for the current month.
-     *
+     * 
      * @return the currentTier value.
      */
     public TierType currentTier() {
@@ -229,7 +282,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the maxJobCount property: The maximum supported jobs running under the account at the same time.
-     *
+     * 
      * @return the maxJobCount value.
      */
     public Integer maxJobCount() {
@@ -238,7 +291,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Set the maxJobCount property: The maximum supported jobs running under the account at the same time.
-     *
+     * 
      * @param maxJobCount the maxJobCount value to set.
      * @return the DataLakeAnalyticsAccountInner object itself.
      */
@@ -252,7 +305,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the maxActiveJobCountPerUser property: The maximum supported active jobs under the account at the same time.
-     *
+     * 
      * @return the maxActiveJobCountPerUser value.
      */
     public Integer maxActiveJobCountPerUser() {
@@ -261,7 +314,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the maxQueuedJobCountPerUser property: The maximum supported jobs queued under the account at the same time.
-     *
+     * 
      * @return the maxQueuedJobCountPerUser value.
      */
     public Integer maxQueuedJobCountPerUser() {
@@ -270,7 +323,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the maxJobRunningTimeInMin property: The maximum supported active jobs under the account at the same time.
-     *
+     * 
      * @return the maxJobRunningTimeInMin value.
      */
     public Integer maxJobRunningTimeInMin() {
@@ -280,7 +333,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
     /**
      * Get the systemMaxJobCount property: The system defined maximum supported jobs running under the account at the
      * same time, which restricts the maximum number of running jobs the user can set for the account.
-     *
+     * 
      * @return the systemMaxJobCount value.
      */
     public Integer systemMaxJobCount() {
@@ -289,7 +342,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the maxDegreeOfParallelism property: The maximum supported degree of parallelism for this account.
-     *
+     * 
      * @return the maxDegreeOfParallelism value.
      */
     public Integer maxDegreeOfParallelism() {
@@ -298,7 +351,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Set the maxDegreeOfParallelism property: The maximum supported degree of parallelism for this account.
-     *
+     * 
      * @param maxDegreeOfParallelism the maxDegreeOfParallelism value to set.
      * @return the DataLakeAnalyticsAccountInner object itself.
      */
@@ -313,7 +366,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
     /**
      * Get the systemMaxDegreeOfParallelism property: The system defined maximum supported degree of parallelism for
      * this account, which restricts the maximum value of parallelism the user can set for the account.
-     *
+     * 
      * @return the systemMaxDegreeOfParallelism value.
      */
     public Integer systemMaxDegreeOfParallelism() {
@@ -323,7 +376,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
     /**
      * Get the maxDegreeOfParallelismPerJob property: The maximum supported degree of parallelism per job for this
      * account.
-     *
+     * 
      * @return the maxDegreeOfParallelismPerJob value.
      */
     public Integer maxDegreeOfParallelismPerJob() {
@@ -333,7 +386,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
     /**
      * Set the maxDegreeOfParallelismPerJob property: The maximum supported degree of parallelism per job for this
      * account.
-     *
+     * 
      * @param maxDegreeOfParallelismPerJob the maxDegreeOfParallelismPerJob value to set.
      * @return the DataLakeAnalyticsAccountInner object itself.
      */
@@ -347,7 +400,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the minPriorityPerJob property: The minimum supported priority per job for this account.
-     *
+     * 
      * @return the minPriorityPerJob value.
      */
     public Integer minPriorityPerJob() {
@@ -356,7 +409,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the queryStoreRetention property: The number of days that job metadata is retained.
-     *
+     * 
      * @return the queryStoreRetention value.
      */
     public Integer queryStoreRetention() {
@@ -365,7 +418,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Set the queryStoreRetention property: The number of days that job metadata is retained.
-     *
+     * 
      * @param queryStoreRetention the queryStoreRetention value to set.
      * @return the DataLakeAnalyticsAccountInner object itself.
      */
@@ -379,7 +432,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the debugDataAccessLevel property: The current state of the DebugDataAccessLevel for this account.
-     *
+     * 
      * @return the debugDataAccessLevel value.
      */
     public DebugDataAccessLevel debugDataAccessLevel() {
@@ -388,7 +441,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the accountId property: The unique identifier associated with this Data Lake Analytics account.
-     *
+     * 
      * @return the accountId value.
      */
     public UUID accountId() {
@@ -397,7 +450,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning status of the Data Lake Analytics account.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DataLakeAnalyticsAccountStatus provisioningState() {
@@ -406,7 +459,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the state property: The state of the Data Lake Analytics account.
-     *
+     * 
      * @return the state value.
      */
     public DataLakeAnalyticsAccountState state() {
@@ -415,7 +468,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the creationTime property: The account creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -424,7 +477,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the lastModifiedTime property: The account last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -433,7 +486,7 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Get the endpoint property: The full CName endpoint for this account.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -442,12 +495,63 @@ public final class DataLakeAnalyticsAccountInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataLakeAnalyticsAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataLakeAnalyticsAccountInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataLakeAnalyticsAccountInner.
+     */
+    public static DataLakeAnalyticsAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataLakeAnalyticsAccountInner deserializedDataLakeAnalyticsAccountInner
+                = new DataLakeAnalyticsAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDataLakeAnalyticsAccountInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataLakeAnalyticsAccountInner.innerProperties
+                        = DataLakeAnalyticsAccountProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataLakeAnalyticsAccountInner;
+        });
     }
 }

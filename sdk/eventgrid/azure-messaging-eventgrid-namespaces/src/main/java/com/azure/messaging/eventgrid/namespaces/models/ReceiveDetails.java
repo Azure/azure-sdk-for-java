@@ -5,12 +5,12 @@ package com.azure.messaging.eventgrid.namespaces.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.CloudEvent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import com.azure.core.models.CloudEvent;
 
 /**
  * Receive operation details per Cloud Event.

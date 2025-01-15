@@ -173,7 +173,7 @@ be found here: [log levels][log_levels].
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
@@ -202,7 +202,7 @@ comments.
 <!-- LINKS -->
 
 [azure_subscription]: https://azure.microsoft.com/free
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/webpubsub/azure-messaging-webpubsub/src
 [product_documentation]: https://aka.ms/awps/doc
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/README.md

@@ -31,7 +31,8 @@ public class SyncTaskSubmitter implements TaskSubmitter {
      * @throws Exception if the task submission fails.
      */
     @Override
-    public Mono<BatchTaskAddCollectionResult>  submitTasks(String jobId, BatchTaskGroup taskCollection) throws Exception {
+    public Mono<BatchTaskAddCollectionResult> submitTasks(String jobId, BatchTaskGroup taskCollection)
+        throws Exception {
         return Mono.fromCallable(() -> client.createTaskCollection(jobId, taskCollection));
     }
 }

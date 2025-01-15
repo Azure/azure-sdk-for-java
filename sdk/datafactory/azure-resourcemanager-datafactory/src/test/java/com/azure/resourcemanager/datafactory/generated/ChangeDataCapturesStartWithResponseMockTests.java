@@ -28,7 +28,7 @@ public final class ChangeDataCapturesStartWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.changeDataCaptures()
-            .startWithResponse("mwbshqpjueo", "htltooikzouv", "krejuuii", com.azure.core.util.Context.NONE);
+            .startWithResponse("q", "ymmqxndxppzyiyc", "powjyfbnqohc", com.azure.core.util.Context.NONE);
 
     }
 }

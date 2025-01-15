@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.powerbidedicated.fluent.models.DedicatedCapacityMutableProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Provision request specification. */
+/**
+ * Provision request specification.
+ */
 @Fluent
-public final class DedicatedCapacityUpdateParameters {
+public final class DedicatedCapacityUpdateParameters implements JsonSerializable<DedicatedCapacityUpdateParameters> {
     /*
      * The SKU of the Dedicated capacity resource.
      */
-    @JsonProperty(value = "sku")
     private CapacitySku sku;
 
     /*
      * Key-value pairs of additional provisioning properties.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Properties of the provision operation request.
      */
-    @JsonProperty(value = "properties")
     private DedicatedCapacityMutableProperties innerProperties;
 
-    /** Creates an instance of DedicatedCapacityUpdateParameters class. */
+    /**
+     * Creates an instance of DedicatedCapacityUpdateParameters class.
+     */
     public DedicatedCapacityUpdateParameters() {
     }
 
     /**
      * Get the sku property: The SKU of the Dedicated capacity resource.
-     *
+     * 
      * @return the sku value.
      */
     public CapacitySku sku() {
@@ -47,7 +50,7 @@ public final class DedicatedCapacityUpdateParameters {
 
     /**
      * Set the sku property: The SKU of the Dedicated capacity resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
@@ -58,7 +61,7 @@ public final class DedicatedCapacityUpdateParameters {
 
     /**
      * Get the tags property: Key-value pairs of additional provisioning properties.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -67,7 +70,7 @@ public final class DedicatedCapacityUpdateParameters {
 
     /**
      * Set the tags property: Key-value pairs of additional provisioning properties.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
@@ -78,7 +81,7 @@ public final class DedicatedCapacityUpdateParameters {
 
     /**
      * Get the innerProperties property: Properties of the provision operation request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DedicatedCapacityMutableProperties innerProperties() {
@@ -87,7 +90,7 @@ public final class DedicatedCapacityUpdateParameters {
 
     /**
      * Get the administration property: A collection of Dedicated capacity administrators.
-     *
+     * 
      * @return the administration value.
      */
     public DedicatedCapacityAdministrators administration() {
@@ -96,7 +99,7 @@ public final class DedicatedCapacityUpdateParameters {
 
     /**
      * Set the administration property: A collection of Dedicated capacity administrators.
-     *
+     * 
      * @param administration the administration value to set.
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
@@ -112,7 +115,7 @@ public final class DedicatedCapacityUpdateParameters {
      * Get the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
      * default value 'Gen2' is used. [Learn
      * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
-     *
+     * 
      * @return the mode value.
      */
     public Mode mode() {
@@ -123,7 +126,7 @@ public final class DedicatedCapacityUpdateParameters {
      * Set the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
      * default value 'Gen2' is used. [Learn
      * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
-     *
+     * 
      * @param mode the mode value to set.
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
@@ -137,7 +140,7 @@ public final class DedicatedCapacityUpdateParameters {
 
     /**
      * Get the tenantId property: Tenant ID for the capacity. Used for creating Pro Plus capacity.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -146,7 +149,7 @@ public final class DedicatedCapacityUpdateParameters {
 
     /**
      * Get the friendlyName property: Capacity name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -155,7 +158,7 @@ public final class DedicatedCapacityUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -165,5 +168,50 @@ public final class DedicatedCapacityUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedCapacityUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedCapacityUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedCapacityUpdateParameters.
+     */
+    public static DedicatedCapacityUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedCapacityUpdateParameters deserializedDedicatedCapacityUpdateParameters
+                = new DedicatedCapacityUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedDedicatedCapacityUpdateParameters.sku = CapacitySku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedCapacityUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedCapacityUpdateParameters.innerProperties
+                        = DedicatedCapacityMutableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedCapacityUpdateParameters;
+        });
     }
 }

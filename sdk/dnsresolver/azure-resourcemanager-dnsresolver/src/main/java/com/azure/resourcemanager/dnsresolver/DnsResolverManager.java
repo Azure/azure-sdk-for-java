@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -44,7 +44,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to DnsResolverManager. The DNS Resolver Management Client. */
+/**
+ * Entry point to DnsResolverManager.
+ * DNS Resolver Client.
+ */
 public final class DnsResolverManager {
     private DnsResolvers dnsResolvers;
 
@@ -63,18 +66,16 @@ public final class DnsResolverManager {
     private DnsResolverManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new DnsResolverManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new DnsResolverManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of DnsResolver service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the DnsResolver service API instance.
@@ -87,7 +88,7 @@ public final class DnsResolverManager {
 
     /**
      * Creates an instance of DnsResolver service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the DnsResolver service API instance.
@@ -100,14 +101,16 @@ public final class DnsResolverManager {
 
     /**
      * Gets a Configurable instance that can be used to create DnsResolverManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new DnsResolverManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -179,8 +182,8 @@ public final class DnsResolverManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -197,8 +200,8 @@ public final class DnsResolverManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -218,15 +221,13 @@ public final class DnsResolverManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.dnsresolver")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -251,38 +252,28 @@ public final class DnsResolverManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new DnsResolverManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of DnsResolvers. It manages DnsResolver.
-     *
+     * 
      * @return Resource collection API of DnsResolvers.
      */
     public DnsResolvers dnsResolvers() {
@@ -294,7 +285,7 @@ public final class DnsResolverManager {
 
     /**
      * Gets the resource collection API of InboundEndpoints. It manages InboundEndpoint.
-     *
+     * 
      * @return Resource collection API of InboundEndpoints.
      */
     public InboundEndpoints inboundEndpoints() {
@@ -306,7 +297,7 @@ public final class DnsResolverManager {
 
     /**
      * Gets the resource collection API of OutboundEndpoints. It manages OutboundEndpoint.
-     *
+     * 
      * @return Resource collection API of OutboundEndpoints.
      */
     public OutboundEndpoints outboundEndpoints() {
@@ -318,7 +309,7 @@ public final class DnsResolverManager {
 
     /**
      * Gets the resource collection API of DnsForwardingRulesets. It manages DnsForwardingRuleset.
-     *
+     * 
      * @return Resource collection API of DnsForwardingRulesets.
      */
     public DnsForwardingRulesets dnsForwardingRulesets() {
@@ -330,7 +321,7 @@ public final class DnsResolverManager {
 
     /**
      * Gets the resource collection API of ForwardingRules. It manages ForwardingRule.
-     *
+     * 
      * @return Resource collection API of ForwardingRules.
      */
     public ForwardingRules forwardingRules() {
@@ -342,7 +333,7 @@ public final class DnsResolverManager {
 
     /**
      * Gets the resource collection API of VirtualNetworkLinks. It manages VirtualNetworkLink.
-     *
+     * 
      * @return Resource collection API of VirtualNetworkLinks.
      */
     public VirtualNetworkLinks virtualNetworkLinks() {
@@ -353,8 +344,10 @@ public final class DnsResolverManager {
     }
 
     /**
-     * @return Wrapped service client DnsResolverManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client DnsResolverManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client DnsResolverManagementClient.
      */
     public DnsResolverManagementClient serviceClient() {
         return this.clientObject;

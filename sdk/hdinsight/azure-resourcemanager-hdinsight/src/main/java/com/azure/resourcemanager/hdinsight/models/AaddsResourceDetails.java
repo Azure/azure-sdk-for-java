@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Azure active directory domain service resource details. */
+/**
+ * The Azure active directory domain service resource details.
+ */
 @Fluent
-public final class AaddsResourceDetails {
+public final class AaddsResourceDetails implements JsonSerializable<AaddsResourceDetails> {
     /*
      * The Azure active directory domain service name.
      */
-    @JsonProperty(value = "domainName")
     private String domainName;
 
     /*
      * This indicates whether initial sync complete or not.
      */
-    @JsonProperty(value = "initialSyncComplete")
     private Boolean initialSyncComplete;
 
     /*
      * This indicates whether enable ldaps or not.
      */
-    @JsonProperty(value = "ldapsEnabled")
     private Boolean ldapsEnabled;
 
     /*
      * The base 64 format string of public ldap certificate.
      */
-    @JsonProperty(value = "ldapsPublicCertificateInBase64")
     private String ldapsPublicCertificateInBase64;
 
     /*
      * The resource id of azure active directory domain service.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The subnet resource id.
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * The tenant id of azure active directory domain service .
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
-    /** Creates an instance of AaddsResourceDetails class. */
+    /**
+     * Creates an instance of AaddsResourceDetails class.
+     */
     public AaddsResourceDetails() {
     }
 
     /**
      * Get the domainName property: The Azure active directory domain service name.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -67,7 +68,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Set the domainName property: The Azure active directory domain service name.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the AaddsResourceDetails object itself.
      */
@@ -78,7 +79,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Get the initialSyncComplete property: This indicates whether initial sync complete or not.
-     *
+     * 
      * @return the initialSyncComplete value.
      */
     public Boolean initialSyncComplete() {
@@ -87,7 +88,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Set the initialSyncComplete property: This indicates whether initial sync complete or not.
-     *
+     * 
      * @param initialSyncComplete the initialSyncComplete value to set.
      * @return the AaddsResourceDetails object itself.
      */
@@ -98,7 +99,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Get the ldapsEnabled property: This indicates whether enable ldaps or not.
-     *
+     * 
      * @return the ldapsEnabled value.
      */
     public Boolean ldapsEnabled() {
@@ -107,7 +108,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Set the ldapsEnabled property: This indicates whether enable ldaps or not.
-     *
+     * 
      * @param ldapsEnabled the ldapsEnabled value to set.
      * @return the AaddsResourceDetails object itself.
      */
@@ -118,7 +119,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Get the ldapsPublicCertificateInBase64 property: The base 64 format string of public ldap certificate.
-     *
+     * 
      * @return the ldapsPublicCertificateInBase64 value.
      */
     public String ldapsPublicCertificateInBase64() {
@@ -127,7 +128,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Set the ldapsPublicCertificateInBase64 property: The base 64 format string of public ldap certificate.
-     *
+     * 
      * @param ldapsPublicCertificateInBase64 the ldapsPublicCertificateInBase64 value to set.
      * @return the AaddsResourceDetails object itself.
      */
@@ -138,7 +139,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Get the resourceId property: The resource id of azure active directory domain service.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -147,7 +148,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Set the resourceId property: The resource id of azure active directory domain service.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the AaddsResourceDetails object itself.
      */
@@ -158,7 +159,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Get the subnetId property: The subnet resource id.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -167,7 +168,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Set the subnetId property: The subnet resource id.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the AaddsResourceDetails object itself.
      */
@@ -178,7 +179,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Get the tenantId property: The tenant id of azure active directory domain service .
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -187,7 +188,7 @@ public final class AaddsResourceDetails {
 
     /**
      * Set the tenantId property: The tenant id of azure active directory domain service .
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AaddsResourceDetails object itself.
      */
@@ -198,9 +199,63 @@ public final class AaddsResourceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeBooleanField("initialSyncComplete", this.initialSyncComplete);
+        jsonWriter.writeBooleanField("ldapsEnabled", this.ldapsEnabled);
+        jsonWriter.writeStringField("ldapsPublicCertificateInBase64", this.ldapsPublicCertificateInBase64);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AaddsResourceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AaddsResourceDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AaddsResourceDetails.
+     */
+    public static AaddsResourceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AaddsResourceDetails deserializedAaddsResourceDetails = new AaddsResourceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domainName".equals(fieldName)) {
+                    deserializedAaddsResourceDetails.domainName = reader.getString();
+                } else if ("initialSyncComplete".equals(fieldName)) {
+                    deserializedAaddsResourceDetails.initialSyncComplete = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ldapsEnabled".equals(fieldName)) {
+                    deserializedAaddsResourceDetails.ldapsEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ldapsPublicCertificateInBase64".equals(fieldName)) {
+                    deserializedAaddsResourceDetails.ldapsPublicCertificateInBase64 = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedAaddsResourceDetails.resourceId = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedAaddsResourceDetails.subnetId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedAaddsResourceDetails.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAaddsResourceDetails;
+        });
     }
 }

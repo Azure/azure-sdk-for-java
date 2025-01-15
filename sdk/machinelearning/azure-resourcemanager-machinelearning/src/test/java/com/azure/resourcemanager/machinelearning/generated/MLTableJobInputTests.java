@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MLTableJobInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MLTableJobInput model =
-            BinaryData
-                .fromString(
-                    "{\"jobInputType\":\"mltable\",\"mode\":\"Direct\",\"uri\":\"pqinf\",\"description\":\"pyglqdhmrjzral\"}")
-                .toObject(MLTableJobInput.class);
-        Assertions.assertEquals("pyglqdhmrjzral", model.description());
-        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("pqinf", model.uri());
+        MLTableJobInput model = BinaryData.fromString(
+            "{\"jobInputType\":\"mltable\",\"uri\":\"ezefkhkqtwqlepjj\",\"mode\":\"ReadOnlyMount\",\"description\":\"sf\"}")
+            .toObject(MLTableJobInput.class);
+        Assertions.assertEquals("sf", model.description());
+        Assertions.assertEquals("ezefkhkqtwqlepjj", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MLTableJobInput model =
-            new MLTableJobInput().withDescription("pyglqdhmrjzral").withMode(InputDeliveryMode.DIRECT).withUri("pqinf");
+        MLTableJobInput model = new MLTableJobInput().withDescription("sf")
+            .withUri("ezefkhkqtwqlepjj")
+            .withMode(InputDeliveryMode.READ_ONLY_MOUNT);
         model = BinaryData.fromObject(model).toObject(MLTableJobInput.class);
-        Assertions.assertEquals("pyglqdhmrjzral", model.description());
-        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("pqinf", model.uri());
+        Assertions.assertEquals("sf", model.description());
+        Assertions.assertEquals("ezefkhkqtwqlepjj", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.mode());
     }
 }

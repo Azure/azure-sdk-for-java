@@ -6,58 +6,60 @@ package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.models.Disk;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
 import com.azure.resourcemanager.storagepool.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Disk Pool response properties. */
+/**
+ * Disk Pool response properties.
+ */
 @Fluent
-public final class DiskPoolProperties {
+public final class DiskPoolProperties implements JsonSerializable<DiskPoolProperties> {
     /*
      * State of the operation on the resource.
      */
-    @JsonProperty(value = "provisioningState", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * Logical zone for Disk Pool resource; example: ["1"].
      */
-    @JsonProperty(value = "availabilityZones", required = true)
     private List<String> availabilityZones;
 
     /*
      * Operational status of the Disk Pool.
      */
-    @JsonProperty(value = "status", required = true)
     private OperationalStatus status;
 
     /*
      * List of Azure Managed Disks to attach to a Disk Pool.
      */
-    @JsonProperty(value = "disks")
     private List<Disk> disks;
 
     /*
      * Azure Resource ID of a Subnet for the Disk Pool.
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
      * List of additional capabilities for Disk Pool.
      */
-    @JsonProperty(value = "additionalCapabilities")
     private List<String> additionalCapabilities;
 
-    /** Creates an instance of DiskPoolProperties class. */
+    /**
+     * Creates an instance of DiskPoolProperties class.
+     */
     public DiskPoolProperties() {
     }
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -66,7 +68,7 @@ public final class DiskPoolProperties {
 
     /**
      * Get the availabilityZones property: Logical zone for Disk Pool resource; example: ["1"].
-     *
+     * 
      * @return the availabilityZones value.
      */
     public List<String> availabilityZones() {
@@ -75,7 +77,7 @@ public final class DiskPoolProperties {
 
     /**
      * Set the availabilityZones property: Logical zone for Disk Pool resource; example: ["1"].
-     *
+     * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the DiskPoolProperties object itself.
      */
@@ -86,7 +88,7 @@ public final class DiskPoolProperties {
 
     /**
      * Get the status property: Operational status of the Disk Pool.
-     *
+     * 
      * @return the status value.
      */
     public OperationalStatus status() {
@@ -95,7 +97,7 @@ public final class DiskPoolProperties {
 
     /**
      * Set the status property: Operational status of the Disk Pool.
-     *
+     * 
      * @param status the status value to set.
      * @return the DiskPoolProperties object itself.
      */
@@ -106,7 +108,7 @@ public final class DiskPoolProperties {
 
     /**
      * Get the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @return the disks value.
      */
     public List<Disk> disks() {
@@ -115,7 +117,7 @@ public final class DiskPoolProperties {
 
     /**
      * Set the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the DiskPoolProperties object itself.
      */
@@ -126,7 +128,7 @@ public final class DiskPoolProperties {
 
     /**
      * Get the subnetId property: Azure Resource ID of a Subnet for the Disk Pool.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -135,7 +137,7 @@ public final class DiskPoolProperties {
 
     /**
      * Set the subnetId property: Azure Resource ID of a Subnet for the Disk Pool.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the DiskPoolProperties object itself.
      */
@@ -146,7 +148,7 @@ public final class DiskPoolProperties {
 
     /**
      * Get the additionalCapabilities property: List of additional capabilities for Disk Pool.
-     *
+     * 
      * @return the additionalCapabilities value.
      */
     public List<String> additionalCapabilities() {
@@ -155,7 +157,7 @@ public final class DiskPoolProperties {
 
     /**
      * Set the additionalCapabilities property: List of additional capabilities for Disk Pool.
-     *
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the DiskPoolProperties object itself.
      */
@@ -166,30 +168,84 @@ public final class DiskPoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (availabilityZones() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property availabilityZones in model DiskPoolProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property availabilityZones in model DiskPoolProperties"));
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property status in model DiskPoolProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property status in model DiskPoolProperties"));
         }
         if (disks() != null) {
             disks().forEach(e -> e.validate());
         }
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subnetId in model DiskPoolProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property subnetId in model DiskPoolProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiskPoolProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeArrayField("disks", this.disks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("additionalCapabilities", this.additionalCapabilities,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskPoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskPoolProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiskPoolProperties.
+     */
+    public static DiskPoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskPoolProperties deserializedDiskPoolProperties = new DiskPoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedDiskPoolProperties.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("availabilityZones".equals(fieldName)) {
+                    List<String> availabilityZones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiskPoolProperties.availabilityZones = availabilityZones;
+                } else if ("status".equals(fieldName)) {
+                    deserializedDiskPoolProperties.status = OperationalStatus.fromString(reader.getString());
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedDiskPoolProperties.subnetId = reader.getString();
+                } else if ("disks".equals(fieldName)) {
+                    List<Disk> disks = reader.readArray(reader1 -> Disk.fromJson(reader1));
+                    deserializedDiskPoolProperties.disks = disks;
+                } else if ("additionalCapabilities".equals(fieldName)) {
+                    List<String> additionalCapabilities = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiskPoolProperties.additionalCapabilities = additionalCapabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskPoolProperties;
+        });
+    }
 }

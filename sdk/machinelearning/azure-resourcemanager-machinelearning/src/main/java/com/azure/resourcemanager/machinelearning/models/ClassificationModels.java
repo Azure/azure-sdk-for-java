@@ -5,53 +5,80 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum for all classification models supported by AutoML. */
+/**
+ * Enum for all classification models supported by AutoML.
+ */
 public final class ClassificationModels extends ExpandableStringEnum<ClassificationModels> {
-    /** Static value LogisticRegression for ClassificationModels. */
+    /**
+     * Static value LogisticRegression for ClassificationModels.
+     */
     public static final ClassificationModels LOGISTIC_REGRESSION = fromString("LogisticRegression");
 
-    /** Static value SGD for ClassificationModels. */
+    /**
+     * Static value SGD for ClassificationModels.
+     */
     public static final ClassificationModels SGD = fromString("SGD");
 
-    /** Static value MultinomialNaiveBayes for ClassificationModels. */
+    /**
+     * Static value MultinomialNaiveBayes for ClassificationModels.
+     */
     public static final ClassificationModels MULTINOMIAL_NAIVE_BAYES = fromString("MultinomialNaiveBayes");
 
-    /** Static value BernoulliNaiveBayes for ClassificationModels. */
+    /**
+     * Static value BernoulliNaiveBayes for ClassificationModels.
+     */
     public static final ClassificationModels BERNOULLI_NAIVE_BAYES = fromString("BernoulliNaiveBayes");
 
-    /** Static value SVM for ClassificationModels. */
+    /**
+     * Static value SVM for ClassificationModels.
+     */
     public static final ClassificationModels SVM = fromString("SVM");
 
-    /** Static value LinearSVM for ClassificationModels. */
+    /**
+     * Static value LinearSVM for ClassificationModels.
+     */
     public static final ClassificationModels LINEAR_SVM = fromString("LinearSVM");
 
-    /** Static value KNN for ClassificationModels. */
+    /**
+     * Static value KNN for ClassificationModels.
+     */
     public static final ClassificationModels KNN = fromString("KNN");
 
-    /** Static value DecisionTree for ClassificationModels. */
+    /**
+     * Static value DecisionTree for ClassificationModels.
+     */
     public static final ClassificationModels DECISION_TREE = fromString("DecisionTree");
 
-    /** Static value RandomForest for ClassificationModels. */
+    /**
+     * Static value RandomForest for ClassificationModels.
+     */
     public static final ClassificationModels RANDOM_FOREST = fromString("RandomForest");
 
-    /** Static value ExtremeRandomTrees for ClassificationModels. */
+    /**
+     * Static value ExtremeRandomTrees for ClassificationModels.
+     */
     public static final ClassificationModels EXTREME_RANDOM_TREES = fromString("ExtremeRandomTrees");
 
-    /** Static value LightGBM for ClassificationModels. */
+    /**
+     * Static value LightGBM for ClassificationModels.
+     */
     public static final ClassificationModels LIGHT_GBM = fromString("LightGBM");
 
-    /** Static value GradientBoosting for ClassificationModels. */
+    /**
+     * Static value GradientBoosting for ClassificationModels.
+     */
     public static final ClassificationModels GRADIENT_BOOSTING = fromString("GradientBoosting");
 
-    /** Static value XGBoostClassifier for ClassificationModels. */
+    /**
+     * Static value XGBoostClassifier for ClassificationModels.
+     */
     public static final ClassificationModels XGBOOST_CLASSIFIER = fromString("XGBoostClassifier");
 
     /**
      * Creates a new instance of ClassificationModels value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -60,18 +87,17 @@ public final class ClassificationModels extends ExpandableStringEnum<Classificat
 
     /**
      * Creates or finds a ClassificationModels from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClassificationModels.
      */
-    @JsonCreator
     public static ClassificationModels fromString(String name) {
         return fromString(name, ClassificationModels.class);
     }
 
     /**
      * Gets known ClassificationModels values.
-     *
+     * 
      * @return known ClassificationModels values.
      */
     public static Collection<ClassificationModels> values() {

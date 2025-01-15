@@ -93,14 +93,16 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
     }
 
     public Catalog create() {
-        this.innerObject = serviceManager.serviceClient().getCatalogs().createOrUpdate(resourceGroupName, catalogName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCatalogs()
+            .createOrUpdate(resourceGroupName, catalogName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Catalog create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCatalogs().createOrUpdate(resourceGroupName, catalogName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCatalogs()
+            .createOrUpdate(resourceGroupName, catalogName, this.innerModel(), context);
         return this;
     }
 
@@ -116,14 +118,18 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
     }
 
     public Catalog apply() {
-        this.innerObject = serviceManager.serviceClient().getCatalogs()
-            .updateWithResponse(resourceGroupName, catalogName, updateProperties, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCatalogs()
+            .updateWithResponse(resourceGroupName, catalogName, updateProperties, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Catalog apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCatalogs()
-            .updateWithResponse(resourceGroupName, catalogName, updateProperties, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCatalogs()
+            .updateWithResponse(resourceGroupName, catalogName, updateProperties, context)
+            .getValue();
         return this;
     }
 
@@ -135,14 +141,18 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
     }
 
     public Catalog refresh() {
-        this.innerObject = serviceManager.serviceClient().getCatalogs()
-            .getByResourceGroupWithResponse(resourceGroupName, catalogName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCatalogs()
+            .getByResourceGroupWithResponse(resourceGroupName, catalogName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Catalog refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCatalogs()
-            .getByResourceGroupWithResponse(resourceGroupName, catalogName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCatalogs()
+            .getByResourceGroupWithResponse(resourceGroupName, catalogName, context)
+            .getValue();
         return this;
     }
 
@@ -160,8 +170,8 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
 
     public PagedIterable<Deployment> listDeployments(String filter, Integer top, Integer skip, Integer maxpagesize,
         Context context) {
-        return serviceManager.catalogs().listDeployments(resourceGroupName, catalogName, filter, top, skip, maxpagesize,
-            context);
+        return serviceManager.catalogs()
+            .listDeployments(resourceGroupName, catalogName, filter, top, skip, maxpagesize, context);
     }
 
     public PagedIterable<DeviceGroup> listDeviceGroups(ListDeviceGroupsRequest listDeviceGroupsRequest) {
@@ -170,8 +180,9 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
 
     public PagedIterable<DeviceGroup> listDeviceGroups(ListDeviceGroupsRequest listDeviceGroupsRequest, String filter,
         Integer top, Integer skip, Integer maxpagesize, Context context) {
-        return serviceManager.catalogs().listDeviceGroups(resourceGroupName, catalogName, listDeviceGroupsRequest,
-            filter, top, skip, maxpagesize, context);
+        return serviceManager.catalogs()
+            .listDeviceGroups(resourceGroupName, catalogName, listDeviceGroupsRequest, filter, top, skip, maxpagesize,
+                context);
     }
 
     public PagedIterable<DeviceInsight> listDeviceInsights() {
@@ -180,8 +191,8 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
 
     public PagedIterable<DeviceInsight> listDeviceInsights(String filter, Integer top, Integer skip,
         Integer maxpagesize, Context context) {
-        return serviceManager.catalogs().listDeviceInsights(resourceGroupName, catalogName, filter, top, skip,
-            maxpagesize, context);
+        return serviceManager.catalogs()
+            .listDeviceInsights(resourceGroupName, catalogName, filter, top, skip, maxpagesize, context);
     }
 
     public PagedIterable<Device> listDevices() {
@@ -190,8 +201,8 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
 
     public PagedIterable<Device> listDevices(String filter, Integer top, Integer skip, Integer maxpagesize,
         Context context) {
-        return serviceManager.catalogs().listDevices(resourceGroupName, catalogName, filter, top, skip, maxpagesize,
-            context);
+        return serviceManager.catalogs()
+            .listDevices(resourceGroupName, catalogName, filter, top, skip, maxpagesize, context);
     }
 
     public void uploadImage(ImageInner uploadImageRequest) {

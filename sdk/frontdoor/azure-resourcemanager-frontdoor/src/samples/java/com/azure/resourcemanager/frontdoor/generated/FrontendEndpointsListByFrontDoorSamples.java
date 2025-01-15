@@ -9,7 +9,8 @@ package com.azure.resourcemanager.frontdoor.generated;
  */
 public final class FrontendEndpointsListByFrontDoorSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorFrontendEndpointList.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/
+     * FrontdoorFrontendEndpointList.json
      */
     /**
      * Sample code: List Frontend endpoints in a Front Door.

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The TemplateDeploymentOptions model. */
+/**
+ * The TemplateDeploymentOptions model.
+ */
 @Fluent
-public class TemplateDeploymentOptions {
+public class TemplateDeploymentOptions implements JsonSerializable<TemplateDeploymentOptions> {
     /*
      * The preflightSupported property.
      */
-    @JsonProperty(value = "preflightSupported")
     private Boolean preflightSupported;
 
     /*
      * The preflightOptions property.
      */
-    @JsonProperty(value = "preflightOptions")
     private List<PreflightOption> preflightOptions;
 
-    /** Creates an instance of TemplateDeploymentOptions class. */
+    /**
+     * Creates an instance of TemplateDeploymentOptions class.
+     */
     public TemplateDeploymentOptions() {
     }
 
     /**
      * Get the preflightSupported property: The preflightSupported property.
-     *
+     * 
      * @return the preflightSupported value.
      */
     public Boolean preflightSupported() {
@@ -38,7 +44,7 @@ public class TemplateDeploymentOptions {
 
     /**
      * Set the preflightSupported property: The preflightSupported property.
-     *
+     * 
      * @param preflightSupported the preflightSupported value to set.
      * @return the TemplateDeploymentOptions object itself.
      */
@@ -49,7 +55,7 @@ public class TemplateDeploymentOptions {
 
     /**
      * Get the preflightOptions property: The preflightOptions property.
-     *
+     * 
      * @return the preflightOptions value.
      */
     public List<PreflightOption> preflightOptions() {
@@ -58,7 +64,7 @@ public class TemplateDeploymentOptions {
 
     /**
      * Set the preflightOptions property: The preflightOptions property.
-     *
+     * 
      * @param preflightOptions the preflightOptions value to set.
      * @return the TemplateDeploymentOptions object itself.
      */
@@ -69,9 +75,52 @@ public class TemplateDeploymentOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("preflightSupported", this.preflightSupported);
+        jsonWriter.writeArrayField("preflightOptions", this.preflightOptions,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TemplateDeploymentOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TemplateDeploymentOptions if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TemplateDeploymentOptions.
+     */
+    public static TemplateDeploymentOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TemplateDeploymentOptions deserializedTemplateDeploymentOptions = new TemplateDeploymentOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("preflightSupported".equals(fieldName)) {
+                    deserializedTemplateDeploymentOptions.preflightSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("preflightOptions".equals(fieldName)) {
+                    List<PreflightOption> preflightOptions
+                        = reader.readArray(reader1 -> PreflightOption.fromString(reader1.getString()));
+                    deserializedTemplateDeploymentOptions.preflightOptions = preflightOptions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTemplateDeploymentOptions;
+        });
     }
 }

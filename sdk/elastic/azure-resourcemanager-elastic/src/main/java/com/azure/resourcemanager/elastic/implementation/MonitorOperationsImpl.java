@@ -17,8 +17,8 @@ public final class MonitorOperationsImpl implements MonitorOperations {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public MonitorOperationsImpl(
-        MonitorOperationsClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public MonitorOperationsImpl(MonitorOperationsClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

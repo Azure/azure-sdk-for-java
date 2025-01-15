@@ -16,50 +16,35 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderOperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"jddeqsrdeupewnw\",\"display\":{\"provider\":\"tjzyflus\",\"resource\":\"hmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"isDataAction\":false,\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"mparcryuanzw\",\"displayName\":\"zdxtayrlhmwhf\",\"blobDuration\":\"rqobmtuk\"}]}}}")
-                .toObject(ResourceProviderOperationInner.class);
+        ResourceProviderOperationInner model = BinaryData.fromString(
+            "{\"name\":\"jddeqsrdeupewnw\",\"display\":{\"provider\":\"tjzyflus\",\"resource\":\"hmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"isDataAction\":false,\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"mparcryuanzw\",\"displayName\":\"zdxtayrlhmwhf\",\"blobDuration\":\"rqobmtuk\"}]}}}")
+            .toObject(ResourceProviderOperationInner.class);
         Assertions.assertEquals("jddeqsrdeupewnw", model.name());
         Assertions.assertEquals("tjzyflus", model.display().provider());
         Assertions.assertEquals("hmofc", model.display().resource());
         Assertions.assertEquals("smy", model.display().operation());
         Assertions.assertEquals("kdtmlxhekuk", model.display().description());
         Assertions.assertEquals(false, model.isDataAction());
-        Assertions
-            .assertEquals("mparcryuanzw", model.properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions
-            .assertEquals(
-                "zdxtayrlhmwhf", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions
-            .assertEquals(
-                "rqobmtuk", model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("mparcryuanzw",
+            model.properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("zdxtayrlhmwhf",
+            model.properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("rqobmtuk",
+            model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderOperationInner model =
-            new ResourceProviderOperationInner()
-                .withName("jddeqsrdeupewnw")
-                .withDisplay(
-                    new ResourceProviderOperationDisplay()
-                        .withProvider("tjzyflus")
-                        .withResource("hmofc")
-                        .withOperation("smy")
-                        .withDescription("kdtmlxhekuk"))
-                .withIsDataAction(false)
-                .withProperties(
-                    new OperationProperties()
-                        .withServiceSpecification(
-                            new ServiceSpecification()
-                                .withLogSpecifications(
-                                    Arrays
-                                        .asList(
-                                            new LogSpecification()
-                                                .withName("mparcryuanzw")
-                                                .withDisplayName("zdxtayrlhmwhf")
-                                                .withBlobDuration("rqobmtuk")))));
+        ResourceProviderOperationInner model = new ResourceProviderOperationInner().withName("jddeqsrdeupewnw")
+            .withDisplay(new ResourceProviderOperationDisplay().withProvider("tjzyflus")
+                .withResource("hmofc")
+                .withOperation("smy")
+                .withDescription("kdtmlxhekuk"))
+            .withIsDataAction(false)
+            .withProperties(new OperationProperties().withServiceSpecification(new ServiceSpecification()
+                .withLogSpecifications(Arrays.asList(new LogSpecification().withName("mparcryuanzw")
+                    .withDisplayName("zdxtayrlhmwhf")
+                    .withBlobDuration("rqobmtuk")))));
         model = BinaryData.fromObject(model).toObject(ResourceProviderOperationInner.class);
         Assertions.assertEquals("jddeqsrdeupewnw", model.name());
         Assertions.assertEquals("tjzyflus", model.display().provider());
@@ -67,13 +52,11 @@ public final class ResourceProviderOperationInnerTests {
         Assertions.assertEquals("smy", model.display().operation());
         Assertions.assertEquals("kdtmlxhekuk", model.display().description());
         Assertions.assertEquals(false, model.isDataAction());
-        Assertions
-            .assertEquals("mparcryuanzw", model.properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions
-            .assertEquals(
-                "zdxtayrlhmwhf", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions
-            .assertEquals(
-                "rqobmtuk", model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("mparcryuanzw",
+            model.properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("zdxtayrlhmwhf",
+            model.properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("rqobmtuk",
+            model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 }

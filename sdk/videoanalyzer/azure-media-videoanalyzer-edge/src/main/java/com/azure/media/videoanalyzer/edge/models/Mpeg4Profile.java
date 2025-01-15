@@ -5,29 +5,46 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Mpeg4Profile. */
+/**
+ * The MPEG4 Profile.
+ */
 public final class Mpeg4Profile extends ExpandableStringEnum<Mpeg4Profile> {
-    /** Static value SP for Mpeg4Profile. */
+    /**
+     * Simple Profile.
+     */
     public static final Mpeg4Profile SP = fromString("SP");
 
-    /** Static value ASP for Mpeg4Profile. */
+    /**
+     * Advanced Simple Profile.
+     */
     public static final Mpeg4Profile ASP = fromString("ASP");
 
     /**
+     * Creates a new instance of Mpeg4Profile value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Mpeg4Profile() {
+    }
+
+    /**
      * Creates or finds a Mpeg4Profile from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Mpeg4Profile.
      */
-    @JsonCreator
     public static Mpeg4Profile fromString(String name) {
         return fromString(name, Mpeg4Profile.class);
     }
 
-    /** @return known Mpeg4Profile values. */
+    /**
+     * Gets known Mpeg4Profile values.
+     * 
+     * @return known Mpeg4Profile values.
+     */
     public static Collection<Mpeg4Profile> values() {
         return values(Mpeg4Profile.class);
     }

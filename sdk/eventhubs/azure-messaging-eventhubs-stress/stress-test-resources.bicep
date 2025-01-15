@@ -4,7 +4,9 @@ param baseName string = resourceGroup().name
 @description('The location of the resources. By default, this is the same as the resource group.')
 param location string = resourceGroup().location
 
-var eventHubsAuthRulesName = 'stress-test-auth-rule'
+@description('The name of the storage account.')
+param storageAccountName string = 'stress${uniqueString(resourceGroup().id)}'
+
 var storageContainerName = 'test-blob-container'
 
 resource eventHubsNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
@@ -36,20 +38,8 @@ resource forwardEventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = 
   }
 }
 
-resource eventHubsAuthRules 'Microsoft.EventHub/namespaces/authorizationRules@2021-11-01' = {
-  parent: eventHubsNamespace
-  name: eventHubsAuthRulesName
-  properties: {
-    rights: [
-      'Manage'
-      'Send'
-      'Listen'
-    ]
-  }
-}
-
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-  name: baseName
+  name: storageAccountName
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -61,28 +51,19 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 }
 
 resource storageContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' = {
-  name: '${baseName}/default/${storageContainerName}'
+  name: '${storageAccountName}/default/${storageContainerName}'
   dependsOn: [
     storageAccount
   ]
 }
 
-// Construct eventhubs connection string
-var eventHubsVersion = eventHubsNamespace.apiVersion
-var eventHubsConnectionString = listkeys(eventHubsAuthRulesName, eventHubsVersion).primaryConnectionString
+var eventHubsHttpsEndpoint = replace(eventHubsNamespace.properties.serviceBusEndpoint, 'https://', '')
+var eventHubsPortIndex = lastIndexOf(eventHubsHttpsEndpoint, ':')
+output EVENT_HUBS_FULLY_QUALIFIED_NAMESPACE string = substring(eventHubsHttpsEndpoint, 0, eventHubsPortIndex)
+output EVENT_HUBS_EVENT_HUB_NAME string = eventHub.name
 
-// Construct storage account connection string
-var endpointSuffix = environment().suffixes.storage
-var storageAccountId = storageAccount.id
-var storageAccountVersion = storageAccount.apiVersion
-var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${baseName};EndpointSuffix=${endpointSuffix};AccountKey=${listKeys(storageAccountId, storageAccountVersion).keys[0].value}'
-var forwardPartitionCount = forwardEventHub.properties.partitionCount
-output EVENTHUBS_CONNECTION_STRING string = '"${eventHubsConnectionString}"'
-output EVENTHUBS_EVENT_HUB_NAME string = eventHub.name
-
-output FORWARD_EVENTHUBS_CONNECTION_STRING string = '"${eventHubsConnectionString}"'
 output FORWARD_EVENT_HUB_NAME string = forwardEventHub.name
-output FORWARD_PARTITIONS_COUNT string = '"${forwardPartitionCount}"'
+output FORWARD_PARTITIONS_COUNT int = forwardEventHub.properties.partitionCount
 
+output STORAGE_BLOB_ENDPOINT_URI string = storageAccount.properties.primaryEndpoints.blob
 output STORAGE_CONTAINER_NAME string = storageContainerName
-output STORAGE_CONNECTION_STRING string = '"${storageConnectionString}"'

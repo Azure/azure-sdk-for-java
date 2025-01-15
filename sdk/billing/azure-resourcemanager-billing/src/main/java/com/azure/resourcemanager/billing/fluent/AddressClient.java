@@ -8,15 +8,17 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.billing.fluent.models.ValidateAddressResponseInner;
+import com.azure.resourcemanager.billing.fluent.models.AddressValidationResponseInner;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 
-/** An instance of this class provides access to all the operations defined in AddressClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AddressClient.
+ */
 public interface AddressClient {
     /**
      * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
+     * 
+     * @param parameters Address details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,17 +26,17 @@ public interface AddressClient {
      * @return result of the address validation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidateAddressResponseInner> validateWithResponse(AddressDetails address, Context context);
+    Response<AddressValidationResponseInner> validateWithResponse(AddressDetails parameters, Context context);
 
     /**
      * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
+     * 
+     * @param parameters Address details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the address validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateAddressResponseInner validate(AddressDetails address);
+    AddressValidationResponseInner validate(AddressDetails parameters);
 }

@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryInfo;
 import com.azure.cosmos.implementation.cpu.CpuLoadHistory;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
@@ -48,7 +50,12 @@ public class RntbdClientChannelHealthCheckerTests {
                 sslContextMock,
                 LogLevel.INFO);
 
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
         Channel channelMock = Mockito.mock(Channel.class);
         ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
         RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
@@ -73,7 +80,8 @@ public class RntbdClientChannelHealthCheckerTests {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow().contains("health check failed due to non-responding write"));
+            assertThat(healthyResult.getNow().contains("health check failed due to non-responding write")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientVmId: testClientVmId")).isTrue();
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -90,7 +98,12 @@ public class RntbdClientChannelHealthCheckerTests {
                 sslContextMock,
                 LogLevel.INFO);
 
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
         Channel channelMock = Mockito.mock(Channel.class);
         ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
         RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
@@ -113,8 +126,12 @@ public class RntbdClientChannelHealthCheckerTests {
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
-            assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow().contains("health check failed due to non-responding read"));
+
+            String message = healthyResult.getNow();
+            assertThat(message).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            assertThat(message.contains("health check failed due to non-responding read")).isTrue();
+            assertThat(message.contains("clientVmId: testClientVmId")).isTrue();
+            validateSystemDiagnostics(message);
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -131,7 +148,12 @@ public class RntbdClientChannelHealthCheckerTests {
                 sslContextMock,
                 LogLevel.INFO);
 
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
         Channel channelMock = Mockito.mock(Channel.class);
         ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
         RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
@@ -174,7 +196,12 @@ public class RntbdClientChannelHealthCheckerTests {
             sslContextMock,
             LogLevel.INFO);
 
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
         Channel channelMock = Mockito.mock(Channel.class);
         ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
         RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
@@ -200,8 +227,12 @@ public class RntbdClientChannelHealthCheckerTests {
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
-            assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow().contains("health check failed due to transit timeout high frequency threshold hit"));
+
+            String message = healthyResult.getNow();
+            assertThat(message).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            assertThat(message.contains("health check failed due to transit timeout high frequency threshold hit")).isTrue();
+            assertThat(message.contains("clientVmId: testClientVmId")).isTrue();
+            validateSystemDiagnostics(message);
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -218,7 +249,12 @@ public class RntbdClientChannelHealthCheckerTests {
             sslContextMock,
             LogLevel.INFO);
 
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
         Channel channelMock = Mockito.mock(Channel.class);
         ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
         RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
@@ -245,8 +281,12 @@ public class RntbdClientChannelHealthCheckerTests {
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
-            assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow()).contains("health check failed due to transit timeout on write threshold hit");
+
+            String message = healthyResult.getNow();
+            assertThat(message).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            assertThat(message).contains("health check failed due to transit timeout on write threshold hit");
+            assertThat(message).contains("clientVmId: testClientVmId");
+            validateSystemDiagnostics(message);
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -264,7 +304,12 @@ public class RntbdClientChannelHealthCheckerTests {
             sslContextMock,
             LogLevel.INFO);
 
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
         Channel channelMock = Mockito.mock(Channel.class);
         ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
         RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
@@ -303,6 +348,7 @@ public class RntbdClientChannelHealthCheckerTests {
                 assertThat(healthyResult.getNow()).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
                 // Verify under high CPU load, the transitTimeout will be reset
                 Mockito.verify(timestampsMock, Mockito.times(1)).resetTransitTimeout();
+
             } else {
                 Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
                 assertThat(healthyResult.isSuccess()).isTrue();
@@ -322,7 +368,12 @@ public class RntbdClientChannelHealthCheckerTests {
             sslContextMock,
             LogLevel.INFO);
 
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
         Channel channelMock = Mockito.mock(Channel.class);
         ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
         RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
@@ -375,7 +426,12 @@ public class RntbdClientChannelHealthCheckerTests {
             sslContextMock,
             LogLevel.INFO);
 
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
         Channel channelMock = Mockito.mock(Channel.class);
         ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
         RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
@@ -409,7 +465,8 @@ public class RntbdClientChannelHealthCheckerTests {
             if (withFailureReason) {
                 Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
                 assertThat(healthyResult.isSuccess()).isTrue();
-                assertThat(healthyResult.getNow()).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+                String message = healthyResult.getNow();
+                assertThat(message).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
                 // Verify under high CPU load, the cancellationCount will be reset
                 Mockito.verify(timestampsMock, Mockito.times(1)).resetCancellationCount();
             } else {
@@ -422,4 +479,10 @@ public class RntbdClientChannelHealthCheckerTests {
         }
     }
 
+    private void validateSystemDiagnostics(String string) {
+        assertThat(string.contains("clientUsedMemory")).isTrue();
+        assertThat(string.contains("clientAvailableMemory")).isTrue();
+        assertThat(string.contains("clientSystemCpuLoad")).isTrue();
+        assertThat(string.contains("clientAvailableProcessors")).isTrue();
+    }
 }

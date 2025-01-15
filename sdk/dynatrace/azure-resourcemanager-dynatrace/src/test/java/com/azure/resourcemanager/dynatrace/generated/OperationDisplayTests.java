@@ -10,11 +10,9 @@ import com.azure.resourcemanager.dynatrace.models.OperationDisplay;
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"sbdkvwr\",\"resource\":\"feusnhut\",\"operation\":\"ltmrldh\",\"description\":\"jzzd\"}")
-                .toObject(OperationDisplay.class);
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"sbdkvwr\",\"resource\":\"feusnhut\",\"operation\":\"ltmrldh\",\"description\":\"jzzd\"}")
+            .toObject(OperationDisplay.class);
     }
 
     @org.junit.jupiter.api.Test

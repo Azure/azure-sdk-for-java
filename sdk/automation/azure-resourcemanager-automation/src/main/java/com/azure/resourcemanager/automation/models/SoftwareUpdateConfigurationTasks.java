@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Task properties of the software update configuration. */
+/**
+ * Task properties of the software update configuration.
+ */
 @Fluent
-public final class SoftwareUpdateConfigurationTasks {
+public final class SoftwareUpdateConfigurationTasks implements JsonSerializable<SoftwareUpdateConfigurationTasks> {
     /*
      * Pre task properties.
      */
-    @JsonProperty(value = "preTask")
     private TaskProperties preTask;
 
     /*
      * Post task properties.
      */
-    @JsonProperty(value = "postTask")
     private TaskProperties postTask;
 
     /**
+     * Creates an instance of SoftwareUpdateConfigurationTasks class.
+     */
+    public SoftwareUpdateConfigurationTasks() {
+    }
+
+    /**
      * Get the preTask property: Pre task properties.
-     *
+     * 
      * @return the preTask value.
      */
     public TaskProperties preTask() {
@@ -33,7 +43,7 @@ public final class SoftwareUpdateConfigurationTasks {
 
     /**
      * Set the preTask property: Pre task properties.
-     *
+     * 
      * @param preTask the preTask value to set.
      * @return the SoftwareUpdateConfigurationTasks object itself.
      */
@@ -44,7 +54,7 @@ public final class SoftwareUpdateConfigurationTasks {
 
     /**
      * Get the postTask property: Post task properties.
-     *
+     * 
      * @return the postTask value.
      */
     public TaskProperties postTask() {
@@ -53,7 +63,7 @@ public final class SoftwareUpdateConfigurationTasks {
 
     /**
      * Set the postTask property: Post task properties.
-     *
+     * 
      * @param postTask the postTask value to set.
      * @return the SoftwareUpdateConfigurationTasks object itself.
      */
@@ -64,7 +74,7 @@ public final class SoftwareUpdateConfigurationTasks {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -74,5 +84,45 @@ public final class SoftwareUpdateConfigurationTasks {
         if (postTask() != null) {
             postTask().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("preTask", this.preTask);
+        jsonWriter.writeJsonField("postTask", this.postTask);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationTasks from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationTasks if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationTasks.
+     */
+    public static SoftwareUpdateConfigurationTasks fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationTasks deserializedSoftwareUpdateConfigurationTasks
+                = new SoftwareUpdateConfigurationTasks();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("preTask".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationTasks.preTask = TaskProperties.fromJson(reader);
+                } else if ("postTask".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationTasks.postTask = TaskProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationTasks;
+        });
     }
 }

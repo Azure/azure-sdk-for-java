@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The artifact content properties definition. */
+/**
+ * The artifact content properties definition.
+ */
 @Fluent
 public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
     /*
      * Anything
      */
-    @JsonProperty(value = "content")
     private Object content;
 
     /*
      * The content type.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * The content link.
      */
-    @JsonProperty(value = "contentLink")
     private ContentLink contentLink;
 
-    /** Creates an instance of ArtifactContentPropertiesDefinition class. */
+    /**
+     * Creates an instance of ArtifactContentPropertiesDefinition class.
+     */
     public ArtifactContentPropertiesDefinition() {
     }
 
     /**
      * Get the content property: Anything.
-     *
+     * 
      * @return the content value.
      */
     public Object content() {
@@ -44,7 +50,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
 
     /**
      * Set the content property: Anything.
-     *
+     * 
      * @param content the content value to set.
      * @return the ArtifactContentPropertiesDefinition object itself.
      */
@@ -55,7 +61,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
 
     /**
      * Get the contentType property: The content type.
-     *
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -64,7 +70,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
 
     /**
      * Set the contentType property: The content type.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the ArtifactContentPropertiesDefinition object itself.
      */
@@ -75,7 +81,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
 
     /**
      * Get the contentLink property: The content link.
-     *
+     * 
      * @return the contentLink value.
      */
     public ContentLink contentLink() {
@@ -84,7 +90,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
 
     /**
      * Set the contentLink property: The content link.
-     *
+     * 
      * @param contentLink the contentLink value to set.
      * @return the ArtifactContentPropertiesDefinition object itself.
      */
@@ -93,21 +99,27 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArtifactContentPropertiesDefinition withCreatedTime(OffsetDateTime createdTime) {
         super.withCreatedTime(createdTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArtifactContentPropertiesDefinition withChangedTime(OffsetDateTime changedTime) {
         super.withChangedTime(changedTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArtifactContentPropertiesDefinition withMetadata(Object metadata) {
         super.withMetadata(metadata);
@@ -116,14 +128,69 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (contentLink() != null) {
             contentLink().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdTime",
+            createdTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdTime()));
+        jsonWriter.writeStringField("changedTime",
+            changedTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(changedTime()));
+        jsonWriter.writeUntypedField("metadata", metadata());
+        jsonWriter.writeUntypedField("content", this.content);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeJsonField("contentLink", this.contentLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactContentPropertiesDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactContentPropertiesDefinition if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactContentPropertiesDefinition.
+     */
+    public static ArtifactContentPropertiesDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactContentPropertiesDefinition deserializedArtifactContentPropertiesDefinition
+                = new ArtifactContentPropertiesDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdTime".equals(fieldName)) {
+                    deserializedArtifactContentPropertiesDefinition.withCreatedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedArtifactContentPropertiesDefinition.withChangedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedArtifactContentPropertiesDefinition.withMetadata(reader.readUntyped());
+                } else if ("content".equals(fieldName)) {
+                    deserializedArtifactContentPropertiesDefinition.content = reader.readUntyped();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedArtifactContentPropertiesDefinition.contentType = reader.getString();
+                } else if ("contentLink".equals(fieldName)) {
+                    deserializedArtifactContentPropertiesDefinition.contentLink = ContentLink.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactContentPropertiesDefinition;
+        });
     }
 }

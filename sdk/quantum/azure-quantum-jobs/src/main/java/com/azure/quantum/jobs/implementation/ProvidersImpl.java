@@ -41,8 +41,8 @@ public final class ProvidersImpl {
      * @param client the instance of the service client containing this operation class.
      */
     ProvidersImpl(QuantumClientImpl client) {
-        this.service =
-                RestProxy.create(ProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,24 +53,19 @@ public final class ProvidersImpl {
     @Host("{$host}")
     @ServiceInterface(name = "QuantumClientProvide")
     private interface ProvidersService {
-        @Get(
-                "/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/providerStatus")
-        @ExpectedResponses({200})
+        @Get("/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/providerStatus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(RestErrorException.class)
-        Mono<Response<ProviderStatusList>> getStatus(
-                @HostParam("$host") String host,
-                @PathParam("subscriptionId") String subscriptionId,
-                @PathParam("resourceGroupName") String resourceGroupName,
-                @PathParam("workspaceName") String workspaceName,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<ProviderStatusList>> getStatus(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(RestErrorException.class)
-        Mono<Response<ProviderStatusList>> getStatusNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<ProviderStatusList>> getStatusNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String host, @HeaderParam("Accept") String accept);
     }
 
     /**
@@ -83,21 +78,11 @@ public final class ProvidersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ProviderStatus>> getStatusSinglePageAsync() {
         final String accept = "application/json";
-        return service.getStatus(
-                        this.client.getHost(),
-                        this.client.getSubscriptionId(),
-                        this.client.getResourceGroupName(),
-                        this.client.getWorkspaceName(),
-                        accept)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return service
+            .getStatus(this.client.getHost(), this.client.getSubscriptionId(), this.client.getResourceGroupName(),
+                this.client.getWorkspaceName(), accept)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -137,14 +122,7 @@ public final class ProvidersImpl {
     public Mono<PagedResponse<ProviderStatus>> getStatusNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return service.getStatusNext(nextLink, this.client.getHost(), accept)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 }

@@ -5,41 +5,41 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes an input signal to be used on a pipeline node. */
+/**
+ * Describes an input signal to be used on a pipeline node.
+ */
 @Fluent
-public final class NodeInput {
+public final class NodeInput implements JsonSerializable<NodeInput> {
     /*
-     * The name of the upstream node in the pipeline which output is used as
-     * input of the current node.
+     * The name of the upstream node in the pipeline which output is used as input of the current node.
      */
-    @JsonProperty(value = "nodeName", required = true)
-    private String nodeName;
+    private final String nodeName;
 
     /*
-     * Allows for the selection of specific data streams (eg. video only) from
-     * another node.
+     * Allows for the selection of specific data streams (eg. video only) from another node.
      */
-    @JsonProperty(value = "outputSelectors")
     private List<OutputSelector> outputSelectors;
 
     /**
      * Creates an instance of NodeInput class.
-     *
+     * 
      * @param nodeName the nodeName value to set.
      */
-    @JsonCreator
-    public NodeInput(@JsonProperty(value = "nodeName", required = true) String nodeName) {
+    public NodeInput(String nodeName) {
         this.nodeName = nodeName;
     }
 
     /**
      * Get the nodeName property: The name of the upstream node in the pipeline which output is used as input of the
      * current node.
-     *
+     * 
      * @return the nodeName value.
      */
     public String getNodeName() {
@@ -49,7 +49,7 @@ public final class NodeInput {
     /**
      * Get the outputSelectors property: Allows for the selection of specific data streams (eg. video only) from another
      * node.
-     *
+     * 
      * @return the outputSelectors value.
      */
     public List<OutputSelector> getOutputSelectors() {
@@ -59,12 +59,61 @@ public final class NodeInput {
     /**
      * Set the outputSelectors property: Allows for the selection of specific data streams (eg. video only) from another
      * node.
-     *
+     * 
      * @param outputSelectors the outputSelectors value to set.
      * @return the NodeInput object itself.
      */
     public NodeInput setOutputSelectors(List<OutputSelector> outputSelectors) {
         this.outputSelectors = outputSelectors;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nodeName", this.nodeName);
+        jsonWriter.writeArrayField("outputSelectors", this.outputSelectors,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NodeInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NodeInput if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NodeInput.
+     */
+    public static NodeInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nodeNameFound = false;
+            String nodeName = null;
+            List<OutputSelector> outputSelectors = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nodeName".equals(fieldName)) {
+                    nodeName = reader.getString();
+                    nodeNameFound = true;
+                } else if ("outputSelectors".equals(fieldName)) {
+                    outputSelectors = reader.readArray(reader1 -> OutputSelector.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nodeNameFound) {
+                NodeInput deserializedNodeInput = new NodeInput(nodeName);
+                deserializedNodeInput.outputSelectors = outputSelectors;
+
+                return deserializedNodeInput;
+            }
+            throw new IllegalStateException("Missing required property: nodeName");
+        });
     }
 }

@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountCertificateInner;
 
-/** An instance of this class provides access to all the operations defined in IntegrationAccountCertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationAccountCertificatesClient.
+ */
 public interface IntegrationAccountCertificatesClient {
     /**
      * Gets a list of integration account certificates.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface IntegrationAccountCertificatesClient {
 
     /**
      * Gets a list of integration account certificates.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
@@ -39,12 +41,12 @@ public interface IntegrationAccountCertificatesClient {
      * @return a list of integration account certificates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IntegrationAccountCertificateInner> list(
-        String resourceGroupName, String integrationAccountName, Integer top, Context context);
+    PagedIterable<IntegrationAccountCertificateInner> list(String resourceGroupName, String integrationAccountName,
+        Integer top, Context context);
 
     /**
      * Gets an integration account certificate.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param certificateName The integration account certificate name.
@@ -55,12 +57,12 @@ public interface IntegrationAccountCertificatesClient {
      * @return an integration account certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountCertificateInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String certificateName, Context context);
+    Response<IntegrationAccountCertificateInner> getWithResponse(String resourceGroupName,
+        String integrationAccountName, String certificateName, Context context);
 
     /**
      * Gets an integration account certificate.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param certificateName The integration account certificate name.
@@ -70,12 +72,12 @@ public interface IntegrationAccountCertificatesClient {
      * @return an integration account certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationAccountCertificateInner get(
-        String resourceGroupName, String integrationAccountName, String certificateName);
+    IntegrationAccountCertificateInner get(String resourceGroupName, String integrationAccountName,
+        String certificateName);
 
     /**
      * Creates or updates an integration account certificate.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param certificateName The integration account certificate name.
@@ -87,16 +89,13 @@ public interface IntegrationAccountCertificatesClient {
      * @return the integration account certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountCertificateInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String certificateName,
-        IntegrationAccountCertificateInner certificate,
+    Response<IntegrationAccountCertificateInner> createOrUpdateWithResponse(String resourceGroupName,
+        String integrationAccountName, String certificateName, IntegrationAccountCertificateInner certificate,
         Context context);
 
     /**
      * Creates or updates an integration account certificate.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param certificateName The integration account certificate name.
@@ -107,15 +106,12 @@ public interface IntegrationAccountCertificatesClient {
      * @return the integration account certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationAccountCertificateInner createOrUpdate(
-        String resourceGroupName,
-        String integrationAccountName,
-        String certificateName,
-        IntegrationAccountCertificateInner certificate);
+    IntegrationAccountCertificateInner createOrUpdate(String resourceGroupName, String integrationAccountName,
+        String certificateName, IntegrationAccountCertificateInner certificate);
 
     /**
      * Deletes an integration account certificate.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param certificateName The integration account certificate name.
@@ -126,12 +122,12 @@ public interface IntegrationAccountCertificatesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String certificateName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, String certificateName,
+        Context context);
 
     /**
      * Deletes an integration account certificate.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param certificateName The integration account certificate name.

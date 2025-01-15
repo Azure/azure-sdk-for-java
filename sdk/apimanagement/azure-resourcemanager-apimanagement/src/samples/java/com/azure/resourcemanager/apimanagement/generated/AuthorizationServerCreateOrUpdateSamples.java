@@ -9,20 +9,23 @@ import com.azure.resourcemanager.apimanagement.models.BearerTokenSendingMethod;
 import com.azure.resourcemanager.apimanagement.models.GrantType;
 import java.util.Arrays;
 
-/** Samples for AuthorizationServer CreateOrUpdate. */
+/**
+ * Samples for AuthorizationServer CreateOrUpdate.
+ */
 public final class AuthorizationServerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationServer.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateAuthorizationServer.json
      */
     /**
      * Sample code: ApiManagementCreateAuthorizationServer.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementCreateAuthorizationServer(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .authorizationServers()
+    public static void
+        apiManagementCreateAuthorizationServer(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.authorizationServers()
             .define("newauthServer")
             .withExistingService("rg1", "apimService1")
             .withDisplayName("test2")

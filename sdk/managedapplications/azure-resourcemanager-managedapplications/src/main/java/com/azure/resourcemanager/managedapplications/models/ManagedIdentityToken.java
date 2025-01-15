@@ -5,62 +5,63 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The managed identity token for the managed app resource. */
+/**
+ * The managed identity token for the managed app resource.
+ */
 @Fluent
-public final class ManagedIdentityToken {
+public final class ManagedIdentityToken implements JsonSerializable<ManagedIdentityToken> {
     /*
      * The requested access token.
      */
-    @JsonProperty(value = "accessToken")
     private String accessToken;
 
     /*
      * The number of seconds the access token will be valid.
      */
-    @JsonProperty(value = "expiresIn")
     private String expiresIn;
 
     /*
      * The timespan when the access token expires. This is represented as the number of seconds from epoch.
      */
-    @JsonProperty(value = "expiresOn")
     private String expiresOn;
 
     /*
      * The timespan when the access token takes effect. This is represented as the number of seconds from epoch.
      */
-    @JsonProperty(value = "notBefore")
     private String notBefore;
 
     /*
      * The aud (audience) the access token was request for. This is the same as what was provided in the listTokens
      * request.
      */
-    @JsonProperty(value = "authorizationAudience")
     private String authorizationAudience;
 
     /*
      * The Azure resource ID for the issued token. This is either the managed application ID or the user-assigned
      * identity ID.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The type of the token.
      */
-    @JsonProperty(value = "tokenType")
     private String tokenType;
 
-    /** Creates an instance of ManagedIdentityToken class. */
+    /**
+     * Creates an instance of ManagedIdentityToken class.
+     */
     public ManagedIdentityToken() {
     }
 
     /**
      * Get the accessToken property: The requested access token.
-     *
+     * 
      * @return the accessToken value.
      */
     public String accessToken() {
@@ -69,7 +70,7 @@ public final class ManagedIdentityToken {
 
     /**
      * Set the accessToken property: The requested access token.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the ManagedIdentityToken object itself.
      */
@@ -80,7 +81,7 @@ public final class ManagedIdentityToken {
 
     /**
      * Get the expiresIn property: The number of seconds the access token will be valid.
-     *
+     * 
      * @return the expiresIn value.
      */
     public String expiresIn() {
@@ -89,7 +90,7 @@ public final class ManagedIdentityToken {
 
     /**
      * Set the expiresIn property: The number of seconds the access token will be valid.
-     *
+     * 
      * @param expiresIn the expiresIn value to set.
      * @return the ManagedIdentityToken object itself.
      */
@@ -101,7 +102,7 @@ public final class ManagedIdentityToken {
     /**
      * Get the expiresOn property: The timespan when the access token expires. This is represented as the number of
      * seconds from epoch.
-     *
+     * 
      * @return the expiresOn value.
      */
     public String expiresOn() {
@@ -111,7 +112,7 @@ public final class ManagedIdentityToken {
     /**
      * Set the expiresOn property: The timespan when the access token expires. This is represented as the number of
      * seconds from epoch.
-     *
+     * 
      * @param expiresOn the expiresOn value to set.
      * @return the ManagedIdentityToken object itself.
      */
@@ -123,7 +124,7 @@ public final class ManagedIdentityToken {
     /**
      * Get the notBefore property: The timespan when the access token takes effect. This is represented as the number of
      * seconds from epoch.
-     *
+     * 
      * @return the notBefore value.
      */
     public String notBefore() {
@@ -133,7 +134,7 @@ public final class ManagedIdentityToken {
     /**
      * Set the notBefore property: The timespan when the access token takes effect. This is represented as the number of
      * seconds from epoch.
-     *
+     * 
      * @param notBefore the notBefore value to set.
      * @return the ManagedIdentityToken object itself.
      */
@@ -145,7 +146,7 @@ public final class ManagedIdentityToken {
     /**
      * Get the authorizationAudience property: The aud (audience) the access token was request for. This is the same as
      * what was provided in the listTokens request.
-     *
+     * 
      * @return the authorizationAudience value.
      */
     public String authorizationAudience() {
@@ -155,7 +156,7 @@ public final class ManagedIdentityToken {
     /**
      * Set the authorizationAudience property: The aud (audience) the access token was request for. This is the same as
      * what was provided in the listTokens request.
-     *
+     * 
      * @param authorizationAudience the authorizationAudience value to set.
      * @return the ManagedIdentityToken object itself.
      */
@@ -167,7 +168,7 @@ public final class ManagedIdentityToken {
     /**
      * Get the resourceId property: The Azure resource ID for the issued token. This is either the managed application
      * ID or the user-assigned identity ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -177,7 +178,7 @@ public final class ManagedIdentityToken {
     /**
      * Set the resourceId property: The Azure resource ID for the issued token. This is either the managed application
      * ID or the user-assigned identity ID.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ManagedIdentityToken object itself.
      */
@@ -188,7 +189,7 @@ public final class ManagedIdentityToken {
 
     /**
      * Get the tokenType property: The type of the token.
-     *
+     * 
      * @return the tokenType value.
      */
     public String tokenType() {
@@ -197,7 +198,7 @@ public final class ManagedIdentityToken {
 
     /**
      * Set the tokenType property: The type of the token.
-     *
+     * 
      * @param tokenType the tokenType value to set.
      * @return the ManagedIdentityToken object itself.
      */
@@ -208,9 +209,63 @@ public final class ManagedIdentityToken {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accessToken", this.accessToken);
+        jsonWriter.writeStringField("expiresIn", this.expiresIn);
+        jsonWriter.writeStringField("expiresOn", this.expiresOn);
+        jsonWriter.writeStringField("notBefore", this.notBefore);
+        jsonWriter.writeStringField("authorizationAudience", this.authorizationAudience);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("tokenType", this.tokenType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIdentityToken from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIdentityToken if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIdentityToken.
+     */
+    public static ManagedIdentityToken fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIdentityToken deserializedManagedIdentityToken = new ManagedIdentityToken();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessToken".equals(fieldName)) {
+                    deserializedManagedIdentityToken.accessToken = reader.getString();
+                } else if ("expiresIn".equals(fieldName)) {
+                    deserializedManagedIdentityToken.expiresIn = reader.getString();
+                } else if ("expiresOn".equals(fieldName)) {
+                    deserializedManagedIdentityToken.expiresOn = reader.getString();
+                } else if ("notBefore".equals(fieldName)) {
+                    deserializedManagedIdentityToken.notBefore = reader.getString();
+                } else if ("authorizationAudience".equals(fieldName)) {
+                    deserializedManagedIdentityToken.authorizationAudience = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedManagedIdentityToken.resourceId = reader.getString();
+                } else if ("tokenType".equals(fieldName)) {
+                    deserializedManagedIdentityToken.tokenType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIdentityToken;
+        });
     }
 }

@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Holds billing meter details for each type of billing. */
+/**
+ * Holds billing meter details for each type of billing.
+ */
 @Immutable
-public final class BillingMeterDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingMeterDetails.class);
-
+public final class BillingMeterDetails implements JsonSerializable<BillingMeterDetails> {
     /*
      * Represents Billing type name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Represents MeterDetails
      */
-    @JsonProperty(value = "meterDetails", access = JsonProperty.Access.WRITE_ONLY)
     private MeterDetails meterDetails;
 
     /*
      * Represents Metering type (eg one-time or recurrent)
      */
-    @JsonProperty(value = "meteringType", access = JsonProperty.Access.WRITE_ONLY)
     private MeteringType meteringType;
 
     /*
      * Frequency of recurrence
      */
-    @JsonProperty(value = "frequency", access = JsonProperty.Access.WRITE_ONLY)
     private String frequency;
 
     /**
+     * Creates an instance of BillingMeterDetails class.
+     */
+    public BillingMeterDetails() {
+    }
+
+    /**
      * Get the name property: Represents Billing type name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class BillingMeterDetails {
 
     /**
      * Get the meterDetails property: Represents MeterDetails.
-     *
+     * 
      * @return the meterDetails value.
      */
     public MeterDetails meterDetails() {
@@ -58,7 +62,7 @@ public final class BillingMeterDetails {
 
     /**
      * Get the meteringType property: Represents Metering type (eg one-time or recurrent).
-     *
+     * 
      * @return the meteringType value.
      */
     public MeteringType meteringType() {
@@ -67,7 +71,7 @@ public final class BillingMeterDetails {
 
     /**
      * Get the frequency property: Frequency of recurrence.
-     *
+     * 
      * @return the frequency value.
      */
     public String frequency() {
@@ -76,12 +80,53 @@ public final class BillingMeterDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (meterDetails() != null) {
             meterDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingMeterDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingMeterDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingMeterDetails.
+     */
+    public static BillingMeterDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingMeterDetails deserializedBillingMeterDetails = new BillingMeterDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedBillingMeterDetails.name = reader.getString();
+                } else if ("meterDetails".equals(fieldName)) {
+                    deserializedBillingMeterDetails.meterDetails = MeterDetails.fromJson(reader);
+                } else if ("meteringType".equals(fieldName)) {
+                    deserializedBillingMeterDetails.meteringType = MeteringType.fromString(reader.getString());
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedBillingMeterDetails.frequency = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingMeterDetails;
+        });
     }
 }

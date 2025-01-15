@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TaskResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TaskResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"startedAt\":\"rxybz\",\"completedAt\":\"e\",\"lastPolledAt\":\"ytb\",\"state\":\"qfou\",\"phase\":\"mmnkzsmodmgl\",\"reason\":\"gpbkwtmut\",\"metadata\":\"dataqktapspwgcuert\",\"provisioningState\":\"DeletingArtifacts\"},\"id\":\"dosvqwhbmdgbbjf\",\"name\":\"dgmb\",\"type\":\"bexppb\"}")
-                .toObject(TaskResourceInner.class);
+        TaskResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"startedAt\":\"rxybz\",\"completedAt\":\"e\",\"lastPolledAt\":\"ytb\",\"state\":\"qfou\",\"phase\":\"mmnkzsmodmgl\",\"reason\":\"gpbkwtmut\",\"metadata\":\"dataqktapspwgcuert\",\"provisioningState\":\"DeletingArtifacts\"},\"id\":\"o\",\"name\":\"vqwhbmdgbbjfd\",\"type\":\"gmbmbexppbh\"}")
+            .toObject(TaskResourceInner.class);
         Assertions.assertEquals("rxybz", model.startedAt());
         Assertions.assertEquals("e", model.completedAt());
         Assertions.assertEquals("ytb", model.lastPolledAt());
@@ -26,15 +24,13 @@ public final class TaskResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaskResourceInner model =
-            new TaskResourceInner()
-                .withStartedAt("rxybz")
-                .withCompletedAt("e")
-                .withLastPolledAt("ytb")
-                .withState("qfou")
-                .withPhase("mmnkzsmodmgl")
-                .withReason("gpbkwtmut")
-                .withMetadata("dataqktapspwgcuert");
+        TaskResourceInner model = new TaskResourceInner().withStartedAt("rxybz")
+            .withCompletedAt("e")
+            .withLastPolledAt("ytb")
+            .withState("qfou")
+            .withPhase("mmnkzsmodmgl")
+            .withReason("gpbkwtmut")
+            .withMetadata("dataqktapspwgcuert");
         model = BinaryData.fromObject(model).toObject(TaskResourceInner.class);
         Assertions.assertEquals("rxybz", model.startedAt());
         Assertions.assertEquals("e", model.completedAt());

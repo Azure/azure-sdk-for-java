@@ -29,8 +29,7 @@ import java.util.stream.Collectors;
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
 public class KubernetesClusterAgentPoolImpl
     extends ChildResourceImpl<ManagedClusterAgentPoolProfile, KubernetesClusterImpl, KubernetesCluster>
-    implements KubernetesClusterAgentPool,
-    KubernetesClusterAgentPool.Definition<KubernetesClusterImpl>,
+    implements KubernetesClusterAgentPool, KubernetesClusterAgentPool.Definition<KubernetesClusterImpl>,
     KubernetesClusterAgentPool.Update<KubernetesClusterImpl> {
 
     private String subnetName;
@@ -168,9 +167,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public Map<String, String> tags() {
-        return innerModel().tags() == null
-            ? Collections.emptyMap()
-            : Collections.unmodifiableMap(innerModel().tags());
+        return innerModel().tags() == null ? Collections.emptyMap() : Collections.unmodifiableMap(innerModel().tags());
     }
 
     @Override
@@ -178,49 +175,49 @@ public class KubernetesClusterAgentPoolImpl
         return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableFips());
     }
 
-//    @Override
-//    public void start() {
-//        startAsync().block();
-//    }
-//
-//    @Override
-//    public Mono<Void> startAsync() {
-//        AgentPoolInner innerModel = this.getAgentPoolInner();
-//        PowerState powerState = innerModel.powerState();
-//        if (powerState == null) {
-//            powerState = new PowerState();
-//            innerModel.withPowerState(powerState);
-//        }
-//        powerState.withCode(Code.RUNNING);
-//        return parent().manager().serviceClient().getAgentPools()
-//            .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), this.name(), innerModel)
-//            .map(inner -> {
-//                this.innerModel().withPowerState(inner.powerState());
-//                return inner;
-//            }).then();
-//    }
-//
-//    @Override
-//    public void stop() {
-//        stopAsync().block();
-//    }
-//
-//    @Override
-//    public Mono<Void> stopAsync() {
-//        AgentPoolInner innerModel = this.getAgentPoolInner();
-//        PowerState powerState = innerModel.powerState();
-//        if (powerState == null) {
-//            powerState = new PowerState();
-//            innerModel.withPowerState(powerState);
-//        }
-//        powerState.withCode(Code.STOPPED);
-//        return parent().manager().serviceClient().getAgentPools()
-//            .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), this.name(), innerModel)
-//            .map(inner -> {
-//                this.innerModel().withPowerState(inner.powerState());
-//                return inner;
-//            }).then();
-//    }
+    //    @Override
+    //    public void start() {
+    //        startAsync().block();
+    //    }
+    //
+    //    @Override
+    //    public Mono<Void> startAsync() {
+    //        AgentPoolInner innerModel = this.getAgentPoolInner();
+    //        PowerState powerState = innerModel.powerState();
+    //        if (powerState == null) {
+    //            powerState = new PowerState();
+    //            innerModel.withPowerState(powerState);
+    //        }
+    //        powerState.withCode(Code.RUNNING);
+    //        return parent().manager().serviceClient().getAgentPools()
+    //            .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), this.name(), innerModel)
+    //            .map(inner -> {
+    //                this.innerModel().withPowerState(inner.powerState());
+    //                return inner;
+    //            }).then();
+    //    }
+    //
+    //    @Override
+    //    public void stop() {
+    //        stopAsync().block();
+    //    }
+    //
+    //    @Override
+    //    public Mono<Void> stopAsync() {
+    //        AgentPoolInner innerModel = this.getAgentPoolInner();
+    //        PowerState powerState = innerModel.powerState();
+    //        if (powerState == null) {
+    //            powerState = new PowerState();
+    //            innerModel.withPowerState(powerState);
+    //        }
+    //        powerState.withCode(Code.STOPPED);
+    //        return parent().manager().serviceClient().getAgentPools()
+    //            .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), this.name(), innerModel)
+    //            .map(inner -> {
+    //                this.innerModel().withPowerState(inner.powerState());
+    //                return inner;
+    //            }).then();
+    //    }
 
     @Override
     public KubernetesClusterAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes vmSize) {
@@ -297,7 +294,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withTypePropertiesType(innerModel().type());
         agentPoolInner.withMode(innerModel().mode());
         agentPoolInner.withOrchestratorVersion(innerModel().orchestratorVersion());
-//        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());     // nodeImageVersion is readOnly now
+        //        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());     // nodeImageVersion is readOnly now
         agentPoolInner.withUpgradeSettings(innerModel().upgradeSettings());
         agentPoolInner.withPowerState(innerModel().powerState());
         agentPoolInner.withAvailabilityZones(innerModel().availabilityZones());
@@ -320,6 +317,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withCapacityReservationGroupId(innerModel().capacityReservationGroupId());
         agentPoolInner.withNetworkProfile(innerModel().networkProfile());
         agentPoolInner.withWindowsProfile(innerModel().windowsProfile());
+        agentPoolInner.withSecurityProfile(innerModel().securityProfile());
         return agentPoolInner;
     }
 

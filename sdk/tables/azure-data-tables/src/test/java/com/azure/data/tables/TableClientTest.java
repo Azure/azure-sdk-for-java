@@ -63,8 +63,7 @@ public class TableClientTest extends TableClientTestBase {
     private TableClient tableClient;
 
     protected HttpClient buildAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
+        return new AssertingHttpClientBuilder(httpClient).skipRequest((ignored1, ignored2) -> false)
             .assertSync()
             .build();
     }
@@ -196,8 +195,8 @@ public class TableClientTest extends TableClientTestBase {
         tableClient.createEntity(tableEntity);
 
         // Act & Assert
-        final Response<TableEntity> response =
-            tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, null, null);
+        final Response<TableEntity> response
+            = tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, null, null);
 
         final TableEntity entity = response.getValue();
         final Map<String, Object> properties = entity.getProperties();
@@ -228,7 +227,7 @@ public class TableClientTest extends TableClientTestBase {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-
+    
         SampleEntity tableEntity = new SampleEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setByteField(bytes);
         tableEntity.setBooleanField(b);
@@ -239,15 +238,15 @@ public class TableClientTest extends TableClientTestBase {
         tableEntity.setLongField(l);
         tableEntity.setStringField(s);
         tableEntity.setEnumField(color);
-
+    
         tableClient.createEntity(tableEntity);
-
+    
         // Act & Assert
         final Response<TableEntity> response =
             tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, null, null);
-
+    
         TableEntity entity = response.getValue();
-
+    
         assertArrayEquals((byte[]) entity.getProperties().get("ByteField"), bytes);
         assertEquals(entity.getProperties().get("BooleanField"), b);
         assertTrue(dateTime.isEqual((OffsetDateTime) entity.getProperties().get("DateTimeField")));
@@ -405,7 +404,7 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     static void getEntityWithResponseImpl(TableClient tableClient, TestResourceNamer testResourceNamer,
-                                          String partitionKeyPrefix, String rowKeyPrefix) {
+        String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
         final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
@@ -415,8 +414,8 @@ public class TableClientTest extends TableClientTestBase {
         tableClient.createEntity(tableEntity);
 
         // Act & Assert
-        final Response<TableEntity> response =
-            tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, null, null);
+        final Response<TableEntity> response
+            = tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, null, null);
 
         final TableEntity entity = response.getValue();
 
@@ -445,8 +444,8 @@ public class TableClientTest extends TableClientTestBase {
         propertyList.add("Test");
 
         // Act & Assert
-        final Response<TableEntity> response =
-            tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, propertyList, null, null);
+        final Response<TableEntity> response
+            = tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, propertyList, null, null);
 
         final TableEntity entity = response.getValue();
         assertEquals(expectedStatusCode, response.getStatusCode());
@@ -487,7 +486,7 @@ public class TableClientTest extends TableClientTestBase {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-
+    
         final Map<String, Object> props = new HashMap<>();
         props.put("ByteField", bytes);
         props.put("BooleanField", b);
@@ -498,28 +497,28 @@ public class TableClientTest extends TableClientTestBase {
         props.put("LongField", l);
         props.put("StringField", s);
         props.put("EnumField", color);
-
+    
         TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setProperties(props);
-
+    
         int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity);
-
+    
         // Act & Assert
         final Response<TableEntity> response =
             tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, SampleEntity.class, null, null);
-
+    
         SampleEntity entity = response.getValue();
-
+    
         assertEquals(expectedStatusCode, response.getStatusCode());
-
+    
         assertNotNull(entity);
         assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
         assertEquals(tableEntity.getRowKey(), entity.getRowKey());
-
+    
         assertNotNull(entity.getTimestamp());
         assertNotNull(entity.getETag());
-
+    
         assertArrayEquals(bytes, entity.getByteField());
         assertEquals(b, entity.getBooleanField());
         assertTrue(dateTime.isEqual(entity.getDateTimeField()));
@@ -553,8 +552,8 @@ public class TableClientTest extends TableClientTestBase {
         final int expectedStatusCode = 204;
         final String oldPropertyKey = "propertyA";
         final String newPropertyKey = "propertyB";
-        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue)
-            .addProperty(oldPropertyKey, "valueA");
+        final TableEntity tableEntity
+            = new TableEntity(partitionKeyValue, rowKeyValue).addProperty(oldPropertyKey, "valueA");
 
         tableClient.createEntity(tableEntity);
 
@@ -587,19 +586,19 @@ public class TableClientTest extends TableClientTestBase {
         String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
         int expectedStatusCode = 204;
-
+    
         SingleFieldEntity tableEntity = new SingleFieldEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setSubclassProperty("InitialValue");
         tableClient.createEntity(tableEntity);
-
+    
         // Act & Assert
         tableEntity.setSubclassProperty("UpdatedValue");
         assertEquals(expectedStatusCode,
             tableClient.updateEntityWithResponse(tableEntity, TableEntityUpdateMode.REPLACE, true, null, null)
                 .getStatusCode()));
-
+    
         TableEntity entity = tableClient.getEntity(partitionKeyValue, rowKeyValue);
-
+    
         final Map<String, Object> properties = entity.getProperties();
         assertTrue(properties.containsKey("SubclassProperty"));
         assertEquals("UpdatedValue", properties.get("SubclassProperty"));
@@ -662,19 +661,17 @@ public class TableClientTest extends TableClientTestBase {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue)
-            .addProperty("propertyC", "valueC")
+        final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue).addProperty("propertyC", "valueC")
             .addProperty("propertyD", "valueD");
         List<String> propertyList = new ArrayList<>();
         propertyList.add("propertyC");
-        ListEntitiesOptions options = new ListEntitiesOptions()
-            .setSelect(propertyList);
+        ListEntitiesOptions options = new ListEntitiesOptions().setSelect(propertyList);
 
         tableClient.createEntity(entity);
 
         // Act & Assert
-        Iterator<PagedResponse<TableEntity>> iterator =
-            tableClient.listEntities(options, null, null).iterableByPage().iterator();
+        Iterator<PagedResponse<TableEntity>> iterator
+            = tableClient.listEntities(options, null, null).iterableByPage().iterator();
 
         assertTrue(iterator.hasNext());
 
@@ -700,8 +697,8 @@ public class TableClientTest extends TableClientTestBase {
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue3));
 
         // Act & Assert
-        Iterator<PagedResponse<TableEntity>> iterator =
-            tableClient.listEntities(options, null, null).iterableByPage().iterator();
+        Iterator<PagedResponse<TableEntity>> iterator
+            = tableClient.listEntities(options, null, null).iterableByPage().iterator();
 
         assertTrue(iterator.hasNext());
         assertEquals(2, iterator.next().getValue().size());
@@ -717,18 +714,18 @@ public class TableClientTest extends TableClientTestBase {
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue));
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2));
-
+    
         // Act & Assert
         Iterator<PagedResponse<TableEntity>> iterator =
             tableClient.listEntities(SampleEntity.class).iterableByPage().iterator();
-
+    
         assertTrue(iterator.hasNext());
-
+    
         List<TableEntity> retrievedEntities = iterator.next().getValue();
-
+    
         TableEntity retrievedEntity = retrievedEntities.get(0);
         TableEntity retrievedEntity2 = retrievedEntities.get(1);
-
+    
         assertEquals(partitionKeyValue, retrievedEntity.getPartitionKey());
         assertEquals(rowKeyValue, retrievedEntity.getRowKey());
         assertEquals(partitionKeyValue, retrievedEntity2.getPartitionKey());
@@ -744,14 +741,14 @@ public class TableClientTest extends TableClientTestBase {
         int expectedOperationStatusCode = 204;
 
         List<TableTransactionAction> transactionalBatch = new ArrayList<>();
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue2)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue2)));
 
         // Act & Assert
-        final Response<TableTransactionResult> result =
-            tableClient.submitTransactionWithResponse(transactionalBatch, null, null);
+        final Response<TableTransactionResult> result
+            = tableClient.submitTransactionWithResponse(transactionalBatch, null, null);
 
         assertNotNull(result);
         assertEquals(expectedBatchStatusCode, result.getStatusCode());
@@ -761,8 +758,8 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(expectedOperationStatusCode,
             result.getValue().getTransactionActionResponses().get(1).getStatusCode());
 
-        final Response<TableEntity> response =
-            tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, null, null);
+        final Response<TableEntity> response
+            = tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, null, null);
 
         final TableEntity entity = response.getValue();
 
@@ -835,8 +832,8 @@ public class TableClientTest extends TableClientTestBase {
             new TableEntity(partitionKeyValue, rowKeyValueDelete)));
 
         // Act & Assert
-        final Response<TableTransactionResult> response =
-            tableClient.submitTransactionWithResponse(transactionalBatch, null, null);
+        final Response<TableTransactionResult> response
+            = tableClient.submitTransactionWithResponse(transactionalBatch, null, null);
 
         assertNotNull(response);
         assertEquals(expectedBatchStatusCode, response.getStatusCode());
@@ -885,10 +882,10 @@ public class TableClientTest extends TableClientTestBase {
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
 
         List<TableTransactionAction> transactionalBatch = new ArrayList<>();
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue)));
 
         // Act & Assert
         try {
@@ -921,10 +918,10 @@ public class TableClientTest extends TableClientTestBase {
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
 
         List<TableTransactionAction> transactionalBatch = new ArrayList<>();
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue2, rowKeyValue2)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue2, rowKeyValue2)));
 
         // Act & Assert
         try {
@@ -962,7 +959,7 @@ public class TableClientTest extends TableClientTestBase {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        final byte[] bytes = new byte[]{4, 5, 6};
+        final byte[] bytes = new byte[] { 4, 5, 6 };
         final boolean b = true;
         final OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         final double d = 1.23D;
@@ -971,8 +968,7 @@ public class TableClientTest extends TableClientTestBase {
         final long l = 123L;
         final String s = "Test";
 
-        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue)
-            .addProperty("byteField", bytes)
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue).addProperty("byteField", bytes)
             .addProperty("booleanField", b)
             .addProperty("dateTimeField", dateTime)
             .addProperty("doubleField", d)
@@ -1006,7 +1002,7 @@ public class TableClientTest extends TableClientTestBase {
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final BinaryData binaryData = BinaryData.fromString("This is string bytes.");
-        final byte[] bytes = new byte[]{4, 5, 6, 7};
+        final byte[] bytes = new byte[] { 4, 5, 6, 7 };
         final boolean b = true;
         final OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         final double d = 1.23D;
@@ -1015,16 +1011,16 @@ public class TableClientTest extends TableClientTestBase {
         final long l = 123L;
         final String s = "Test";
 
-        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue)
-            .addProperty("binaryField", binaryData.toBytes())
-            .addProperty("byteField", bytes)
-            .addProperty("booleanField", b)
-            .addProperty("dateTimeField", dateTime)
-            .addProperty("doubleField", d)
-            .addProperty("uuidField", uuid)
-            .addProperty("intField", i)
-            .addProperty("longField", l)
-            .addProperty("stringField", s);
+        final TableEntity tableEntity
+            = new TableEntity(partitionKeyValue, rowKeyValue).addProperty("binaryField", binaryData.toBytes())
+                .addProperty("byteField", bytes)
+                .addProperty("booleanField", b)
+                .addProperty("dateTimeField", dateTime)
+                .addProperty("doubleField", d)
+                .addProperty("uuidField", uuid)
+                .addProperty("intField", i)
+                .addProperty("longField", l)
+                .addProperty("stringField", s);
 
         tableClient.createEntity(tableEntity);
 
@@ -1056,7 +1052,7 @@ public class TableClientTest extends TableClientTestBase {
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         // final BinaryData binaryData = BinaryData.fromString("This is string bytes.");
-        final byte[] bytes = new byte[]{4, 5, 6, 7};
+        final byte[] bytes = new byte[] { 4, 5, 6, 7 };
         final boolean b = true;
         final OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         final double d = 1.23D;
@@ -1120,23 +1116,16 @@ public class TableClientTest extends TableClientTestBase {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("r");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_ONLY;
-        final TableSasSignatureValues sasSignatureValues =
-            new TableSasSignatureValues(expiryTime, permissions)
-                .setProtocol(protocol)
+        final TableSasSignatureValues sasSignatureValues
+            = new TableSasSignatureValues(expiryTime, permissions).setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
+        TableClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
         final String sas = tableClient2.generateSas(sasSignatureValues);
 
-        assertTrue(
-            sas.startsWith("sv=2019-02-02"
-                + "&se=2021-12-12T00%3A00%3A00Z"
-                + "&tn=" + tableClient.getTableName()
-                + "&sp=r"
-                + "&spr=https"
-                + "&sig="
-            )
-        );
+        assertTrue(sas.startsWith("sv=2019-02-02" + "&se=2021-12-12T00%3A00%3A00Z" + "&tn=" + tableClient.getTableName()
+            + "&sp=r" + "&spr=https" + "&sig="));
     }
 
     @Test
@@ -1151,9 +1140,8 @@ public class TableClientTest extends TableClientTestBase {
         final String endPartitionKey = "endPartitionKey";
         final String endRowKey = "endRowKey";
 
-        final TableSasSignatureValues sasSignatureValues =
-            new TableSasSignatureValues(expiryTime, permissions)
-                .setProtocol(protocol)
+        final TableSasSignatureValues sasSignatureValues
+            = new TableSasSignatureValues(expiryTime, permissions).setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion())
                 .setStartTime(startTime)
                 .setSasIpRange(ipRange)
@@ -1162,24 +1150,13 @@ public class TableClientTest extends TableClientTestBase {
                 .setEndPartitionKey(endPartitionKey)
                 .setEndRowKey(endRowKey);
 
-        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
+        TableClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
         final String sas = tableClient2.generateSas(sasSignatureValues);
 
-        assertTrue(
-            sas.startsWith("sv=2019-02-02"
-                + "&st=2015-01-01T00%3A00%3A00Z"
-                + "&se=2021-12-12T00%3A00%3A00Z"
-                + "&tn=" + tableClient.getTableName()
-                + "&sp=raud"
-                + "&spk=startPartitionKey"
-                + "&srk=startRowKey"
-                + "&epk=endPartitionKey"
-                + "&erk=endRowKey"
-                + "&sip=a-b"
-                + "&spr=https%2Chttp"
-                + "&sig="
-            )
-        );
+        assertTrue(sas.startsWith("sv=2019-02-02" + "&st=2015-01-01T00%3A00%3A00Z" + "&se=2021-12-12T00%3A00%3A00Z"
+            + "&tn=" + tableClient.getTableName() + "&sp=raud" + "&spk=startPartitionKey" + "&srk=startRowKey"
+            + "&epk=endPartitionKey" + "&erk=endRowKey" + "&sip=a-b" + "&spr=https%2Chttp" + "&sig="));
     }
 
     @Test
@@ -1192,12 +1169,12 @@ public class TableClientTest extends TableClientTestBase {
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
 
-        final TableSasSignatureValues sasSignatureValues =
-            new TableSasSignatureValues(expiryTime, permissions)
-                .setProtocol(protocol)
+        final TableSasSignatureValues sasSignatureValues
+            = new TableSasSignatureValues(expiryTime, permissions).setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
+        TableClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
         final String sas = tableClient2.generateSas(sasSignatureValues);
 
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
@@ -1215,8 +1192,8 @@ public class TableClientTest extends TableClientTestBase {
                 tableClientBuilder.addPolicy(recordPolicy);
             }
 
-            tableClientBuilder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
+            tableClientBuilder.addPolicy(
+                new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500), Duration.ofSeconds(100))));
         }
 
         // Create a new client authenticated with the SAS token.
@@ -1239,15 +1216,14 @@ public class TableClientTest extends TableClientTestBase {
         OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         String permissions = "r";
-        TableAccessPolicy tableAccessPolicy = new TableAccessPolicy()
-            .setStartsOn(startTime)
-            .setExpiresOn(expiryTime)
-            .setPermissions(permissions);
+        TableAccessPolicy tableAccessPolicy
+            = new TableAccessPolicy().setStartsOn(startTime).setExpiresOn(expiryTime).setPermissions(permissions);
         String id = "testPolicy";
         TableSignedIdentifier tableSignedIdentifier = new TableSignedIdentifier(id).setAccessPolicy(tableAccessPolicy);
         final int expectedStatusCode = 204;
 
-        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
+        TableClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
 
         assertEquals(expectedStatusCode,
             tableClient2.setAccessPoliciesWithResponse(Collections.singletonList(tableSignedIdentifier), null, null)
@@ -1281,10 +1257,8 @@ public class TableClientTest extends TableClientTestBase {
         OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         String permissions = "r";
-        TableAccessPolicy tableAccessPolicy = new TableAccessPolicy()
-            .setStartsOn(startTime)
-            .setExpiresOn(expiryTime)
-            .setPermissions(permissions);
+        TableAccessPolicy tableAccessPolicy
+            = new TableAccessPolicy().setStartsOn(startTime).setExpiresOn(expiryTime).setPermissions(permissions);
         String id1 = "testPolicy1";
         String id2 = "testPolicy2";
         List<TableSignedIdentifier> tableSignedIdentifiers = new ArrayList<>();
@@ -1292,7 +1266,8 @@ public class TableClientTest extends TableClientTestBase {
         tableSignedIdentifiers.add(new TableSignedIdentifier(id2).setAccessPolicy(tableAccessPolicy));
         final int expectedStatusCode = 204;
 
-        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
+        TableClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
 
         assertEquals(expectedStatusCode,
             tableClient2.setAccessPoliciesWithResponse(tableSignedIdentifiers, null, null).getStatusCode());

@@ -50,8 +50,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- Links -->
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-amqp-experimental%2FREADME.png)

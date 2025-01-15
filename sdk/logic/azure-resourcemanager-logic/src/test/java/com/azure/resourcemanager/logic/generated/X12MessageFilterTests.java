@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class X12MessageFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        X12MessageFilter model =
-            BinaryData.fromString("{\"messageFilterType\":\"NotSpecified\"}").toObject(X12MessageFilter.class);
-        Assertions.assertEquals(MessageFilterType.NOT_SPECIFIED, model.messageFilterType());
+        X12MessageFilter model
+            = BinaryData.fromString("{\"messageFilterType\":\"Exclude\"}").toObject(X12MessageFilter.class);
+        Assertions.assertEquals(MessageFilterType.EXCLUDE, model.messageFilterType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        X12MessageFilter model = new X12MessageFilter().withMessageFilterType(MessageFilterType.NOT_SPECIFIED);
+        X12MessageFilter model = new X12MessageFilter().withMessageFilterType(MessageFilterType.EXCLUDE);
         model = BinaryData.fromObject(model).toObject(X12MessageFilter.class);
-        Assertions.assertEquals(MessageFilterType.NOT_SPECIFIED, model.messageFilterType());
+        Assertions.assertEquals(MessageFilterType.EXCLUDE, model.messageFilterType());
     }
 }

@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Application properties that can be patched. */
+/**
+ * Application properties that can be patched.
+ */
 @Fluent
-public final class ApplicationPatch {
+public final class ApplicationPatch implements JsonSerializable<ApplicationPatch> {
     /*
      * tags to be updated
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Detailed properties for Application
      */
-    @JsonProperty(value = "properties")
     private ApplicationPatchProperties innerProperties;
 
-    /** Creates an instance of ApplicationPatch class. */
+    /**
+     * Creates an instance of ApplicationPatch class.
+     */
     public ApplicationPatch() {
     }
 
     /**
      * Get the tags property: tags to be updated.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the tags property: tags to be updated.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -52,7 +56,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the innerProperties property: Detailed properties for Application.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationPatchProperties innerProperties() {
@@ -61,7 +65,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the description property: Description of Application.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -70,7 +74,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the description property: Description of Application.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -84,7 +88,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the friendlyName property: Friendly name of Application.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -93,7 +97,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the friendlyName property: Friendly name of Application.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -107,7 +111,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the filePath property: Specifies a path for the executable file for the application.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -116,7 +120,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the filePath property: Specifies a path for the executable file for the application.
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -132,7 +136,7 @@ public final class ApplicationPatch {
      * Get the commandLineSetting property: Specifies whether this published application can be launched with command
      * line arguments provided by the client, command line arguments specified at publish time, or no command line
      * arguments at all.
-     *
+     * 
      * @return the commandLineSetting value.
      */
     public CommandLineSetting commandLineSetting() {
@@ -143,7 +147,7 @@ public final class ApplicationPatch {
      * Set the commandLineSetting property: Specifies whether this published application can be launched with command
      * line arguments provided by the client, command line arguments specified at publish time, or no command line
      * arguments at all.
-     *
+     * 
      * @param commandLineSetting the commandLineSetting value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -157,7 +161,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the commandLineArguments property: Command Line Arguments for Application.
-     *
+     * 
      * @return the commandLineArguments value.
      */
     public String commandLineArguments() {
@@ -166,7 +170,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the commandLineArguments property: Command Line Arguments for Application.
-     *
+     * 
      * @param commandLineArguments the commandLineArguments value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -180,7 +184,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the showInPortal property: Specifies whether to show the RemoteApp program in the RD Web Access server.
-     *
+     * 
      * @return the showInPortal value.
      */
     public Boolean showInPortal() {
@@ -189,7 +193,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the showInPortal property: Specifies whether to show the RemoteApp program in the RD Web Access server.
-     *
+     * 
      * @param showInPortal the showInPortal value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -203,7 +207,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the iconPath property: Path to icon.
-     *
+     * 
      * @return the iconPath value.
      */
     public String iconPath() {
@@ -212,7 +216,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the iconPath property: Path to icon.
-     *
+     * 
      * @param iconPath the iconPath value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -226,7 +230,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the iconIndex property: Index of the icon.
-     *
+     * 
      * @return the iconIndex value.
      */
     public Integer iconIndex() {
@@ -235,7 +239,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the iconIndex property: Index of the icon.
-     *
+     * 
      * @param iconIndex the iconIndex value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -249,7 +253,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the msixPackageFamilyName property: Specifies the package family name for MSIX applications.
-     *
+     * 
      * @return the msixPackageFamilyName value.
      */
     public String msixPackageFamilyName() {
@@ -258,7 +262,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the msixPackageFamilyName property: Specifies the package family name for MSIX applications.
-     *
+     * 
      * @param msixPackageFamilyName the msixPackageFamilyName value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -272,7 +276,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the msixPackageApplicationId property: Specifies the package application Id for MSIX applications.
-     *
+     * 
      * @return the msixPackageApplicationId value.
      */
     public String msixPackageApplicationId() {
@@ -281,7 +285,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the msixPackageApplicationId property: Specifies the package application Id for MSIX applications.
-     *
+     * 
      * @param msixPackageApplicationId the msixPackageApplicationId value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -295,7 +299,7 @@ public final class ApplicationPatch {
 
     /**
      * Get the applicationType property: Resource Type of Application.
-     *
+     * 
      * @return the applicationType value.
      */
     public RemoteApplicationType applicationType() {
@@ -304,7 +308,7 @@ public final class ApplicationPatch {
 
     /**
      * Set the applicationType property: Resource Type of Application.
-     *
+     * 
      * @param applicationType the applicationType value to set.
      * @return the ApplicationPatch object itself.
      */
@@ -318,12 +322,52 @@ public final class ApplicationPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationPatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationPatch.
+     */
+    public static ApplicationPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationPatch deserializedApplicationPatch = new ApplicationPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationPatch.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationPatch.innerProperties = ApplicationPatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationPatch;
+        });
     }
 }

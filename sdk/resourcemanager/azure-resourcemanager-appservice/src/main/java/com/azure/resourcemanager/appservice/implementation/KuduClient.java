@@ -9,6 +9,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
@@ -18,11 +19,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -43,6 +50,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 /** A client which interacts with Kudu service. */
 class KuduClient {
@@ -52,36 +61,68 @@ class KuduClient {
     private final String host;
     private final KuduService service;
 
+    private static final String DEPLOYER_JAVA_SDK = "JavaSDK";
+
     KuduClient(WebAppBase webAppBase) {
         if (webAppBase.defaultHostname() == null) {
             throw logger.logExceptionAsError(
                 new UnsupportedOperationException("Cannot initialize kudu client before web app is created"));
         }
-        String host = webAppBase.defaultHostname().toLowerCase(Locale.ROOT)
-            .replace("http://", "")
-            .replace("https://", "");
+        String host
+            = webAppBase.defaultHostname().toLowerCase(Locale.ROOT).replace("http://", "").replace("https://", "");
         String[] parts = host.split("\\.", 2);
         host = parts[0] + ".scm." + parts[1];
         this.host = "https://" + host;
 
-        // Kudu's authentication changed from Basic Auth to AAD Auth
-//        List<HttpPipelinePolicy> policies = new ArrayList<>();
-//        for (int i = 0, count = webAppBase.manager().httpPipeline().getPolicyCount(); i < count; ++i) {
-//            HttpPipelinePolicy policy = webAppBase.manager().httpPipeline().getPolicy(i);
-//            if (!(policy instanceof AuthenticationPolicy)
-//                && !(policy instanceof ProviderRegistrationPolicy)
-//                && !(policy instanceof AuxiliaryAuthenticationPolicy)) {
-//                policies.add(policy);
-//            }
-//        }
-//        policies.add(new KuduAuthenticationPolicy(webAppBase));
-//        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-//            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-//            .httpClient(webAppBase.manager().httpPipeline().getHttpClient())
-//            .build();
-
         service = RestProxy.create(KuduService.class, webAppBase.manager().httpPipeline(),
             SerializerFactory.createDefaultManagementSerializerAdapter());
+    }
+
+    public static class DeploymentStatus implements JsonSerializable<DeploymentStatus> {
+        private String id;
+        private Integer status;
+        private Boolean isTemp;
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            // no serialization
+            jsonWriter.writeStartObject();
+            return jsonWriter.writeEndObject();
+        }
+
+        public static DeploymentStatus fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                DeploymentStatus deserializedDeploymentStatus = new DeploymentStatus();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("id".equals(fieldName)) {
+                        deserializedDeploymentStatus.id = reader.getString();
+                    } else if ("status".equals(fieldName)) {
+                        deserializedDeploymentStatus.status = reader.getNullable(JsonReader::getInt);
+                    } else if ("is_temp".equals(fieldName)) {
+                        deserializedDeploymentStatus.isTemp = reader.getNullable(JsonReader::getBoolean);
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return deserializedDeploymentStatus;
+            });
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public Integer getStatus() {
+            return status;
+        }
+
+        public Boolean getTemp() {
+            return isTemp;
+        }
     }
 
     @Host("{$host}")
@@ -102,57 +143,42 @@ class KuduClient {
         @Get("api/logstream")
         Mono<StreamResponse> streamAllLogs(@HostParam("$host") String host);
 
-//        @Headers({
-//            "Content-Type: application/octet-stream",
-//            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps warDeploy",
-//            "x-ms-body-logging: false"
-//        })
-//        @Post("api/wardeploy")
-//        Mono<Void> warDeploy(
-//            @HostParam("$host") String host,
-//            @BodyParam("application/octet-stream") byte[] warFile,
-//            @QueryParam("name") String appName);
-
-        @Headers({"Content-Type: application/octet-stream"})
+        @Headers({ "Content-Type: application/octet-stream" })
         @Post("api/wardeploy")
-        Mono<Void> warDeploy(
-            @HostParam("$host") String host,
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> warFile,
-            @HeaderParam("content-length") long size,
+        Mono<Void> warDeploy(@HostParam("$host") String host,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> warFile, @HeaderParam("content-length") long size,
             @QueryParam("name") String appName);
 
-//        @Headers({
-//            "Content-Type: application/octet-stream",
-//            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps zipDeploy",
-//            "x-ms-body-logging: false"
-//        })
-//        @Post("api/zipdeploy")
-//        Mono<Void> zipDeploy(
-//            @HostParam("$host") String host,
-//            @BodyParam("application/octet-stream") byte[] zipFile);
-
-        @Headers({"Content-Type: application/octet-stream"})
+        @Headers({ "Content-Type: application/octet-stream" })
         @Post("api/zipdeploy")
-        Mono<Void> zipDeploy(
-            @HostParam("$host") String host,
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> zipFile,
-            @HeaderParam("content-length") long size);
+        Mono<Response<Void>> zipDeploy(@HostParam("$host") String host,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> zipFile, @HeaderParam("content-length") long size,
+            @QueryParam("isAsync") Boolean isAsync, @QueryParam("deployer") String deployer);
 
-        @Headers({"Content-Type: application/octet-stream"})
+        // OneDeploy
+        @Headers({ "Content-Type: application/octet-stream" })
         @Post("api/publish")
-        Mono<Response<Void>> deploy(
-            @HostParam("$host") String host,
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
-            @HeaderParam("content-length") long size,
-            @QueryParam("type") DeployType type,
-            @QueryParam("path") String path,
-            @QueryParam("restart") Boolean restart,
-            @QueryParam("clean") Boolean clean,
+        Mono<Response<Void>> deploy(@HostParam("$host") String host,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> file, @HeaderParam("content-length") long size,
+            @QueryParam("type") DeployType type, @QueryParam("path") String path,
+            @QueryParam("restart") Boolean restart, @QueryParam("clean") Boolean clean,
             @QueryParam("isAsync") Boolean isAsync,
             @QueryParam("trackDeploymentProgress") Boolean trackDeploymentProgress);
 
+        // OneDeploy for FunctionApp of Flex Consumption plan
+        @Headers({ "Content-Type: application/zip" })
+        @Post("api/publish")
+        Mono<Response<Void>> deployFlexConsumption(@HostParam("$host") String host,
+            @BodyParam("application/zip") Flux<ByteBuffer> file, @HeaderParam("content-length") long size,
+            @QueryParam("remoteBuild") Boolean remoteBuild, @QueryParam("deployer") String deployer);
+
         @Get("api/settings")
         Mono<Map<String, String>> settings(@HostParam("$host") String host);
+
+        @Headers({ "Accept: application/json" })
+        @Get("api/deployments/{deploymentId}")
+        Mono<Response<DeploymentStatus>> deploymentStatus(@HostParam("$host") String host,
+            @PathParam("deploymentId") String deploymentId);
     }
 
     Flux<String> streamApplicationLogsAsync() {
@@ -180,55 +206,53 @@ class KuduClient {
         final byte newLineR = '\r';
 
         final ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        return source
-            .concatMap(
-                byteBuffer -> {
-                    int index = findByte(byteBuffer, newLine);
-                    if (index == -1) {
-                        // no newLine byte found, not a line, put it into stream
-                        try {
-                            stream.write(FluxUtil.byteBufferToArray(byteBuffer));
-                            return Flux.empty();
-                        } catch (IOException e) {
-                            return Flux.error(e);
-                        }
-                    } else {
-                        // newLine byte found, at least 1 line
-                        List<String> lines = new ArrayList<>();
-                        while ((index = findByte(byteBuffer, newLine)) != -1) {
-                            byte[] byteArray = new byte[index + 1];
-                            byteBuffer.get(byteArray);
-                            try {
-                                stream.write(byteArray);
-                                String line = new String(stream.toByteArray(), StandardCharsets.UTF_8);
-                                if (!line.isEmpty() && line.charAt(line.length() - 1) == newLine) {
-                                    // OK this is a line, end with newLine char
-                                    line = line.substring(0, line.length() - 1);
-                                    if (!line.isEmpty() && line.charAt(line.length() - 1) == newLineR) {
-                                        line = line.substring(0, line.length() - 1);
-                                    }
-                                    lines.add(line);
-                                    stream.reset();
-                                }
-                            } catch (IOException e) {
-                                return Flux.error(e);
+        return source.concatMap(byteBuffer -> {
+            int index = findByte(byteBuffer, newLine);
+            if (index == -1) {
+                // no newLine byte found, not a line, put it into stream
+                try {
+                    stream.write(FluxUtil.byteBufferToArray(byteBuffer));
+                    return Flux.empty();
+                } catch (IOException e) {
+                    return Flux.error(e);
+                }
+            } else {
+                // newLine byte found, at least 1 line
+                List<String> lines = new ArrayList<>();
+                while ((index = findByte(byteBuffer, newLine)) != -1) {
+                    byte[] byteArray = new byte[index + 1];
+                    byteBuffer.get(byteArray);
+                    try {
+                        stream.write(byteArray);
+                        String line = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+                        if (!line.isEmpty() && line.charAt(line.length() - 1) == newLine) {
+                            // OK this is a line, end with newLine char
+                            line = line.substring(0, line.length() - 1);
+                            if (!line.isEmpty() && line.charAt(line.length() - 1) == newLineR) {
+                                line = line.substring(0, line.length() - 1);
                             }
+                            lines.add(line);
+                            stream.reset();
                         }
-                        if (byteBuffer.hasRemaining()) {
-                            // put rest into stream
-                            try {
-                                stream.write(FluxUtil.byteBufferToArray(byteBuffer));
-                            } catch (IOException e) {
-                                return Flux.error(e);
-                            }
-                        }
-                        if (lines.isEmpty()) {
-                            return Flux.empty();
-                        } else {
-                            return Flux.fromIterable(lines);
-                        }
+                    } catch (IOException e) {
+                        return Flux.error(e);
                     }
-                });
+                }
+                if (byteBuffer.hasRemaining()) {
+                    // put rest into stream
+                    try {
+                        stream.write(FluxUtil.byteBufferToArray(byteBuffer));
+                    } catch (IOException e) {
+                        return Flux.error(e);
+                    }
+                }
+                if (lines.isEmpty()) {
+                    return Flux.empty();
+                } else {
+                    return Flux.fromIterable(lines);
+                }
+            }
+        });
     }
 
     private static int findByte(ByteBuffer byteBuffer, byte b) {
@@ -243,14 +267,14 @@ class KuduClient {
         return index;
     }
 
-//    Mono<Void> warDeployAsync(InputStream warFile, String appName) {
-//        InputStreamFlux flux = fluxFromInputStream(warFile);
-//        if (flux.flux != null) {
-//            return withRetry(service.warDeploy(host, flux.flux, flux.size, appName));
-//        } else {
-//            return withRetry(service.warDeploy(host, flux.bytes, appName));
-//        }
-//    }
+    //    Mono<Void> warDeployAsync(InputStream warFile, String appName) {
+    //        InputStreamFlux flux = fluxFromInputStream(warFile);
+    //        if (flux.flux != null) {
+    //            return withRetry(service.warDeploy(host, flux.flux, flux.size, appName));
+    //        } else {
+    //            return withRetry(service.warDeploy(host, flux.bytes, appName));
+    //        }
+    //    }
 
     Mono<Void> warDeployAsync(InputStream warFile, long length, String appName) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(warFile);
@@ -260,6 +284,108 @@ class KuduClient {
     Mono<Void> warDeployAsync(File warFile, String appName) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(warFile.toPath(), StandardOpenOption.READ);
         return retryOnError(service.warDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(), appName))
+            .doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.logThrowableAsError(e);
+                }
+            });
+    }
+
+    Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
+        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(zipFile);
+        return retryOnError(service.zipDeploy(host, flux, length, false, null)).then();
+    }
+
+    Mono<Void> zipDeployAsync(File zipFile) throws IOException {
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(zipFile.toPath(), StandardOpenOption.READ);
+        return retryOnError(service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(), false, null))
+            .doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.logThrowableAsError(e);
+                }
+            })
+            .then();
+    }
+
+    Mono<Void> deployAsync(DeployType type, InputStream file, long length, String path, Boolean restart,
+        Boolean clean) {
+        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
+        return retryOnError(service.deploy(host, flux, length, type, path, restart, clean, false, false)).then();
+    }
+
+    Mono<Void> deployAsync(DeployType type, File file, String path, Boolean restart, Boolean clean) throws IOException {
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
+        return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(), type, path,
+            restart, clean, false, false)).then().doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.logThrowableAsError(e);
+                }
+            });
+    }
+
+    Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, String path, Boolean restart, Boolean clean,
+        Boolean trackDeployment) throws IOException {
+        final boolean trackDeploymentProgress = trackDeployment == null || trackDeployment;
+
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
+        return getDeploymentResult(retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
+            type, path, restart, clean, true, trackDeployment)), trackDeploymentProgress).doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.logThrowableAsError(e);
+                }
+            });
+    }
+
+    private Mono<KuduDeploymentResult> getDeploymentResult(Mono<Response<Void>> responseMono,
+        boolean trackDeploymentProgress) {
+        return responseMono.map(response -> {
+            HttpHeader deploymentIdHeader = response.getHeaders().get("SCM-DEPLOYMENT-ID");
+            if (trackDeploymentProgress
+                && (deploymentIdHeader == null
+                    || deploymentIdHeader.getValue() == null
+                    || deploymentIdHeader.getValue().isEmpty())) {
+
+                // error, deployment ID not available
+                throw logger.logExceptionAsError(
+                    new AzureException("Deployment ID not found in response header 'SCM-DEPLOYMENT-ID'"));
+            }
+            return new KuduDeploymentResult(deploymentIdHeader == null ? null : deploymentIdHeader.getValue());
+        });
+    }
+
+    Mono<KuduDeploymentResult> pushZipDeployAsync(File file) throws IOException {
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
+        return getDeploymentResult(
+            retryOnError(
+                service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(), true, DEPLOYER_JAVA_SDK)),
+            true).doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.logThrowableAsError(e);
+                }
+            });
+    }
+
+    Mono<KuduDeploymentResult> pushZipDeployAsync(InputStream file, long length) throws IOException {
+        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
+        return getDeploymentResult(retryOnError(service.zipDeploy(host, flux, length, true, DEPLOYER_JAVA_SDK)), true);
+    }
+
+    Mono<KuduDeploymentResult> pushDeployFlexConsumptionAsync(File file) throws IOException {
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
+        return retryOnError(service.deployFlexConsumption(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
+            false, DEPLOYER_JAVA_SDK))
+                // there is no "SCM-DEPLOYMENT-ID" header in response
+                .then(Mono.just(new KuduDeploymentResult("latest")))
                 .doFinally(ignored -> {
                     try {
                         fileChannel.close();
@@ -269,104 +395,65 @@ class KuduClient {
                 });
     }
 
-//    Mono<Void> zipDeployAsync(InputStream zipFile) {
-//        InputStreamFlux flux = fluxFromInputStream(zipFile);
-//        if (flux.flux != null) {
-//            return withRetry(service.zipDeploy(host, flux.flux, flux.size));
-//        } else {
-//            return withRetry(service.zipDeploy(host, flux.bytes));
-//        }
-//    }
-
-    Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
-        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(zipFile);
-        return retryOnError(service.zipDeploy(host, flux, length));
-    }
-
-    Mono<Void> zipDeployAsync(File zipFile) throws IOException {
-        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(zipFile.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size()))
-            .doFinally(ignored -> {
-                try {
-                    fileChannel.close();
-                } catch (IOException e) {
-                    logger.logThrowableAsError(e);
-                }
-            });
-    }
-
-    Mono<Void> deployAsync(DeployType type,
-                           InputStream file, long length,
-                           String path, Boolean restart, Boolean clean) {
+    Mono<KuduDeploymentResult> pushDeployFlexConsumptionAsync(InputStream file, long length) throws IOException {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
-        return retryOnError(service.deploy(host, flux, length, type, path, restart, clean, false, false))
-            .then();
-    }
-
-    Mono<Void> deployAsync(DeployType type,
-                           File file,
-                           String path, Boolean restart, Boolean clean) throws IOException {
-        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            type, path, restart, clean, false, false))
-            .then()
-            .doFinally(ignored -> {
-                try {
-                    fileChannel.close();
-                } catch (IOException e) {
-                    logger.logThrowableAsError(e);
-                }
-            });
-    }
-
-    Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, String path, Boolean restart,
-                                               Boolean clean, Boolean trackDeployment) throws IOException {
-        final boolean trackDeploymentProgress = trackDeployment == null || trackDeployment;
-
-        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            type, path, restart, clean, true, trackDeployment))
-            .map(response -> {
-                HttpHeader deploymentIdHeader = response.getHeaders().get("SCM-DEPLOYMENT-ID");
-                if (trackDeploymentProgress && (deploymentIdHeader == null || deploymentIdHeader.getValue() == null
-                    || deploymentIdHeader.getValue().isEmpty())) {
-
-                    // error, deployment ID not available
-                    throw logger.logExceptionAsError(
-                        new AzureException("Deployment ID not found in response header 'SCM-DEPLOYMENT-ID'"));
-                }
-                return new KuduDeploymentResult(deploymentIdHeader == null ? null : deploymentIdHeader.getValue());
-            })
-            .doFinally(ignored -> {
-                try {
-                    fileChannel.close();
-                } catch (IOException e) {
-                    logger.logThrowableAsError(e);
-                }
-            });
+        return retryOnError(service.deployFlexConsumption(host, flux, length, false, DEPLOYER_JAVA_SDK))
+            .then(Mono.just(new KuduDeploymentResult("latest")));
     }
 
     Mono<Map<String, String>> settings() {
         return retryOnError(service.settings(host));
     }
 
+    private static final Duration MAX_DEPLOY_TIMEOUT = Duration.ofMinutes(10);
+
+    Mono<Void> pollDeploymentStatus(KuduDeploymentResult result, Duration pollInterval) {
+        AtomicLong pollCount = new AtomicLong();
+        AtomicReference<String> deploymentId = new AtomicReference<>(result.deploymentId());
+        return Mono.defer(() -> service.deploymentStatus(host, deploymentId.get())).flatMap(response -> {
+            DeploymentStatus deploymentStatus = response.getValue();
+            Integer status = deploymentStatus.getStatus();
+
+            // https://github.com/Azure/azure-cli/blob/dev/src/azure-cli/azure/cli/command_modules/appservice/custom.py
+            boolean succeeded = status == 4;
+            boolean completed = succeeded || status == -1 || (status >= 3 && status <= 6);
+
+            // use deploymentId from response, as the initial deploymentId could be "latest"
+            // but do not use temp id
+            String id = deploymentStatus.getId();
+            if (!CoreUtils.isNullOrEmpty(id) && deploymentStatus.getTemp() == Boolean.FALSE) {
+                deploymentId.set(id);
+            }
+
+            if (succeeded) {
+                return Mono.just(deploymentStatus);
+            } else if (completed) {
+                return Mono.error(new RuntimeException("Deployment failed, status " + status));
+            } else {
+                if (pollInterval.multipliedBy(pollCount.get()).compareTo(MAX_DEPLOY_TIMEOUT) >= 0) {
+                    // timeout
+                    return Mono.error(new RuntimeException("Deployment timed out, status " + status));
+                } else {
+                    // continue polling
+                    return Mono.empty();
+                }
+            }
+        }).repeatWhenEmpty(longFlux -> longFlux.flatMap(index -> {
+            pollCount.set(index);
+            return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollInterval));
+        })).then();
+    }
+
     private <T> Mono<T> retryOnError(Mono<T> observable) {
         final int retryCount = 5 + 1;   // retryCount is 5, last 1 is guard
-        return observable
-            .retryWhen(Retry.withThrowable(
-                flux ->
-                    flux
-                        .zipWith(
-                            Flux.range(1, retryCount),
-                            (Throwable throwable, Integer count) -> {
-                                if (count < retryCount
-                                    && (throwable instanceof TimeoutException
-                                    || throwable instanceof SocketTimeoutException)) {
-                                    return count;
-                                } else {
-                                    throw logger.logExceptionAsError(Exceptions.propagate(throwable));
-                                }
-                            })
-                        .flatMap(i -> Mono.delay(Duration.ofSeconds(((long) i) * 10)))));
+        return observable.retryWhen(Retry
+            .withThrowable(flux -> flux.zipWith(Flux.range(1, retryCount), (Throwable throwable, Integer count) -> {
+                if (count < retryCount
+                    && (throwable instanceof TimeoutException || throwable instanceof SocketTimeoutException)) {
+                    return count;
+                } else {
+                    throw logger.logExceptionAsError(Exceptions.propagate(throwable));
+                }
+            }).flatMap(i -> Mono.delay(Duration.ofSeconds(((long) i) * 10)))));
     }
 }

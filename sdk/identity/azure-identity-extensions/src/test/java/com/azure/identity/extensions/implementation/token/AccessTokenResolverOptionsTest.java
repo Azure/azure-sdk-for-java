@@ -36,7 +36,7 @@ class AccessTokenResolverOptionsTest {
 
         AccessTokenResolverOptions accessTokenResolverOptions = new AccessTokenResolverOptions(properties);
         assertEquals("fake-claims", accessTokenResolverOptions.getClaims());
-        assertArrayEquals(new String[]{"fake-scopes"}, accessTokenResolverOptions.getScopes());
+        assertArrayEquals(new String[] { "fake-scopes" }, accessTokenResolverOptions.getScopes());
         assertEquals("fake-tenant-id", accessTokenResolverOptions.getTenantId());
     }
 
@@ -46,17 +46,16 @@ class AccessTokenResolverOptionsTest {
         Properties properties = new Properties();
         AuthProperty.AUTHORITY_HOST.setProperty(properties, authorityHost);
         AccessTokenResolverOptions accessTokenResolverOptions = new AccessTokenResolverOptions(properties);
-        assertArrayEquals(new String[]{scope}, accessTokenResolverOptions.getScopes());
+        assertArrayEquals(new String[] { scope }, accessTokenResolverOptions.getScopes());
     }
 
     private static Stream<Arguments> provideAuthorityHostScopeMap() {
-        return Stream.of(
-                Arguments.of(null,  "https://ossrdbms-aad.database.windows.net/.default"),
-                Arguments.of("",  "https://ossrdbms-aad.database.windows.net/.default"),
-                Arguments.of(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD,  "https://ossrdbms-aad.database.windows.net/.default"),
-                Arguments.of(AzureAuthorityHosts.AZURE_CHINA, "https://ossrdbms-aad.database.chinacloudapi.cn/.default"),
-                Arguments.of(AzureAuthorityHosts.AZURE_GERMANY, "https://ossrdbms-aad.database.cloudapi.de/.default"),
-                Arguments.of(AzureAuthorityHosts.AZURE_GOVERNMENT, "https://ossrdbms-aad.database.usgovcloudapi.net/.default")
-        );
+        return Stream.of(Arguments.of(null, "https://ossrdbms-aad.database.windows.net/.default"),
+            Arguments.of("", "https://ossrdbms-aad.database.windows.net/.default"),
+            Arguments.of(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD, "https://ossrdbms-aad.database.windows.net/.default"),
+            Arguments.of(AzureAuthorityHosts.AZURE_CHINA, "https://ossrdbms-aad.database.chinacloudapi.cn/.default"),
+            Arguments.of(AzureAuthorityHosts.AZURE_GERMANY, "https://ossrdbms-aad.database.cloudapi.de/.default"),
+            Arguments.of(AzureAuthorityHosts.AZURE_GOVERNMENT,
+                "https://ossrdbms-aad.database.usgovcloudapi.net/.default"));
     }
 }

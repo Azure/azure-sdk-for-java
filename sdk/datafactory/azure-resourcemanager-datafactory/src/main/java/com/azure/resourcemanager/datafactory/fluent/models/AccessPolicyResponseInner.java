@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.UserAccessPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Get Data Plane read only token response definition.
  */
 @Fluent
-public final class AccessPolicyResponseInner {
+public final class AccessPolicyResponseInner implements JsonSerializable<AccessPolicyResponseInner> {
     /*
      * The user access policy.
      */
-    @JsonProperty(value = "policy")
     private UserAccessPolicy policy;
 
     /*
      * Data Plane read only access token.
      */
-    @JsonProperty(value = "accessToken")
     private String accessToken;
 
     /*
      * Data Plane service base URL.
      */
-    @JsonProperty(value = "dataPlaneUrl")
     private String dataPlaneUrl;
 
     /**
@@ -106,5 +107,47 @@ public final class AccessPolicyResponseInner {
         if (policy() != null) {
             policy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("policy", this.policy);
+        jsonWriter.writeStringField("accessToken", this.accessToken);
+        jsonWriter.writeStringField("dataPlaneUrl", this.dataPlaneUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessPolicyResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessPolicyResponseInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessPolicyResponseInner.
+     */
+    public static AccessPolicyResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessPolicyResponseInner deserializedAccessPolicyResponseInner = new AccessPolicyResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policy".equals(fieldName)) {
+                    deserializedAccessPolicyResponseInner.policy = UserAccessPolicy.fromJson(reader);
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedAccessPolicyResponseInner.accessToken = reader.getString();
+                } else if ("dataPlaneUrl".equals(fieldName)) {
+                    deserializedAccessPolicyResponseInner.dataPlaneUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessPolicyResponseInner;
+        });
     }
 }

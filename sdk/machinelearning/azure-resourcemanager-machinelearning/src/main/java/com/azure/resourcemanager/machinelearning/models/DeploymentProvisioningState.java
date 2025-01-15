@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Possible values for DeploymentProvisioningState. */
+/**
+ * Possible values for DeploymentProvisioningState.
+ */
 public final class DeploymentProvisioningState extends ExpandableStringEnum<DeploymentProvisioningState> {
-    /** Static value Creating for DeploymentProvisioningState. */
+    /**
+     * Static value Creating for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Deleting for DeploymentProvisioningState. */
+    /**
+     * Static value Deleting for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Scaling for DeploymentProvisioningState. */
+    /**
+     * Static value Scaling for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState SCALING = fromString("Scaling");
 
-    /** Static value Updating for DeploymentProvisioningState. */
+    /**
+     * Static value Updating for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Succeeded for DeploymentProvisioningState. */
+    /**
+     * Static value Succeeded for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for DeploymentProvisioningState. */
+    /**
+     * Static value Failed for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for DeploymentProvisioningState. */
+    /**
+     * Static value Canceled for DeploymentProvisioningState.
+     */
     public static final DeploymentProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of DeploymentProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class DeploymentProvisioningState extends ExpandableStringEnum<Depl
 
     /**
      * Creates or finds a DeploymentProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeploymentProvisioningState.
      */
-    @JsonCreator
     public static DeploymentProvisioningState fromString(String name) {
         return fromString(name, DeploymentProvisioningState.class);
     }
 
     /**
      * Gets known DeploymentProvisioningState values.
-     *
+     * 
      * @return known DeploymentProvisioningState values.
      */
     public static Collection<DeploymentProvisioningState> values() {

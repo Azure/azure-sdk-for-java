@@ -8,60 +8,62 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.policyinsights.fluent.models.RemediationDeploymentInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of RemediationDeployment. */
+/**
+ * An immutable client-side representation of RemediationDeployment.
+ */
 public interface RemediationDeployment {
     /**
      * Gets the remediatedResourceId property: Resource ID of the resource that is being remediated by the deployment.
-     *
+     * 
      * @return the remediatedResourceId value.
      */
     String remediatedResourceId();
 
     /**
      * Gets the deploymentId property: Resource ID of the template deployment that will remediate the resource.
-     *
+     * 
      * @return the deploymentId value.
      */
     String deploymentId();
 
     /**
      * Gets the status property: Status of the remediation deployment.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the resourceLocation property: Location of the resource that is being remediated.
-     *
+     * 
      * @return the resourceLocation value.
      */
     String resourceLocation();
 
     /**
      * Gets the error property: Error encountered while remediated the resource.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
 
     /**
      * Gets the createdOn property: The time at which the remediation was created.
-     *
+     * 
      * @return the createdOn value.
      */
     OffsetDateTime createdOn();
 
     /**
      * Gets the lastUpdatedOn property: The time at which the remediation deployment was last updated.
-     *
+     * 
      * @return the lastUpdatedOn value.
      */
     OffsetDateTime lastUpdatedOn();
 
     /**
      * Gets the inner com.azure.resourcemanager.policyinsights.fluent.models.RemediationDeploymentInner object.
-     *
+     * 
      * @return the inner object.
      */
     RemediationDeploymentInner innerModel();

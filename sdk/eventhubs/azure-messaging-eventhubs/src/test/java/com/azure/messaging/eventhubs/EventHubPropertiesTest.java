@@ -19,7 +19,7 @@ public class EventHubPropertiesTest {
         // Arrange
         final String name = "Some-event-hub-name";
         final Instant instant = Instant.ofEpochSecond(145620);
-        final String[] partitionIds = new String[]{"one-partition", "two-partition", "three-partition"};
+        final String[] partitionIds = new String[] { "one-partition", "two-partition", "three-partition" };
 
         // Act
         final EventHubProperties eventHubProperties = new EventHubProperties(name, instant, partitionIds);
@@ -55,7 +55,7 @@ public class EventHubPropertiesTest {
     public void requiresCreatedAt() {
         // Arrange
         final String name = "Some-event-hub-name";
-        final String[] partitionIds = new String[]{"one-partition", "two-partition", "three-partition"};
+        final String[] partitionIds = new String[] { "one-partition", "two-partition", "three-partition" };
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new EventHubProperties(name, null, partitionIds));
@@ -67,7 +67,7 @@ public class EventHubPropertiesTest {
     public void requiresName() {
         // Arrange
         final Instant instant = Instant.ofEpochSecond(145620);
-        final String[] partitionIds = new String[]{"one-partition", "two-partition", "three-partition"};
+        final String[] partitionIds = new String[] { "one-partition", "two-partition", "three-partition" };
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new EventHubProperties(null, instant, partitionIds));

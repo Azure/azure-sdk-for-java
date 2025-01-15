@@ -14,33 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskPoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskPoolProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Updating\",\"availabilityZones\":[\"norcjxvsnbyxqab\",\"mocpc\"],\"status\":\"Stopped"
-                        + " (deallocated)\",\"disks\":[{\"id\":\"rzafbljjgpbtoqcj\"},{\"id\":\"klj\"}],\"subnetId\":\"vbqid\",\"additionalCapabilities\":[\"jzyulpk\",\"dj\"]}")
-                .toObject(DiskPoolProperties.class);
-        Assertions.assertEquals("norcjxvsnbyxqab", model.availabilityZones().get(0));
-        Assertions.assertEquals(OperationalStatus.STOPPED_DEALLOCATED, model.status());
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.disks().get(0).id());
-        Assertions.assertEquals("vbqid", model.subnetId());
-        Assertions.assertEquals("jzyulpk", model.additionalCapabilities().get(0));
+        DiskPoolProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Canceled\",\"availabilityZones\":[\"l\"],\"status\":\"Updating\",\"disks\":[{\"id\":\"jtjaodxobnbdxkq\"}],\"subnetId\":\"xo\",\"additionalCapabilities\":[\"ionpimexg\",\"txgcpodgmaajr\",\"vdjwzrlovm\",\"lwhijcoejctbzaq\"]}")
+            .toObject(DiskPoolProperties.class);
+        Assertions.assertEquals("l", model.availabilityZones().get(0));
+        Assertions.assertEquals(OperationalStatus.UPDATING, model.status());
+        Assertions.assertEquals("jtjaodxobnbdxkq", model.disks().get(0).id());
+        Assertions.assertEquals("xo", model.subnetId());
+        Assertions.assertEquals("ionpimexg", model.additionalCapabilities().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskPoolProperties model =
-            new DiskPoolProperties()
-                .withAvailabilityZones(Arrays.asList("norcjxvsnbyxqab", "mocpc"))
-                .withStatus(OperationalStatus.STOPPED_DEALLOCATED)
-                .withDisks(Arrays.asList(new Disk().withId("rzafbljjgpbtoqcj"), new Disk().withId("klj")))
-                .withSubnetId("vbqid")
-                .withAdditionalCapabilities(Arrays.asList("jzyulpk", "dj"));
+        DiskPoolProperties model = new DiskPoolProperties().withAvailabilityZones(Arrays.asList("l"))
+            .withStatus(OperationalStatus.UPDATING)
+            .withDisks(Arrays.asList(new Disk().withId("jtjaodxobnbdxkq")))
+            .withSubnetId("xo")
+            .withAdditionalCapabilities(Arrays.asList("ionpimexg", "txgcpodgmaajr", "vdjwzrlovm", "lwhijcoejctbzaq"));
         model = BinaryData.fromObject(model).toObject(DiskPoolProperties.class);
-        Assertions.assertEquals("norcjxvsnbyxqab", model.availabilityZones().get(0));
-        Assertions.assertEquals(OperationalStatus.STOPPED_DEALLOCATED, model.status());
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.disks().get(0).id());
-        Assertions.assertEquals("vbqid", model.subnetId());
-        Assertions.assertEquals("jzyulpk", model.additionalCapabilities().get(0));
+        Assertions.assertEquals("l", model.availabilityZones().get(0));
+        Assertions.assertEquals(OperationalStatus.UPDATING, model.status());
+        Assertions.assertEquals("jtjaodxobnbdxkq", model.disks().get(0).id());
+        Assertions.assertEquals("xo", model.subnetId());
+        Assertions.assertEquals("ionpimexg", model.additionalCapabilities().get(0));
     }
 }

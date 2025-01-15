@@ -81,7 +81,8 @@ public class AssistantsApiToolChoiceOption {
                 return new AssistantsApiToolChoiceOption(toolChoice);
             }
         } catch (UncheckedIOException e) {
-            AssistantsApiToolChoiceOptionMode mode = toolChoiceBinaryData.toObject(AssistantsApiToolChoiceOptionMode.class);
+            AssistantsApiToolChoiceOptionMode mode
+                = toolChoiceBinaryData.toObject(AssistantsApiToolChoiceOptionMode.class);
             if (AssistantsApiToolChoiceOptionMode.values().contains(mode)) {
                 return new AssistantsApiToolChoiceOption(mode);
             }

@@ -12,20 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthorizationProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizationProfile model = BinaryData.fromString(
-            "{\"userIds\":[\"eo\",\"lokeyy\",\"enjbdlwtgrhp\",\"jp\"],\"groupIds\":[\"asxazjpqyegualhb\",\"xhejjzzvdud\",\"wdslfhotwmcy\",\"pwlbjnpg\"]}")
+        AuthorizationProfile model = BinaryData
+            .fromString(
+                "{\"userIds\":[\"clha\",\"xdbabphlwr\",\"lfktsths\",\"cocmnyyaztt\"],\"groupIds\":[\"wrqpue\"]}")
             .toObject(AuthorizationProfile.class);
-        Assertions.assertEquals("eo", model.userIds().get(0));
-        Assertions.assertEquals("asxazjpqyegualhb", model.groupIds().get(0));
+        Assertions.assertEquals("clha", model.userIds().get(0));
+        Assertions.assertEquals("wrqpue", model.groupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AuthorizationProfile model
-            = new AuthorizationProfile().withUserIds(Arrays.asList("eo", "lokeyy", "enjbdlwtgrhp", "jp"))
-                .withGroupIds(Arrays.asList("asxazjpqyegualhb", "xhejjzzvdud", "wdslfhotwmcy", "pwlbjnpg"));
+            = new AuthorizationProfile().withUserIds(Arrays.asList("clha", "xdbabphlwr", "lfktsths", "cocmnyyaztt"))
+                .withGroupIds(Arrays.asList("wrqpue"));
         model = BinaryData.fromObject(model).toObject(AuthorizationProfile.class);
-        Assertions.assertEquals("eo", model.userIds().get(0));
-        Assertions.assertEquals("asxazjpqyegualhb", model.groupIds().get(0));
+        Assertions.assertEquals("clha", model.userIds().get(0));
+        Assertions.assertEquals("wrqpue", model.groupIds().get(0));
     }
 }

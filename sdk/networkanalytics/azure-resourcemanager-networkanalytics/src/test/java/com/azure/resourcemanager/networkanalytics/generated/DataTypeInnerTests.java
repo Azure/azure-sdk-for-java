@@ -24,9 +24,11 @@ public final class DataTypeInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataTypeInner model = new DataTypeInner().withProperties(
-            new DataTypeProperties().withState(DataTypeState.STOPPED).withStorageOutputRetention(1083545989)
-                .withDatabaseCacheRetention(299344741).withDatabaseRetention(1177469779));
+        DataTypeInner model
+            = new DataTypeInner().withProperties(new DataTypeProperties().withState(DataTypeState.STOPPED)
+                .withStorageOutputRetention(1083545989)
+                .withDatabaseCacheRetention(299344741)
+                .withDatabaseRetention(1177469779));
         model = BinaryData.fromObject(model).toObject(DataTypeInner.class);
         Assertions.assertEquals(DataTypeState.STOPPED, model.properties().state());
         Assertions.assertEquals(1083545989, model.properties().storageOutputRetention());

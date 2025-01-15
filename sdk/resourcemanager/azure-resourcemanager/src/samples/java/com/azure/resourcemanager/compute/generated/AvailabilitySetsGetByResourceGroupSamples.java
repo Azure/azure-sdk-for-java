@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class AvailabilitySetsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * availabilitySetExamples/AvailabilitySet_Get_MaximumSet_Gen.json
      */
     /**
@@ -28,7 +28,7 @@ public final class AvailabilitySetsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * availabilitySetExamples/AvailabilitySet_Get_MinimumSet_Gen.json
      */
     /**

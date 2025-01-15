@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes threat intelligence metric entity. */
+/**
+ * Describes threat intelligence metric entity.
+ */
 @Fluent
-public final class ThreatIntelligenceMetricEntity {
+public final class ThreatIntelligenceMetricEntity implements JsonSerializable<ThreatIntelligenceMetricEntity> {
     /*
      * Metric name
      */
-    @JsonProperty(value = "metricName")
     private String metricName;
 
     /*
      * Metric value
      */
-    @JsonProperty(value = "metricValue")
     private Integer metricValue;
 
     /**
+     * Creates an instance of ThreatIntelligenceMetricEntity class.
+     */
+    public ThreatIntelligenceMetricEntity() {
+    }
+
+    /**
      * Get the metricName property: Metric name.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -33,7 +43,7 @@ public final class ThreatIntelligenceMetricEntity {
 
     /**
      * Set the metricName property: Metric name.
-     *
+     * 
      * @param metricName the metricName value to set.
      * @return the ThreatIntelligenceMetricEntity object itself.
      */
@@ -44,7 +54,7 @@ public final class ThreatIntelligenceMetricEntity {
 
     /**
      * Get the metricValue property: Metric value.
-     *
+     * 
      * @return the metricValue value.
      */
     public Integer metricValue() {
@@ -53,7 +63,7 @@ public final class ThreatIntelligenceMetricEntity {
 
     /**
      * Set the metricValue property: Metric value.
-     *
+     * 
      * @param metricValue the metricValue value to set.
      * @return the ThreatIntelligenceMetricEntity object itself.
      */
@@ -64,9 +74,49 @@ public final class ThreatIntelligenceMetricEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metricName", this.metricName);
+        jsonWriter.writeNumberField("metricValue", this.metricValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreatIntelligenceMetricEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreatIntelligenceMetricEntity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThreatIntelligenceMetricEntity.
+     */
+    public static ThreatIntelligenceMetricEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreatIntelligenceMetricEntity deserializedThreatIntelligenceMetricEntity
+                = new ThreatIntelligenceMetricEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricName".equals(fieldName)) {
+                    deserializedThreatIntelligenceMetricEntity.metricName = reader.getString();
+                } else if ("metricValue".equals(fieldName)) {
+                    deserializedThreatIntelligenceMetricEntity.metricValue = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreatIntelligenceMetricEntity;
+        });
     }
 }

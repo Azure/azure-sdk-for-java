@@ -5,37 +5,56 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.IoTHubEventSourceMutableProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters supplied to the Update Event Source operation to update an IoTHub event source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Microsoft.IoTHub")
+/**
+ * Parameters supplied to the Update Event Source operation to update an IoTHub event source.
+ */
 @Fluent
 public final class IoTHubEventSourceUpdateParameters extends EventSourceUpdateParameters {
     /*
+     * The kind of the event source.
+     */
+    private EventSourceKind kind = EventSourceKind.MICROSOFT_IO_THUB;
+
+    /*
      * Properties of the IoTHub event source.
      */
-    @JsonProperty(value = "properties")
     private IoTHubEventSourceMutableProperties innerProperties;
 
-    /** Creates an instance of IoTHubEventSourceUpdateParameters class. */
+    /**
+     * Creates an instance of IoTHubEventSourceUpdateParameters class.
+     */
     public IoTHubEventSourceUpdateParameters() {
     }
 
     /**
+     * Get the kind property: The kind of the event source.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EventSourceKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: Properties of the IoTHub event source.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTHubEventSourceMutableProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IoTHubEventSourceUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -45,7 +64,7 @@ public final class IoTHubEventSourceUpdateParameters extends EventSourceUpdatePa
     /**
      * Get the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the iot hub. This property is not shown in event source responses.
-     *
+     * 
      * @return the sharedAccessKey value.
      */
     public String sharedAccessKey() {
@@ -55,7 +74,7 @@ public final class IoTHubEventSourceUpdateParameters extends EventSourceUpdatePa
     /**
      * Set the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the iot hub. This property is not shown in event source responses.
-     *
+     * 
      * @param sharedAccessKey the sharedAccessKey value to set.
      * @return the IoTHubEventSourceUpdateParameters object itself.
      */
@@ -71,7 +90,7 @@ public final class IoTHubEventSourceUpdateParameters extends EventSourceUpdatePa
      * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
      * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
      * time will be used.
-     *
+     * 
      * @return the timestampPropertyName value.
      */
     public String timestampPropertyName() {
@@ -82,7 +101,7 @@ public final class IoTHubEventSourceUpdateParameters extends EventSourceUpdatePa
      * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
      * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
      * time will be used.
-     *
+     * 
      * @param timestampPropertyName the timestampPropertyName value to set.
      * @return the IoTHubEventSourceUpdateParameters object itself.
      */
@@ -96,14 +115,58 @@ public final class IoTHubEventSourceUpdateParameters extends EventSourceUpdatePa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTHubEventSourceUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTHubEventSourceUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTHubEventSourceUpdateParameters.
+     */
+    public static IoTHubEventSourceUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTHubEventSourceUpdateParameters deserializedIoTHubEventSourceUpdateParameters
+                = new IoTHubEventSourceUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIoTHubEventSourceUpdateParameters.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedIoTHubEventSourceUpdateParameters.kind = EventSourceKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIoTHubEventSourceUpdateParameters.innerProperties
+                        = IoTHubEventSourceMutableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTHubEventSourceUpdateParameters;
+        });
     }
 }

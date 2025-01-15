@@ -6,55 +6,38 @@ package com.azure.resourcemanager.streamanalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager;
 import com.azure.resourcemanager.streamanalytics.models.Function;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FunctionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"gzpfrla\",\"properties\":{\"inputs\":[{\"dataType\":\"woiindf\",\"isConfigurationParameter\":false},{\"dataType\":\"ylwbtlhflsjcdhsz\",\"isConfigurationParameter\":true},{\"dataType\":\"bgofeljag\",\"isConfigurationParameter\":true}],\"output\":{\"dataType\":\"ldvriiiojnalghfk\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"sexso\",\"type\":\"el\",\"id\":\"hhahhxvrhmzkwpjg\"}";
+            = "{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"o\",\"properties\":{\"inputs\":[{\"dataType\":\"klff\",\"isConfigurationParameter\":false},{\"dataType\":\"wqlgzrf\",\"isConfigurationParameter\":true}],\"output\":{\"dataType\":\"bizikayuhq\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"bs\",\"type\":\"bqwrvtldgm\",\"id\":\"gvmpipaslthaqfx\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        Function response = manager.functions()
+            .getWithResponse("stawfsdjpvkv", "bjxbkzbzk", "vncjabudurgk", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Function response
-            = manager.functions().getWithResponse("av", "mbzonokix", "jq", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("hhahhxvrhmzkwpjg", response.id());
-        Assertions.assertEquals("woiindf", response.properties().inputs().get(0).dataType());
+        Assertions.assertEquals("gvmpipaslthaqfx", response.id());
+        Assertions.assertEquals("klff", response.properties().inputs().get(0).dataType());
         Assertions.assertEquals(false, response.properties().inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("ldvriiiojnalghfk", response.properties().output().dataType());
-        Assertions.assertEquals("sexso", response.name());
+        Assertions.assertEquals("bizikayuhq", response.properties().output().dataType());
+        Assertions.assertEquals("bs", response.name());
     }
 }

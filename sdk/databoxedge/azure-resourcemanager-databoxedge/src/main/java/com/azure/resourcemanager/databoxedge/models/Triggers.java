@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
 
-/** Resource collection API of Triggers. */
+/**
+ * Resource collection API of Triggers.
+ */
 public interface Triggers {
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,7 +27,7 @@ public interface Triggers {
 
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param filter Specify $filter='CustomContextTag eq &lt;tag&gt;' to filter on custom context tag property.
@@ -35,12 +37,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all trigger on the data box edge device as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Trigger> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, String filter, Context context);
+    PagedIterable<Trigger> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, String filter,
+        Context context);
 
     /**
      * Get a specific trigger by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -54,7 +56,7 @@ public interface Triggers {
 
     /**
      * Get a specific trigger by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -67,7 +69,7 @@ public interface Triggers {
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -81,7 +83,7 @@ public interface Triggers {
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -92,12 +94,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trigger details.
      */
-    Trigger createOrUpdate(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger, Context context);
+    Trigger createOrUpdate(String deviceName, String name, String resourceGroupName, TriggerInner trigger,
+        Context context);
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -109,7 +111,7 @@ public interface Triggers {
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.

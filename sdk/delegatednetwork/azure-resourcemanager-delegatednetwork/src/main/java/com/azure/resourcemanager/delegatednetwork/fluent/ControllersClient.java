@@ -13,11 +13,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedControllerInner;
 import com.azure.resourcemanager.delegatednetwork.models.ControllerResourceUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in ControllersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ControllersClient.
+ */
 public interface ControllersClient {
     /**
      * Gets details about the specified dnc controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
@@ -27,12 +29,12 @@ public interface ControllersClient {
      * @return details about the specified dnc controller along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DelegatedControllerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<DelegatedControllerInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets details about the specified dnc controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface ControllersClient {
 
     /**
      * Create a dnc controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters controller type parameters.
@@ -55,12 +57,12 @@ public interface ControllersClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a DNC controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DelegatedControllerInner>, DelegatedControllerInner> beginCreate(
-        String resourceGroupName, String resourceName, DelegatedControllerInner parameters);
+    SyncPoller<PollResult<DelegatedControllerInner>, DelegatedControllerInner> beginCreate(String resourceGroupName,
+        String resourceName, DelegatedControllerInner parameters);
 
     /**
      * Create a dnc controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters controller type parameters.
@@ -71,12 +73,12 @@ public interface ControllersClient {
      * @return the {@link SyncPoller} for polling of represents an instance of a DNC controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DelegatedControllerInner>, DelegatedControllerInner> beginCreate(
-        String resourceGroupName, String resourceName, DelegatedControllerInner parameters, Context context);
+    SyncPoller<PollResult<DelegatedControllerInner>, DelegatedControllerInner> beginCreate(String resourceGroupName,
+        String resourceName, DelegatedControllerInner parameters, Context context);
 
     /**
      * Create a dnc controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters controller type parameters.
@@ -90,7 +92,7 @@ public interface ControllersClient {
 
     /**
      * Create a dnc controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters controller type parameters.
@@ -101,12 +103,12 @@ public interface ControllersClient {
      * @return represents an instance of a DNC controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DelegatedControllerInner create(
-        String resourceGroupName, String resourceName, DelegatedControllerInner parameters, Context context);
+    DelegatedControllerInner create(String resourceGroupName, String resourceName, DelegatedControllerInner parameters,
+        Context context);
 
     /**
      * Deletes the DNC controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +121,7 @@ public interface ControllersClient {
 
     /**
      * Deletes the DNC controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
@@ -133,7 +135,7 @@ public interface ControllersClient {
 
     /**
      * Deletes the DNC controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +147,7 @@ public interface ControllersClient {
 
     /**
      * Deletes the DNC controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
@@ -158,7 +160,7 @@ public interface ControllersClient {
 
     /**
      * Update dnc controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters controller type parameters.
@@ -169,12 +171,12 @@ public interface ControllersClient {
      * @return represents an instance of a DNC controller along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DelegatedControllerInner> patchWithResponse(
-        String resourceGroupName, String resourceName, ControllerResourceUpdateParameters parameters, Context context);
+    Response<DelegatedControllerInner> patchWithResponse(String resourceGroupName, String resourceName,
+        ControllerResourceUpdateParameters parameters, Context context);
 
     /**
      * Update dnc controller.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters controller type parameters.
@@ -184,6 +186,6 @@ public interface ControllersClient {
      * @return represents an instance of a DNC controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DelegatedControllerInner patch(
-        String resourceGroupName, String resourceName, ControllerResourceUpdateParameters parameters);
+    DelegatedControllerInner patch(String resourceGroupName, String resourceName,
+        ControllerResourceUpdateParameters parameters);
 }

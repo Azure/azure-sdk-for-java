@@ -18,17 +18,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 
 /** Entry point to public IP address management. */
 @Fluent()
-public interface PublicIpAddresses
-    extends SupportsListing<PublicIpAddress>,
-        SupportsCreating<PublicIpAddress.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsListingByResourceGroup<PublicIpAddress>,
-        SupportsGettingByResourceGroup<PublicIpAddress>,
-        SupportsGettingById<PublicIpAddress>,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<PublicIpAddress>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+public interface PublicIpAddresses extends SupportsListing<PublicIpAddress>,
+    SupportsCreating<PublicIpAddress.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListingByResourceGroup<PublicIpAddress>, SupportsGettingByResourceGroup<PublicIpAddress>,
+    SupportsGettingById<PublicIpAddress>, SupportsDeletingByResourceGroup, SupportsBatchCreation<PublicIpAddress>,
+    SupportsBatchDeletion, HasManager<NetworkManager> {
 
     /**
      * Begins deleting a public IP address from Azure, identifying it by its resource ID.

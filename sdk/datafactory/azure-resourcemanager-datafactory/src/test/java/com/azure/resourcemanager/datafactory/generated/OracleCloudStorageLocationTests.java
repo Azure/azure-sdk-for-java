@@ -11,16 +11,16 @@ public final class OracleCloudStorageLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleCloudStorageLocation model = BinaryData.fromString(
-            "{\"type\":\"OracleCloudStorageLocation\",\"bucketName\":\"datapwr\",\"version\":\"datafpcfjf\",\"folderPath\":\"datalgzawkgyepeyamnn\",\"fileName\":\"datamdiawpzx\",\"\":{\"azihq\":\"datantmkctdhuosgwqps\",\"ibniynts\":\"datadvqgcnbhcbmjkz\",\"ogjrhskbwgm\":\"datajmfmeftvhkm\"}}")
+            "{\"type\":\"OracleCloudStorageLocation\",\"bucketName\":\"datajcxfno\",\"version\":\"dataegjdydhqkk\",\"folderPath\":\"datajuck\",\"fileName\":\"datatuqbhp\",\"\":{\"tpzdlyseidto\":\"datan\",\"d\":\"datakatprytgrhzbq\",\"rptvcshtkutzcttb\":\"datafa\"}}")
             .toObject(OracleCloudStorageLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleCloudStorageLocation model = new OracleCloudStorageLocation().withFolderPath("datalgzawkgyepeyamnn")
-            .withFileName("datamdiawpzx")
-            .withBucketName("datapwr")
-            .withVersion("datafpcfjf");
+        OracleCloudStorageLocation model = new OracleCloudStorageLocation().withFolderPath("datajuck")
+            .withFileName("datatuqbhp")
+            .withBucketName("datajcxfno")
+            .withVersion("dataegjdydhqkk");
         model = BinaryData.fromObject(model).toObject(OracleCloudStorageLocation.class);
     }
 }

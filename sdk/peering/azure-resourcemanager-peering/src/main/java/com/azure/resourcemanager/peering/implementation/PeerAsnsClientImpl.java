@@ -33,17 +33,23 @@ import com.azure.resourcemanager.peering.fluent.models.PeerAsnInner;
 import com.azure.resourcemanager.peering.models.PeerAsnListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PeerAsnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PeerAsnsClient.
+ */
 public final class PeerAsnsClientImpl implements PeerAsnsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PeerAsnsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PeeringManagementClientImpl client;
 
     /**
      * Initializes an instance of PeerAsnsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PeerAsnsClientImpl(PeeringManagementClientImpl client) {
@@ -58,156 +64,117 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
     @Host("{$host}")
     @ServiceInterface(name = "PeeringManagementCli")
     public interface PeerAsnsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PeerAsnInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("peerAsnName") String peerAsnName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PeerAsnInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("peerAsnName") String peerAsnName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PeerAsnInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("peerAsnName") String peerAsnName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PeerAsnInner peerAsn,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PeerAsnInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("peerAsnName") String peerAsnName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") PeerAsnInner peerAsn,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("peerAsnName") String peerAsnName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("peerAsnName") String peerAsnName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PeerAsnListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PeerAsnListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PeerAsnListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the peer ASN with the specified name under the given subscription along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeerAsnInner>> getWithResponseAsync(String peerAsnName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (peerAsnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peerAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            peerAsnName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), peerAsnName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the peer ASN with the specified name under the given subscription along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeerAsnInner>> getWithResponseAsync(String peerAsnName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (peerAsnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peerAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                peerAsnName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), peerAsnName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peer ASN with the specified name under the given subscription on successful completion of {@link
-     *     Mono}.
+     * @return the peer ASN with the specified name under the given subscription on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeerAsnInner> getAsync(String peerAsnName) {
@@ -216,7 +183,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Gets the peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,7 +198,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Gets the peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,31 +212,27 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @param peerAsn The peer ASN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the essential information related to the peer's ASN along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeerAsnInner>> createOrUpdateWithResponseAsync(String peerAsnName, PeerAsnInner peerAsn) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (peerAsnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peerAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (peerAsn == null) {
             return Mono.error(new IllegalArgumentException("Parameter peerAsn is required and cannot be null."));
@@ -278,23 +241,14 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            peerAsnName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            peerAsn,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), peerAsnName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), peerAsn, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @param peerAsn The peer ASN.
      * @param context The context to associate with this operation.
@@ -302,25 +256,21 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the essential information related to the peer's ASN along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PeerAsnInner>> createOrUpdateWithResponseAsync(
-        String peerAsnName, PeerAsnInner peerAsn, Context context) {
+    private Mono<Response<PeerAsnInner>> createOrUpdateWithResponseAsync(String peerAsnName, PeerAsnInner peerAsn,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (peerAsnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peerAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (peerAsn == null) {
             return Mono.error(new IllegalArgumentException("Parameter peerAsn is required and cannot be null."));
@@ -329,20 +279,13 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                peerAsnName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                peerAsn,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), peerAsnName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), peerAsn, accept, context);
     }
 
     /**
      * Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @param peerAsn The peer ASN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -357,7 +300,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @param peerAsn The peer ASN.
      * @param context The context to associate with this operation.
@@ -367,14 +310,14 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @return the essential information related to the peer's ASN along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PeerAsnInner> createOrUpdateWithResponse(
-        String peerAsnName, PeerAsnInner peerAsn, Context context) {
+    public Response<PeerAsnInner> createOrUpdateWithResponse(String peerAsnName, PeerAsnInner peerAsn,
+        Context context) {
         return createOrUpdateWithResponseAsync(peerAsnName, peerAsn, context).block();
     }
 
     /**
      * Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @param peerAsn The peer ASN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,7 +332,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Deletes an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -399,38 +342,26 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String peerAsnName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (peerAsnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peerAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            peerAsnName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), peerAsnName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,35 +372,25 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String peerAsnName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (peerAsnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peerAsnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                peerAsnName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), peerAsnName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -483,7 +404,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Deletes an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -498,7 +419,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Deletes an existing peer ASN with the specified name under the given subscription.
-     *
+     * 
      * @param peerAsnName The peer ASN name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -511,109 +432,76 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Lists all of the peer ASNs under the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerAsnInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<PeerAsnInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<PeerAsnInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the peer ASNs under the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerAsnInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the peer ASNs under the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peer ASNs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeerAsnInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the peer ASNs under the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -622,13 +510,13 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeerAsnInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the peer ASNs under the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peer ASNs as paginated response with {@link PagedIterable}.
@@ -640,7 +528,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Lists all of the peer ASNs under the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -654,14 +542,13 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerAsnInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -669,38 +556,28 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PeerAsnInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PeerAsnInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerAsnInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -708,23 +585,13 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -7,6 +7,9 @@ package com.azure.resourcemanager.mediaservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.fluent.models.JobInner;
 import com.azure.resourcemanager.mediaservices.models.JobCollection;
+import com.azure.resourcemanager.mediaservices.models.JobInput;
+import com.azure.resourcemanager.mediaservices.models.JobOutput;
+import com.azure.resourcemanager.mediaservices.models.Preset;
 import com.azure.resourcemanager.mediaservices.models.Priority;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,47 +19,40 @@ import org.junit.jupiter.api.Assertions;
 public final class JobCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"created\":\"2021-03-19T00:27:21Z\",\"state\":\"Scheduled\",\"description\":\"srknftguv\",\"lastModified\":\"2021-11-24T12:31:24Z\",\"outputs\":[],\"priority\":\"High\",\"correlationData\":{},\"startTime\":\"2021-06-11T11:55:02Z\",\"endTime\":\"2021-05-29T19:52:45Z\"},\"id\":\"xqtayriwwro\",\"name\":\"qbex\",\"type\":\"mcqibycnojv\"},{\"properties\":{\"created\":\"2021-02-06T03:19:14Z\",\"state\":\"Processing\",\"description\":\"gzva\",\"lastModified\":\"2021-09-24T18:39:34Z\",\"outputs\":[],\"priority\":\"Low\",\"correlationData\":{},\"startTime\":\"2021-09-29T06:33:19Z\",\"endTime\":\"2021-04-21T18:37:49Z\"},\"id\":\"zcjrvxdjzlmwlx\",\"name\":\"vu\",\"type\":\"fhzovawjvzunluth\"},{\"properties\":{\"created\":\"2021-12-09T15:55:09Z\",\"state\":\"Queued\",\"description\":\"peilpjzuaejxdu\",\"lastModified\":\"2021-04-04T06:42:49Z\",\"outputs\":[],\"priority\":\"High\",\"correlationData\":{},\"startTime\":\"2021-04-25T18:40:13Z\",\"endTime\":\"2021-08-12T02:58:19Z\"},\"id\":\"mv\",\"name\":\"ekg\",\"type\":\"wozuhkf\"},{\"properties\":{\"created\":\"2021-02-19T22:50:40Z\",\"state\":\"Canceling\",\"description\":\"dxluu\",\"lastModified\":\"2021-01-22T23:23:23Z\",\"outputs\":[],\"priority\":\"Low\",\"correlationData\":{},\"startTime\":\"2021-10-19T19:08:50Z\",\"endTime\":\"2021-02-11T03:20:25Z\"},\"id\":\"kqvkelnsmvbxwyjs\",\"name\":\"lh\",\"type\":\"caalnjixisxyaw\"}],\"@odata.nextLink\":\"yaqcslyjpkiidz\"}")
-                .toObject(JobCollection.class);
-        Assertions.assertEquals("srknftguv", model.value().get(0).description());
-        Assertions.assertEquals(Priority.HIGH, model.value().get(0).priority());
+        JobCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"created\":\"2021-09-16T01:27:29Z\",\"state\":\"Canceling\",\"description\":\"ciuqgbdb\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-02-02T04:23:15Z\",\"outputs\":[{\"@odata.type\":\"JobOutput\",\"error\":{},\"presetOverride\":{\"@odata.type\":\"Preset\"},\"state\":\"Queued\",\"progress\":1787121852,\"label\":\"hhmhykojoxa\",\"startTime\":\"2021-09-02T16:03:41Z\",\"endTime\":\"2021-08-20T12:23:25Z\"},{\"@odata.type\":\"JobOutput\",\"error\":{},\"presetOverride\":{\"@odata.type\":\"Preset\"},\"state\":\"Processing\",\"progress\":171305753,\"label\":\"mkcdyhbpkkpwdre\",\"startTime\":\"2021-09-12T16:04:39Z\",\"endTime\":\"2021-01-25T12:45:51Z\"},{\"@odata.type\":\"JobOutput\",\"error\":{},\"presetOverride\":{\"@odata.type\":\"Preset\"},\"state\":\"Error\",\"progress\":1902041203,\"label\":\"ywsuwsy\",\"startTime\":\"2021-02-16T01:50:46Z\",\"endTime\":\"2021-03-16T15:34:55Z\"}],\"priority\":\"Normal\",\"correlationData\":{\"zar\":\"dgvraeaeneq\",\"iipfpubj\":\"wlquuijfqkace\",\"hqkvpuvksgplsak\":\"bwwift\"},\"startTime\":\"2021-07-05T23:56:24Z\",\"endTime\":\"2021-01-14T10:56:19Z\"},\"id\":\"n\",\"name\":\"jphuopxodlqi\",\"type\":\"ntorzihleosjswsr\"},{\"properties\":{\"created\":\"2021-01-12T15:56:27Z\",\"state\":\"Canceled\",\"description\":\"zbchckqqzqioxiy\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-10-31T06:14:16Z\",\"outputs\":[{\"@odata.type\":\"JobOutput\",\"error\":{},\"presetOverride\":{\"@odata.type\":\"Preset\"},\"state\":\"Error\",\"progress\":486073857,\"label\":\"atrwyhqmibzyh\",\"startTime\":\"2021-05-20T17:58:30Z\",\"endTime\":\"2021-05-22T03:58:36Z\"}],\"priority\":\"Low\",\"correlationData\":{\"z\":\"npcdpumnzgm\",\"dtlwwrlkd\":\"mabiknsorgjhxb\",\"lxdy\":\"tncvokot\",\"tdtbnnhadooc\":\"gsyocogj\"},\"startTime\":\"2021-03-23T09:46:56Z\",\"endTime\":\"2021-04-20T13:46:12Z\"},\"id\":\"hnvpamqgxq\",\"name\":\"u\",\"type\":\"zikywgg\"}],\"@odata.nextLink\":\"allatmelwuipic\"}")
+            .toObject(JobCollection.class);
+        Assertions.assertEquals("ciuqgbdb", model.value().get(0).description());
+        Assertions.assertEquals("hhmhykojoxa", model.value().get(0).outputs().get(0).label());
+        Assertions.assertEquals(Priority.NORMAL, model.value().get(0).priority());
+        Assertions.assertEquals("dgvraeaeneq", model.value().get(0).correlationData().get("zar"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobCollection model =
-            new JobCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new JobInner()
-                                .withDescription("srknftguv")
-                                .withOutputs(Arrays.asList())
-                                .withPriority(Priority.HIGH)
-                                .withCorrelationData(mapOf()),
-                            new JobInner()
-                                .withDescription("gzva")
-                                .withOutputs(Arrays.asList())
-                                .withPriority(Priority.LOW)
-                                .withCorrelationData(mapOf()),
-                            new JobInner()
-                                .withDescription("peilpjzuaejxdu")
-                                .withOutputs(Arrays.asList())
-                                .withPriority(Priority.HIGH)
-                                .withCorrelationData(mapOf()),
-                            new JobInner()
-                                .withDescription("dxluu")
-                                .withOutputs(Arrays.asList())
-                                .withPriority(Priority.LOW)
-                                .withCorrelationData(mapOf())));
+        JobCollection model = new JobCollection().withValue(Arrays.asList(
+            new JobInner().withDescription("ciuqgbdb")
+                .withInput(new JobInput())
+                .withOutputs(Arrays.asList(new JobOutput().withPresetOverride(new Preset()).withLabel("hhmhykojoxa"),
+                    new JobOutput().withPresetOverride(new Preset()).withLabel("mkcdyhbpkkpwdre"),
+                    new JobOutput().withPresetOverride(new Preset()).withLabel("ywsuwsy")))
+                .withPriority(Priority.NORMAL)
+                .withCorrelationData(
+                    mapOf("zar", "dgvraeaeneq", "iipfpubj", "wlquuijfqkace", "hqkvpuvksgplsak", "bwwift")),
+            new JobInner().withDescription("zbchckqqzqioxiy")
+                .withInput(new JobInput())
+                .withOutputs(Arrays.asList(new JobOutput().withPresetOverride(new Preset()).withLabel("atrwyhqmibzyh")))
+                .withPriority(Priority.LOW)
+                .withCorrelationData(mapOf("z", "npcdpumnzgm", "dtlwwrlkd", "mabiknsorgjhxb", "lxdy", "tncvokot",
+                    "tdtbnnhadooc", "gsyocogj"))));
         model = BinaryData.fromObject(model).toObject(JobCollection.class);
-        Assertions.assertEquals("srknftguv", model.value().get(0).description());
-        Assertions.assertEquals(Priority.HIGH, model.value().get(0).priority());
+        Assertions.assertEquals("ciuqgbdb", model.value().get(0).description());
+        Assertions.assertEquals("hhmhykojoxa", model.value().get(0).outputs().get(0).label());
+        Assertions.assertEquals(Priority.NORMAL, model.value().get(0).priority());
+        Assertions.assertEquals("dgvraeaeneq", model.value().get(0).correlationData().get("zar"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

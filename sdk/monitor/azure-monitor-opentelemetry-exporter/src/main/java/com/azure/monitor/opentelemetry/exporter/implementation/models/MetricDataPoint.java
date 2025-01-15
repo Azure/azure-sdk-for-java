@@ -64,7 +64,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the namespace property: Namespace of the metric.
-     *
+     * 
      * @return the namespace value.
      */
     public String getNamespace() {
@@ -73,7 +73,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Set the namespace property: Namespace of the metric.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the MetricDataPoint object itself.
      */
@@ -84,7 +84,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the name property: Name of the metric.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -93,7 +93,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Set the name property: Name of the metric.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricDataPoint object itself.
      */
@@ -104,7 +104,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the dataPointType property: Metric type. Single measurement or the aggregated value.
-     *
+     * 
      * @return the dataPointType value.
      */
     public DataPointType getDataPointType() {
@@ -113,7 +113,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Set the dataPointType property: Metric type. Single measurement or the aggregated value.
-     *
+     * 
      * @param dataPointType the dataPointType value to set.
      * @return the MetricDataPoint object itself.
      */
@@ -124,7 +124,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the value property: Single value for measurement. Sum of individual measurements for the aggregation.
-     *
+     * 
      * @return the value value.
      */
     public double getValue() {
@@ -133,7 +133,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Set the value property: Single value for measurement. Sum of individual measurements for the aggregation.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetricDataPoint object itself.
      */
@@ -144,7 +144,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the count property: Metric weight of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @return the count value.
      */
     public Integer getCount() {
@@ -153,7 +153,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Set the count property: Metric weight of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @param count the count value to set.
      * @return the MetricDataPoint object itself.
      */
@@ -164,7 +164,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the min property: Minimum value of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @return the min value.
      */
     public Double getMin() {
@@ -173,7 +173,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Set the min property: Minimum value of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @param min the min value to set.
      * @return the MetricDataPoint object itself.
      */
@@ -184,7 +184,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the max property: Maximum value of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @return the max value.
      */
     public Double getMax() {
@@ -193,7 +193,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Set the max property: Maximum value of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @param max the max value to set.
      * @return the MetricDataPoint object itself.
      */
@@ -204,7 +204,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Get the stdDev property: Standard deviation of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @return the stdDev value.
      */
     public Double getStdDev() {
@@ -213,7 +213,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Set the stdDev property: Standard deviation of the aggregated metric. Should not be set for a measurement.
-     *
+     * 
      * @param stdDev the stdDev value to set.
      * @return the MetricDataPoint object itself.
      */
@@ -241,7 +241,7 @@ public final class MetricDataPoint implements JsonSerializable<MetricDataPoint> 
 
     /**
      * Reads an instance of MetricDataPoint from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of MetricDataPoint if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

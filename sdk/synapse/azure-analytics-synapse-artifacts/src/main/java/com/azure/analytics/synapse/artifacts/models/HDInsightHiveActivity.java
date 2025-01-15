@@ -59,7 +59,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     private List<Object> variables;
 
     /*
-     * Query timeout value (in minutes).  Effective when the HDInsight cluster is with ESP (Enterprise Security Package)
+     * Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP (Enterprise Security Package)
      */
     private Integer queryTimeout;
 

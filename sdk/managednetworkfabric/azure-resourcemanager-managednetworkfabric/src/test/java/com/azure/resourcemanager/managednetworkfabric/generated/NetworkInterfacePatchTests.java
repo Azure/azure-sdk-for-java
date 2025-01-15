@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfacePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterfacePatch model =
-            BinaryData
-                .fromString("{\"properties\":{\"annotation\":\"likyohz\"}}")
-                .toObject(NetworkInterfacePatch.class);
-        Assertions.assertEquals("likyohz", model.annotation());
+        NetworkInterfacePatch model = BinaryData.fromString("{\"properties\":{\"annotation\":\"ducdaaktujktz\"}}")
+            .toObject(NetworkInterfacePatch.class);
+        Assertions.assertEquals("ducdaaktujktz", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfacePatch model = new NetworkInterfacePatch().withAnnotation("likyohz");
+        NetworkInterfacePatch model = new NetworkInterfacePatch().withAnnotation("ducdaaktujktz");
         model = BinaryData.fromObject(model).toObject(NetworkInterfacePatch.class);
-        Assertions.assertEquals("likyohz", model.annotation());
+        Assertions.assertEquals("ducdaaktujktz", model.annotation());
     }
 }

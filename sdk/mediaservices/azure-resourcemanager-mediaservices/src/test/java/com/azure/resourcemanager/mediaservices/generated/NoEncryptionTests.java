@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class NoEncryptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NoEncryption model =
-            BinaryData
-                .fromString(
-                    "{\"enabledProtocols\":{\"download\":true,\"dash\":true,\"hls\":false,\"smoothStreaming\":true}}")
-                .toObject(NoEncryption.class);
+        NoEncryption model = BinaryData
+            .fromString(
+                "{\"enabledProtocols\":{\"download\":true,\"dash\":true,\"hls\":false,\"smoothStreaming\":true}}")
+            .toObject(NoEncryption.class);
         Assertions.assertEquals(true, model.enabledProtocols().download());
         Assertions.assertEquals(true, model.enabledProtocols().dash());
         Assertions.assertEquals(false, model.enabledProtocols().hls());
@@ -25,10 +24,8 @@ public final class NoEncryptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NoEncryption model =
-            new NoEncryption()
-                .withEnabledProtocols(
-                    new EnabledProtocols().withDownload(true).withDash(true).withHls(false).withSmoothStreaming(true));
+        NoEncryption model = new NoEncryption().withEnabledProtocols(
+            new EnabledProtocols().withDownload(true).withDash(true).withHls(false).withSmoothStreaming(true));
         model = BinaryData.fromObject(model).toObject(NoEncryption.class);
         Assertions.assertEquals(true, model.enabledProtocols().download());
         Assertions.assertEquals(true, model.enabledProtocols().dash());

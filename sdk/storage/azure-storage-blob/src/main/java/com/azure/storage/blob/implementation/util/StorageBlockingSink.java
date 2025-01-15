@@ -82,8 +82,8 @@ public final class StorageBlockingSink {
              * case since we manage the subscribe process in the constructor of BlockBlobOutputStream
              */
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Faulted stream due to underlying sink "
-                + "write failure", e));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Faulted stream due to underlying sink " + "write failure", e));
         }
     }
 

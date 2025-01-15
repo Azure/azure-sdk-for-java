@@ -14,46 +14,44 @@ import com.azure.resourcemanager.machinelearning.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for OnlineEndpoints CreateOrUpdate. */
+/**
+ * Samples for OnlineEndpoints CreateOrUpdate.
+ */
 public final class OnlineEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineEndpoint/createOrUpdate.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/OnlineEndpoint/createOrUpdate.json
      */
     /**
-     * Sample code: CreateOrUpdate Online Endpoint.
-     *
+     * Sample code: CreateOrUpdate Workspace Online Endpoint.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateOnlineEndpoint(
+    public static void createOrUpdateWorkspaceOnlineEndpoint(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .onlineEndpoints()
+        manager.onlineEndpoints()
             .define("testEndpointName")
             .withRegion("string")
             .withExistingWorkspace("test-rg", "my-aml-workspace")
-            .withProperties(
-                new OnlineEndpointProperties()
-                    .withAuthMode(EndpointAuthMode.AMLTOKEN)
-                    .withDescription("string")
-                    .withProperties(mapOf("string", "string"))
-                    .withCompute("string")
-                    .withTraffic(mapOf("string", 1)))
+            .withProperties(new OnlineEndpointProperties().withDescription("string")
+                .withProperties(mapOf("string", "string"))
+                .withAuthMode(EndpointAuthMode.AMLTOKEN)
+                .withCompute("string")
+                .withTraffic(mapOf("string", 1)))
             .withTags(mapOf())
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("string", new UserAssignedIdentity())))
             .withKind("string")
-            .withSku(
-                new Sku()
-                    .withName("string")
-                    .withTier(SkuTier.FREE)
-                    .withSize("string")
-                    .withFamily("string")
-                    .withCapacity(1))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("string", new UserAssignedIdentity())))
+            .withSku(new Sku().withName("string")
+                .withTier(SkuTier.FREE)
+                .withSize("string")
+                .withFamily("string")
+                .withCapacity(1))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class BillingSource extends ExpandableStringEnum<BillingSource> {
      * @param name a name to look for.
      * @return the corresponding BillingSource.
      */
-    @JsonCreator
     public static BillingSource fromString(String name) {
         return fromString(name, BillingSource.class);
     }

@@ -13,8 +13,7 @@ public final class VerificationCodeResponseImpl implements VerificationCodeRespo
 
     private final com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager;
 
-    VerificationCodeResponseImpl(
-        VerificationCodeResponseInner innerObject,
+    VerificationCodeResponseImpl(VerificationCodeResponseInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

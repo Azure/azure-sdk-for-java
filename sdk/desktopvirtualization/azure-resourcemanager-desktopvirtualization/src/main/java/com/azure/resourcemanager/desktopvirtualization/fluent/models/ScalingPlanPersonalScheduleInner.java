@@ -8,45 +8,56 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHandlingOperation;
 import com.azure.resourcemanager.desktopvirtualization.models.SetStartVMOnConnect;
 import com.azure.resourcemanager.desktopvirtualization.models.StartupBehavior;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents a ScalingPlanPersonalSchedule definition. */
+/**
+ * Represents a ScalingPlanPersonalSchedule definition.
+ */
 @Fluent
 public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Detailed properties for ScalingPlanPersonalSchedule
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private ScalingPlanPersonalScheduleProperties innerProperties = new ScalingPlanPersonalScheduleProperties();
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
     private SystemData systemData;
 
     /*
-     * Detailed properties for ScalingPlanPersonalSchedule
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
-    private ScalingPlanPersonalScheduleProperties innerProperties = new ScalingPlanPersonalScheduleProperties();
+    private String type;
 
-    /** Creates an instance of ScalingPlanPersonalScheduleInner class. */
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ScalingPlanPersonalScheduleInner class.
+     */
     public ScalingPlanPersonalScheduleInner() {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the innerProperties property: Detailed properties for ScalingPlanPersonalSchedule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScalingPlanPersonalScheduleProperties innerProperties() {
@@ -54,8 +65,47 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the daysOfWeek property: Set of days of the week on which this schedule is active.
-     *
+     * 
      * @return the daysOfWeek value.
      */
     public List<DayOfWeek> daysOfWeek() {
@@ -64,7 +114,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the daysOfWeek property: Set of days of the week on which this schedule is active.
-     *
+     * 
      * @param daysOfWeek the daysOfWeek value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -78,7 +128,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the rampUpStartTime property: Starting time for ramp up period.
-     *
+     * 
      * @return the rampUpStartTime value.
      */
     public Time rampUpStartTime() {
@@ -87,7 +137,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the rampUpStartTime property: Starting time for ramp up period.
-     *
+     * 
      * @param rampUpStartTime the rampUpStartTime value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -102,7 +152,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the rampUpAutoStartHosts property: The desired startup behavior during the ramp up period for personal vms in
      * the hostpool.
-     *
+     * 
      * @return the rampUpAutoStartHosts value.
      */
     public StartupBehavior rampUpAutoStartHosts() {
@@ -112,7 +162,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the rampUpAutoStartHosts property: The desired startup behavior during the ramp up period for personal vms in
      * the hostpool.
-     *
+     * 
      * @param rampUpAutoStartHosts the rampUpAutoStartHosts value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -128,7 +178,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
      * Get the rampUpStartVMOnConnect property: The desired configuration of Start VM On Connect for the hostpool during
      * the ramp up phase. If this is disabled, session hosts must be turned on using rampUpAutoStartHosts or by turning
      * them on manually.
-     *
+     * 
      * @return the rampUpStartVMOnConnect value.
      */
     public SetStartVMOnConnect rampUpStartVMOnConnect() {
@@ -139,7 +189,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
      * Set the rampUpStartVMOnConnect property: The desired configuration of Start VM On Connect for the hostpool during
      * the ramp up phase. If this is disabled, session hosts must be turned on using rampUpAutoStartHosts or by turning
      * them on manually.
-     *
+     * 
      * @param rampUpStartVMOnConnect the rampUpStartVMOnConnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -153,7 +203,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the rampUpActionOnDisconnect property: Action to be taken after a user disconnect during the ramp up period.
-     *
+     * 
      * @return the rampUpActionOnDisconnect value.
      */
     public SessionHandlingOperation rampUpActionOnDisconnect() {
@@ -162,12 +212,12 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the rampUpActionOnDisconnect property: Action to be taken after a user disconnect during the ramp up period.
-     *
+     * 
      * @param rampUpActionOnDisconnect the rampUpActionOnDisconnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
-    public ScalingPlanPersonalScheduleInner withRampUpActionOnDisconnect(
-        SessionHandlingOperation rampUpActionOnDisconnect) {
+    public ScalingPlanPersonalScheduleInner
+        withRampUpActionOnDisconnect(SessionHandlingOperation rampUpActionOnDisconnect) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScalingPlanPersonalScheduleProperties();
         }
@@ -178,7 +228,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the rampUpMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the desired
      * session handling action when a user disconnects during the ramp up period.
-     *
+     * 
      * @return the rampUpMinutesToWaitOnDisconnect value.
      */
     public Integer rampUpMinutesToWaitOnDisconnect() {
@@ -188,12 +238,12 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the rampUpMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the desired
      * session handling action when a user disconnects during the ramp up period.
-     *
+     * 
      * @param rampUpMinutesToWaitOnDisconnect the rampUpMinutesToWaitOnDisconnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
-    public ScalingPlanPersonalScheduleInner withRampUpMinutesToWaitOnDisconnect(
-        Integer rampUpMinutesToWaitOnDisconnect) {
+    public ScalingPlanPersonalScheduleInner
+        withRampUpMinutesToWaitOnDisconnect(Integer rampUpMinutesToWaitOnDisconnect) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScalingPlanPersonalScheduleProperties();
         }
@@ -203,7 +253,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the rampUpActionOnLogoff property: Action to be taken after a logoff during the ramp up period.
-     *
+     * 
      * @return the rampUpActionOnLogoff value.
      */
     public SessionHandlingOperation rampUpActionOnLogoff() {
@@ -212,7 +262,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the rampUpActionOnLogoff property: Action to be taken after a logoff during the ramp up period.
-     *
+     * 
      * @param rampUpActionOnLogoff the rampUpActionOnLogoff value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -227,7 +277,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the rampUpMinutesToWaitOnLogoff property: The time in minutes to wait before performing the desired session
      * handling action when a user logs off during the ramp up period.
-     *
+     * 
      * @return the rampUpMinutesToWaitOnLogoff value.
      */
     public Integer rampUpMinutesToWaitOnLogoff() {
@@ -237,7 +287,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the rampUpMinutesToWaitOnLogoff property: The time in minutes to wait before performing the desired session
      * handling action when a user logs off during the ramp up period.
-     *
+     * 
      * @param rampUpMinutesToWaitOnLogoff the rampUpMinutesToWaitOnLogoff value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -251,7 +301,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the peakStartTime property: Starting time for peak period.
-     *
+     * 
      * @return the peakStartTime value.
      */
     public Time peakStartTime() {
@@ -260,7 +310,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the peakStartTime property: Starting time for peak period.
-     *
+     * 
      * @param peakStartTime the peakStartTime value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -275,7 +325,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the peakStartVMOnConnect property: The desired configuration of Start VM On Connect for the hostpool during
      * the peak phase.
-     *
+     * 
      * @return the peakStartVMOnConnect value.
      */
     public SetStartVMOnConnect peakStartVMOnConnect() {
@@ -285,7 +335,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the peakStartVMOnConnect property: The desired configuration of Start VM On Connect for the hostpool during
      * the peak phase.
-     *
+     * 
      * @param peakStartVMOnConnect the peakStartVMOnConnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -299,7 +349,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the peakActionOnDisconnect property: Action to be taken after a user disconnect during the peak period.
-     *
+     * 
      * @return the peakActionOnDisconnect value.
      */
     public SessionHandlingOperation peakActionOnDisconnect() {
@@ -308,12 +358,12 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the peakActionOnDisconnect property: Action to be taken after a user disconnect during the peak period.
-     *
+     * 
      * @param peakActionOnDisconnect the peakActionOnDisconnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
-    public ScalingPlanPersonalScheduleInner withPeakActionOnDisconnect(
-        SessionHandlingOperation peakActionOnDisconnect) {
+    public ScalingPlanPersonalScheduleInner
+        withPeakActionOnDisconnect(SessionHandlingOperation peakActionOnDisconnect) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScalingPlanPersonalScheduleProperties();
         }
@@ -324,7 +374,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the peakMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the desired session
      * handling action when a user disconnects during the peak period.
-     *
+     * 
      * @return the peakMinutesToWaitOnDisconnect value.
      */
     public Integer peakMinutesToWaitOnDisconnect() {
@@ -334,7 +384,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the peakMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the desired session
      * handling action when a user disconnects during the peak period.
-     *
+     * 
      * @param peakMinutesToWaitOnDisconnect the peakMinutesToWaitOnDisconnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -348,7 +398,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the peakActionOnLogoff property: Action to be taken after a logoff during the peak period.
-     *
+     * 
      * @return the peakActionOnLogoff value.
      */
     public SessionHandlingOperation peakActionOnLogoff() {
@@ -357,7 +407,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the peakActionOnLogoff property: Action to be taken after a logoff during the peak period.
-     *
+     * 
      * @param peakActionOnLogoff the peakActionOnLogoff value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -372,7 +422,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the peakMinutesToWaitOnLogoff property: The time in minutes to wait before performing the desired session
      * handling action when a user logs off during the peak period.
-     *
+     * 
      * @return the peakMinutesToWaitOnLogoff value.
      */
     public Integer peakMinutesToWaitOnLogoff() {
@@ -382,7 +432,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the peakMinutesToWaitOnLogoff property: The time in minutes to wait before performing the desired session
      * handling action when a user logs off during the peak period.
-     *
+     * 
      * @param peakMinutesToWaitOnLogoff the peakMinutesToWaitOnLogoff value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -396,7 +446,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the rampDownStartTime property: Starting time for ramp down period.
-     *
+     * 
      * @return the rampDownStartTime value.
      */
     public Time rampDownStartTime() {
@@ -405,7 +455,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the rampDownStartTime property: Starting time for ramp down period.
-     *
+     * 
      * @param rampDownStartTime the rampDownStartTime value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -420,7 +470,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the rampDownStartVMOnConnect property: The desired configuration of Start VM On Connect for the hostpool
      * during the ramp down phase.
-     *
+     * 
      * @return the rampDownStartVMOnConnect value.
      */
     public SetStartVMOnConnect rampDownStartVMOnConnect() {
@@ -430,7 +480,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the rampDownStartVMOnConnect property: The desired configuration of Start VM On Connect for the hostpool
      * during the ramp down phase.
-     *
+     * 
      * @param rampDownStartVMOnConnect the rampDownStartVMOnConnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -445,7 +495,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the rampDownActionOnDisconnect property: Action to be taken after a user disconnect during the ramp down
      * period.
-     *
+     * 
      * @return the rampDownActionOnDisconnect value.
      */
     public SessionHandlingOperation rampDownActionOnDisconnect() {
@@ -455,12 +505,12 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the rampDownActionOnDisconnect property: Action to be taken after a user disconnect during the ramp down
      * period.
-     *
+     * 
      * @param rampDownActionOnDisconnect the rampDownActionOnDisconnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
-    public ScalingPlanPersonalScheduleInner withRampDownActionOnDisconnect(
-        SessionHandlingOperation rampDownActionOnDisconnect) {
+    public ScalingPlanPersonalScheduleInner
+        withRampDownActionOnDisconnect(SessionHandlingOperation rampDownActionOnDisconnect) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScalingPlanPersonalScheduleProperties();
         }
@@ -471,7 +521,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the rampDownMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the desired
      * session handling action when a user disconnects during the ramp down period.
-     *
+     * 
      * @return the rampDownMinutesToWaitOnDisconnect value.
      */
     public Integer rampDownMinutesToWaitOnDisconnect() {
@@ -481,12 +531,12 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the rampDownMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the desired
      * session handling action when a user disconnects during the ramp down period.
-     *
+     * 
      * @param rampDownMinutesToWaitOnDisconnect the rampDownMinutesToWaitOnDisconnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
-    public ScalingPlanPersonalScheduleInner withRampDownMinutesToWaitOnDisconnect(
-        Integer rampDownMinutesToWaitOnDisconnect) {
+    public ScalingPlanPersonalScheduleInner
+        withRampDownMinutesToWaitOnDisconnect(Integer rampDownMinutesToWaitOnDisconnect) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScalingPlanPersonalScheduleProperties();
         }
@@ -496,7 +546,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the rampDownActionOnLogoff property: Action to be taken after a logoff during the ramp down period.
-     *
+     * 
      * @return the rampDownActionOnLogoff value.
      */
     public SessionHandlingOperation rampDownActionOnLogoff() {
@@ -505,12 +555,12 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the rampDownActionOnLogoff property: Action to be taken after a logoff during the ramp down period.
-     *
+     * 
      * @param rampDownActionOnLogoff the rampDownActionOnLogoff value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
-    public ScalingPlanPersonalScheduleInner withRampDownActionOnLogoff(
-        SessionHandlingOperation rampDownActionOnLogoff) {
+    public ScalingPlanPersonalScheduleInner
+        withRampDownActionOnLogoff(SessionHandlingOperation rampDownActionOnLogoff) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScalingPlanPersonalScheduleProperties();
         }
@@ -521,7 +571,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the rampDownMinutesToWaitOnLogoff property: The time in minutes to wait before performing the desired session
      * handling action when a user logs off during the ramp down period.
-     *
+     * 
      * @return the rampDownMinutesToWaitOnLogoff value.
      */
     public Integer rampDownMinutesToWaitOnLogoff() {
@@ -531,7 +581,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the rampDownMinutesToWaitOnLogoff property: The time in minutes to wait before performing the desired session
      * handling action when a user logs off during the ramp down period.
-     *
+     * 
      * @param rampDownMinutesToWaitOnLogoff the rampDownMinutesToWaitOnLogoff value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -545,7 +595,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the offPeakStartTime property: Starting time for off-peak period.
-     *
+     * 
      * @return the offPeakStartTime value.
      */
     public Time offPeakStartTime() {
@@ -554,7 +604,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the offPeakStartTime property: Starting time for off-peak period.
-     *
+     * 
      * @param offPeakStartTime the offPeakStartTime value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -569,7 +619,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the offPeakStartVMOnConnect property: The desired configuration of Start VM On Connect for the hostpool
      * during the off-peak phase.
-     *
+     * 
      * @return the offPeakStartVMOnConnect value.
      */
     public SetStartVMOnConnect offPeakStartVMOnConnect() {
@@ -579,7 +629,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the offPeakStartVMOnConnect property: The desired configuration of Start VM On Connect for the hostpool
      * during the off-peak phase.
-     *
+     * 
      * @param offPeakStartVMOnConnect the offPeakStartVMOnConnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -594,7 +644,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the offPeakActionOnDisconnect property: Action to be taken after a user disconnect during the off-peak
      * period.
-     *
+     * 
      * @return the offPeakActionOnDisconnect value.
      */
     public SessionHandlingOperation offPeakActionOnDisconnect() {
@@ -604,12 +654,12 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the offPeakActionOnDisconnect property: Action to be taken after a user disconnect during the off-peak
      * period.
-     *
+     * 
      * @param offPeakActionOnDisconnect the offPeakActionOnDisconnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
-    public ScalingPlanPersonalScheduleInner withOffPeakActionOnDisconnect(
-        SessionHandlingOperation offPeakActionOnDisconnect) {
+    public ScalingPlanPersonalScheduleInner
+        withOffPeakActionOnDisconnect(SessionHandlingOperation offPeakActionOnDisconnect) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScalingPlanPersonalScheduleProperties();
         }
@@ -620,7 +670,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the offPeakMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the desired
      * session handling action when a user disconnects during the off-peak period.
-     *
+     * 
      * @return the offPeakMinutesToWaitOnDisconnect value.
      */
     public Integer offPeakMinutesToWaitOnDisconnect() {
@@ -630,12 +680,12 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the offPeakMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the desired
      * session handling action when a user disconnects during the off-peak period.
-     *
+     * 
      * @param offPeakMinutesToWaitOnDisconnect the offPeakMinutesToWaitOnDisconnect value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
-    public ScalingPlanPersonalScheduleInner withOffPeakMinutesToWaitOnDisconnect(
-        Integer offPeakMinutesToWaitOnDisconnect) {
+    public ScalingPlanPersonalScheduleInner
+        withOffPeakMinutesToWaitOnDisconnect(Integer offPeakMinutesToWaitOnDisconnect) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScalingPlanPersonalScheduleProperties();
         }
@@ -645,7 +695,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Get the offPeakActionOnLogoff property: Action to be taken after a logoff during the off-peak period.
-     *
+     * 
      * @return the offPeakActionOnLogoff value.
      */
     public SessionHandlingOperation offPeakActionOnLogoff() {
@@ -654,7 +704,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Set the offPeakActionOnLogoff property: Action to be taken after a logoff during the off-peak period.
-     *
+     * 
      * @param offPeakActionOnLogoff the offPeakActionOnLogoff value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -669,7 +719,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Get the offPeakMinutesToWaitOnLogoff property: The time in minutes to wait before performing the desired session
      * handling action when a user logs off during the off-peak period.
-     *
+     * 
      * @return the offPeakMinutesToWaitOnLogoff value.
      */
     public Integer offPeakMinutesToWaitOnLogoff() {
@@ -679,7 +729,7 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
     /**
      * Set the offPeakMinutesToWaitOnLogoff property: The time in minutes to wait before performing the desired session
      * handling action when a user logs off during the off-peak period.
-     *
+     * 
      * @param offPeakMinutesToWaitOnLogoff the offPeakMinutesToWaitOnLogoff value to set.
      * @return the ScalingPlanPersonalScheduleInner object itself.
      */
@@ -693,19 +743,65 @@ public final class ScalingPlanPersonalScheduleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ScalingPlanPersonalScheduleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ScalingPlanPersonalScheduleInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScalingPlanPersonalScheduleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScalingPlanPersonalScheduleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScalingPlanPersonalScheduleInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScalingPlanPersonalScheduleInner.
+     */
+    public static ScalingPlanPersonalScheduleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScalingPlanPersonalScheduleInner deserializedScalingPlanPersonalScheduleInner
+                = new ScalingPlanPersonalScheduleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScalingPlanPersonalScheduleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScalingPlanPersonalScheduleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScalingPlanPersonalScheduleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScalingPlanPersonalScheduleInner.innerProperties
+                        = ScalingPlanPersonalScheduleProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedScalingPlanPersonalScheduleInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScalingPlanPersonalScheduleInner;
+        });
+    }
 }

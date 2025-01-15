@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -154,6 +155,9 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -196,11 +200,11 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
                     deserializedEventGridMqttClientCreatedOrUpdatedEventData.state
                         = EventGridMqttClientState.fromString(reader.getString());
                 } else if ("createdOn".equals(fieldName)) {
-                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.createdOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("updatedOn".equals(fieldName)) {
-                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.updatedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.updatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("attributes".equals(fieldName)) {
                     Map<String, String> attributes = reader.readMap(reader1 -> reader1.getString());
                     deserializedEventGridMqttClientCreatedOrUpdatedEventData.attributes = attributes;

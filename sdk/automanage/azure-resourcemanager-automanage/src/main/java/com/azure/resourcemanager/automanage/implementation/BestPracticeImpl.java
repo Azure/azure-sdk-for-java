@@ -7,14 +7,15 @@ package com.azure.resourcemanager.automanage.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.automanage.fluent.models.BestPracticeInner;
 import com.azure.resourcemanager.automanage.models.BestPractice;
+import com.azure.resourcemanager.automanage.models.ConfigurationProfileProperties;
 
 public final class BestPracticeImpl implements BestPractice {
     private BestPracticeInner innerObject;
 
     private final com.azure.resourcemanager.automanage.AutomanageManager serviceManager;
 
-    BestPracticeImpl(
-        BestPracticeInner innerObject, com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
+    BestPracticeImpl(BestPracticeInner innerObject,
+        com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -31,12 +32,12 @@ public final class BestPracticeImpl implements BestPractice {
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public ConfigurationProfileProperties properties() {
+        return this.innerModel().properties();
     }
 
-    public Object configuration() {
-        return this.innerModel().configuration();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public BestPracticeInner innerModel() {

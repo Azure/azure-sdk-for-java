@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.guava25.base.Splitter;
@@ -78,6 +79,8 @@ public final class DiagnosticsProvider {
     private static final
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
             ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static final ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor
+        = ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiagnosticsProvider.class);
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -261,12 +264,16 @@ public final class DiagnosticsProvider {
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
+        Long opCountPerEvaluation,
+        Long opRetriedCountPerEvaluation,
+        Long globalOpCount,
+        Integer targetMaxMicroBatchSize,
         CosmosDiagnostics diagnostics,
         boolean isSampledOut
     ) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, diagnostics, isSampledOut);
+            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, opCountPerEvaluation, opRetriedCountPerEvaluation, globalOpCount, targetMaxMicroBatchSize, diagnostics, isSampledOut);
         } catch (Throwable error) {
             this.handleErrors(error, 9901);
         }
@@ -278,6 +285,10 @@ public final class DiagnosticsProvider {
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
+        Long opCountPerEvaluation,
+        Long opRetriedCountPerEvaluation,
+        Long globalOpCount,
+        Integer targetMaxMicroBatchSize,
         CosmosDiagnostics diagnostics,
         boolean isSampledOut
     ) {
@@ -296,6 +307,10 @@ public final class DiagnosticsProvider {
                     0,
                     actualItemCount,
                     requestCharge,
+                    opCountPerEvaluation,
+                    opRetriedCountPerEvaluation,
+                    globalOpCount,
+                    targetMaxMicroBatchSize,
                     diagnostics,
                     null,
                     context,
@@ -309,6 +324,10 @@ public final class DiagnosticsProvider {
                     0,
                     actualItemCount,
                     requestCharge,
+                    opCountPerEvaluation,
+                    opRetriedCountPerEvaluation,
+                    globalOpCount,
+                    targetMaxMicroBatchSize,
                     diagnostics,
                     null,
                     context,
@@ -345,6 +364,10 @@ public final class DiagnosticsProvider {
                     subStatusCode,
                     actualItemCount,
                     effectiveRequestCharge,
+                    opCountPerEvaluation,
+                    opRetriedCountPerEvaluation,
+                    globalOpCount,
+                    targetMaxMicroBatchSize,
                     effectiveDiagnostics,
                     throwable,
                     context,
@@ -377,9 +400,11 @@ public final class DiagnosticsProvider {
                 statusCode,
                 subStatusCode,
                 null,
-
                 effectiveRequestCharge,
-
+                0L,
+                0L,
+                0L,
+                0,
                 effectiveDiagnostics,
                 throwable,
                 context,
@@ -399,6 +424,10 @@ public final class DiagnosticsProvider {
                 0,
                 null,
                 null,
+                0L,
+                0L,
+                0L,
+                0,
                 null,
                 null,
                 context,
@@ -555,6 +584,10 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
+            r -> 0L,
+            r -> 0L,
+            r -> 0L,
+            r -> 0,
             requestOptions,
             null);
     }
@@ -600,6 +633,10 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
+            cosmosBatchResponseAccessor::getOpCountPerEvaluation,
+            cosmosBatchResponseAccessor::getRetriedOpCountPerEvaluation,
+            cosmosBatchResponseAccessor::getGlobalOpCount,
+            cosmosBatchResponseAccessor::getTargetMaxMicroBatchSize,
             requestOptions,
             null);
     }
@@ -646,6 +683,10 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
+            r -> 0L,
+            r -> 0L,
+            r -> 0L,
+            r -> 0,
             requestOptions,
             null);
     }
@@ -697,6 +738,10 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
+            r -> 0L,
+            r -> 0L,
+            r -> 0L,
+            r -> 0,
             requestOptions,
             ctx
         );
@@ -815,8 +860,12 @@ public final class DiagnosticsProvider {
       Function<T, Integer> statusCodeFunc,
       Function<T, Integer> actualItemCountFunc,
       Function<T, Double> requestChargeFunc,
-      BiFunction<T, Double, CosmosDiagnostics> diagnosticsFunc
-    ) {
+      BiFunction<T, Double, CosmosDiagnostics> diagnosticsFunc,
+      Function<T, Long> opCountPerEvaluationPeriodFunc,
+      Function<T, Long> opRetriedCountPerEvaluationPeriodFunc,
+      Function<T, Long> globalOpCountPerEvaluationPeriodFunc,
+      Function<T, Integer> targetMaxMicroBatchSizeFunc) {
+
         final double samplingRateSnapshot =  isEnabled() ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig) : 0;
         final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
         if (cosmosCtx != null) {
@@ -845,6 +894,10 @@ public final class DiagnosticsProvider {
                             statusCodeFunc.apply(response),
                             actualItemCountFunc.apply(response),
                             requestChargeFunc.apply(response),
+                            opCountPerEvaluationPeriodFunc.apply(response),
+                            opRetriedCountPerEvaluationPeriodFunc.apply(response),
+                            globalOpCountPerEvaluationPeriodFunc.apply(response),
+                            targetMaxMicroBatchSizeFunc.apply(response),
                             diagnosticsFunc.apply(response, samplingRateSnapshot),
                             isSampledOut);
                         break;
@@ -855,6 +908,10 @@ public final class DiagnosticsProvider {
                             signal,
                             cosmosCtx,
                             ERROR_CODE,
+                            null,
+                            null,
+                            null,
+                            null,
                             null,
                             null,
                             null,
@@ -882,6 +939,10 @@ public final class DiagnosticsProvider {
                                                  Function<T, Integer> actualItemCountFunc,
                                                  Function<T, Double> requestChargeFunc,
                                                  BiFunction<T, Double, CosmosDiagnostics> diagnosticFunc,
+                                                 Function<T, Long> opCountPerEvaluationPeriodFunc,
+                                                 Function<T, Long> opRetriedCountPerEvaluationPeriodFunc,
+                                                 Function<T, Long> globalOpCountPerEvaluationPeriodFunc,
+                                                 Function<T, Integer> targetMaxMicroBatchSizeFunc,
                                                  RequestOptions requestOptions,
                                                  CosmosDiagnosticsContext cosmosCtxFromUpstream) {
 
@@ -922,7 +983,11 @@ public final class DiagnosticsProvider {
             statusCodeFunc,
             actualItemCountFunc,
             requestChargeFunc,
-            diagnosticFunc);
+            diagnosticFunc,
+            opCountPerEvaluationPeriodFunc,
+            opRetriedCountPerEvaluationPeriodFunc,
+            globalOpCountPerEvaluationPeriodFunc,
+            targetMaxMicroBatchSizeFunc);
     }
 
     private void end(
@@ -931,6 +996,10 @@ public final class DiagnosticsProvider {
         int subStatusCode,
         Integer actualItemCount,
         Double requestCharge,
+        Long opCountPerEvaluation,
+        Long opRetriedCountPerEvaluation,
+        Long globalOpCount,
+        Integer targetMaxMicroBatchSize,
         CosmosDiagnostics diagnostics,
         Throwable throwable,
         Context context,
@@ -946,6 +1015,10 @@ public final class DiagnosticsProvider {
             subStatusCode,
             actualItemCount,
             requestCharge,
+            opCountPerEvaluation,
+            opRetriedCountPerEvaluation,
+            globalOpCount,
+            targetMaxMicroBatchSize,
             diagnostics,
             throwable)) {
 
@@ -1640,12 +1713,9 @@ public final class DiagnosticsProvider {
         // there is no mapping, handle error
         if (this.shouldSystemExitOnError) {
             LOGGER.error("Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit({})...", systemExitCode, error);
-            System.err.println(
-                String.format(
-                    "Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit(%d)... %s",
-                    systemExitCode,
-                    error)
-            );
+            System.err.printf("Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit(%d)... %s%n",
+                systemExitCode,
+                error);
 
             System.exit(systemExitCode);
         } else {

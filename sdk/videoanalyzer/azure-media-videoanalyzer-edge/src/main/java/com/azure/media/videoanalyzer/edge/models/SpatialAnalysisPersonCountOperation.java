@@ -5,10 +5,10 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,83 +16,192 @@ import java.util.List;
  * to be deployed alongside the Video Analyzer module, please see https://aka.ms/ava-spatial-analysis for more
  * information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-@JsonTypeName("#Microsoft.VideoAnalyzer.SpatialAnalysisPersonCountOperation")
 @Fluent
 public final class SpatialAnalysisPersonCountOperation extends SpatialAnalysisTypedOperationBase {
     /*
+     * The Type discriminator for the derived types.
+     */
+    private String type = "#Microsoft.VideoAnalyzer.SpatialAnalysisPersonCountOperation";
+
+    /*
      * The list of zones and optional events.
      */
-    @JsonProperty(value = "zones", required = true)
-    private List<SpatialAnalysisPersonCountZoneEvents> zones;
+    private final List<SpatialAnalysisPersonCountZoneEvents> zones;
 
     /**
      * Creates an instance of SpatialAnalysisPersonCountOperation class.
-     *
+     * 
      * @param zones the zones value to set.
      */
-    @JsonCreator
-    public SpatialAnalysisPersonCountOperation(
-            @JsonProperty(value = "zones", required = true) List<SpatialAnalysisPersonCountZoneEvents> zones) {
+    public SpatialAnalysisPersonCountOperation(List<SpatialAnalysisPersonCountZoneEvents> zones) {
         this.zones = zones;
     }
 
     /**
+     * Get the type property: The Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Get the zones property: The list of zones and optional events.
-     *
+     * 
      * @return the zones value.
      */
     public List<SpatialAnalysisPersonCountZoneEvents> getZones() {
         return this.zones;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonCountOperation setDebug(String debug) {
         super.setDebug(debug);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonCountOperation setCalibrationConfiguration(String calibrationConfiguration) {
         super.setCalibrationConfiguration(calibrationConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonCountOperation setCameraConfiguration(String cameraConfiguration) {
         super.setCameraConfiguration(cameraConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public SpatialAnalysisPersonCountOperation setCameraCalibratorNodeConfiguration(
-            String cameraCalibratorNodeConfiguration) {
+    public SpatialAnalysisPersonCountOperation
+        setCameraCalibratorNodeConfiguration(String cameraCalibratorNodeConfiguration) {
         super.setCameraCalibratorNodeConfiguration(cameraCalibratorNodeConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonCountOperation setDetectorNodeConfiguration(String detectorNodeConfiguration) {
         super.setDetectorNodeConfiguration(detectorNodeConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonCountOperation setTrackerNodeConfiguration(String trackerNodeConfiguration) {
         super.setTrackerNodeConfiguration(trackerNodeConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonCountOperation setEnableFaceMaskClassifier(String enableFaceMaskClassifier) {
         super.setEnableFaceMaskClassifier(enableFaceMaskClassifier);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("debug", getDebug());
+        jsonWriter.writeStringField("calibrationConfiguration", getCalibrationConfiguration());
+        jsonWriter.writeStringField("cameraConfiguration", getCameraConfiguration());
+        jsonWriter.writeStringField("cameraCalibratorNodeConfiguration", getCameraCalibratorNodeConfiguration());
+        jsonWriter.writeStringField("detectorNodeConfiguration", getDetectorNodeConfiguration());
+        jsonWriter.writeStringField("trackerNodeConfiguration", getTrackerNodeConfiguration());
+        jsonWriter.writeStringField("enableFaceMaskClassifier", getEnableFaceMaskClassifier());
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialAnalysisPersonCountOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialAnalysisPersonCountOperation if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SpatialAnalysisPersonCountOperation.
+     */
+    public static SpatialAnalysisPersonCountOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String debug = null;
+            String calibrationConfiguration = null;
+            String cameraConfiguration = null;
+            String cameraCalibratorNodeConfiguration = null;
+            String detectorNodeConfiguration = null;
+            String trackerNodeConfiguration = null;
+            String enableFaceMaskClassifier = null;
+            boolean zonesFound = false;
+            List<SpatialAnalysisPersonCountZoneEvents> zones = null;
+            String type = "#Microsoft.VideoAnalyzer.SpatialAnalysisPersonCountOperation";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("debug".equals(fieldName)) {
+                    debug = reader.getString();
+                } else if ("calibrationConfiguration".equals(fieldName)) {
+                    calibrationConfiguration = reader.getString();
+                } else if ("cameraConfiguration".equals(fieldName)) {
+                    cameraConfiguration = reader.getString();
+                } else if ("cameraCalibratorNodeConfiguration".equals(fieldName)) {
+                    cameraCalibratorNodeConfiguration = reader.getString();
+                } else if ("detectorNodeConfiguration".equals(fieldName)) {
+                    detectorNodeConfiguration = reader.getString();
+                } else if ("trackerNodeConfiguration".equals(fieldName)) {
+                    trackerNodeConfiguration = reader.getString();
+                } else if ("enableFaceMaskClassifier".equals(fieldName)) {
+                    enableFaceMaskClassifier = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    zones = reader.readArray(reader1 -> SpatialAnalysisPersonCountZoneEvents.fromJson(reader1));
+                    zonesFound = true;
+                } else if ("@type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (zonesFound) {
+                SpatialAnalysisPersonCountOperation deserializedSpatialAnalysisPersonCountOperation
+                    = new SpatialAnalysisPersonCountOperation(zones);
+                deserializedSpatialAnalysisPersonCountOperation.setDebug(debug);
+                deserializedSpatialAnalysisPersonCountOperation.setCalibrationConfiguration(calibrationConfiguration);
+                deserializedSpatialAnalysisPersonCountOperation.setCameraConfiguration(cameraConfiguration);
+                deserializedSpatialAnalysisPersonCountOperation
+                    .setCameraCalibratorNodeConfiguration(cameraCalibratorNodeConfiguration);
+                deserializedSpatialAnalysisPersonCountOperation.setDetectorNodeConfiguration(detectorNodeConfiguration);
+                deserializedSpatialAnalysisPersonCountOperation.setTrackerNodeConfiguration(trackerNodeConfiguration);
+                deserializedSpatialAnalysisPersonCountOperation.setEnableFaceMaskClassifier(enableFaceMaskClassifier);
+                deserializedSpatialAnalysisPersonCountOperation.type = type;
+
+                return deserializedSpatialAnalysisPersonCountOperation;
+            }
+            throw new IllegalStateException("Missing required property: zones");
+        });
     }
 }

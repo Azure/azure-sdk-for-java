@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Update state of a SessionHost. */
+/**
+ * Update state of a SessionHost.
+ */
 public final class UpdateState extends ExpandableStringEnum<UpdateState> {
-    /** Static value Initial for UpdateState. */
+    /**
+     * Static value Initial for UpdateState.
+     */
     public static final UpdateState INITIAL = fromString("Initial");
 
-    /** Static value Pending for UpdateState. */
+    /**
+     * Static value Pending for UpdateState.
+     */
     public static final UpdateState PENDING = fromString("Pending");
 
-    /** Static value Started for UpdateState. */
+    /**
+     * Static value Started for UpdateState.
+     */
     public static final UpdateState STARTED = fromString("Started");
 
-    /** Static value Succeeded for UpdateState. */
+    /**
+     * Static value Succeeded for UpdateState.
+     */
     public static final UpdateState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for UpdateState. */
+    /**
+     * Static value Failed for UpdateState.
+     */
     public static final UpdateState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of UpdateState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
 
     /**
      * Creates or finds a UpdateState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpdateState.
      */
-    @JsonCreator
     public static UpdateState fromString(String name) {
         return fromString(name, UpdateState.class);
     }
 
     /**
      * Gets known UpdateState values.
-     *
+     * 
      * @return known UpdateState values.
      */
     public static Collection<UpdateState> values() {

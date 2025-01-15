@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SimPolicyResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SimPolicyResourceId model = BinaryData.fromString("{\"id\":\"ev\"}").toObject(SimPolicyResourceId.class);
-        Assertions.assertEquals("ev", model.id());
+        SimPolicyResourceId model = BinaryData.fromString("{\"id\":\"db\"}").toObject(SimPolicyResourceId.class);
+        Assertions.assertEquals("db", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SimPolicyResourceId model = new SimPolicyResourceId().withId("ev");
+        SimPolicyResourceId model = new SimPolicyResourceId().withId("db");
         model = BinaryData.fromObject(model).toObject(SimPolicyResourceId.class);
-        Assertions.assertEquals("ev", model.id());
+        Assertions.assertEquals("db", model.id());
     }
 }

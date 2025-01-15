@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class LogFileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogFileInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"sizeInKB\":5129856498527307035,\"createdTime\":\"2021-03-29T14:33:29Z\",\"lastModifiedTime\":\"2021-10-01T21:26:02Z\",\"type\":\"usue\",\"url\":\"zwdejbavor\"},\"id\":\"zdmohctbqvu\",\"name\":\"wxdndnvowgujjug\",\"type\":\"dkcglhsl\"}")
-                .toObject(LogFileInner.class);
-        Assertions.assertEquals(5129856498527307035L, model.sizeInKB());
-        Assertions.assertEquals("usue", model.typePropertiesType());
+        LogFileInner model = BinaryData.fromString(
+            "{\"properties\":{\"sizeInKB\":6981573049423863635,\"createdTime\":\"2021-06-02T09:19:15Z\",\"lastModifiedTime\":\"2021-03-02T12:24:45Z\",\"type\":\"ltyfsop\",\"url\":\"suesnzw\"},\"id\":\"ej\",\"name\":\"avo\",\"type\":\"xzdmohctb\"}")
+            .toObject(LogFileInner.class);
+        Assertions.assertEquals(6981573049423863635L, model.sizeInKB());
+        Assertions.assertEquals("ltyfsop", model.typePropertiesType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogFileInner model = new LogFileInner().withSizeInKB(5129856498527307035L).withTypePropertiesType("usue");
+        LogFileInner model = new LogFileInner().withSizeInKB(6981573049423863635L).withTypePropertiesType("ltyfsop");
         model = BinaryData.fromObject(model).toObject(LogFileInner.class);
-        Assertions.assertEquals(5129856498527307035L, model.sizeInKB());
-        Assertions.assertEquals("usue", model.typePropertiesType());
+        Assertions.assertEquals(6981573049423863635L, model.sizeInKB());
+        Assertions.assertEquals("ltyfsop", model.typePropertiesType());
     }
 }

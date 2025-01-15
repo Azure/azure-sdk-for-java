@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of identity that created the resource. */
+/**
+ * The type of identity that created the resource.
+ */
 public final class CreatedByType extends ExpandableStringEnum<CreatedByType> {
-    /** Static value User for CreatedByType. */
+    /**
+     * Static value User for CreatedByType.
+     */
     public static final CreatedByType USER = fromString("User");
 
-    /** Static value Application for CreatedByType. */
+    /**
+     * Static value Application for CreatedByType.
+     */
     public static final CreatedByType APPLICATION = fromString("Application");
 
-    /** Static value ManagedIdentity for CreatedByType. */
+    /**
+     * Static value ManagedIdentity for CreatedByType.
+     */
     public static final CreatedByType MANAGED_IDENTITY = fromString("ManagedIdentity");
 
-    /** Static value Key for CreatedByType. */
+    /**
+     * Static value Key for CreatedByType.
+     */
     public static final CreatedByType KEY = fromString("Key");
 
     /**
      * Creates a new instance of CreatedByType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class CreatedByType extends ExpandableStringEnum<CreatedByType> {
 
     /**
      * Creates or finds a CreatedByType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CreatedByType.
      */
-    @JsonCreator
     public static CreatedByType fromString(String name) {
         return fromString(name, CreatedByType.class);
     }
 
     /**
      * Gets known CreatedByType values.
-     *
+     * 
      * @return known CreatedByType values.
      */
     public static Collection<CreatedByType> values() {

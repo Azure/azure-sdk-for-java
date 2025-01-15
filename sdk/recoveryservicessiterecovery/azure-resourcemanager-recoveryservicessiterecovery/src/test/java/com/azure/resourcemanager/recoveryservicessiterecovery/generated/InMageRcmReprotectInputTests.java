@@ -23,7 +23,9 @@ public final class InMageRcmReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageRcmReprotectInput model = new InMageRcmReprotectInput().withReprotectAgentId("cwwtzqzclo")
-            .withDatastoreName("hy").withLogStorageAccountId("pgidhzgyresgzsdt").withPolicyId("byorjplb");
+            .withDatastoreName("hy")
+            .withLogStorageAccountId("pgidhzgyresgzsdt")
+            .withPolicyId("byorjplb");
         model = BinaryData.fromObject(model).toObject(InMageRcmReprotectInput.class);
         Assertions.assertEquals("cwwtzqzclo", model.reprotectAgentId());
         Assertions.assertEquals("hy", model.datastoreName());

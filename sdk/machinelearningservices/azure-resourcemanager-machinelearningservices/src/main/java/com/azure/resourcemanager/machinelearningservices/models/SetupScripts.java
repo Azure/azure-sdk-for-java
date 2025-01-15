@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Details of customized scripts to execute for setting up the cluster. */
 @Fluent
 public final class SetupScripts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SetupScripts.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SetupScripts.class);
 
     /*
      * Customized setup scripts

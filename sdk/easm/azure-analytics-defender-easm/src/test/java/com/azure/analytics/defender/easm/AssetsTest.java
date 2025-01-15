@@ -14,30 +14,38 @@ public class AssetsTest extends EasmClientTestBase {
     private String assetKind = "domain";
     private String filter = "name = " + assetName + " and type = " + assetKind;
     private String assetId = assetKind + "$$" + "kumc.edu";
+
     private Class<?> getAssetResourceClass(String kind) {
         switch (kind) {
             case "as":
                 return AsAssetResource.class;
+
             case "contact":
                 return ContactAssetResource.class;
+
             case "domain":
                 return DomainAssetResource.class;
+
             case "host":
                 return HostAssetResource.class;
+
             case "ipAddress":
                 return IpAddressAssetResource.class;
+
             case "ipBlock":
                 return IpBlockAssetResource.class;
+
             case "page":
                 return PageAssetResource.class;
+
             case "sslCert":
                 return SslCertAssetResource.class;
+
             default:
                 return null;
 
         }
     }
-
 
     @Test
     public void testAssetsListWithResponse() {
@@ -56,6 +64,7 @@ public class AssetsTest extends EasmClientTestBase {
         assertEquals(TaskPhase.COMPLETE, taskResponse.getPhase());
         //assertTrue(taskResponse.getId().matches(UUID_REGEX));
     }
+
     //
     @Test
     public void testAssetsGetWithResponse() {

@@ -13,22 +13,23 @@ public final class AzureBlobFSSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSSink model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobFSSink\",\"copyBehavior\":\"datat\",\"metadata\":[{\"name\":\"datawzjycg\",\"value\":\"dataeagxikzvnghtknrw\"},{\"name\":\"dataysnmy\",\"value\":\"datafmlcnrapxw\"},{\"name\":\"datapxoelfobehr\",\"value\":\"dataglojjcziytf\"}],\"writeBatchSize\":\"datavirmbr\",\"writeBatchTimeout\":\"datagnqa\",\"sinkRetryCount\":\"datak\",\"sinkRetryWait\":\"datafyb\",\"maxConcurrentConnections\":\"datadzvuhw\",\"disableMetricsCollection\":\"datanazjvyiiezdnez\",\"\":{\"rm\":\"datazd\"}}")
+            "{\"type\":\"AzureBlobFSSink\",\"copyBehavior\":\"datazmrlprbclj\",\"metadata\":[{\"name\":\"dataawnz\",\"value\":\"datafvefskjbasmrdpb\"},{\"name\":\"dataqusv\",\"value\":\"datagfzbykap\"},{\"name\":\"dataomc\",\"value\":\"datam\"},{\"name\":\"datadtg\",\"value\":\"datayubnwymyewbfoxw\"}],\"writeBatchSize\":\"dataetj\",\"writeBatchTimeout\":\"datajbahx\",\"sinkRetryCount\":\"dataddpbt\",\"sinkRetryWait\":\"datardj\",\"maxConcurrentConnections\":\"datacrmptjsixawipj\",\"disableMetricsCollection\":\"datacyxnza\",\"\":{\"dvapoh\":\"datavbkhgdzrc\"}}")
             .toObject(AzureBlobFSSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSSink model = new AzureBlobFSSink().withWriteBatchSize("datavirmbr")
-            .withWriteBatchTimeout("datagnqa")
-            .withSinkRetryCount("datak")
-            .withSinkRetryWait("datafyb")
-            .withMaxConcurrentConnections("datadzvuhw")
-            .withDisableMetricsCollection("datanazjvyiiezdnez")
-            .withCopyBehavior("datat")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datawzjycg").withValue("dataeagxikzvnghtknrw"),
-                new MetadataItem().withName("dataysnmy").withValue("datafmlcnrapxw"),
-                new MetadataItem().withName("datapxoelfobehr").withValue("dataglojjcziytf")));
+        AzureBlobFSSink model = new AzureBlobFSSink().withWriteBatchSize("dataetj")
+            .withWriteBatchTimeout("datajbahx")
+            .withSinkRetryCount("dataddpbt")
+            .withSinkRetryWait("datardj")
+            .withMaxConcurrentConnections("datacrmptjsixawipj")
+            .withDisableMetricsCollection("datacyxnza")
+            .withCopyBehavior("datazmrlprbclj")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("dataawnz").withValue("datafvefskjbasmrdpb"),
+                new MetadataItem().withName("dataqusv").withValue("datagfzbykap"),
+                new MetadataItem().withName("dataomc").withValue("datam"),
+                new MetadataItem().withName("datadtg").withValue("datayubnwymyewbfoxw")));
         model = BinaryData.fromObject(model).toObject(AzureBlobFSSink.class);
     }
 }

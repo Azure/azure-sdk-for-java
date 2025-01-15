@@ -6,37 +6,42 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Class of paths for streaming. */
+/**
+ * Class of paths for streaming.
+ */
 @Fluent
-public final class StreamingPath {
+public final class StreamingPath implements JsonSerializable<StreamingPath> {
     /*
      * Streaming protocol
      */
-    @JsonProperty(value = "streamingProtocol", required = true)
     private StreamingPolicyStreamingProtocol streamingProtocol;
 
     /*
      * Encryption scheme
      */
-    @JsonProperty(value = "encryptionScheme", required = true)
     private EncryptionScheme encryptionScheme;
 
     /*
      * Streaming paths for each protocol and encryptionScheme pair
      */
-    @JsonProperty(value = "paths")
     private List<String> paths;
 
-    /** Creates an instance of StreamingPath class. */
+    /**
+     * Creates an instance of StreamingPath class.
+     */
     public StreamingPath() {
     }
 
     /**
      * Get the streamingProtocol property: Streaming protocol.
-     *
+     * 
      * @return the streamingProtocol value.
      */
     public StreamingPolicyStreamingProtocol streamingProtocol() {
@@ -45,7 +50,7 @@ public final class StreamingPath {
 
     /**
      * Set the streamingProtocol property: Streaming protocol.
-     *
+     * 
      * @param streamingProtocol the streamingProtocol value to set.
      * @return the StreamingPath object itself.
      */
@@ -56,7 +61,7 @@ public final class StreamingPath {
 
     /**
      * Get the encryptionScheme property: Encryption scheme.
-     *
+     * 
      * @return the encryptionScheme value.
      */
     public EncryptionScheme encryptionScheme() {
@@ -65,7 +70,7 @@ public final class StreamingPath {
 
     /**
      * Set the encryptionScheme property: Encryption scheme.
-     *
+     * 
      * @param encryptionScheme the encryptionScheme value to set.
      * @return the StreamingPath object itself.
      */
@@ -76,7 +81,7 @@ public final class StreamingPath {
 
     /**
      * Get the paths property: Streaming paths for each protocol and encryptionScheme pair.
-     *
+     * 
      * @return the paths value.
      */
     public List<String> paths() {
@@ -85,7 +90,7 @@ public final class StreamingPath {
 
     /**
      * Set the paths property: Streaming paths for each protocol and encryptionScheme pair.
-     *
+     * 
      * @param paths the paths value to set.
      * @return the StreamingPath object itself.
      */
@@ -96,21 +101,67 @@ public final class StreamingPath {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (streamingProtocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property streamingProtocol in model StreamingPath"));
         }
         if (encryptionScheme() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property encryptionScheme in model StreamingPath"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property encryptionScheme in model StreamingPath"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StreamingPath.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("streamingProtocol",
+            this.streamingProtocol == null ? null : this.streamingProtocol.toString());
+        jsonWriter.writeStringField("encryptionScheme",
+            this.encryptionScheme == null ? null : this.encryptionScheme.toString());
+        jsonWriter.writeArrayField("paths", this.paths, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamingPath from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamingPath if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StreamingPath.
+     */
+    public static StreamingPath fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamingPath deserializedStreamingPath = new StreamingPath();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("streamingProtocol".equals(fieldName)) {
+                    deserializedStreamingPath.streamingProtocol
+                        = StreamingPolicyStreamingProtocol.fromString(reader.getString());
+                } else if ("encryptionScheme".equals(fieldName)) {
+                    deserializedStreamingPath.encryptionScheme = EncryptionScheme.fromString(reader.getString());
+                } else if ("paths".equals(fieldName)) {
+                    List<String> paths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStreamingPath.paths = paths;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamingPath;
+        });
+    }
 }

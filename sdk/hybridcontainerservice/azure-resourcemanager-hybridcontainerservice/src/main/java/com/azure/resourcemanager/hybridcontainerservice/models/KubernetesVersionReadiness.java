@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Indicates whether the kubernetes version image is ready or not.
  */
 @Fluent
-public final class KubernetesVersionReadiness {
+public final class KubernetesVersionReadiness implements JsonSerializable<KubernetesVersionReadiness> {
     /*
      * The particular KubernetesVersion Image OS Type (Linux, Windows)
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
 
     /*
      * Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is Linux. The default is
      * Windows2019 when OSType is Windows.
      */
-    @JsonProperty(value = "osSku")
     private Ossku osSku;
 
     /*
      * Whether the kubernetes version image is ready or not
      */
-    @JsonProperty(value = "ready", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean ready;
 
     /*
      * The error message for version not being ready
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /**
@@ -98,5 +98,47 @@ public final class KubernetesVersionReadiness {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osSku", this.osSku == null ? null : this.osSku.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesVersionReadiness from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesVersionReadiness if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesVersionReadiness.
+     */
+    public static KubernetesVersionReadiness fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesVersionReadiness deserializedKubernetesVersionReadiness = new KubernetesVersionReadiness();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedKubernetesVersionReadiness.osType = OsType.fromString(reader.getString());
+                } else if ("osSku".equals(fieldName)) {
+                    deserializedKubernetesVersionReadiness.osSku = Ossku.fromString(reader.getString());
+                } else if ("ready".equals(fieldName)) {
+                    deserializedKubernetesVersionReadiness.ready = reader.getNullable(JsonReader::getBoolean);
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedKubernetesVersionReadiness.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesVersionReadiness;
+        });
     }
 }

@@ -44,8 +44,8 @@ public interface LivePipelinesClient {
      * @return a collection of LivePipeline items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LivePipelineInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context);
+    PagedIterable<LivePipelineInner> list(String resourceGroupName, String accountName, String filter, Integer top,
+        Context context);
 
     /**
      * Retrieves a specific live pipeline by name. If a live pipeline with that name has been previously created, the
@@ -78,8 +78,8 @@ public interface LivePipelinesClient {
      *     and publishing of content for a unique RTSP camera along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LivePipelineInner> getWithResponse(
-        String resourceGroupName, String accountName, String livePipelineName, Context context);
+    Response<LivePipelineInner> getWithResponse(String resourceGroupName, String accountName, String livePipelineName,
+        Context context);
 
     /**
      * Creates a new live pipeline or updates an existing one, with the given name.
@@ -95,8 +95,8 @@ public interface LivePipelinesClient {
      *     and publishing of content for a unique RTSP camera.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LivePipelineInner createOrUpdate(
-        String resourceGroupName, String accountName, String livePipelineName, LivePipelineInner parameters);
+    LivePipelineInner createOrUpdate(String resourceGroupName, String accountName, String livePipelineName,
+        LivePipelineInner parameters);
 
     /**
      * Creates a new live pipeline or updates an existing one, with the given name.
@@ -113,12 +113,8 @@ public interface LivePipelinesClient {
      *     and publishing of content for a unique RTSP camera along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LivePipelineInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String livePipelineName,
-        LivePipelineInner parameters,
-        Context context);
+    Response<LivePipelineInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String livePipelineName, LivePipelineInner parameters, Context context);
 
     /**
      * Deletes a live pipeline with the given name.
@@ -146,8 +142,8 @@ public interface LivePipelinesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String livePipelineName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String livePipelineName,
+        Context context);
 
     /**
      * Updates an existing live pipeline with the given name. Properties that can be updated include: description,
@@ -164,8 +160,8 @@ public interface LivePipelinesClient {
      *     and publishing of content for a unique RTSP camera.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LivePipelineInner update(
-        String resourceGroupName, String accountName, String livePipelineName, LivePipelineUpdate parameters);
+    LivePipelineInner update(String resourceGroupName, String accountName, String livePipelineName,
+        LivePipelineUpdate parameters);
 
     /**
      * Updates an existing live pipeline with the given name. Properties that can be updated include: description,
@@ -183,12 +179,8 @@ public interface LivePipelinesClient {
      *     and publishing of content for a unique RTSP camera along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LivePipelineInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String livePipelineName,
-        LivePipelineUpdate parameters,
-        Context context);
+    Response<LivePipelineInner> updateWithResponse(String resourceGroupName, String accountName,
+        String livePipelineName, LivePipelineUpdate parameters, Context context);
 
     /**
      * Activates a live pipeline with the given name.
@@ -202,8 +194,8 @@ public interface LivePipelinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginActivate(
-        String resourceGroupName, String accountName, String livePipelineName);
+    SyncPoller<PollResult<Void>, Void> beginActivate(String resourceGroupName, String accountName,
+        String livePipelineName);
 
     /**
      * Activates a live pipeline with the given name.
@@ -218,8 +210,8 @@ public interface LivePipelinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginActivate(
-        String resourceGroupName, String accountName, String livePipelineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginActivate(String resourceGroupName, String accountName,
+        String livePipelineName, Context context);
 
     /**
      * Activates a live pipeline with the given name.
@@ -260,8 +252,8 @@ public interface LivePipelinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeactivate(
-        String resourceGroupName, String accountName, String livePipelineName);
+    SyncPoller<PollResult<Void>, Void> beginDeactivate(String resourceGroupName, String accountName,
+        String livePipelineName);
 
     /**
      * Deactivates a live pipeline with the given name.
@@ -276,8 +268,8 @@ public interface LivePipelinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeactivate(
-        String resourceGroupName, String accountName, String livePipelineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeactivate(String resourceGroupName, String accountName,
+        String livePipelineName, Context context);
 
     /**
      * Deactivates a live pipeline with the given name.

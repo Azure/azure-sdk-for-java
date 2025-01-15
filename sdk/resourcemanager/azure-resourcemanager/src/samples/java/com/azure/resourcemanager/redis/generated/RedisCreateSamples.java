@@ -10,6 +10,7 @@ import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.SkuFamily;
 import com.azure.resourcemanager.redis.models.SkuName;
 import com.azure.resourcemanager.redis.models.TlsVersion;
+import com.azure.resourcemanager.redis.models.ZonalAllocationPolicy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +20,68 @@ import java.util.Map;
  */
 public final class RedisCreateSamples {
     /*
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/
+     * RedisCacheCreateAutomaticZonalAllocationPolicy.json
+     */
+    /**
+     * Sample code: RedisCacheCreateAutomaticZonalAllocationPolicy.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        redisCacheCreateAutomaticZonalAllocationPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.redisCaches()
+            .manager()
+            .serviceClient()
+            .getRedis()
+            .create("rg1", "cache1", new RedisCreateParameters().withLocation("East US")
+                .withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(1))
+                .withSubnetId(
+                    "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1")
+                .withStaticIp("192.168.0.5")
+                .withRedisConfiguration(
+                    new RedisConfiguration().withMaxmemoryPolicy("allkeys-lru").withAdditionalProperties(mapOf()))
+                .withEnableNonSslPort(true)
+                .withReplicasPerPrimary(2)
+                .withShardCount(2)
+                .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+                .withZonalAllocationPolicy(ZonalAllocationPolicy.AUTOMATIC), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/
+     * RedisCacheCreateUserDefinedZonalAllocationPolicy.json
+     */
+    /**
+     * Sample code: RedisCacheCreateUserDefinedZonalAllocationPolicy.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        redisCacheCreateUserDefinedZonalAllocationPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.redisCaches()
+            .manager()
+            .serviceClient()
+            .getRedis()
+            .create("rg1", "cache1", new RedisCreateParameters().withZones(Arrays.asList("1"))
+                .withLocation("East US")
+                .withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(1))
+                .withSubnetId(
+                    "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1")
+                .withStaticIp("192.168.0.5")
+                .withRedisConfiguration(
+                    new RedisConfiguration().withMaxmemoryPolicy("allkeys-lru").withAdditionalProperties(mapOf()))
+                .withRedisVersion("Latest")
+                .withEnableNonSslPort(true)
+                .withReplicasPerPrimary(2)
+                .withShardCount(2)
+                .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+                .withZonalAllocationPolicy(ZonalAllocationPolicy.USER_DEFINED), com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheCreate.json
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCreate.json
      */
     /**
      * Sample code: RedisCacheCreate.
@@ -33,7 +94,7 @@ public final class RedisCreateSamples {
             .serviceClient()
             .getRedis()
             .create("rg1", "cache1", new RedisCreateParameters().withZones(Arrays.asList("1"))
-                .withLocation("West US")
+                .withLocation("East US")
                 .withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(1))
                 .withSubnetId(
                     "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1")
@@ -48,8 +109,37 @@ public final class RedisCreateSamples {
     }
 
     /*
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/
+     * RedisCacheCreateNoZonesZonalAllocationPolicy.json
+     */
+    /**
+     * Sample code: RedisCacheCreateNoZonesZonalAllocationPolicy.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        redisCacheCreateNoZonesZonalAllocationPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.redisCaches()
+            .manager()
+            .serviceClient()
+            .getRedis()
+            .create("rg1", "cache1", new RedisCreateParameters().withLocation("East US")
+                .withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(1))
+                .withSubnetId(
+                    "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1")
+                .withStaticIp("192.168.0.5")
+                .withRedisConfiguration(
+                    new RedisConfiguration().withMaxmemoryPolicy("allkeys-lru").withAdditionalProperties(mapOf()))
+                .withEnableNonSslPort(true)
+                .withReplicasPerPrimary(2)
+                .withShardCount(2)
+                .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+                .withZonalAllocationPolicy(ZonalAllocationPolicy.NO_ZONES), com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheCreateDefaultVersion.
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCreateDefaultVersion.
      * json
      */
     /**
@@ -63,7 +153,7 @@ public final class RedisCreateSamples {
             .serviceClient()
             .getRedis()
             .create("rg1", "cache1", new RedisCreateParameters().withZones(Arrays.asList("1"))
-                .withLocation("West US")
+                .withLocation("East US")
                 .withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(1))
                 .withSubnetId(
                     "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1")
@@ -78,7 +168,7 @@ public final class RedisCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheCreateLatestVersion.
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCreateLatestVersion.
      * json
      */
     /**
@@ -92,7 +182,7 @@ public final class RedisCreateSamples {
             .serviceClient()
             .getRedis()
             .create("rg1", "cache1", new RedisCreateParameters().withZones(Arrays.asList("1"))
-                .withLocation("West US")
+                .withLocation("East US")
                 .withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(1))
                 .withSubnetId(
                     "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1")

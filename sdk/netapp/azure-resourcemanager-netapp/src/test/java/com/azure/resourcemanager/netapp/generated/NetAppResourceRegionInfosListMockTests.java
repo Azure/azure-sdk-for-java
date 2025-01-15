@@ -23,7 +23,7 @@ public final class NetAppResourceRegionInfosListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"bjoxs\",\"isAvailable\":false}]},\"id\":\"hlabrq\",\"name\":\"kkzjcjbtrga\",\"type\":\"hvv\"}]}";
+            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"AcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"ijouwivkxoyzunb\",\"isAvailable\":true}]},\"id\":\"ti\",\"name\":\"vcpwpgclrc\",\"type\":\"vtsoxf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class NetAppResourceRegionInfosListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RegionInfoResource> response
-            = manager.netAppResourceRegionInfos().list("y", com.azure.core.util.Context.NONE);
+            = manager.netAppResourceRegionInfos().list("tilaxh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2,
+        Assertions.assertEquals(RegionStorageToNetworkProximity.ACROSS_T2,
             response.iterator().next().storageToNetworkProximity());
-        Assertions.assertEquals("bjoxs",
+        Assertions.assertEquals("ijouwivkxoyzunb",
             response.iterator().next().availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(false, response.iterator().next().availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals(true, response.iterator().next().availabilityZoneMappings().get(0).isAvailable());
     }
 }

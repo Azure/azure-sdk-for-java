@@ -255,7 +255,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
      */
     public static class Processor extends Consumer implements ServiceBusProcessorClientProperties {
         /**
-         * Max concurrent messages to process.
+         * Max concurrent messages to process. When session enabled, it applies to each session.
          */
         private Integer maxConcurrentCalls;
         /**

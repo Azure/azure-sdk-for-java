@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for getting the Task counts for a Batch Job.
  */
 public class GetBatchJobTaskCountsOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link GetBatchJobTaskCountsOptions}.
+     */
+    public GetBatchJobTaskCountsOptions() {
+    }
 }

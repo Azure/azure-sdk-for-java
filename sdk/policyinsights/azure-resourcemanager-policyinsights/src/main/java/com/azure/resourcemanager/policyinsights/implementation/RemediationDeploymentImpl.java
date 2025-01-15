@@ -14,8 +14,7 @@ public final class RemediationDeploymentImpl implements RemediationDeployment {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    RemediationDeploymentImpl(
-        RemediationDeploymentInner innerObject,
+    RemediationDeploymentImpl(RemediationDeploymentInner innerObject,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

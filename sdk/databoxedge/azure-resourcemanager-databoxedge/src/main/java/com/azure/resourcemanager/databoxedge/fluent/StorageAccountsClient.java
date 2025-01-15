@@ -13,25 +13,27 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.models.StorageAccountInner;
 
-/** An instance of this class provides access to all the operations defined in StorageAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StorageAccountsClient.
+ */
 public interface StorageAccountsClient {
     /**
      * Lists all the storage accounts in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all the Storage Accounts on the Data Box Edge/Gateway device as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StorageAccountInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
     /**
      * Lists all the storage accounts in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -39,15 +41,15 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all the Storage Accounts on the Data Box Edge/Gateway device as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageAccountInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, Context context);
+    PagedIterable<StorageAccountInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName,
+        Context context);
 
     /**
      * Gets a StorageAccount by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The storage account name.
      * @param resourceGroupName The resource group name.
@@ -58,12 +60,12 @@ public interface StorageAccountsClient {
      * @return a StorageAccount by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageAccountInner> getWithResponse(
-        String deviceName, String storageAccountName, String resourceGroupName, Context context);
+    Response<StorageAccountInner> getWithResponse(String deviceName, String storageAccountName,
+        String resourceGroupName, Context context);
 
     /**
      * Gets a StorageAccount by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The storage account name.
      * @param resourceGroupName The resource group name.
@@ -77,7 +79,7 @@ public interface StorageAccountsClient {
 
     /**
      * Creates a new StorageAccount or updates an existing StorageAccount on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The StorageAccount name.
      * @param resourceGroupName The resource group name.
@@ -88,12 +90,12 @@ public interface StorageAccountsClient {
      * @return the {@link SyncPoller} for polling of represents a Storage Account on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateOrUpdate(
-        String deviceName, String storageAccountName, String resourceGroupName, StorageAccountInner storageAccount);
+    SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateOrUpdate(String deviceName,
+        String storageAccountName, String resourceGroupName, StorageAccountInner storageAccount);
 
     /**
      * Creates a new StorageAccount or updates an existing StorageAccount on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The StorageAccount name.
      * @param resourceGroupName The resource group name.
@@ -105,16 +107,12 @@ public interface StorageAccountsClient {
      * @return the {@link SyncPoller} for polling of represents a Storage Account on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateOrUpdate(
-        String deviceName,
-        String storageAccountName,
-        String resourceGroupName,
-        StorageAccountInner storageAccount,
-        Context context);
+    SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateOrUpdate(String deviceName,
+        String storageAccountName, String resourceGroupName, StorageAccountInner storageAccount, Context context);
 
     /**
      * Creates a new StorageAccount or updates an existing StorageAccount on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The StorageAccount name.
      * @param resourceGroupName The resource group name.
@@ -125,12 +123,12 @@ public interface StorageAccountsClient {
      * @return represents a Storage Account on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageAccountInner createOrUpdate(
-        String deviceName, String storageAccountName, String resourceGroupName, StorageAccountInner storageAccount);
+    StorageAccountInner createOrUpdate(String deviceName, String storageAccountName, String resourceGroupName,
+        StorageAccountInner storageAccount);
 
     /**
      * Creates a new StorageAccount or updates an existing StorageAccount on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The StorageAccount name.
      * @param resourceGroupName The resource group name.
@@ -142,16 +140,12 @@ public interface StorageAccountsClient {
      * @return represents a Storage Account on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageAccountInner createOrUpdate(
-        String deviceName,
-        String storageAccountName,
-        String resourceGroupName,
-        StorageAccountInner storageAccount,
-        Context context);
+    StorageAccountInner createOrUpdate(String deviceName, String storageAccountName, String resourceGroupName,
+        StorageAccountInner storageAccount, Context context);
 
     /**
      * Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The StorageAccount name.
      * @param resourceGroupName The resource group name.
@@ -161,12 +155,12 @@ public interface StorageAccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String storageAccountName, String resourceGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String storageAccountName,
+        String resourceGroupName);
 
     /**
      * Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The StorageAccount name.
      * @param resourceGroupName The resource group name.
@@ -177,12 +171,12 @@ public interface StorageAccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String storageAccountName, String resourceGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String storageAccountName,
+        String resourceGroupName, Context context);
 
     /**
      * Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The StorageAccount name.
      * @param resourceGroupName The resource group name.
@@ -195,7 +189,7 @@ public interface StorageAccountsClient {
 
     /**
      * Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The StorageAccount name.
      * @param resourceGroupName The resource group name.

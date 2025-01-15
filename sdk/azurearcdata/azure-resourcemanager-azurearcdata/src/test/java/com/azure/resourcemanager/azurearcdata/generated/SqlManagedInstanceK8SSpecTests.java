@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.azurearcdata.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.azurearcdata.models.K8SResourceRequirements;
 import com.azure.resourcemanager.azurearcdata.models.K8SScheduling;
 import com.azure.resourcemanager.azurearcdata.models.K8SSchedulingOptions;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceK8SSpec;
@@ -15,28 +16,40 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlManagedInstanceK8SSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlManagedInstanceK8SSpec model =
-            BinaryData
-                .fromString(
-                    "{\"scheduling\":{\"default\":{\"\":{\"ghmewuam\":\"dataixuigdtopbobj\"}},\"\":{\"t\":\"datarzayv\",\"ln\":\"datagvdfgiotkftutq\",\"qmi\":\"dataxlefgugnxkrx\",\"abhjybi\":\"datatthzrvqd\"}},\"replicas\":212297341,\"\":{\"zlcuiywgqywgndrv\":\"datafbowskanyk\",\"ocpecfvmmco\":\"datanhzgpphrcgyn\"}}")
-                .toObject(SqlManagedInstanceK8SSpec.class);
-        Assertions.assertEquals(212297341, model.replicas());
+        SqlManagedInstanceK8SSpec model = BinaryData.fromString(
+            "{\"scheduling\":{\"default\":{\"resources\":{\"requests\":{\"kftutqxlngxlefg\":\"vvtpgvdfgio\",\"rvqdra\":\"gnxkrxdqmidtth\",\"skanyk\":\"hjybigehoqfbo\"},\"limits\":{\"ndrvynhzg\":\"cuiywgqyw\",\"ecfvmm\":\"phrcgyncoc\",\"sxlzevgbmqj\":\"oo\",\"lzu\":\"abcypmivk\"},\"\":{\"cfionl\":\"datafwnfnb\"}},\"\":{\"qqwx\":\"dataetqgtzxdpnq\"}},\"\":{\"mpmngnzscxaqwoo\":\"dataeallnwsubisnj\",\"njeaseipheofloke\":\"datahcbonqvpkvlr\",\"enjbdlwtgrhp\":\"datay\"}},\"replicas\":469621378,\"\":{\"lhbxxhejjzzvdud\":\"datamasxazjpqyegu\",\"pwlbjnpg\":\"datawdslfhotwmcy\",\"nltyfsoppusuesnz\":\"datacftadeh\"}}")
+            .toObject(SqlManagedInstanceK8SSpec.class);
+        Assertions.assertEquals("vvtpgvdfgio",
+            model.scheduling().defaultProperty().resources().requests().get("kftutqxlngxlefg"));
+        Assertions.assertEquals("cuiywgqyw",
+            model.scheduling().defaultProperty().resources().limits().get("ndrvynhzg"));
+        Assertions.assertEquals(469621378, model.replicas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlManagedInstanceK8SSpec model =
-            new SqlManagedInstanceK8SSpec()
+        SqlManagedInstanceK8SSpec model
+            = new SqlManagedInstanceK8SSpec()
                 .withScheduling(
                     new K8SScheduling()
-                        .withDefaultProperty(new K8SSchedulingOptions().withAdditionalProperties(mapOf()))
+                        .withDefaultProperty(new K8SSchedulingOptions().withResources(new K8SResourceRequirements()
+                            .withRequests(mapOf("kftutqxlngxlefg", "vvtpgvdfgio", "rvqdra", "gnxkrxdqmidtth", "skanyk",
+                                "hjybigehoqfbo"))
+                            .withLimits(mapOf("ndrvynhzg", "cuiywgqyw", "ecfvmm", "phrcgyncoc", "sxlzevgbmqj", "oo",
+                                "lzu", "abcypmivk"))
+                            .withAdditionalProperties(mapOf())).withAdditionalProperties(mapOf()))
                         .withAdditionalProperties(mapOf()))
-                .withReplicas(212297341)
+                .withReplicas(469621378)
                 .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(SqlManagedInstanceK8SSpec.class);
-        Assertions.assertEquals(212297341, model.replicas());
+        Assertions.assertEquals("vvtpgvdfgio",
+            model.scheduling().defaultProperty().resources().requests().get("kftutqxlngxlefg"));
+        Assertions.assertEquals("cuiywgqyw",
+            model.scheduling().defaultProperty().resources().limits().get("ndrvynhzg"));
+        Assertions.assertEquals(469621378, model.replicas());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Properties specific to Synapse Spark pools. */
 @Fluent
 public class SynapseSparkPoolProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SynapseSparkPoolProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SynapseSparkPoolProperties.class);
 
     /*
      * AKS properties

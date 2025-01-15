@@ -15,66 +15,52 @@ import org.junit.jupiter.api.Assertions;
 public final class KubernetesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KubernetesProperties model =
-            BinaryData
-                .fromString(
-                    "{\"relayConnectionString\":\"oyuelyetn\",\"serviceBusConnectionString\":\"bf\",\"extensionPrincipalId\":\"ggagfln\",\"extensionInstanceReleaseTrain\":\"mtrwah\",\"vcName\":\"mu\",\"namespace\":\"tb\",\"defaultInstanceType\":\"plrohkpigq\",\"instanceTypes\":{\"nmg\":{\"nodeSelector\":{\"alhhjnhgwydyynfs\":\"kzmkwklsnoxaxmqe\",\"qtanarfdlpuk\":\"khgb\",\"neizjcpe\":\"py\"},\"resources\":{\"requests\":{},\"limits\":{}}},\"f\":{\"nodeSelector\":{\"fpazjzoywjxhpd\":\"uxddbhfh\",\"tehtuevrhrljyoog\":\"lontacnpq\",\"sd\":\"xh\",\"arenlvhhtklnvnaf\":\"ugwbsreurfqkf\"},\"resources\":{\"requests\":{},\"limits\":{}}}}}")
-                .toObject(KubernetesProperties.class);
-        Assertions.assertEquals("oyuelyetn", model.relayConnectionString());
-        Assertions.assertEquals("bf", model.serviceBusConnectionString());
-        Assertions.assertEquals("ggagfln", model.extensionPrincipalId());
-        Assertions.assertEquals("mtrwah", model.extensionInstanceReleaseTrain());
-        Assertions.assertEquals("mu", model.vcName());
-        Assertions.assertEquals("tb", model.namespace());
-        Assertions.assertEquals("plrohkpigq", model.defaultInstanceType());
-        Assertions
-            .assertEquals("kzmkwklsnoxaxmqe", model.instanceTypes().get("nmg").nodeSelector().get("alhhjnhgwydyynfs"));
+        KubernetesProperties model = BinaryData.fromString(
+            "{\"relayConnectionString\":\"od\",\"serviceBusConnectionString\":\"vfsxx\",\"extensionPrincipalId\":\"desqlvg\",\"extensionInstanceReleaseTrain\":\"pwgoljt\",\"vcName\":\"nm\",\"namespace\":\"dobygoogxqapj\",\"defaultInstanceType\":\"azyj\",\"instanceTypes\":{\"qeq\":{\"nodeSelector\":{\"kvibfa\":\"odjnos\"},\"resources\":{\"requests\":{\"ktz\":\"trnzpducdaaktu\",\"wkppnwyytfvp\":\"oimyfpqd\",\"nwhvuldbkkejj\":\"tfjikffffgkuh\",\"xjqifhujjsbc\":\"jigawgaz\"},\"limits\":{\"rhhmojusu\":\"aahzbhuroolkol\",\"ia\":\"gfjzcvaax\",\"xkukm\":\"ahfxwccok\",\"ynuhh\":\"c\"}}}}}")
+            .toObject(KubernetesProperties.class);
+        Assertions.assertEquals("od", model.relayConnectionString());
+        Assertions.assertEquals("vfsxx", model.serviceBusConnectionString());
+        Assertions.assertEquals("desqlvg", model.extensionPrincipalId());
+        Assertions.assertEquals("pwgoljt", model.extensionInstanceReleaseTrain());
+        Assertions.assertEquals("nm", model.vcName());
+        Assertions.assertEquals("dobygoogxqapj", model.namespace());
+        Assertions.assertEquals("azyj", model.defaultInstanceType());
+        Assertions.assertEquals("odjnos", model.instanceTypes().get("qeq").nodeSelector().get("kvibfa"));
+        Assertions.assertEquals("trnzpducdaaktu", model.instanceTypes().get("qeq").resources().requests().get("ktz"));
+        Assertions.assertEquals("aahzbhuroolkol",
+            model.instanceTypes().get("qeq").resources().limits().get("rhhmojusu"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KubernetesProperties model =
-            new KubernetesProperties()
-                .withRelayConnectionString("oyuelyetn")
-                .withServiceBusConnectionString("bf")
-                .withExtensionPrincipalId("ggagfln")
-                .withExtensionInstanceReleaseTrain("mtrwah")
-                .withVcName("mu")
-                .withNamespace("tb")
-                .withDefaultInstanceType("plrohkpigq")
-                .withInstanceTypes(
-                    mapOf(
-                        "nmg",
-                        new InstanceTypeSchema()
-                            .withNodeSelector(
-                                mapOf("alhhjnhgwydyynfs", "kzmkwklsnoxaxmqe", "qtanarfdlpuk", "khgb", "neizjcpe", "py"))
-                            .withResources(new InstanceTypeSchemaResources().withRequests(mapOf()).withLimits(mapOf())),
-                        "f",
-                        new InstanceTypeSchema()
-                            .withNodeSelector(
-                                mapOf(
-                                    "fpazjzoywjxhpd",
-                                    "uxddbhfh",
-                                    "tehtuevrhrljyoog",
-                                    "lontacnpq",
-                                    "sd",
-                                    "xh",
-                                    "arenlvhhtklnvnaf",
-                                    "ugwbsreurfqkf"))
-                            .withResources(
-                                new InstanceTypeSchemaResources().withRequests(mapOf()).withLimits(mapOf()))));
+        KubernetesProperties model = new KubernetesProperties().withRelayConnectionString("od")
+            .withServiceBusConnectionString("vfsxx")
+            .withExtensionPrincipalId("desqlvg")
+            .withExtensionInstanceReleaseTrain("pwgoljt")
+            .withVcName("nm")
+            .withNamespace("dobygoogxqapj")
+            .withDefaultInstanceType("azyj")
+            .withInstanceTypes(mapOf("qeq", new InstanceTypeSchema().withNodeSelector(mapOf("kvibfa", "odjnos"))
+                .withResources(new InstanceTypeSchemaResources()
+                    .withRequests(mapOf("ktz", "trnzpducdaaktu", "wkppnwyytfvp", "oimyfpqd", "nwhvuldbkkejj",
+                        "tfjikffffgkuh", "xjqifhujjsbc", "jigawgaz"))
+                    .withLimits(
+                        mapOf("rhhmojusu", "aahzbhuroolkol", "ia", "gfjzcvaax", "xkukm", "ahfxwccok", "ynuhh", "c")))));
         model = BinaryData.fromObject(model).toObject(KubernetesProperties.class);
-        Assertions.assertEquals("oyuelyetn", model.relayConnectionString());
-        Assertions.assertEquals("bf", model.serviceBusConnectionString());
-        Assertions.assertEquals("ggagfln", model.extensionPrincipalId());
-        Assertions.assertEquals("mtrwah", model.extensionInstanceReleaseTrain());
-        Assertions.assertEquals("mu", model.vcName());
-        Assertions.assertEquals("tb", model.namespace());
-        Assertions.assertEquals("plrohkpigq", model.defaultInstanceType());
-        Assertions
-            .assertEquals("kzmkwklsnoxaxmqe", model.instanceTypes().get("nmg").nodeSelector().get("alhhjnhgwydyynfs"));
+        Assertions.assertEquals("od", model.relayConnectionString());
+        Assertions.assertEquals("vfsxx", model.serviceBusConnectionString());
+        Assertions.assertEquals("desqlvg", model.extensionPrincipalId());
+        Assertions.assertEquals("pwgoljt", model.extensionInstanceReleaseTrain());
+        Assertions.assertEquals("nm", model.vcName());
+        Assertions.assertEquals("dobygoogxqapj", model.namespace());
+        Assertions.assertEquals("azyj", model.defaultInstanceType());
+        Assertions.assertEquals("odjnos", model.instanceTypes().get("qeq").nodeSelector().get("kvibfa"));
+        Assertions.assertEquals("trnzpducdaaktu", model.instanceTypes().get("qeq").resources().requests().get("ktz"));
+        Assertions.assertEquals("aahzbhuroolkol",
+            model.instanceTypes().get("qeq").resources().limits().get("rhhmojusu"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

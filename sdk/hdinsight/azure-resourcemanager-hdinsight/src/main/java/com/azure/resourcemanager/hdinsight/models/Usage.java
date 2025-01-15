@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The details about the usage of a particular limited resource. */
+/**
+ * The details about the usage of a particular limited resource.
+ */
 @Fluent
-public final class Usage {
+public final class Usage implements JsonSerializable<Usage> {
     /*
      * The type of measurement for usage.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The current usage.
      */
-    @JsonProperty(value = "currentValue")
     private Long currentValue;
 
     /*
      * The maximum allowed usage.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * The details about the localizable name of the used resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizedName name;
 
-    /** Creates an instance of Usage class. */
+    /**
+     * Creates an instance of Usage class.
+     */
     public Usage() {
     }
 
     /**
      * Get the unit property: The type of measurement for usage.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -49,7 +53,7 @@ public final class Usage {
 
     /**
      * Set the unit property: The type of measurement for usage.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the Usage object itself.
      */
@@ -60,7 +64,7 @@ public final class Usage {
 
     /**
      * Get the currentValue property: The current usage.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -69,7 +73,7 @@ public final class Usage {
 
     /**
      * Set the currentValue property: The current usage.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the Usage object itself.
      */
@@ -80,7 +84,7 @@ public final class Usage {
 
     /**
      * Get the limit property: The maximum allowed usage.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -89,7 +93,7 @@ public final class Usage {
 
     /**
      * Set the limit property: The maximum allowed usage.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the Usage object itself.
      */
@@ -100,7 +104,7 @@ public final class Usage {
 
     /**
      * Get the name property: The details about the localizable name of the used resource.
-     *
+     * 
      * @return the name value.
      */
     public LocalizedName name() {
@@ -109,12 +113,56 @@ public final class Usage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeNumberField("limit", this.limit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Usage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Usage if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Usage.
+     */
+    public static Usage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Usage deserializedUsage = new Usage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedUsage.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedUsage.currentValue = reader.getNullable(JsonReader::getLong);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUsage.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedUsage.name = LocalizedName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsage;
+        });
     }
 }

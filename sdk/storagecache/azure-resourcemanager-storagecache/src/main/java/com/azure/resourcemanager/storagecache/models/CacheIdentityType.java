@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storagecache.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The type of identity used for the cache.
  */
@@ -46,7 +43,6 @@ public enum CacheIdentityType {
      * @param value the serialized value to parse.
      * @return the parsed CacheIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static CacheIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -63,7 +59,6 @@ public enum CacheIdentityType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

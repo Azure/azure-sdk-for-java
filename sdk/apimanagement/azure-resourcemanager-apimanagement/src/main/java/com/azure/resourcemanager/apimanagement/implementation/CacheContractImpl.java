@@ -73,24 +73,20 @@ public final class CacheContractImpl implements CacheContract, CacheContract.Def
     }
 
     public CacheContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, cacheId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, cacheId, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CacheContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, cacheId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, cacheId, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -108,52 +104,43 @@ public final class CacheContractImpl implements CacheContract, CacheContract.Def
     }
 
     public CacheContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, cacheId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .updateWithResponse(resourceGroupName, serviceName, cacheId, updateIfMatch, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CacheContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .updateWithResponse(resourceGroupName, serviceName, cacheId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .updateWithResponse(resourceGroupName, serviceName, cacheId, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    CacheContractImpl(
-        CacheContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    CacheContractImpl(CacheContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.cacheId = Utils.getValueFromIdByName(innerObject.id(), "caches");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.cacheId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "caches");
     }
 
     public CacheContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .getWithResponse(resourceGroupName, serviceName, cacheId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .getWithResponse(resourceGroupName, serviceName, cacheId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CacheContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .getWithResponse(resourceGroupName, serviceName, cacheId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .getWithResponse(resourceGroupName, serviceName, cacheId, context)
+            .getValue();
         return this;
     }
 

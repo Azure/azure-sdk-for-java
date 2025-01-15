@@ -6,76 +6,77 @@ package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.ExecutionStatus;
 import com.azure.resourcemanager.costmanagement.models.ExecutionType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The properties of the export run. */
+/**
+ * The properties of the export run.
+ */
 @Fluent
-public final class ExportRunPropertiesInner {
+public final class ExportRunPropertiesInner implements JsonSerializable<ExportRunPropertiesInner> {
     /*
      * The type of the export run.
      */
-    @JsonProperty(value = "executionType")
     private ExecutionType executionType;
 
     /*
      * The last known status of the export run.
      */
-    @JsonProperty(value = "status")
     private ExecutionStatus status;
 
     /*
      * The identifier for the entity that triggered the export. For on-demand runs it is the user email. For scheduled
      * runs it is 'System'.
      */
-    @JsonProperty(value = "submittedBy")
     private String submittedBy;
 
     /*
      * The time when export was queued to be run.
      */
-    @JsonProperty(value = "submittedTime")
     private OffsetDateTime submittedTime;
 
     /*
      * The time when export was picked up to be run.
      */
-    @JsonProperty(value = "processingStartTime")
     private OffsetDateTime processingStartTime;
 
     /*
      * The time when the export run finished.
      */
-    @JsonProperty(value = "processingEndTime")
     private OffsetDateTime processingEndTime;
 
     /*
      * The name of the exported file.
      */
-    @JsonProperty(value = "fileName")
     private String fileName;
 
     /*
      * The export settings that were in effect for this run.
      */
-    @JsonProperty(value = "runSettings")
     private CommonExportPropertiesInner runSettings;
 
     /*
      * The details of any error.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of ExportRunPropertiesInner class. */
+    /**
+     * Creates an instance of ExportRunPropertiesInner class.
+     */
     public ExportRunPropertiesInner() {
     }
 
     /**
      * Get the executionType property: The type of the export run.
-     *
+     * 
      * @return the executionType value.
      */
     public ExecutionType executionType() {
@@ -84,7 +85,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Set the executionType property: The type of the export run.
-     *
+     * 
      * @param executionType the executionType value to set.
      * @return the ExportRunPropertiesInner object itself.
      */
@@ -95,7 +96,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Get the status property: The last known status of the export run.
-     *
+     * 
      * @return the status value.
      */
     public ExecutionStatus status() {
@@ -104,7 +105,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Set the status property: The last known status of the export run.
-     *
+     * 
      * @param status the status value to set.
      * @return the ExportRunPropertiesInner object itself.
      */
@@ -116,7 +117,7 @@ public final class ExportRunPropertiesInner {
     /**
      * Get the submittedBy property: The identifier for the entity that triggered the export. For on-demand runs it is
      * the user email. For scheduled runs it is 'System'.
-     *
+     * 
      * @return the submittedBy value.
      */
     public String submittedBy() {
@@ -126,7 +127,7 @@ public final class ExportRunPropertiesInner {
     /**
      * Set the submittedBy property: The identifier for the entity that triggered the export. For on-demand runs it is
      * the user email. For scheduled runs it is 'System'.
-     *
+     * 
      * @param submittedBy the submittedBy value to set.
      * @return the ExportRunPropertiesInner object itself.
      */
@@ -137,7 +138,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Get the submittedTime property: The time when export was queued to be run.
-     *
+     * 
      * @return the submittedTime value.
      */
     public OffsetDateTime submittedTime() {
@@ -146,7 +147,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Set the submittedTime property: The time when export was queued to be run.
-     *
+     * 
      * @param submittedTime the submittedTime value to set.
      * @return the ExportRunPropertiesInner object itself.
      */
@@ -157,7 +158,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Get the processingStartTime property: The time when export was picked up to be run.
-     *
+     * 
      * @return the processingStartTime value.
      */
     public OffsetDateTime processingStartTime() {
@@ -166,7 +167,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Set the processingStartTime property: The time when export was picked up to be run.
-     *
+     * 
      * @param processingStartTime the processingStartTime value to set.
      * @return the ExportRunPropertiesInner object itself.
      */
@@ -177,7 +178,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Get the processingEndTime property: The time when the export run finished.
-     *
+     * 
      * @return the processingEndTime value.
      */
     public OffsetDateTime processingEndTime() {
@@ -186,7 +187,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Set the processingEndTime property: The time when the export run finished.
-     *
+     * 
      * @param processingEndTime the processingEndTime value to set.
      * @return the ExportRunPropertiesInner object itself.
      */
@@ -197,7 +198,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Get the fileName property: The name of the exported file.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -206,7 +207,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Set the fileName property: The name of the exported file.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ExportRunPropertiesInner object itself.
      */
@@ -217,7 +218,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Get the runSettings property: The export settings that were in effect for this run.
-     *
+     * 
      * @return the runSettings value.
      */
     public CommonExportPropertiesInner runSettings() {
@@ -226,7 +227,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Set the runSettings property: The export settings that were in effect for this run.
-     *
+     * 
      * @param runSettings the runSettings value to set.
      * @return the ExportRunPropertiesInner object itself.
      */
@@ -237,7 +238,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Get the error property: The details of any error.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -246,7 +247,7 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Set the error property: The details of any error.
-     *
+     * 
      * @param error the error value to set.
      * @return the ExportRunPropertiesInner object itself.
      */
@@ -257,12 +258,82 @@ public final class ExportRunPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runSettings() != null) {
             runSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("executionType", this.executionType == null ? null : this.executionType.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("submittedBy", this.submittedBy);
+        jsonWriter.writeStringField("submittedTime",
+            this.submittedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.submittedTime));
+        jsonWriter.writeStringField("processingStartTime",
+            this.processingStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.processingStartTime));
+        jsonWriter.writeStringField("processingEndTime",
+            this.processingEndTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.processingEndTime));
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeJsonField("runSettings", this.runSettings);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportRunPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportRunPropertiesInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportRunPropertiesInner.
+     */
+    public static ExportRunPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportRunPropertiesInner deserializedExportRunPropertiesInner = new ExportRunPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("executionType".equals(fieldName)) {
+                    deserializedExportRunPropertiesInner.executionType = ExecutionType.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedExportRunPropertiesInner.status = ExecutionStatus.fromString(reader.getString());
+                } else if ("submittedBy".equals(fieldName)) {
+                    deserializedExportRunPropertiesInner.submittedBy = reader.getString();
+                } else if ("submittedTime".equals(fieldName)) {
+                    deserializedExportRunPropertiesInner.submittedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("processingStartTime".equals(fieldName)) {
+                    deserializedExportRunPropertiesInner.processingStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("processingEndTime".equals(fieldName)) {
+                    deserializedExportRunPropertiesInner.processingEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedExportRunPropertiesInner.fileName = reader.getString();
+                } else if ("runSettings".equals(fieldName)) {
+                    deserializedExportRunPropertiesInner.runSettings = CommonExportPropertiesInner.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedExportRunPropertiesInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportRunPropertiesInner;
+        });
     }
 }

@@ -8,34 +8,59 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.ValueFormat;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPropertiesV2;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class WorkspaceConnectionPropertiesV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceConnectionPropertiesV2 model =
-            BinaryData
-                .fromString(
-                    "{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"PythonFeed\",\"target\":\"evfiwjmygt\",\"value\":\"slswtm\",\"valueFormat\":\"JSON\"}")
-                .toObject(WorkspaceConnectionPropertiesV2.class);
-        Assertions.assertEquals(ConnectionCategory.PYTHON_FEED, model.category());
-        Assertions.assertEquals("evfiwjmygt", model.target());
-        Assertions.assertEquals("slswtm", model.value());
+        WorkspaceConnectionPropertiesV2 model = BinaryData.fromString(
+            "{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"SapOpenHub\",\"createdByWorkspaceArmId\":\"ondjmq\",\"expiryTime\":\"2021-06-21T21:58:07Z\",\"group\":\"Azure\",\"isSharedToAll\":false,\"target\":\"kopkwhojvpajqgx\",\"metadata\":{\"vhelxprglyatdd\":\"ocmbqfqvmkcxoza\",\"rjxgciqib\":\"kcbcue\",\"sdqrhzoymibmrq\":\"hos\"},\"sharedUserList\":[\"ahwfluszdtmhrk\",\"ofyyvoqacpi\"],\"value\":\"pbtg\",\"valueFormat\":\"JSON\"}")
+            .toObject(WorkspaceConnectionPropertiesV2.class);
+        Assertions.assertEquals(ConnectionCategory.SAP_OPEN_HUB, model.category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T21:58:07Z"), model.expiryTime());
+        Assertions.assertEquals(false, model.isSharedToAll());
+        Assertions.assertEquals("kopkwhojvpajqgx", model.target());
+        Assertions.assertEquals("ocmbqfqvmkcxoza", model.metadata().get("vhelxprglyatdd"));
+        Assertions.assertEquals("ahwfluszdtmhrk", model.sharedUserList().get(0));
+        Assertions.assertEquals("pbtg", model.value());
         Assertions.assertEquals(ValueFormat.JSON, model.valueFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceConnectionPropertiesV2 model =
-            new WorkspaceConnectionPropertiesV2()
-                .withCategory(ConnectionCategory.PYTHON_FEED)
-                .withTarget("evfiwjmygt")
-                .withValue("slswtm")
-                .withValueFormat(ValueFormat.JSON);
+        WorkspaceConnectionPropertiesV2 model = new WorkspaceConnectionPropertiesV2()
+            .withCategory(ConnectionCategory.SAP_OPEN_HUB)
+            .withExpiryTime(OffsetDateTime.parse("2021-06-21T21:58:07Z"))
+            .withIsSharedToAll(false)
+            .withTarget("kopkwhojvpajqgx")
+            .withMetadata(mapOf("vhelxprglyatdd", "ocmbqfqvmkcxoza", "rjxgciqib", "kcbcue", "sdqrhzoymibmrq", "hos"))
+            .withSharedUserList(Arrays.asList("ahwfluszdtmhrk", "ofyyvoqacpi"))
+            .withValue("pbtg")
+            .withValueFormat(ValueFormat.JSON);
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionPropertiesV2.class);
-        Assertions.assertEquals(ConnectionCategory.PYTHON_FEED, model.category());
-        Assertions.assertEquals("evfiwjmygt", model.target());
-        Assertions.assertEquals("slswtm", model.value());
+        Assertions.assertEquals(ConnectionCategory.SAP_OPEN_HUB, model.category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T21:58:07Z"), model.expiryTime());
+        Assertions.assertEquals(false, model.isSharedToAll());
+        Assertions.assertEquals("kopkwhojvpajqgx", model.target());
+        Assertions.assertEquals("ocmbqfqvmkcxoza", model.metadata().get("vhelxprglyatdd"));
+        Assertions.assertEquals("ahwfluszdtmhrk", model.sharedUserList().get(0));
+        Assertions.assertEquals("pbtg", model.value());
         Assertions.assertEquals(ValueFormat.JSON, model.valueFormat());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

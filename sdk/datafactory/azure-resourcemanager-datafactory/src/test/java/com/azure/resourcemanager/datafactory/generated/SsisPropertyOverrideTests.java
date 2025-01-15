@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisPropertyOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisPropertyOverride model = BinaryData.fromString("{\"value\":\"datanvcqhmu\",\"isSensitive\":false}")
+        SsisPropertyOverride model = BinaryData.fromString("{\"value\":\"dataxwmwrjm\",\"isSensitive\":false}")
             .toObject(SsisPropertyOverride.class);
         Assertions.assertEquals(false, model.isSensitive());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisPropertyOverride model = new SsisPropertyOverride().withValue("datanvcqhmu").withIsSensitive(false);
+        SsisPropertyOverride model = new SsisPropertyOverride().withValue("dataxwmwrjm").withIsSensitive(false);
         model = BinaryData.fromObject(model).toObject(SsisPropertyOverride.class);
         Assertions.assertEquals(false, model.isSensitive());
     }

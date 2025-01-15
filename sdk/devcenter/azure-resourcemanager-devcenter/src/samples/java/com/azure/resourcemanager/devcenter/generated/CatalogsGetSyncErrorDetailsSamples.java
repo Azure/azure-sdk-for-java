@@ -9,7 +9,8 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class CatalogsGetSyncErrorDetailsSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_GetSyncErrorDetails.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * Catalogs_GetSyncErrorDetails.json
      */
     /**
      * Sample code: Catalogs_GetSyncErrorDetails.

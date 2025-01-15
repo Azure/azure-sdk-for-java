@@ -6,9 +6,9 @@ Azure Key Vault is a cloud service that provides secure storage of certificates,
 
 Azure Key Vault Managed HSM is a fully-managed, highly-available, single-tenant, standards-compliant cloud service that enables you to safeguard cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validated HSMs.
 
-For more information refer to [About Azure Key Vault](https://docs.microsoft.com/azure/key-vault/general/overview) and [What is Azure Key Vault Managed HSM?](https://docs.microsoft.com/azure/key-vault/managed-hsm/overview).
+For more information refer to [About Azure Key Vault](https://learn.microsoft.com/azure/key-vault/general/overview) and [What is Azure Key Vault Managed HSM?](https://learn.microsoft.com/azure/key-vault/managed-hsm/overview).
 
-Documentation for this SDK can be found at [Azure Key Vault Java Documentation](https://docs.microsoft.com/java/api/overview/azure/keyvault)
+Documentation for this SDK can be found at [Azure Key Vault Java Documentation](https://learn.microsoft.com/java/api/overview/azure/keyvault)
 
 ## Getting started
 

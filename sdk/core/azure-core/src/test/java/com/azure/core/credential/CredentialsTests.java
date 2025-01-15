@@ -39,7 +39,7 @@ public class CredentialsTests {
     private static final String DUMMY_VALUE = "DummyValue";
 
     @SyncAsyncTest
-    public void basicCredentialsTest() throws Exception {
+    public void basicCredentialsTest() {
         BasicAuthenticationCredential credentials = new BasicAuthenticationCredential("user", "fakeKeyPlaceholder");
 
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
@@ -82,8 +82,7 @@ public class CredentialsTests {
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, createUrl("https://localhost"));
-        SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
-            () -> pipeline.send(request).block());
+        SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
     }
 
     @SyncAsyncTest
@@ -243,8 +242,8 @@ public class CredentialsTests {
         Assertions.assertEquals(expectedValue, azureNamedKeyCredential.getAzureNamedKey().getKey());
     }
 
-    private HttpResponse sendRequest(HttpPipeline pipeline) throws MalformedURLException {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, createUrl("http://localhost"))).block();
+    private Mono<HttpResponse> sendRequest(HttpPipeline pipeline) throws MalformedURLException {
+        return pipeline.send(new HttpRequest(HttpMethod.GET, createUrl("http://localhost")));
     }
 
     private HttpResponse sendRequestSync(HttpPipeline pipeline) throws MalformedURLException {

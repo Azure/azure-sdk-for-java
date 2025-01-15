@@ -7,13 +7,15 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of LibrariesOperations. */
+/**
+ * Resource collection API of LibrariesOperations.
+ */
 public interface LibrariesOperations {
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,9 +27,9 @@ public interface LibrariesOperations {
 
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

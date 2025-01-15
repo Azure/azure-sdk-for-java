@@ -6,6 +6,7 @@ package com.azure.core.util.metrics;
 import com.azure.core.implementation.util.Providers;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.LibraryTelemetryOptions;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -30,13 +31,23 @@ final class DefaultMeterProvider implements MeterProvider {
         return INSTANCE;
     }
 
+    @Override
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        final MetricsOptions finalOptions = options != null ? options : DEFAULT_OPTIONS;
+        LibraryTelemetryOptions sdkOptions = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion);
 
-        return METER_PROVIDER.create(provider -> provider.createMeter(libraryName, libraryVersion, finalOptions),
-            NoopMeter.INSTANCE, finalOptions.getMeterProvider());
+        return createMeter(sdkOptions, options);
+    }
+
+    @Override
+    public Meter createMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+
+        final MetricsOptions finalOptions = applicationOptions != null ? applicationOptions : DEFAULT_OPTIONS;
+
+        return METER_PROVIDER.create(provider -> provider.createMeter(libraryOptions, finalOptions), NoopMeter.INSTANCE,
+            finalOptions.getMeterProvider());
     }
 
     static final LongGauge NOOP_GAUGE = new LongGauge() {

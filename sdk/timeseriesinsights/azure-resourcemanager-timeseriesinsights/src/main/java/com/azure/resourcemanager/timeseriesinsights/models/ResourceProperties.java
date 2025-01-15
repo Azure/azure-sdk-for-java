@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties that are common to all tracked resources. */
+/**
+ * Properties that are common to all tracked resources.
+ */
 @Immutable
-public class ResourceProperties {
+public class ResourceProperties implements JsonSerializable<ResourceProperties> {
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The time the resource was created.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
-    /** Creates an instance of ResourceProperties class. */
+    /**
+     * Creates an instance of ResourceProperties class.
+     */
     public ResourceProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -37,8 +44,19 @@ public class ResourceProperties {
     }
 
     /**
+     * Set the provisioningState property: Provisioning state of the resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ResourceProperties object itself.
+     */
+    ResourceProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the creationTime property: The time the resource was created.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -46,10 +64,59 @@ public class ResourceProperties {
     }
 
     /**
+     * Set the creationTime property: The time the resource was created.
+     * 
+     * @param creationTime the creationTime value to set.
+     * @return the ResourceProperties object itself.
+     */
+    ResourceProperties withCreationTime(OffsetDateTime creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProperties.
+     */
+    public static ResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProperties deserializedResourceProperties = new ResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedResourceProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedResourceProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProperties;
+        });
     }
 }

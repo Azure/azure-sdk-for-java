@@ -4515,7 +4515,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
         return beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
             clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4539,7 +4539,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
         return beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
             clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5168,7 +5168,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
         return beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
             storedProcedureName, createUpdateSqlStoredProcedureParameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5192,7 +5192,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
         return beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
             storedProcedureName, createUpdateSqlStoredProcedureParameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6104,7 +6104,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
         return beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
             userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6130,7 +6130,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context) {
         return beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
             userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -7041,7 +7041,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
         return beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName,
             triggerName, createUpdateSqlTriggerParameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

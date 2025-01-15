@@ -60,18 +60,16 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
 
     @Override
     public Mono<AvailableProviders> executeWorkAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()
             .listAvailableProvidersAsync(parent().resourceGroupName(), parent().name(), parameters)
-            .map(
-                availableProvidersListInner -> {
-                    AvailableProvidersImpl.this.inner = availableProvidersListInner;
-                    AvailableProvidersImpl.this.initializeResourcesFromInner();
-                    return AvailableProvidersImpl.this;
-                });
+            .map(availableProvidersListInner -> {
+                AvailableProvidersImpl.this.inner = availableProvidersListInner;
+                AvailableProvidersImpl.this.initializeResourcesFromInner();
+                return AvailableProvidersImpl.this;
+            });
     }
 
     @Override

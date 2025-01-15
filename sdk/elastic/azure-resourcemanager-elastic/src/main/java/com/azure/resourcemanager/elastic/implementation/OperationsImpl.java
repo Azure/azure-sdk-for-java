@@ -19,20 +19,20 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<OperationResult> list() {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationResult> list(Context context) {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

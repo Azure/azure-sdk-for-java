@@ -27,8 +27,11 @@ public final class DeploymentPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentProperties model = new DeploymentProperties().withTitle("cxgod").withDescription("fqkkr")
-            .withEnvironmentId("pukgriwflzlfb").withDefinitionId("puz").withState(DeploymentState.INACTIVE)
+        DeploymentProperties model = new DeploymentProperties().withTitle("cxgod")
+            .withDescription("fqkkr")
+            .withEnvironmentId("pukgriwflzlfb")
+            .withDefinitionId("puz")
+            .withState(DeploymentState.INACTIVE)
             .withServer(
                 new DeploymentServer().withRuntimeUri(Arrays.asList("qzahmgkbrp", "y", "hibnuqqkpika", "rgvtqag")))
             .withCustomProperties("datauynhijg");

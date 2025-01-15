@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonFlatten
 @Fluent
 public class SharedPrivateLinkResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResource.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResource.class);
 
     /*
      * Unique name of the private link.

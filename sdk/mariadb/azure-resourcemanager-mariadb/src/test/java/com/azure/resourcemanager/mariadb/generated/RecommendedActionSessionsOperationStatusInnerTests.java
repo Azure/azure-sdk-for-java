@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendedActionSessionsOperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendedActionSessionsOperationStatusInner model =
-            BinaryData
-                .fromString("{\"name\":\"sqfsubcgjbirxb\",\"startTime\":\"2021-08-16T05:09:52Z\",\"status\":\"rfbjf\"}")
+        RecommendedActionSessionsOperationStatusInner model
+            = BinaryData.fromString("{\"name\":\"hh\",\"startTime\":\"2021-03-10T20:06:44Z\",\"status\":\"dzu\"}")
                 .toObject(RecommendedActionSessionsOperationStatusInner.class);
-        Assertions.assertEquals("sqfsubcgjbirxb", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T05:09:52Z"), model.startTime());
-        Assertions.assertEquals("rfbjf", model.status());
+        Assertions.assertEquals("hh", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-10T20:06:44Z"), model.startTime());
+        Assertions.assertEquals("dzu", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendedActionSessionsOperationStatusInner model =
-            new RecommendedActionSessionsOperationStatusInner()
-                .withName("sqfsubcgjbirxb")
-                .withStartTime(OffsetDateTime.parse("2021-08-16T05:09:52Z"))
-                .withStatus("rfbjf");
+        RecommendedActionSessionsOperationStatusInner model
+            = new RecommendedActionSessionsOperationStatusInner().withName("hh")
+                .withStartTime(OffsetDateTime.parse("2021-03-10T20:06:44Z"))
+                .withStatus("dzu");
         model = BinaryData.fromObject(model).toObject(RecommendedActionSessionsOperationStatusInner.class);
-        Assertions.assertEquals("sqfsubcgjbirxb", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T05:09:52Z"), model.startTime());
-        Assertions.assertEquals("rfbjf", model.status());
+        Assertions.assertEquals("hh", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-10T20:06:44Z"), model.startTime());
+        Assertions.assertEquals("dzu", model.status());
     }
 }

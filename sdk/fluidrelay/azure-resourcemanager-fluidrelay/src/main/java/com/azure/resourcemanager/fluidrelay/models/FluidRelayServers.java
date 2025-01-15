@@ -8,11 +8,27 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FluidRelayServers. */
+/**
+ * Resource collection API of FluidRelayServers.
+ */
 public interface FluidRelayServers {
     /**
      * Get a Fluid Relay server.
-     *
+     * 
+     * @param resourceGroup The resource group containing the resource.
+     * @param fluidRelayServerName The Fluid Relay server resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Fluid Relay server along with {@link Response}.
+     */
+    Response<FluidRelayServer> getByResourceGroupWithResponse(String resourceGroup, String fluidRelayServerName,
+        Context context);
+
+    /**
+     * Get a Fluid Relay server.
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,22 +39,22 @@ public interface FluidRelayServers {
     FluidRelayServer getByResourceGroup(String resourceGroup, String fluidRelayServerName);
 
     /**
-     * Get a Fluid Relay server.
-     *
+     * Delete a Fluid Relay server.
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Fluid Relay server along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<FluidRelayServer> getByResourceGroupWithResponse(
-        String resourceGroup, String fluidRelayServerName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroup, String fluidRelayServerName,
+        Context context);
 
     /**
      * Delete a Fluid Relay server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,35 +64,8 @@ public interface FluidRelayServers {
     void deleteByResourceGroup(String resourceGroup, String fluidRelayServerName);
 
     /**
-     * Delete a Fluid Relay server.
-     *
-     * @param resourceGroup The resource group containing the resource.
-     * @param fluidRelayServerName The Fluid Relay server resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(String resourceGroup, String fluidRelayServerName, Context context);
-
-    /**
      * Regenerate the primary or secondary key for this server.
-     *
-     * @param resourceGroup The resource group containing the resource.
-     * @param fluidRelayServerName The Fluid Relay server resource name.
-     * @param parameters The details of which keys to generate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of available keys for this server.
-     */
-    FluidRelayServerKeys regenerateKey(
-        String resourceGroup, String fluidRelayServerName, RegenerateKeyRequest parameters);
-
-    /**
-     * Regenerate the primary or secondary key for this server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param parameters The details of which keys to generate.
@@ -86,12 +75,40 @@ public interface FluidRelayServers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of available keys for this server along with {@link Response}.
      */
-    Response<FluidRelayServerKeys> regenerateKeyWithResponse(
-        String resourceGroup, String fluidRelayServerName, RegenerateKeyRequest parameters, Context context);
+    Response<FluidRelayServerKeys> regenerateKeyWithResponse(String resourceGroup, String fluidRelayServerName,
+        RegenerateKeyRequest parameters, Context context);
+
+    /**
+     * Regenerate the primary or secondary key for this server.
+     * 
+     * @param resourceGroup The resource group containing the resource.
+     * @param fluidRelayServerName The Fluid Relay server resource name.
+     * @param parameters The details of which keys to generate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the set of available keys for this server.
+     */
+    FluidRelayServerKeys regenerateKey(String resourceGroup, String fluidRelayServerName,
+        RegenerateKeyRequest parameters);
 
     /**
      * Get primary and secondary key for this server.
-     *
+     * 
+     * @param resourceGroup The resource group containing the resource.
+     * @param fluidRelayServerName The Fluid Relay server resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return primary and secondary key for this server along with {@link Response}.
+     */
+    Response<FluidRelayServerKeys> listKeysWithResponse(String resourceGroup, String fluidRelayServerName,
+        Context context);
+
+    /**
+     * Get primary and secondary key for this server.
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,22 +119,8 @@ public interface FluidRelayServers {
     FluidRelayServerKeys listKeys(String resourceGroup, String fluidRelayServerName);
 
     /**
-     * Get primary and secondary key for this server.
-     *
-     * @param resourceGroup The resource group containing the resource.
-     * @param fluidRelayServerName The Fluid Relay server resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return primary and secondary key for this server along with {@link Response}.
-     */
-    Response<FluidRelayServerKeys> listKeysWithResponse(
-        String resourceGroup, String fluidRelayServerName, Context context);
-
-    /**
      * List all Fluid Relay servers in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response as paginated response with {@link PagedIterable}.
@@ -126,7 +129,7 @@ public interface FluidRelayServers {
 
     /**
      * List all Fluid Relay servers in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +140,7 @@ public interface FluidRelayServers {
 
     /**
      * List all Fluid Relay servers in a resource group.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,7 +151,7 @@ public interface FluidRelayServers {
 
     /**
      * List all Fluid Relay servers in a resource group.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +163,7 @@ public interface FluidRelayServers {
 
     /**
      * Get a Fluid Relay server.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -171,7 +174,7 @@ public interface FluidRelayServers {
 
     /**
      * Get a Fluid Relay server.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +186,7 @@ public interface FluidRelayServers {
 
     /**
      * Delete a Fluid Relay server.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -193,7 +196,7 @@ public interface FluidRelayServers {
 
     /**
      * Delete a Fluid Relay server.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,7 +208,7 @@ public interface FluidRelayServers {
 
     /**
      * Begins definition for a new FluidRelayServer resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FluidRelayServer definition.
      */

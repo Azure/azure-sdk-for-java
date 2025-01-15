@@ -7,24 +7,21 @@ package com.azure.resourcemanager.dnsresolver.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.models.TargetDnsServer;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TargetDnsServerTests {
-    @Test
-    public void testDeserialize() {
-        TargetDnsServer model =
-            BinaryData
-                .fromString("{\"ipAddress\":\"lbjnpgacftadehx\",\"port\":1194387790}")
-                .toObject(TargetDnsServer.class);
-        Assertions.assertEquals("lbjnpgacftadehx", model.ipAddress());
-        Assertions.assertEquals(1194387790, model.port());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TargetDnsServer model = BinaryData.fromString("{\"ipAddress\":\"tjixhbkuofqweyk\",\"port\":1807410645}")
+            .toObject(TargetDnsServer.class);
+        Assertions.assertEquals("tjixhbkuofqweyk", model.ipAddress());
+        Assertions.assertEquals(1807410645, model.port());
     }
 
-    @Test
-    public void testSerialize() {
-        TargetDnsServer model = new TargetDnsServer().withIpAddress("lbjnpgacftadehx").withPort(1194387790);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        TargetDnsServer model = new TargetDnsServer().withIpAddress("tjixhbkuofqweyk").withPort(1807410645);
         model = BinaryData.fromObject(model).toObject(TargetDnsServer.class);
-        Assertions.assertEquals("lbjnpgacftadehx", model.ipAddress());
-        Assertions.assertEquals(1194387790, model.port());
+        Assertions.assertEquals("tjixhbkuofqweyk", model.ipAddress());
+        Assertions.assertEquals(1807410645, model.port());
     }
 }

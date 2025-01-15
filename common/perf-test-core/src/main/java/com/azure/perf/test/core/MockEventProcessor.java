@@ -49,7 +49,7 @@ public class MockEventProcessor {
      * @param processEvent the consumer to process the event.
      */
     public MockEventProcessor(int partitions, int maxEventsPerSecond, Duration errorAfter,
-                              Consumer<MockErrorContext> processError, Consumer<MockEventContext> processEvent) {
+        Consumer<MockErrorContext> processError, Consumer<MockEventContext> processEvent) {
         this.processError = processError;
         this.processEvent = processEvent;
         this.partitions = partitions;
@@ -78,8 +78,7 @@ public class MockEventProcessor {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         scheduler.set(executor);
 
-        runner.set(scheduler.get().schedule(this::processEvents,
-            0l, TimeUnit.MILLISECONDS));
+        runner.set(scheduler.get().schedule(this::processEvents, 0l, TimeUnit.MILLISECONDS));
     }
 
     private Mono<Void> processEvents() {
@@ -99,8 +98,7 @@ public class MockEventProcessor {
         if (maxEventsPerSecond > 0) {
             while (process) {
                 long elapsedTime = (System.nanoTime() - startTime);
-                if (errorAfter != null && !errorRaised
-                    && (errorAfter.compareTo(Duration.ofNanos(elapsedTime)) < 0)) {
+                if (errorAfter != null && !errorRaised && (errorAfter.compareTo(Duration.ofNanos(elapsedTime)) < 0)) {
                     errorLock.lock();
                     try {
                         if (!errorRaised) {
@@ -112,8 +110,7 @@ public class MockEventProcessor {
                     }
                 } else {
                     int eventsSent = eventsRaised[partition];
-                    double targetEventsSent = ((double) (elapsedTime / 1_000_000_000))
-                        * maxEventsPerSecondPerPartition;
+                    double targetEventsSent = ((double) (elapsedTime / 1_000_000_000)) * maxEventsPerSecondPerPartition;
                     if (eventsSent < targetEventsSent) {
                         processEvent.accept(mockEventContext);
                         eventsRaised[partition]++;
@@ -128,7 +125,8 @@ public class MockEventProcessor {
             }
         } else {
             while (process) {
-                if (errorAfter != null && !errorRaised
+                if (errorAfter != null
+                    && !errorRaised
                     && (errorAfter.compareTo(Duration.ofNanos((System.nanoTime() - startTime))) < 0)) {
                     errorLock.lock();
                     try {

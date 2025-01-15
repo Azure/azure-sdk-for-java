@@ -17,7 +17,7 @@ import com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionRepetition
 public interface WorkflowRunActionScopeRepetitionsClient {
     /**
      * List the workflow run action scoped repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -28,12 +28,12 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a collection of workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
-        String resourceGroupName, String workflowName, String runName, String actionName);
+    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String workflowName,
+        String runName, String actionName);
 
     /**
      * List the workflow run action scoped repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -45,12 +45,12 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a collection of workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context);
+    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String workflowName,
+        String runName, String actionName, Context context);
 
     /**
      * Get a workflow run action scoped repetition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -63,17 +63,12 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a workflow run action scoped repetition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context);
+    Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName, Context context);
 
     /**
      * Get a workflow run action scoped repetition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -85,6 +80,6 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a workflow run action scoped repetition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowRunActionRepetitionDefinitionInner get(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName);
+    WorkflowRunActionRepetitionDefinitionInner get(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName);
 }

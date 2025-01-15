@@ -59,8 +59,8 @@ public final class TasksStateTasksKeyPhraseExtractionTasksItem extends TaskState
      */
     public static TasksStateTasksKeyPhraseExtractionTasksItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TasksStateTasksKeyPhraseExtractionTasksItem deserializedTasksStateTasksKeyPhraseExtractionTasksItem =
-                    new TasksStateTasksKeyPhraseExtractionTasksItem();
+            TasksStateTasksKeyPhraseExtractionTasksItem deserializedTasksStateTasksKeyPhraseExtractionTasksItem
+                = new TasksStateTasksKeyPhraseExtractionTasksItem();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();

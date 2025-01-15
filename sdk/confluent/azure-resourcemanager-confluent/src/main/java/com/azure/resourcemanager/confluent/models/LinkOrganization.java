@@ -6,17 +6,20 @@ package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Link an existing Confluent organization.
  */
 @Fluent
-public final class LinkOrganization {
+public final class LinkOrganization implements JsonSerializable<LinkOrganization> {
     /*
      * User auth token
      */
-    @JsonProperty(value = "token")
     private String token;
 
     /**
@@ -52,10 +55,47 @@ public final class LinkOrganization {
      */
     public void validate() {
         if (token() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property token in model LinkOrganization"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property token in model LinkOrganization"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LinkOrganization.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("token", this.token);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkOrganization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkOrganization if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LinkOrganization.
+     */
+    public static LinkOrganization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkOrganization deserializedLinkOrganization = new LinkOrganization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("token".equals(fieldName)) {
+                    deserializedLinkOrganization.token = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkOrganization;
+        });
+    }
 }

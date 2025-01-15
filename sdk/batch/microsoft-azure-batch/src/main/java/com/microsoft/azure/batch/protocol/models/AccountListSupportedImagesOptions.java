@@ -20,7 +20,7 @@ public class AccountListSupportedImagesOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -63,7 +63,7 @@ public class AccountListSupportedImagesOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      *
      * @return the filter value
      */
@@ -72,7 +72,7 @@ public class AccountListSupportedImagesOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      *
      * @param filter the filter value to set
      * @return the AccountListSupportedImagesOptions object itself.

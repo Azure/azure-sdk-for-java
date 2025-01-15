@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Cost information for the product system. */
+/**
+ * Cost information for the product system.
+ */
 @Immutable
-public final class CostInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CostInformation.class);
-
+public final class CostInformation implements JsonSerializable<CostInformation> {
     /*
      * Details on the various billing aspects for the product system.
      */
-    @JsonProperty(value = "billingMeterDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<BillingMeterDetails> billingMeterDetails;
 
     /*
      * Default url to display billing information
      */
-    @JsonProperty(value = "billingInfoUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String billingInfoUrl;
 
     /**
+     * Creates an instance of CostInformation class.
+     */
+    public CostInformation() {
+    }
+
+    /**
      * Get the billingMeterDetails property: Details on the various billing aspects for the product system.
-     *
+     * 
      * @return the billingMeterDetails value.
      */
     public List<BillingMeterDetails> billingMeterDetails() {
@@ -38,7 +44,7 @@ public final class CostInformation {
 
     /**
      * Get the billingInfoUrl property: Default url to display billing information.
-     *
+     * 
      * @return the billingInfoUrl value.
      */
     public String billingInfoUrl() {
@@ -47,12 +53,51 @@ public final class CostInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (billingMeterDetails() != null) {
             billingMeterDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CostInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CostInformation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CostInformation.
+     */
+    public static CostInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CostInformation deserializedCostInformation = new CostInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingMeterDetails".equals(fieldName)) {
+                    List<BillingMeterDetails> billingMeterDetails
+                        = reader.readArray(reader1 -> BillingMeterDetails.fromJson(reader1));
+                    deserializedCostInformation.billingMeterDetails = billingMeterDetails;
+                } else if ("billingInfoUrl".equals(fieldName)) {
+                    deserializedCostInformation.billingInfoUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCostInformation;
+        });
     }
 }

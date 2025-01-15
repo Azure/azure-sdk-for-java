@@ -9,10 +9,24 @@ import java.util.List;
 
 /** Type representing Geographic Hierarchy region (location). */
 public interface GeographicLocation extends HasName, HasInnerModel<Region> {
-    /** @return the location code. */
+    /**
+     * Gets the location code.
+     *
+     * @return the location code.
+     */
     String code();
-    /** @return list of immediate child locations grouped under this location in the Geographic Hierarchy. */
+
+    /**
+     * Gets list of immediate child locations grouped under this location in the Geographic Hierarchy.
+     *
+     * @return list of immediate child locations grouped under this location in the Geographic Hierarchy.
+     */
     List<GeographicLocation> childLocations();
-    /** @return list of all descendant locations grouped under this location in the Geographic Hierarchy. */
+
+    /**
+     * Gets list of all descendant locations grouped under this location in the Geographic Hierarchy.
+     *
+     * @return list of all descendant locations grouped under this location in the Geographic Hierarchy.
+     */
     List<GeographicLocation> descendantLocations();
 }

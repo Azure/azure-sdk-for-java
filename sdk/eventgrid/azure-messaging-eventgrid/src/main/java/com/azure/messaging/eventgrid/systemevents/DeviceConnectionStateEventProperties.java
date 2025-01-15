@@ -50,7 +50,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
     /**
      * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = &#064; ; $ '.
      * 
      * @return the deviceId value.
      */
@@ -61,7 +61,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
     /**
      * Set the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = &#064; ; $ '.
      * 
      * @param deviceId the deviceId value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
@@ -74,7 +74,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
     /**
      * Get the moduleId property: The unique identifier of the module. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = &#064; ; $ '.
      * 
      * @return the moduleId value.
      */
@@ -85,7 +85,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
     /**
      * Set the moduleId property: The unique identifier of the module. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = &#064; ; $ '.
      * 
      * @param moduleId the moduleId value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
@@ -136,6 +136,9 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

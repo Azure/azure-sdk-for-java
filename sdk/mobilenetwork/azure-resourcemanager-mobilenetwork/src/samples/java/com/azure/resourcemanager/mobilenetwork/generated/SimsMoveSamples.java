@@ -13,7 +13,8 @@ import java.util.Arrays;
  */
 public final class SimsMoveSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimMove.json
+     * x-ms-original-file:
+     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimMove.json
      */
     /**
      * Sample code: Move list of SIMs to target SIM group.

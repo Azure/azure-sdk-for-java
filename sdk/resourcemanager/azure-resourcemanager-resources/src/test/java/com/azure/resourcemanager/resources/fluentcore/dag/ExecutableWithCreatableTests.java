@@ -10,16 +10,14 @@ public class ExecutableWithCreatableTests {
     public void testExecutableWithExecutableDependency() {
         BreadSliceImpl breadFetcher1 = new BreadSliceImpl("BreadSlice1");
         BreadSliceImpl breadFetcher2 = new BreadSliceImpl("BreadSlice2");
-        breadFetcher1.withAnotherSliceFromStore(breadFetcher2)
-                .execute();
+        breadFetcher1.withAnotherSliceFromStore(breadFetcher2).execute();
     }
 
     @Test
     public void testExecutableWithCreatableDependency() {
         BreadSliceImpl breadFetcher = new BreadSliceImpl("BreadSlice");
         OrderImpl order = new OrderImpl("OrderForSlice", new OrderInner());
-        breadFetcher.withNewOrder(order)
-                .execute();
+        breadFetcher.withNewOrder(order).execute();
     }
 
     @Test
@@ -28,7 +26,6 @@ public class ExecutableWithCreatableTests {
         BreadSliceImpl breadFetcher = new BreadSliceImpl("SliceForSandwich");
         OrderImpl order = new OrderImpl("OrderForSlice", new OrderInner());
         breadFetcher.withNewOrder(order);
-        sandwich.withBreadSliceFromStore(breadFetcher)
-                .create();
+        sandwich.withBreadSliceFromStore(breadFetcher).create();
     }
 }

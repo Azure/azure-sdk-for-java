@@ -12,8 +12,7 @@ public final class ResourcePoolImpl implements ResourcePool {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    ResourcePoolImpl(
-        ResourcePoolInner innerObject,
+    ResourcePoolImpl(ResourcePoolInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

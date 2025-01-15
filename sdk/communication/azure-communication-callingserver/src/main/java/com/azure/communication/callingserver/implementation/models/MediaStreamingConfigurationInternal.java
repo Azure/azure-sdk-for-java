@@ -5,33 +5,36 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.Objects;
 
 /** The MediaStreamingConfigurationInternal model. */
 @Fluent
-public final class MediaStreamingConfigurationInternal {
+public final class MediaStreamingConfigurationInternal
+    implements JsonSerializable<MediaStreamingConfigurationInternal> {
     /*
      * Transport URL for media streaming
      */
-    @JsonProperty(value = "transportUrl", required = true)
     private String transportUrl;
 
     /*
      * The type of tranport to be used for media streaming, eg. Websocket
      */
-    @JsonProperty(value = "transportType", required = true)
     private MediaStreamingTransportTypeInternal transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    @JsonProperty(value = "contentType", required = true)
     private MediaStreamingContentTypeInternal contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
-    @JsonProperty(value = "audioChannelType", required = true)
     private MediaStreamingAudioChannelTypeInternal audioChannelType;
 
     /**
@@ -109,9 +112,53 @@ public final class MediaStreamingConfigurationInternal {
      * @param audioChannelType the audioChannelType value to set.
      * @return the MediaStreamingConfigurationInternal object itself.
      */
-    public MediaStreamingConfigurationInternal setAudioChannelType(
-            MediaStreamingAudioChannelTypeInternal audioChannelType) {
+    public MediaStreamingConfigurationInternal
+        setAudioChannelType(MediaStreamingAudioChannelTypeInternal audioChannelType) {
         this.audioChannelType = audioChannelType;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("transportUrl", transportUrl)
+            .writeStringField("transportType", Objects.toString(transportType, null))
+            .writeStringField("contentType", Objects.toString(contentType, null))
+            .writeStringField("audioChannelType", Objects.toString(audioChannelType, null))
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link MediaStreamingConfigurationInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link MediaStreamingConfigurationInternal}, or null if the {@link JsonReader} was
+     * pointing to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static MediaStreamingConfigurationInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaStreamingConfigurationInternal configuration = new MediaStreamingConfigurationInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transportUrl".equals(fieldName)) {
+                    configuration.transportUrl = reader.getString();
+                } else if ("transportType".equals(fieldName)) {
+                    configuration.transportType = MediaStreamingTransportTypeInternal.fromString(reader.getString());
+                } else if ("contentType".equals(fieldName)) {
+                    configuration.contentType = MediaStreamingContentTypeInternal.fromString(reader.getString());
+                } else if ("audioChannelType".equals(fieldName)) {
+                    configuration.audioChannelType
+                        = MediaStreamingAudioChannelTypeInternal.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return configuration;
+        });
     }
 }

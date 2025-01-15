@@ -40,8 +40,8 @@ public interface GitHubRepoesClient {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GitHubRepoInner> listByConnector(
-        String resourceGroupName, String gitHubConnectorName, Context context);
+    PagedIterable<GitHubRepoInner> listByConnector(String resourceGroupName, String gitHubConnectorName,
+        Context context);
 
     /**
      * Returns a list of monitored GitHub repositories.
@@ -70,8 +70,8 @@ public interface GitHubRepoesClient {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GitHubRepoInner> list(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, Context context);
+    PagedIterable<GitHubRepoInner> list(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        Context context);
 
     /**
      * Returns a monitored GitHub repository.
@@ -87,12 +87,8 @@ public interface GitHubRepoesClient {
      * @return gitHub repo Proxy Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GitHubRepoInner> getWithResponse(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        String gitHubRepoName,
-        Context context);
+    Response<GitHubRepoInner> getWithResponse(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, String gitHubRepoName, Context context);
 
     /**
      * Returns a monitored GitHub repository.
@@ -107,8 +103,8 @@ public interface GitHubRepoesClient {
      * @return gitHub repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubRepoInner get(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, String gitHubRepoName);
+    GitHubRepoInner get(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        String gitHubRepoName);
 
     /**
      * Create or update a monitored GitHub repository.
@@ -124,12 +120,8 @@ public interface GitHubRepoesClient {
      * @return the {@link SyncPoller} for polling of gitHub repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubRepoInner>, GitHubRepoInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        String gitHubRepoName,
-        GitHubRepoInner gitHubRepo);
+    SyncPoller<PollResult<GitHubRepoInner>, GitHubRepoInner> beginCreateOrUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, String gitHubRepoName, GitHubRepoInner gitHubRepo);
 
     /**
      * Create or update a monitored GitHub repository.
@@ -146,12 +138,8 @@ public interface GitHubRepoesClient {
      * @return the {@link SyncPoller} for polling of gitHub repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubRepoInner>, GitHubRepoInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        String gitHubRepoName,
-        GitHubRepoInner gitHubRepo,
+    SyncPoller<PollResult<GitHubRepoInner>, GitHubRepoInner> beginCreateOrUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, String gitHubRepoName, GitHubRepoInner gitHubRepo,
         Context context);
 
     /**
@@ -168,12 +156,8 @@ public interface GitHubRepoesClient {
      * @return gitHub repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubRepoInner createOrUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        String gitHubRepoName,
-        GitHubRepoInner gitHubRepo);
+    GitHubRepoInner createOrUpdate(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        String gitHubRepoName, GitHubRepoInner gitHubRepo);
 
     /**
      * Create or update a monitored GitHub repository.
@@ -190,13 +174,8 @@ public interface GitHubRepoesClient {
      * @return gitHub repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubRepoInner createOrUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        String gitHubRepoName,
-        GitHubRepoInner gitHubRepo,
-        Context context);
+    GitHubRepoInner createOrUpdate(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        String gitHubRepoName, GitHubRepoInner gitHubRepo, Context context);
 
     /**
      * Patch a monitored GitHub repository.
@@ -211,8 +190,8 @@ public interface GitHubRepoesClient {
      * @return the {@link SyncPoller} for polling of gitHub repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubRepoInner>, GitHubRepoInner> beginUpdate(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, String gitHubRepoName);
+    SyncPoller<PollResult<GitHubRepoInner>, GitHubRepoInner> beginUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, String gitHubRepoName);
 
     /**
      * Patch a monitored GitHub repository.
@@ -229,12 +208,8 @@ public interface GitHubRepoesClient {
      * @return the {@link SyncPoller} for polling of gitHub repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GitHubRepoInner>, GitHubRepoInner> beginUpdate(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        String gitHubRepoName,
-        GitHubRepoInner gitHubRepo,
+    SyncPoller<PollResult<GitHubRepoInner>, GitHubRepoInner> beginUpdate(String resourceGroupName,
+        String gitHubConnectorName, String gitHubOwnerName, String gitHubRepoName, GitHubRepoInner gitHubRepo,
         Context context);
 
     /**
@@ -250,8 +225,8 @@ public interface GitHubRepoesClient {
      * @return gitHub repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubRepoInner update(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, String gitHubRepoName);
+    GitHubRepoInner update(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        String gitHubRepoName);
 
     /**
      * Patch a monitored GitHub repository.
@@ -268,11 +243,6 @@ public interface GitHubRepoesClient {
      * @return gitHub repo Proxy Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GitHubRepoInner update(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        String gitHubRepoName,
-        GitHubRepoInner gitHubRepo,
-        Context context);
+    GitHubRepoInner update(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        String gitHubRepoName, GitHubRepoInner gitHubRepo, Context context);
 }

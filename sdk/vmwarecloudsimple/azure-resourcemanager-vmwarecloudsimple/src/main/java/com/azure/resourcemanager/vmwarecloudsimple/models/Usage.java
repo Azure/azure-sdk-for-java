@@ -6,11 +6,13 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.UsageInner;
 
-/** An immutable client-side representation of Usage. */
+/**
+ * An immutable client-side representation of Usage.
+ */
 public interface Usage {
     /**
      * Gets the currentValue property: The current usage value.
-     *
+     * 
      * @return the currentValue value.
      */
     int currentValue();
@@ -18,28 +20,28 @@ public interface Usage {
     /**
      * Gets the limit property: limit of a given sku in a region for a subscription. The maximum permitted value for the
      * usage quota. If there is no limit, this value will be -1.
-     *
+     * 
      * @return the limit value.
      */
     int limit();
 
     /**
      * Gets the name property: Usage name value and localized name.
-     *
+     * 
      * @return the name value.
      */
     UsageName name();
 
     /**
      * Gets the unit property: The usages' unit.
-     *
+     * 
      * @return the unit value.
      */
     UsageCount unit();
 
     /**
      * Gets the inner com.azure.resourcemanager.vmwarecloudsimple.fluent.models.UsageInner object.
-     *
+     * 
      * @return the inner object.
      */
     UsageInner innerModel();

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Data disks settings. */
 @Fluent
 public final class DataDisks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDisks.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DataDisks.class);
 
     /*
      * Disk size in GB for the blank data disks.
@@ -138,9 +139,8 @@ public final class DataDisks {
      */
     public void validate() {
         if (storageAccountType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property storageAccountType in model DataDisks"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property storageAccountType in model DataDisks"));
         }
     }
 }

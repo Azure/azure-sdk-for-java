@@ -19,33 +19,33 @@ public final class SapBwCubeDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapBwCubeDataset model = BinaryData.fromString(
-            "{\"type\":\"SapBwCube\",\"description\":\"kwakkchsf\",\"structure\":\"datalb\",\"schema\":\"datacxu\",\"linkedServiceName\":{\"referenceName\":\"bsdqbdybl\",\"parameters\":{\"m\":\"datat\",\"lerufollcshju\":\"datapgweoqhbjqlqf\",\"xvjeazrah\":\"dataihbymjjvtpne\",\"qamcthtpqgfz\":\"datalhbimyii\"}},\"parameters\":{\"vflgzhc\":{\"type\":\"Bool\",\"defaultValue\":\"datakdi\"},\"pccxziv\":{\"type\":\"Object\",\"defaultValue\":\"datawahcrxofgrutv\"},\"jd\":{\"type\":\"SecureString\",\"defaultValue\":\"datahzghhhkvn\"}},\"annotations\":[\"dataq\"],\"folder\":{\"name\":\"njvpmxn\"},\"\":{\"olrwvtlgxyfj\":\"datazstqlf\"}}")
+            "{\"type\":\"SapBwCube\",\"description\":\"pu\",\"structure\":\"dataa\",\"schema\":\"datasujtgg\",\"linkedServiceName\":{\"referenceName\":\"bszam\",\"parameters\":{\"lrnhhjtvhqsz\":\"dataejpdcliqwzutiy\",\"dp\":\"datasyovqmqc\"}},\"parameters\":{\"kjthl\":{\"type\":\"Object\",\"defaultValue\":\"datanf\"},\"wfubk\":{\"type\":\"String\",\"defaultValue\":\"dataxw\"},\"uktdrsjtmnkxjouw\":{\"type\":\"Int\",\"defaultValue\":\"datajjxumowynjmoozm\"}},\"annotations\":[\"datafdt\",\"datatia\"],\"folder\":{\"name\":\"rnuhcfhepisqbc\"},\"\":{\"blcyeqdobobaq\":\"dataoiommemsoq\",\"srsixwn\":\"dataabebckc\",\"qyyfrridzfpsfyak\":\"datapjcxbjgfm\"}}")
             .toObject(SapBwCubeDataset.class);
-        Assertions.assertEquals("kwakkchsf", model.description());
-        Assertions.assertEquals("bsdqbdybl", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("vflgzhc").type());
-        Assertions.assertEquals("njvpmxn", model.folder().name());
+        Assertions.assertEquals("pu", model.description());
+        Assertions.assertEquals("bszam", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("kjthl").type());
+        Assertions.assertEquals("rnuhcfhepisqbc", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapBwCubeDataset model = new SapBwCubeDataset().withDescription("kwakkchsf")
-            .withStructure("datalb")
-            .withSchema("datacxu")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bsdqbdybl")
-                .withParameters(mapOf("m", "datat", "lerufollcshju", "datapgweoqhbjqlqf", "xvjeazrah",
-                    "dataihbymjjvtpne", "qamcthtpqgfz", "datalhbimyii")))
-            .withParameters(mapOf("vflgzhc",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datakdi"), "pccxziv",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datawahcrxofgrutv"), "jd",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datahzghhhkvn")))
-            .withAnnotations(Arrays.asList("dataq"))
-            .withFolder(new DatasetFolder().withName("njvpmxn"));
+        SapBwCubeDataset model = new SapBwCubeDataset().withDescription("pu")
+            .withStructure("dataa")
+            .withSchema("datasujtgg")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bszam")
+                .withParameters(mapOf("lrnhhjtvhqsz", "dataejpdcliqwzutiy", "dp", "datasyovqmqc")))
+            .withParameters(
+                mapOf("kjthl", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datanf"),
+                    "wfubk", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataxw"),
+                    "uktdrsjtmnkxjouw",
+                    new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datajjxumowynjmoozm")))
+            .withAnnotations(Arrays.asList("datafdt", "datatia"))
+            .withFolder(new DatasetFolder().withName("rnuhcfhepisqbc"));
         model = BinaryData.fromObject(model).toObject(SapBwCubeDataset.class);
-        Assertions.assertEquals("kwakkchsf", model.description());
-        Assertions.assertEquals("bsdqbdybl", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("vflgzhc").type());
-        Assertions.assertEquals("njvpmxn", model.folder().name());
+        Assertions.assertEquals("pu", model.description());
+        Assertions.assertEquals("bszam", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("kjthl").type());
+        Assertions.assertEquals("rnuhcfhepisqbc", model.folder().name());
     }
 
     // Use "Map.of" if available

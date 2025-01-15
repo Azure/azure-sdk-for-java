@@ -90,7 +90,12 @@ public final class ExpressionRoot extends Expression {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (subexpressions() != null) {
+            subexpressions().forEach(e -> e.validate());
+        }
+        if (error() != null) {
+            error().validate();
+        }
     }
 
     /**

@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WarmStoragePropertiesUsageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WarmStoragePropertiesUsage model =
-            BinaryData
-                .fromString("{\"state\":\"Ok\",\"stateDetails\":{\"currentCount\":1487439384,\"maxCount\":1681681951}}")
-                .toObject(WarmStoragePropertiesUsage.class);
+        WarmStoragePropertiesUsage model = BinaryData
+            .fromString("{\"state\":\"Ok\",\"stateDetails\":{\"currentCount\":343837467,\"maxCount\":1240635196}}")
+            .toObject(WarmStoragePropertiesUsage.class);
         Assertions.assertEquals(WarmStoragePropertiesState.OK, model.state());
     }
 

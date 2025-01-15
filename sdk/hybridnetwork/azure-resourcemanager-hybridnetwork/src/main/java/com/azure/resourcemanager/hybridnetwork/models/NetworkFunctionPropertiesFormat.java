@@ -5,96 +5,92 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network function properties.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "configurationType",
-    defaultImpl = NetworkFunctionPropertiesFormat.class)
-@JsonTypeName("NetworkFunctionPropertiesFormat")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Secret", value = NetworkFunctionValueWithSecrets.class),
-    @JsonSubTypes.Type(name = "Open", value = NetworkFunctionValueWithoutSecrets.class) })
 @Fluent
-public class NetworkFunctionPropertiesFormat {
+public class NetworkFunctionPropertiesFormat implements JsonSerializable<NetworkFunctionPropertiesFormat> {
+    /*
+     * The value which indicates if NF values are secrets
+     */
+    private NetworkFunctionConfigurationType configurationType
+        = NetworkFunctionConfigurationType.fromString("NetworkFunctionPropertiesFormat");
+
     /*
      * The provisioning state of the network function resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The publisher name for the network function.
      */
-    @JsonProperty(value = "publisherName", access = JsonProperty.Access.WRITE_ONLY)
     private String publisherName;
 
     /*
      * The scope of the publisher.
      */
-    @JsonProperty(value = "publisherScope", access = JsonProperty.Access.WRITE_ONLY)
     private PublisherScope publisherScope;
 
     /*
      * The network function definition group name for the network function.
      */
-    @JsonProperty(value = "networkFunctionDefinitionGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String networkFunctionDefinitionGroupName;
 
     /*
      * The network function definition version for the network function.
      */
-    @JsonProperty(value = "networkFunctionDefinitionVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String networkFunctionDefinitionVersion;
 
     /*
      * The location of the network function definition offering.
      */
-    @JsonProperty(value = "networkFunctionDefinitionOfferingLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String networkFunctionDefinitionOfferingLocation;
 
     /*
      * The network function definition version resource reference.
      */
-    @JsonProperty(value = "networkFunctionDefinitionVersionResourceReference")
     private DeploymentResourceIdReference networkFunctionDefinitionVersionResourceReference;
 
     /*
      * The nfvi type for the network function.
      */
-    @JsonProperty(value = "nfviType")
     private NfviType nfviType;
 
     /*
      * The nfviId for the network function.
      */
-    @JsonProperty(value = "nfviId")
     private String nfviId;
 
     /*
      * Indicates if software updates are allowed during deployment.
      */
-    @JsonProperty(value = "allowSoftwareUpdate")
     private Boolean allowSoftwareUpdate;
 
     /*
      * The role configuration override values from the user.
      */
-    @JsonProperty(value = "roleOverrideValues")
     private List<String> roleOverrideValues;
 
     /**
      * Creates an instance of NetworkFunctionPropertiesFormat class.
      */
     public NetworkFunctionPropertiesFormat() {
+    }
+
+    /**
+     * Get the configurationType property: The value which indicates if NF values are secrets.
+     * 
+     * @return the configurationType value.
+     */
+    public NetworkFunctionConfigurationType configurationType() {
+        return this.configurationType;
     }
 
     /**
@@ -107,6 +103,17 @@ public class NetworkFunctionPropertiesFormat {
     }
 
     /**
+     * Set the provisioningState property: The provisioning state of the network function resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the NetworkFunctionPropertiesFormat object itself.
+     */
+    NetworkFunctionPropertiesFormat withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the publisherName property: The publisher name for the network function.
      * 
      * @return the publisherName value.
@@ -116,12 +123,34 @@ public class NetworkFunctionPropertiesFormat {
     }
 
     /**
+     * Set the publisherName property: The publisher name for the network function.
+     * 
+     * @param publisherName the publisherName value to set.
+     * @return the NetworkFunctionPropertiesFormat object itself.
+     */
+    NetworkFunctionPropertiesFormat withPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+        return this;
+    }
+
+    /**
      * Get the publisherScope property: The scope of the publisher.
      * 
      * @return the publisherScope value.
      */
     public PublisherScope publisherScope() {
         return this.publisherScope;
+    }
+
+    /**
+     * Set the publisherScope property: The scope of the publisher.
+     * 
+     * @param publisherScope the publisherScope value to set.
+     * @return the NetworkFunctionPropertiesFormat object itself.
+     */
+    NetworkFunctionPropertiesFormat withPublisherScope(PublisherScope publisherScope) {
+        this.publisherScope = publisherScope;
+        return this;
     }
 
     /**
@@ -135,6 +164,18 @@ public class NetworkFunctionPropertiesFormat {
     }
 
     /**
+     * Set the networkFunctionDefinitionGroupName property: The network function definition group name for the network
+     * function.
+     * 
+     * @param networkFunctionDefinitionGroupName the networkFunctionDefinitionGroupName value to set.
+     * @return the NetworkFunctionPropertiesFormat object itself.
+     */
+    NetworkFunctionPropertiesFormat withNetworkFunctionDefinitionGroupName(String networkFunctionDefinitionGroupName) {
+        this.networkFunctionDefinitionGroupName = networkFunctionDefinitionGroupName;
+        return this;
+    }
+
+    /**
      * Get the networkFunctionDefinitionVersion property: The network function definition version for the network
      * function.
      * 
@@ -145,6 +186,18 @@ public class NetworkFunctionPropertiesFormat {
     }
 
     /**
+     * Set the networkFunctionDefinitionVersion property: The network function definition version for the network
+     * function.
+     * 
+     * @param networkFunctionDefinitionVersion the networkFunctionDefinitionVersion value to set.
+     * @return the NetworkFunctionPropertiesFormat object itself.
+     */
+    NetworkFunctionPropertiesFormat withNetworkFunctionDefinitionVersion(String networkFunctionDefinitionVersion) {
+        this.networkFunctionDefinitionVersion = networkFunctionDefinitionVersion;
+        return this;
+    }
+
+    /**
      * Get the networkFunctionDefinitionOfferingLocation property: The location of the network function definition
      * offering.
      * 
@@ -152,6 +205,19 @@ public class NetworkFunctionPropertiesFormat {
      */
     public String networkFunctionDefinitionOfferingLocation() {
         return this.networkFunctionDefinitionOfferingLocation;
+    }
+
+    /**
+     * Set the networkFunctionDefinitionOfferingLocation property: The location of the network function definition
+     * offering.
+     * 
+     * @param networkFunctionDefinitionOfferingLocation the networkFunctionDefinitionOfferingLocation value to set.
+     * @return the NetworkFunctionPropertiesFormat object itself.
+     */
+    NetworkFunctionPropertiesFormat
+        withNetworkFunctionDefinitionOfferingLocation(String networkFunctionDefinitionOfferingLocation) {
+        this.networkFunctionDefinitionOfferingLocation = networkFunctionDefinitionOfferingLocation;
+        return this;
     }
 
     /**
@@ -267,5 +333,106 @@ public class NetworkFunctionPropertiesFormat {
         if (networkFunctionDefinitionVersionResourceReference() != null) {
             networkFunctionDefinitionVersionResourceReference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        jsonWriter.writeJsonField("networkFunctionDefinitionVersionResourceReference",
+            this.networkFunctionDefinitionVersionResourceReference);
+        jsonWriter.writeStringField("nfviType", this.nfviType == null ? null : this.nfviType.toString());
+        jsonWriter.writeStringField("nfviId", this.nfviId);
+        jsonWriter.writeBooleanField("allowSoftwareUpdate", this.allowSoftwareUpdate);
+        jsonWriter.writeArrayField("roleOverrideValues", this.roleOverrideValues,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFunctionPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFunctionPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkFunctionPropertiesFormat.
+     */
+    public static NetworkFunctionPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("configurationType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Secret".equals(discriminatorValue)) {
+                    return NetworkFunctionValueWithSecrets.fromJson(readerToUse.reset());
+                } else if ("Open".equals(discriminatorValue)) {
+                    return NetworkFunctionValueWithoutSecrets.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static NetworkFunctionPropertiesFormat fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFunctionPropertiesFormat deserializedNetworkFunctionPropertiesFormat
+                = new NetworkFunctionPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationType".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.configurationType
+                        = NetworkFunctionConfigurationType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("publisherName".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.publisherName = reader.getString();
+                } else if ("publisherScope".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.publisherScope
+                        = PublisherScope.fromString(reader.getString());
+                } else if ("networkFunctionDefinitionGroupName".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.networkFunctionDefinitionGroupName = reader.getString();
+                } else if ("networkFunctionDefinitionVersion".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.networkFunctionDefinitionVersion = reader.getString();
+                } else if ("networkFunctionDefinitionOfferingLocation".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.networkFunctionDefinitionOfferingLocation
+                        = reader.getString();
+                } else if ("networkFunctionDefinitionVersionResourceReference".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.networkFunctionDefinitionVersionResourceReference
+                        = DeploymentResourceIdReference.fromJson(reader);
+                } else if ("nfviType".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.nfviType = NfviType.fromString(reader.getString());
+                } else if ("nfviId".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.nfviId = reader.getString();
+                } else if ("allowSoftwareUpdate".equals(fieldName)) {
+                    deserializedNetworkFunctionPropertiesFormat.allowSoftwareUpdate
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("roleOverrideValues".equals(fieldName)) {
+                    List<String> roleOverrideValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkFunctionPropertiesFormat.roleOverrideValues = roleOverrideValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFunctionPropertiesFormat;
+        });
     }
 }

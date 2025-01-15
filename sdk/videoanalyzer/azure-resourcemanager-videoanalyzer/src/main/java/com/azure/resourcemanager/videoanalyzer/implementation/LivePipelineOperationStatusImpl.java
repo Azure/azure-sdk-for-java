@@ -13,8 +13,7 @@ public final class LivePipelineOperationStatusImpl implements LivePipelineOperat
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    LivePipelineOperationStatusImpl(
-        LivePipelineOperationStatusInner innerObject,
+    LivePipelineOperationStatusImpl(LivePipelineOperationStatusInner innerObject,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

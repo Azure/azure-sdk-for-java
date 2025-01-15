@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The Model data collection properties. */
 @Fluent
 public class ModelDataCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelDataCollection.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelDataCollection.class);
 
     /*
      * Option for enabling/disabling Event Hub.

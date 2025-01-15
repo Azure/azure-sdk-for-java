@@ -15,7 +15,6 @@ import com.azure.analytics.purview.datamap.GlossaryClient;
 import com.azure.analytics.purview.datamap.LineageClient;
 import com.azure.analytics.purview.datamap.RelationshipClient;
 import com.azure.analytics.purview.datamap.TypeDefinitionClient;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -41,11 +40,10 @@ class DataMapClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         DataMapClientBuilder entityClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            entityClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            entityClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             entityClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -56,11 +54,10 @@ class DataMapClientTestBase extends TestProxyTestBase {
 
         DataMapClientBuilder glossaryClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            glossaryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            glossaryClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             glossaryClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -71,11 +68,10 @@ class DataMapClientTestBase extends TestProxyTestBase {
 
         DataMapClientBuilder discoveryClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            discoveryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            discoveryClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             discoveryClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -86,11 +82,10 @@ class DataMapClientTestBase extends TestProxyTestBase {
 
         DataMapClientBuilder lineageClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            lineageClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            lineageClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             lineageClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -101,11 +96,10 @@ class DataMapClientTestBase extends TestProxyTestBase {
 
         DataMapClientBuilder relationshipClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            relationshipClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            relationshipClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             relationshipClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -116,11 +110,10 @@ class DataMapClientTestBase extends TestProxyTestBase {
 
         DataMapClientBuilder typeDefinitionClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            typeDefinitionClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            typeDefinitionClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             typeDefinitionClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());

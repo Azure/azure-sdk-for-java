@@ -33,8 +33,8 @@ public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     @Test
     public void denyListedWordsTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(3, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "errorHTTPMethod", "XML, HTTP, URL")),
-            expectedErrorMessage(9, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "invalidXMLMethod", "XML, HTTP, URL"))
+            expectedErrorMessage(3, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "errorHTTPMethod", "URL, HTTP, XML")),
+            expectedErrorMessage(9, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "invalidXMLMethod", "URL, HTTP, XML"))
         };
         verify(checker, getPath("DenyListedWordsTestData.java"), expected);
     }

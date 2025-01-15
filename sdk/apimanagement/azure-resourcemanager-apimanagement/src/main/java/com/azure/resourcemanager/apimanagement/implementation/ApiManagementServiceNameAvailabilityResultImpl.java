@@ -14,8 +14,7 @@ public final class ApiManagementServiceNameAvailabilityResultImpl
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    ApiManagementServiceNameAvailabilityResultImpl(
-        ApiManagementServiceNameAvailabilityResultInner innerObject,
+    ApiManagementServiceNameAvailabilityResultImpl(ApiManagementServiceNameAvailabilityResultInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

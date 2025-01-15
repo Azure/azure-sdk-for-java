@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -76,6 +77,108 @@ public class PoolPatchParameter {
      */
     @JsonProperty(value = "targetNodeCommunicationMode")
     private NodeCommunicationMode targetNodeCommunicationMode;
+
+    /**
+     * The display name for the Pool.
+     * The display name need not be unique and can contain any Unicode
+     * characters up to a maximum length of 1024.&lt;br /&gt;&lt;br /&gt;This
+     * field can be updated only when the pool is empty.
+     */
+    @JsonProperty(value = "displayName")
+    private String displayName;
+
+    /**
+     * The size of virtual machines in the Pool. All VMs in a Pool are the same
+     * size.
+     * For information about available sizes of virtual machines in Pools, see
+     * Choose a VM size for Compute Nodes in an Azure Batch Pool
+     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).&lt;br
+     * /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     */
+    @JsonProperty(value = "vmSize")
+    private String vmSize;
+
+    /**
+     * The number of task slots that can be used to run concurrent tasks on a
+     * single compute node in the pool.
+     * The default value is 1. The maximum value is the smaller of 4 times the
+     * number of cores of the vmSize of the pool or 256.&lt;br /&gt;&lt;br
+     * /&gt;This field can be updated only when the pool is empty.
+     */
+    @JsonProperty(value = "taskSlotsPerNode")
+    private Integer taskSlotsPerNode;
+
+    /**
+     * How Tasks are distributed across Compute Nodes in a Pool.
+     * If not specified, the default is spread.&lt;br /&gt;&lt;br /&gt;This
+     * field can be updated only when the pool is empty.
+     */
+    @JsonProperty(value = "taskSchedulingPolicy")
+    private TaskSchedulingPolicy taskSchedulingPolicy;
+
+    /**
+     * Whether the Pool permits direct communication between Compute Nodes.
+     * Enabling inter-node communication limits the maximum size of the Pool
+     * due to deployment restrictions on the Compute Nodes of the Pool. This
+     * may result in the Pool not reaching its desired size. The default value
+     * is false.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the
+     * pool is empty.
+     */
+    @JsonProperty(value = "enableInterNodeCommunication")
+    private Boolean enableInterNodeCommunication;
+
+    /**
+     * The virtual machine configuration for the Pool.
+     * This property must be specified.&lt;br /&gt;&lt;br /&gt;This field can
+     * be updated only when the pool is empty.
+     */
+    @JsonProperty(value = "virtualMachineConfiguration")
+    private VirtualMachineConfiguration virtualMachineConfiguration;
+
+    /**
+     * The network configuration for the Pool.
+     * This field can be updated only when the pool is empty.
+     */
+    @JsonProperty(value = "networkConfiguration")
+    private NetworkConfiguration networkConfiguration;
+
+    /**
+     * The list of user Accounts to be created on each Compute Node in the
+     * Pool.
+     * This field can be updated only when the pool is empty.
+     */
+    @JsonProperty(value = "userAccounts")
+    private List<UserAccount> userAccounts;
+
+    /**
+     * Mount storage using specified file system for the entire lifetime of the
+     * pool.
+     * Mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based
+     * file system.&lt;br /&gt;&lt;br /&gt;This field can be updated only when
+     * the pool is empty.
+     */
+    @JsonProperty(value = "mountConfiguration")
+    private List<MountConfiguration> mountConfiguration;
+
+    /**
+     * The upgrade policy for the Pool.
+     * Describes an upgrade policy - automatic, manual, or rolling.&lt;br
+     * /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     */
+    @JsonProperty(value = "upgradePolicy")
+    private UpgradePolicy upgradePolicy;
+
+    /**
+     * The user-specified tags associated with the pool.
+     * The user-defined tags to be associated with the Azure Batch Pool. When
+     * specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the
+     * Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.&lt;br /&gt;&lt;br /&gt;This field can be updated
+     * only when the pool is empty.
+     */
+    @JsonProperty(value = "resourceTags")
+    private Map<String, String> resourceTags;
 
     /**
      * Get if this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
@@ -176,6 +279,226 @@ public class PoolPatchParameter {
      */
     public PoolPatchParameter withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
+        return this;
+    }
+
+    /**
+     * Get the display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @return the displayName value
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @param displayName the displayName value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get for information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @return the vmSize value
+     */
+    public String vmSize() {
+        return this.vmSize;
+    }
+
+    /**
+     * Set for information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @param vmSize the vmSize value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withVmSize(String vmSize) {
+        this.vmSize = vmSize;
+        return this;
+    }
+
+    /**
+     * Get the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @return the taskSlotsPerNode value
+     */
+    public Integer taskSlotsPerNode() {
+        return this.taskSlotsPerNode;
+    }
+
+    /**
+     * Set the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @param taskSlotsPerNode the taskSlotsPerNode value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withTaskSlotsPerNode(Integer taskSlotsPerNode) {
+        this.taskSlotsPerNode = taskSlotsPerNode;
+        return this;
+    }
+
+    /**
+     * Get if not specified, the default is spread.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @return the taskSchedulingPolicy value
+     */
+    public TaskSchedulingPolicy taskSchedulingPolicy() {
+        return this.taskSchedulingPolicy;
+    }
+
+    /**
+     * Set if not specified, the default is spread.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @param taskSchedulingPolicy the taskSchedulingPolicy value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withTaskSchedulingPolicy(TaskSchedulingPolicy taskSchedulingPolicy) {
+        this.taskSchedulingPolicy = taskSchedulingPolicy;
+        return this;
+    }
+
+    /**
+     * Get enabling inter-node communication limits the maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the Pool not reaching its desired size. The default value is false.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @return the enableInterNodeCommunication value
+     */
+    public Boolean enableInterNodeCommunication() {
+        return this.enableInterNodeCommunication;
+    }
+
+    /**
+     * Set enabling inter-node communication limits the maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the Pool not reaching its desired size. The default value is false.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @param enableInterNodeCommunication the enableInterNodeCommunication value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
+        this.enableInterNodeCommunication = enableInterNodeCommunication;
+        return this;
+    }
+
+    /**
+     * Get this property must be specified.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @return the virtualMachineConfiguration value
+     */
+    public VirtualMachineConfiguration virtualMachineConfiguration() {
+        return this.virtualMachineConfiguration;
+    }
+
+    /**
+     * Set this property must be specified.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @param virtualMachineConfiguration the virtualMachineConfiguration value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
+        this.virtualMachineConfiguration = virtualMachineConfiguration;
+        return this;
+    }
+
+    /**
+     * Get this field can be updated only when the pool is empty.
+     *
+     * @return the networkConfiguration value
+     */
+    public NetworkConfiguration networkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set this field can be updated only when the pool is empty.
+     *
+     * @param networkConfiguration the networkConfiguration value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withNetworkConfiguration(NetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
+        return this;
+    }
+
+    /**
+     * Get this field can be updated only when the pool is empty.
+     *
+     * @return the userAccounts value
+     */
+    public List<UserAccount> userAccounts() {
+        return this.userAccounts;
+    }
+
+    /**
+     * Set this field can be updated only when the pool is empty.
+     *
+     * @param userAccounts the userAccounts value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withUserAccounts(List<UserAccount> userAccounts) {
+        this.userAccounts = userAccounts;
+        return this;
+    }
+
+    /**
+     * Get mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based file system.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @return the mountConfiguration value
+     */
+    public List<MountConfiguration> mountConfiguration() {
+        return this.mountConfiguration;
+    }
+
+    /**
+     * Set mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based file system.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @param mountConfiguration the mountConfiguration value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withMountConfiguration(List<MountConfiguration> mountConfiguration) {
+        this.mountConfiguration = mountConfiguration;
+        return this;
+    }
+
+    /**
+     * Get describes an upgrade policy - automatic, manual, or rolling.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @return the upgradePolicy value
+     */
+    public UpgradePolicy upgradePolicy() {
+        return this.upgradePolicy;
+    }
+
+    /**
+     * Set describes an upgrade policy - automatic, manual, or rolling.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @param upgradePolicy the upgradePolicy value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withUpgradePolicy(UpgradePolicy upgradePolicy) {
+        this.upgradePolicy = upgradePolicy;
+        return this;
+    }
+
+    /**
+     * Get the user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @return the resourceTags value
+     */
+    public Map<String, String> resourceTags() {
+        return this.resourceTags;
+    }
+
+    /**
+     * Set the user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
+     *
+     * @param resourceTags the resourceTags value to set
+     * @return the PoolPatchParameter object itself.
+     */
+    public PoolPatchParameter withResourceTags(Map<String, String> resourceTags) {
+        this.resourceTags = resourceTags;
         return this;
     }
 

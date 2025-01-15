@@ -124,7 +124,6 @@ public final class UniformInt64RangePartitionScheme extends Partition {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

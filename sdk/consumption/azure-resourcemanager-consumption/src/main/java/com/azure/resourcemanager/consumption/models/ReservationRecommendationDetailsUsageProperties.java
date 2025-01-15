@@ -5,54 +5,55 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Details about historical usage data that has been used for computing the recommendation. */
+/**
+ * Details about historical usage data that has been used for computing the recommendation.
+ */
 @Immutable
-public final class ReservationRecommendationDetailsUsageProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ReservationRecommendationDetailsUsageProperties.class);
-
+public final class ReservationRecommendationDetailsUsageProperties
+    implements JsonSerializable<ReservationRecommendationDetailsUsageProperties> {
     /*
-     * The first usage date used for looking back for computing the
-     * recommendation.
+     * The first usage date used for looking back for computing the recommendation.
      */
-    @JsonProperty(value = "firstConsumptionDate", access = JsonProperty.Access.WRITE_ONLY)
     private String firstConsumptionDate;
 
     /*
-     * The last usage date used for looking back for computing the
-     * recommendation.
+     * The last usage date used for looking back for computing the recommendation.
      */
-    @JsonProperty(value = "lastConsumptionDate", access = JsonProperty.Access.WRITE_ONLY)
     private String lastConsumptionDate;
 
     /*
      * What the usage data values represent ex: virtual machine instance.
      */
-    @JsonProperty(value = "lookBackUnitType", access = JsonProperty.Access.WRITE_ONLY)
     private String lookBackUnitType;
 
     /*
-     * The breakdown of historical resource usage.  The values are in the order
-     * of usage between the firstConsumptionDate and the lastConsumptionDate.
+     * The breakdown of historical resource usage. The values are in the order of usage between the firstConsumptionDate
+     * and the lastConsumptionDate.
      */
-    @JsonProperty(value = "usageData", access = JsonProperty.Access.WRITE_ONLY)
     private List<Float> usageData;
 
     /*
      * The grain of the values represented in the usage data ex: hourly.
      */
-    @JsonProperty(value = "usageGrain", access = JsonProperty.Access.WRITE_ONLY)
     private String usageGrain;
+
+    /**
+     * Creates an instance of ReservationRecommendationDetailsUsageProperties class.
+     */
+    public ReservationRecommendationDetailsUsageProperties() {
+    }
 
     /**
      * Get the firstConsumptionDate property: The first usage date used for looking back for computing the
      * recommendation.
-     *
+     * 
      * @return the firstConsumptionDate value.
      */
     public String firstConsumptionDate() {
@@ -61,7 +62,7 @@ public final class ReservationRecommendationDetailsUsageProperties {
 
     /**
      * Get the lastConsumptionDate property: The last usage date used for looking back for computing the recommendation.
-     *
+     * 
      * @return the lastConsumptionDate value.
      */
     public String lastConsumptionDate() {
@@ -70,7 +71,7 @@ public final class ReservationRecommendationDetailsUsageProperties {
 
     /**
      * Get the lookBackUnitType property: What the usage data values represent ex: virtual machine instance.
-     *
+     * 
      * @return the lookBackUnitType value.
      */
     public String lookBackUnitType() {
@@ -80,7 +81,7 @@ public final class ReservationRecommendationDetailsUsageProperties {
     /**
      * Get the usageData property: The breakdown of historical resource usage. The values are in the order of usage
      * between the firstConsumptionDate and the lastConsumptionDate.
-     *
+     * 
      * @return the usageData value.
      */
     public List<Float> usageData() {
@@ -89,7 +90,7 @@ public final class ReservationRecommendationDetailsUsageProperties {
 
     /**
      * Get the usageGrain property: The grain of the values represented in the usage data ex: hourly.
-     *
+     * 
      * @return the usageGrain value.
      */
     public String usageGrain() {
@@ -98,9 +99,56 @@ public final class ReservationRecommendationDetailsUsageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationRecommendationDetailsUsageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationRecommendationDetailsUsageProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationRecommendationDetailsUsageProperties.
+     */
+    public static ReservationRecommendationDetailsUsageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationRecommendationDetailsUsageProperties deserializedReservationRecommendationDetailsUsageProperties
+                = new ReservationRecommendationDetailsUsageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("firstConsumptionDate".equals(fieldName)) {
+                    deserializedReservationRecommendationDetailsUsageProperties.firstConsumptionDate
+                        = reader.getString();
+                } else if ("lastConsumptionDate".equals(fieldName)) {
+                    deserializedReservationRecommendationDetailsUsageProperties.lastConsumptionDate
+                        = reader.getString();
+                } else if ("lookBackUnitType".equals(fieldName)) {
+                    deserializedReservationRecommendationDetailsUsageProperties.lookBackUnitType = reader.getString();
+                } else if ("usageData".equals(fieldName)) {
+                    List<Float> usageData = reader.readArray(reader1 -> reader1.getFloat());
+                    deserializedReservationRecommendationDetailsUsageProperties.usageData = usageData;
+                } else if ("usageGrain".equals(fieldName)) {
+                    deserializedReservationRecommendationDetailsUsageProperties.usageGrain = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationRecommendationDetailsUsageProperties;
+        });
     }
 }

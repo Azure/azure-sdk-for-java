@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonFlatten
 @Fluent
 public class ClusterUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpdateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ClusterUpdateParameters.class);
 
     /*
      * Desired scale settings for the amlCompute.

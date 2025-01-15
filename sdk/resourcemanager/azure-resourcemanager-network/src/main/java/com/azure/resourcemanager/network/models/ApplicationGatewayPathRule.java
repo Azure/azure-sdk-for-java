@@ -15,16 +15,32 @@ import java.util.List;
 public interface ApplicationGatewayPathRule
     extends HasInnerModel<ApplicationGatewayPathRuleInner>, ChildResource<ApplicationGatewayUrlPathMap> {
 
-    /** @return backend address pool resource of URL path map path rule */
+    /**
+     * Gets backend address pool resource of URL path map path rule.
+     *
+     * @return backend address pool resource of URL path map path rule
+     */
     ApplicationGatewayBackend backend();
 
-    /** @return backend http settings resource of URL path map path rule */
+    /**
+     * Gets backend http settings resource of URL path map path rule.
+     *
+     * @return backend http settings resource of URL path map path rule
+     */
     ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration();
 
-    /** @return redirect configuration resource of URL path map path rule */
+    /**
+     * Gets redirect configuration resource of URL path map path rule.
+     *
+     * @return redirect configuration resource of URL path map path rule
+     */
     ApplicationGatewayRedirectConfiguration redirectConfiguration();
 
-    /** @return paths for URL path map rule. */
+    /**
+     * Gets paths for URL path map rule.
+     *
+     * @return paths for URL path map rule.
+     */
     List<String> paths();
 
     /** Grouping of application gateway URL path map definition stages. */
@@ -47,12 +63,16 @@ public interface ApplicationGatewayPathRule
          */
         interface WithPath<ReturnT> {
             /**
+             * Specifies path for the path rule.
+             *
              * @param path for the path rule
              * @return the next stage of the definition
              */
             WithAttach<ReturnT> withPath(String path);
 
             /**
+             * Specifies path for the path rule.
+             *
              * @param paths for the path rule
              * @return the next stage of the definition
              */
@@ -134,10 +154,8 @@ public interface ApplicationGatewayPathRule
      *     definition
      */
     interface Definition<ReturnT>
-        extends DefinitionStages.Blank<ReturnT>,
-            DefinitionStages.WithBackendHttpConfiguration<ReturnT>,
-            DefinitionStages.WithBackend<ReturnT>,
-            DefinitionStages.WithAttach<ReturnT> {
+        extends DefinitionStages.Blank<ReturnT>, DefinitionStages.WithBackendHttpConfiguration<ReturnT>,
+        DefinitionStages.WithBackend<ReturnT>, DefinitionStages.WithAttach<ReturnT> {
     }
 
     /** The entirety of path rule of URL path map update as part of an application gateway update. */
@@ -202,12 +220,16 @@ public interface ApplicationGatewayPathRule
          */
         interface WithPath<ReturnT> {
             /**
+             * Specifies path for the path rule.
+             *
              * @param path for the path rule
              * @return the next stage of the definition
              */
             WithAttach<ReturnT> withPath(String path);
 
             /**
+             * Specifies path for the path rule.
+             *
              * @param paths for the path rule
              * @return the next stage of the definition
              */
@@ -250,11 +272,8 @@ public interface ApplicationGatewayPathRule
      * @param <ReturnT> the stage of the parent application gateway URL path map definition to return to after attaching
      *     this definition
      */
-    interface UpdateDefinition<ReturnT>
-        extends UpdateDefinitionStages.Blank<ReturnT>,
-            UpdateDefinitionStages.WithBackendHttpConfiguration<ReturnT>,
-            UpdateDefinitionStages.WithBackend<ReturnT>,
-            UpdateDefinitionStages.WithPath<ReturnT>,
-            UpdateDefinitionStages.WithAttach<ReturnT> {
+    interface UpdateDefinition<ReturnT> extends UpdateDefinitionStages.Blank<ReturnT>,
+        UpdateDefinitionStages.WithBackendHttpConfiguration<ReturnT>, UpdateDefinitionStages.WithBackend<ReturnT>,
+        UpdateDefinitionStages.WithPath<ReturnT>, UpdateDefinitionStages.WithAttach<ReturnT> {
     }
 }

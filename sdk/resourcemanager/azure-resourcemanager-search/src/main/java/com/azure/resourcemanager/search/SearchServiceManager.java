@@ -85,19 +85,16 @@ public final class SearchServiceManager extends Manager<SearchManagementClient> 
     }
 
     private SearchServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new SearchManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new SearchManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient()
-        );
+                .buildClient());
     }
 
-
     /**
+     * Gets the API entry point of the search management.
+     *
      * @return the availability set resource management API entry point
      */
     public SearchServices searchServices() {

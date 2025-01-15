@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Azure Blob Storage Container mounting configuration. */
 @Fluent
 public final class AzureBlobFileSystemReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobFileSystemReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AzureBlobFileSystemReference.class);
 
     /*
      * Name of the Azure storage account.
@@ -158,30 +159,22 @@ public final class AzureBlobFileSystemReference {
      */
     public void validate() {
         if (accountName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accountName in model AzureBlobFileSystemReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property accountName in model AzureBlobFileSystemReference"));
         }
         if (containerName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containerName in model AzureBlobFileSystemReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property containerName in model AzureBlobFileSystemReference"));
         }
         if (credentials() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property credentials in model AzureBlobFileSystemReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property credentials in model AzureBlobFileSystemReference"));
         } else {
             credentials().validate();
         }
         if (relativeMountPath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relativeMountPath in model AzureBlobFileSystemReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property relativeMountPath in model AzureBlobFileSystemReference"));
         }
     }
 }

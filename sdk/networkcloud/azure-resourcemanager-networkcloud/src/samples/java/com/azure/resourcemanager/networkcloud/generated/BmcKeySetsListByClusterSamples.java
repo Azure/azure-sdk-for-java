@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for BmcKeySets ListByCluster. */
+/**
+ * Samples for BmcKeySets ListByCluster.
+ */
 public final class BmcKeySetsListByClusterSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BmcKeySets_ListByCluster.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * BmcKeySets_ListByCluster.json
      */
     /**
      * Sample code: List baseboard management controller key sets of the cluster.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void listBaseboardManagementControllerKeySetsOfTheCluster(

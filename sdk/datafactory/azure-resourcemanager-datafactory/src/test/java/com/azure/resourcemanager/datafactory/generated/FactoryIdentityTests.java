@@ -15,7 +15,7 @@ public final class FactoryIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FactoryIdentity model = BinaryData.fromString(
-            "{\"type\":\"SystemAssigned\",\"principalId\":\"e7ce8104-99be-4f7c-a3d9-61b241524eed\",\"tenantId\":\"e6580028-d4aa-4bb5-8921-8d2c6828ca9e\",\"userAssignedIdentities\":{\"qjpkcattpngjcrc\":\"dataleyyvx\"}}")
+            "{\"type\":\"SystemAssigned\",\"principalId\":\"2ffd519b-7921-43a8-b545-158a4038b111\",\"tenantId\":\"8fa182c0-3361-4b09-a470-d687353b1a2c\",\"userAssignedIdentities\":{\"qjpkcattpngjcrc\":\"dataleyyvx\"}}")
             .toObject(FactoryIdentity.class);
         Assertions.assertEquals(FactoryIdentityType.SYSTEM_ASSIGNED, model.type());
     }

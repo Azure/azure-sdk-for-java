@@ -6,32 +6,38 @@ package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A field that should be evaluated against Azure Policy to determine restrictions. */
+/**
+ * A field that should be evaluated against Azure Policy to determine restrictions.
+ */
 @Fluent
-public final class PendingField {
+public final class PendingField implements JsonSerializable<PendingField> {
     /*
      * The name of the field. This can be a top-level property like 'name' or 'type' or an Azure Policy field alias.
      */
-    @JsonProperty(value = "field", required = true)
     private String field;
 
     /*
      * The list of potential values for the field that should be evaluated against Azure Policy.
      */
-    @JsonProperty(value = "values")
     private List<String> values;
 
-    /** Creates an instance of PendingField class. */
+    /**
+     * Creates an instance of PendingField class.
+     */
     public PendingField() {
     }
 
     /**
      * Get the field property: The name of the field. This can be a top-level property like 'name' or 'type' or an Azure
      * Policy field alias.
-     *
+     * 
      * @return the field value.
      */
     public String field() {
@@ -41,7 +47,7 @@ public final class PendingField {
     /**
      * Set the field property: The name of the field. This can be a top-level property like 'name' or 'type' or an Azure
      * Policy field alias.
-     *
+     * 
      * @param field the field value to set.
      * @return the PendingField object itself.
      */
@@ -53,7 +59,7 @@ public final class PendingField {
     /**
      * Get the values property: The list of potential values for the field that should be evaluated against Azure
      * Policy.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -63,7 +69,7 @@ public final class PendingField {
     /**
      * Set the values property: The list of potential values for the field that should be evaluated against Azure
      * Policy.
-     *
+     * 
      * @param values the values value to set.
      * @return the PendingField object itself.
      */
@@ -74,16 +80,56 @@ public final class PendingField {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (field() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property field in model PendingField"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property field in model PendingField"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PendingField.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("field", this.field);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PendingField from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PendingField if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PendingField.
+     */
+    public static PendingField fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PendingField deserializedPendingField = new PendingField();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("field".equals(fieldName)) {
+                    deserializedPendingField.field = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPendingField.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPendingField;
+        });
+    }
 }

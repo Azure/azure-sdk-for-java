@@ -15,22 +15,22 @@ public final class ClusterResizeDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterResizeData model = BinaryData.fromString(
-            "{\"properties\":{\"targetWorkerNodeCount\":462425094},\"location\":\"ztfolhbnxk\",\"tags\":{\"pnapnyiropuh\":\"aulppggd\",\"git\":\"igvpgylg\"},\"id\":\"medjvcslynqwwncw\",\"name\":\"zhxgktrmgucn\",\"type\":\"pkteo\"}")
+            "{\"properties\":{\"targetWorkerNodeCount\":1929078891},\"location\":\"gvvcnayrhyr\",\"tags\":{\"qqtch\":\"mueedndrdvstk\",\"mtdaa\":\"alm\"},\"id\":\"gdv\",\"name\":\"vgpiohgwxrt\",\"type\":\"udxepxgyqagv\"}")
             .toObject(ClusterResizeData.class);
-        Assertions.assertEquals("ztfolhbnxk", model.location());
-        Assertions.assertEquals("aulppggd", model.tags().get("pnapnyiropuh"));
-        Assertions.assertEquals(462425094, model.properties().targetWorkerNodeCount());
+        Assertions.assertEquals("gvvcnayrhyr", model.location());
+        Assertions.assertEquals("mueedndrdvstk", model.tags().get("qqtch"));
+        Assertions.assertEquals(1929078891, model.properties().targetWorkerNodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterResizeData model = new ClusterResizeData().withLocation("ztfolhbnxk")
-            .withTags(mapOf("pnapnyiropuh", "aulppggd", "git", "igvpgylg"))
-            .withProperties(new ClusterResizeProperties().withTargetWorkerNodeCount(462425094));
+        ClusterResizeData model = new ClusterResizeData().withLocation("gvvcnayrhyr")
+            .withTags(mapOf("qqtch", "mueedndrdvstk", "mtdaa", "alm"))
+            .withProperties(new ClusterResizeProperties().withTargetWorkerNodeCount(1929078891));
         model = BinaryData.fromObject(model).toObject(ClusterResizeData.class);
-        Assertions.assertEquals("ztfolhbnxk", model.location());
-        Assertions.assertEquals("aulppggd", model.tags().get("pnapnyiropuh"));
-        Assertions.assertEquals(462425094, model.properties().targetWorkerNodeCount());
+        Assertions.assertEquals("gvvcnayrhyr", model.location());
+        Assertions.assertEquals("mueedndrdvstk", model.tags().get("qqtch"));
+        Assertions.assertEquals(1929078891, model.properties().targetWorkerNodeCount());
     }
 
     // Use "Map.of" if available

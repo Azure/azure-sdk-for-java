@@ -13,7 +13,8 @@ import java.time.Duration;
 /** Constraints associated with the Job. */
 @Fluent
 public final class JobPropertiesConstraints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobPropertiesConstraints.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(JobPropertiesConstraints.class);
 
     /*
      * Max time the job can run. Default value: 1 week.

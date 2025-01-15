@@ -12,19 +12,15 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import reactor.core.publisher.Mono;
 
 /** A private endpoint connection. */
-public class PrivateEndpointConnectionImpl
-    extends ExternalChildResourceImpl<
-        PrivateEndpointConnection, PrivateEndpointConnectionInner, CosmosDBAccountImpl, CosmosDBAccount>
+public class PrivateEndpointConnectionImpl extends
+    ExternalChildResourceImpl<PrivateEndpointConnection, PrivateEndpointConnectionInner, CosmosDBAccountImpl, CosmosDBAccount>
     implements PrivateEndpointConnection,
-        PrivateEndpointConnection.Definition<CosmosDBAccount.DefinitionStages.WithCreate>,
-        PrivateEndpointConnection.UpdateDefinition<CosmosDBAccount.UpdateStages.WithOptionals>,
-        PrivateEndpointConnection.Update {
+    PrivateEndpointConnection.Definition<CosmosDBAccount.DefinitionStages.WithCreate>,
+    PrivateEndpointConnection.UpdateDefinition<CosmosDBAccount.UpdateStages.WithOptionals>,
+    PrivateEndpointConnection.Update {
     private final PrivateEndpointConnectionsClient client;
 
-    PrivateEndpointConnectionImpl(
-        String name,
-        CosmosDBAccountImpl parent,
-        PrivateEndpointConnectionInner inner,
+    PrivateEndpointConnectionImpl(String name, CosmosDBAccountImpl parent, PrivateEndpointConnectionInner inner,
         PrivateEndpointConnectionsClient client) {
         super(name, parent, inner);
         this.client = client;
@@ -72,14 +68,13 @@ public class PrivateEndpointConnectionImpl
     @Override
     public Mono<PrivateEndpointConnection> createResourceAsync() {
         final PrivateEndpointConnectionImpl self = this;
-        return this
-            .client
-            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.innerModel())
-            .map(
-                privateEndpointConnectionInner -> {
-                    self.setInner(privateEndpointConnectionInner);
-                    return self;
-                });
+        return this.client
+            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                this.innerModel())
+            .map(privateEndpointConnectionInner -> {
+                self.setInner(privateEndpointConnectionInner);
+                return self;
+            });
     }
 
     @Override

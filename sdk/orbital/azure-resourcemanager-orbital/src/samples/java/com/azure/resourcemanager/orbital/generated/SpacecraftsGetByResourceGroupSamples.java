@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-/** Samples for Spacecrafts GetByResourceGroup. */
+/**
+ * Samples for Spacecrafts GetByResourceGroup.
+ */
 public final class SpacecraftsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/SpacecraftGet.json
+     * x-ms-original-file:
+     * specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/SpacecraftGet.json
      */
     /**
      * Sample code: Get Spacecraft.
-     *
+     * 
      * @param manager Entry point to OrbitalManager.
      */
     public static void getSpacecraft(com.azure.resourcemanager.orbital.OrbitalManager manager) {
-        manager
-            .spacecrafts()
+        manager.spacecrafts()
             .getByResourceGroupWithResponse("contoso-Rgp", "CONTOSO_SAT", com.azure.core.util.Context.NONE);
     }
 }

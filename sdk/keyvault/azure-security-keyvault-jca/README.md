@@ -50,7 +50,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.9.0-beta.2</version>
+    <version>2.10.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -192,6 +192,45 @@ Please replace `${KEY_VAULT}` with your key vault name and replace `${MANAGED_ID
 
 ## Troubleshooting
 
+### Debug Key Vault Provider
+
+Remote debugger can be used to troubleshoot complex issues. Let’s try this out in Java 9 and above!
+
+Before you start debugging, make sure the code of your JCA jar is the same as your IDE source code. 
+
+1. Replace the placeholders with your own credentials and execute below command to start the `jarsigner` command:
+
+   ```shell
+   jarsigner \
+       -keystore NONE \
+       -storetype AzureKeyVault \
+       -signedjar <file-name-generated-after-signing> <jar-file-name-to-be-signed> <certificate-bundle-name-in-key-vault> \
+       -verbose  \
+       -storepass "" \
+       -providerName AzureKeyVault \
+       -providerClass com.azure.security.keyvault.jca.KeyVaultJcaProvider \
+       -J--module-path="<your-local-Maven-repository-path>/com/azure/azure-security-keyvault-jca/<current-version-num>/azure-security-keyvault-jca-<current-version-num>.jar" \
+       -J--add-modules="com.azure.security.keyvault.jca" \
+       -J-Dazure.keyvault.uri=https://<your-key-vault-name>.vault.azure.net/ \
+       -J-Dazure.keyvault.tenant-id=<your-tenant-id> \
+       -J-Dazure.keyvault.client-id=<your-client-id> \
+       -J-Dazure.keyvault.client-secret=<your-client-secret> \
+       -J-Djava.security.debug=jar \
+       -J-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=y
+   ```
+
+   After execution, you will see the following output information:
+
+   ![start jarsigner command for debug](resources/start-jarsigner-command-for-debug.png)
+
+2. Create a Remote JVM Debug configuration in your IDE tool, such as in Intellij IDEA:
+
+   ![add remote JVM Debug configuration](./resources/add-remote-jvm-debug-configuration.png)
+
+3. Click the `Debug` button to debug in your IDE:
+
+   ![debug breakpoints](resources/debug-breakpoints.png)
+
 ## Configure logging
 This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
 
@@ -243,6 +282,7 @@ For Spring Boot applications see our [Spring Boot starter][spring_boot_starter].
 
 ### References
 1. [Java Cryptography Architecture (JCA) Reference Guide][jca_reference_guide]
+2. [Creating a Shaded Jar Wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Creating-a-Shaded-Jar)
 
 ### Additional documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation].
@@ -257,15 +297,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 <!-- LINKS -->
 [Source code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-jca/src
 [API reference documentation]: https://azure.github.io/azure-sdk-for-java/keyvault.html#azure-security-keyvault-jca
-[Product documentation]: https://docs.microsoft.com/azure/key-vault/
+[Product documentation]: https://learn.microsoft.com/azure/key-vault/
 [Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-jca/src/samples/java/com/azure/security/keyvault/jca
 [azure_subscription]: https://azure.microsoft.com/
-[azure_keyvault]: https://docs.microsoft.com/azure/key-vault/keys/quick-create-portal
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[azure_keyvault]: https://learn.microsoft.com/azure/key-vault/keys/quick-create-portal
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_cloud_shell]: https://shell.azure.com/bash
 [spring_boot_starter]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/spring-cloud-azure-starter-keyvault-certificates
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
+[non-exportable]: https://learn.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-jca%2FREADME.png)

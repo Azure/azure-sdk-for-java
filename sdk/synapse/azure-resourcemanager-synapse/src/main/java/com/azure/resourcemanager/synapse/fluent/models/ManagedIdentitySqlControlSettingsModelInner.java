@@ -6,33 +6,48 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Managed Identity Sql Control Settings
- *
- * <p>Sql Control Settings for workspace managed identity.
+ * 
+ * Sql Control Settings for workspace managed identity.
  */
 @Fluent
 public final class ManagedIdentitySqlControlSettingsModelInner extends ProxyResource {
     /*
-     * Managed Identity Sql Control Settings
-     *
      * Sql Control Settings for workspace managed identity
      */
-    @JsonProperty(value = "properties")
     private ManagedIdentitySqlControlSettingsModelProperties innerProperties;
 
-    /** Creates an instance of ManagedIdentitySqlControlSettingsModelInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ManagedIdentitySqlControlSettingsModelInner class.
+     */
     public ManagedIdentitySqlControlSettingsModelInner() {
     }
 
     /**
-     * Get the innerProperties property: Managed Identity Sql Control Settings
-     *
-     * <p>Sql Control Settings for workspace managed identity.
-     *
+     * Get the innerProperties property: Sql Control Settings for workspace managed identity.
+     * 
      * @return the innerProperties value.
      */
     private ManagedIdentitySqlControlSettingsModelProperties innerProperties() {
@@ -40,8 +55,38 @@ public final class ManagedIdentitySqlControlSettingsModelInner extends ProxyReso
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the grantSqlControlToManagedIdentity property: Grant sql control to managed identity.
-     *
+     * 
      * @return the grantSqlControlToManagedIdentity value.
      */
     public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
@@ -51,13 +96,12 @@ public final class ManagedIdentitySqlControlSettingsModelInner extends ProxyReso
 
     /**
      * Set the grantSqlControlToManagedIdentity property: Grant sql control to managed identity.
-     *
+     * 
      * @param grantSqlControlToManagedIdentity the grantSqlControlToManagedIdentity value to set.
      * @return the ManagedIdentitySqlControlSettingsModelInner object itself.
      */
     public ManagedIdentitySqlControlSettingsModelInner withGrantSqlControlToManagedIdentity(
-        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
-            grantSqlControlToManagedIdentity) {
+        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedIdentitySqlControlSettingsModelProperties();
         }
@@ -67,12 +111,57 @@ public final class ManagedIdentitySqlControlSettingsModelInner extends ProxyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIdentitySqlControlSettingsModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIdentitySqlControlSettingsModelInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedIdentitySqlControlSettingsModelInner.
+     */
+    public static ManagedIdentitySqlControlSettingsModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIdentitySqlControlSettingsModelInner deserializedManagedIdentitySqlControlSettingsModelInner
+                = new ManagedIdentitySqlControlSettingsModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedIdentitySqlControlSettingsModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedIdentitySqlControlSettingsModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedIdentitySqlControlSettingsModelInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedIdentitySqlControlSettingsModelInner.innerProperties
+                        = ManagedIdentitySqlControlSettingsModelProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIdentitySqlControlSettingsModelInner;
+        });
     }
 }

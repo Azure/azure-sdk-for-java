@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SingleSignOnConfigurations. */
+/**
+ * Resource collection API of SingleSignOnConfigurations.
+ */
 public interface SingleSignOnConfigurations {
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface SingleSignOnConfigurations {
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface SingleSignOnConfigurations {
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -47,12 +49,12 @@ public interface SingleSignOnConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the datadog single sign-on resource for the given Monitor along with {@link Response}.
      */
-    Response<DatadogSingleSignOnResource> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<DatadogSingleSignOnResource> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -65,7 +67,7 @@ public interface SingleSignOnConfigurations {
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,7 +78,7 @@ public interface SingleSignOnConfigurations {
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,7 +90,7 @@ public interface SingleSignOnConfigurations {
 
     /**
      * Begins definition for a new DatadogSingleSignOnResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DatadogSingleSignOnResource definition.
      */

@@ -9,9 +9,8 @@ import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
 
 /** Represents a SQL Firewall rules collection associated with an Azure SQL server. */
-public class SqlFirewallRulesAsExternalChildResourcesImpl
-    extends ExternalChildResourcesNonCachedImpl<
-        SqlFirewallRuleImpl, SqlFirewallRule, FirewallRuleInner, SqlServerImpl, SqlServer> {
+public class SqlFirewallRulesAsExternalChildResourcesImpl extends
+    ExternalChildResourcesNonCachedImpl<SqlFirewallRuleImpl, SqlFirewallRule, FirewallRuleInner, SqlServerImpl, SqlServer> {
 
     SqlServerManager sqlServerManager;
 
@@ -32,8 +31,8 @@ public class SqlFirewallRulesAsExternalChildResourcesImpl
      * @param sqlServerManager the manager
      * @param childResourceName the child resource name (for logging)
      */
-    protected SqlFirewallRulesAsExternalChildResourcesImpl(
-        SqlServerManager sqlServerManager, String childResourceName) {
+    protected SqlFirewallRulesAsExternalChildResourcesImpl(SqlServerManager sqlServerManager,
+        String childResourceName) {
         super(null, null, childResourceName);
         this.sqlServerManager = sqlServerManager;
     }

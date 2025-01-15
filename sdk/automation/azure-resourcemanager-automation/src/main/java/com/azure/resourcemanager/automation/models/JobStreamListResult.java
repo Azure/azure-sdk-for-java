@@ -7,25 +7,27 @@ package com.azure.resourcemanager.automation.models;
 import com.azure.resourcemanager.automation.fluent.models.JobStreamListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of JobStreamListResult. */
+/**
+ * An immutable client-side representation of JobStreamListResult.
+ */
 public interface JobStreamListResult {
     /**
      * Gets the value property: A list of job streams.
-     *
+     * 
      * @return the value value.
      */
     List<JobStream> value();
 
     /**
      * Gets the nextLink property: Gets or sets the next link.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.JobStreamListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     JobStreamListResultInner innerModel();

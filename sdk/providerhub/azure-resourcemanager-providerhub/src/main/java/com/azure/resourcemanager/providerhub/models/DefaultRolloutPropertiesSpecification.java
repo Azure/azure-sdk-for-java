@@ -5,84 +5,200 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.providerhub.fluent.models.ResourceTypeRegistrationInner;
+import java.io.IOException;
 import java.util.List;
 
-/** The DefaultRolloutPropertiesSpecification model. */
+/**
+ * The DefaultRolloutPropertiesSpecification model.
+ */
 @Fluent
 public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutSpecification {
-    /** Creates an instance of DefaultRolloutPropertiesSpecification class. */
+    /**
+     * Creates an instance of DefaultRolloutPropertiesSpecification class.
+     */
     public DefaultRolloutPropertiesSpecification() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultRolloutPropertiesSpecification withCanary(DefaultRolloutSpecificationCanary canary) {
         super.withCanary(canary);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultRolloutPropertiesSpecification withLowTraffic(DefaultRolloutSpecificationLowTraffic lowTraffic) {
         super.withLowTraffic(lowTraffic);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DefaultRolloutPropertiesSpecification withMediumTraffic(
-        DefaultRolloutSpecificationMediumTraffic mediumTraffic) {
+    public DefaultRolloutPropertiesSpecification
+        withMediumTraffic(DefaultRolloutSpecificationMediumTraffic mediumTraffic) {
         super.withMediumTraffic(mediumTraffic);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultRolloutPropertiesSpecification withHighTraffic(DefaultRolloutSpecificationHighTraffic highTraffic) {
         super.withHighTraffic(highTraffic);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DefaultRolloutPropertiesSpecification withRestOfTheWorldGroupOne(
-        DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne) {
+    public DefaultRolloutPropertiesSpecification
+        withRestOfTheWorldGroupOne(DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne) {
         super.withRestOfTheWorldGroupOne(restOfTheWorldGroupOne);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DefaultRolloutPropertiesSpecification withRestOfTheWorldGroupTwo(
-        DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo) {
+    public DefaultRolloutPropertiesSpecification
+        withRestOfTheWorldGroupTwo(DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo) {
         super.withRestOfTheWorldGroupTwo(restOfTheWorldGroupTwo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DefaultRolloutPropertiesSpecification withProviderRegistration(
-        DefaultRolloutSpecificationProviderRegistration providerRegistration) {
+    public DefaultRolloutPropertiesSpecification
+        withProviderRegistration(DefaultRolloutSpecificationProviderRegistration providerRegistration) {
         super.withProviderRegistration(providerRegistration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DefaultRolloutPropertiesSpecification withResourceTypeRegistrations(
-        List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
+    public DefaultRolloutPropertiesSpecification
+        withResourceTypeRegistrations(List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
         super.withResourceTypeRegistrations(resourceTypeRegistrations);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (canary() != null) {
+            canary().validate();
+        }
+        if (lowTraffic() != null) {
+            lowTraffic().validate();
+        }
+        if (mediumTraffic() != null) {
+            mediumTraffic().validate();
+        }
+        if (highTraffic() != null) {
+            highTraffic().validate();
+        }
+        if (restOfTheWorldGroupOne() != null) {
+            restOfTheWorldGroupOne().validate();
+        }
+        if (restOfTheWorldGroupTwo() != null) {
+            restOfTheWorldGroupTwo().validate();
+        }
+        if (providerRegistration() != null) {
+            providerRegistration().validate();
+        }
+        if (resourceTypeRegistrations() != null) {
+            resourceTypeRegistrations().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("canary", canary());
+        jsonWriter.writeJsonField("lowTraffic", lowTraffic());
+        jsonWriter.writeJsonField("mediumTraffic", mediumTraffic());
+        jsonWriter.writeJsonField("highTraffic", highTraffic());
+        jsonWriter.writeJsonField("restOfTheWorldGroupOne", restOfTheWorldGroupOne());
+        jsonWriter.writeJsonField("restOfTheWorldGroupTwo", restOfTheWorldGroupTwo());
+        jsonWriter.writeJsonField("providerRegistration", providerRegistration());
+        jsonWriter.writeArrayField("resourceTypeRegistrations", resourceTypeRegistrations(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultRolloutPropertiesSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultRolloutPropertiesSpecification if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefaultRolloutPropertiesSpecification.
+     */
+    public static DefaultRolloutPropertiesSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultRolloutPropertiesSpecification deserializedDefaultRolloutPropertiesSpecification
+                = new DefaultRolloutPropertiesSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("canary".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withCanary(DefaultRolloutSpecificationCanary.fromJson(reader));
+                } else if ("lowTraffic".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withLowTraffic(DefaultRolloutSpecificationLowTraffic.fromJson(reader));
+                } else if ("mediumTraffic".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withMediumTraffic(DefaultRolloutSpecificationMediumTraffic.fromJson(reader));
+                } else if ("highTraffic".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withHighTraffic(DefaultRolloutSpecificationHighTraffic.fromJson(reader));
+                } else if ("restOfTheWorldGroupOne".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withRestOfTheWorldGroupOne(DefaultRolloutSpecificationRestOfTheWorldGroupOne.fromJson(reader));
+                } else if ("restOfTheWorldGroupTwo".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withRestOfTheWorldGroupTwo(DefaultRolloutSpecificationRestOfTheWorldGroupTwo.fromJson(reader));
+                } else if ("providerRegistration".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withProviderRegistration(DefaultRolloutSpecificationProviderRegistration.fromJson(reader));
+                } else if ("resourceTypeRegistrations".equals(fieldName)) {
+                    List<ResourceTypeRegistrationInner> resourceTypeRegistrations
+                        = reader.readArray(reader1 -> ResourceTypeRegistrationInner.fromJson(reader1));
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withResourceTypeRegistrations(resourceTypeRegistrations);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultRolloutPropertiesSpecification;
+        });
     }
 }

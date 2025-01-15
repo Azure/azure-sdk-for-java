@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoredResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoredResourceListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"wxmnteiwao\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"ijcmmx\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"uf\"},{\"id\":\"pymzidnsezcxtbzs\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"cs\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"dwzjeiach\"},{\"id\":\"osfln\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"qpteeh\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"pyqr\"},{\"id\":\"z\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"swjdkirso\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"hc\"}],\"nextLink\":\"nohjt\"}")
-                .toObject(MonitoredResourceListResponse.class);
+        MonitoredResourceListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"wxmnteiwao\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"ijcmmx\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"uf\"},{\"id\":\"pymzidnsezcxtbzs\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"cs\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"dwzjeiach\"},{\"id\":\"osfln\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"qpteeh\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"pyqr\"},{\"id\":\"z\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"swjdkirso\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"hc\"}],\"nextLink\":\"nohjt\"}")
+            .toObject(MonitoredResourceListResponse.class);
         Assertions.assertEquals("wxmnteiwao", model.value().get(0).id());
         Assertions.assertEquals(false, model.value().get(0).sendingMetrics());
         Assertions.assertEquals("ijcmmx", model.value().get(0).reasonForMetricsStatus());
@@ -28,36 +26,28 @@ public final class MonitoredResourceListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredResourceListResponse model =
-            new MonitoredResourceListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new MonitoredResourceInner()
-                                .withId("wxmnteiwao")
-                                .withSendingMetrics(false)
-                                .withReasonForMetricsStatus("ijcmmx")
-                                .withSendingLogs(false)
-                                .withReasonForLogsStatus("uf"),
-                            new MonitoredResourceInner()
-                                .withId("pymzidnsezcxtbzs")
-                                .withSendingMetrics(false)
-                                .withReasonForMetricsStatus("cs")
-                                .withSendingLogs(true)
-                                .withReasonForLogsStatus("dwzjeiach"),
-                            new MonitoredResourceInner()
-                                .withId("osfln")
-                                .withSendingMetrics(true)
-                                .withReasonForMetricsStatus("qpteeh")
-                                .withSendingLogs(true)
-                                .withReasonForLogsStatus("pyqr"),
-                            new MonitoredResourceInner()
-                                .withId("z")
-                                .withSendingMetrics(true)
-                                .withReasonForMetricsStatus("swjdkirso")
-                                .withSendingLogs(false)
-                                .withReasonForLogsStatus("hc")))
-                .withNextLink("nohjt");
+        MonitoredResourceListResponse model = new MonitoredResourceListResponse().withValue(Arrays.asList(
+            new MonitoredResourceInner().withId("wxmnteiwao")
+                .withSendingMetrics(false)
+                .withReasonForMetricsStatus("ijcmmx")
+                .withSendingLogs(false)
+                .withReasonForLogsStatus("uf"),
+            new MonitoredResourceInner().withId("pymzidnsezcxtbzs")
+                .withSendingMetrics(false)
+                .withReasonForMetricsStatus("cs")
+                .withSendingLogs(true)
+                .withReasonForLogsStatus("dwzjeiach"),
+            new MonitoredResourceInner().withId("osfln")
+                .withSendingMetrics(true)
+                .withReasonForMetricsStatus("qpteeh")
+                .withSendingLogs(true)
+                .withReasonForLogsStatus("pyqr"),
+            new MonitoredResourceInner().withId("z")
+                .withSendingMetrics(true)
+                .withReasonForMetricsStatus("swjdkirso")
+                .withSendingLogs(false)
+                .withReasonForLogsStatus("hc")))
+            .withNextLink("nohjt");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceListResponse.class);
         Assertions.assertEquals("wxmnteiwao", model.value().get(0).id());
         Assertions.assertEquals(false, model.value().get(0).sendingMetrics());

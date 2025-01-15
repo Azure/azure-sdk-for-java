@@ -31,11 +31,14 @@ public final class InstanceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstanceInner model = new InstanceInner().withLocation("wbnguitnwui").withTags(mapOf("ckyfih", "zxufiz"))
-            .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("xgjvtbv"))).withEnableDiagnostics(false)
+        InstanceInner model = new InstanceInner().withLocation("wbnguitnwui")
+            .withTags(mapOf("ckyfih", "zxufiz"))
+            .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("xgjvtbv")))
+            .withEnableDiagnostics(false)
             .withDiagnosticStorageProperties(
                 new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
-                    .withConnectionString("nruj").withResourceId("guhmuouqfpr"));
+                    .withConnectionString("nruj")
+                    .withResourceId("guhmuouqfpr"));
         model = BinaryData.fromObject(model).toObject(InstanceInner.class);
         Assertions.assertEquals("wbnguitnwui", model.location());
         Assertions.assertEquals("zxufiz", model.tags().get("ckyfih"));

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The definition of a prediction grade. */
+/**
+ * The definition of a prediction grade.
+ */
 @Fluent
-public final class PredictionGradesItem {
+public final class PredictionGradesItem implements JsonSerializable<PredictionGradesItem> {
     /*
      * Name of the grade.
      */
-    @JsonProperty(value = "gradeName")
     private String gradeName;
 
     /*
      * Minimum score threshold.
      */
-    @JsonProperty(value = "minScoreThreshold")
     private Integer minScoreThreshold;
 
     /*
      * Maximum score threshold.
      */
-    @JsonProperty(value = "maxScoreThreshold")
     private Integer maxScoreThreshold;
 
-    /** Creates an instance of PredictionGradesItem class. */
+    /**
+     * Creates an instance of PredictionGradesItem class.
+     */
     public PredictionGradesItem() {
     }
 
     /**
      * Get the gradeName property: Name of the grade.
-     *
+     * 
      * @return the gradeName value.
      */
     public String gradeName() {
@@ -43,7 +48,7 @@ public final class PredictionGradesItem {
 
     /**
      * Set the gradeName property: Name of the grade.
-     *
+     * 
      * @param gradeName the gradeName value to set.
      * @return the PredictionGradesItem object itself.
      */
@@ -54,7 +59,7 @@ public final class PredictionGradesItem {
 
     /**
      * Get the minScoreThreshold property: Minimum score threshold.
-     *
+     * 
      * @return the minScoreThreshold value.
      */
     public Integer minScoreThreshold() {
@@ -63,7 +68,7 @@ public final class PredictionGradesItem {
 
     /**
      * Set the minScoreThreshold property: Minimum score threshold.
-     *
+     * 
      * @param minScoreThreshold the minScoreThreshold value to set.
      * @return the PredictionGradesItem object itself.
      */
@@ -74,7 +79,7 @@ public final class PredictionGradesItem {
 
     /**
      * Get the maxScoreThreshold property: Maximum score threshold.
-     *
+     * 
      * @return the maxScoreThreshold value.
      */
     public Integer maxScoreThreshold() {
@@ -83,7 +88,7 @@ public final class PredictionGradesItem {
 
     /**
      * Set the maxScoreThreshold property: Maximum score threshold.
-     *
+     * 
      * @param maxScoreThreshold the maxScoreThreshold value to set.
      * @return the PredictionGradesItem object itself.
      */
@@ -94,9 +99,51 @@ public final class PredictionGradesItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("gradeName", this.gradeName);
+        jsonWriter.writeNumberField("minScoreThreshold", this.minScoreThreshold);
+        jsonWriter.writeNumberField("maxScoreThreshold", this.maxScoreThreshold);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredictionGradesItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredictionGradesItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PredictionGradesItem.
+     */
+    public static PredictionGradesItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredictionGradesItem deserializedPredictionGradesItem = new PredictionGradesItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gradeName".equals(fieldName)) {
+                    deserializedPredictionGradesItem.gradeName = reader.getString();
+                } else if ("minScoreThreshold".equals(fieldName)) {
+                    deserializedPredictionGradesItem.minScoreThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("maxScoreThreshold".equals(fieldName)) {
+                    deserializedPredictionGradesItem.maxScoreThreshold = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredictionGradesItem;
+        });
     }
 }

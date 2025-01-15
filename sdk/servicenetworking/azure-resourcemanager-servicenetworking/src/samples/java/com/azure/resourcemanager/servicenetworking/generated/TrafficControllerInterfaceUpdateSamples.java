@@ -14,7 +14,7 @@ import java.util.Map;
 public final class TrafficControllerInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
      * TrafficControllerPatch.json
      */
     /**
@@ -25,7 +25,8 @@ public final class TrafficControllerInterfaceUpdateSamples {
     public static void
         patchTrafficController(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         TrafficController resource = manager.trafficControllerInterfaces()
-            .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 

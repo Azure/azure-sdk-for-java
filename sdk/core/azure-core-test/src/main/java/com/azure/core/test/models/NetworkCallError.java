@@ -4,19 +4,20 @@
 package com.azure.core.test.models;
 
 import com.azure.core.exception.UnexpectedLengthException;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 
 /**
  * This class represents a caught throwable during a network call. It is used to serialize exceptions that were thrown
  * during the pipeline and deserialize them back into their actual throwable class when running in playback mode.
  */
-public class NetworkCallError {
-    @JsonProperty("ClassName")
+public class NetworkCallError implements JsonSerializable<NetworkCallError> {
     private String className;
-
-    @JsonProperty("ErrorMessage")
     private String errorMessage;
 
     private Throwable throwable;
@@ -87,5 +88,32 @@ public class NetworkCallError {
      */
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("ClassName", className)
+            .writeStringField("ErrorMessage", errorMessage)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of NetworkCallError from the input JSON.
+     *
+     * @param jsonReader The JSON reader to deserialize the data from.
+     * @return An instance of NetworkCallError deserialized from the JSON.
+     * @throws IOException If the JSON reader encounters an error while reading the JSON.
+     */
+    public static NetworkCallError fromJson(JsonReader jsonReader) throws IOException {
+        return TestingHelpers.readObject(jsonReader, NetworkCallError::new, (callError, fieldName, reader) -> {
+            if ("ClassName".equals(fieldName)) {
+                callError.className = reader.getString();
+            } else if ("ErrorMessage".equals(fieldName)) {
+                callError.errorMessage = reader.getString();
+            } else {
+                reader.skipChildren();
+            }
+        });
     }
 }

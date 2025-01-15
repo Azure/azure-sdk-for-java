@@ -14,10 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class RelationshipLinkResourceFormatImpl
-    implements RelationshipLinkResourceFormat,
-        RelationshipLinkResourceFormat.Definition,
-        RelationshipLinkResourceFormat.Update {
+public final class RelationshipLinkResourceFormatImpl implements RelationshipLinkResourceFormat,
+    RelationshipLinkResourceFormat.Definition, RelationshipLinkResourceFormat.Update {
     private RelationshipLinkResourceFormatInner innerObject;
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
@@ -128,25 +126,21 @@ public final class RelationshipLinkResourceFormatImpl
     }
 
     public RelationshipLinkResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationshipLinks()
-                .createOrUpdate(resourceGroupName, hubName, relationshipLinkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationshipLinks()
+            .createOrUpdate(resourceGroupName, hubName, relationshipLinkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RelationshipLinkResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationshipLinks()
-                .createOrUpdate(resourceGroupName, hubName, relationshipLinkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationshipLinks()
+            .createOrUpdate(resourceGroupName, hubName, relationshipLinkName, this.innerModel(), context);
         return this;
     }
 
-    RelationshipLinkResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    RelationshipLinkResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new RelationshipLinkResourceFormatInner();
         this.serviceManager = serviceManager;
         this.relationshipLinkName = name;
@@ -157,50 +151,41 @@ public final class RelationshipLinkResourceFormatImpl
     }
 
     public RelationshipLinkResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationshipLinks()
-                .createOrUpdate(resourceGroupName, hubName, relationshipLinkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationshipLinks()
+            .createOrUpdate(resourceGroupName, hubName, relationshipLinkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RelationshipLinkResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationshipLinks()
-                .createOrUpdate(resourceGroupName, hubName, relationshipLinkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationshipLinks()
+            .createOrUpdate(resourceGroupName, hubName, relationshipLinkName, this.innerModel(), context);
         return this;
     }
 
-    RelationshipLinkResourceFormatImpl(
-        RelationshipLinkResourceFormatInner innerObject,
+    RelationshipLinkResourceFormatImpl(RelationshipLinkResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.relationshipLinkName = Utils.getValueFromIdByName(innerObject.id(), "relationshipLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.relationshipLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "relationshipLinks");
     }
 
     public RelationshipLinkResourceFormat refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationshipLinks()
-                .getWithResponse(resourceGroupName, hubName, relationshipLinkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationshipLinks()
+            .getWithResponse(resourceGroupName, hubName, relationshipLinkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public RelationshipLinkResourceFormat refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRelationshipLinks()
-                .getWithResponse(resourceGroupName, hubName, relationshipLinkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRelationshipLinks()
+            .getWithResponse(resourceGroupName, hubName, relationshipLinkName, context)
+            .getValue();
         return this;
     }
 
@@ -224,8 +209,8 @@ public final class RelationshipLinkResourceFormatImpl
         return this;
     }
 
-    public RelationshipLinkResourceFormatImpl withProfilePropertyReferences(
-        List<ParticipantProfilePropertyReference> profilePropertyReferences) {
+    public RelationshipLinkResourceFormatImpl
+        withProfilePropertyReferences(List<ParticipantProfilePropertyReference> profilePropertyReferences) {
         this.innerModel().withProfilePropertyReferences(profilePropertyReferences);
         return this;
     }

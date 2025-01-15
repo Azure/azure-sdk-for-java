@@ -15,22 +15,46 @@ import reactor.core.publisher.Mono;
 /** Client-side representation of Packet capture object, associated with Network Watcher. */
 @Fluent
 public interface PacketCapture extends HasInnerModel<PacketCaptureResultInner>, HasName, HasId, Indexable {
-    /** @return the target id value */
+    /**
+     * Gets the target ID value.
+     *
+     * @return the target ID value
+     */
     String targetId();
 
-    /** @return the number of bytes captured per packet, the remaining bytes are truncated. */
+    /**
+     * Gets the number of bytes captured per packet, the remaining bytes are truncated.
+     *
+     * @return the number of bytes captured per packet, the remaining bytes are truncated.
+     */
     long bytesToCapturePerPacket();
 
-    /** @return the maximum size of the capture output */
+    /**
+     * Gets the maximum size of the capture output.
+     *
+     * @return the maximum size of the capture output
+     */
     long totalBytesPerSession();
 
-    /** @return the maximum duration of the capture session in seconds */
+    /**
+     * Gets the maximum duration of the capture session in seconds.
+     *
+     * @return the maximum duration of the capture session in seconds
+     */
     int timeLimitInSeconds();
 
-    /** @return the storageLocation value */
+    /**
+     * Gets the storageLocation value.
+     *
+     * @return the storageLocation value
+     */
     PacketCaptureStorageLocation storageLocation();
 
-    /** @return the filters value */
+    /**
+     * Gets the filters value.
+     *
+     * @return the filters value
+     */
     List<PacketCaptureFilter> filters();
 
     /**
@@ -65,10 +89,8 @@ public interface PacketCapture extends HasInnerModel<PacketCaptureResultInner>, 
     Mono<PacketCaptureStatus> getStatusAsync();
 
     /** The entirety of the packet capture definition. */
-    interface Definition
-        extends PacketCapture.DefinitionStages.WithTarget,
-            PacketCapture.DefinitionStages.WithStorageLocation,
-            PacketCapture.DefinitionStages.WithCreateAndStoragePath {
+    interface Definition extends PacketCapture.DefinitionStages.WithTarget,
+        PacketCapture.DefinitionStages.WithStorageLocation, PacketCapture.DefinitionStages.WithCreateAndStoragePath {
     }
 
     /** Grouping of Packet Capture definition stages. */

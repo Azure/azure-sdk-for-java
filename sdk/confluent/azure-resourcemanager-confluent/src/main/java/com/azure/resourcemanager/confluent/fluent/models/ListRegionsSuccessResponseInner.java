@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.RegionRecord;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result of POST request to list regions supported by confluent.
  */
 @Fluent
-public final class ListRegionsSuccessResponseInner {
+public final class ListRegionsSuccessResponseInner implements JsonSerializable<ListRegionsSuccessResponseInner> {
     /*
      * List of regions supported by confluent
      */
-    @JsonProperty(value = "data")
     private List<RegionRecord> data;
 
     /**
@@ -55,5 +58,43 @@ public final class ListRegionsSuccessResponseInner {
         if (data() != null) {
             data().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListRegionsSuccessResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListRegionsSuccessResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListRegionsSuccessResponseInner.
+     */
+    public static ListRegionsSuccessResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListRegionsSuccessResponseInner deserializedListRegionsSuccessResponseInner
+                = new ListRegionsSuccessResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("data".equals(fieldName)) {
+                    List<RegionRecord> data = reader.readArray(reader1 -> RegionRecord.fromJson(reader1));
+                    deserializedListRegionsSuccessResponseInner.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListRegionsSuccessResponseInner;
+        });
     }
 }

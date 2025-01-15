@@ -15,29 +15,28 @@ public final class PipelineRunInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PipelineRunInner model = BinaryData.fromString(
-            "{\"runId\":\"lqol\",\"runGroupId\":\"kcgxxlxsffgcvi\",\"isLatest\":true,\"pipelineName\":\"wlvwlyoupf\",\"parameters\":{\"ubdyhgk\":\"k\",\"tsttktlahbq\":\"minsgowzf\",\"mmqtgqqqxhr\":\"ctxtgzukxi\",\"juisavokqdzf\":\"xrxc\"},\"runDimensions\":{\"nwxyiop\":\"ivjlfrqttbajlka\"},\"invokedBy\":{\"name\":\"qqfkuv\",\"id\":\"xkdmligo\",\"invokedByType\":\"brxk\",\"pipelineName\":\"loazuruocbgoo\",\"pipelineRunId\":\"te\"},\"lastUpdated\":\"2021-05-01T19:42:34Z\",\"runStart\":\"2021-05-18T20:05:21Z\",\"runEnd\":\"2021-08-27T22:46:55Z\",\"durationInMs\":1900106080,\"status\":\"vjgsl\",\"message\":\"dilmyww\",\"\":{\"edabgyvudtjue\":\"datakxn\",\"yxccyb\":\"databcihxuuwhc\",\"px\":\"datapayakkud\"}}")
+            "{\"runId\":\"m\",\"runGroupId\":\"fpmvmemfnczd\",\"isLatest\":true,\"pipelineName\":\"alxlllchp\",\"parameters\":{\"jcswsmys\":\"zevwrdnhfukuv\",\"lerchpq\":\"uluqypfc\"},\"runDimensions\":{\"sspuunnoxyhkx\":\"pjbabwidfc\"},\"invokedBy\":{\"name\":\"drihpfhoqcaaewda\",\"id\":\"djvlpj\",\"invokedByType\":\"kzbrmsgeivsiy\",\"pipelineName\":\"kdncj\",\"pipelineRunId\":\"onbzoggculapzwy\"},\"lastUpdated\":\"2021-08-05T01:58:35Z\",\"runStart\":\"2021-06-21T04:03:02Z\",\"runEnd\":\"2021-07-13T09:34:39Z\",\"durationInMs\":2072237694,\"status\":\"n\",\"message\":\"b\",\"\":{\"hvfcibyfmow\":\"datajlyjtlvofq\",\"fzwiivwzjbhyz\":\"dataxrkjpvdw\",\"mbtrnegvmnvu\":\"dataxjrk\",\"bkkd\":\"dataeqvldspast\"}}")
             .toObject(PipelineRunInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PipelineRunInner model = new PipelineRunInner().withAdditionalProperties(mapOf("durationInMs", 1900106080,
+        PipelineRunInner model = new PipelineRunInner().withAdditionalProperties(mapOf("durationInMs", 2072237694,
             "runDimensions",
             JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize("{\"nwxyiop\":\"ivjlfrqttbajlka\"}", Object.class, SerializerEncoding.JSON),
+                .deserialize("{\"sspuunnoxyhkx\":\"pjbabwidfc\"}", Object.class, SerializerEncoding.JSON),
             "invokedBy",
             JacksonAdapter.createDefaultSerializerAdapter()
                 .deserialize(
-                    "{\"name\":\"qqfkuv\",\"id\":\"xkdmligo\",\"invokedByType\":\"brxk\",\"pipelineName\":\"loazuruocbgoo\",\"pipelineRunId\":\"te\"}",
+                    "{\"name\":\"drihpfhoqcaaewda\",\"id\":\"djvlpj\",\"invokedByType\":\"kzbrmsgeivsiy\",\"pipelineName\":\"kdncj\",\"pipelineRunId\":\"onbzoggculapzwy\"}",
                     Object.class, SerializerEncoding.JSON),
-            "runStart", "2021-05-18T20:05:21Z", "message", "dilmyww", "pipelineName", "wlvwlyoupf", "lastUpdated",
-            "2021-05-01T19:42:34Z", "isLatest", true, "runId", "lqol", "runEnd", "2021-08-27T22:46:55Z", "runGroupId",
-            "kcgxxlxsffgcvi", "parameters",
+            "runStart", "2021-06-21T04:03:02Z", "message", "b", "pipelineName", "alxlllchp", "lastUpdated",
+            "2021-08-05T01:58:35Z", "isLatest", true, "runId", "m", "runEnd", "2021-07-13T09:34:39Z", "runGroupId",
+            "fpmvmemfnczd", "parameters",
             JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"ubdyhgk\":\"k\",\"tsttktlahbq\":\"minsgowzf\",\"mmqtgqqqxhr\":\"ctxtgzukxi\",\"juisavokqdzf\":\"xrxc\"}",
-                    Object.class, SerializerEncoding.JSON),
-            "status", "vjgsl"));
+                .deserialize("{\"jcswsmys\":\"zevwrdnhfukuv\",\"lerchpq\":\"uluqypfc\"}", Object.class,
+                    SerializerEncoding.JSON),
+            "status", "n"));
         model = BinaryData.fromObject(model).toObject(PipelineRunInner.class);
     }
 

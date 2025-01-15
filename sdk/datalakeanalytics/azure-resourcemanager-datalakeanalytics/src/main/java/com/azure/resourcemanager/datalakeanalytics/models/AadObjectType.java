@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of AAD object the object identifier refers to. */
+/**
+ * The type of AAD object the object identifier refers to.
+ */
 public final class AadObjectType extends ExpandableStringEnum<AadObjectType> {
-    /** Static value User for AadObjectType. */
+    /**
+     * Static value User for AadObjectType.
+     */
     public static final AadObjectType USER = fromString("User");
 
-    /** Static value Group for AadObjectType. */
+    /**
+     * Static value Group for AadObjectType.
+     */
     public static final AadObjectType GROUP = fromString("Group");
 
-    /** Static value ServicePrincipal for AadObjectType. */
+    /**
+     * Static value ServicePrincipal for AadObjectType.
+     */
     public static final AadObjectType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
     /**
      * Creates a new instance of AadObjectType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class AadObjectType extends ExpandableStringEnum<AadObjectType> {
 
     /**
      * Creates or finds a AadObjectType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AadObjectType.
      */
-    @JsonCreator
     public static AadObjectType fromString(String name) {
         return fromString(name, AadObjectType.class);
     }
 
     /**
      * Gets known AadObjectType values.
-     *
+     * 
      * @return known AadObjectType values.
      */
     public static Collection<AadObjectType> values() {

@@ -30,11 +30,15 @@ public final class CertificateObjectLocalRulestackResourceListResultTests {
         CertificateObjectLocalRulestackResourceListResult model
             = new CertificateObjectLocalRulestackResourceListResult().withValue(Arrays.asList(
                 new CertificateObjectLocalRulestackResourceInner().withCertificateSignerResourceId("kkzddrtkgdojbmx")
-                    .withCertificateSelfSigned(BooleanEnum.TRUE).withAuditComment("refdee")
-                    .withDescription("ecuijpxtxs").withEtag("prtujwsawdd"),
+                    .withCertificateSelfSigned(BooleanEnum.TRUE)
+                    .withAuditComment("refdee")
+                    .withDescription("ecuijpxtxs")
+                    .withEtag("prtujwsawdd"),
                 new CertificateObjectLocalRulestackResourceInner().withCertificateSignerResourceId("q")
-                    .withCertificateSelfSigned(BooleanEnum.TRUE).withAuditComment("fjacbslhhxudb")
-                    .withDescription("odhtnsirudhzm").withEtag("sckdlp")))
+                    .withCertificateSelfSigned(BooleanEnum.TRUE)
+                    .withAuditComment("fjacbslhhxudb")
+                    .withDescription("odhtnsirudhzm")
+                    .withEtag("sckdlp")))
                 .withNextLink("rzvul");
         model = BinaryData.fromObject(model).toObject(CertificateObjectLocalRulestackResourceListResult.class);
         Assertions.assertEquals("kkzddrtkgdojbmx", model.value().get(0).certificateSignerResourceId());

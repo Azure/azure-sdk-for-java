@@ -35,14 +35,14 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
         String artifactStoreName) {
         PagedIterable<ArtifactManifestInner> inner
             = this.serviceClient().listByArtifactStore(resourceGroupName, publisherName, artifactStoreName);
-        return Utils.mapPage(inner, inner1 -> new ArtifactManifestImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArtifactManifestImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ArtifactManifest> listByArtifactStore(String resourceGroupName, String publisherName,
         String artifactStoreName, Context context) {
         PagedIterable<ArtifactManifestInner> inner
             = this.serviceClient().listByArtifactStore(resourceGroupName, publisherName, artifactStoreName, context);
-        return Utils.mapPage(inner, inner1 -> new ArtifactManifestImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArtifactManifestImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String publisherName, String artifactStoreName,
@@ -57,8 +57,8 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
 
     public Response<ArtifactManifest> getWithResponse(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName, Context context) {
-        Response<ArtifactManifestInner> inner = this.serviceClient().getWithResponse(resourceGroupName, publisherName,
-            artifactStoreName, artifactManifestName, context);
+        Response<ArtifactManifestInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ArtifactManifestImpl(inner.getValue(), this.manager()));
@@ -80,8 +80,9 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
 
     public Response<ArtifactAccessCredential> listCredentialWithResponse(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName, Context context) {
-        Response<ArtifactAccessCredentialInner> inner = this.serviceClient().listCredentialWithResponse(
-            resourceGroupName, publisherName, artifactStoreName, artifactManifestName, context);
+        Response<ArtifactAccessCredentialInner> inner = this.serviceClient()
+            .listCredentialWithResponse(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ArtifactAccessCredentialImpl(inner.getValue(), this.manager()));
@@ -92,8 +93,8 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
 
     public ArtifactAccessCredential listCredential(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName) {
-        ArtifactAccessCredentialInner inner = this.serviceClient().listCredential(resourceGroupName, publisherName,
-            artifactStoreName, artifactManifestName);
+        ArtifactAccessCredentialInner inner = this.serviceClient()
+            .listCredential(resourceGroupName, publisherName, artifactStoreName, artifactManifestName);
         if (inner != null) {
             return new ArtifactAccessCredentialImpl(inner, this.manager());
         } else {
@@ -103,8 +104,8 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
 
     public ArtifactManifestUpdateState updateState(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName, ArtifactManifestUpdateStateInner parameters) {
-        ArtifactManifestUpdateStateInner inner = this.serviceClient().updateState(resourceGroupName, publisherName,
-            artifactStoreName, artifactManifestName, parameters);
+        ArtifactManifestUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, parameters);
         if (inner != null) {
             return new ArtifactManifestUpdateStateImpl(inner, this.manager());
         } else {
@@ -115,8 +116,9 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
     public ArtifactManifestUpdateState updateState(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName, ArtifactManifestUpdateStateInner parameters,
         Context context) {
-        ArtifactManifestUpdateStateInner inner = this.serviceClient().updateState(resourceGroupName, publisherName,
-            artifactStoreName, artifactManifestName, parameters, context);
+        ArtifactManifestUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, parameters,
+                context);
         if (inner != null) {
             return new ArtifactManifestUpdateStateImpl(inner, this.manager());
         } else {
@@ -125,22 +127,22 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
     }
 
     public ArtifactManifest getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String artifactStoreName = Utils.getValueFromIdByName(id, "artifactStores");
+        String artifactStoreName = ResourceManagerUtils.getValueFromIdByName(id, "artifactStores");
         if (artifactStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'artifactStores'.", id)));
         }
-        String artifactManifestName = Utils.getValueFromIdByName(id, "artifactManifests");
+        String artifactManifestName = ResourceManagerUtils.getValueFromIdByName(id, "artifactManifests");
         if (artifactManifestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'artifactManifests'.", id)));
@@ -151,22 +153,22 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
     }
 
     public Response<ArtifactManifest> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String artifactStoreName = Utils.getValueFromIdByName(id, "artifactStores");
+        String artifactStoreName = ResourceManagerUtils.getValueFromIdByName(id, "artifactStores");
         if (artifactStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'artifactStores'.", id)));
         }
-        String artifactManifestName = Utils.getValueFromIdByName(id, "artifactManifests");
+        String artifactManifestName = ResourceManagerUtils.getValueFromIdByName(id, "artifactManifests");
         if (artifactManifestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'artifactManifests'.", id)));
@@ -175,22 +177,22 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String artifactStoreName = Utils.getValueFromIdByName(id, "artifactStores");
+        String artifactStoreName = ResourceManagerUtils.getValueFromIdByName(id, "artifactStores");
         if (artifactStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'artifactStores'.", id)));
         }
-        String artifactManifestName = Utils.getValueFromIdByName(id, "artifactManifests");
+        String artifactManifestName = ResourceManagerUtils.getValueFromIdByName(id, "artifactManifests");
         if (artifactManifestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'artifactManifests'.", id)));
@@ -199,22 +201,22 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String artifactStoreName = Utils.getValueFromIdByName(id, "artifactStores");
+        String artifactStoreName = ResourceManagerUtils.getValueFromIdByName(id, "artifactStores");
         if (artifactStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'artifactStores'.", id)));
         }
-        String artifactManifestName = Utils.getValueFromIdByName(id, "artifactManifests");
+        String artifactManifestName = ResourceManagerUtils.getValueFromIdByName(id, "artifactManifests");
         if (artifactManifestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'artifactManifests'.", id)));

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VirtualMachines. */
+/**
+ * Resource collection API of VirtualMachines.
+ */
 public interface VirtualMachines {
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual machines as paginated response with {@link PagedIterable}.
@@ -23,9 +25,9 @@ public interface VirtualMachines {
 
     /**
      * Implements list virtual machine within subscription method
-     *
-     * <p>Returns list virtual machine within subscription.
-     *
+     * 
+     * Returns list virtual machine within subscription.
+     * 
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
      * @param skipToken to be used by nextLink implementation.
@@ -39,9 +41,9 @@ public interface VirtualMachines {
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,9 +54,9 @@ public interface VirtualMachines {
 
     /**
      * Implements list virtual machine within RG method
-     *
-     * <p>Returns list of virtual machine within resource group.
-     *
+     * 
+     * Returns list of virtual machine within resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -65,14 +67,14 @@ public interface VirtualMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual machines as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<VirtualMachine> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, String skipToken, Context context);
+    PagedIterable<VirtualMachine> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        String skipToken, Context context);
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @param context The context to associate with this operation.
@@ -81,14 +83,14 @@ public interface VirtualMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine along with {@link Response}.
      */
-    Response<VirtualMachine> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context);
+    Response<VirtualMachine> getByResourceGroupWithResponse(String resourceGroupName, String virtualMachineName,
+        Context context);
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,9 +102,9 @@ public interface VirtualMachines {
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -114,9 +116,9 @@ public interface VirtualMachines {
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -129,9 +131,9 @@ public interface VirtualMachines {
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -143,9 +145,9 @@ public interface VirtualMachines {
 
     /**
      * Implements a start method for a virtual machine
-     *
-     * <p>Power on virtual machine.
-     *
+     * 
+     * Power on virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -158,9 +160,9 @@ public interface VirtualMachines {
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -172,9 +174,9 @@ public interface VirtualMachines {
 
     /**
      * Implements shutdown, poweroff, and suspend method for a virtual machine
-     *
-     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
+     * 
+     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param referer referer url.
      * @param virtualMachineName virtual machine name.
@@ -185,19 +187,14 @@ public interface VirtualMachines {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stop(
-        String resourceGroupName,
-        String referer,
-        String virtualMachineName,
-        StopMode mode,
-        VirtualMachineStopMode m,
-        Context context);
+    void stop(String resourceGroupName, String referer, String virtualMachineName, StopMode mode,
+        VirtualMachineStopMode m, Context context);
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -208,9 +205,9 @@ public interface VirtualMachines {
 
     /**
      * Implements virtual machine GET method
-     *
-     * <p>Get virtual machine.
-     *
+     * 
+     * Get virtual machine.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,9 +219,9 @@ public interface VirtualMachines {
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,9 +231,9 @@ public interface VirtualMachines {
 
     /**
      * Implements virtual machine DELETE method
-     *
-     * <p>Delete virtual machine.
-     *
+     * 
+     * Delete virtual machine.
+     * 
      * @param id the resource ID.
      * @param referer referer url.
      * @param context The context to associate with this operation.
@@ -248,7 +245,7 @@ public interface VirtualMachines {
 
     /**
      * Begins definition for a new VirtualMachine resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VirtualMachine definition.
      */

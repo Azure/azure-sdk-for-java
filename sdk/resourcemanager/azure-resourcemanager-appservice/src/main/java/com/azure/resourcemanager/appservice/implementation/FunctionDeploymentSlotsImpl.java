@@ -19,9 +19,8 @@ import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation DeploymentSlots. */
-class FunctionDeploymentSlotsImpl
-    extends IndependentChildResourcesImpl<
-        FunctionDeploymentSlot, FunctionDeploymentSlotImpl, SiteInner, WebAppsClient, AppServiceManager, FunctionApp>
+class FunctionDeploymentSlotsImpl extends
+    IndependentChildResourcesImpl<FunctionDeploymentSlot, FunctionDeploymentSlotImpl, SiteInner, WebAppsClient, AppServiceManager, FunctionApp>
     implements FunctionDeploymentSlots {
 
     private final FunctionAppImpl parent;
@@ -34,8 +33,7 @@ class FunctionDeploymentSlotsImpl
 
     @Override
     protected FunctionDeploymentSlotImpl wrapModel(String name) {
-        return new FunctionDeploymentSlotImpl(name, new SiteInner(), null, null, parent)
-            .withRegion(parent.regionName())
+        return new FunctionDeploymentSlotImpl(name, new SiteInner(), null, null, parent).withRegion(parent.regionName())
             .withExistingResourceGroup(parent.resourceGroupName());
     }
 
@@ -53,20 +51,15 @@ class FunctionDeploymentSlotsImpl
     }
 
     @Override
-    public Mono<FunctionDeploymentSlot> getByParentAsync(
-        final String resourceGroup, final String parentName, final String name) {
-        return innerCollection
-            .getSlotAsync(resourceGroup, parentName, name)
-            .flatMap(
-                siteInner ->
-                    Mono
-                        .zip(
-                            innerCollection.getConfigurationSlotAsync(resourceGroup, parentName,
-                                name.replaceAll(".*/", "")),
-                            innerCollection.getDiagnosticLogsConfigurationSlotAsync(resourceGroup, parentName,
-                                name.replaceAll(".*/", "")),
-                            (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
-                                wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
+    public Mono<FunctionDeploymentSlot> getByParentAsync(final String resourceGroup, final String parentName,
+        final String name) {
+        return innerCollection.getSlotAsync(resourceGroup, parentName, name)
+            .flatMap(siteInner -> Mono.zip(
+                innerCollection.getConfigurationSlotAsync(resourceGroup, parentName, name.replaceAll(".*/", "")),
+                innerCollection.getDiagnosticLogsConfigurationSlotAsync(resourceGroup, parentName,
+                    name.replaceAll(".*/", "")),
+                (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) -> wrapModel(
+                    siteInner, siteConfigResourceInner, logsConfigInner)));
     }
 
     @Override
@@ -115,8 +108,8 @@ class FunctionDeploymentSlotsImpl
             inner -> new FunctionDeploymentSlotBasicImpl(inner, parent));
     }
 
-    private FunctionDeploymentSlotImpl wrapModel(
-        SiteInner inner, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig) {
+    private FunctionDeploymentSlotImpl wrapModel(SiteInner inner, SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig) {
         if (inner == null) {
             return null;
         }

@@ -47,6 +47,9 @@ public final class MetricNamespaceName implements JsonSerializable<MetricNamespa
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

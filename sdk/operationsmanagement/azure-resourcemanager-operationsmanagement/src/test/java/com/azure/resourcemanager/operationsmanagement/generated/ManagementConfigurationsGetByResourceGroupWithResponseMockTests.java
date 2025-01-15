@@ -6,67 +6,38 @@ package com.azure.resourcemanager.operationsmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.operationsmanagement.OperationsManagementManager;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfiguration;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ManagementConfigurationsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"location\":\"ocfs\",\"properties\":{\"applicationId\":\"ymddys\",\"parentResourceType\":\"kiiuxhqyudxor\",\"parameters\":[{\"name\":\"b\",\"value\":\"czvyifq\"}],\"provisioningState\":\"kdvjsll\",\"template\":\"datamvvd\"},\"id\":\"watkpnpulexxb\",\"name\":\"zwtruwiqzbqjvsov\",\"type\":\"yokacspkw\"}";
 
-        String responseStr =
-            "{\"location\":\"e\",\"properties\":{\"applicationId\":\"oaeupfhyhltrpmo\",\"parentResourceType\":\"jmcmatuokthfu\",\"parameters\":[],\"provisioningState\":\"odsfcpkvxodpuozm\",\"template\":\"datazydagfuaxbezyiuo\"},\"id\":\"ktwh\",\"name\":\"dxwzywqsmbsurexi\",\"type\":\"o\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        OperationsManagementManager manager = OperationsManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ManagementConfiguration response = manager.managementConfigurations()
+            .getByResourceGroupWithResponse("dxwzywqsmbsurexi", "o", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        OperationsManagementManager manager =
-            OperationsManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ManagementConfiguration response =
-            manager
-                .managementConfigurations()
-                .getByResourceGroupWithResponse("mdajv", "ysou", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("e", response.location());
-        Assertions.assertEquals("oaeupfhyhltrpmo", response.properties().applicationId());
-        Assertions.assertEquals("jmcmatuokthfu", response.properties().parentResourceType());
+        Assertions.assertEquals("ocfs", response.location());
+        Assertions.assertEquals("ymddys", response.properties().applicationId());
+        Assertions.assertEquals("kiiuxhqyudxor", response.properties().parentResourceType());
+        Assertions.assertEquals("b", response.properties().parameters().get(0).name());
+        Assertions.assertEquals("czvyifq", response.properties().parameters().get(0).value());
     }
 }

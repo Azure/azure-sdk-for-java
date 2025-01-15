@@ -45,11 +45,12 @@ public final class CustomFormModelInfo {
 
             @Override
             public void setCustomFormModelProperties(CustomFormModelInfo formModelInfo,
-                                                     CustomFormModelProperties customFormModelProperties) {
+                CustomFormModelProperties customFormModelProperties) {
                 formModelInfo.setCustomFormModelProperties(customFormModelProperties);
             }
         });
     }
+
     /**
      * Constructs a {@link CustomFormModelInfo} object.
      *

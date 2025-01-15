@@ -6,32 +6,38 @@ package com.azure.resourcemanager.attestation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.attestation.models.OperationsDefinition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of supported operations. */
+/**
+ * List of supported operations.
+ */
 @Fluent
-public final class OperationListInner {
+public final class OperationListInner implements JsonSerializable<OperationListInner> {
     /*
      * The system metadata relating to this resource
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * List of supported operations.
      */
-    @JsonProperty(value = "value")
     private List<OperationsDefinition> value;
 
-    /** Creates an instance of OperationListInner class. */
+    /**
+     * Creates an instance of OperationListInner class.
+     */
     public OperationListInner() {
     }
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -40,7 +46,7 @@ public final class OperationListInner {
 
     /**
      * Get the value property: List of supported operations.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationsDefinition> value() {
@@ -49,7 +55,7 @@ public final class OperationListInner {
 
     /**
      * Set the value property: List of supported operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationListInner object itself.
      */
@@ -60,12 +66,52 @@ public final class OperationListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationListInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationListInner.
+     */
+    public static OperationListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationListInner deserializedOperationListInner = new OperationListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("systemData".equals(fieldName)) {
+                    deserializedOperationListInner.systemData = SystemData.fromJson(reader);
+                } else if ("value".equals(fieldName)) {
+                    List<OperationsDefinition> value
+                        = reader.readArray(reader1 -> OperationsDefinition.fromJson(reader1));
+                    deserializedOperationListInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationListInner;
+        });
     }
 }

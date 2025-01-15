@@ -16,7 +16,9 @@ import java.util.Map;
  */
 public final class SimGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupPatch.json
+     * x-ms-original-file:
+     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupPatch.
+     * json
      */
     /**
      * Sample code: Patch SIM group.

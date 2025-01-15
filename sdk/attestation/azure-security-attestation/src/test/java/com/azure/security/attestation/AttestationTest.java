@@ -55,7 +55,6 @@ public class AttestationTest extends AttestationClientTestBase {
         + "gICAieCI6IjE4d0hMZUlnVzl3Vk42VkQxVHhncHF5MkxzellrTWY2SjhualZBaWJ2aE0iLAogICAgICAgICAgICAgICAgInkiOiJjVjRkUzR"
         + "VYUxNZ1BfNGZZNGo4aXI3Y2wxVFhsRmRBZ2N4NTVvN1RrY1NBIgogICAgICAgICAgICB9CiAgICAgICAgfQogICAgICAgIA";
 
-
     private static final String OPEN_ENCLAVE_REPORT = "AQAAAAIAAADkEQAAAAAAAAMAAgAAAAAABQAKAJOacjP3nEyplAoNs5V_Bgc42MPz"
         + "Go7hPWS_h-3tExJrAAAAABERAwX_gAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAABwAAAAAAAAC3"
         + "eSAmGL7LY2do5dkC8o1SQiJzX6-1OeqboHw_wXGhwgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALBpElSroIHE1xsKbdbjAKTcu"
@@ -125,8 +124,8 @@ public class AttestationTest extends AttestationClientTestBase {
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(RUNTIME_DATA));
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT));
-        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10,
-            decodedOpenEnclaveReport.toBytes().length));
+        BinaryData sgxQuote = BinaryData.fromBytes(
+            Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
         AttestationOptions request = new AttestationOptions(sgxQuote)
             .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY));
@@ -145,8 +144,8 @@ public class AttestationTest extends AttestationClientTestBase {
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(RUNTIME_DATA));
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT));
-        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10,
-            decodedOpenEnclaveReport.toBytes().length));
+        BinaryData sgxQuote = BinaryData.fromBytes(
+            Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
         AttestationResult result = client.attestSgxEnclave(sgxQuote);
         verifyAttestationResult(getTestMode(), clientUri, result, null, false);
@@ -162,8 +161,8 @@ public class AttestationTest extends AttestationClientTestBase {
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(RUNTIME_DATA));
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT));
-        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10,
-            decodedOpenEnclaveReport.toBytes().length));
+        BinaryData sgxQuote = BinaryData.fromBytes(
+            Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
         AttestationOptions request = new AttestationOptions(sgxQuote)
             .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
@@ -182,8 +181,8 @@ public class AttestationTest extends AttestationClientTestBase {
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(RUNTIME_DATA));
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT));
-        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10,
-            decodedOpenEnclaveReport.toBytes().length));
+        BinaryData sgxQuote = BinaryData.fromBytes(
+            Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
         AttestationOptions request = new AttestationOptions(sgxQuote)
             .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
@@ -198,7 +197,6 @@ public class AttestationTest extends AttestationClientTestBase {
         verifyAttestationResult(getTestMode(), clientUri, response.getValue(), decodedRuntimeData, true);
     }
 
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveAsync(HttpClient httpClient, String clientUri) {
@@ -208,47 +206,43 @@ public class AttestationTest extends AttestationClientTestBase {
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(RUNTIME_DATA));
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT));
-        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10,
-            decodedOpenEnclaveReport.toBytes().length));
+        BinaryData sgxQuote = BinaryData.fromBytes(
+            Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
         final AtomicBoolean callbackCalled = new AtomicBoolean(false);
         AttestationOptions request = new AttestationOptions(sgxQuote)
             .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY))
-            .setValidationOptions(new AttestationTokenValidationOptions()
-                .setValidationCallback((token, signer) -> {
-                    callbackCalled.set(true);
-                    // Perform minimal validation of the issued SGX token. The
-                    // token validation logic will have checked the issuance_time
-                    // and expiration_time, but this shows accessing those fields.
-                    //
-                    // The validation logic also checks the subject of the certificate to verify
-                    // that the issuer of the certificate is the expected instance of the service.
-                    LOGGER.info("In validation callback, checking token...");
-                    LOGGER.info(String.format("     Token issuer: %s", token.getIssuer()));
-                    if (!interceptorManager.isPlaybackMode()) {
-                        LOGGER.info(String.format("     Token was issued at: %tc", token.getIssuedAt()));
-                        LOGGER.info(String.format("     Token expires at: %tc", token.getExpiresOn()));
-                        if (!token.getIssuer().equals(clientUri)) {
-                            LOGGER.error(String.format("Token issuer %s does not match expected issuer %s",
-                                token.getIssuer(), clientUri));
-                            throw new RuntimeException(String.format("Issuer Mismatch: found %s, expected %s",
-                                token.getIssuer(), clientUri));
-                        }
-                        LOGGER.info(String.format("Issuer of signing certificate is: %s",
-                            signer.getCertificates().get(0).getIssuerDN().getName()));
+            .setValidationOptions(new AttestationTokenValidationOptions().setValidationCallback((token, signer) -> {
+                callbackCalled.set(true);
+                // Perform minimal validation of the issued SGX token. The
+                // token validation logic will have checked the issuance_time
+                // and expiration_time, but this shows accessing those fields.
+                //
+                // The validation logic also checks the subject of the certificate to verify
+                // that the issuer of the certificate is the expected instance of the service.
+                LOGGER.info("In validation callback, checking token...");
+                LOGGER.info(String.format("     Token issuer: %s", token.getIssuer()));
+                if (!interceptorManager.isPlaybackMode()) {
+                    LOGGER.info(String.format("     Token was issued at: %tc", token.getIssuedAt()));
+                    LOGGER.info(String.format("     Token expires at: %tc", token.getExpiresOn()));
+                    if (!token.getIssuer().equals(clientUri)) {
+                        LOGGER.error(String.format("Token issuer %s does not match expected issuer %s",
+                            token.getIssuer(), clientUri));
+                        throw new RuntimeException(
+                            String.format("Issuer Mismatch: found %s, expected %s", token.getIssuer(), clientUri));
                     }
-                })
+                    LOGGER.info(String.format("Issuer of signing certificate is: %s",
+                        signer.getCertificates().get(0).getIssuerDN().getName()));
+                }
+            })
                 // Only validate time based properties when not in PLAYBACK mode. PLAYBACK mode has these values
                 // hard-coded into the session record.
                 .setValidateExpiresOn(getTestMode() != TestMode.PLAYBACK));
 
-        StepVerifier.create(client.attestSgxEnclave(request))
-            .assertNext(result -> {
-                assertTrue(callbackCalled.get());
-                verifyAttestationResult(getTestMode(), clientUri, result, decodedRuntimeData, false);
-            })
-            .expectComplete()
-            .verify();
+        StepVerifier.create(client.attestSgxEnclave(request)).assertNext(result -> {
+            assertTrue(callbackCalled.get());
+            verifyAttestationResult(getTestMode(), clientUri, result, decodedRuntimeData, false);
+        }).expectComplete().verify();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -261,8 +255,8 @@ public class AttestationTest extends AttestationClientTestBase {
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(RUNTIME_DATA));
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT));
-        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10,
-            decodedOpenEnclaveReport.toBytes().length));
+        BinaryData sgxQuote = BinaryData.fromBytes(
+            Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
         AttestationOptions request = new AttestationOptions(sgxQuote);
 
@@ -285,7 +279,8 @@ public class AttestationTest extends AttestationClientTestBase {
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(RUNTIME_DATA));
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT));
-        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
+        BinaryData sgxQuote = BinaryData.fromBytes(
+            Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
         AttestationOptions options = new AttestationOptions(sgxQuote)
             .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
@@ -306,9 +301,8 @@ public class AttestationTest extends AttestationClientTestBase {
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(RUNTIME_DATA));
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(OPEN_ENCLAVE_REPORT));
-        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10,
-            decodedOpenEnclaveReport.toBytes().length));
-
+        BinaryData sgxQuote = BinaryData.fromBytes(
+            Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
         Span span = tracer.spanBuilder("AttestWithDraft").startSpan();
         Context contextWithSpan = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current());
@@ -318,25 +312,22 @@ public class AttestationTest extends AttestationClientTestBase {
             .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
 
         try {
-            StepVerifier.create(client.attestSgxEnclaveWithResponse(request, contextWithSpan))
-                .assertNext(response -> {
-                    // Make sure that the request included a traceparent header and that the response contains a
-                    // traceresponse header.
-                    // Note: The recording infrastructure doesn't record traceparent or traceresponse, so we can
-                    // only perform this check on live servers.
-                    if (getTestMode() != TestMode.PLAYBACK) {
-                        HttpHeaders requestHeaders = response.getRequest().getHeaders();
-                        assertNotNull(requestHeaders.getValue("traceparent"));
-                        HttpHeaders responseHeaders = response.getHeaders();
-                        // NB: As of 1-5-2022, MAA doesn't include the standardized traceresponse header, instead
-                        // it includes the response in x-ms-request-id.
-                        assertNotNull(responseHeaders.getValue("x-ms-request-id"));
-                        assertEquals(requestHeaders.getValue("traceparent"), responseHeaders.getValue("x-ms-request-id"));
-                    }
-                    verifyAttestationResult(getTestMode(), clientUri, response.getValue(), decodedRuntimeData, true);
-                })
-                .expectComplete()
-                .verify();
+            StepVerifier.create(client.attestSgxEnclaveWithResponse(request, contextWithSpan)).assertNext(response -> {
+                // Make sure that the request included a traceparent header and that the response contains a
+                // traceresponse header.
+                // Note: The recording infrastructure doesn't record traceparent or traceresponse, so we can
+                // only perform this check on live servers.
+                if (getTestMode() != TestMode.PLAYBACK) {
+                    HttpHeaders requestHeaders = response.getRequest().getHeaders();
+                    assertNotNull(requestHeaders.getValue("traceparent"));
+                    HttpHeaders responseHeaders = response.getHeaders();
+                    // NB: As of 1-5-2022, MAA doesn't include the standardized traceresponse header, instead
+                    // it includes the response in x-ms-request-id.
+                    assertNotNull(responseHeaders.getValue("x-ms-request-id"));
+                    assertEquals(requestHeaders.getValue("traceparent"), responseHeaders.getValue("x-ms-request-id"));
+                }
+                verifyAttestationResult(getTestMode(), clientUri, response.getValue(), decodedRuntimeData, true);
+            }).expectComplete().verify();
         } finally {
             span.end();
         }
@@ -351,8 +342,8 @@ public class AttestationTest extends AttestationClientTestBase {
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
         // Set the TPM attestation policy to a default value.
-        AttestationAdministrationClient adminClient = getAttestationAdministrationBuilder(httpClient, clientUri)
-            .buildClient();
+        AttestationAdministrationClient adminClient
+            = getAttestationAdministrationBuilder(httpClient, clientUri).buildClient();
         PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, new AttestationPolicySetOptions()
             .setAttestationPolicy("version=1.0; authorizationrules{=>permit();};issuancerules{};")
             .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
@@ -367,8 +358,7 @@ public class AttestationTest extends AttestationClientTestBase {
         // first leg of the attestation operation.
         //
         // Note that TPM attestation requires an authenticated attestation builder.
-        AttestationClient client = getAuthenticatedAttestationBuilder(httpClient, clientUri)
-            .buildClient();
+        AttestationClient client = getAuthenticatedAttestationBuilder(httpClient, clientUri).buildClient();
 
         // The initial payload for TPM attestation is a JSON object with a property named "payload",
         // containing an object with a property named "type" whose value is "aikcert".
@@ -376,8 +366,8 @@ public class AttestationTest extends AttestationClientTestBase {
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
         TpmAttestationResult tpmResponse = client.attestTpm(BinaryData.fromString(attestInitialPayload));
 
-        Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(tpmResponse.getTpmResult().toBytes(),
-            Object.class, SerializerEncoding.JSON));
+        Object deserializedResponse = assertDoesNotThrow(
+            () -> ADAPTER.deserialize(tpmResponse.getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
         assertInstanceOf(LinkedHashMap.class, deserializedResponse);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
@@ -400,8 +390,8 @@ public class AttestationTest extends AttestationClientTestBase {
 
         // Set the TPM attestation policy to a default value.
 
-        AttestationAdministrationClient adminClient = getAttestationAdministrationBuilder(httpClient, clientUri)
-            .buildClient();
+        AttestationAdministrationClient adminClient
+            = getAttestationAdministrationBuilder(httpClient, clientUri).buildClient();
         PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, new AttestationPolicySetOptions()
             .setAttestationPolicy("version=1.0; authorizationrules{=>permit();};issuancerules{};")
             .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
@@ -424,11 +414,12 @@ public class AttestationTest extends AttestationClientTestBase {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Response<TpmAttestationResult> tpmResponse = client.attestTpmWithResponse(BinaryData.fromString(attestInitialPayload), Context.NONE);
+        Response<TpmAttestationResult> tpmResponse
+            = client.attestTpmWithResponse(BinaryData.fromString(attestInitialPayload), Context.NONE);
         // END: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
 
-        Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(
-            tpmResponse.getValue().getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
+        Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER
+            .deserialize(tpmResponse.getValue().getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
         assertInstanceOf(LinkedHashMap.class, deserializedResponse);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
@@ -449,8 +440,8 @@ public class AttestationTest extends AttestationClientTestBase {
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
         // Set the TPM attestation policy to a default value.
-        AttestationAdministrationClient adminClient = getAttestationAdministrationBuilder(httpClient, clientUri)
-            .buildClient();
+        AttestationAdministrationClient adminClient
+            = getAttestationAdministrationBuilder(httpClient, clientUri).buildClient();
         PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, new AttestationPolicySetOptions()
             .setAttestationPolicy("version=1.0; authorizationrules{=>permit();};issuancerules{};")
             .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
@@ -472,21 +463,19 @@ public class AttestationTest extends AttestationClientTestBase {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        StepVerifier.create(client.attestTpm(BinaryData.fromString(attestInitialPayload)))
-            .assertNext(tpmResponse -> {
-                Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(
-                    tpmResponse.getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
-                assertInstanceOf(LinkedHashMap.class, deserializedResponse);
-                @SuppressWarnings("unchecked")
-                LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
-                assertTrue(initialResponse.containsKey("payload"));
-                assertInstanceOf(LinkedHashMap.class, initialResponse.get("payload"));
-                @SuppressWarnings("unchecked")
-                LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
-                assertTrue(payload.containsKey("challenge"));
-                assertTrue(payload.containsKey("service_context"));
-            })
-            .verifyComplete();
+        StepVerifier.create(client.attestTpm(BinaryData.fromString(attestInitialPayload))).assertNext(tpmResponse -> {
+            Object deserializedResponse = assertDoesNotThrow(
+                () -> ADAPTER.deserialize(tpmResponse.getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
+            assertInstanceOf(LinkedHashMap.class, deserializedResponse);
+            @SuppressWarnings("unchecked")
+            LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
+            assertTrue(initialResponse.containsKey("payload"));
+            assertInstanceOf(LinkedHashMap.class, initialResponse.get("payload"));
+            @SuppressWarnings("unchecked")
+            LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
+            assertTrue(payload.containsKey("challenge"));
+            assertTrue(payload.containsKey("service_context"));
+        }).verifyComplete();
     }
 
     @Test()
@@ -498,11 +487,11 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestationOptions request2 = new AttestationOptions(decodedOpenEnclaveReport)
             .setInitTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON))
             .setInitTimeData(new AttestationData(decodedOpenEnclaveReport, AttestationDataInterpretation.BINARY))
-            .setRunTimeData(new AttestationData(BinaryData.fromBytes(new byte[]{1, 2, 3, 4, 5}),
+            .setRunTimeData(new AttestationData(BinaryData.fromBytes(new byte[] { 1, 2, 3, 4, 5 }),
                 AttestationDataInterpretation.BINARY));
 
         assertArrayEquals(decodedOpenEnclaveReport.toBytes(), request2.getInitTimeData().getData().toBytes());
-        assertArrayEquals(new byte[]{1, 2, 3, 4, 5}, request2.getRunTimeData().getData().toBytes());
+        assertArrayEquals(new byte[] { 1, 2, 3, 4, 5 }, request2.getRunTimeData().getData().toBytes());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -580,7 +569,6 @@ public class AttestationTest extends AttestationClientTestBase {
 
         verifyAttestationResult(getTestMode(), clientUri, response.getValue(), decodedRuntimeData, true);
     }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
@@ -660,7 +648,6 @@ public class AttestationTest extends AttestationClientTestBase {
 
     }
 
-
     private static void verifyAttestationResult(TestMode testMode, String clientUri, AttestationResult result,
         BinaryData runtimeData, boolean expectJson) {
         assertNotNull(result.getIssuer());
@@ -679,8 +666,8 @@ public class AttestationTest extends AttestationClientTestBase {
             assertInstanceOf(Map.class, result.getRuntimeClaims());
             @SuppressWarnings("unchecked")
             Map<String, Object> runtimeClaims = (Map<String, Object>) result.getRuntimeClaims();
-            Map<String, Object> expectedClaims = assertDoesNotThrow(() ->
-                ADAPTER.deserialize(runtimeData.toBytes(), Object.class, SerializerEncoding.JSON));
+            Map<String, Object> expectedClaims = assertDoesNotThrow(
+                () -> ADAPTER.deserialize(runtimeData.toBytes(), Object.class, SerializerEncoding.JSON));
             assertObjectEqual(expectedClaims, runtimeClaims);
         } else if (runtimeData != null) {
             TestUtils.assertArraysEqual(runtimeData.toBytes(), result.getEnclaveHeldData().toBytes());

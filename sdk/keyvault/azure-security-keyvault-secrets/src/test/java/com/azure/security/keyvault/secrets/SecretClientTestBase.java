@@ -45,22 +45,22 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SecretClientTestBase extends TestProxyTestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS =
-        "AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV =
-        Configuration.getGlobalConfiguration().get(AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS);
+    private static final String AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS
+        = "AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS";
+    private static final String SERVICE_VERSION_FROM_ENV
+        = Configuration.getGlobalConfiguration().get(AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS);
 
     private static final String SECRET_NAME = "javaSecretTemp";
     private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
 
     private static final int MAX_RETRIES = 5;
-    private static final RetryOptions LIVE_RETRY_OPTIONS = new RetryOptions(new ExponentialBackoffOptions()
-        .setMaxRetries(MAX_RETRIES)
-        .setBaseDelay(Duration.ofSeconds(2))
-        .setMaxDelay(Duration.ofSeconds(16)));
+    private static final RetryOptions LIVE_RETRY_OPTIONS
+        = new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(MAX_RETRIES)
+            .setBaseDelay(Duration.ofSeconds(2))
+            .setMaxDelay(Duration.ofSeconds(16)));
 
-    private static final RetryOptions PLAYBACK_RETRY_OPTIONS =
-        new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
+    private static final RetryOptions PLAYBACK_RETRY_OPTIONS
+        = new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
     void beforeTestSetup() {
         KeyVaultCredentialPolicy.clearCache();
@@ -82,8 +82,7 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        SecretClientBuilder builder = new SecretClientBuilder()
-            .vaultUrl(endpoint)
+        SecretClientBuilder builder = new SecretClientBuilder().vaultUrl(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)
             .httpClient(httpClient);
@@ -107,9 +106,8 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
         String resourceId = testResourceNamer.randomName(SECRET_NAME, 20);
 
-        final KeyVaultSecret secretToSet = new KeyVaultSecret(resourceId, SECRET_VALUE)
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+        final KeyVaultSecret secretToSet = new KeyVaultSecret(resourceId, SECRET_VALUE).setProperties(
+            new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
                 .setTags(tags)
                 .setContentType("text"));
@@ -143,14 +141,12 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         tags.put("second tag", "second value");
 
         String resourceId = testResourceNamer.randomName("testSecretUpdate", 20);
-        final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+        final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretVal").setProperties(
+            new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setTags(tags));
 
-        final KeyVaultSecret updatedSecret = new KeyVaultSecret(resourceId, "testSecretVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+        final KeyVaultSecret updatedSecret = new KeyVaultSecret(resourceId, "testSecretVal").setProperties(
+            new SecretProperties().setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setTags(tags));
 
         testRunner.accept(originalSecret, updatedSecret);
@@ -162,15 +158,15 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
     void updateDisabledSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testUpdateOfDisabledSecret", 35);
 
-        final KeyVaultSecret originalSecret = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setEnabled(false));
+        final KeyVaultSecret originalSecret
+            = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal").setProperties(
+                new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+                    .setEnabled(false));
 
-        final KeyVaultSecret updatedSecret = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setEnabled(false));
+        final KeyVaultSecret updatedSecret
+            = new KeyVaultSecret(resourceId, "testSecretUpdateDisabledVal").setProperties(
+                new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+                    .setEnabled(false));
 
         testRunner.accept(originalSecret, updatedSecret);
     }
@@ -180,9 +176,8 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
     void getSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretGet", 20);
-        final KeyVaultSecret secretToGet = new KeyVaultSecret(resourceId, "testSecretGetVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+        final KeyVaultSecret secretToGet = new KeyVaultSecret(resourceId, "testSecretGetVal").setProperties(
+            new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToGet);
     }
@@ -192,12 +187,11 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
     void getSecretSpecificVersionRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretGetVersion", 30);
-        final KeyVaultSecret secretWithOriginalValue = new KeyVaultSecret(resourceId, "testSecretGetVersionVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-        final KeyVaultSecret secretWithNewValue = new KeyVaultSecret(resourceId, "newVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+        final KeyVaultSecret secretWithOriginalValue
+            = new KeyVaultSecret(resourceId, "testSecretGetVersionVal").setProperties(
+                new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+        final KeyVaultSecret secretWithNewValue = new KeyVaultSecret(resourceId, "newVal").setProperties(
+            new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretWithOriginalValue, secretWithNewValue);
     }
@@ -210,9 +204,8 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
     void deleteSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretDelete", 20);
-        final KeyVaultSecret secretToDelete = new KeyVaultSecret(resourceId, "testSecretDeleteVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+        final KeyVaultSecret secretToDelete = new KeyVaultSecret(resourceId, "testSecretDeleteVal").setProperties(
+            new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToDelete);
     }
@@ -225,9 +218,9 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
     void getDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretGetDeleted", 25);
-        final KeyVaultSecret secretToDeleteAndGet = new KeyVaultSecret(resourceId, "testSecretGetDeleteVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+        final KeyVaultSecret secretToDeleteAndGet
+            = new KeyVaultSecret(resourceId, "testSecretGetDeleteVal").setProperties(
+                new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToDeleteAndGet);
     }
@@ -240,9 +233,9 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
     void recoverDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = testResourceNamer.randomName("testSecretRecover", 25);
-        final KeyVaultSecret secretToDeleteAndRecover = new KeyVaultSecret(resourceId, "testSecretRecoverVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+        final KeyVaultSecret secretToDeleteAndRecover
+            = new KeyVaultSecret(resourceId, "testSecretRecoverVal").setProperties(
+                new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToDeleteAndRecover);
     }
@@ -254,10 +247,10 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
     public abstract void backupSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void backupSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        final KeyVaultSecret secretToBackup =
-            new KeyVaultSecret(testResourceNamer.randomName("testSecretBackup", 20), "testSecretBackupVal")
-                .setProperties(new SecretProperties()
-                    .setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+        final KeyVaultSecret secretToBackup
+            = new KeyVaultSecret(testResourceNamer.randomName("testSecretBackup", 20), "testSecretBackupVal")
+                .setProperties(
+                    new SecretProperties().setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToBackup);
     }
@@ -269,10 +262,10 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
     public abstract void restoreSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void restoreSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        final KeyVaultSecret secretToBackupAndRestore =
-            new KeyVaultSecret(testResourceNamer.randomName("testSecretRestore", 20), "testSecretRestoreVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+        final KeyVaultSecret secretToBackupAndRestore
+            = new KeyVaultSecret(testResourceNamer.randomName("testSecretRestore", 20), "testSecretRestoreVal")
+                .setProperties(
+                    new SecretProperties().setExpiresOn(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToBackupAndRestore);
     }
@@ -289,9 +282,8 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         for (int i = 0; i < 2; i++) {
             String secretName = testResourceNamer.randomName("listSecret", 20);
             String secretVal = "listSecretVal" + i;
-            KeyVaultSecret secret = new KeyVaultSecret(secretName, secretVal)
-                .setProperties(new SecretProperties()
-                    .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+            KeyVaultSecret secret = new KeyVaultSecret(secretName, secretVal).setProperties(
+                new SecretProperties().setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
             secretsToSetAndList.put(secretName, secret);
         }
@@ -309,9 +301,8 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
             String secretName = testResourceNamer.randomName("listDeletedSecretsTest", 20);
             String secretVal = "listDeletedSecretVal" + i;
 
-            secretSecretsToSetAndDelete.put(secretName, new KeyVaultSecret(secretName, secretVal)
-                .setProperties(new SecretProperties()
-                    .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))));
+            secretSecretsToSetAndDelete.put(secretName, new KeyVaultSecret(secretName, secretVal).setProperties(
+                new SecretProperties().setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))));
         }
 
         testRunner.accept(secretSecretsToSetAndDelete);
@@ -328,9 +319,8 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         for (int i = 1; i < 5; i++) {
             secretVal = "listSecretVersionVal" + i;
 
-            secretsToSetAndList.add(new KeyVaultSecret(secretName, secretVal)
-                .setProperties(new SecretProperties()
-                    .setExpiresOn(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC))));
+            secretsToSetAndList.add(new KeyVaultSecret(secretName, secretVal).setProperties(
+                new SecretProperties().setExpiresOn(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC))));
         }
 
         testRunner.accept(secretsToSetAndList);
@@ -363,8 +353,8 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
     }
 
     public String getEndpoint() {
-        final String endpoint =
-            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
+        final String endpoint
+            = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
 
         Objects.requireNonNull(endpoint);
 
@@ -394,11 +384,11 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         // arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
 
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(SecretServiceVersion.values()).filter(SecretClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
+        getHttpClients().forEach(httpClient -> {
+            Arrays.stream(SecretServiceVersion.values())
+                .filter(SecretClientTestBase::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+        });
 
         return argumentsList.stream();
     }
@@ -431,7 +421,7 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
 
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+        return Arrays.stream(configuredServiceVersionList)
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 }

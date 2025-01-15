@@ -72,7 +72,8 @@ class StorageAccountImpl
     private StorageEncryptionHelper encryptionHelper;
     private StorageAccountMsiHandler storageAccountMsiHandler;
 
-    StorageAccountImpl(String name, StorageAccountInner innerModel, final StorageManager storageManager, final AuthorizationManager authorizationManager) {
+    StorageAccountImpl(String name, StorageAccountInner innerModel, final StorageManager storageManager,
+        final AuthorizationManager authorizationManager) {
         super(name, innerModel, storageManager);
         this.createParameters = new StorageAccountCreateParameters();
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.createParameters);
@@ -83,7 +84,8 @@ class StorageAccountImpl
     @Override
     public AccountStatuses accountStatuses() {
         if (accountStatuses == null) {
-            accountStatuses = new AccountStatuses(this.innerModel().statusOfPrimary(), this.innerModel().statusOfSecondary());
+            accountStatuses
+                = new AccountStatuses(this.innerModel().statusOfPrimary(), this.innerModel().statusOfSecondary());
         }
         return accountStatuses;
     }
@@ -124,7 +126,8 @@ class StorageAccountImpl
     @Override
     public PublicEndpoints endPoints() {
         if (publicEndpoints == null) {
-            publicEndpoints = new PublicEndpoints(this.innerModel().primaryEndpoints(), this.innerModel().secondaryEndpoints());
+            publicEndpoints
+                = new PublicEndpoints(this.innerModel().primaryEndpoints(), this.innerModel().secondaryEndpoints());
         }
         return publicEndpoints;
     }
@@ -169,8 +172,7 @@ class StorageAccountImpl
 
     @Override
     public Set<String> userAssignedManagedServiceIdentityIds() {
-        if (innerModel().identity() != null
-            && innerModel().identity().userAssignedIdentities() != null) {
+        if (innerModel().identity() != null && innerModel().identity().userAssignedIdentities() != null) {
             return Collections
                 .unmodifiableSet(new HashSet<String>(this.innerModel().identity().userAssignedIdentities().keySet()));
         }
@@ -293,8 +295,7 @@ class StorageAccountImpl
 
     @Override
     public Mono<List<StorageAccountKey>> getKeysAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getStorageAccounts()
             .listKeysAsync(this.resourceGroupName(), this.name())
@@ -308,8 +309,7 @@ class StorageAccountImpl
 
     @Override
     public Mono<List<StorageAccountKey>> regenerateKeyAsync(String keyName) {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getStorageAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(),
@@ -324,11 +324,12 @@ class StorageAccountImpl
 
     @Override
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getPrivateLinkResources()
+        Mono<Response<List<PrivateLinkResource>>> retList = this.manager()
+            .serviceClient()
+            .getPrivateLinkResources()
             .listByStorageAccountWithResponseAsync(this.resourceGroupName(), this.name())
-            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
-                .map(PrivateLinkResourceImpl::new)
-                .collect(Collectors.toList())));
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue().value().stream().map(PrivateLinkResourceImpl::new).collect(Collectors.toList())));
 
         return PagedConverter.convertListToPagedFlux(retList);
     }
@@ -340,7 +341,9 @@ class StorageAccountImpl
 
     @Override
     public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getPrivateEndpointConnections()
+        return PagedConverter.mapPage(this.manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
             .listAsync(this.resourceGroupName(), this.name()), PrivateEndpointConnectionImpl::new);
     }
 
@@ -351,12 +354,13 @@ class StorageAccountImpl
 
     @Override
     public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return this.manager().serviceClient().getPrivateEndpointConnections()
+        return this.manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
             .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
-                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(
-                            PrivateEndpointServiceConnectionStatus.APPROVED)))
+                new PrivateEndpointConnectionInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
             .then();
     }
 
@@ -367,30 +371,31 @@ class StorageAccountImpl
 
     @Override
     public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return this.manager().serviceClient().getPrivateEndpointConnections()
+        return this.manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
             .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
-                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(
-                            PrivateEndpointServiceConnectionStatus.REJECTED)))
+                new PrivateEndpointConnectionInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)))
             .then();
     }
 
     @Override
     public Mono<StorageAccount> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                storageAccount -> {
-                    StorageAccountImpl impl = (StorageAccountImpl) storageAccount;
-                    impl.clearWrapperProperties();
-                    return impl;
-                });
+        return super.refreshAsync().map(storageAccount -> {
+            StorageAccountImpl impl = (StorageAccountImpl) storageAccount;
+            impl.clearWrapperProperties();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<StorageAccountInner> getInnerAsync() {
-        return this.manager().serviceClient().getStorageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -458,7 +463,8 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity) {
+    public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+        Identity userAssignedIdentity) {
         if (userAssignedIdentity == null) {
             throw new IllegalArgumentException("User-assigned identity is null.");
         }
@@ -466,7 +472,8 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId) {
+    public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+        String userAssignedIdentityId) {
         if (CoreUtils.isNullOrEmpty(userAssignedIdentityId)) {
             throw new IllegalArgumentException("User-assigned identity ID is null.");
         }
@@ -793,17 +800,13 @@ class StorageAccountImpl
         this.storageAccountMsiHandler.handleExternalIdentities();
         this.storageAccountMsiHandler.clear();
         final StorageAccountsClient client = this.manager().serviceClient().getStorageAccounts();
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getStorageAccounts()
             .createAsync(this.resourceGroupName(), this.name(), createParameters)
-            .flatMap(
-                storageAccountInner ->
-                    client
-                        .getByResourceGroupAsync(resourceGroupName(), this.name())
-                        .map(innerToFluentMap(this))
-                        .doOnNext(storageAccount -> clearWrapperProperties()));
+            .flatMap(storageAccountInner -> client.getByResourceGroupAsync(resourceGroupName(), this.name())
+                .map(innerToFluentMap(this))
+                .doOnNext(storageAccount -> clearWrapperProperties()));
     }
 
     @Override
@@ -813,8 +816,7 @@ class StorageAccountImpl
         this.storageAccountMsiHandler.processCreatedExternalIdentities();
         this.storageAccountMsiHandler.handleExternalIdentities();
         this.storageAccountMsiHandler.clear();
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getStorageAccounts()
             .updateAsync(resourceGroupName(), this.name(), updateParameters)
@@ -826,27 +828,20 @@ class StorageAccountImpl
     public StorageAccountImpl withAzureFilesAadIntegrationEnabled(boolean enabled) {
         if (isInCreateMode()) {
             if (enabled) {
-                this
-                    .createParameters
-                    .withAzureFilesIdentityBasedAuthentication(
-                        new AzureFilesIdentityBasedAuthentication()
-                            .withDirectoryServiceOptions(DirectoryServiceOptions.AADDS));
+                this.createParameters
+                    .withAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication()
+                        .withDirectoryServiceOptions(DirectoryServiceOptions.AADDS));
             }
         } else {
             if (this.createParameters.azureFilesIdentityBasedAuthentication() == null) {
-                this
-                    .createParameters
+                this.createParameters
                     .withAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication());
             }
             if (enabled) {
-                this
-                    .updateParameters
-                    .azureFilesIdentityBasedAuthentication()
+                this.updateParameters.azureFilesIdentityBasedAuthentication()
                     .withDirectoryServiceOptions(DirectoryServiceOptions.AADDS);
             } else {
-                this
-                    .updateParameters
-                    .azureFilesIdentityBasedAuthentication()
+                this.updateParameters.azureFilesIdentityBasedAuthentication()
                     .withDirectoryServiceOptions(DirectoryServiceOptions.NONE);
             }
         }
@@ -872,13 +867,15 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl withNewUserAssignedManagedServiceIdentity(Creatable<com.azure.resourcemanager.msi.models.Identity> creatableIdentity) {
+    public StorageAccountImpl withNewUserAssignedManagedServiceIdentity(
+        Creatable<com.azure.resourcemanager.msi.models.Identity> creatableIdentity) {
         this.storageAccountMsiHandler.withNewExternalManagedServiceIdentity(creatableIdentity);
         return this;
     }
 
     @Override
-    public StorageAccountImpl withExistingUserAssignedManagedServiceIdentity(com.azure.resourcemanager.msi.models.Identity identity) {
+    public StorageAccountImpl
+        withExistingUserAssignedManagedServiceIdentity(com.azure.resourcemanager.msi.models.Identity identity) {
         this.storageAccountMsiHandler.withExistingExternalManagedServiceIdentity(identity);
         return this;
     }
@@ -944,25 +941,23 @@ class StorageAccountImpl
         private final PrivateEndpointConnectionInner innerModel;
 
         private final PrivateEndpoint privateEndpoint;
-        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
-            privateLinkServiceConnectionState;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
         private final PrivateEndpointConnectionProvisioningState provisioningState;
 
         private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
             this.innerModel = innerModel;
 
-            this.privateEndpoint = innerModel.privateEndpoint() == null
-                ? null
-                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateEndpoint
+                = innerModel.privateEndpoint() == null ? null : new PrivateEndpoint(innerModel.privateEndpoint().id());
             this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
                 ? null
                 : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
-                innerModel.privateLinkServiceConnectionState().status() == null
-                    ? null
-                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
-                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
-                innerModel.privateLinkServiceConnectionState().description(),
-                innerModel.privateLinkServiceConnectionState().actionRequired());
+                    innerModel.privateLinkServiceConnectionState().status() == null
+                        ? null
+                        : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                            .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                    innerModel.privateLinkServiceConnectionState().description(),
+                    innerModel.privateLinkServiceConnectionState().actionRequired());
             this.provisioningState = innerModel.provisioningState() == null
                 ? null
                 : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());

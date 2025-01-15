@@ -12,27 +12,24 @@ import com.azure.resourcemanager.kusto.models.EventGridDataFormat;
 import com.azure.resourcemanager.kusto.models.EventHubDataConnection;
 import java.time.OffsetDateTime;
 
-/** Samples for DataConnections CreateOrUpdate. */
+/**
+ * Samples for DataConnections CreateOrUpdate.
+ */
 public final class DataConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsEventGridCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoDataConnectionsEventGridCreateOrUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsEventGridCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoDataConnectionsEventGridCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
-                new EventGridDataConnection()
-                    .withLocation("westus")
+    public static void
+        kustoDataConnectionsEventGridCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.dataConnections()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest",
+                new EventGridDataConnection().withLocation("westus")
                     .withStorageAccountResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount")
                     .withEventGridResourceId(
@@ -52,24 +49,19 @@ public final class DataConnectionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCosmosDbCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoDataConnectionsCosmosDbCreateOrUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsCosmosDbCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoDataConnectionsCosmosDbCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase1",
-                "dataConnectionTest",
-                new CosmosDbDataConnection()
-                    .withLocation("westus")
+    public static void
+        kustoDataConnectionsCosmosDbCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.dataConnections()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest",
+                new CosmosDbDataConnection().withLocation("westus")
                     .withTableName("TestTable")
                     .withMappingRuleName("TestMapping")
                     .withManagedIdentityResourceId(
@@ -83,23 +75,18 @@ public final class DataConnectionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoDataConnectionsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
-                new EventHubDataConnection()
-                    .withLocation("westus")
+        manager.dataConnections()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest",
+                new EventHubDataConnection().withLocation("westus")
                     .withEventHubResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
                     .withConsumerGroup("testConsumerGroup1")

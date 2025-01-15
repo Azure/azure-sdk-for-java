@@ -32,5 +32,3 @@ abstract class IndexableImpl implements Indexable {
         return this.key();
     }
 }
-
-

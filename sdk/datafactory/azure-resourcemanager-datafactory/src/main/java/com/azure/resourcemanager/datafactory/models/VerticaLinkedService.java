@@ -6,32 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.VerticaLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Vertica linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = VerticaLinkedService.class, visible = true)
-@JsonTypeName("Vertica")
 @Fluent
 public final class VerticaLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "Vertica";
 
     /*
      * Vertica linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private VerticaLinkedServiceTypeProperties innerTypeProperties = new VerticaLinkedServiceTypeProperties();
 
     /**
@@ -57,6 +53,15 @@ public final class VerticaLinkedService extends LinkedService {
      */
     private VerticaLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VerticaLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -121,6 +126,98 @@ public final class VerticaLinkedService extends LinkedService {
     }
 
     /**
+     * Get the server property: Server name for connection. Type: string.
+     * 
+     * @return the server value.
+     */
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
+    }
+
+    /**
+     * Set the server property: Server name for connection. Type: string.
+     * 
+     * @param server the server value to set.
+     * @return the VerticaLinkedService object itself.
+     */
+    public VerticaLinkedService withServer(Object server) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new VerticaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer.
+     * 
+     * @return the port value.
+     */
+    public Object port() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().port();
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer.
+     * 
+     * @param port the port value to set.
+     * @return the VerticaLinkedService object itself.
+     */
+    public VerticaLinkedService withPort(Object port) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new VerticaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPort(port);
+        return this;
+    }
+
+    /**
+     * Get the uid property: Username for authentication. Type: string.
+     * 
+     * @return the uid value.
+     */
+    public Object uid() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().uid();
+    }
+
+    /**
+     * Set the uid property: Username for authentication. Type: string.
+     * 
+     * @param uid the uid value to set.
+     * @return the VerticaLinkedService object itself.
+     */
+    public VerticaLinkedService withUid(Object uid) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new VerticaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUid(uid);
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string.
+     * 
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string.
+     * 
+     * @param database the database value to set.
+     * @return the VerticaLinkedService object itself.
+     */
+    public VerticaLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new VerticaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
      * Get the pwd property: The Azure key vault secret reference of password in connection string.
      * 
      * @return the pwd value.
@@ -175,7 +272,6 @@ public final class VerticaLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -183,7 +279,87 @@ public final class VerticaLinkedService extends LinkedService {
         } else {
             innerTypeProperties().validate();
         }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VerticaLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VerticaLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VerticaLinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VerticaLinkedService.
+     */
+    public static VerticaLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VerticaLinkedService deserializedVerticaLinkedService = new VerticaLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedVerticaLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedVerticaLinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedVerticaLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedVerticaLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedVerticaLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedVerticaLinkedService.innerTypeProperties
+                        = VerticaLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedVerticaLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedVerticaLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedVerticaLinkedService;
+        });
+    }
 }

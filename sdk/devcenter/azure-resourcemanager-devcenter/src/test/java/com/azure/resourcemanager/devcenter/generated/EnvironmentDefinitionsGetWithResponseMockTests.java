@@ -20,7 +20,7 @@ public final class EnvironmentDefinitionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"yophz\",\"parameters\":[{\"id\":\"gcrpfbcun\",\"name\":\"zcezelfwyfwl\",\"description\":\"jwetnpsihcla\",\"type\":\"string\",\"readOnly\":true,\"required\":false}],\"templatePath\":\"rsqqwztcm\",\"validationStatus\":\"Pending\"},\"id\":\"hcxwaxfewzjk\",\"name\":\"exfdeqvhpsylk\",\"type\":\"shk\"}";
+            = "{\"properties\":{\"description\":\"vpbdbzqgq\",\"parameters\":[{\"id\":\"dsvqwt\",\"name\":\"ky\",\"description\":\"cysihs\",\"type\":\"integer\",\"readOnly\":true,\"required\":false},{\"id\":\"sdtmcdzs\",\"name\":\"cohdx\",\"description\":\"lm\",\"type\":\"object\",\"readOnly\":true,\"required\":true},{\"id\":\"dbevwqqxeysko\",\"name\":\"zinkfkbgbzbowxeq\",\"description\":\"ljmygvkzqkjjeokb\",\"type\":\"array\",\"readOnly\":true,\"required\":false},{\"id\":\"czurtlei\",\"name\":\"xbkwv\",\"description\":\"nzvdfbzdixzmq\",\"type\":\"string\",\"readOnly\":false,\"required\":true}],\"templatePath\":\"qhewj\",\"validationStatus\":\"Failed\"},\"id\":\"gsbos\",\"name\":\"zelndlatutmzlbi\",\"type\":\"jlvfhrbbpneqv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class EnvironmentDefinitionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EnvironmentDefinition response = manager.environmentDefinitions()
-            .getWithResponse("bcuiiz", "ktwfa", "snvpdibmi", "ostbzbkiwb", com.azure.core.util.Context.NONE)
+            .getWithResponse("k", "vlgo", "bmftpmdt", "fjltfvnzcyjtotp", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -90,26 +90,21 @@ public final class EncryptionProtectorImpl
     }
 
     public EncryptionProtector create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerEncryptionProtectors()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, encryptionProtectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerEncryptionProtectors()
+            .createOrUpdate(resourceGroupName, workspaceName, encryptionProtectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public EncryptionProtector create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerEncryptionProtectors()
-                .createOrUpdate(resourceGroupName, workspaceName, encryptionProtectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerEncryptionProtectors()
+            .createOrUpdate(resourceGroupName, workspaceName, encryptionProtectorName, this.innerModel(), context);
         return this;
     }
 
-    EncryptionProtectorImpl(
-        EncryptionProtectorName name, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    EncryptionProtectorImpl(EncryptionProtectorName name,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = new EncryptionProtectorInner();
         this.serviceManager = serviceManager;
         this.encryptionProtectorName = name;
@@ -120,63 +115,52 @@ public final class EncryptionProtectorImpl
     }
 
     public EncryptionProtector apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerEncryptionProtectors()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, encryptionProtectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerEncryptionProtectors()
+            .createOrUpdate(resourceGroupName, workspaceName, encryptionProtectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public EncryptionProtector apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerEncryptionProtectors()
-                .createOrUpdate(resourceGroupName, workspaceName, encryptionProtectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerEncryptionProtectors()
+            .createOrUpdate(resourceGroupName, workspaceName, encryptionProtectorName, this.innerModel(), context);
         return this;
     }
 
-    EncryptionProtectorImpl(
-        EncryptionProtectorInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    EncryptionProtectorImpl(EncryptionProtectorInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.encryptionProtectorName =
-            EncryptionProtectorName.fromString(Utils.getValueFromIdByName(innerObject.id(), "encryptionProtector"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.encryptionProtectorName = EncryptionProtectorName
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "encryptionProtector"));
     }
 
     public EncryptionProtector refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerEncryptionProtectors()
-                .getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerEncryptionProtectors()
+            .getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EncryptionProtector refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerEncryptionProtectors()
-                .getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerEncryptionProtectors()
+            .getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, context)
+            .getValue();
         return this;
     }
 
     public void revalidate() {
-        serviceManager
-            .workspaceManagedSqlServerEncryptionProtectors()
+        serviceManager.workspaceManagedSqlServerEncryptionProtectors()
             .revalidate(resourceGroupName, workspaceName, encryptionProtectorName);
     }
 
     public void revalidate(Context context) {
-        serviceManager
-            .workspaceManagedSqlServerEncryptionProtectors()
+        serviceManager.workspaceManagedSqlServerEncryptionProtectors()
             .revalidate(resourceGroupName, workspaceName, encryptionProtectorName, context);
     }
 

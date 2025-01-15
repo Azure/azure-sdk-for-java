@@ -13,32 +13,36 @@ public final class ClusterServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterServerProperties model = BinaryData.fromString(
-            "{\"fullyQualifiedDomainName\":\"cukjf\",\"role\":\"Coordinator\",\"state\":\"w\",\"haState\":\"lryplwckbasyy\",\"availabilityZone\":\"ddhsgcbacphe\",\"postgresqlVersion\":\"ot\",\"citusVersion\":\"qgoulznd\",\"serverEdition\":\"kwy\",\"storageQuotaInMb\":1581994668,\"vCores\":1308251370,\"enableHa\":false,\"enablePublicIpAccess\":true,\"isReadOnly\":false,\"administratorLogin\":\"keqsrxybzqqedq\"}")
+            "{\"fullyQualifiedDomainName\":\"zdzevndh\",\"role\":\"Worker\",\"state\":\"d\",\"haState\":\"p\",\"availabilityZone\":\"bdkvwrwjf\",\"postgresqlVersion\":\"snhu\",\"citusVersion\":\"eltmrldhugjzzdat\",\"serverEdition\":\"hocdgeab\",\"storageQuotaInMb\":950218840,\"vCores\":1780121294,\"enableHa\":true,\"enablePublicIpAccess\":false,\"isReadOnly\":true,\"administratorLogin\":\"aozwyiftyhxhu\"}")
             .toObject(ClusterServerProperties.class);
-        Assertions.assertEquals("kwy", model.serverEdition());
-        Assertions.assertEquals(1581994668, model.storageQuotaInMb());
-        Assertions.assertEquals(1308251370, model.vCores());
-        Assertions.assertEquals(false, model.enableHa());
-        Assertions.assertEquals(ServerRole.COORDINATOR, model.role());
-        Assertions.assertEquals("ddhsgcbacphe", model.availabilityZone());
-        Assertions.assertEquals("ot", model.postgresqlVersion());
-        Assertions.assertEquals("qgoulznd", model.citusVersion());
+        Assertions.assertEquals("hocdgeab", model.serverEdition());
+        Assertions.assertEquals(950218840, model.storageQuotaInMb());
+        Assertions.assertEquals(1780121294, model.vCores());
+        Assertions.assertEquals(true, model.enableHa());
+        Assertions.assertEquals(ServerRole.WORKER, model.role());
+        Assertions.assertEquals("bdkvwrwjf", model.availabilityZone());
+        Assertions.assertEquals("snhu", model.postgresqlVersion());
+        Assertions.assertEquals("eltmrldhugjzzdat", model.citusVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterServerProperties model
-            = new ClusterServerProperties().withServerEdition("kwy").withStorageQuotaInMb(1581994668)
-                .withVCores(1308251370).withEnableHa(false).withRole(ServerRole.COORDINATOR)
-                .withAvailabilityZone("ddhsgcbacphe").withPostgresqlVersion("ot").withCitusVersion("qgoulznd");
+        ClusterServerProperties model = new ClusterServerProperties().withServerEdition("hocdgeab")
+            .withStorageQuotaInMb(950218840)
+            .withVCores(1780121294)
+            .withEnableHa(true)
+            .withRole(ServerRole.WORKER)
+            .withAvailabilityZone("bdkvwrwjf")
+            .withPostgresqlVersion("snhu")
+            .withCitusVersion("eltmrldhugjzzdat");
         model = BinaryData.fromObject(model).toObject(ClusterServerProperties.class);
-        Assertions.assertEquals("kwy", model.serverEdition());
-        Assertions.assertEquals(1581994668, model.storageQuotaInMb());
-        Assertions.assertEquals(1308251370, model.vCores());
-        Assertions.assertEquals(false, model.enableHa());
-        Assertions.assertEquals(ServerRole.COORDINATOR, model.role());
-        Assertions.assertEquals("ddhsgcbacphe", model.availabilityZone());
-        Assertions.assertEquals("ot", model.postgresqlVersion());
-        Assertions.assertEquals("qgoulznd", model.citusVersion());
+        Assertions.assertEquals("hocdgeab", model.serverEdition());
+        Assertions.assertEquals(950218840, model.storageQuotaInMb());
+        Assertions.assertEquals(1780121294, model.vCores());
+        Assertions.assertEquals(true, model.enableHa());
+        Assertions.assertEquals(ServerRole.WORKER, model.role());
+        Assertions.assertEquals("bdkvwrwjf", model.availabilityZone());
+        Assertions.assertEquals("snhu", model.postgresqlVersion());
+        Assertions.assertEquals("eltmrldhugjzzdat", model.citusVersion());
     }
 }

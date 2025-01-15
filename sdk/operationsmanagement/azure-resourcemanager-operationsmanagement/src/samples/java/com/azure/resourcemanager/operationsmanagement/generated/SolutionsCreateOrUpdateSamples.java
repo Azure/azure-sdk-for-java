@@ -8,43 +8,39 @@ import com.azure.resourcemanager.operationsmanagement.models.SolutionPlan;
 import com.azure.resourcemanager.operationsmanagement.models.SolutionProperties;
 import java.util.Arrays;
 
-/** Samples for Solutions CreateOrUpdate. */
+/**
+ * Samples for Solutions CreateOrUpdate.
+ */
 public final class SolutionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/SolutionCreate.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/SolutionCreate.json
      */
     /**
      * Sample code: SolutionCreate.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionCreate(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        manager
-            .solutions()
+    public static void
+        solutionCreate(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+        manager.solutions()
             .define("solution1")
             .withRegion("East US")
             .withExistingResourceGroup("rg1")
-            .withPlan(
-                new SolutionPlan()
-                    .withName("name1")
-                    .withPublisher("publisher1")
-                    .withPromotionCode("fakeTokenPlaceholder")
-                    .withProduct("product1"))
-            .withProperties(
-                new SolutionProperties()
-                    .withWorkspaceResourceId(
-                        "/subscriptions/sub2/resourceGroups/rg2/providers/Microsoft.OperationalInsights/workspaces/ws1")
-                    .withContainedResources(
-                        Arrays
-                            .asList(
-                                "/subscriptions/sub2/resourceGroups/rg2/providers/provider1/resources/resource1",
-                                "/subscriptions/sub2/resourceGroups/rg2/providers/provider2/resources/resource2"))
-                    .withReferencedResources(
-                        Arrays
-                            .asList(
-                                "/subscriptions/sub2/resourceGroups/rg2/providers/provider1/resources/resource2",
-                                "/subscriptions/sub2/resourceGroups/rg2/providers/provider2/resources/resource3")))
+            .withPlan(new SolutionPlan().withName("name1")
+                .withPublisher("publisher1")
+                .withPromotionCode("fakeTokenPlaceholder")
+                .withProduct("product1"))
+            .withProperties(new SolutionProperties()
+                .withWorkspaceResourceId(
+                    "/subscriptions/sub2/resourceGroups/rg2/providers/Microsoft.OperationalInsights/workspaces/ws1")
+                .withContainedResources(
+                    Arrays.asList("/subscriptions/sub2/resourceGroups/rg2/providers/provider1/resources/resource1",
+                        "/subscriptions/sub2/resourceGroups/rg2/providers/provider2/resources/resource2"))
+                .withReferencedResources(
+                    Arrays.asList("/subscriptions/sub2/resourceGroups/rg2/providers/provider1/resources/resource2",
+                        "/subscriptions/sub2/resourceGroups/rg2/providers/provider2/resources/resource3")))
             .create();
     }
 }

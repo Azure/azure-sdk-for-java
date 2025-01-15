@@ -6,58 +6,57 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** AutoML vertical class. Base class for AutoML verticals - TableVertical/ImageVertical/NLPVertical. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "taskType",
-    defaultImpl = AutoMLVertical.class)
-@JsonTypeName("AutoMLVertical")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Classification", value = Classification.class),
-    @JsonSubTypes.Type(name = "Forecasting", value = Forecasting.class),
-    @JsonSubTypes.Type(name = "ImageClassification", value = ImageClassification.class),
-    @JsonSubTypes.Type(name = "ImageClassificationMultilabel", value = ImageClassificationMultilabel.class),
-    @JsonSubTypes.Type(name = "ImageInstanceSegmentation", value = ImageInstanceSegmentation.class),
-    @JsonSubTypes.Type(name = "ImageObjectDetection", value = ImageObjectDetection.class),
-    @JsonSubTypes.Type(name = "Regression", value = Regression.class),
-    @JsonSubTypes.Type(name = "TextClassification", value = TextClassification.class),
-    @JsonSubTypes.Type(name = "TextClassificationMultilabel", value = TextClassificationMultilabel.class),
-    @JsonSubTypes.Type(name = "TextNER", value = TextNer.class)
-})
+/**
+ * AutoML vertical class.
+ * Base class for AutoML verticals - TableVertical/ImageVertical/NLPVertical.
+ */
 @Fluent
-public class AutoMLVertical {
+public class AutoMLVertical implements JsonSerializable<AutoMLVertical> {
+    /*
+     * [Required] Task type for AutoMLJob.
+     */
+    private TaskType taskType = TaskType.fromString("AutoMLVertical");
+
     /*
      * Log verbosity for the job.
      */
-    @JsonProperty(value = "logVerbosity")
     private LogVerbosity logVerbosity;
+
+    /*
+     * [Required] Training data input.
+     */
+    private MLTableJobInput trainingData;
 
     /*
      * Target column name: This is prediction values column.
      * Also known as label column name in context of classification tasks.
      */
-    @JsonProperty(value = "targetColumnName")
     private String targetColumnName;
 
-    /*
-     * [Required] Training data input.
+    /**
+     * Creates an instance of AutoMLVertical class.
      */
-    @JsonProperty(value = "trainingData", required = true)
-    private MLTableJobInput trainingData;
-
-    /** Creates an instance of AutoMLVertical class. */
     public AutoMLVertical() {
     }
 
     /**
+     * Get the taskType property: [Required] Task type for AutoMLJob.
+     * 
+     * @return the taskType value.
+     */
+    public TaskType taskType() {
+        return this.taskType;
+    }
+
+    /**
      * Get the logVerbosity property: Log verbosity for the job.
-     *
+     * 
      * @return the logVerbosity value.
      */
     public LogVerbosity logVerbosity() {
@@ -66,7 +65,7 @@ public class AutoMLVertical {
 
     /**
      * Set the logVerbosity property: Log verbosity for the job.
-     *
+     * 
      * @param logVerbosity the logVerbosity value to set.
      * @return the AutoMLVertical object itself.
      */
@@ -76,30 +75,8 @@ public class AutoMLVertical {
     }
 
     /**
-     * Get the targetColumnName property: Target column name: This is prediction values column. Also known as label
-     * column name in context of classification tasks.
-     *
-     * @return the targetColumnName value.
-     */
-    public String targetColumnName() {
-        return this.targetColumnName;
-    }
-
-    /**
-     * Set the targetColumnName property: Target column name: This is prediction values column. Also known as label
-     * column name in context of classification tasks.
-     *
-     * @param targetColumnName the targetColumnName value to set.
-     * @return the AutoMLVertical object itself.
-     */
-    public AutoMLVertical withTargetColumnName(String targetColumnName) {
-        this.targetColumnName = targetColumnName;
-        return this;
-    }
-
-    /**
      * Get the trainingData property: [Required] Training data input.
-     *
+     * 
      * @return the trainingData value.
      */
     public MLTableJobInput trainingData() {
@@ -108,7 +85,7 @@ public class AutoMLVertical {
 
     /**
      * Set the trainingData property: [Required] Training data input.
-     *
+     * 
      * @param trainingData the trainingData value to set.
      * @return the AutoMLVertical object itself.
      */
@@ -118,19 +95,129 @@ public class AutoMLVertical {
     }
 
     /**
+     * Get the targetColumnName property: Target column name: This is prediction values column.
+     * Also known as label column name in context of classification tasks.
+     * 
+     * @return the targetColumnName value.
+     */
+    public String targetColumnName() {
+        return this.targetColumnName;
+    }
+
+    /**
+     * Set the targetColumnName property: Target column name: This is prediction values column.
+     * Also known as label column name in context of classification tasks.
+     * 
+     * @param targetColumnName the targetColumnName value to set.
+     * @return the AutoMLVertical object itself.
+     */
+    public AutoMLVertical withTargetColumnName(String targetColumnName) {
+        this.targetColumnName = targetColumnName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (trainingData() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property trainingData in model AutoMLVertical"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property trainingData in model AutoMLVertical"));
         } else {
             trainingData().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoMLVertical.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("trainingData", this.trainingData);
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
+        jsonWriter.writeStringField("logVerbosity", this.logVerbosity == null ? null : this.logVerbosity.toString());
+        jsonWriter.writeStringField("targetColumnName", this.targetColumnName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoMLVertical from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoMLVertical if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoMLVertical.
+     */
+    public static AutoMLVertical fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("taskType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Classification".equals(discriminatorValue)) {
+                    return Classification.fromJson(readerToUse.reset());
+                } else if ("Forecasting".equals(discriminatorValue)) {
+                    return Forecasting.fromJson(readerToUse.reset());
+                } else if ("ImageClassification".equals(discriminatorValue)) {
+                    return ImageClassification.fromJson(readerToUse.reset());
+                } else if ("ImageClassificationMultilabel".equals(discriminatorValue)) {
+                    return ImageClassificationMultilabel.fromJson(readerToUse.reset());
+                } else if ("ImageInstanceSegmentation".equals(discriminatorValue)) {
+                    return ImageInstanceSegmentation.fromJson(readerToUse.reset());
+                } else if ("ImageObjectDetection".equals(discriminatorValue)) {
+                    return ImageObjectDetection.fromJson(readerToUse.reset());
+                } else if ("Regression".equals(discriminatorValue)) {
+                    return Regression.fromJson(readerToUse.reset());
+                } else if ("TextClassification".equals(discriminatorValue)) {
+                    return TextClassification.fromJson(readerToUse.reset());
+                } else if ("TextClassificationMultilabel".equals(discriminatorValue)) {
+                    return TextClassificationMultilabel.fromJson(readerToUse.reset());
+                } else if ("TextNER".equals(discriminatorValue)) {
+                    return TextNer.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AutoMLVertical fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoMLVertical deserializedAutoMLVertical = new AutoMLVertical();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trainingData".equals(fieldName)) {
+                    deserializedAutoMLVertical.trainingData = MLTableJobInput.fromJson(reader);
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedAutoMLVertical.taskType = TaskType.fromString(reader.getString());
+                } else if ("logVerbosity".equals(fieldName)) {
+                    deserializedAutoMLVertical.logVerbosity = LogVerbosity.fromString(reader.getString());
+                } else if ("targetColumnName".equals(fieldName)) {
+                    deserializedAutoMLVertical.targetColumnName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoMLVertical;
+        });
+    }
 }

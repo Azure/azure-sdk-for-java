@@ -21,8 +21,8 @@ public interface ServiceTopologies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the service topology along with {@link Response}.
      */
-    Response<ServiceTopologyResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String serviceTopologyName, Context context);
+    Response<ServiceTopologyResource> getByResourceGroupWithResponse(String resourceGroupName,
+        String serviceTopologyName, Context context);
 
     /**
      * Gets the service topology.
@@ -47,8 +47,8 @@ public interface ServiceTopologies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String serviceTopologyName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String serviceTopologyName,
+        Context context);
 
     /**
      * Deletes the service topology.

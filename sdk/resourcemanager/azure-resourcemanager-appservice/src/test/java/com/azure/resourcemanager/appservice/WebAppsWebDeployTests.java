@@ -39,16 +39,14 @@ public class WebAppsWebDeployTests extends AppServiceTest {
     @Test
     public void canDeployWarFile() throws Exception {
         // Create with new app service plan
-        WebApp webApp1 =
-            appServiceManager
-                .webApps()
-                .define(webappName1)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName1)
-                .withNewWindowsPlan(PricingTier.BASIC_B1)
-                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                .create();
+        WebApp webApp1 = appServiceManager.webApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName1)
+            .withNewWindowsPlan(PricingTier.BASIC_B1)
+            .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+            .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+            .create();
         Assertions.assertNotNull(webApp1);
         Assertions.assertEquals(Region.US_WEST, webApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
@@ -56,13 +54,11 @@ public class WebAppsWebDeployTests extends AppServiceTest {
         Assertions.assertEquals(Region.US_WEST, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
-        WebDeployment deployment =
-            webApp1
-                .deploy()
-                .withPackageUri(
-                    "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/webapps.zip")
-                .withExistingDeploymentsDeleted(true)
-                .execute();
+        WebDeployment deployment = webApp1.deploy()
+            .withPackageUri(
+                "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/webapps.zip")
+            .withExistingDeploymentsDeleted(true)
+            .execute();
 
         Assertions.assertNotNull(deployment);
         if (!isPlaybackMode()) {

@@ -80,8 +80,10 @@ public interface NetworkSecurityPerimeterConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of network security perimeter configurations.
      */
-    void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName);
+    NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(String resourceGroupName,
+        String scopeName, String perimeterName);
 
     /**
      * Forces the network security perimeter configuration to refresh for a private link scope.
@@ -94,7 +96,8 @@ public interface NetworkSecurityPerimeterConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of network security perimeter configurations.
      */
-    void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName,
-        Context context);
+    NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(String resourceGroupName,
+        String scopeName, String perimeterName, Context context);
 }

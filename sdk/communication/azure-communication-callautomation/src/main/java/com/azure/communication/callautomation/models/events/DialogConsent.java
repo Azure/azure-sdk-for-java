@@ -37,7 +37,8 @@ public final class DialogConsent extends CallAutomationEventBase {
     private String dialogId;
 
     /** Creates an instance of DialogConsent class. */
-    public DialogConsent() {}
+    public DialogConsent() {
+    }
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceMetricsListInner;
 import java.util.List;
 
-/** An immutable client-side representation of ThreatIntelligenceMetricsList. */
+/**
+ * An immutable client-side representation of ThreatIntelligenceMetricsList.
+ */
 public interface ThreatIntelligenceMetricsList {
     /**
      * Gets the value property: Array of threat intelligence metric fields (type/threat type/source).
-     *
+     * 
      * @return the value value.
      */
     List<ThreatIntelligenceMetrics> value();
@@ -19,7 +21,7 @@ public interface ThreatIntelligenceMetricsList {
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceMetricsListInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ThreatIntelligenceMetricsListInner innerModel();

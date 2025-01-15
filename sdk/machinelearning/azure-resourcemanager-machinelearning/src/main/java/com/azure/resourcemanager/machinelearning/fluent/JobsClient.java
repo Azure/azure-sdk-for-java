@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.machinelearning.fluent.models.JobBaseInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
-/** An instance of this class provides access to all the operations defined in JobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobsClient.
+ */
 public interface JobsClient {
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,13 +33,15 @@ public interface JobsClient {
 
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
      * @param jobType Type of job to be returned.
      * @param tag Jobs returned will have this tag key.
      * @param listViewType View type for including/excluding (for example) archived entities.
+     * @param properties Comma-separated list of user property names (and optionally values). Example:
+     * prop1,prop2=value2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,18 +49,12 @@ public interface JobsClient {
      * @return a paginated list of JobBase entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobBaseInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String jobType,
-        String tag,
-        ListViewType listViewType,
-        Context context);
+    PagedIterable<JobBaseInner> list(String resourceGroupName, String workspaceName, String skip, String jobType,
+        String tag, ListViewType listViewType, String properties, Context context);
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -70,7 +68,7 @@ public interface JobsClient {
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -81,12 +79,12 @@ public interface JobsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String id, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String id,
+        Context context);
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -99,7 +97,7 @@ public interface JobsClient {
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -113,7 +111,7 @@ public interface JobsClient {
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -128,7 +126,7 @@ public interface JobsClient {
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -142,7 +140,8 @@ public interface JobsClient {
 
     /**
      * Creates and executes a Job.
-     *
+     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -154,12 +153,13 @@ public interface JobsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobBaseInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String id, JobBaseInner body, Context context);
+    Response<JobBaseInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String id,
+        JobBaseInner body, Context context);
 
     /**
      * Creates and executes a Job.
-     *
+     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -174,7 +174,7 @@ public interface JobsClient {
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -188,7 +188,7 @@ public interface JobsClient {
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -199,12 +199,12 @@ public interface JobsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancel(
-        String resourceGroupName, String workspaceName, String id, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String workspaceName, String id,
+        Context context);
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -217,7 +217,7 @@ public interface JobsClient {
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.

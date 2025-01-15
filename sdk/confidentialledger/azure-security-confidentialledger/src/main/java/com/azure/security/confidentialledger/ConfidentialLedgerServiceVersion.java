@@ -6,9 +6,13 @@ package com.azure.security.confidentialledger;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of ConfidentialLedgerClient. */
+/**
+ * Service version of ConfidentialLedgerClient.
+ */
 public enum ConfidentialLedgerServiceVersion implements ServiceVersion {
-    /** Enum value 2022-05-13. */
+    /**
+     * Enum value 2022-05-13.
+     */
     V2022_05_13("2022-05-13");
 
     private final String version;
@@ -17,6 +21,9 @@ public enum ConfidentialLedgerServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -24,7 +31,7 @@ public enum ConfidentialLedgerServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link ConfidentialLedgerServiceVersion}.
      */
     public static ConfidentialLedgerServiceVersion getLatest() {

@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class OrchestratorIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrchestratorIdentity model =
-            BinaryData
-                .fromString("{\"principalId\":\"lssai\",\"tenantId\":\"p\",\"type\":\"SystemAssigned\"}")
+        OrchestratorIdentity model
+            = BinaryData.fromString("{\"principalId\":\"lssai\",\"tenantId\":\"p\",\"type\":\"SystemAssigned\"}")
                 .toObject(OrchestratorIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

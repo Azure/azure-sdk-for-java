@@ -5,21 +5,22 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * Billing currency
- *
- * <p>Three lettered code specifying the currency of the VM price. Example: USD.
+ * 
+ * Three lettered code specifying the currency of the VM price. Example: USD.
  */
 public final class BillingCurrency extends ExpandableStringEnum<BillingCurrency> {
-    /** Static value USD for BillingCurrency. */
+    /**
+     * Static value USD for BillingCurrency.
+     */
     public static final BillingCurrency USD = fromString("USD");
 
     /**
      * Creates a new instance of BillingCurrency value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +29,17 @@ public final class BillingCurrency extends ExpandableStringEnum<BillingCurrency>
 
     /**
      * Creates or finds a BillingCurrency from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingCurrency.
      */
-    @JsonCreator
     public static BillingCurrency fromString(String name) {
         return fromString(name, BillingCurrency.class);
     }
 
     /**
      * Gets known BillingCurrency values.
-     *
+     * 
      * @return known BillingCurrency values.
      */
     public static Collection<BillingCurrency> values() {

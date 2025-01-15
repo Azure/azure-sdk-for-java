@@ -25,18 +25,14 @@ public final class RemoteRenderingServiceError {
      * @param innerError An object containing more specific information than the current object about the error.
      * @param rootErrors The list of errors that led to this reported error.
      */
-    public RemoteRenderingServiceError(String code,
-                                       String message,
-                                       String target,
-                                       RemoteRenderingServiceError innerError,
-                                       List<RemoteRenderingServiceError> rootErrors) {
+    public RemoteRenderingServiceError(String code, String message, String target,
+        RemoteRenderingServiceError innerError, List<RemoteRenderingServiceError> rootErrors) {
         this.code = code;
         this.message = message;
         this.target = target;
         this.innerError = innerError;
         this.rootErrors = rootErrors;
     }
-
 
     /**
      * Get the code property: Error code.

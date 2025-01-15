@@ -25,7 +25,8 @@ public final class NetworkFunctionsUpdateTagsSamples {
     public static void
         updateTagsForNetworkFunctionResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
         NetworkFunction resource = manager.networkFunctions()
-            .getByResourceGroupWithResponse("rg", "testNf", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rg", "testNf", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

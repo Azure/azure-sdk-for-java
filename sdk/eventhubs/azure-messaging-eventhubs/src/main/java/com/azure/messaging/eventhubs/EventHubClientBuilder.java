@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -202,15 +203,17 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNE
  * @see EventHubConsumerAsyncClient
  * @see EventHubConsumerClient
  */
-@ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
-    EventHubConsumerAsyncClient.class, EventHubConsumerClient.class}, protocol = ServiceClientProtocol.AMQP)
-public class EventHubClientBuilder implements
-    TokenCredentialTrait<EventHubClientBuilder>,
-    AzureNamedKeyCredentialTrait<EventHubClientBuilder>,
-    ConnectionStringTrait<EventHubClientBuilder>,
-    AzureSasCredentialTrait<EventHubClientBuilder>,
-    AmqpTrait<EventHubClientBuilder>,
-    ConfigurationTrait<EventHubClientBuilder> {
+@ServiceClientBuilder(
+    serviceClients = {
+        EventHubProducerAsyncClient.class,
+        EventHubProducerClient.class,
+        EventHubConsumerAsyncClient.class,
+        EventHubConsumerClient.class },
+    protocol = ServiceClientProtocol.AMQP)
+public class EventHubClientBuilder
+    implements TokenCredentialTrait<EventHubClientBuilder>, AzureNamedKeyCredentialTrait<EventHubClientBuilder>,
+    ConnectionStringTrait<EventHubClientBuilder>, AzureSasCredentialTrait<EventHubClientBuilder>,
+    AmqpTrait<EventHubClientBuilder>, ConfigurationTrait<EventHubClientBuilder> {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
@@ -219,8 +222,8 @@ public class EventHubClientBuilder implements
     // So, limit the prefetch to just 1 by default.
     static final int DEFAULT_PREFETCH_COUNT_FOR_SYNC_CLIENT = 1;
 
-    static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
-        .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
+    static final AmqpRetryOptions DEFAULT_RETRY
+        = new AmqpRetryOptions().setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
     /**
      * The name of the default consumer group in the Event Hubs service.
@@ -257,7 +260,7 @@ public class EventHubClientBuilder implements
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
-    private EventHubConnectionProcessor eventHubConnectionProcessor;
+    private ConnectionCacheWrapper eventHubConnectionProcessor;
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
@@ -275,6 +278,7 @@ public class EventHubClientBuilder implements
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
      */
     private final AtomicInteger openClients = new AtomicInteger();
+    private final V2StackSupport v2StackSupport = new V2StackSupport(LOGGER);
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP} and a non-shared connection. A
@@ -387,8 +391,8 @@ public class EventHubClientBuilder implements
         Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
         if (connectionString.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'connectionString' cannot be an empty string."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'connectionString' cannot be an empty string."));
         } else if (eventHubName.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
@@ -452,8 +456,8 @@ public class EventHubClientBuilder implements
         try {
             this.customEndpointAddress = new URI(customEndpointAddress);
         } catch (URISyntaxException e) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException(customEndpointAddress + " : is not a valid URL.", e));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(customEndpointAddress + " : is not a valid URL.", e));
         }
 
         return this;
@@ -477,8 +481,8 @@ public class EventHubClientBuilder implements
      * @throws NullPointerException if {@code fullyQualifiedNamespace} is null.
      */
     public EventHubClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
@@ -497,7 +501,7 @@ public class EventHubClientBuilder implements
      * Sets the name of the Event Hub to connect the client to.
      *
      * @param eventHubName The name of the Event Hub to connect the client to.
-
+    
      * @return The updated {@link EventHubClientBuilder} object.
      * @throws IllegalArgumentException if {@code eventHubName} is an empty string.
      * @throws NullPointerException if {@code eventHubName} is null.
@@ -546,8 +550,8 @@ public class EventHubClientBuilder implements
      */
     public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         TokenCredential credential) {
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
@@ -594,10 +598,10 @@ public class EventHubClientBuilder implements
      *     null.
      */
     public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
-                                            AzureNamedKeyCredential credential) {
+        AzureNamedKeyCredential credential) {
 
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
@@ -648,10 +652,10 @@ public class EventHubClientBuilder implements
      *     null.
      */
     public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
-                                            AzureSasCredential credential) {
+        AzureSasCredential credential) {
 
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
@@ -984,16 +988,22 @@ public class EventHubClientBuilder implements
             prefetchCount = DEFAULT_PREFETCH_COUNT;
         }
 
-        final Meter meter = MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
-            clientOptions == null ? null : clientOptions.getMetricsOptions());
-
+        final Meter meter = createMeter();
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final EventHubConnectionProcessor processor;
+        final ConnectionCacheWrapper processor;
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
                 if (eventHubConnectionProcessor == null) {
-                    eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer, meter);
+                    if (v2StackSupport.isV2StackEnabled(configuration)) {
+                        final boolean useSessionChannelCache
+                            = v2StackSupport.isSessionChannelCacheEnabled(configuration);
+                        eventHubConnectionProcessor = new ConnectionCacheWrapper(
+                            buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
+                    } else {
+                        eventHubConnectionProcessor
+                            = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+                    }
                 }
             }
 
@@ -1002,19 +1012,27 @@ public class EventHubClientBuilder implements
             final int numberOfOpenClients = openClients.incrementAndGet();
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
-            processor = buildConnectionProcessor(messageSerializer, meter);
+            if (v2StackSupport.isV2StackEnabled(configuration)) {
+                final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
+                processor = new ConnectionCacheWrapper(
+                    buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
+            } else {
+                processor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+            }
         }
 
         String identifier;
         if (clientOptions instanceof AmqpClientOptions) {
             String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
-            identifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            identifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier)
+                ? UUID.randomUUID().toString()
+                : clientOptionIdentifier;
         } else {
             identifier = UUID.randomUUID().toString();
         }
 
-        return new EventHubAsyncClient(processor, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose, identifier, meter, createTracer());
+        return new EventHubAsyncClient(processor, messageSerializer, scheduler, isSharedConnection.get(),
+            this::onClientClose, identifier, meter, createTracer());
     }
 
     /**
@@ -1075,15 +1093,23 @@ public class EventHubClientBuilder implements
     }
 
     Tracer createTracer() {
-        return TracerProvider.getDefaultProvider().createTracer(LIBRARY_NAME, LIBRARY_VERSION,
-            AZ_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
+        return TracerProvider.getDefaultProvider()
+            .createTracer(LIBRARY_NAME, LIBRARY_VERSION, AZ_NAMESPACE_VALUE,
+                clientOptions == null ? null : clientOptions.getTracingOptions());
+    }
+
+    Meter createMeter() {
+        return MeterProvider.getDefaultProvider()
+            .createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+                clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Supplier<String> getEventHubName = () -> {
             if (CoreUtils.isNullOrEmpty(eventHubName)) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
             }
             return eventHubName;
         };
@@ -1100,20 +1126,18 @@ public class EventHubClientBuilder implements
                 }
 
                 final String connectionId = StringUtil.getRandomString("MF");
-                LOGGER.atInfo()
-                    .addKeyValue(CONNECTION_ID_KEY, connectionId)
-                    .log("Emitting a single connection.");
+                LOGGER.atInfo().addKeyValue(CONNECTION_ID_KEY, connectionId).log("Emitting a single connection.");
 
-                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                    connectionOptions.getAuthorizationScope());
+                final TokenManagerProvider tokenManagerProvider
+                    = new AzureTokenManagerProvider(connectionOptions.getAuthorizationType(),
+                        connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getAuthorizationScope());
                 final ReactorProvider provider = new ReactorProvider();
                 final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
                 final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
-                final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, getEventHubName.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
-                    messageSerializer);
+                final EventHubAmqpConnection connection
+                    = new EventHubReactorAmqpConnection(connectionId, connectionOptions, getEventHubName.get(),
+                        provider, handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, false);
 
                 sink.next(connection);
             });
@@ -1123,10 +1147,23 @@ public class EventHubClientBuilder implements
             connectionOptions.getFullyQualifiedNamespace(), getEventHubName.get(), connectionOptions.getRetry()));
     }
 
+    private ReactorConnectionCache<EventHubReactorAmqpConnection>
+        buildConnectionCache(MessageSerializer messageSerializer, Meter meter, boolean useSessionChannelCache) {
+        final ConnectionOptions connectionOptions = getConnectionOptions();
+        final Supplier<String> getEventHubName = () -> {
+            if (CoreUtils.isNullOrEmpty(eventHubName)) {
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+            }
+            return eventHubName;
+        };
+        return v2StackSupport.createConnectionCache(connectionOptions, getEventHubName, messageSerializer, meter,
+            useSessionChannelCache);
+    }
+
     ConnectionOptions getConnectionOptions() {
-        Configuration buildConfiguration = configuration == null
-                ? Configuration.getGlobalConfiguration().clone()
-                : configuration;
+        Configuration buildConfiguration
+            = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         if (credentials == null) {
             final String connectionString = buildConfiguration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
@@ -1147,10 +1184,11 @@ public class EventHubClientBuilder implements
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
         // is not AMQP_WEB_SOCKETS.
-        if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
+        if (proxyOptions != null
+            && proxyOptions.isProxyAddressConfigured()
             && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Cannot use a proxy when TransportType is not AMQP Web Sockets. "
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Cannot use a proxy when TransportType is not AMQP Web Sockets. "
                     + "Use the setter 'transportType(AmqpTransportType.AMQP_WEB_SOCKETS)' to enable Web Sockets mode."));
         }
 
@@ -1163,12 +1201,10 @@ public class EventHubClientBuilder implements
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        SslDomain.VerifyMode verificationMode = verifyMode != null
-            ? verifyMode
-            : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+        SslDomain.VerifyMode verificationMode = verifyMode != null ? verifyMode : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
-        final boolean usingDevelopmentEmulator = connectionStringProperties != null
-            && connectionStringProperties.useDevelopmentEmulator();
+        final boolean usingDevelopmentEmulator
+            = connectionStringProperties != null && connectionStringProperties.useDevelopmentEmulator();
 
         if (usingDevelopmentEmulator) {
             verificationMode = SslDomain.VerifyMode.ANONYMOUS_PEER;
@@ -1196,8 +1232,8 @@ public class EventHubClientBuilder implements
         final boolean enableSsl = !usingDevelopmentEmulator;
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
-            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-            options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, portToUse, enableSsl);
+            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler, options,
+            verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, portToUse, enableSsl);
     }
 
     private static int getPort(AmqpTransportType transport, boolean useDevelopmentEmulator) {

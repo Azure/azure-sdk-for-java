@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Resource collection API of SourceControlSyncJobStreams. */
+/**
+ * Resource collection API of SourceControlSyncJobStreams.
+ */
 public interface SourceControlSyncJobStreams {
     /**
      * Retrieve a list of sync job streams identified by sync job id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -22,14 +24,14 @@ public interface SourceControlSyncJobStreams {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list source control sync job streams operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
-    PagedIterable<SourceControlSyncJobStream> listBySyncJob(
-        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId);
+    PagedIterable<SourceControlSyncJobStream> listBySyncJob(String resourceGroupName, String automationAccountName,
+        String sourceControlName, UUID sourceControlSyncJobId);
 
     /**
      * Retrieve a list of sync job streams identified by sync job id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -40,39 +42,14 @@ public interface SourceControlSyncJobStreams {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list source control sync job streams operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
-    PagedIterable<SourceControlSyncJobStream> listBySyncJob(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        String filter,
-        Context context);
+    PagedIterable<SourceControlSyncJobStream> listBySyncJob(String resourceGroupName, String automationAccountName,
+        String sourceControlName, UUID sourceControlSyncJobId, String filter, Context context);
 
     /**
      * Retrieve a sync job stream identified by stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param sourceControlSyncJobId The source control sync job id.
-     * @param streamId The id of the sync job stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job stream by id.
-     */
-    SourceControlSyncJobStreamById get(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        String streamId);
-
-    /**
-     * Retrieve a sync job stream identified by stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -84,11 +61,22 @@ public interface SourceControlSyncJobStreams {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the source control sync job stream by id along with {@link Response}.
      */
-    Response<SourceControlSyncJobStreamById> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        String streamId,
-        Context context);
+    Response<SourceControlSyncJobStreamById> getWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, UUID sourceControlSyncJobId, String streamId, Context context);
+
+    /**
+     * Retrieve a sync job stream identified by stream id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param sourceControlSyncJobId The source control sync job id.
+     * @param streamId The id of the sync job stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control sync job stream by id.
+     */
+    SourceControlSyncJobStreamById get(String resourceGroupName, String automationAccountName, String sourceControlName,
+        UUID sourceControlSyncJobId, String streamId);
 }

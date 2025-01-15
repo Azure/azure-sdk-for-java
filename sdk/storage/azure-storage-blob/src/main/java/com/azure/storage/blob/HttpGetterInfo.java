@@ -15,12 +15,18 @@ import java.time.Duration;
  */
 public final class HttpGetterInfo {
     private long offset = 0;
-
     private Long count = null;
-
     private String eTag = null;
 
     /**
+     * Creates a new instance of {@link HttpGetterInfo}.
+     */
+    public HttpGetterInfo() {
+    }
+
+    /**
+     * Gets the start offset that is used when creating the Range header. If unchanged this will default to 0.
+     *
      * @return the start offset used when creating the Range header. Defaults to 0.
      */
     public long getOffset() {
@@ -39,16 +45,19 @@ public final class HttpGetterInfo {
     }
 
     /**
-     * @return the count of bytes used to calculate the end offset when creating the Range header. {@code} null is the
-     * default and indicates that the entire rest of the blob should be retrieved.
+     * Gets the count of bytes used to calculate the end offset when creating the Range header. null is the default and
+     * indicates that the entire rest of the blob should be retrieved.
+     *
+     * @return the count of bytes used to calculate the end offset when creating the Range header. null is the default
+     * and indicates that the entire rest of the blob should be retrieved.
      */
     public Long getCount() {
         return count;
     }
 
     /**
-     * Sets the count of bytes used to calculate the end offset when creating the Range header. {@code} null is the
-     * default and indicates that the entire rest of the blob should be retrieved.
+     * Sets the count of bytes used to calculate the end offset when creating the Range header. null is the default and
+     * indicates that the entire rest of the blob should be retrieved.
      *
      * @param count Count of bytes
      * @return the updated HttpGetterInfo object
@@ -62,9 +71,15 @@ public final class HttpGetterInfo {
     }
 
     /**
+     * Gets the eTag used when creating If-Match header. eTag is returned with any operation that modifies the resource
+     * and when retrieving
+     * {@link BlobClient#getPropertiesWithResponse(BlobRequestConditions, Duration, Context) properties}. Defaults to
+     * null.
+     *
      * @return the eTag used when creating If-Match header. eTag is returned with any operation that modifies the
-     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobRequestConditions, Duration,
-     * Context) properties}. Defaults to null.
+     * resource and when retrieving
+     * {@link BlobClient#getPropertiesWithResponse(BlobRequestConditions, Duration, Context) properties}. Defaults to
+     * null.
      */
     public String getETag() {
         return eTag;
@@ -72,8 +87,9 @@ public final class HttpGetterInfo {
 
     /**
      * Sets the eTag used when creating If-Match header. eTag is returned with any operation that modifies the resource
-     * and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobRequestConditions, Duration, Context)
-     * properties}. Defaults to null.
+     * and when retrieving
+     * {@link BlobClient#getPropertiesWithResponse(BlobRequestConditions, Duration, Context) properties}. Defaults to
+     * null.
      *
      * @param eTag Resource's eTag
      * @return the updated HttpGetterInfo object

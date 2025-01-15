@@ -23,9 +23,11 @@ public final class IdentityProviderInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProviderInput model
-            = new IdentityProviderInput().withTenantId("lqxihhrmooiz").withApplicationId("seypxiutcxapz")
-                .withObjectId("y").withAudience("petogebjox").withAadAuthority("lhvnhlab");
+        IdentityProviderInput model = new IdentityProviderInput().withTenantId("lqxihhrmooiz")
+            .withApplicationId("seypxiutcxapz")
+            .withObjectId("y")
+            .withAudience("petogebjox")
+            .withAadAuthority("lhvnhlab");
         model = BinaryData.fromObject(model).toObject(IdentityProviderInput.class);
         Assertions.assertEquals("lqxihhrmooiz", model.tenantId());
         Assertions.assertEquals("seypxiutcxapz", model.applicationId());

@@ -12,15 +12,15 @@ public final class ServerConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerConfigurationInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"zafb\",\"source\":\"j\",\"description\":\"btoqcjmkljavbqid\",\"defaultValue\":\"ajzyul\",\"dataType\":\"Boolean\",\"allowedValues\":\"jkrlkhbzhfepg\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"locx\",\"name\":\"c\",\"type\":\"aierhhb\"}")
+            "{\"properties\":{\"value\":\"dwzjeiach\",\"source\":\"osfln\",\"description\":\"sfqpteehz\",\"defaultValue\":\"ypyqrimzinp\",\"dataType\":\"Boolean\",\"allowedValues\":\"dkirsoodqxhcr\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"ckwhds\",\"name\":\"ifiyipjxsqwpgrj\",\"type\":\"znorcj\"}")
             .toObject(ServerConfigurationInner.class);
-        Assertions.assertEquals("zafb", model.value());
+        Assertions.assertEquals("dwzjeiach", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerConfigurationInner model = new ServerConfigurationInner().withValue("zafb");
+        ServerConfigurationInner model = new ServerConfigurationInner().withValue("dwzjeiach");
         model = BinaryData.fromObject(model).toObject(ServerConfigurationInner.class);
-        Assertions.assertEquals("zafb", model.value());
+        Assertions.assertEquals("dwzjeiach", model.value());
     }
 }

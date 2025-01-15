@@ -12,36 +12,33 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountSchemaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountSchemaProperties model =
-            BinaryData
-                .fromString(
-                    "{\"schemaType\":\"Xml\",\"targetNamespace\":\"j\",\"documentName\":\"nlfzxiavrmbz\",\"fileName\":\"okixrjqcir\",\"createdTime\":\"2021-02-12T14:44:45Z\",\"changedTime\":\"2021-01-31T15:02:11Z\",\"metadata\":\"dataazszrnwoiindfpw\",\"content\":\"ylwbtlhflsjcdhsz\",\"contentType\":\"vfbgofeljagrqmqh\",\"contentLink\":{\"uri\":\"riiiojnalghfkv\",\"contentVersion\":\"sexso\",\"contentSize\":1864806181782385356,\"contentHash\":{\"algorithm\":\"hhahhxvrhmzkwpjg\",\"value\":\"spughftqsxhq\"},\"metadata\":\"dataj\"}}")
-                .toObject(IntegrationAccountSchemaProperties.class);
+        IntegrationAccountSchemaProperties model = BinaryData.fromString(
+            "{\"schemaType\":\"Xml\",\"targetNamespace\":\"ypxiutcxap\",\"documentName\":\"y\",\"fileName\":\"etoge\",\"createdTime\":\"2021-06-21T12:50:27Z\",\"changedTime\":\"2021-04-27T17:13:09Z\",\"metadata\":\"datahvnh\",\"content\":\"brqnkkzjcjb\",\"contentType\":\"gaehvvibrxjjst\",\"contentLink\":{\"uri\":\"eitpkxztmo\",\"contentVersion\":\"klf\",\"contentSize\":9186423365086285286,\"contentHash\":{\"algorithm\":\"wqmpimaqxzhemjyh\",\"value\":\"uj\"},\"metadata\":\"datat\"}}")
+            .toObject(IntegrationAccountSchemaProperties.class);
         Assertions.assertEquals(SchemaType.XML, model.schemaType());
-        Assertions.assertEquals("j", model.targetNamespace());
-        Assertions.assertEquals("nlfzxiavrmbz", model.documentName());
-        Assertions.assertEquals("okixrjqcir", model.fileName());
-        Assertions.assertEquals("ylwbtlhflsjcdhsz", model.content());
-        Assertions.assertEquals("vfbgofeljagrqmqh", model.contentType());
+        Assertions.assertEquals("ypxiutcxap", model.targetNamespace());
+        Assertions.assertEquals("y", model.documentName());
+        Assertions.assertEquals("etoge", model.fileName());
+        Assertions.assertEquals("brqnkkzjcjb", model.content());
+        Assertions.assertEquals("gaehvvibrxjjst", model.contentType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountSchemaProperties model =
-            new IntegrationAccountSchemaProperties()
-                .withSchemaType(SchemaType.XML)
-                .withTargetNamespace("j")
-                .withDocumentName("nlfzxiavrmbz")
-                .withFileName("okixrjqcir")
-                .withMetadata("dataazszrnwoiindfpw")
-                .withContent("ylwbtlhflsjcdhsz")
-                .withContentType("vfbgofeljagrqmqh");
+        IntegrationAccountSchemaProperties model
+            = new IntegrationAccountSchemaProperties().withSchemaType(SchemaType.XML)
+                .withTargetNamespace("ypxiutcxap")
+                .withDocumentName("y")
+                .withFileName("etoge")
+                .withMetadata("datahvnh")
+                .withContent("brqnkkzjcjb")
+                .withContentType("gaehvvibrxjjst");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountSchemaProperties.class);
         Assertions.assertEquals(SchemaType.XML, model.schemaType());
-        Assertions.assertEquals("j", model.targetNamespace());
-        Assertions.assertEquals("nlfzxiavrmbz", model.documentName());
-        Assertions.assertEquals("okixrjqcir", model.fileName());
-        Assertions.assertEquals("ylwbtlhflsjcdhsz", model.content());
-        Assertions.assertEquals("vfbgofeljagrqmqh", model.contentType());
+        Assertions.assertEquals("ypxiutcxap", model.targetNamespace());
+        Assertions.assertEquals("y", model.documentName());
+        Assertions.assertEquals("etoge", model.fileName());
+        Assertions.assertEquals("brqnkkzjcjb", model.content());
+        Assertions.assertEquals("gaehvvibrxjjst", model.contentType());
     }
 }

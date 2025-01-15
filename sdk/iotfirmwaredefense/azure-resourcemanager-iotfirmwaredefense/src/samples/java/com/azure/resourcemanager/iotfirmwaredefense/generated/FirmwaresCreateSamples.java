@@ -23,10 +23,18 @@ public final class FirmwaresCreateSamples {
      */
     public static void
         firmwaresCreateMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().define("umrkdttp").withExistingWorkspace("rgworkspaces-firmwares", "A7")
-            .withFileName("wresexxulcdsdd").withVendor("vycmdhgtmepcptyoubztiuudpkcpd").withModel("f").withVersion("s")
-            .withDescription("uz").withFileSize(17L).withStatus(Status.PENDING)
-            .withStatusMessages(Arrays.asList(new StatusMessage().withMessage("ulvhmhokezathzzauiitu"))).create();
+        manager.firmwares()
+            .define("umrkdttp")
+            .withExistingWorkspace("rgworkspaces-firmwares", "A7")
+            .withFileName("wresexxulcdsdd")
+            .withVendor("vycmdhgtmepcptyoubztiuudpkcpd")
+            .withModel("f")
+            .withVersion("s")
+            .withDescription("uz")
+            .withFileSize(17L)
+            .withStatus(Status.PENDING)
+            .withStatusMessages(Arrays.asList(new StatusMessage().withMessage("ulvhmhokezathzzauiitu")))
+            .create();
     }
 
     /*

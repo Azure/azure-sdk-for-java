@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateDataLakeStorePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateDataLakeStoreProperties model =
-            BinaryData.fromString("{\"suffix\":\"enhwlrs\"}").toObject(UpdateDataLakeStoreProperties.class);
-        Assertions.assertEquals("enhwlrs", model.suffix());
+        UpdateDataLakeStoreProperties model
+            = BinaryData.fromString("{\"suffix\":\"tki\"}").toObject(UpdateDataLakeStoreProperties.class);
+        Assertions.assertEquals("tki", model.suffix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateDataLakeStoreProperties model = new UpdateDataLakeStoreProperties().withSuffix("enhwlrs");
+        UpdateDataLakeStoreProperties model = new UpdateDataLakeStoreProperties().withSuffix("tki");
         model = BinaryData.fromObject(model).toObject(UpdateDataLakeStoreProperties.class);
-        Assertions.assertEquals("enhwlrs", model.suffix());
+        Assertions.assertEquals("tki", model.suffix());
     }
 }
