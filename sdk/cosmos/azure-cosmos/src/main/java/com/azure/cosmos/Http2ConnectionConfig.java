@@ -114,7 +114,7 @@ public class Http2ConnectionConfig {
     }
 
     @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String toDiagnosticsString() {
+    String toDiagnosticsString() {
         return String.format("(enabled:%s, maxc:%s, minc:%s, maxs:%s)",
             isEnabled(),
             maxConnectionPoolSize,
