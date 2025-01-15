@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0 (2025-01-15)
 
 #### Features Added
 - Support cache for token credential object. [#39393](https://github.com/Azure/azure-sdk-for-java/issues/39393).
@@ -8,9 +8,8 @@
 #### Bugs Fixed
 - Fix the issue where the token acquisition timeout is not set via the property `azure.accessTokenTimeoutInSeconds`. [#43512](https://github.com/Azure/azure-sdk-for-java/issues/43512).
 
-### Other Changes
-
 #### Dependency Updates
+- Upgraded `azure-identity` from `1.14.2` to version `1.15.0`.
 
 ## 1.1.22 (2024-12-04)
 
@@ -196,14 +195,6 @@
 ### Others
 
 - Improve the performance of DefaultTokenCredentialProvider's `get()` method.
-
-## 1.2.0-beta.1 (2023-02-04)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `mysql-connector-j` from `8.0.33` to version `9.0.0`.
 
 ## 1.2.0-beta.1 (2023-02-06)
 
