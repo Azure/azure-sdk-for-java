@@ -44,7 +44,6 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpLinkProvider;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
@@ -478,7 +477,6 @@ public final class ServiceBusClientBuilder
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private ClientOptions clientOptions;
     private Configuration configuration;
-    private ServiceBusConnectionProcessor sharedConnection;
     private ConnectionStringProperties connectionStringProperties;
     private String connectionStringEntityName;
     private TokenCredential credentials;
