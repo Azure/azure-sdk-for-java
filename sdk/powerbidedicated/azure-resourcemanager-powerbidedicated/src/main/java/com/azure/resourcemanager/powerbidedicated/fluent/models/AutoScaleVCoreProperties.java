@@ -5,33 +5,38 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.powerbidedicated.models.VCoreProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of an auto scale v-core resource. */
+/**
+ * Properties of an auto scale v-core resource.
+ */
 @Fluent
 public final class AutoScaleVCoreProperties extends AutoScaleVCoreMutableProperties {
     /*
      * The object ID of the capacity resource associated with the auto scale v-core resource.
      */
-    @JsonProperty(value = "capacityObjectId")
     private String capacityObjectId;
 
     /*
      * The current deployment state of an auto scale v-core resource. The provisioningState is to indicate states for
      * resource provisioning.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private VCoreProvisioningState provisioningState;
 
-    /** Creates an instance of AutoScaleVCoreProperties class. */
+    /**
+     * Creates an instance of AutoScaleVCoreProperties class.
+     */
     public AutoScaleVCoreProperties() {
     }
 
     /**
      * Get the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
      * resource.
-     *
+     * 
      * @return the capacityObjectId value.
      */
     public String capacityObjectId() {
@@ -41,7 +46,7 @@ public final class AutoScaleVCoreProperties extends AutoScaleVCoreMutablePropert
     /**
      * Set the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
      * resource.
-     *
+     * 
      * @param capacityObjectId the capacityObjectId value to set.
      * @return the AutoScaleVCoreProperties object itself.
      */
@@ -53,14 +58,16 @@ public final class AutoScaleVCoreProperties extends AutoScaleVCoreMutablePropert
     /**
      * Get the provisioningState property: The current deployment state of an auto scale v-core resource. The
      * provisioningState is to indicate states for resource provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public VCoreProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AutoScaleVCoreProperties withCapacityLimit(Integer capacityLimit) {
         super.withCapacityLimit(capacityLimit);
@@ -69,11 +76,52 @@ public final class AutoScaleVCoreProperties extends AutoScaleVCoreMutablePropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("capacityLimit", capacityLimit());
+        jsonWriter.writeStringField("capacityObjectId", this.capacityObjectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoScaleVCoreProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoScaleVCoreProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoScaleVCoreProperties.
+     */
+    public static AutoScaleVCoreProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoScaleVCoreProperties deserializedAutoScaleVCoreProperties = new AutoScaleVCoreProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("capacityLimit".equals(fieldName)) {
+                    deserializedAutoScaleVCoreProperties.withCapacityLimit(reader.getNullable(JsonReader::getInt));
+                } else if ("capacityObjectId".equals(fieldName)) {
+                    deserializedAutoScaleVCoreProperties.capacityObjectId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAutoScaleVCoreProperties.provisioningState
+                        = VCoreProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoScaleVCoreProperties;
+        });
     }
 }

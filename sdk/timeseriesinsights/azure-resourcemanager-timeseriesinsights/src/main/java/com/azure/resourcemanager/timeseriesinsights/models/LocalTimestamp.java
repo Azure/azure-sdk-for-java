@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An object that represents the local timestamp property. It contains the format of local timestamp that needs to be
@@ -13,27 +17,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * then the local timestamp will not be ingressed with the events.
  */
 @Fluent
-public final class LocalTimestamp {
+public final class LocalTimestamp implements JsonSerializable<LocalTimestamp> {
     /*
      * An enum that represents the format of the local timestamp property that needs to be set.
      */
-    @JsonProperty(value = "format")
     private LocalTimestampFormat format;
 
     /*
      * An object that represents the offset information for the local timestamp format specified. Should not be
      * specified for LocalTimestampFormat - Embedded.
      */
-    @JsonProperty(value = "timeZoneOffset")
     private LocalTimestampTimeZoneOffset timeZoneOffset;
 
-    /** Creates an instance of LocalTimestamp class. */
+    /**
+     * Creates an instance of LocalTimestamp class.
+     */
     public LocalTimestamp() {
     }
 
     /**
      * Get the format property: An enum that represents the format of the local timestamp property that needs to be set.
-     *
+     * 
      * @return the format value.
      */
     public LocalTimestampFormat format() {
@@ -42,7 +46,7 @@ public final class LocalTimestamp {
 
     /**
      * Set the format property: An enum that represents the format of the local timestamp property that needs to be set.
-     *
+     * 
      * @param format the format value to set.
      * @return the LocalTimestamp object itself.
      */
@@ -54,7 +58,7 @@ public final class LocalTimestamp {
     /**
      * Get the timeZoneOffset property: An object that represents the offset information for the local timestamp format
      * specified. Should not be specified for LocalTimestampFormat - Embedded.
-     *
+     * 
      * @return the timeZoneOffset value.
      */
     public LocalTimestampTimeZoneOffset timeZoneOffset() {
@@ -64,7 +68,7 @@ public final class LocalTimestamp {
     /**
      * Set the timeZoneOffset property: An object that represents the offset information for the local timestamp format
      * specified. Should not be specified for LocalTimestampFormat - Embedded.
-     *
+     * 
      * @param timeZoneOffset the timeZoneOffset value to set.
      * @return the LocalTimestamp object itself.
      */
@@ -75,12 +79,51 @@ public final class LocalTimestamp {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timeZoneOffset() != null) {
             timeZoneOffset().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
+        jsonWriter.writeJsonField("timeZoneOffset", this.timeZoneOffset);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocalTimestamp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocalTimestamp if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocalTimestamp.
+     */
+    public static LocalTimestamp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocalTimestamp deserializedLocalTimestamp = new LocalTimestamp();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("format".equals(fieldName)) {
+                    deserializedLocalTimestamp.format = LocalTimestampFormat.fromString(reader.getString());
+                } else if ("timeZoneOffset".equals(fieldName)) {
+                    deserializedLocalTimestamp.timeZoneOffset = LocalTimestampTimeZoneOffset.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocalTimestamp;
+        });
     }
 }

@@ -37,6 +37,6 @@ public interface PrivateLinkResourcesClient {
      * @return the private link resources that need to be created for a workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceListResultInner> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<PrivateLinkResourceListResultInner> listByWorkspaceWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 }

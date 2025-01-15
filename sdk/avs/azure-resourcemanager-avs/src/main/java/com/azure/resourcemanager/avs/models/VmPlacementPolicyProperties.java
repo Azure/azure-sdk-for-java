@@ -128,7 +128,6 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmMembers() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The regions capability. */
+/**
+ * The regions capability.
+ */
 @Fluent
-public final class RegionsCapability {
+public final class RegionsCapability implements JsonSerializable<RegionsCapability> {
     /*
      * The list of region capabilities.
      */
-    @JsonProperty(value = "available")
     private List<String> available;
 
-    /** Creates an instance of RegionsCapability class. */
+    /**
+     * Creates an instance of RegionsCapability class.
+     */
     public RegionsCapability() {
     }
 
     /**
      * Get the available property: The list of region capabilities.
-     *
+     * 
      * @return the available value.
      */
     public List<String> available() {
@@ -32,7 +39,7 @@ public final class RegionsCapability {
 
     /**
      * Set the available property: The list of region capabilities.
-     *
+     * 
      * @param available the available value to set.
      * @return the RegionsCapability object itself.
      */
@@ -43,9 +50,46 @@ public final class RegionsCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("available", this.available, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegionsCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegionsCapability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegionsCapability.
+     */
+    public static RegionsCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegionsCapability deserializedRegionsCapability = new RegionsCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("available".equals(fieldName)) {
+                    List<String> available = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRegionsCapability.available = available;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegionsCapability;
+        });
     }
 }

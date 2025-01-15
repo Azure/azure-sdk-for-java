@@ -14,11 +14,13 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlan
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ScalingPlansClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ScalingPlansClient.
+ */
 public interface ScalingPlansClient {
     /**
      * Get a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,12 +29,12 @@ public interface ScalingPlansClient {
      * @return a scaling plan along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ScalingPlanInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String scalingPlanName);
+    Mono<Response<ScalingPlanInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String scalingPlanName);
 
     /**
      * Get a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface ScalingPlansClient {
 
     /**
      * Get a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param context The context to associate with this operation.
@@ -55,12 +57,12 @@ public interface ScalingPlansClient {
      * @return a scaling plan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScalingPlanInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String scalingPlanName, Context context);
+    Response<ScalingPlanInner> getByResourceGroupWithResponse(String resourceGroupName, String scalingPlanName,
+        Context context);
 
     /**
      * Get a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,7 +75,7 @@ public interface ScalingPlansClient {
 
     /**
      * Create or update a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlan Object containing scaling plan definitions.
@@ -83,12 +85,12 @@ public interface ScalingPlansClient {
      * @return scalingPlan along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ScalingPlanInner>> createWithResponseAsync(
-        String resourceGroupName, String scalingPlanName, ScalingPlanInner scalingPlan);
+    Mono<Response<ScalingPlanInner>> createWithResponseAsync(String resourceGroupName, String scalingPlanName,
+        ScalingPlanInner scalingPlan);
 
     /**
      * Create or update a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlan Object containing scaling plan definitions.
@@ -102,7 +104,7 @@ public interface ScalingPlansClient {
 
     /**
      * Create or update a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlan Object containing scaling plan definitions.
@@ -113,12 +115,12 @@ public interface ScalingPlansClient {
      * @return scalingPlan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScalingPlanInner> createWithResponse(
-        String resourceGroupName, String scalingPlanName, ScalingPlanInner scalingPlan, Context context);
+    Response<ScalingPlanInner> createWithResponse(String resourceGroupName, String scalingPlanName,
+        ScalingPlanInner scalingPlan, Context context);
 
     /**
      * Create or update a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlan Object containing scaling plan definitions.
@@ -132,7 +134,7 @@ public interface ScalingPlansClient {
 
     /**
      * Remove a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +147,7 @@ public interface ScalingPlansClient {
 
     /**
      * Remove a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,7 +160,7 @@ public interface ScalingPlansClient {
 
     /**
      * Remove a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param context The context to associate with this operation.
@@ -172,7 +174,7 @@ public interface ScalingPlansClient {
 
     /**
      * Remove a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,7 +186,7 @@ public interface ScalingPlansClient {
 
     /**
      * Update a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlan Object containing scaling plan definitions.
@@ -194,12 +196,12 @@ public interface ScalingPlansClient {
      * @return scalingPlan along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ScalingPlanInner>> updateWithResponseAsync(
-        String resourceGroupName, String scalingPlanName, ScalingPlanPatch scalingPlan);
+    Mono<Response<ScalingPlanInner>> updateWithResponseAsync(String resourceGroupName, String scalingPlanName,
+        ScalingPlanPatch scalingPlan);
 
     /**
      * Update a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -212,7 +214,7 @@ public interface ScalingPlansClient {
 
     /**
      * Update a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlan Object containing scaling plan definitions.
@@ -223,12 +225,12 @@ public interface ScalingPlansClient {
      * @return scalingPlan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScalingPlanInner> updateWithResponse(
-        String resourceGroupName, String scalingPlanName, ScalingPlanPatch scalingPlan, Context context);
+    Response<ScalingPlanInner> updateWithResponse(String resourceGroupName, String scalingPlanName,
+        ScalingPlanPatch scalingPlan, Context context);
 
     /**
      * Update a scaling plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +243,7 @@ public interface ScalingPlansClient {
 
     /**
      * List scaling plans.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param pageSize Number of items per page.
      * @param isDescending Indicates whether the collection is descending.
@@ -252,12 +254,12 @@ public interface ScalingPlansClient {
      * @return scalingPlanList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ScalingPlanInner> listByResourceGroupAsync(
-        String resourceGroupName, Integer pageSize, Boolean isDescending, Integer initialSkip);
+    PagedFlux<ScalingPlanInner> listByResourceGroupAsync(String resourceGroupName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip);
 
     /**
      * List scaling plans.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -269,7 +271,7 @@ public interface ScalingPlansClient {
 
     /**
      * List scaling plans.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -281,7 +283,7 @@ public interface ScalingPlansClient {
 
     /**
      * List scaling plans.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param pageSize Number of items per page.
      * @param isDescending Indicates whether the collection is descending.
@@ -293,12 +295,12 @@ public interface ScalingPlansClient {
      * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScalingPlanInner> listByResourceGroup(
-        String resourceGroupName, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context);
+    PagedIterable<ScalingPlanInner> listByResourceGroup(String resourceGroupName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * List scaling plans in subscription.
-     *
+     * 
      * @param pageSize Number of items per page.
      * @param isDescending Indicates whether the collection is descending.
      * @param initialSkip Initial number of items to skip.
@@ -312,7 +314,7 @@ public interface ScalingPlansClient {
 
     /**
      * List scaling plans in subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return scalingPlanList as paginated response with {@link PagedFlux}.
@@ -322,7 +324,7 @@ public interface ScalingPlansClient {
 
     /**
      * List scaling plans in subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return scalingPlanList as paginated response with {@link PagedIterable}.
@@ -332,7 +334,7 @@ public interface ScalingPlansClient {
 
     /**
      * List scaling plans in subscription.
-     *
+     * 
      * @param pageSize Number of items per page.
      * @param isDescending Indicates whether the collection is descending.
      * @param initialSkip Initial number of items to skip.
@@ -347,7 +349,7 @@ public interface ScalingPlansClient {
 
     /**
      * List scaling plan associated with hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -359,12 +361,12 @@ public interface ScalingPlansClient {
      * @return scalingPlanList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ScalingPlanInner> listByHostPoolAsync(
-        String resourceGroupName, String hostPoolName, Integer pageSize, Boolean isDescending, Integer initialSkip);
+    PagedFlux<ScalingPlanInner> listByHostPoolAsync(String resourceGroupName, String hostPoolName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip);
 
     /**
      * List scaling plan associated with hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -377,7 +379,7 @@ public interface ScalingPlansClient {
 
     /**
      * List scaling plan associated with hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,7 +392,7 @@ public interface ScalingPlansClient {
 
     /**
      * List scaling plan associated with hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -403,11 +405,6 @@ public interface ScalingPlansClient {
      * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScalingPlanInner> listByHostPool(
-        String resourceGroupName,
-        String hostPoolName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<ScalingPlanInner> listByHostPool(String resourceGroupName, String hostPoolName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 }

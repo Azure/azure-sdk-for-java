@@ -55,7 +55,8 @@ public final class BlocklistAsyncClient {
      * request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItems (Required): [
      *          (Required){
@@ -65,11 +66,13 @@ public final class BlocklistAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItems (Required): [
      *          (Required){
@@ -79,7 +82,8 @@ public final class BlocklistAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param options Options for adding or updating blocklist items.
@@ -104,21 +108,25 @@ public final class BlocklistAsyncClient {
      * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param options The resource instance.
@@ -161,12 +169,14 @@ public final class BlocklistAsyncClient {
      * Returns text blocklist details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -174,7 +184,9 @@ public final class BlocklistAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return text Blocklist along with {@link Response} on successful completion of {@link Mono}.
+     * @return text Blocklist By blocklistName
+     *
+     * Returns text blocklist details along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -188,13 +200,15 @@ public final class BlocklistAsyncClient {
      * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param blocklistItemId The service will generate a BlocklistItemId, which will be a UUID.
@@ -203,7 +217,9 @@ public final class BlocklistAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response} on
+     * @return blocklistItem By blocklistName And blocklistItemId
+     *
+     * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response} on
      * successful completion of {@link Mono}.
      */
     @Generated
@@ -228,13 +244,15 @@ public final class BlocklistAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemId: String (Required)
      *     description: String (Optional)
      *     text: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -242,7 +260,9 @@ public final class BlocklistAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all blocklistItems in a text blocklist as paginated response with {@link PagedFlux}.
+     * @return all BlocklistItems By blocklistName
+     *
+     * Get all blocklistItems in a text blocklist as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -256,19 +276,23 @@ public final class BlocklistAsyncClient {
      * Get all text blocklists details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all text blocklists details as paginated response with {@link PagedFlux}.
+     * @return all Text Blocklists
+     *
+     * Get all text blocklists details as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -282,13 +306,15 @@ public final class BlocklistAsyncClient {
      * Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistItemIds (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param name Text blocklist name.
      * @param options Options for removing blocklist items.
@@ -367,7 +393,9 @@ public final class BlocklistAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return text Blocklist on successful completion of {@link Mono}.
+     * @return text Blocklist By blocklistName
+     *
+     * Returns text blocklist details on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -391,7 +419,9 @@ public final class BlocklistAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist on successful completion of
+     * @return blocklistItem By blocklistName And blocklistItemId
+     *
+     * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist on successful completion of
      * {@link Mono}.
      */
     @Generated
@@ -417,7 +447,9 @@ public final class BlocklistAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all blocklistItems in a text blocklist as paginated response with {@link PagedFlux}.
+     * @return all BlocklistItems By blocklistName
+     *
+     * Get all blocklistItems in a text blocklist as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -457,7 +489,9 @@ public final class BlocklistAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all blocklistItems in a text blocklist as paginated response with {@link PagedFlux}.
+     * @return all BlocklistItems By blocklistName
+     *
+     * Get all blocklistItems in a text blocklist as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -489,7 +523,9 @@ public final class BlocklistAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all text blocklists details as paginated response with {@link PagedFlux}.
+     * @return all Text Blocklists
+     *
+     * Get all text blocklists details as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

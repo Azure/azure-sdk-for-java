@@ -4,33 +4,48 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The state of a virtual machine. */
+/**
+ * The state of a virtual machine.
+ */
 public enum VirtualMachineState {
-    /** Enum value Stopped. */
+    /**
+     * Enum value Stopped.
+     */
     STOPPED("Stopped"),
 
-    /** Enum value Starting. */
+    /**
+     * Enum value Starting.
+     */
     STARTING("Starting"),
 
-    /** Enum value Running. */
+    /**
+     * Enum value Running.
+     */
     RUNNING("Running"),
 
-    /** Enum value Stopping. */
+    /**
+     * Enum value Stopping.
+     */
     STOPPING("Stopping"),
 
-    /** Enum value ResettingPassword. */
+    /**
+     * Enum value ResettingPassword.
+     */
     RESETTING_PASSWORD("ResettingPassword"),
 
-    /** Enum value Reimaging. */
+    /**
+     * Enum value Reimaging.
+     */
     REIMAGING("Reimaging"),
 
-    /** Enum value Redeploying. */
+    /**
+     * Enum value Redeploying.
+     */
     REDEPLOYING("Redeploying");
 
-    /** The actual serialized value for a VirtualMachineState instance. */
+    /**
+     * The actual serialized value for a VirtualMachineState instance.
+     */
     private final String value;
 
     VirtualMachineState(String value) {
@@ -39,11 +54,10 @@ public enum VirtualMachineState {
 
     /**
      * Parses a serialized value to a VirtualMachineState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VirtualMachineState object, or null if unable to parse.
      */
-    @JsonCreator
     public static VirtualMachineState fromString(String value) {
         if (value == null) {
             return null;
@@ -57,8 +71,9 @@ public enum VirtualMachineState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

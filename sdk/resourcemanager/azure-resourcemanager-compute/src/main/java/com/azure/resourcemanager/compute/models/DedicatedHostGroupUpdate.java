@@ -183,7 +183,6 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

@@ -10,8 +10,7 @@ import java.util.Collection;
 /**
  * The logical operator to apply across multiple {@link MetricAlertConfiguration}.
  */
-public final class MetricAlertConfigurationsOperator
-    extends ExpandableStringEnum<MetricAlertConfigurationsOperator> {
+public final class MetricAlertConfigurationsOperator extends ExpandableStringEnum<MetricAlertConfigurationsOperator> {
 
     /**
      * Constructs a {@link MetricAlertConfigurationsOperator} object.

@@ -1,6 +1,6 @@
 # Azure Personalizer client library for Java
 
-[Azure Personalizer](https://docs.microsoft.com/azure/cognitive-services/personalizer/)
+[Azure Personalizer](https://learn.microsoft.com/azure/cognitive-services/personalizer/)
 is a cloud-based service that helps your applications choose the best content item to show your users. You can use the Personalizer service to determine what product to suggest to shoppers or to figure out the optimal position for an advertisement. After the content is shown to the user, your application monitors the user's reaction and reports a reward score back to the Personalizer service. This ensures continuous improvement of the machine learning model, and Personalizer's ability to select the best content item based on the contextual information it receives.
 
 ## Getting started
@@ -62,18 +62,18 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information, see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
-[personalizer_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
+[personalizer_account]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [personalizer_admin_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/administration/PersonalizerAdministrationClient.java
 [personalizer_admin_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/administration/PersonalizerAdministrationAsyncClient.java
 [personalizer_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerClient.java
 [personalizer_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerAsyncClient.java
-[learning_mode]: https://docs.microsoft.com/azure/cognitive-services/personalizer/what-is-personalizer#learning-modes
-[exploration]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concepts-exploration
-[multi_slot]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concept-multi-slot-personalization
+[learning_mode]: https://learn.microsoft.com/azure/cognitive-services/personalizer/what-is-personalizer#learning-modes
+[exploration]: https://learn.microsoft.com/azure/cognitive-services/personalizer/concepts-exploration
+[multi_slot]: https://learn.microsoft.com/azure/cognitive-services/personalizer/concept-multi-slot-personalization
 [examples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/samples#examples
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

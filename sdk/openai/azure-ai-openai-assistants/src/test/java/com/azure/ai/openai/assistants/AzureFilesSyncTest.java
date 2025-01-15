@@ -104,7 +104,8 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantTextFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    public void assistantTextFileOperationsWithResponse(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         uploadAssistantTextFileRunner((fileDetails, filePurpose) -> {
             // Upload file
@@ -123,8 +124,7 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
             Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            List<OpenAIFile> files = listFilesResponse.getValue()
-                .toObject(FileListResponse.class).getData();
+            List<OpenAIFile> files = listFilesResponse.getValue().toObject(FileListResponse.class).getData();
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -138,7 +138,8 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantImageFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    public void assistantImageFileOperationsWithResponse(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         uploadAssistantImageFileRunner((fileDetails, filePurpose) -> {
             // Upload file
@@ -157,8 +158,7 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
             Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            List<OpenAIFile> files = listFilesResponse.getValue()
-                .toObject(FileListResponse.class).getData();
+            List<OpenAIFile> files = listFilesResponse.getValue().toObject(FileListResponse.class).getData();
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -173,7 +173,8 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
     @Disabled("Support in Azure OpenAI for FINE_TUNE files is not yet available")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void fineTuningJsonFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    public void fineTuningJsonFileOperationsWithResponse(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         uploadFineTuningJsonFileRunner((fileDetails, filePurpose) -> {
             // Upload file
@@ -192,8 +193,7 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             requestOptions.addQueryParam("purpose", FilePurpose.FINE_TUNE.toString());
             Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            List<OpenAIFile> files = listFilesResponse.getValue()
-                .toObject(FileListResponse.class).getData();
+            List<OpenAIFile> files = listFilesResponse.getValue().toObject(FileListResponse.class).getData();
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file

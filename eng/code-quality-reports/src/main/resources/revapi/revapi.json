@@ -43,6 +43,121 @@
     }
   },
   {
+    "extension": "allowed-external-apis",
+    "configuration": {
+      "enabled": true,
+      "allowedPrefixes": {
+        "com.azure.": [
+          "communication.common.",
+          "core.",
+          "cosmos.",
+          "data.appconfiguration.",
+          "data.schemaregistry.",
+          "identity.",
+          "json.",
+          "messaging.eventgrid.",
+          "messaging.eventhub.",
+          "messaging.servicebus.",
+          "perf.test.core.",
+          "resourcemanager.",
+          "security.keyvault.",
+          "spring.cloud.appconfiguration.config.",
+          "spring.cloud.feature.",
+          "storage.",
+          "xml."
+        ],
+        "com.mysql.cj.": [],
+        "io.": [
+          "clientcore.",
+          "cloudevents.",
+          "opentelemetry."
+        ],
+        "org.": [
+          "json.",
+          "postgresql.",
+          "reactivestreams.",
+          "springframework.util.ErrorHandler"
+        ],
+        "redis.clients.jedis": []
+      }
+    }
+  },
+  {
+    "extension": "ignored-jackson-databind-removal",
+    "configuration": {
+      "enabled": true
+    }
+  },
+  {
+    "extension": "ignored-transitive-changes",
+    "configuration": {
+      "enabled": true,
+      "ignoredNewArchives": [
+        "com.azure:azure-core:",
+        "com.azure:azure-json:",
+        "com.azure:azure-xml:"
+      ]
+    }
+  },
+  {
+    "extension": "class-and-package-tree-filter-provider",
+    "configuration": {
+      "ignoredClasses": {
+        "com.azure.": [
+          "core.util.Configuration",
+          "cosmos.BridgeInternal",
+          "cosmos.CosmosBridgeInternal",
+          "cosmos.models.ModelBridgeInternal",
+          "cosmos.util.UtilBridgeInternal",
+          "spring.cloud.config.AppConfigurationBootstrapConfiguration",
+          "spring.cloud.config.AppConfigurationRefresh",
+          "spring.cloud.config.properties.AppConfigurationProviderProperties",
+          "spring.cloud.config.web.AppConfigurationEndpoint",
+          "spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEvent"
+        ]
+      },
+      "ignoredPackages": {
+        "com.": [
+          "azure.data.cosmos",
+          "fasterxml.jackson",
+          "google.gson",
+          "microsoft.azure",
+          "numbusds"
+        ],
+        "io.": [
+          "micrometer",
+          "netty",
+          "vertx"
+        ],
+        "javax.": [
+          "jms",
+          "servlet"
+        ],
+        "kotlin": [],
+        "okhttp3": [],
+        "okio": [],
+        "org.": [
+          "apache.avro",
+          "apache.commons",
+          "apache.qpid",
+          "junit",
+          "reactivestreams",
+          "slf4j",
+          "springframework"
+        ],
+        "reactor.": [
+          "core",
+          "netty",
+          "util"
+        ]
+      },
+      "ignoredPackagesPatterns": [
+        "com\\.azure\\..*(implementation|samples).*",
+        "com\\.azure\\.resourcemanager\\..*(fluent)(\\..*)?$"
+      ]
+    }
+  },
+  {
     "extension": "revapi.differences",
     "configuration": {
       "ignore": true,
@@ -89,6 +204,11 @@
         },
         {
           "code": "java.method.addedToInterface",
+          "new" : "method <T> long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
           "new": "method <S extends T, T> reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, reactor.core.publisher.Flux<S>)",
           "justification": "Spring interfaces are allowed to add methods."
         },
@@ -105,6 +225,11 @@
         {
           "code": "java.method.addedToInterface",
           "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new" : "method reactor.core.publisher.Mono<java.lang.Long> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
@@ -317,6 +442,32 @@
           "justification": "Previous value did was incorrect."
         },
         {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties::fromJson(com.azure.json.JsonReader) throws java.io.IOException @ com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData",
+          "new": "method com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData::fromJson(com.azure.json.JsonReader) throws java.io.IOException",
+          "justification": "Subtype was not updated by codegen for azure-json due to being deprecated and no longer in swagger."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties::fromJson(com.azure.json.JsonReader) throws java.io.IOException @ com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData",
+          "new": "method com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData::fromJson(com.azure.json.JsonReader) throws java.io.IOException",
+          "justification": "Subtype was not updated by codegen for azure-json due to being deprecated and no longer in swagger."
+        },
+        {
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.GROUPS",
+          "new": "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.GROUPS",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.USERS",
+          "new": "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.USERS",
+          "justification": "Previous value did was incorrect."
+        },
+        {
           "code": "java.field.removed",
           "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
           "justification": "Remove this because AZURE_GERMANY is deprecated."
@@ -365,19 +516,24 @@
           "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
         },
         {
-          "code" : "java.field.removed",
-          "old" : "field com.mysql.cj.conf.PropertyKey.ociConfigProfile",
-          "justification" : "Fix field removed."
+          "code": "java.field.removed",
+          "old": "field com.mysql.cj.conf.PropertyKey.ociConfigProfile",
+          "justification": "Fix field removed."
         },
         {
-          "code" : "java.method.addedToInterface",
-          "new" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
-          "justification" : "Method was added to an interface."
+          "code": "java.method.addedToInterface",
+          "new": "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
+          "justification": "Method was added to an interface."
         },
         {
-          "code" : "java.method.addedToInterface",
-          "new" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
-          "justification" : "Method was added to an interface."
+          "code": "java.method.addedToInterface",
+          "new": "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
+          "justification": "Method was added to an interface."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method java.lang.String com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider.TokenCredentialOptions::getTokenCredentialBeanName()",
+          "justification": "Support to configure token credential bean name."
         },
         {
           "code": "java.annotation.added",
@@ -440,111 +596,29 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
-          "old": ".*? com\\.azure\\.communication\\.messages\\.models.*",
-          "justification": "Jackson annotation changed."
-        },
-        {
-          "regex": true,
-          "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
-          "new" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "regex": true,
-          "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.digitaltwins\\.core(\\.models)?.*",
-          "new" : ".*? com\\.azure\\.digitaltwins\\.core(\\.models)?.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "regex": true,
-          "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
-          "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
-          "new": ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "regex": true,
-          "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.ai\\.translation\\.text\\.models.*",
-          "new" : ".*? com\\.azure\\.ai\\.translation\\.text\\.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "regex": true,
-          "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.communication\\.callautomation\\.models.*",
-          "new" : ".*? com\\.azure\\.communication\\.callautomation\\.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "regex": true,
-          "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
-          "new" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "regex": true,
-          "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.communication\\.email\\.models.*",
-          "new" : ".*? com\\.azure\\.communication\\.email\\.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "regex": true,
           "code": "java.class.nowFinal",
-          "old" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
-          "new" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
+          "old": "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
+          "new": "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
           "justification": "Class is now final."
         },
         {
           "regex": true,
           "code": "java.class.nowFinal",
-          "old" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
-          "new" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
+          "old": "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
+          "new": "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
           "justification": "Class is now final."
         },
         {
-          "ignore": true,
-          "code": "java.annotation.removed",
-          "old": "method com.azure.communication.identity.models.CommunicationTokenScope com.azure.communication.identity.models.CommunicationTokenScope::fromString(java.lang.String)",
-          "new": "method com.azure.communication.identity.models.CommunicationTokenScope com.azure.communication.identity.models.CommunicationTokenScope::fromString(java.lang.String)",
-          "annotation": "@com.fasterxml.jackson.annotation.JsonCreator",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "regex": true,
-          "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.communication\\.messages\\.models(\\.channels)?.*",
-          "new" : ".*? com\\.azure\\.communication\\.messages\\.models(\\.channels)?.*",
-          "justification": "Migration to azure-json"
-        },
-        {
           "code": "java.method.returnTypeErasureChanged",
-          "old" : "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.InteractiveBrowserCredentialBuilder",
-          "new" : "method com.azure.identity.InteractiveBrowserCredentialBuilder com.azure.identity.InteractiveBrowserCredentialBuilder::clientId(java.lang.String)",
+          "old": "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.InteractiveBrowserCredentialBuilder",
+          "new": "method com.azure.identity.InteractiveBrowserCredentialBuilder com.azure.identity.InteractiveBrowserCredentialBuilder::clientId(java.lang.String)",
           "justification": "Override flags this as a potential binary breaking change, but it isn't."
         },
         {
           "code": "java.method.returnTypeErasureChanged",
-          "old" : "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.DeviceCodeCredentialBuilder",
-          "new" : "method com.azure.identity.DeviceCodeCredentialBuilder com.azure.identity.DeviceCodeCredentialBuilder::clientId(java.lang.String)",
+          "old": "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.DeviceCodeCredentialBuilder",
+          "new": "method com.azure.identity.DeviceCodeCredentialBuilder com.azure.identity.DeviceCodeCredentialBuilder::clientId(java.lang.String)",
           "justification": "Override flags this as a potential binary breaking change, but it isn't."
-        },
-        {
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.compute\\.batch\\.models.*",
-          "justification": "Removing Jackson annotations from Azure Batch in transition to stream-style."
         },
         {
           "ignore": true,
@@ -633,6 +707,18 @@
           "old": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "new": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.compute.models.WindowsConfiguration com.azure.resourcemanager.compute.models.WindowsConfiguration::withEnableVMAgentPlatformUpdates(java.lang.Boolean)",
+          "justification": "Service changed the property to readOnly."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
+          "justification": "The property is a constant, which should not be changed."
         }
       ]
     }

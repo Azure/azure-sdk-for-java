@@ -33,7 +33,7 @@ public class ActivationResponse<T> extends SimpleResponse<T> {
      *     own when the next poll operation is to occur.
      */
     public ActivationResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value,
-                              LongRunningOperationStatus status, Duration retryAfter) {
+        LongRunningOperationStatus status, Duration retryAfter) {
         super(request, statusCode, headers, value);
         this.status = status;
         this.retryAfter = retryAfter;

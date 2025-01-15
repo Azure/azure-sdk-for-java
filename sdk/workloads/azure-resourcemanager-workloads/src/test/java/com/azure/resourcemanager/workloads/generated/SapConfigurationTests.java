@@ -10,8 +10,8 @@ import com.azure.resourcemanager.workloads.models.SapConfiguration;
 public final class SapConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapConfiguration model =
-            BinaryData.fromString("{\"configurationType\":\"SapConfiguration\"}").toObject(SapConfiguration.class);
+        SapConfiguration model
+            = BinaryData.fromString("{\"configurationType\":\"SapConfiguration\"}").toObject(SapConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

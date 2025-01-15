@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the WebPubSubManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {WebPubSubManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the WebPubSubManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { WebPubSubManagementClientImpl.class })
 public final class WebPubSubManagementClientBuilder {
     /*
      * The ID of the target subscription. The value must be an UUID.
@@ -24,7 +26,7 @@ public final class WebPubSubManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the WebPubSubManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class WebPubSubManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the WebPubSubManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class WebPubSubManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the WebPubSubManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class WebPubSubManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the WebPubSubManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class WebPubSubManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the WebPubSubManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class WebPubSubManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the WebPubSubManagementClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class WebPubSubManagementClientBuilder {
 
     /**
      * Builds an instance of WebPubSubManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of WebPubSubManagementClientImpl.
      */
     public WebPubSubManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        WebPubSubManagementClientImpl client =
-            new WebPubSubManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        WebPubSubManagementClientImpl client = new WebPubSubManagementClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

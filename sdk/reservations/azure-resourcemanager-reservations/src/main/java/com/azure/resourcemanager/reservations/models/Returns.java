@@ -6,13 +6,15 @@ package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of Returns. */
+/**
+ * Resource collection API of Returns.
+ */
 public interface Returns {
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,9 +26,9 @@ public interface Returns {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @param context The context to associate with this operation.

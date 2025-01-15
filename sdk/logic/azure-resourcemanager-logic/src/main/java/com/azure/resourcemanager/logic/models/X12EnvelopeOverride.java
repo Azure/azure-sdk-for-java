@@ -6,78 +6,76 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The X12 envelope override settings. */
+/**
+ * The X12 envelope override settings.
+ */
 @Fluent
-public final class X12EnvelopeOverride {
+public final class X12EnvelopeOverride implements JsonSerializable<X12EnvelopeOverride> {
     /*
      * The target namespace on which this envelope settings has to be applied.
      */
-    @JsonProperty(value = "targetNamespace", required = true)
     private String targetNamespace;
 
     /*
      * The protocol version on which this envelope settings has to be applied.
      */
-    @JsonProperty(value = "protocolVersion", required = true)
     private String protocolVersion;
 
     /*
      * The message id on which this envelope settings has to be applied.
      */
-    @JsonProperty(value = "messageId", required = true)
     private String messageId;
 
     /*
      * The responsible agency code.
      */
-    @JsonProperty(value = "responsibleAgencyCode", required = true)
     private String responsibleAgencyCode;
 
     /*
      * The header version.
      */
-    @JsonProperty(value = "headerVersion", required = true)
     private String headerVersion;
 
     /*
      * The sender application id.
      */
-    @JsonProperty(value = "senderApplicationId", required = true)
     private String senderApplicationId;
 
     /*
      * The receiver application id.
      */
-    @JsonProperty(value = "receiverApplicationId", required = true)
     private String receiverApplicationId;
 
     /*
      * The functional identifier code.
      */
-    @JsonProperty(value = "functionalIdentifierCode")
     private String functionalIdentifierCode;
 
     /*
      * The date format.
      */
-    @JsonProperty(value = "dateFormat", required = true)
     private X12DateFormat dateFormat;
 
     /*
      * The time format.
      */
-    @JsonProperty(value = "timeFormat", required = true)
     private X12TimeFormat timeFormat;
 
-    /** Creates an instance of X12EnvelopeOverride class. */
+    /**
+     * Creates an instance of X12EnvelopeOverride class.
+     */
     public X12EnvelopeOverride() {
     }
 
     /**
      * Get the targetNamespace property: The target namespace on which this envelope settings has to be applied.
-     *
+     * 
      * @return the targetNamespace value.
      */
     public String targetNamespace() {
@@ -86,7 +84,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the targetNamespace property: The target namespace on which this envelope settings has to be applied.
-     *
+     * 
      * @param targetNamespace the targetNamespace value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -97,7 +95,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Get the protocolVersion property: The protocol version on which this envelope settings has to be applied.
-     *
+     * 
      * @return the protocolVersion value.
      */
     public String protocolVersion() {
@@ -106,7 +104,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the protocolVersion property: The protocol version on which this envelope settings has to be applied.
-     *
+     * 
      * @param protocolVersion the protocolVersion value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -117,7 +115,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Get the messageId property: The message id on which this envelope settings has to be applied.
-     *
+     * 
      * @return the messageId value.
      */
     public String messageId() {
@@ -126,7 +124,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the messageId property: The message id on which this envelope settings has to be applied.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -137,7 +135,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Get the responsibleAgencyCode property: The responsible agency code.
-     *
+     * 
      * @return the responsibleAgencyCode value.
      */
     public String responsibleAgencyCode() {
@@ -146,7 +144,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the responsibleAgencyCode property: The responsible agency code.
-     *
+     * 
      * @param responsibleAgencyCode the responsibleAgencyCode value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -157,7 +155,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Get the headerVersion property: The header version.
-     *
+     * 
      * @return the headerVersion value.
      */
     public String headerVersion() {
@@ -166,7 +164,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the headerVersion property: The header version.
-     *
+     * 
      * @param headerVersion the headerVersion value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -177,7 +175,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Get the senderApplicationId property: The sender application id.
-     *
+     * 
      * @return the senderApplicationId value.
      */
     public String senderApplicationId() {
@@ -186,7 +184,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the senderApplicationId property: The sender application id.
-     *
+     * 
      * @param senderApplicationId the senderApplicationId value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -197,7 +195,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Get the receiverApplicationId property: The receiver application id.
-     *
+     * 
      * @return the receiverApplicationId value.
      */
     public String receiverApplicationId() {
@@ -206,7 +204,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the receiverApplicationId property: The receiver application id.
-     *
+     * 
      * @param receiverApplicationId the receiverApplicationId value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -217,7 +215,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Get the functionalIdentifierCode property: The functional identifier code.
-     *
+     * 
      * @return the functionalIdentifierCode value.
      */
     public String functionalIdentifierCode() {
@@ -226,7 +224,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the functionalIdentifierCode property: The functional identifier code.
-     *
+     * 
      * @param functionalIdentifierCode the functionalIdentifierCode value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -237,7 +235,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Get the dateFormat property: The date format.
-     *
+     * 
      * @return the dateFormat value.
      */
     public X12DateFormat dateFormat() {
@@ -246,7 +244,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the dateFormat property: The date format.
-     *
+     * 
      * @param dateFormat the dateFormat value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -257,7 +255,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Get the timeFormat property: The time format.
-     *
+     * 
      * @return the timeFormat value.
      */
     public X12TimeFormat timeFormat() {
@@ -266,7 +264,7 @@ public final class X12EnvelopeOverride {
 
     /**
      * Set the timeFormat property: The time format.
-     *
+     * 
      * @param timeFormat the timeFormat value to set.
      * @return the X12EnvelopeOverride object itself.
      */
@@ -277,62 +275,117 @@ public final class X12EnvelopeOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetNamespace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetNamespace in model X12EnvelopeOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetNamespace in model X12EnvelopeOverride"));
         }
         if (protocolVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocolVersion in model X12EnvelopeOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocolVersion in model X12EnvelopeOverride"));
         }
         if (messageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property messageId in model X12EnvelopeOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property messageId in model X12EnvelopeOverride"));
         }
         if (responsibleAgencyCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property responsibleAgencyCode in model X12EnvelopeOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property responsibleAgencyCode in model X12EnvelopeOverride"));
         }
         if (headerVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property headerVersion in model X12EnvelopeOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property headerVersion in model X12EnvelopeOverride"));
         }
         if (senderApplicationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property senderApplicationId in model X12EnvelopeOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property senderApplicationId in model X12EnvelopeOverride"));
         }
         if (receiverApplicationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property receiverApplicationId in model X12EnvelopeOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property receiverApplicationId in model X12EnvelopeOverride"));
         }
         if (dateFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dateFormat in model X12EnvelopeOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dateFormat in model X12EnvelopeOverride"));
         }
         if (timeFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeFormat in model X12EnvelopeOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeFormat in model X12EnvelopeOverride"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(X12EnvelopeOverride.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetNamespace", this.targetNamespace);
+        jsonWriter.writeStringField("protocolVersion", this.protocolVersion);
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeStringField("responsibleAgencyCode", this.responsibleAgencyCode);
+        jsonWriter.writeStringField("headerVersion", this.headerVersion);
+        jsonWriter.writeStringField("senderApplicationId", this.senderApplicationId);
+        jsonWriter.writeStringField("receiverApplicationId", this.receiverApplicationId);
+        jsonWriter.writeStringField("dateFormat", this.dateFormat == null ? null : this.dateFormat.toString());
+        jsonWriter.writeStringField("timeFormat", this.timeFormat == null ? null : this.timeFormat.toString());
+        jsonWriter.writeStringField("functionalIdentifierCode", this.functionalIdentifierCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12EnvelopeOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12EnvelopeOverride if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12EnvelopeOverride.
+     */
+    public static X12EnvelopeOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12EnvelopeOverride deserializedX12EnvelopeOverride = new X12EnvelopeOverride();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetNamespace".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.targetNamespace = reader.getString();
+                } else if ("protocolVersion".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.protocolVersion = reader.getString();
+                } else if ("messageId".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.messageId = reader.getString();
+                } else if ("responsibleAgencyCode".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.responsibleAgencyCode = reader.getString();
+                } else if ("headerVersion".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.headerVersion = reader.getString();
+                } else if ("senderApplicationId".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.senderApplicationId = reader.getString();
+                } else if ("receiverApplicationId".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.receiverApplicationId = reader.getString();
+                } else if ("dateFormat".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.dateFormat = X12DateFormat.fromString(reader.getString());
+                } else if ("timeFormat".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.timeFormat = X12TimeFormat.fromString(reader.getString());
+                } else if ("functionalIdentifierCode".equals(fieldName)) {
+                    deserializedX12EnvelopeOverride.functionalIdentifierCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12EnvelopeOverride;
+        });
+    }
 }

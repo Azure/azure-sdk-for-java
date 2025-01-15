@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_WEST;
+    private Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -47,21 +47,18 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
     public void canCreateImageFromNativeVhd() throws IOException {
         final String vhdBasedImageName = generateRandomResourceName("img", 20);
 
-        VirtualMachine linuxVM =
-            prepareGeneralizedVmWith2EmptyDataDisks(
-                rgName, generateRandomResourceName("muldvm", 15), region, computeManager);
+        VirtualMachine linuxVM = prepareGeneralizedVmWith2EmptyDataDisks(rgName,
+            generateRandomResourceName("muldvm", 15), region, computeManager);
         //
-        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings creatableDisk =
-            computeManager
-                .virtualMachineCustomImages()
+        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings creatableDisk
+            = computeManager.virtualMachineCustomImages()
                 .define(vhdBasedImageName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withLinuxFromVhd(linuxVM.osUnmanagedDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
                 .withOSDiskCaching(linuxVM.osDiskCachingType());
         for (VirtualMachineUnmanagedDataDisk disk : linuxVM.unmanagedDataDisks().values()) {
-            creatableDisk
-                .defineDataDiskImage()
+            creatableDisk.defineDataDiskImage()
                 .withLun(disk.lun())
                 .fromVhd(disk.vhdUri())
                 .withDiskCaching(disk.cachingType())
@@ -94,39 +91,36 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             Assertions.assertEquals(matchedDisk.vhdUri(), diskImage.blobUri());
             Assertions.assertEquals((long) matchedDisk.size() + 10, (long) diskImage.diskSizeGB());
         }
-        VirtualMachineCustomImage image =
-            computeManager.virtualMachineCustomImages().getByResourceGroup(rgName, vhdBasedImageName);
+        VirtualMachineCustomImage image
+            = computeManager.virtualMachineCustomImages().getByResourceGroup(rgName, vhdBasedImageName);
         Assertions.assertNotNull(image);
-        PagedIterable<VirtualMachineCustomImage> images =
-            computeManager.virtualMachineCustomImages().listByResourceGroup(rgName);
+        PagedIterable<VirtualMachineCustomImage> images
+            = computeManager.virtualMachineCustomImages().listByResourceGroup(rgName);
         Assertions.assertTrue(TestUtilities.getSize(images) > 0);
 
         // Create virtual machine from custom image
         //
-        VirtualMachine virtualMachine =
-            computeManager
-                .virtualMachines()
-                .define(generateRandomResourceName("cusvm", 15))
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withGeneralizedLinuxCustomImage(image.id())
-                .withRootUsername("javauser")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .create();
+        VirtualMachine virtualMachine = computeManager.virtualMachines()
+            .define(generateRandomResourceName("cusvm", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withGeneralizedLinuxCustomImage(image.id())
+            .withRootUsername("javauser")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .create();
 
         Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine.dataDisks();
         Assertions.assertNotNull(dataDisks);
         Assertions.assertEquals(dataDisks.size(), image.dataDiskImages().size());
 
         // Create a hyperv Gen2 image
-        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings creatableDiskGen2 =
-            computeManager
-                .virtualMachineCustomImages()
+        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings creatableDiskGen2
+            = computeManager.virtualMachineCustomImages()
                 .define(vhdBasedImageName + "Gen2")
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -134,8 +128,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withLinuxFromVhd(linuxVM.osUnmanagedDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
                 .withOSDiskCaching(linuxVM.osDiskCachingType());
         for (VirtualMachineUnmanagedDataDisk disk : linuxVM.unmanagedDataDisks().values()) {
-            creatableDisk
-                .defineDataDiskImage()
+            creatableDisk.defineDataDiskImage()
                 .withLun(disk.lun())
                 .fromVhd(disk.vhdUri())
                 .withDiskCaching(disk.cachingType())
@@ -167,15 +160,13 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
         VirtualMachine vm = prepareGeneralizedVmWith2EmptyDataDisks(rgName, vmName, region, computeManager);
         //
-        VirtualMachineCustomImage customImage =
-            computeManager
-                .virtualMachineCustomImages()
-                .define(imageName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withHyperVGeneration(HyperVGenerationTypes.V1)
-                .fromVirtualMachine(vm.id())
-                .create();
+        VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages()
+            .define(imageName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withHyperVGeneration(HyperVGenerationTypes.V1)
+            .fromVirtualMachine(vm.id())
+            .create();
 
         Assertions.assertTrue(customImage.name().equalsIgnoreCase(imageName));
         Assertions.assertNotNull(customImage.osDiskImage());
@@ -208,28 +199,26 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         final String storageAccountName = generateRandomResourceName("stg", 17);
         final String uname = "juser";
 
-        VirtualMachine nativeVm =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
-                .withRootUsername(uname)
-                .withSsh(sshPublicKey())
-                .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
-                .defineUnmanagedDataDisk("disk1")
-                .withNewVhd(100)
-                .withCaching(CachingTypes.READ_ONLY)
-                .attach()
-                .withNewUnmanagedDataDisk(100)
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withNewStorageAccount(storageAccountName)
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .create();
+        VirtualMachine nativeVm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername(uname)
+            .withSsh(sshPublicKey())
+            .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
+            .defineUnmanagedDataDisk("disk1")
+            .withNewVhd(100)
+            .withCaching(CachingTypes.READ_ONLY)
+            .attach()
+            .withNewUnmanagedDataDisk(100)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withNewStorageAccount(storageAccountName)
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .create();
 
         Assertions.assertFalse(nativeVm.isManagedDiskEnabled());
         String osVhdUri = nativeVm.osUnmanagedDiskVhdUri();
@@ -242,72 +231,63 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         final String osDiskName = generateRandomResourceName("dsk", 15);
         // Create managed disk with Os from vm's Os disk
         //
-        Disk managedOsDisk =
-            computeManager
-                .disks()
-                .define(osDiskName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withLinuxFromVhd(osVhdUri)
-                .withStorageAccountName(storageAccountName)
-                .create();
+        Disk managedOsDisk = computeManager.disks()
+            .define(osDiskName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinuxFromVhd(osVhdUri)
+            .withStorageAccountName(storageAccountName)
+            .create();
 
         // Create managed disk with Data from vm's lun0 data disk
         //
-        StorageAccount storageAccount =
-            storageManager.storageAccounts().getByResourceGroup(rgName, storageAccountName);
+        StorageAccount storageAccount = storageManager.storageAccounts().getByResourceGroup(rgName, storageAccountName);
 
         final String dataDiskName1 = generateRandomResourceName("dsk", 15);
         VirtualMachineUnmanagedDataDisk vmNativeDataDisk1 = dataDisks.get(0);
-        Disk managedDataDisk1 =
-            computeManager
-                .disks()
-                .define(dataDiskName1)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withData()
-                .fromVhd(vmNativeDataDisk1.vhdUri())
-                .withStorageAccount(storageAccount)
-                .create();
+        Disk managedDataDisk1 = computeManager.disks()
+            .define(dataDiskName1)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withData()
+            .fromVhd(vmNativeDataDisk1.vhdUri())
+            .withStorageAccount(storageAccount)
+            .create();
 
         // Create managed disk with Data from vm's lun1 data disk
         //
         final String dataDiskName2 = generateRandomResourceName("dsk", 15);
         VirtualMachineUnmanagedDataDisk vmNativeDataDisk2 = dataDisks.get(1);
-        Disk managedDataDisk2 =
-            computeManager
-                .disks()
-                .define(dataDiskName2)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withData()
-                .fromVhd(vmNativeDataDisk2.vhdUri())
-                .withStorageAccountId(storageAccount.id())
-                .create();
+        Disk managedDataDisk2 = computeManager.disks()
+            .define(dataDiskName2)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withData()
+            .fromVhd(vmNativeDataDisk2.vhdUri())
+            .withStorageAccountId(storageAccount.id())
+            .create();
 
         // Create an image from the above managed disks
         // Note that this is not a direct user scenario, but including this as per CRP team request
         //
         final String imageName = generateRandomResourceName("img", 15);
-        VirtualMachineCustomImage customImage =
-            computeManager
-                .virtualMachineCustomImages()
-                .define(imageName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withLinuxFromDisk(managedOsDisk, OperatingSystemStateTypes.GENERALIZED)
-                .defineDataDiskImage()
-                .withLun(vmNativeDataDisk1.lun())
-                .fromManagedDisk(managedDataDisk1)
-                .withDiskCaching(vmNativeDataDisk1.cachingType())
-                .withDiskSizeInGB(vmNativeDataDisk1.size() + 10)
-                .attach()
-                .defineDataDiskImage()
-                .withLun(vmNativeDataDisk2.lun())
-                .fromManagedDisk(managedDataDisk2)
-                .withDiskSizeInGB(vmNativeDataDisk2.size() + 10)
-                .attach()
-                .create();
+        VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages()
+            .define(imageName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinuxFromDisk(managedOsDisk, OperatingSystemStateTypes.GENERALIZED)
+            .defineDataDiskImage()
+            .withLun(vmNativeDataDisk1.lun())
+            .fromManagedDisk(managedDataDisk1)
+            .withDiskCaching(vmNativeDataDisk1.cachingType())
+            .withDiskSizeInGB(vmNativeDataDisk1.size() + 10)
+            .attach()
+            .defineDataDiskImage()
+            .withLun(vmNativeDataDisk2.lun())
+            .fromManagedDisk(managedDataDisk2)
+            .withDiskSizeInGB(vmNativeDataDisk2.size() + 10)
+            .attach()
+            .create();
 
         Assertions.assertNotNull(customImage);
         Assertions.assertTrue(customImage.name().equalsIgnoreCase(imageName));
@@ -320,9 +300,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assertions.assertNull(customImage.sourceVirtualMachineId());
 
         Assertions.assertTrue(customImage.dataDiskImages().containsKey(vmNativeDataDisk1.lun()));
-        Assertions
-            .assertEquals(
-                customImage.dataDiskImages().get(vmNativeDataDisk1.lun()).caching(), vmNativeDataDisk1.cachingType());
+        Assertions.assertEquals(customImage.dataDiskImages().get(vmNativeDataDisk1.lun()).caching(),
+            vmNativeDataDisk1.cachingType());
         Assertions.assertTrue(customImage.dataDiskImages().containsKey(vmNativeDataDisk2.lun()));
         Assertions.assertEquals(customImage.dataDiskImages().get(vmNativeDataDisk2.lun()).caching(), CachingTypes.NONE);
 
@@ -332,10 +311,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             Assertions.assertEquals((long) diskImage.diskSizeGB(), vmDisk.size() + 10);
             Assertions.assertNull(diskImage.blobUri());
             Assertions.assertNotNull(diskImage.managedDisk());
-            Assertions
-                .assertTrue(
-                    diskImage.managedDisk().id().equalsIgnoreCase(managedDataDisk1.id())
-                        || diskImage.managedDisk().id().equalsIgnoreCase(managedDataDisk2.id()));
+            Assertions.assertTrue(diskImage.managedDisk().id().equalsIgnoreCase(managedDataDisk1.id())
+                || diskImage.managedDisk().id().equalsIgnoreCase(managedDataDisk2.id()));
         }
         computeManager.disks().deleteById(managedOsDisk.id());
         computeManager.disks().deleteById(managedDataDisk1.id());
@@ -343,37 +320,35 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         computeManager.virtualMachineCustomImages().deleteById(customImage.id());
     }
 
-    private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(
-        String rgName, String vmName, Region region, ComputeManager computeManager) {
+    private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(String rgName, String vmName, Region region,
+        ComputeManager computeManager) {
         final String uname = "javauser";
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 
-        VirtualMachine virtualMachine =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
-                .withPopularLinuxImage(linuxImage)
-                .withRootUsername(uname)
-                .withSsh(sshPublicKey())
-                .withUnmanagedDisks()
-                .defineUnmanagedDataDisk("disk-1")
-                .withNewVhd(30)
-                .withCaching(CachingTypes.READ_WRITE)
-                .attach()
-                .defineUnmanagedDataDisk("disk-2")
-                .withNewVhd(60)
-                .withCaching(CachingTypes.READ_ONLY)
-                .attach()
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withNewStorageAccount(generateRandomResourceName("stg", 17))
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .create();
+        VirtualMachine virtualMachine = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
+            .withPopularLinuxImage(linuxImage)
+            .withRootUsername(uname)
+            .withSsh(sshPublicKey())
+            .withUnmanagedDisks()
+            .defineUnmanagedDataDisk("disk-1")
+            .withNewVhd(30)
+            .withCaching(CachingTypes.READ_WRITE)
+            .attach()
+            .defineUnmanagedDataDisk("disk-2")
+            .withNewVhd(60)
+            .withCaching(CachingTypes.READ_ONLY)
+            .attach()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withNewStorageAccount(generateRandomResourceName("stg", 17))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .create();
         //
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
         deprovisionAgentInLinuxVM(virtualMachine);

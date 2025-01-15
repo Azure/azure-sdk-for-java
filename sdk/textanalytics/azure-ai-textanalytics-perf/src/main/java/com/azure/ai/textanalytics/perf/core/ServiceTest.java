@@ -16,8 +16,8 @@ import com.azure.perf.test.core.PerfStressTest;
  * Base class for Azure Text Analytics performance tests.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    private static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
-                                                          + "or system properties.%n";
+    private static final String CONFIGURATION_ERROR
+        = "Configuration %s must be set in either environment variables " + "or system properties.%n";
 
     protected final TextAnalyticsClient textAnalyticsClient;
     protected final TextAnalyticsAsyncClient textAnalyticsAsyncClient;
@@ -42,11 +42,10 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             throw new RuntimeException(String.format(CONFIGURATION_ERROR, "AZURE_TEXT_ANALYTICS_API_KEY"));
         }
 
-        TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
-                                                 .endpoint(textAnalyticsEndpoint)
-                                                 .credential(new AzureKeyCredential(textAnalyticsApiKey));
+        TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder().endpoint(textAnalyticsEndpoint)
+            .credential(new AzureKeyCredential(textAnalyticsApiKey));
 
         this.textAnalyticsClient = builder.buildClient();
-        this.textAnalyticsAsyncClient  = builder.buildAsyncClient();
+        this.textAnalyticsAsyncClient = builder.buildAsyncClient();
     }
 }

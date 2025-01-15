@@ -5,56 +5,59 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties that define a ProactiveDetection configuration. */
+/**
+ * Properties that define a ProactiveDetection configuration.
+ */
 @Fluent
-public final class ApplicationInsightsComponentProactiveDetectionConfigurationInner {
+public final class ApplicationInsightsComponentProactiveDetectionConfigurationInner
+    implements JsonSerializable<ApplicationInsightsComponentProactiveDetectionConfigurationInner> {
     /*
      * The rule name
      */
-    @JsonProperty(value = "Name")
     private String name;
 
     /*
      * A flag that indicates whether this rule is enabled by the user
      */
-    @JsonProperty(value = "Enabled")
     private Boolean enabled;
 
     /*
      * A flag that indicated whether notifications on this rule should be sent to subscription owners
      */
-    @JsonProperty(value = "SendEmailsToSubscriptionOwners")
     private Boolean sendEmailsToSubscriptionOwners;
 
     /*
      * Custom email addresses for this rule notifications
      */
-    @JsonProperty(value = "CustomEmails")
     private List<String> customEmails;
 
     /*
      * The last time this rule was updated
      */
-    @JsonProperty(value = "LastUpdatedTime")
     private String lastUpdatedTime;
 
     /*
      * Static definitions of the ProactiveDetection configuration rule (same values for all components).
      */
-    @JsonProperty(value = "RuleDefinitions")
     private ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions ruleDefinitions;
 
-    /** Creates an instance of ApplicationInsightsComponentProactiveDetectionConfigurationInner class. */
+    /**
+     * Creates an instance of ApplicationInsightsComponentProactiveDetectionConfigurationInner class.
+     */
     public ApplicationInsightsComponentProactiveDetectionConfigurationInner() {
     }
 
     /**
      * Get the name property: The rule name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +66,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
 
     /**
      * Set the name property: The rule name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationInner object itself.
      */
@@ -74,7 +77,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
 
     /**
      * Get the enabled property: A flag that indicates whether this rule is enabled by the user.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -83,7 +86,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
 
     /**
      * Set the enabled property: A flag that indicates whether this rule is enabled by the user.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationInner object itself.
      */
@@ -95,7 +98,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
     /**
      * Get the sendEmailsToSubscriptionOwners property: A flag that indicated whether notifications on this rule should
      * be sent to subscription owners.
-     *
+     * 
      * @return the sendEmailsToSubscriptionOwners value.
      */
     public Boolean sendEmailsToSubscriptionOwners() {
@@ -105,19 +108,19 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
     /**
      * Set the sendEmailsToSubscriptionOwners property: A flag that indicated whether notifications on this rule should
      * be sent to subscription owners.
-     *
+     * 
      * @param sendEmailsToSubscriptionOwners the sendEmailsToSubscriptionOwners value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationInner object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationInner withSendEmailsToSubscriptionOwners(
-        Boolean sendEmailsToSubscriptionOwners) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationInner
+        withSendEmailsToSubscriptionOwners(Boolean sendEmailsToSubscriptionOwners) {
         this.sendEmailsToSubscriptionOwners = sendEmailsToSubscriptionOwners;
         return this;
     }
 
     /**
      * Get the customEmails property: Custom email addresses for this rule notifications.
-     *
+     * 
      * @return the customEmails value.
      */
     public List<String> customEmails() {
@@ -126,19 +129,19 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
 
     /**
      * Set the customEmails property: Custom email addresses for this rule notifications.
-     *
+     * 
      * @param customEmails the customEmails value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationInner object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationInner withCustomEmails(
-        List<String> customEmails) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationInner
+        withCustomEmails(List<String> customEmails) {
         this.customEmails = customEmails;
         return this;
     }
 
     /**
      * Get the lastUpdatedTime property: The last time this rule was updated.
-     *
+     * 
      * @return the lastUpdatedTime value.
      */
     public String lastUpdatedTime() {
@@ -147,12 +150,12 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
 
     /**
      * Set the lastUpdatedTime property: The last time this rule was updated.
-     *
+     * 
      * @param lastUpdatedTime the lastUpdatedTime value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationInner object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationInner withLastUpdatedTime(
-        String lastUpdatedTime) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationInner
+        withLastUpdatedTime(String lastUpdatedTime) {
         this.lastUpdatedTime = lastUpdatedTime;
         return this;
     }
@@ -160,7 +163,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
     /**
      * Get the ruleDefinitions property: Static definitions of the ProactiveDetection configuration rule (same values
      * for all components).
-     *
+     * 
      * @return the ruleDefinitions value.
      */
     public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions ruleDefinitions() {
@@ -170,7 +173,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
     /**
      * Set the ruleDefinitions property: Static definitions of the ProactiveDetection configuration rule (same values
      * for all components).
-     *
+     * 
      * @param ruleDefinitions the ruleDefinitions value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationInner object itself.
      */
@@ -182,12 +185,73 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleDefinitions() != null) {
             ruleDefinitions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("Name", this.name);
+        jsonWriter.writeBooleanField("Enabled", this.enabled);
+        jsonWriter.writeBooleanField("SendEmailsToSubscriptionOwners", this.sendEmailsToSubscriptionOwners);
+        jsonWriter.writeArrayField("CustomEmails", this.customEmails, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("LastUpdatedTime", this.lastUpdatedTime);
+        jsonWriter.writeJsonField("RuleDefinitions", this.ruleDefinitions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationInsightsComponentProactiveDetectionConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationInsightsComponentProactiveDetectionConfigurationInner if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApplicationInsightsComponentProactiveDetectionConfigurationInner.
+     */
+    public static ApplicationInsightsComponentProactiveDetectionConfigurationInner fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationInsightsComponentProactiveDetectionConfigurationInner deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner
+                = new ApplicationInsightsComponentProactiveDetectionConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Name".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.name
+                        = reader.getString();
+                } else if ("Enabled".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("SendEmailsToSubscriptionOwners".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.sendEmailsToSubscriptionOwners
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("CustomEmails".equals(fieldName)) {
+                    List<String> customEmails = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.customEmails
+                        = customEmails;
+                } else if ("LastUpdatedTime".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.lastUpdatedTime
+                        = reader.getString();
+                } else if ("RuleDefinitions".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner.ruleDefinitions
+                        = ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationInsightsComponentProactiveDetectionConfigurationInner;
+        });
     }
 }

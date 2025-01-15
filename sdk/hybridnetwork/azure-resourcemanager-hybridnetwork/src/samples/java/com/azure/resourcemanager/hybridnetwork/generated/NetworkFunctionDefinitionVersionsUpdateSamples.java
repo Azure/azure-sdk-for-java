@@ -24,9 +24,10 @@ public final class NetworkFunctionDefinitionVersionsUpdateSamples {
      */
     public static void updateTheNetworkFunctionDefinitionVersionTags(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        NetworkFunctionDefinitionVersion resource
-            = manager.networkFunctionDefinitionVersions().getWithResponse("rg", "TestPublisher",
-                "TestNetworkFunctionDefinitionGroupName", "1.0.0", com.azure.core.util.Context.NONE).getValue();
+        NetworkFunctionDefinitionVersion resource = manager.networkFunctionDefinitionVersions()
+            .getWithResponse("rg", "TestPublisher", "TestNetworkFunctionDefinitionGroupName", "1.0.0",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

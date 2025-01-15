@@ -85,7 +85,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.13.1</version>
+  <version>1.14.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -324,13 +324,13 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-okhttp
 [azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
@@ -338,6 +338,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [throttling]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/
 [rbac]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/RBAC.md
-[api_profile]: https://docs.microsoft.com/azure-stack/user/azure-stack-version-profiles
-[vm_considerations]: https://docs.microsoft.com/azure-stack/user/azure-stack-vm-considerations
+[api_profile]: https://learn.microsoft.com/azure-stack/user/azure-stack-version-profiles
+[vm_considerations]: https://learn.microsoft.com/azure-stack/user/azure-stack-vm-considerations
 [resourcemanager_azure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/README.md

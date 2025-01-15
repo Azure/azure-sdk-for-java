@@ -5,68 +5,73 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AutomationRuleAction;
 import com.azure.resourcemanager.securityinsights.models.AutomationRuleTriggeringLogic;
 import com.azure.resourcemanager.securityinsights.models.ClientInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Automation rule properties. */
+/**
+ * Automation rule properties.
+ */
 @Fluent
-public final class AutomationRuleProperties {
+public final class AutomationRuleProperties implements JsonSerializable<AutomationRuleProperties> {
     /*
      * The display name of the automation rule.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * The order of execution of the automation rule.
      */
-    @JsonProperty(value = "order", required = true)
     private int order;
 
     /*
      * Describes automation rule triggering logic.
      */
-    @JsonProperty(value = "triggeringLogic", required = true)
     private AutomationRuleTriggeringLogic triggeringLogic;
 
     /*
      * The actions to execute when the automation rule is triggered.
      */
-    @JsonProperty(value = "actions", required = true)
     private List<AutomationRuleAction> actions;
 
     /*
      * The last time the automation rule was updated.
      */
-    @JsonProperty(value = "lastModifiedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTimeUtc;
 
     /*
      * The time the automation rule was created.
      */
-    @JsonProperty(value = "createdTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTimeUtc;
 
     /*
      * Information on the client (user or application) that made some action
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private ClientInfo lastModifiedBy;
 
     /*
      * Information on the client (user or application) that made some action
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private ClientInfo createdBy;
 
     /**
+     * Creates an instance of AutomationRuleProperties class.
+     */
+    public AutomationRuleProperties() {
+    }
+
+    /**
      * Get the displayName property: The display name of the automation rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -75,7 +80,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Set the displayName property: The display name of the automation rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AutomationRuleProperties object itself.
      */
@@ -86,7 +91,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Get the order property: The order of execution of the automation rule.
-     *
+     * 
      * @return the order value.
      */
     public int order() {
@@ -95,7 +100,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Set the order property: The order of execution of the automation rule.
-     *
+     * 
      * @param order the order value to set.
      * @return the AutomationRuleProperties object itself.
      */
@@ -106,7 +111,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Get the triggeringLogic property: Describes automation rule triggering logic.
-     *
+     * 
      * @return the triggeringLogic value.
      */
     public AutomationRuleTriggeringLogic triggeringLogic() {
@@ -115,7 +120,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Set the triggeringLogic property: Describes automation rule triggering logic.
-     *
+     * 
      * @param triggeringLogic the triggeringLogic value to set.
      * @return the AutomationRuleProperties object itself.
      */
@@ -126,7 +131,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Get the actions property: The actions to execute when the automation rule is triggered.
-     *
+     * 
      * @return the actions value.
      */
     public List<AutomationRuleAction> actions() {
@@ -135,7 +140,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Set the actions property: The actions to execute when the automation rule is triggered.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AutomationRuleProperties object itself.
      */
@@ -146,7 +151,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Get the lastModifiedTimeUtc property: The last time the automation rule was updated.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -155,7 +160,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Get the createdTimeUtc property: The time the automation rule was created.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -164,7 +169,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Get the lastModifiedBy property: Information on the client (user or application) that made some action.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public ClientInfo lastModifiedBy() {
@@ -173,7 +178,7 @@ public final class AutomationRuleProperties {
 
     /**
      * Get the createdBy property: Information on the client (user or application) that made some action.
-     *
+     * 
      * @return the createdBy value.
      */
     public ClientInfo createdBy() {
@@ -182,29 +187,26 @@ public final class AutomationRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model AutomationRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model AutomationRuleProperties"));
         }
         if (triggeringLogic() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property triggeringLogic in model AutomationRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property triggeringLogic in model AutomationRuleProperties"));
         } else {
             triggeringLogic().validate();
         }
         if (actions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property actions in model AutomationRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property actions in model AutomationRuleProperties"));
         } else {
             actions().forEach(e -> e.validate());
         }
@@ -217,4 +219,63 @@ public final class AutomationRuleProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutomationRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeIntField("order", this.order);
+        jsonWriter.writeJsonField("triggeringLogic", this.triggeringLogic);
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRuleProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutomationRuleProperties.
+     */
+    public static AutomationRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRuleProperties deserializedAutomationRuleProperties = new AutomationRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedAutomationRuleProperties.displayName = reader.getString();
+                } else if ("order".equals(fieldName)) {
+                    deserializedAutomationRuleProperties.order = reader.getInt();
+                } else if ("triggeringLogic".equals(fieldName)) {
+                    deserializedAutomationRuleProperties.triggeringLogic
+                        = AutomationRuleTriggeringLogic.fromJson(reader);
+                } else if ("actions".equals(fieldName)) {
+                    List<AutomationRuleAction> actions
+                        = reader.readArray(reader1 -> AutomationRuleAction.fromJson(reader1));
+                    deserializedAutomationRuleProperties.actions = actions;
+                } else if ("lastModifiedTimeUtc".equals(fieldName)) {
+                    deserializedAutomationRuleProperties.lastModifiedTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdTimeUtc".equals(fieldName)) {
+                    deserializedAutomationRuleProperties.createdTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedAutomationRuleProperties.lastModifiedBy = ClientInfo.fromJson(reader);
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedAutomationRuleProperties.createdBy = ClientInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRuleProperties;
+        });
+    }
 }

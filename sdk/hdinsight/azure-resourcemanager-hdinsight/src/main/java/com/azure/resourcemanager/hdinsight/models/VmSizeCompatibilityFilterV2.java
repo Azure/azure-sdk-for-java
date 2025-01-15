@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,71 +19,64 @@ import java.util.List;
  * Filters. Later filters override previous settings if conflicted.
  */
 @Fluent
-public final class VmSizeCompatibilityFilterV2 {
+public final class VmSizeCompatibilityFilterV2 implements JsonSerializable<VmSizeCompatibilityFilterV2> {
     /*
      * The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
      */
-    @JsonProperty(value = "filterMode")
     private FilterMode filterMode;
 
     /*
      * The list of regions under the effect of the filter.
      */
-    @JsonProperty(value = "regions")
     private List<String> regions;
 
     /*
      * The list of cluster flavors under the effect of the filter.
      */
-    @JsonProperty(value = "clusterFlavors")
     private List<String> clusterFlavors;
 
     /*
      * The list of node types affected by the filter.
      */
-    @JsonProperty(value = "nodeTypes")
     private List<String> nodeTypes;
 
     /*
      * The list of cluster versions affected in Major.Minor format.
      */
-    @JsonProperty(value = "clusterVersions")
     private List<String> clusterVersions;
 
     /*
      * The OSType affected, Windows or Linux.
      */
-    @JsonProperty(value = "osType")
     private List<OSType> osType;
 
     /*
      * The list of virtual machine sizes to include or exclude.
      */
-    @JsonProperty(value = "vmSizes")
     private List<String> vmSizes;
 
     /*
-     * Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for non-ESP, null or empty string
-     * or others mean for both.
+     * Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for non-ESP, null or empty string or
+     * others mean for both.
      */
-    @JsonProperty(value = "espApplied")
     private String espApplied;
 
     /*
      * Whether support compute isolation. 'true' means only for ComputeIsolationEnabled, 'false' means only for regular
      * cluster.
      */
-    @JsonProperty(value = "computeIsolationSupported")
     private String computeIsolationSupported;
 
-    /** Creates an instance of VmSizeCompatibilityFilterV2 class. */
+    /**
+     * Creates an instance of VmSizeCompatibilityFilterV2 class.
+     */
     public VmSizeCompatibilityFilterV2() {
     }
 
     /**
      * Get the filterMode property: The filtering mode. Effectively this can enabling or disabling the VM sizes in a
      * particular set.
-     *
+     * 
      * @return the filterMode value.
      */
     public FilterMode filterMode() {
@@ -89,7 +86,7 @@ public final class VmSizeCompatibilityFilterV2 {
     /**
      * Set the filterMode property: The filtering mode. Effectively this can enabling or disabling the VM sizes in a
      * particular set.
-     *
+     * 
      * @param filterMode the filterMode value to set.
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
@@ -100,7 +97,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Get the regions property: The list of regions under the effect of the filter.
-     *
+     * 
      * @return the regions value.
      */
     public List<String> regions() {
@@ -109,7 +106,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Set the regions property: The list of regions under the effect of the filter.
-     *
+     * 
      * @param regions the regions value to set.
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
@@ -120,7 +117,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Get the clusterFlavors property: The list of cluster flavors under the effect of the filter.
-     *
+     * 
      * @return the clusterFlavors value.
      */
     public List<String> clusterFlavors() {
@@ -129,7 +126,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Set the clusterFlavors property: The list of cluster flavors under the effect of the filter.
-     *
+     * 
      * @param clusterFlavors the clusterFlavors value to set.
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
@@ -140,7 +137,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Get the nodeTypes property: The list of node types affected by the filter.
-     *
+     * 
      * @return the nodeTypes value.
      */
     public List<String> nodeTypes() {
@@ -149,7 +146,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Set the nodeTypes property: The list of node types affected by the filter.
-     *
+     * 
      * @param nodeTypes the nodeTypes value to set.
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
@@ -160,7 +157,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Get the clusterVersions property: The list of cluster versions affected in Major.Minor format.
-     *
+     * 
      * @return the clusterVersions value.
      */
     public List<String> clusterVersions() {
@@ -169,7 +166,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Set the clusterVersions property: The list of cluster versions affected in Major.Minor format.
-     *
+     * 
      * @param clusterVersions the clusterVersions value to set.
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
@@ -180,7 +177,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Get the osType property: The OSType affected, Windows or Linux.
-     *
+     * 
      * @return the osType value.
      */
     public List<OSType> osType() {
@@ -189,7 +186,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Set the osType property: The OSType affected, Windows or Linux.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
@@ -200,7 +197,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Get the vmSizes property: The list of virtual machine sizes to include or exclude.
-     *
+     * 
      * @return the vmSizes value.
      */
     public List<String> vmSizes() {
@@ -209,7 +206,7 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Set the vmSizes property: The list of virtual machine sizes to include or exclude.
-     *
+     * 
      * @param vmSizes the vmSizes value to set.
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
@@ -221,7 +218,7 @@ public final class VmSizeCompatibilityFilterV2 {
     /**
      * Get the espApplied property: Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for
      * non-ESP, null or empty string or others mean for both.
-     *
+     * 
      * @return the espApplied value.
      */
     public String espApplied() {
@@ -231,7 +228,7 @@ public final class VmSizeCompatibilityFilterV2 {
     /**
      * Set the espApplied property: Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for
      * non-ESP, null or empty string or others mean for both.
-     *
+     * 
      * @param espApplied the espApplied value to set.
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
@@ -243,7 +240,7 @@ public final class VmSizeCompatibilityFilterV2 {
     /**
      * Get the computeIsolationSupported property: Whether support compute isolation. 'true' means only for
      * ComputeIsolationEnabled, 'false' means only for regular cluster.
-     *
+     * 
      * @return the computeIsolationSupported value.
      */
     public String computeIsolationSupported() {
@@ -253,7 +250,7 @@ public final class VmSizeCompatibilityFilterV2 {
     /**
      * Set the computeIsolationSupported property: Whether support compute isolation. 'true' means only for
      * ComputeIsolationEnabled, 'false' means only for regular cluster.
-     *
+     * 
      * @param computeIsolationSupported the computeIsolationSupported value to set.
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
@@ -264,9 +261,78 @@ public final class VmSizeCompatibilityFilterV2 {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filterMode", this.filterMode == null ? null : this.filterMode.toString());
+        jsonWriter.writeArrayField("regions", this.regions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("clusterFlavors", this.clusterFlavors,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nodeTypes", this.nodeTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("clusterVersions", this.clusterVersions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("osType", this.osType,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("vmSizes", this.vmSizes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("espApplied", this.espApplied);
+        jsonWriter.writeStringField("computeIsolationSupported", this.computeIsolationSupported);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmSizeCompatibilityFilterV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmSizeCompatibilityFilterV2 if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VmSizeCompatibilityFilterV2.
+     */
+    public static VmSizeCompatibilityFilterV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmSizeCompatibilityFilterV2 deserializedVmSizeCompatibilityFilterV2 = new VmSizeCompatibilityFilterV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filterMode".equals(fieldName)) {
+                    deserializedVmSizeCompatibilityFilterV2.filterMode = FilterMode.fromString(reader.getString());
+                } else if ("regions".equals(fieldName)) {
+                    List<String> regions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVmSizeCompatibilityFilterV2.regions = regions;
+                } else if ("clusterFlavors".equals(fieldName)) {
+                    List<String> clusterFlavors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVmSizeCompatibilityFilterV2.clusterFlavors = clusterFlavors;
+                } else if ("nodeTypes".equals(fieldName)) {
+                    List<String> nodeTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVmSizeCompatibilityFilterV2.nodeTypes = nodeTypes;
+                } else if ("clusterVersions".equals(fieldName)) {
+                    List<String> clusterVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVmSizeCompatibilityFilterV2.clusterVersions = clusterVersions;
+                } else if ("osType".equals(fieldName)) {
+                    List<OSType> osType = reader.readArray(reader1 -> OSType.fromString(reader1.getString()));
+                    deserializedVmSizeCompatibilityFilterV2.osType = osType;
+                } else if ("vmSizes".equals(fieldName)) {
+                    List<String> vmSizes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVmSizeCompatibilityFilterV2.vmSizes = vmSizes;
+                } else if ("espApplied".equals(fieldName)) {
+                    deserializedVmSizeCompatibilityFilterV2.espApplied = reader.getString();
+                } else if ("computeIsolationSupported".equals(fieldName)) {
+                    deserializedVmSizeCompatibilityFilterV2.computeIsolationSupported = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmSizeCompatibilityFilterV2;
+        });
     }
 }

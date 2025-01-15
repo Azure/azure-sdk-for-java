@@ -4,36 +4,51 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.resourcemanager.billing.models.AddressDetails;
-import com.azure.resourcemanager.billing.models.BillingAccountUpdateRequest;
+import com.azure.resourcemanager.billing.models.BillingAccountPatch;
+import com.azure.resourcemanager.billing.models.BillingAccountProperties;
+import com.azure.resourcemanager.billing.models.BillingAccountPropertiesEnrollmentDetails;
+import com.azure.resourcemanager.billing.models.BillingAccountPropertiesSoldTo;
 
-/** Samples for BillingAccounts Update. */
+/**
+ * Samples for BillingAccounts Update.
+ */
 public final class BillingAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateBillingAccount.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingAccountsUpdate.json
      */
     /**
-     * Sample code: UpdateBillingAccount.
-     *
+     * Sample code: BillingAccountsUpdate.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void updateBillingAccount(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .billingAccounts()
-            .update(
-                "{billingAccountName}",
-                new BillingAccountUpdateRequest()
-                    .withDisplayName("Test Account")
-                    .withSoldTo(
-                        new AddressDetails()
-                            .withFirstName("Test")
-                            .withLastName("User")
-                            .withCompanyName("Contoso")
-                            .withAddressLine1("Test Address 1")
-                            .withCity("Redmond")
-                            .withRegion("WA")
-                            .withCountry("US")
-                            .withPostalCode("fakeTokenPlaceholder")),
+    public static void billingAccountsUpdate(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.billingAccounts()
+            .update("10000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31",
+                new BillingAccountPatch().withProperties(new BillingAccountProperties().withDisplayName("Test Account")
+                    .withSoldTo(new BillingAccountPropertiesSoldTo().withAddressLine1("1 Microsoft Way")
+                        .withCity("Redmond")
+                        .withCompanyName("Contoso")
+                        .withCountry("US")
+                        .withPostalCode("fakeTokenPlaceholder")
+                        .withRegion("WA"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
+     * billingAccountUpdateWithPONumber.json
+     */
+    /**
+     * Sample code: BillingAccountUpdateWithPONumber.
+     * 
+     * @param manager Entry point to BillingManager.
+     */
+    public static void billingAccountUpdateWithPONumber(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.billingAccounts()
+            .update("6575495",
+                new BillingAccountPatch().withProperties(new BillingAccountProperties().withEnrollmentDetails(
+                    new BillingAccountPropertiesEnrollmentDetails().withPoNumber("poNumber123"))),
                 com.azure.core.util.Context.NONE);
     }
 }

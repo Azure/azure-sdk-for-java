@@ -7,11 +7,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRange;
 
-
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2_1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
@@ -35,7 +34,7 @@ final class EncryptedBlobRange {
      * 0-31 for v1
      * 0-(4mb+12-1)
      */
-    private final int offsetAdjustment;
+    private final Long offsetAdjustment;
 
     /**
      * How many bytes to download, including the adjustments for encryption block boundaries and the IV.
@@ -78,7 +77,7 @@ final class EncryptedBlobRange {
     EncryptedBlobRange(BlobRange originalRange, EncryptionData encryptionData) {
         if (originalRange == null) {
             this.originalRange = new BlobRange(0);
-            this.offsetAdjustment = 0;
+            this.offsetAdjustment = 0L;
             this.amountPlaintextToSkip = 0; // In cases where this block is executed, this value does not matter
             return;
         }
@@ -111,49 +110,52 @@ final class EncryptedBlobRange {
                     }
                 }
 
-                this.offsetAdjustment = tempOffsetAdjustment;
+                this.offsetAdjustment = (long) tempOffsetAdjustment;
 
                 /*
                 Align adjustedDownloadCount with encryption block boundary at the end of the range. Note that it is impossible
                 to adjust past the end of the blob as an encrypted blob was padded to align to an encryption block boundary.
                  */
                 if (this.adjustedDownloadCount != null) {
-                    this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE
-                        - (int) (this.adjustedDownloadCount % ENCRYPTION_BLOCK_SIZE);
+                    this.adjustedDownloadCount
+                        += ENCRYPTION_BLOCK_SIZE - (int) (this.adjustedDownloadCount % ENCRYPTION_BLOCK_SIZE);
                 }
                 // These values are the same here because, barring padding, which is irrelevant here, the cipher text
                 // length is the same as the plaintext length.
                 this.amountPlaintextToSkip = offsetAdjustment;
                 break;
+
             case ENCRYPTION_PROTOCOL_V2:
+            case ENCRYPTION_PROTOCOL_V2_1:
                 // Calculate offsetAdjustment.
                 // Get the start of the encryption region for the original offset
-                long regionNumber = originalRange.getOffset() / GCM_ENCRYPTION_REGION_LENGTH;
+                long authenticatedRegionDataLength = encryptionData.getEncryptedRegionInfo().getDataLength();
+                long regionNumber = originalRange.getOffset() / authenticatedRegionDataLength;
 
-                long regionStartOffset = regionNumber
-                    * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+                long regionStartOffset = regionNumber * (NONCE_LENGTH + authenticatedRegionDataLength + TAG_LENGTH);
 
                 // This is the plaintext original offset minus the beginning of the containing encryption region also in plaintext.
                 // It is effectively the amount of extra plaintext we grabbed. This is necessary because the nonces and tags
                 // are stored in the data, which skews our counting.
-                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * GCM_ENCRYPTION_REGION_LENGTH);
+                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * authenticatedRegionDataLength);
 
                 if (originalRange.getCount() != null) {
                     // Get the end of the encryption region for the end of the original range
-                    regionNumber = (originalRange.getOffset() + originalRange.getCount() - 1)
-                        / GCM_ENCRYPTION_REGION_LENGTH;
+                    regionNumber
+                        = (originalRange.getOffset() + originalRange.getCount() - 1) / authenticatedRegionDataLength;
                     // Read: Get the starting offset for the last encryption region as above and add the length of a region
                     // to get the end offset for the region
-                    long regionEndOffset = (regionNumber + 1)
-                        * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+                    long regionEndOffset
+                        = (regionNumber + 1) * (NONCE_LENGTH + authenticatedRegionDataLength + TAG_LENGTH);
                     // adjusted download count is the difference in the end and start of the range.
                     this.adjustedDownloadCount = regionEndOffset - regionStartOffset;
                 }
 
                 // Offset adjustment is difference in two starting values
-                this.offsetAdjustment = (int) (originalRange.getOffset() - regionStartOffset);
+                this.offsetAdjustment = (originalRange.getOffset() - regionStartOffset);
 
                 break;
+
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unexpected protocol version"));
         }
@@ -169,7 +171,7 @@ final class EncryptedBlobRange {
     /**
      * @return Offset from beginning of BlobRange, 0-31.
      */
-    int getOffsetAdjustment() {
+    Long getOffsetAdjustment() {
         return this.offsetAdjustment;
     }
 

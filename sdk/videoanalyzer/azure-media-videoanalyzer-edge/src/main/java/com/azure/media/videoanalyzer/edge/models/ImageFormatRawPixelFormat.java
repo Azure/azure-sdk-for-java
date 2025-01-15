@@ -5,56 +5,91 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImageFormatRawPixelFormat. */
+/**
+ * Pixel format to be applied to the raw image.
+ */
 public final class ImageFormatRawPixelFormat extends ExpandableStringEnum<ImageFormatRawPixelFormat> {
-    /** Static value yuv420p for ImageFormatRawPixelFormat. */
+    /**
+     * Planar YUV 4:2:0, 12bpp, (1 Cr and Cb sample per 2x2 Y samples).
+     */
     public static final ImageFormatRawPixelFormat YUV420P = fromString("yuv420p");
 
-    /** Static value rgb565be for ImageFormatRawPixelFormat. */
+    /**
+     * Packed RGB 5:6:5, 16bpp, (msb) 5R 6G 5B(lsb), big-endian.
+     */
     public static final ImageFormatRawPixelFormat RGB565BE = fromString("rgb565be");
 
-    /** Static value rgb565le for ImageFormatRawPixelFormat. */
+    /**
+     * Packed RGB 5:6:5, 16bpp, (msb) 5R 6G 5B(lsb), little-endian.
+     */
     public static final ImageFormatRawPixelFormat RGB565LE = fromString("rgb565le");
 
-    /** Static value rgb555be for ImageFormatRawPixelFormat. */
+    /**
+     * Packed RGB 5:5:5, 16bpp, (msb)1X 5R 5G 5B(lsb), big-endian , X=unused/undefined.
+     */
     public static final ImageFormatRawPixelFormat RGB555BE = fromString("rgb555be");
 
-    /** Static value rgb555le for ImageFormatRawPixelFormat. */
+    /**
+     * Packed RGB 5:5:5, 16bpp, (msb)1X 5R 5G 5B(lsb), little-endian, X=unused/undefined.
+     */
     public static final ImageFormatRawPixelFormat RGB555LE = fromString("rgb555le");
 
-    /** Static value rgb24 for ImageFormatRawPixelFormat. */
+    /**
+     * Packed RGB 8:8:8, 24bpp, RGBRGB.
+     */
     public static final ImageFormatRawPixelFormat RGB24 = fromString("rgb24");
 
-    /** Static value bgr24 for ImageFormatRawPixelFormat. */
+    /**
+     * Packed RGB 8:8:8, 24bpp, BGRBGR.
+     */
     public static final ImageFormatRawPixelFormat BGR24 = fromString("bgr24");
 
-    /** Static value argb for ImageFormatRawPixelFormat. */
+    /**
+     * Packed ARGB 8:8:8:8, 32bpp, ARGBARGB.
+     */
     public static final ImageFormatRawPixelFormat ARGB = fromString("argb");
 
-    /** Static value rgba for ImageFormatRawPixelFormat. */
+    /**
+     * Packed RGBA 8:8:8:8, 32bpp, RGBARGBA.
+     */
     public static final ImageFormatRawPixelFormat RGBA = fromString("rgba");
 
-    /** Static value abgr for ImageFormatRawPixelFormat. */
+    /**
+     * Packed ABGR 8:8:8:8, 32bpp, ABGRABGR.
+     */
     public static final ImageFormatRawPixelFormat ABGR = fromString("abgr");
 
-    /** Static value bgra for ImageFormatRawPixelFormat. */
+    /**
+     * Packed BGRA 8:8:8:8, 32bpp, BGRABGRA.
+     */
     public static final ImageFormatRawPixelFormat BGRA = fromString("bgra");
 
     /**
+     * Creates a new instance of ImageFormatRawPixelFormat value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImageFormatRawPixelFormat() {
+    }
+
+    /**
      * Creates or finds a ImageFormatRawPixelFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImageFormatRawPixelFormat.
      */
-    @JsonCreator
     public static ImageFormatRawPixelFormat fromString(String name) {
         return fromString(name, ImageFormatRawPixelFormat.class);
     }
 
-    /** @return known ImageFormatRawPixelFormat values. */
+    /**
+     * Gets known ImageFormatRawPixelFormat values.
+     * 
+     * @return known ImageFormatRawPixelFormat values.
+     */
     public static Collection<ImageFormatRawPixelFormat> values() {
         return values(ImageFormatRawPixelFormat.class);
     }

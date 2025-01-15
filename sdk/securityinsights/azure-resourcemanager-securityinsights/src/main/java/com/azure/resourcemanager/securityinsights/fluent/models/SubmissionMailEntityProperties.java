@@ -5,77 +5,91 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.UUID;
 
-/** Submission mail entity property bag. */
+/**
+ * Submission mail entity property bag.
+ */
 @Immutable
 public final class SubmissionMailEntityProperties extends EntityCommonProperties {
     /*
      * The network message id of email to which submission belongs
      */
-    @JsonProperty(value = "networkMessageId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID networkMessageId;
 
     /*
      * The submission id
      */
-    @JsonProperty(value = "submissionId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID submissionId;
 
     /*
      * The submitter
      */
-    @JsonProperty(value = "submitter", access = JsonProperty.Access.WRITE_ONLY)
     private String submitter;
 
     /*
      * The submission date
      */
-    @JsonProperty(value = "submissionDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime submissionDate;
 
     /*
      * The Time stamp when the message is received (Mail)
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * The recipient of the mail
      */
-    @JsonProperty(value = "recipient", access = JsonProperty.Access.WRITE_ONLY)
     private String recipient;
 
     /*
      * The sender of the mail
      */
-    @JsonProperty(value = "sender", access = JsonProperty.Access.WRITE_ONLY)
     private String sender;
 
     /*
      * The sender's IP
      */
-    @JsonProperty(value = "senderIp", access = JsonProperty.Access.WRITE_ONLY)
     private String senderIp;
 
     /*
      * The subject of submission mail
      */
-    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
     private String subject;
 
     /*
      * The submission type for the given instance. This maps to Junk, Phish, Malware or NotJunk.
      */
-    @JsonProperty(value = "reportType", access = JsonProperty.Access.WRITE_ONLY)
     private String reportType;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of SubmissionMailEntityProperties class.
+     */
+    public SubmissionMailEntityProperties() {
+    }
 
     /**
      * Get the networkMessageId property: The network message id of email to which submission belongs.
-     *
+     * 
      * @return the networkMessageId value.
      */
     public UUID networkMessageId() {
@@ -84,7 +98,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
 
     /**
      * Get the submissionId property: The submission id.
-     *
+     * 
      * @return the submissionId value.
      */
     public UUID submissionId() {
@@ -93,7 +107,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
 
     /**
      * Get the submitter property: The submitter.
-     *
+     * 
      * @return the submitter value.
      */
     public String submitter() {
@@ -102,7 +116,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
 
     /**
      * Get the submissionDate property: The submission date.
-     *
+     * 
      * @return the submissionDate value.
      */
     public OffsetDateTime submissionDate() {
@@ -111,7 +125,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
 
     /**
      * Get the timestamp property: The Time stamp when the message is received (Mail).
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -120,7 +134,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
 
     /**
      * Get the recipient property: The recipient of the mail.
-     *
+     * 
      * @return the recipient value.
      */
     public String recipient() {
@@ -129,7 +143,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
 
     /**
      * Get the sender property: The sender of the mail.
-     *
+     * 
      * @return the sender value.
      */
     public String sender() {
@@ -138,7 +152,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
 
     /**
      * Get the senderIp property: The sender's IP.
-     *
+     * 
      * @return the senderIp value.
      */
     public String senderIp() {
@@ -147,7 +161,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
 
     /**
      * Get the subject property: The subject of submission mail.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -157,7 +171,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
     /**
      * Get the reportType property: The submission type for the given instance. This maps to Junk, Phish, Malware or
      * NotJunk.
-     *
+     * 
      * @return the reportType value.
      */
     public String reportType() {
@@ -165,12 +179,96 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubmissionMailEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubmissionMailEntityProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubmissionMailEntityProperties.
+     */
+    public static SubmissionMailEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubmissionMailEntityProperties deserializedSubmissionMailEntityProperties
+                = new SubmissionMailEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedSubmissionMailEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.friendlyName = reader.getString();
+                } else if ("networkMessageId".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.networkMessageId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("submissionId".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.submissionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("submitter".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.submitter = reader.getString();
+                } else if ("submissionDate".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.submissionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recipient".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.recipient = reader.getString();
+                } else if ("sender".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.sender = reader.getString();
+                } else if ("senderIp".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.senderIp = reader.getString();
+                } else if ("subject".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.subject = reader.getString();
+                } else if ("reportType".equals(fieldName)) {
+                    deserializedSubmissionMailEntityProperties.reportType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubmissionMailEntityProperties;
+        });
     }
 }

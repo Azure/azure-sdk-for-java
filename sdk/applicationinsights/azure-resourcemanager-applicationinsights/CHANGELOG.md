@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,86 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2024-12-13)
+
+- Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2022-06-15-java. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.WorkbookResource` was modified
+
+* `name()` was added
+* `type()` was added
+* `id()` was added
+
+#### `models.AnnotationError` was modified
+
+* `getAdditionalInfo()` was added
+* `getDetails()` was added
+* `getMessage()` was added
+* `getTarget()` was added
+* `getCode()` was added
+
+#### `models.WorkbookErrorDefinition` was modified
+
+* `getDetails()` was added
+* `getTarget()` was added
+* `getCode()` was added
+* `getAdditionalInfo()` was added
+* `getMessage()` was added
+
+#### `models.WorkbookResourceIdentity` was modified
+
+* `principalId()` was added
+* `tenantId()` was added
+
+#### `models.WebtestsResource` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.ComponentsResource` was modified
+
+* `type()` was added
+* `id()` was added
+* `name()` was added
+
+#### `models.WorkItemConfigurationError` was modified
+
+* `getDetails()` was added
+* `getAdditionalInfo()` was added
+* `getCode()` was added
+* `getTarget()` was added
+* `getMessage()` was added
+
+#### `models.ErrorDefinition` was modified
+
+* `getCode()` was added
+* `getTarget()` was added
+* `getAdditionalInfo()` was added
+* `getDetails()` was added
+* `getMessage()` was added
+
+#### `models.WorkbookTemplateResource` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
 
 ## 1.0.0 (2023-10-27)
 

@@ -13,57 +13,51 @@ import org.junit.jupiter.api.Assertions;
 public final class SynapseSparkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SynapseSparkProperties model =
-            BinaryData
-                .fromString(
-                    "{\"autoScaleProperties\":{\"minNodeCount\":1954145446,\"enabled\":true,\"maxNodeCount\":1674537674},\"autoPauseProperties\":{\"delayInMinutes\":1052407004,\"enabled\":true},\"sparkVersion\":\"ojpslsvjgpliufi\",\"nodeCount\":1125182676,\"nodeSize\":\"xqvapcohh\",\"nodeSizeFamily\":\"cqpqojxcxzrzdc\",\"subscriptionId\":\"zbenribc\",\"resourceGroup\":\"etzqd\",\"workspaceName\":\"jwfljhznamtua\",\"poolName\":\"zwcjjncqtj\"}")
-                .toObject(SynapseSparkProperties.class);
-        Assertions.assertEquals(1954145446, model.autoScaleProperties().minNodeCount());
+        SynapseSparkProperties model = BinaryData.fromString(
+            "{\"autoScaleProperties\":{\"minNodeCount\":217576922,\"enabled\":true,\"maxNodeCount\":1065975774},\"autoPauseProperties\":{\"delayInMinutes\":1088502083,\"enabled\":false},\"sparkVersion\":\"rncmazdfsqxh\",\"nodeCount\":982275641,\"nodeSize\":\"ejparn\",\"nodeSizeFamily\":\"grszrbwtdrcwg\",\"subscriptionId\":\"ll\",\"resourceGroup\":\"lhhfi\",\"workspaceName\":\"cfculzj\",\"poolName\":\"hp\"}")
+            .toObject(SynapseSparkProperties.class);
+        Assertions.assertEquals(217576922, model.autoScaleProperties().minNodeCount());
         Assertions.assertEquals(true, model.autoScaleProperties().enabled());
-        Assertions.assertEquals(1674537674, model.autoScaleProperties().maxNodeCount());
-        Assertions.assertEquals(1052407004, model.autoPauseProperties().delayInMinutes());
-        Assertions.assertEquals(true, model.autoPauseProperties().enabled());
-        Assertions.assertEquals("ojpslsvjgpliufi", model.sparkVersion());
-        Assertions.assertEquals(1125182676, model.nodeCount());
-        Assertions.assertEquals("xqvapcohh", model.nodeSize());
-        Assertions.assertEquals("cqpqojxcxzrzdc", model.nodeSizeFamily());
-        Assertions.assertEquals("zbenribc", model.subscriptionId());
-        Assertions.assertEquals("etzqd", model.resourceGroup());
-        Assertions.assertEquals("jwfljhznamtua", model.workspaceName());
-        Assertions.assertEquals("zwcjjncqtj", model.poolName());
+        Assertions.assertEquals(1065975774, model.autoScaleProperties().maxNodeCount());
+        Assertions.assertEquals(1088502083, model.autoPauseProperties().delayInMinutes());
+        Assertions.assertEquals(false, model.autoPauseProperties().enabled());
+        Assertions.assertEquals("rncmazdfsqxh", model.sparkVersion());
+        Assertions.assertEquals(982275641, model.nodeCount());
+        Assertions.assertEquals("ejparn", model.nodeSize());
+        Assertions.assertEquals("grszrbwtdrcwg", model.nodeSizeFamily());
+        Assertions.assertEquals("ll", model.subscriptionId());
+        Assertions.assertEquals("lhhfi", model.resourceGroup());
+        Assertions.assertEquals("cfculzj", model.workspaceName());
+        Assertions.assertEquals("hp", model.poolName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SynapseSparkProperties model =
-            new SynapseSparkProperties()
-                .withAutoScaleProperties(
-                    new AutoScaleProperties()
-                        .withMinNodeCount(1954145446)
-                        .withEnabled(true)
-                        .withMaxNodeCount(1674537674))
-                .withAutoPauseProperties(new AutoPauseProperties().withDelayInMinutes(1052407004).withEnabled(true))
-                .withSparkVersion("ojpslsvjgpliufi")
-                .withNodeCount(1125182676)
-                .withNodeSize("xqvapcohh")
-                .withNodeSizeFamily("cqpqojxcxzrzdc")
-                .withSubscriptionId("zbenribc")
-                .withResourceGroup("etzqd")
-                .withWorkspaceName("jwfljhznamtua")
-                .withPoolName("zwcjjncqtj");
+        SynapseSparkProperties model = new SynapseSparkProperties()
+            .withAutoScaleProperties(
+                new AutoScaleProperties().withMinNodeCount(217576922).withEnabled(true).withMaxNodeCount(1065975774))
+            .withAutoPauseProperties(new AutoPauseProperties().withDelayInMinutes(1088502083).withEnabled(false))
+            .withSparkVersion("rncmazdfsqxh")
+            .withNodeCount(982275641)
+            .withNodeSize("ejparn")
+            .withNodeSizeFamily("grszrbwtdrcwg")
+            .withSubscriptionId("ll")
+            .withResourceGroup("lhhfi")
+            .withWorkspaceName("cfculzj")
+            .withPoolName("hp");
         model = BinaryData.fromObject(model).toObject(SynapseSparkProperties.class);
-        Assertions.assertEquals(1954145446, model.autoScaleProperties().minNodeCount());
+        Assertions.assertEquals(217576922, model.autoScaleProperties().minNodeCount());
         Assertions.assertEquals(true, model.autoScaleProperties().enabled());
-        Assertions.assertEquals(1674537674, model.autoScaleProperties().maxNodeCount());
-        Assertions.assertEquals(1052407004, model.autoPauseProperties().delayInMinutes());
-        Assertions.assertEquals(true, model.autoPauseProperties().enabled());
-        Assertions.assertEquals("ojpslsvjgpliufi", model.sparkVersion());
-        Assertions.assertEquals(1125182676, model.nodeCount());
-        Assertions.assertEquals("xqvapcohh", model.nodeSize());
-        Assertions.assertEquals("cqpqojxcxzrzdc", model.nodeSizeFamily());
-        Assertions.assertEquals("zbenribc", model.subscriptionId());
-        Assertions.assertEquals("etzqd", model.resourceGroup());
-        Assertions.assertEquals("jwfljhznamtua", model.workspaceName());
-        Assertions.assertEquals("zwcjjncqtj", model.poolName());
+        Assertions.assertEquals(1065975774, model.autoScaleProperties().maxNodeCount());
+        Assertions.assertEquals(1088502083, model.autoPauseProperties().delayInMinutes());
+        Assertions.assertEquals(false, model.autoPauseProperties().enabled());
+        Assertions.assertEquals("rncmazdfsqxh", model.sparkVersion());
+        Assertions.assertEquals(982275641, model.nodeCount());
+        Assertions.assertEquals("ejparn", model.nodeSize());
+        Assertions.assertEquals("grszrbwtdrcwg", model.nodeSizeFamily());
+        Assertions.assertEquals("ll", model.subscriptionId());
+        Assertions.assertEquals("lhhfi", model.resourceGroup());
+        Assertions.assertEquals("cfculzj", model.workspaceName());
+        Assertions.assertEquals("hp", model.poolName());
     }
 }

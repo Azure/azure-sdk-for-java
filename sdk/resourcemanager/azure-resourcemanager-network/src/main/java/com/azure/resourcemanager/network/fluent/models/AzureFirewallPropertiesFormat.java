@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
+import com.azure.resourcemanager.network.models.AzureFirewallAutoscaleConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpGroups;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRuleCollection;
@@ -92,6 +93,11 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      * The additional properties used to further config this azure firewall.
      */
     private Map<String, String> additionalProperties;
+
+    /*
+     * Properties to provide a custom autoscale configuration to this azure firewall.
+     */
+    private AzureFirewallAutoscaleConfiguration autoscaleConfiguration;
 
     /**
      * Creates an instance of AzureFirewallPropertiesFormat class.
@@ -342,6 +348,29 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
     }
 
     /**
+     * Get the autoscaleConfiguration property: Properties to provide a custom autoscale configuration to this azure
+     * firewall.
+     * 
+     * @return the autoscaleConfiguration value.
+     */
+    public AzureFirewallAutoscaleConfiguration autoscaleConfiguration() {
+        return this.autoscaleConfiguration;
+    }
+
+    /**
+     * Set the autoscaleConfiguration property: Properties to provide a custom autoscale configuration to this azure
+     * firewall.
+     * 
+     * @param autoscaleConfiguration the autoscaleConfiguration value to set.
+     * @return the AzureFirewallPropertiesFormat object itself.
+     */
+    public AzureFirewallPropertiesFormat
+        withAutoscaleConfiguration(AzureFirewallAutoscaleConfiguration autoscaleConfiguration) {
+        this.autoscaleConfiguration = autoscaleConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -371,6 +400,9 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
         if (sku() != null) {
             sku().validate();
         }
+        if (autoscaleConfiguration() != null) {
+            autoscaleConfiguration().validate();
+        }
     }
 
     /**
@@ -396,6 +428,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeMapField("additionalProperties", this.additionalProperties,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("autoscaleConfiguration", this.autoscaleConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -455,6 +488,9 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
                 } else if ("additionalProperties".equals(fieldName)) {
                     Map<String, String> additionalProperties = reader.readMap(reader1 -> reader1.getString());
                     deserializedAzureFirewallPropertiesFormat.additionalProperties = additionalProperties;
+                } else if ("autoscaleConfiguration".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.autoscaleConfiguration
+                        = AzureFirewallAutoscaleConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

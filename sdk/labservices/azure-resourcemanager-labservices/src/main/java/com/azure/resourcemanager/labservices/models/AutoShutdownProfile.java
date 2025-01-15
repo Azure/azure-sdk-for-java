@@ -5,52 +5,59 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Profile for how to handle shutting down virtual machines. */
+/**
+ * Profile for how to handle shutting down virtual machines.
+ */
 @Fluent
-public final class AutoShutdownProfile {
+public final class AutoShutdownProfile implements JsonSerializable<AutoShutdownProfile> {
     /*
      * Whether shutdown on disconnect is enabled
      */
-    @JsonProperty(value = "shutdownOnDisconnect")
     private EnableState shutdownOnDisconnect;
 
     /*
      * Whether a VM will get shutdown when it hasn't been connected to after a period of time.
      */
-    @JsonProperty(value = "shutdownWhenNotConnected")
     private EnableState shutdownWhenNotConnected;
 
     /*
      * Whether a VM will get shutdown when it has idled for a period of time.
      */
-    @JsonProperty(value = "shutdownOnIdle")
     private ShutdownOnIdleMode shutdownOnIdle;
 
     /*
      * The amount of time a VM will stay running after a user disconnects if this behavior is enabled.
      */
-    @JsonProperty(value = "disconnectDelay")
     private Duration disconnectDelay;
 
     /*
      * The amount of time a VM will stay running before it is shutdown if no connection is made and this behavior is
      * enabled.
      */
-    @JsonProperty(value = "noConnectDelay")
     private Duration noConnectDelay;
 
     /*
      * The amount of time a VM will idle before it is shutdown if this behavior is enabled.
      */
-    @JsonProperty(value = "idleDelay")
     private Duration idleDelay;
 
     /**
+     * Creates an instance of AutoShutdownProfile class.
+     */
+    public AutoShutdownProfile() {
+    }
+
+    /**
      * Get the shutdownOnDisconnect property: Whether shutdown on disconnect is enabled.
-     *
+     * 
      * @return the shutdownOnDisconnect value.
      */
     public EnableState shutdownOnDisconnect() {
@@ -59,7 +66,7 @@ public final class AutoShutdownProfile {
 
     /**
      * Set the shutdownOnDisconnect property: Whether shutdown on disconnect is enabled.
-     *
+     * 
      * @param shutdownOnDisconnect the shutdownOnDisconnect value to set.
      * @return the AutoShutdownProfile object itself.
      */
@@ -71,7 +78,7 @@ public final class AutoShutdownProfile {
     /**
      * Get the shutdownWhenNotConnected property: Whether a VM will get shutdown when it hasn't been connected to after
      * a period of time.
-     *
+     * 
      * @return the shutdownWhenNotConnected value.
      */
     public EnableState shutdownWhenNotConnected() {
@@ -81,7 +88,7 @@ public final class AutoShutdownProfile {
     /**
      * Set the shutdownWhenNotConnected property: Whether a VM will get shutdown when it hasn't been connected to after
      * a period of time.
-     *
+     * 
      * @param shutdownWhenNotConnected the shutdownWhenNotConnected value to set.
      * @return the AutoShutdownProfile object itself.
      */
@@ -92,7 +99,7 @@ public final class AutoShutdownProfile {
 
     /**
      * Get the shutdownOnIdle property: Whether a VM will get shutdown when it has idled for a period of time.
-     *
+     * 
      * @return the shutdownOnIdle value.
      */
     public ShutdownOnIdleMode shutdownOnIdle() {
@@ -101,7 +108,7 @@ public final class AutoShutdownProfile {
 
     /**
      * Set the shutdownOnIdle property: Whether a VM will get shutdown when it has idled for a period of time.
-     *
+     * 
      * @param shutdownOnIdle the shutdownOnIdle value to set.
      * @return the AutoShutdownProfile object itself.
      */
@@ -113,7 +120,7 @@ public final class AutoShutdownProfile {
     /**
      * Get the disconnectDelay property: The amount of time a VM will stay running after a user disconnects if this
      * behavior is enabled.
-     *
+     * 
      * @return the disconnectDelay value.
      */
     public Duration disconnectDelay() {
@@ -123,7 +130,7 @@ public final class AutoShutdownProfile {
     /**
      * Set the disconnectDelay property: The amount of time a VM will stay running after a user disconnects if this
      * behavior is enabled.
-     *
+     * 
      * @param disconnectDelay the disconnectDelay value to set.
      * @return the AutoShutdownProfile object itself.
      */
@@ -135,7 +142,7 @@ public final class AutoShutdownProfile {
     /**
      * Get the noConnectDelay property: The amount of time a VM will stay running before it is shutdown if no connection
      * is made and this behavior is enabled.
-     *
+     * 
      * @return the noConnectDelay value.
      */
     public Duration noConnectDelay() {
@@ -145,7 +152,7 @@ public final class AutoShutdownProfile {
     /**
      * Set the noConnectDelay property: The amount of time a VM will stay running before it is shutdown if no connection
      * is made and this behavior is enabled.
-     *
+     * 
      * @param noConnectDelay the noConnectDelay value to set.
      * @return the AutoShutdownProfile object itself.
      */
@@ -156,7 +163,7 @@ public final class AutoShutdownProfile {
 
     /**
      * Get the idleDelay property: The amount of time a VM will idle before it is shutdown if this behavior is enabled.
-     *
+     * 
      * @return the idleDelay value.
      */
     public Duration idleDelay() {
@@ -165,7 +172,7 @@ public final class AutoShutdownProfile {
 
     /**
      * Set the idleDelay property: The amount of time a VM will idle before it is shutdown if this behavior is enabled.
-     *
+     * 
      * @param idleDelay the idleDelay value to set.
      * @return the AutoShutdownProfile object itself.
      */
@@ -176,9 +183,67 @@ public final class AutoShutdownProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("shutdownOnDisconnect",
+            this.shutdownOnDisconnect == null ? null : this.shutdownOnDisconnect.toString());
+        jsonWriter.writeStringField("shutdownWhenNotConnected",
+            this.shutdownWhenNotConnected == null ? null : this.shutdownWhenNotConnected.toString());
+        jsonWriter.writeStringField("shutdownOnIdle",
+            this.shutdownOnIdle == null ? null : this.shutdownOnIdle.toString());
+        jsonWriter.writeStringField("disconnectDelay", CoreUtils.durationToStringWithDays(this.disconnectDelay));
+        jsonWriter.writeStringField("noConnectDelay", CoreUtils.durationToStringWithDays(this.noConnectDelay));
+        jsonWriter.writeStringField("idleDelay", CoreUtils.durationToStringWithDays(this.idleDelay));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoShutdownProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoShutdownProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoShutdownProfile.
+     */
+    public static AutoShutdownProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoShutdownProfile deserializedAutoShutdownProfile = new AutoShutdownProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("shutdownOnDisconnect".equals(fieldName)) {
+                    deserializedAutoShutdownProfile.shutdownOnDisconnect = EnableState.fromString(reader.getString());
+                } else if ("shutdownWhenNotConnected".equals(fieldName)) {
+                    deserializedAutoShutdownProfile.shutdownWhenNotConnected
+                        = EnableState.fromString(reader.getString());
+                } else if ("shutdownOnIdle".equals(fieldName)) {
+                    deserializedAutoShutdownProfile.shutdownOnIdle = ShutdownOnIdleMode.fromString(reader.getString());
+                } else if ("disconnectDelay".equals(fieldName)) {
+                    deserializedAutoShutdownProfile.disconnectDelay
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("noConnectDelay".equals(fieldName)) {
+                    deserializedAutoShutdownProfile.noConnectDelay
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("idleDelay".equals(fieldName)) {
+                    deserializedAutoShutdownProfile.idleDelay
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoShutdownProfile;
+        });
     }
 }

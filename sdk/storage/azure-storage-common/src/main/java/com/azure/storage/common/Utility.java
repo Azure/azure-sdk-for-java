@@ -240,9 +240,11 @@ public final class Utility {
             try {
                 if (data.read() != -1) {
                     long totalLength = 1 + data.available();
-                    return FluxUtil.fluxError(LOGGER, new UnexpectedLengthException(String.format(
-                        "Request body emitted %d bytes, more than the expected %d bytes.", totalLength, length),
-                        totalLength, length));
+                    return FluxUtil.fluxError(LOGGER,
+                        new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                                totalLength, length),
+                            totalLength, length));
                 }
             } catch (IOException e) {
                 return FluxUtil.fluxError(LOGGER, new UncheckedIOException(e));
@@ -289,9 +291,10 @@ public final class Utility {
                 }
 
                 if (numOfBytes == -1 && currentTotalLength[0] < length) {
-                    sink.error(LOGGER.logExceptionAsError(new UnexpectedLengthException(String.format(
-                        "Request body emitted %d bytes, less than the expected %d bytes.",
-                        currentTotalLength[0], length), currentTotalLength[0], length)));
+                    sink.error(LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes, less than the expected %d bytes.",
+                            currentTotalLength[0], length),
+                        currentTotalLength[0], length)));
                     return is;
                 }
 
@@ -302,7 +305,8 @@ public final class Utility {
                             long totalLength = 1 + currentTotalLength[0] + data.available();
                             sink.error(LOGGER.logExceptionAsError(new UnexpectedLengthException(
                                 String.format("Request body emitted %d bytes, more than the expected %d bytes.",
-                                    totalLength, length), totalLength, length)));
+                                    totalLength, length),
+                                totalLength, length)));
                             return is;
                         } else if (currentTotalLength[0] > length) {
                             sink.error(LOGGER.logExceptionAsError(new IllegalStateException(
@@ -334,8 +338,6 @@ public final class Utility {
      * @return The updated url.
      */
     public static String appendQueryParameter(String url, String key, String value) {
-        return (url.indexOf('?') != -1)
-            ? url + "&" + key + "=" + value
-            : url + "?" + key + "=" + value;
+        return (url.indexOf('?') != -1) ? url + "&" + key + "=" + value : url + "?" + key + "=" + value;
     }
 }

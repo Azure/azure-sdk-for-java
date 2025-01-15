@@ -21,42 +21,52 @@ import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure private endpoint. */
-public interface PrivateEndpoint extends
-    GroupableResource<NetworkManager, PrivateEndpointInner>,
-    Refreshable<PrivateEndpoint>,
-    Updatable<PrivateEndpoint.Update> {
+public interface PrivateEndpoint extends GroupableResource<NetworkManager, PrivateEndpointInner>,
+    Refreshable<PrivateEndpoint>, Updatable<PrivateEndpoint.Update> {
 
     /** A client-side representation of a private link service connection. */
-    interface PrivateLinkServiceConnection extends
-        HasInnerModel<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection>,
+    interface PrivateLinkServiceConnection
+        extends HasInnerModel<com.azure.resourcemanager.network.models.PrivateLinkServiceConnection>,
         ChildResource<PrivateEndpoint> {
 
         /**
+         * Gets the state of the connection.
+         *
          * @return the state of the connection.
          */
         PrivateLinkServiceConnectionState state();
 
         /**
+         * Gets the resource ID that this connection connects to.
+         *
          * @return the resource ID that this connection connects to.
          */
         String privateLinkResourceId();
 
         /**
+         * Gets the collection of sub resource names.
+         *
          * @return the collection of sub resource names.
          */
         List<PrivateLinkSubResourceName> subResourceNames();
 
         /**
+         * Gets the request message.
+         *
          * @return the request message.
          */
         String requestMessage();
 
         /**
+         * Gets the provisioning state.
+         *
          * @return the provisioning state.
          */
         ProvisioningState provisioningState();
 
         /**
+         * Checks whether connection is manual approval.
+         *
          * @return whether connection is manual approval.
          */
         boolean isManualApproval();
@@ -84,8 +94,8 @@ public interface PrivateEndpoint extends
                  * @param privateLinkServiceResource the resource of the private link service
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT> withResource(
-                    Resource privateLinkServiceResource);
+                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT>
+                    withResource(Resource privateLinkServiceResource);
 
                 /**
                  * Specifies the resource of the private link service.
@@ -93,8 +103,8 @@ public interface PrivateEndpoint extends
                  * @param privateLinkServiceResourceId the resource ID of the private link service
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT> withResourceId(
-                    String privateLinkServiceResourceId);
+                PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT>
+                    withResourceId(String privateLinkServiceResourceId);
             }
 
             /**
@@ -110,8 +120,8 @@ public interface PrivateEndpoint extends
                  * @param subResourceName the name of the sub resource
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> withSubResource(
-                    PrivateLinkSubResourceName subResourceName);
+                PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT>
+                    withSubResource(PrivateLinkSubResourceName subResourceName);
 
                 /**
                  * Specifies no sub resource, used for Private Link service.
@@ -133,8 +143,8 @@ public interface PrivateEndpoint extends
                  * @param requestMessage the request message for manual approval
                  * @return the next stage of the definition
                  */
-                PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT> withManualApproval(
-                    String requestMessage);
+                PrivateLinkServiceConnection.DefinitionStages.WithAttach<ParentT>
+                    withManualApproval(String requestMessage);
             }
 
             /**
@@ -145,9 +155,7 @@ public interface PrivateEndpoint extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
-                WithApprovalMethod<ParentT> {
+            interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithApprovalMethod<ParentT> {
             }
         }
 
@@ -156,8 +164,7 @@ public interface PrivateEndpoint extends
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Definition<ParentT> extends
-            PrivateLinkServiceConnection.DefinitionStages.Blank<ParentT>,
+        interface Definition<ParentT> extends PrivateLinkServiceConnection.DefinitionStages.Blank<ParentT>,
             PrivateLinkServiceConnection.DefinitionStages.WithPrivateLinkServiceResource<ParentT>,
             PrivateLinkServiceConnection.DefinitionStages.WithSubResource<ParentT>,
             PrivateLinkServiceConnection.DefinitionStages.WithApprovalMethod<ParentT>,
@@ -181,38 +188,49 @@ public interface PrivateEndpoint extends
         }
 
         /** The entirety of a private link service update. */
-        interface Update extends
-            PrivateLinkServiceConnection.UpdateStages.WithApprovalMethod,
-            Settable<PrivateEndpoint.Update> {
+        interface Update
+            extends PrivateLinkServiceConnection.UpdateStages.WithApprovalMethod, Settable<PrivateEndpoint.Update> {
         }
     }
 
     /**
+     * Gets the resource collection API of private DNS zone group.
+     *
      * @return the resource collection API of private DNS zone group.
      */
     PrivateDnsZoneGroups privateDnsZoneGroups();
 
     /**
+     * Gets the reference of the subnet.
+     *
      * @return the reference of the subnet.
      */
     SubResource subnet();
 
     /**
+     * Gets the collection of reference of the network interfaces.
+     *
      * @return the collection of reference of the network interfaces.
      */
     List<SubResource> networkInterfaces();
 
     /**
+     * Gets the provisioning state.
+     *
      * @return the provisioning state.
      */
     ProvisioningState provisioningState();
 
     /**
+     * Gets the collection of the private link service connections.
+     *
      * @return the collection of the private link service connections.
      */
     Map<String, PrivateLinkServiceConnection> privateLinkServiceConnections();
 
     /**
+     * Gets the collection of custom DNS configurations.
+     *
      * @return the collection of custom DNS configurations.
      */
     List<CustomDnsConfigPropertiesFormat> customDnsConfigurations();
@@ -220,12 +238,8 @@ public interface PrivateEndpoint extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    interface Definition extends
-        DefinitionStages.Blank,
-        DefinitionStages.WithGroup,
-        DefinitionStages.WithSubnet,
-        DefinitionStages.WithPrivateLinkServiceConnection,
-        DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSubnet,
+        DefinitionStages.WithPrivateLinkServiceConnection, DefinitionStages.WithCreate {
     }
 
     /**
@@ -288,9 +302,7 @@ public interface PrivateEndpoint extends
     }
 
     /** The template for a private endpoint update operation, containing all the settings that can be modified. */
-    interface Update extends
-        Appliable<PrivateEndpoint>,
-        UpdateStages.WithPrivateLinkServiceConnection,
+    interface Update extends Appliable<PrivateEndpoint>, UpdateStages.WithPrivateLinkServiceConnection,
         Resource.UpdateWithTags<Update> {
     }
 

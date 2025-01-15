@@ -14,8 +14,7 @@ public final class PredictionModelStatusImpl implements PredictionModelStatus {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    PredictionModelStatusImpl(
-        PredictionModelStatusInner innerObject,
+    PredictionModelStatusImpl(PredictionModelStatusInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

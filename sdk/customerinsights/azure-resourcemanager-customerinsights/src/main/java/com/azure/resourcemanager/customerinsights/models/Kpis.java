@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Kpis. */
+/**
+ * Resource collection API of Kpis.
+ */
 public interface Kpis {
     /**
      * Gets a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -22,12 +24,12 @@ public interface Kpis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KPI in the hub along with {@link Response}.
      */
-    Response<KpiResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String kpiName, Context context);
+    Response<KpiResourceFormat> getWithResponse(String resourceGroupName, String hubName, String kpiName,
+        Context context);
 
     /**
      * Gets a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -40,7 +42,7 @@ public interface Kpis {
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -52,7 +54,7 @@ public interface Kpis {
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -65,7 +67,7 @@ public interface Kpis {
 
     /**
      * Reprocesses the Kpi values of the specified KPI.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -79,7 +81,7 @@ public interface Kpis {
 
     /**
      * Reprocesses the Kpi values of the specified KPI.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -91,7 +93,7 @@ public interface Kpis {
 
     /**
      * Gets all the KPIs in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,7 +105,7 @@ public interface Kpis {
 
     /**
      * Gets all the KPIs in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -116,7 +118,7 @@ public interface Kpis {
 
     /**
      * Gets a KPI in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,7 +129,7 @@ public interface Kpis {
 
     /**
      * Gets a KPI in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +141,7 @@ public interface Kpis {
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -149,7 +151,7 @@ public interface Kpis {
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +162,7 @@ public interface Kpis {
 
     /**
      * Begins definition for a new KpiResourceFormat resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new KpiResourceFormat definition.
      */

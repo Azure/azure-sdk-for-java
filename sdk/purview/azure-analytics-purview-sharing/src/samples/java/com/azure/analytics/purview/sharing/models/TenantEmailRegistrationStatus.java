@@ -4,10 +4,9 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
  * Defines the supported types for registration.
@@ -26,11 +25,12 @@ public final class TenantEmailRegistrationStatus extends ExpandableStringEnum<Te
     /**
      * The tenant email registration has exhausted the max attempts.
      */
-    public static final TenantEmailRegistrationStatus ACTIVATION_ATTEMPTS_EXHAUSTED = fromString("ActivationAttemptsExhausted");
+    public static final TenantEmailRegistrationStatus ACTIVATION_ATTEMPTS_EXHAUSTED
+        = fromString("ActivationAttemptsExhausted");
 
     /**
      * Creates a new instance of TenantEmailRegistrationStatus value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +39,17 @@ public final class TenantEmailRegistrationStatus extends ExpandableStringEnum<Te
 
     /**
      * Creates or finds a TenantEmailRegistrationStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding TenantEmailRegistrationStatus.
      */
-    @JsonCreator
     public static TenantEmailRegistrationStatus fromString(String name) {
         return fromString(name, TenantEmailRegistrationStatus.class);
     }
 
     /**
      * Gets known TenantEmailRegistrationStatus values.
-     * 
+     *
      * @return known TenantEmailRegistrationStatus values.
      */
     public static Collection<TenantEmailRegistrationStatus> values() {

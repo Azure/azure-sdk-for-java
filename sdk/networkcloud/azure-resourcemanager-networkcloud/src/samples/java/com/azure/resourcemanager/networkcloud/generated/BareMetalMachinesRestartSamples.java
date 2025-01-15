@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for BareMetalMachines Restart. */
+/**
+ * Samples for BareMetalMachines Restart.
+ */
 public final class BareMetalMachinesRestartSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachines_Restart.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * BareMetalMachines_Restart.json
      */
     /**
      * Sample code: Restart bare metal machine.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void restartBareMetalMachine(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .bareMetalMachines()
+        manager.bareMetalMachines()
             .restart("resourceGroupName", "bareMetalMachineName", com.azure.core.util.Context.NONE);
     }
 }

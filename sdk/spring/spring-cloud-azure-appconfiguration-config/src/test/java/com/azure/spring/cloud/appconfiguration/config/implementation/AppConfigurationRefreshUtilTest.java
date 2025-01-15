@@ -228,7 +228,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
             // Monitor is disabled
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
@@ -248,7 +248,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(false);
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
@@ -267,7 +267,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(true);
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
@@ -289,7 +289,7 @@ public class AppConfigurationRefreshUtilTest {
             StateHolder updatedStateHolder = new StateHolder();
             stateHolderMock.when(() -> StateHolder.getCurrentState()).thenReturn(updatedStateHolder);
 
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
@@ -315,7 +315,7 @@ public class AppConfigurationRefreshUtilTest {
             StateHolder updatedStateHolder = new StateHolder();
             stateHolderMock.when(() -> StateHolder.getCurrentState()).thenReturn(updatedStateHolder);
 
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
             assertEquals(newState, StateHolder.getState(endpoint));
             assertFalse(eventData.getDoRefresh());
@@ -345,7 +345,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
             stateHolderMock.when(StateHolder::getCurrentState).thenReturn(currentStateMock);
 
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertTrue(eventData.getDoRefresh());
@@ -368,7 +368,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
 
             // Monitor is disabled
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
@@ -390,7 +390,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
 
             // Monitor is disabled
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
@@ -419,7 +419,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(StateHolder::getCurrentState).thenReturn(currentStateMock);
 
             // Monitor is disabled
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
@@ -446,7 +446,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(StateHolder::getCurrentState).thenReturn(currentStateMock);
 
             // Monitor is disabled
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
             assertTrue(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
@@ -458,13 +458,13 @@ public class AppConfigurationRefreshUtilTest {
     public void minRefreshPeriodTest() {
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getNextForcedRefresh()).thenReturn(Instant.now().minusSeconds(600));
-            RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactoryMock,
+            RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(1), (long) 0, replicaLookUpMock);
             assertTrue(eventData.getDoRefresh());
             assertEquals("Minimum refresh period reached. Refreshing configurations.", eventData.getMessage());
         }
     }
-    
+
     private void setupFeatureFlagLoad() {
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
         when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);

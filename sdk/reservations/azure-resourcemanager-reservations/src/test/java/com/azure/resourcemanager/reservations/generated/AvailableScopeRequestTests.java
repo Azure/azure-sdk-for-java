@@ -13,18 +13,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableScopeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableScopeRequest model =
-            BinaryData
-                .fromString("{\"properties\":{\"scopes\":[\"quvgjxpybczme\"]}}")
-                .toObject(AvailableScopeRequest.class);
+        AvailableScopeRequest model = BinaryData.fromString("{\"properties\":{\"scopes\":[\"quvgjxpybczme\"]}}")
+            .toObject(AvailableScopeRequest.class);
         Assertions.assertEquals("quvgjxpybczme", model.properties().scopes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableScopeRequest model =
-            new AvailableScopeRequest()
-                .withProperties(new AvailableScopeRequestProperties().withScopes(Arrays.asList("quvgjxpybczme")));
+        AvailableScopeRequest model = new AvailableScopeRequest()
+            .withProperties(new AvailableScopeRequestProperties().withScopes(Arrays.asList("quvgjxpybczme")));
         model = BinaryData.fromObject(model).toObject(AvailableScopeRequest.class);
         Assertions.assertEquals("quvgjxpybczme", model.properties().scopes().get(0));
     }

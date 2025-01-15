@@ -11,29 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableServiceSkuSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableServiceSkuSku model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"duqkt\",\"family\":\"spwgcuertumkdosv\",\"size\":\"hbmdgbbjfdd\",\"tier\":\"bmbexppbhtqqro\"}")
+        AvailableServiceSkuSku model
+            = BinaryData.fromString("{\"name\":\"jbiksqrglssai\",\"family\":\"p\",\"size\":\"nzl\",\"tier\":\"fmppe\"}")
                 .toObject(AvailableServiceSkuSku.class);
-        Assertions.assertEquals("duqkt", model.name());
-        Assertions.assertEquals("spwgcuertumkdosv", model.family());
-        Assertions.assertEquals("hbmdgbbjfdd", model.size());
-        Assertions.assertEquals("bmbexppbhtqqro", model.tier());
+        Assertions.assertEquals("jbiksqrglssai", model.name());
+        Assertions.assertEquals("p", model.family());
+        Assertions.assertEquals("nzl", model.size());
+        Assertions.assertEquals("fmppe", model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableServiceSkuSku model =
-            new AvailableServiceSkuSku()
-                .withName("duqkt")
-                .withFamily("spwgcuertumkdosv")
-                .withSize("hbmdgbbjfdd")
-                .withTier("bmbexppbhtqqro");
+        AvailableServiceSkuSku model
+            = new AvailableServiceSkuSku().withName("jbiksqrglssai").withFamily("p").withSize("nzl").withTier("fmppe");
         model = BinaryData.fromObject(model).toObject(AvailableServiceSkuSku.class);
-        Assertions.assertEquals("duqkt", model.name());
-        Assertions.assertEquals("spwgcuertumkdosv", model.family());
-        Assertions.assertEquals("hbmdgbbjfdd", model.size());
-        Assertions.assertEquals("bmbexppbhtqqro", model.tier());
+        Assertions.assertEquals("jbiksqrglssai", model.name());
+        Assertions.assertEquals("p", model.family());
+        Assertions.assertEquals("nzl", model.size());
+        Assertions.assertEquals("fmppe", model.tier());
     }
 }

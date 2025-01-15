@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class DigitalTwinsLifecycleTests extends TestBase {
+public class DigitalTwinsLifecycleTests extends TestProxyTestBase {
 
     private static final String DEFAULT_INSTANCE_NAME = "DigitalTwinsSdk";
     private static final Region DEFAULT_REGION = Region.US_WEST_CENTRAL;
@@ -42,20 +42,17 @@ public class DigitalTwinsLifecycleTests extends TestBase {
         AzureDigitalTwinsManager digitalTwinsManager = AzureDigitalTwinsManager
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
-        ResourceGroup group = resourceManager.resourceGroups()
-            .define(rgName)
-            .withRegion(DEFAULT_REGION)
-            .create();
+        ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(DEFAULT_REGION).create();
 
         Assertions.assertNotNull(group);
 
         try {
             CheckNameResult checkNameResult = digitalTwinsManager.digitalTwins()
-                .checkNameAvailability(DEFAULT_REGION.toString(), new CheckNameRequest().withName(DEFAULT_INSTANCE_NAME));
+                .checkNameAvailability(DEFAULT_REGION.toString(),
+                    new CheckNameRequest().withName(DEFAULT_INSTANCE_NAME));
 
             if (!checkNameResult.nameAvailable()) {
-                PagedIterable<DigitalTwinsDescription> allDigitalTwins = digitalTwinsManager
-                    .digitalTwins().list();
+                PagedIterable<DigitalTwinsDescription> allDigitalTwins = digitalTwinsManager.digitalTwins().list();
 
                 for (DigitalTwinsDescription digitalTwin : allDigitalTwins) {
                     if (digitalTwin.name().equals(DEFAULT_INSTANCE_NAME)) {
@@ -71,8 +68,7 @@ public class DigitalTwinsLifecycleTests extends TestBase {
             }
 
             // Create DigitalTwins resource
-            DigitalTwinsDescription instance = digitalTwinsManager
-                .digitalTwins()
+            DigitalTwinsDescription instance = digitalTwinsManager.digitalTwins()
                 .define(DEFAULT_INSTANCE_NAME)
                 .withRegion(DEFAULT_REGION)
                 .withExistingResourceGroup(rgName)
@@ -91,22 +87,18 @@ public class DigitalTwinsLifecycleTests extends TestBase {
             Map<String, String> tags = new HashMap<>();
             tags.put(key1, value1);
             tags.put(key2, value2);
-            instance = instance.update()
-                .withTags(tags)
-                .apply();
+            instance = instance.update().withTags(tags).apply();
 
             Assertions.assertEquals(value1, instance.tags().get(key1));
             Assertions.assertEquals(value2, instance.tags().get(key2));
 
-            List<DigitalTwinsDescription> list = digitalTwinsManager.digitalTwins()
-                .listByResourceGroup(rgName)
-                .stream().collect(Collectors.toList());
+            List<DigitalTwinsDescription> list
+                = digitalTwinsManager.digitalTwins().listByResourceGroup(rgName).stream().collect(Collectors.toList());
 
             Assertions.assertTrue(list.size() > 0);
 
-            List<String> myOpNames = digitalTwinsManager.operations().list()
-                .stream().map(Operation::name)
-                .collect(Collectors.toList());
+            List<String> myOpNames
+                = digitalTwinsManager.operations().list().stream().map(Operation::name).collect(Collectors.toList());
 
             Assertions.assertTrue(myOpNames.contains("Microsoft.DigitalTwins/digitalTwinsInstances/read"));
             Assertions.assertTrue(myOpNames.contains("Microsoft.DigitalTwins/digitalTwinsInstances/write"));

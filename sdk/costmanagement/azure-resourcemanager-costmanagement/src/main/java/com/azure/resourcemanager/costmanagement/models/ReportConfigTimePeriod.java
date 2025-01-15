@@ -5,32 +5,40 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The start and end date for pulling data for the report. */
+/**
+ * The start and end date for pulling data for the report.
+ */
 @Fluent
-public final class ReportConfigTimePeriod {
+public final class ReportConfigTimePeriod implements JsonSerializable<ReportConfigTimePeriod> {
     /*
      * The start date to pull data from.
      */
-    @JsonProperty(value = "from", required = true)
     private OffsetDateTime from;
 
     /*
      * The end date to pull data to.
      */
-    @JsonProperty(value = "to", required = true)
     private OffsetDateTime to;
 
-    /** Creates an instance of ReportConfigTimePeriod class. */
+    /**
+     * Creates an instance of ReportConfigTimePeriod class.
+     */
     public ReportConfigTimePeriod() {
     }
 
     /**
      * Get the from property: The start date to pull data from.
-     *
+     * 
      * @return the from value.
      */
     public OffsetDateTime from() {
@@ -39,7 +47,7 @@ public final class ReportConfigTimePeriod {
 
     /**
      * Set the from property: The start date to pull data from.
-     *
+     * 
      * @param from the from value to set.
      * @return the ReportConfigTimePeriod object itself.
      */
@@ -50,7 +58,7 @@ public final class ReportConfigTimePeriod {
 
     /**
      * Get the to property: The end date to pull data to.
-     *
+     * 
      * @return the to value.
      */
     public OffsetDateTime to() {
@@ -59,7 +67,7 @@ public final class ReportConfigTimePeriod {
 
     /**
      * Set the to property: The end date to pull data to.
-     *
+     * 
      * @param to the to value to set.
      * @return the ReportConfigTimePeriod object itself.
      */
@@ -70,21 +78,63 @@ public final class ReportConfigTimePeriod {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (from() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property from in model ReportConfigTimePeriod"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property from in model ReportConfigTimePeriod"));
         }
         if (to() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property to in model ReportConfigTimePeriod"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property to in model ReportConfigTimePeriod"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReportConfigTimePeriod.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("from",
+            this.from == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.from));
+        jsonWriter.writeStringField("to",
+            this.to == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.to));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportConfigTimePeriod from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportConfigTimePeriod if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReportConfigTimePeriod.
+     */
+    public static ReportConfigTimePeriod fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportConfigTimePeriod deserializedReportConfigTimePeriod = new ReportConfigTimePeriod();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("from".equals(fieldName)) {
+                    deserializedReportConfigTimePeriod.from = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("to".equals(fieldName)) {
+                    deserializedReportConfigTimePeriod.to = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportConfigTimePeriod;
+        });
+    }
 }

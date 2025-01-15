@@ -11,30 +11,28 @@ import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationR
 import java.time.Duration;
 import java.util.Arrays;
 
-/** Samples for DefaultRollouts CreateOrUpdate. */
+/**
+ * Samples for DefaultRollouts CreateOrUpdate.
+ */
 public final class DefaultRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_CreateOrUpdate.json
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * DefaultRollouts_CreateOrUpdate.json
      */
     /**
      * Sample code: DefaultRollouts_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to ProviderHubManager.
      */
     public static void defaultRolloutsCreateOrUpdate(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
-        manager
-            .defaultRollouts()
+        manager.defaultRollouts()
             .define("2020week10")
             .withExistingProviderRegistration("Microsoft.Contoso")
             .withProperties(
-                new DefaultRolloutProperties()
-                    .withSpecification(
-                        new DefaultRolloutPropertiesSpecification()
-                            .withCanary(
-                                new DefaultRolloutSpecificationCanary().withSkipRegions(Arrays.asList("eastus2euap")))
-                            .withRestOfTheWorldGroupTwo(
-                                new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
-                                    .withWaitDuration(Duration.parse("PT4H")))))
+                new DefaultRolloutProperties().withSpecification(new DefaultRolloutPropertiesSpecification()
+                    .withCanary(new DefaultRolloutSpecificationCanary().withSkipRegions(Arrays.asList("eastus2euap")))
+                    .withRestOfTheWorldGroupTwo(new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
+                        .withWaitDuration(Duration.parse("PT4H")))))
             .create();
     }
 }

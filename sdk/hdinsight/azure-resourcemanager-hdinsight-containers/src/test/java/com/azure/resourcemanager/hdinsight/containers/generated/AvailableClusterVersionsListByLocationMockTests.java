@@ -6,56 +6,38 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterVersion;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AvailableClusterVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"clusterType\":\"libph\",\"clusterVersion\":\"zmizakakan\",\"ossVersion\":\"p\",\"clusterPoolVersion\":\"jzhajoy\",\"isPreview\":true,\"components\":[{\"name\":\"oyxprimr\",\"version\":\"pteecjme\"},{\"name\":\"ls\",\"version\":\"asylwx\"},{\"name\":\"aumweoohguufu\",\"version\":\"oyjathwtzol\"}]},\"id\":\"emwmdxmebwjs\",\"name\":\"jpahlxvea\",\"type\":\"f\"}]}";
+            = "{\"value\":[{\"properties\":{\"clusterType\":\"eolhbhlvbmx\",\"clusterVersion\":\"ibsxtkcud\",\"ossVersion\":\"sfar\",\"clusterPoolVersion\":\"iowl\",\"isPreview\":false,\"components\":[{\"name\":\"vwgf\",\"version\":\"mhqykizmdksa\"},{\"name\":\"fcluqvo\",\"version\":\"ycjimryvwgcwwpbm\"}]},\"id\":\"w\",\"name\":\"sydsxwefohe\",\"type\":\"bvopwndyqle\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        HDInsightContainersManager manager = HDInsightContainersManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HDInsightContainersManager manager = HDInsightContainersManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ClusterVersion> response
-            = manager.availableClusterVersions().listByLocation("wsldrizetpwbr", com.azure.core.util.Context.NONE);
+            = manager.availableClusterVersions().listByLocation("fldpuviyfc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("libph", response.iterator().next().properties().clusterType());
-        Assertions.assertEquals("zmizakakan", response.iterator().next().properties().clusterVersion());
-        Assertions.assertEquals("p", response.iterator().next().properties().ossVersion());
-        Assertions.assertEquals("jzhajoy", response.iterator().next().properties().clusterPoolVersion());
-        Assertions.assertEquals(true, response.iterator().next().properties().isPreview());
+        Assertions.assertEquals("eolhbhlvbmx", response.iterator().next().properties().clusterType());
+        Assertions.assertEquals("ibsxtkcud", response.iterator().next().properties().clusterVersion());
+        Assertions.assertEquals("sfar", response.iterator().next().properties().ossVersion());
+        Assertions.assertEquals("iowl", response.iterator().next().properties().clusterPoolVersion());
+        Assertions.assertEquals(false, response.iterator().next().properties().isPreview());
     }
 }

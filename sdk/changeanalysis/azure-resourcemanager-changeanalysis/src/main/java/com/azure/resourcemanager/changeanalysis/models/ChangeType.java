@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the change. */
+/**
+ * The type of the change.
+ */
 public final class ChangeType extends ExpandableStringEnum<ChangeType> {
-    /** Static value Add for ChangeType. */
+    /**
+     * Static value Add for ChangeType.
+     */
     public static final ChangeType ADD = fromString("Add");
 
-    /** Static value Remove for ChangeType. */
+    /**
+     * Static value Remove for ChangeType.
+     */
     public static final ChangeType REMOVE = fromString("Remove");
 
-    /** Static value Update for ChangeType. */
+    /**
+     * Static value Update for ChangeType.
+     */
     public static final ChangeType UPDATE = fromString("Update");
 
     /**
      * Creates a new instance of ChangeType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ChangeType extends ExpandableStringEnum<ChangeType> {
 
     /**
      * Creates or finds a ChangeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ChangeType.
      */
-    @JsonCreator
     public static ChangeType fromString(String name) {
         return fromString(name, ChangeType.class);
     }
 
     /**
      * Gets known ChangeType values.
-     *
+     * 
      * @return known ChangeType values.
      */
     public static Collection<ChangeType> values() {

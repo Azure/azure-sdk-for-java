@@ -5,79 +5,75 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for Azure Cognitive Services Spatial Analysis typed operations. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@type",
-        defaultImpl = SpatialAnalysisTypedOperationBase.class)
-@JsonTypeName("SpatialAnalysisTypedOperationBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-            name = "#Microsoft.VideoAnalyzer.SpatialAnalysisPersonCountOperation",
-            value = SpatialAnalysisPersonCountOperation.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.VideoAnalyzer.SpatialAnalysisPersonZoneCrossingOperation",
-            value = SpatialAnalysisPersonZoneCrossingOperation.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.VideoAnalyzer.SpatialAnalysisPersonDistanceOperation",
-            value = SpatialAnalysisPersonDistanceOperation.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.VideoAnalyzer.SpatialAnalysisPersonLineCrossingOperation",
-            value = SpatialAnalysisPersonLineCrossingOperation.class)
-})
+/**
+ * Base class for Azure Cognitive Services Spatial Analysis typed operations.
+ */
 @Fluent
 public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationBase {
     /*
+     * The Type discriminator for the derived types.
+     */
+    private String type = "SpatialAnalysisTypedOperationBase";
+
+    /*
      * If set to 'true', enables debugging mode for this operation.
      */
-    @JsonProperty(value = "debug")
     private String debug;
 
     /*
      * Advanced calibration configuration.
      */
-    @JsonProperty(value = "calibrationConfiguration")
     private String calibrationConfiguration;
 
     /*
      * Advanced camera configuration.
      */
-    @JsonProperty(value = "cameraConfiguration")
     private String cameraConfiguration;
 
     /*
      * Advanced camera calibrator configuration.
      */
-    @JsonProperty(value = "cameraCalibratorNodeConfiguration")
     private String cameraCalibratorNodeConfiguration;
 
     /*
      * Advanced detector node configuration.
      */
-    @JsonProperty(value = "detectorNodeConfiguration")
     private String detectorNodeConfiguration;
 
     /*
      * Advanced tracker node configuration.
      */
-    @JsonProperty(value = "trackerNodeConfiguration")
     private String trackerNodeConfiguration;
 
     /*
      * If set to 'true', enables face mask detection for this operation.
      */
-    @JsonProperty(value = "enableFaceMaskClassifier")
     private String enableFaceMaskClassifier;
 
     /**
+     * Creates an instance of SpatialAnalysisTypedOperationBase class.
+     */
+    public SpatialAnalysisTypedOperationBase() {
+    }
+
+    /**
+     * Get the type property: The Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Get the debug property: If set to 'true', enables debugging mode for this operation.
-     *
+     * 
      * @return the debug value.
      */
     public String getDebug() {
@@ -86,7 +82,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Set the debug property: If set to 'true', enables debugging mode for this operation.
-     *
+     * 
      * @param debug the debug value to set.
      * @return the SpatialAnalysisTypedOperationBase object itself.
      */
@@ -97,7 +93,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Get the calibrationConfiguration property: Advanced calibration configuration.
-     *
+     * 
      * @return the calibrationConfiguration value.
      */
     public String getCalibrationConfiguration() {
@@ -106,7 +102,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Set the calibrationConfiguration property: Advanced calibration configuration.
-     *
+     * 
      * @param calibrationConfiguration the calibrationConfiguration value to set.
      * @return the SpatialAnalysisTypedOperationBase object itself.
      */
@@ -117,7 +113,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Get the cameraConfiguration property: Advanced camera configuration.
-     *
+     * 
      * @return the cameraConfiguration value.
      */
     public String getCameraConfiguration() {
@@ -126,7 +122,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Set the cameraConfiguration property: Advanced camera configuration.
-     *
+     * 
      * @param cameraConfiguration the cameraConfiguration value to set.
      * @return the SpatialAnalysisTypedOperationBase object itself.
      */
@@ -137,7 +133,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Get the cameraCalibratorNodeConfiguration property: Advanced camera calibrator configuration.
-     *
+     * 
      * @return the cameraCalibratorNodeConfiguration value.
      */
     public String getCameraCalibratorNodeConfiguration() {
@@ -146,19 +142,19 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Set the cameraCalibratorNodeConfiguration property: Advanced camera calibrator configuration.
-     *
+     * 
      * @param cameraCalibratorNodeConfiguration the cameraCalibratorNodeConfiguration value to set.
      * @return the SpatialAnalysisTypedOperationBase object itself.
      */
-    public SpatialAnalysisTypedOperationBase setCameraCalibratorNodeConfiguration(
-            String cameraCalibratorNodeConfiguration) {
+    public SpatialAnalysisTypedOperationBase
+        setCameraCalibratorNodeConfiguration(String cameraCalibratorNodeConfiguration) {
         this.cameraCalibratorNodeConfiguration = cameraCalibratorNodeConfiguration;
         return this;
     }
 
     /**
      * Get the detectorNodeConfiguration property: Advanced detector node configuration.
-     *
+     * 
      * @return the detectorNodeConfiguration value.
      */
     public String getDetectorNodeConfiguration() {
@@ -167,7 +163,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Set the detectorNodeConfiguration property: Advanced detector node configuration.
-     *
+     * 
      * @param detectorNodeConfiguration the detectorNodeConfiguration value to set.
      * @return the SpatialAnalysisTypedOperationBase object itself.
      */
@@ -178,7 +174,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Get the trackerNodeConfiguration property: Advanced tracker node configuration.
-     *
+     * 
      * @return the trackerNodeConfiguration value.
      */
     public String getTrackerNodeConfiguration() {
@@ -187,7 +183,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Set the trackerNodeConfiguration property: Advanced tracker node configuration.
-     *
+     * 
      * @param trackerNodeConfiguration the trackerNodeConfiguration value to set.
      * @return the SpatialAnalysisTypedOperationBase object itself.
      */
@@ -198,7 +194,7 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Get the enableFaceMaskClassifier property: If set to 'true', enables face mask detection for this operation.
-     *
+     * 
      * @return the enableFaceMaskClassifier value.
      */
     public String getEnableFaceMaskClassifier() {
@@ -207,12 +203,105 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
 
     /**
      * Set the enableFaceMaskClassifier property: If set to 'true', enables face mask detection for this operation.
-     *
+     * 
      * @param enableFaceMaskClassifier the enableFaceMaskClassifier value to set.
      * @return the SpatialAnalysisTypedOperationBase object itself.
      */
     public SpatialAnalysisTypedOperationBase setEnableFaceMaskClassifier(String enableFaceMaskClassifier) {
         this.enableFaceMaskClassifier = enableFaceMaskClassifier;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@type", this.type);
+        jsonWriter.writeStringField("debug", this.debug);
+        jsonWriter.writeStringField("calibrationConfiguration", this.calibrationConfiguration);
+        jsonWriter.writeStringField("cameraConfiguration", this.cameraConfiguration);
+        jsonWriter.writeStringField("cameraCalibratorNodeConfiguration", this.cameraCalibratorNodeConfiguration);
+        jsonWriter.writeStringField("detectorNodeConfiguration", this.detectorNodeConfiguration);
+        jsonWriter.writeStringField("trackerNodeConfiguration", this.trackerNodeConfiguration);
+        jsonWriter.writeStringField("enableFaceMaskClassifier", this.enableFaceMaskClassifier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialAnalysisTypedOperationBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialAnalysisTypedOperationBase if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpatialAnalysisTypedOperationBase.
+     */
+    public static SpatialAnalysisTypedOperationBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.VideoAnalyzer.SpatialAnalysisPersonCountOperation".equals(discriminatorValue)) {
+                    return SpatialAnalysisPersonCountOperation.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.SpatialAnalysisPersonZoneCrossingOperation"
+                    .equals(discriminatorValue)) {
+                    return SpatialAnalysisPersonZoneCrossingOperation.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.SpatialAnalysisPersonDistanceOperation"
+                    .equals(discriminatorValue)) {
+                    return SpatialAnalysisPersonDistanceOperation.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.SpatialAnalysisPersonLineCrossingOperation"
+                    .equals(discriminatorValue)) {
+                    return SpatialAnalysisPersonLineCrossingOperation.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static SpatialAnalysisTypedOperationBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpatialAnalysisTypedOperationBase deserializedSpatialAnalysisTypedOperationBase
+                = new SpatialAnalysisTypedOperationBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@type".equals(fieldName)) {
+                    deserializedSpatialAnalysisTypedOperationBase.type = reader.getString();
+                } else if ("debug".equals(fieldName)) {
+                    deserializedSpatialAnalysisTypedOperationBase.debug = reader.getString();
+                } else if ("calibrationConfiguration".equals(fieldName)) {
+                    deserializedSpatialAnalysisTypedOperationBase.calibrationConfiguration = reader.getString();
+                } else if ("cameraConfiguration".equals(fieldName)) {
+                    deserializedSpatialAnalysisTypedOperationBase.cameraConfiguration = reader.getString();
+                } else if ("cameraCalibratorNodeConfiguration".equals(fieldName)) {
+                    deserializedSpatialAnalysisTypedOperationBase.cameraCalibratorNodeConfiguration
+                        = reader.getString();
+                } else if ("detectorNodeConfiguration".equals(fieldName)) {
+                    deserializedSpatialAnalysisTypedOperationBase.detectorNodeConfiguration = reader.getString();
+                } else if ("trackerNodeConfiguration".equals(fieldName)) {
+                    deserializedSpatialAnalysisTypedOperationBase.trackerNodeConfiguration = reader.getString();
+                } else if ("enableFaceMaskClassifier".equals(fieldName)) {
+                    deserializedSpatialAnalysisTypedOperationBase.enableFaceMaskClassifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpatialAnalysisTypedOperationBase;
+        });
     }
 }

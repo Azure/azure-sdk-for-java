@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UserSubscriptionQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserSubscriptionQuota model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"vetvt\",\"type\":\"aqtdoqmcbx\",\"unit\":\"vxysl\",\"currentValue\":675840078,\"limit\":92665469,\"name\":{\"value\":\"blytk\",\"localizedValue\":\"mpew\"}}")
-                .toObject(UserSubscriptionQuota.class);
+        UserSubscriptionQuota model = BinaryData.fromString(
+            "{\"id\":\"vetvt\",\"type\":\"aqtdoqmcbx\",\"unit\":\"vxysl\",\"currentValue\":675840078,\"limit\":92665469,\"name\":{\"value\":\"blytk\",\"localizedValue\":\"mpew\"}}")
+            .toObject(UserSubscriptionQuota.class);
         Assertions.assertEquals("vetvt", model.id());
         Assertions.assertEquals("aqtdoqmcbx", model.type());
         Assertions.assertEquals("vxysl", model.unit());
@@ -28,14 +26,12 @@ public final class UserSubscriptionQuotaTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserSubscriptionQuota model =
-            new UserSubscriptionQuota()
-                .withId("vetvt")
-                .withType("aqtdoqmcbx")
-                .withUnit("vxysl")
-                .withCurrentValue(675840078)
-                .withLimit(92665469)
-                .withName(new Name().withValue("blytk").withLocalizedValue("mpew"));
+        UserSubscriptionQuota model = new UserSubscriptionQuota().withId("vetvt")
+            .withType("aqtdoqmcbx")
+            .withUnit("vxysl")
+            .withCurrentValue(675840078)
+            .withLimit(92665469)
+            .withName(new Name().withValue("blytk").withLocalizedValue("mpew"));
         model = BinaryData.fromObject(model).toObject(UserSubscriptionQuota.class);
         Assertions.assertEquals("vetvt", model.id());
         Assertions.assertEquals("aqtdoqmcbx", model.type());

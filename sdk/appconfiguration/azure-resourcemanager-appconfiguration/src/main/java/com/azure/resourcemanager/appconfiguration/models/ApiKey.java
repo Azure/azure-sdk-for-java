@@ -7,25 +7,27 @@ package com.azure.resourcemanager.appconfiguration.models;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ApiKeyInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of ApiKey. */
+/**
+ * An immutable client-side representation of ApiKey.
+ */
 public interface ApiKey {
     /**
      * Gets the id property: The key ID.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: A name for the key describing its usage.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the value property: The value of the key that is used for authentication purposes.
-     *
+     * 
      * @return the value value.
      */
     String value();
@@ -33,28 +35,28 @@ public interface ApiKey {
     /**
      * Gets the connectionString property: A connection string that can be used by supporting clients for
      * authentication.
-     *
+     * 
      * @return the connectionString value.
      */
     String connectionString();
 
     /**
      * Gets the lastModified property: The last time any of the key's properties were modified.
-     *
+     * 
      * @return the lastModified value.
      */
     OffsetDateTime lastModified();
 
     /**
      * Gets the readOnly property: Whether this key can only be used for read operations.
-     *
+     * 
      * @return the readOnly value.
      */
     Boolean readOnly();
 
     /**
      * Gets the inner com.azure.resourcemanager.appconfiguration.fluent.models.ApiKeyInner object.
-     *
+     * 
      * @return the inner object.
      */
     ApiKeyInner innerModel();

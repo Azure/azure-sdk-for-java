@@ -18,67 +18,46 @@ import org.junit.jupiter.api.Assertions;
 public final class L3IsolationDomainPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3IsolationDomainProperties model =
-            BinaryData
-                .fromString(
-                    "{\"networkFabricId\":\"tzarhzvqnsqktc\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Disabled\",\"redistributeConnectedSubnets\":\"True\",\"redistributeStaticRoutes\":\"False\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"glwkzpgajsqj\"},{\"prefix\":\"emqbmfuvqarwzxuq\"},{\"prefix\":\"ebluimmbwx\"},{\"prefix\":\"fgtdmbvx\"}],\"ipv6Routes\":[{\"prefix\":\"aokqk\"},{\"prefix\":\"ud\"},{\"prefix\":\"twaokb\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"ytt\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"nwfrkebsmhpd\",\"exportIpv6RoutePolicyId\":\"dig\"}},\"annotation\":\"olekscbctnanqim\"}")
-                .toObject(L3IsolationDomainProperties.class);
-        Assertions.assertEquals("olekscbctnanqim", model.annotation());
-        Assertions.assertEquals("tzarhzvqnsqktc", model.networkFabricId());
+        L3IsolationDomainProperties model = BinaryData.fromString(
+            "{\"networkFabricId\":\"jb\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Disabled\",\"redistributeConnectedSubnets\":\"True\",\"redistributeStaticRoutes\":\"True\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"fwwvuatbwbqam\"}],\"ipv6Routes\":[{\"prefix\":\"liys\"},{\"prefix\":\"pkcvmwf\"},{\"prefix\":\"uxx\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"ywbo\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"qmiciijqp\",\"exportIpv6RoutePolicyId\":\"fbojxjmcsmyqwix\"}},\"annotation\":\"pwnkwywzwo\"}")
+            .toObject(L3IsolationDomainProperties.class);
+        Assertions.assertEquals("pwnkwywzwo", model.annotation());
+        Assertions.assertEquals("jb", model.networkFabricId());
         Assertions.assertEquals(RedistributeConnectedSubnets.TRUE, model.redistributeConnectedSubnets());
-        Assertions.assertEquals(RedistributeStaticRoutes.FALSE, model.redistributeStaticRoutes());
-        Assertions.assertEquals("glwkzpgajsqj", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("aokqk", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("ytt", model.connectedSubnetRoutePolicy().exportRoutePolicyId());
-        Assertions
-            .assertEquals(
-                "nwfrkebsmhpd", model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions
-            .assertEquals("dig", model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals(RedistributeStaticRoutes.TRUE, model.redistributeStaticRoutes());
+        Assertions.assertEquals("fwwvuatbwbqam", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("liys", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("ywbo", model.connectedSubnetRoutePolicy().exportRoutePolicyId());
+        Assertions.assertEquals("qmiciijqp",
+            model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("fbojxjmcsmyqwix",
+            model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3IsolationDomainProperties model =
-            new L3IsolationDomainProperties()
-                .withAnnotation("olekscbctnanqim")
-                .withNetworkFabricId("tzarhzvqnsqktc")
-                .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
-                .withRedistributeStaticRoutes(RedistributeStaticRoutes.FALSE)
-                .withAggregateRouteConfiguration(
-                    new AggregateRouteConfiguration()
-                        .withIpv4Routes(
-                            Arrays
-                                .asList(
-                                    new AggregateRoute().withPrefix("glwkzpgajsqj"),
-                                    new AggregateRoute().withPrefix("emqbmfuvqarwzxuq"),
-                                    new AggregateRoute().withPrefix("ebluimmbwx"),
-                                    new AggregateRoute().withPrefix("fgtdmbvx")))
-                        .withIpv6Routes(
-                            Arrays
-                                .asList(
-                                    new AggregateRoute().withPrefix("aokqk"),
-                                    new AggregateRoute().withPrefix("ud"),
-                                    new AggregateRoute().withPrefix("twaokb"))))
-                .withConnectedSubnetRoutePolicy(
-                    new ConnectedSubnetRoutePolicy()
-                        .withExportRoutePolicyId("ytt")
-                        .withExportRoutePolicy(
-                            new L3ExportRoutePolicy()
-                                .withExportIpv4RoutePolicyId("nwfrkebsmhpd")
-                                .withExportIpv6RoutePolicyId("dig")));
+        L3IsolationDomainProperties model = new L3IsolationDomainProperties().withAnnotation("pwnkwywzwo")
+            .withNetworkFabricId("jb")
+            .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
+            .withRedistributeStaticRoutes(RedistributeStaticRoutes.TRUE)
+            .withAggregateRouteConfiguration(new AggregateRouteConfiguration()
+                .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("fwwvuatbwbqam")))
+                .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("liys"),
+                    new AggregateRoute().withPrefix("pkcvmwf"), new AggregateRoute().withPrefix("uxx"))))
+            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicy().withExportRoutePolicyId("ywbo")
+                .withExportRoutePolicy(new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("qmiciijqp")
+                    .withExportIpv6RoutePolicyId("fbojxjmcsmyqwix")));
         model = BinaryData.fromObject(model).toObject(L3IsolationDomainProperties.class);
-        Assertions.assertEquals("olekscbctnanqim", model.annotation());
-        Assertions.assertEquals("tzarhzvqnsqktc", model.networkFabricId());
+        Assertions.assertEquals("pwnkwywzwo", model.annotation());
+        Assertions.assertEquals("jb", model.networkFabricId());
         Assertions.assertEquals(RedistributeConnectedSubnets.TRUE, model.redistributeConnectedSubnets());
-        Assertions.assertEquals(RedistributeStaticRoutes.FALSE, model.redistributeStaticRoutes());
-        Assertions.assertEquals("glwkzpgajsqj", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("aokqk", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("ytt", model.connectedSubnetRoutePolicy().exportRoutePolicyId());
-        Assertions
-            .assertEquals(
-                "nwfrkebsmhpd", model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions
-            .assertEquals("dig", model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals(RedistributeStaticRoutes.TRUE, model.redistributeStaticRoutes());
+        Assertions.assertEquals("fwwvuatbwbqam", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("liys", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("ywbo", model.connectedSubnetRoutePolicy().exportRoutePolicyId());
+        Assertions.assertEquals("qmiciijqp",
+            model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("fbojxjmcsmyqwix",
+            model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
     }
 }

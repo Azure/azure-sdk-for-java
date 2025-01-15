@@ -13,26 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageProfile model =
-            BinaryData
-                .fromString(
-                    "{\"nfsIpAddress\":\"fp\",\"osDisks\":[{\"name\":\"bmtukknryrti\",\"diskSizeGB\":995143874,\"lun\":1773018691},{\"name\":\"bpzvgn\",\"diskSizeGB\":706884387,\"lun\":2084129316}]}")
-                .toObject(StorageProfile.class);
-        Assertions.assertEquals("bmtukknryrti", model.osDisks().get(0).name());
-        Assertions.assertEquals(995143874, model.osDisks().get(0).diskSizeGB());
+        StorageProfile model = BinaryData.fromString(
+            "{\"nfsIpAddress\":\"anzwuxzdxta\",\"osDisks\":[{\"name\":\"m\",\"diskSizeGB\":527064006,\"lun\":829422315},{\"name\":\"qobmtukk\",\"diskSizeGB\":1306784267,\"lun\":1077251222},{\"name\":\"hfx\",\"diskSizeGB\":1273684509,\"lun\":2000849582},{\"name\":\"vg\",\"diskSizeGB\":2137961352,\"lun\":477742160}]}")
+            .toObject(StorageProfile.class);
+        Assertions.assertEquals("m", model.osDisks().get(0).name());
+        Assertions.assertEquals(527064006, model.osDisks().get(0).diskSizeGB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageProfile model =
-            new StorageProfile()
-                .withOsDisks(
-                    Arrays
-                        .asList(
-                            new Disk().withName("bmtukknryrti").withDiskSizeGB(995143874),
-                            new Disk().withName("bpzvgn").withDiskSizeGB(706884387)));
+        StorageProfile model
+            = new StorageProfile().withOsDisks(Arrays.asList(new Disk().withName("m").withDiskSizeGB(527064006),
+                new Disk().withName("qobmtukk").withDiskSizeGB(1306784267),
+                new Disk().withName("hfx").withDiskSizeGB(1273684509),
+                new Disk().withName("vg").withDiskSizeGB(2137961352)));
         model = BinaryData.fromObject(model).toObject(StorageProfile.class);
-        Assertions.assertEquals("bmtukknryrti", model.osDisks().get(0).name());
-        Assertions.assertEquals(995143874, model.osDisks().get(0).diskSizeGB());
+        Assertions.assertEquals("m", model.osDisks().get(0).name());
+        Assertions.assertEquals(527064006, model.osDisks().get(0).diskSizeGB());
     }
 }

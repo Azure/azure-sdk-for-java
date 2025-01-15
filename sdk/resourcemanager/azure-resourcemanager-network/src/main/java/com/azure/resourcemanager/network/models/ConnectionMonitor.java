@@ -16,16 +16,32 @@ import reactor.core.publisher.Mono;
 /** Client-side representation of Connection Monitor object, associated with Network Watcher. */
 @Fluent
 public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResultInner>, HasName, HasId, Indexable {
-    /** @return connection monitor location */
+    /**
+     * Gets connection monitor location.
+     *
+     * @return connection monitor location
+     */
     String location();
 
-    /** @return connection monitor tags */
+    /**
+     * Gets connection monitor tags.
+     *
+     * @return connection monitor tags
+     */
     Map<String, String> tags();
 
-    /** @return the source property */
+    /**
+     * Gets the source property.
+     *
+     * @return the source property
+     */
     ConnectionMonitorSource source();
 
-    /** @return the destination property */
+    /**
+     * Gets the destination property.
+     *
+     * @return the destination property
+     */
     ConnectionMonitorDestination destination();
 
     /**
@@ -35,16 +51,32 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
      */
     boolean autoStart();
 
-    /** @return the provisioning state of the connection monitor */
+    /**
+     * Gets the provisioning state of the connection monitor.
+     *
+     * @return the provisioning state of the connection monitor
+     */
     ProvisioningState provisioningState();
 
-    /** @return the date and time when the connection monitor was started */
+    /**
+     * Gets the date and time when the connection monitor was started.
+     *
+     * @return the date and time when the connection monitor was started
+     */
     OffsetDateTime startTime();
 
-    /** @return the monitoring status of the connection monitor */
+    /**
+     * Gets the monitoring status of the connection monitor.
+     *
+     * @return the monitoring status of the connection monitor
+     */
     String monitoringStatus();
 
-    /** @return monitoring interval in seconds */
+    /**
+     * Gets monitoring interval in seconds.
+     *
+     * @return monitoring interval in seconds
+     */
     int monitoringIntervalInSeconds();
 
     /** Stops a specified connection monitor. */
@@ -82,11 +114,8 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
     Mono<ConnectionMonitorQueryResult> queryAsync();
 
     /** The entirety of the connection monitor definition. */
-    interface Definition
-        extends DefinitionStages.WithSource,
-            DefinitionStages.WithDestination,
-            DefinitionStages.WithDestinationPort,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.WithSource, DefinitionStages.WithDestination,
+        DefinitionStages.WithDestinationPort, DefinitionStages.WithCreate {
     }
 
     /** Grouping of connection monitor definition stages. */
@@ -95,12 +124,16 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
         /** Sets the source property. */
         interface WithSource {
             /**
+             * Specifies the ID of the resource used as the source by connection monitor.
+             *
              * @param resourceId the ID of the resource used as the source by connection monitor
              * @return next definition stage
              */
             WithDestination withSourceId(String resourceId);
 
             /**
+             * Specifies virtual machine used as the source by connection monitor.
+             *
              * @param vm virtual machine used as the source by connection monitor
              * @return next definition stage
              */
@@ -110,6 +143,8 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
         /** Sets the source port used by connection monitor. */
         interface WithSourcePort {
             /**
+             * Specifies source port used by connection monitor.
+             *
              * @param port source port used by connection monitor
              * @return next definition stage
              */
@@ -119,18 +154,24 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
         /** Sets the destination. */
         interface WithDestination {
             /**
+             * Specifies the ID of the resource used as the source by connection monitor.
+             *
              * @param resourceId the ID of the resource used as the source by connection monitor
              * @return next definition stage
              */
             WithDestinationPort withDestinationId(String resourceId);
 
             /**
+             * Specifies virtual machine used as the source by connection monitor.
+             *
              * @param vm virtual machine used as the source by connection monitor
              * @return next definition stage
              */
             WithDestinationPort withDestination(HasNetworkInterfaces vm);
 
             /**
+             * Specifies address of the connection monitor destination (IP or domain name).
+             *
              * @param address address of the connection monitor destination (IP or domain name)
              * @return next definition stage
              */
@@ -140,6 +181,8 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
         /** Sets the destination port used by connection monitor. */
         interface WithDestinationPort {
             /**
+             * Specifies the ID of the resource used as the source by connection monitor.
+             *
              * @param port the ID of the resource used as the source by connection monitor
              * @return next definition stage
              */
@@ -162,6 +205,8 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
         /** Sets monitoring interval in seconds. */
         interface WithMonitoringInterval {
             /**
+             * Specifies monitoring interval in seconds.
+             *
              * @param seconds monitoring interval in seconds
              * @return next definition stage
              */

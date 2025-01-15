@@ -5,74 +5,99 @@
 package com.azure.resourcemanager.orbital.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.orbital.models.AutoTrackingConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfileLink;
 import com.azure.resourcemanager.orbital.models.ContactProfileThirdPartyConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfilesProperties;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesNetworkConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesProvisioningState;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the contact profile resource. */
+/**
+ * Properties of the contact profile resource.
+ */
 @Fluent
 public final class ContactProfileProperties extends ContactProfilesProperties {
-    /** Creates an instance of ContactProfileProperties class. */
+    /**
+     * Creates an instance of ContactProfileProperties class.
+     */
     public ContactProfileProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ContactProfileProperties withProvisioningState(
-        ContactProfilesPropertiesProvisioningState provisioningState) {
+    public ContactProfileProperties
+        withProvisioningState(ContactProfilesPropertiesProvisioningState provisioningState) {
         super.withProvisioningState(provisioningState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContactProfileProperties withMinimumViableContactDuration(String minimumViableContactDuration) {
         super.withMinimumViableContactDuration(minimumViableContactDuration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContactProfileProperties withMinimumElevationDegrees(Float minimumElevationDegrees) {
         super.withMinimumElevationDegrees(minimumElevationDegrees);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContactProfileProperties withAutoTrackingConfiguration(AutoTrackingConfiguration autoTrackingConfiguration) {
         super.withAutoTrackingConfiguration(autoTrackingConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContactProfileProperties withEventHubUri(String eventHubUri) {
         super.withEventHubUri(eventHubUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ContactProfileProperties withNetworkConfiguration(
-        ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
+    public ContactProfileProperties
+        withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
         super.withNetworkConfiguration(networkConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ContactProfileProperties withThirdPartyConfigurations(
-        List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
+    public ContactProfileProperties
+        withThirdPartyConfigurations(List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
         super.withThirdPartyConfigurations(thirdPartyConfigurations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContactProfileProperties withLinks(List<ContactProfileLink> links) {
         super.withLinks(links);
@@ -81,11 +106,96 @@ public final class ContactProfileProperties extends ContactProfilesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (networkConfiguration() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkConfiguration in model ContactProfileProperties"));
+        } else {
+            networkConfiguration().validate();
+        }
+        if (thirdPartyConfigurations() != null) {
+            thirdPartyConfigurations().forEach(e -> e.validate());
+        }
+        if (links() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property links in model ContactProfileProperties"));
+        } else {
+            links().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContactProfileProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("networkConfiguration", networkConfiguration());
+        jsonWriter.writeArrayField("links", links(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("provisioningState",
+            provisioningState() == null ? null : provisioningState().toString());
+        jsonWriter.writeStringField("minimumViableContactDuration", minimumViableContactDuration());
+        jsonWriter.writeNumberField("minimumElevationDegrees", minimumElevationDegrees());
+        jsonWriter.writeStringField("autoTrackingConfiguration",
+            autoTrackingConfiguration() == null ? null : autoTrackingConfiguration().toString());
+        jsonWriter.writeStringField("eventHubUri", eventHubUri());
+        jsonWriter.writeArrayField("thirdPartyConfigurations", thirdPartyConfigurations(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContactProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContactProfileProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContactProfileProperties.
+     */
+    public static ContactProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContactProfileProperties deserializedContactProfileProperties = new ContactProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkConfiguration".equals(fieldName)) {
+                    deserializedContactProfileProperties
+                        .withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration.fromJson(reader));
+                } else if ("links".equals(fieldName)) {
+                    List<ContactProfileLink> links = reader.readArray(reader1 -> ContactProfileLink.fromJson(reader1));
+                    deserializedContactProfileProperties.withLinks(links);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedContactProfileProperties.withProvisioningState(
+                        ContactProfilesPropertiesProvisioningState.fromString(reader.getString()));
+                } else if ("minimumViableContactDuration".equals(fieldName)) {
+                    deserializedContactProfileProperties.withMinimumViableContactDuration(reader.getString());
+                } else if ("minimumElevationDegrees".equals(fieldName)) {
+                    deserializedContactProfileProperties
+                        .withMinimumElevationDegrees(reader.getNullable(JsonReader::getFloat));
+                } else if ("autoTrackingConfiguration".equals(fieldName)) {
+                    deserializedContactProfileProperties
+                        .withAutoTrackingConfiguration(AutoTrackingConfiguration.fromString(reader.getString()));
+                } else if ("eventHubUri".equals(fieldName)) {
+                    deserializedContactProfileProperties.withEventHubUri(reader.getString());
+                } else if ("thirdPartyConfigurations".equals(fieldName)) {
+                    List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations
+                        = reader.readArray(reader1 -> ContactProfileThirdPartyConfiguration.fromJson(reader1));
+                    deserializedContactProfileProperties.withThirdPartyConfigurations(thirdPartyConfigurations);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContactProfileProperties;
+        });
     }
 }

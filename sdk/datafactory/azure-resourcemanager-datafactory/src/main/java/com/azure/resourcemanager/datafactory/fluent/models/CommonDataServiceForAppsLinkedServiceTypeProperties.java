@@ -6,41 +6,42 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Common Data Service for Apps linked service properties.
  */
 @Fluent
-public final class CommonDataServiceForAppsLinkedServiceTypeProperties {
+public final class CommonDataServiceForAppsLinkedServiceTypeProperties
+    implements JsonSerializable<CommonDataServiceForAppsLinkedServiceTypeProperties> {
     /*
      * The deployment type of the Common Data Service for Apps instance. 'Online' for Common Data Service for Apps
      * Online and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with Ifd. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "deploymentType", required = true)
     private Object deploymentType;
 
     /*
      * The host name of the on-premises Common Data Service for Apps server. The property is required for on-prem and
      * not allowed for online. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "hostName")
     private Object hostname;
 
     /*
      * The port of on-premises Common Data Service for Apps server. The property is required for on-prem and not allowed
      * for online. Default is 443. Type: integer (or Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * The URL to the Microsoft Common Data Service for Apps server. The property is required for on-line and not
      * allowed for on-prem. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "serviceUri")
     private Object serviceUri;
 
     /*
@@ -48,42 +49,42 @@ public final class CommonDataServiceForAppsLinkedServiceTypeProperties {
      * required for online when there are more than one Common Data Service for Apps instances associated with the user.
      * Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "organizationName")
     private Object organizationName;
 
     /*
      * The authentication type to connect to Common Data Service for Apps server. 'Office365' for online scenario, 'Ifd'
-     * for on-premises with Ifd scenario. 'AADServicePrincipal' for Server-To-Server authentication in online scenario.
-     * Type: string (or Expression with resultType string).
+     * for on-premises with Ifd scenario. 'AADServicePrincipal' for Server-To-Server authentication in online scenario,
+     * 'Active Directory' for Dynamics on-premises with IFD. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "authenticationType", required = true)
     private Object authenticationType;
+
+    /*
+     * The Active Directory domain that will verify user credentials. Type: string (or Expression with resultType
+     * string).
+     */
+    private Object domain;
 
     /*
      * User name to access the Common Data Service for Apps instance. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * Password to access the Common Data Service for Apps instance.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
      * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
@@ -92,14 +93,12 @@ public final class CommonDataServiceForAppsLinkedServiceTypeProperties {
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -227,7 +226,8 @@ public final class CommonDataServiceForAppsLinkedServiceTypeProperties {
     /**
      * Get the authenticationType property: The authentication type to connect to Common Data Service for Apps server.
      * 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. 'AADServicePrincipal' for
-     * Server-To-Server authentication in online scenario. Type: string (or Expression with resultType string).
+     * Server-To-Server authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type:
+     * string (or Expression with resultType string).
      * 
      * @return the authenticationType value.
      */
@@ -238,13 +238,36 @@ public final class CommonDataServiceForAppsLinkedServiceTypeProperties {
     /**
      * Set the authenticationType property: The authentication type to connect to Common Data Service for Apps server.
      * 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. 'AADServicePrincipal' for
-     * Server-To-Server authentication in online scenario. Type: string (or Expression with resultType string).
+     * Server-To-Server authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type:
+     * string (or Expression with resultType string).
      * 
      * @param authenticationType the authenticationType value to set.
      * @return the CommonDataServiceForAppsLinkedServiceTypeProperties object itself.
      */
     public CommonDataServiceForAppsLinkedServiceTypeProperties withAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the domain value.
+     */
+    public Object domain() {
+        return this.domain;
+    }
+
+    /**
+     * Set the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param domain the domain value to set.
+     * @return the CommonDataServiceForAppsLinkedServiceTypeProperties object itself.
+     */
+    public CommonDataServiceForAppsLinkedServiceTypeProperties withDomain(Object domain) {
+        this.domain = domain;
         return this;
     }
 
@@ -412,4 +435,87 @@ public final class CommonDataServiceForAppsLinkedServiceTypeProperties {
 
     private static final ClientLogger LOGGER
         = new ClientLogger(CommonDataServiceForAppsLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("deploymentType", this.deploymentType);
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        jsonWriter.writeUntypedField("hostName", this.hostname);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeUntypedField("serviceUri", this.serviceUri);
+        jsonWriter.writeUntypedField("organizationName", this.organizationName);
+        jsonWriter.writeUntypedField("domain", this.domain);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonDataServiceForAppsLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonDataServiceForAppsLinkedServiceTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommonDataServiceForAppsLinkedServiceTypeProperties.
+     */
+    public static CommonDataServiceForAppsLinkedServiceTypeProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonDataServiceForAppsLinkedServiceTypeProperties deserializedCommonDataServiceForAppsLinkedServiceTypeProperties
+                = new CommonDataServiceForAppsLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentType".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.deploymentType
+                        = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.authenticationType
+                        = reader.readUntyped();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.hostname = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("serviceUri".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.serviceUri = reader.readUntyped();
+                } else if ("organizationName".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.organizationName
+                        = reader.readUntyped();
+                } else if ("domain".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.domain = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.password
+                        = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.servicePrincipalId
+                        = reader.readUntyped();
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalCredential".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.servicePrincipalCredential
+                        = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedServiceTypeProperties.encryptedCredential
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommonDataServiceForAppsLinkedServiceTypeProperties;
+        });
+    }
 }

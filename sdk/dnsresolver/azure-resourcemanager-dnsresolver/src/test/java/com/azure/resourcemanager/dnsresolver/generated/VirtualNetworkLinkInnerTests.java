@@ -10,40 +10,28 @@ import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkInn
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkLinkInnerTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkLinkInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"okacspk\",\"properties\":{\"virtualNetwork\":{\"id\":\"hzdobpxjmflbvvnc\"},\"metadata\":{\"zjuqkhrsaj\":\"cciw\",\"mjmvxieduugidyjr\":\"wkuofoskghsauu\",\"y\":\"f\",\"hslkevleggzf\":\"osvexcsonpclhoc\"},\"provisioningState\":\"Failed\"},\"id\":\"mvfaxkffeiith\",\"name\":\"vmezy\",\"type\":\"shxmzsbbzoggigrx\"}")
-                .toObject(VirtualNetworkLinkInner.class);
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.virtualNetwork().id());
-        Assertions.assertEquals("cciw", model.metadata().get("zjuqkhrsaj"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkLinkInner model = BinaryData.fromString(
+            "{\"etag\":\"w\",\"properties\":{\"virtualNetwork\":{\"id\":\"sjttgzfbish\"},\"metadata\":{\"alpbuxwgipwhon\":\"hajdeyeamdpha\"},\"provisioningState\":\"Creating\"},\"id\":\"shwankixzbinje\",\"name\":\"uttmrywnuzoqft\",\"type\":\"yqzrnkcqvyxlw\"}")
+            .toObject(VirtualNetworkLinkInner.class);
+        Assertions.assertEquals("sjttgzfbish", model.virtualNetwork().id());
+        Assertions.assertEquals("hajdeyeamdpha", model.metadata().get("alpbuxwgipwhon"));
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkLinkInner model =
-            new VirtualNetworkLinkInner()
-                .withVirtualNetwork(new SubResource().withId("hzdobpxjmflbvvnc"))
-                .withMetadata(
-                    mapOf(
-                        "zjuqkhrsaj",
-                        "cciw",
-                        "mjmvxieduugidyjr",
-                        "wkuofoskghsauu",
-                        "y",
-                        "f",
-                        "hslkevleggzf",
-                        "osvexcsonpclhoc"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkLinkInner model
+            = new VirtualNetworkLinkInner().withVirtualNetwork(new SubResource().withId("sjttgzfbish"))
+                .withMetadata(mapOf("alpbuxwgipwhon", "hajdeyeamdpha"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkLinkInner.class);
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.virtualNetwork().id());
-        Assertions.assertEquals("cciw", model.metadata().get("zjuqkhrsaj"));
+        Assertions.assertEquals("sjttgzfbish", model.virtualNetwork().id());
+        Assertions.assertEquals("hajdeyeamdpha", model.metadata().get("alpbuxwgipwhon"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

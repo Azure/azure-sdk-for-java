@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** delete response if content must be provided on delete operation. */
+/**
+ * delete response if content must be provided on delete operation.
+ */
 @Fluent
-public final class DeleteWorkflowResponseInner {
+public final class DeleteWorkflowResponseInner implements JsonSerializable<DeleteWorkflowResponseInner> {
     /*
      * delete status message
      */
-    @JsonProperty(value = "status")
     private String status;
 
-    /** Creates an instance of DeleteWorkflowResponseInner class. */
+    /**
+     * Creates an instance of DeleteWorkflowResponseInner class.
+     */
     public DeleteWorkflowResponseInner() {
     }
 
     /**
      * Get the status property: delete status message.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -31,7 +38,7 @@ public final class DeleteWorkflowResponseInner {
 
     /**
      * Set the status property: delete status message.
-     *
+     * 
      * @param status the status value to set.
      * @return the DeleteWorkflowResponseInner object itself.
      */
@@ -42,9 +49,45 @@ public final class DeleteWorkflowResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeleteWorkflowResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeleteWorkflowResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeleteWorkflowResponseInner.
+     */
+    public static DeleteWorkflowResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeleteWorkflowResponseInner deserializedDeleteWorkflowResponseInner = new DeleteWorkflowResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedDeleteWorkflowResponseInner.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeleteWorkflowResponseInner;
+        });
     }
 }

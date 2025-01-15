@@ -19,34 +19,38 @@ public final class SparkObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SparkObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"SparkObject\",\"typeProperties\":{\"tableName\":\"datatxtdqiusp\",\"table\":\"datazljvgjijzqjhljsa\",\"schema\":\"datajsisfqqhcmec\"},\"description\":\"sbfe\",\"structure\":\"datarpnjygllfkchhgsj\",\"schema\":\"datazcajlwmqc\",\"linkedServiceName\":{\"referenceName\":\"cabaam\",\"parameters\":{\"oqywsuarpzhryh\":\"datadhpmkxdujkxpuqzd\",\"zdsyxb\":\"datazx\",\"hwivkd\":\"datajilbuazcco\",\"pi\":\"datavjsknrbxz\"}},\"parameters\":{\"dqbvx\":{\"type\":\"Float\",\"defaultValue\":\"datai\"}},\"annotations\":[\"datalpwbopvhcbt\"],\"folder\":{\"name\":\"rjxcon\"},\"\":{\"h\":\"datakfki\",\"gvuqzgbjwvrudmp\":\"dataeoc\",\"esgyzwph\":\"dataewpmioleaja\"}}")
+            "{\"type\":\"SparkObject\",\"typeProperties\":{\"tableName\":\"datavmshkkgygfohrm\",\"table\":\"datahlclpkr\",\"schema\":\"datacbmjjviutivr\"},\"description\":\"ztxt\",\"structure\":\"datamgftjviiloh\",\"schema\":\"datarjcxhhfhznsjx\",\"linkedServiceName\":{\"referenceName\":\"fo\",\"parameters\":{\"sxhdkhm\":\"datauylyumbweprlnuo\",\"lyfzmnxr\":\"datamxkahapesnbyou\",\"fwzlmpx\":\"dataxxjvwbatjgzkm\"}},\"parameters\":{\"mmdzphxulx\":{\"type\":\"Bool\",\"defaultValue\":\"datai\"},\"cpbzxpz\":{\"type\":\"SecureString\",\"defaultValue\":\"datadnpfcghdttowqx\"},\"feomotquqlq\":{\"type\":\"Bool\",\"defaultValue\":\"datavhatiywtcvzuzp\"}},\"annotations\":[\"datasgqp\"],\"folder\":{\"name\":\"dpfvlsqmmetwtla\"},\"\":{\"cgrllyyfsmoc\":\"datajtefbdpnuvh\",\"chmetvzhuugdykgd\":\"dataxh\"}}")
             .toObject(SparkObjectDataset.class);
-        Assertions.assertEquals("sbfe", model.description());
-        Assertions.assertEquals("cabaam", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("dqbvx").type());
-        Assertions.assertEquals("rjxcon", model.folder().name());
+        Assertions.assertEquals("ztxt", model.description());
+        Assertions.assertEquals("fo", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("mmdzphxulx").type());
+        Assertions.assertEquals("dpfvlsqmmetwtla", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkObjectDataset model = new SparkObjectDataset().withDescription("sbfe")
-            .withStructure("datarpnjygllfkchhgsj")
-            .withSchema("datazcajlwmqc")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cabaam")
-                .withParameters(mapOf("oqywsuarpzhryh", "datadhpmkxdujkxpuqzd", "zdsyxb", "datazx", "hwivkd",
-                    "datajilbuazcco", "pi", "datavjsknrbxz")))
-            .withParameters(
-                mapOf("dqbvx", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datai")))
-            .withAnnotations(Arrays.asList("datalpwbopvhcbt"))
-            .withFolder(new DatasetFolder().withName("rjxcon"))
-            .withTableName("datatxtdqiusp")
-            .withTable("datazljvgjijzqjhljsa")
-            .withSchemaTypePropertiesSchema("datajsisfqqhcmec");
+        SparkObjectDataset model = new SparkObjectDataset().withDescription("ztxt")
+            .withStructure("datamgftjviiloh")
+            .withSchema("datarjcxhhfhznsjx")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fo")
+                .withParameters(mapOf("sxhdkhm", "datauylyumbweprlnuo", "lyfzmnxr", "datamxkahapesnbyou", "fwzlmpx",
+                    "dataxxjvwbatjgzkm")))
+            .withParameters(mapOf("mmdzphxulx",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datai"), "cpbzxpz",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                    .withDefaultValue("datadnpfcghdttowqx"),
+                "feomotquqlq",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datavhatiywtcvzuzp")))
+            .withAnnotations(Arrays.asList("datasgqp"))
+            .withFolder(new DatasetFolder().withName("dpfvlsqmmetwtla"))
+            .withTableName("datavmshkkgygfohrm")
+            .withTable("datahlclpkr")
+            .withSchemaTypePropertiesSchema("datacbmjjviutivr");
         model = BinaryData.fromObject(model).toObject(SparkObjectDataset.class);
-        Assertions.assertEquals("sbfe", model.description());
-        Assertions.assertEquals("cabaam", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("dqbvx").type());
-        Assertions.assertEquals("rjxcon", model.folder().name());
+        Assertions.assertEquals("ztxt", model.description());
+        Assertions.assertEquals("fo", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("mmdzphxulx").type());
+        Assertions.assertEquals("dpfvlsqmmetwtla", model.folder().name());
     }
 
     // Use "Map.of" if available

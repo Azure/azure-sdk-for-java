@@ -34,13 +34,11 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         String saName3 = generateRandomResourceName("javacsmsa", 15);
         String saName4 = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount1 =
-            storageManager
-                .storageAccounts()
-                .define(saName1)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount1 = storageManager.storageAccounts()
+            .define(saName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .create();
 
         Assertions.assertNotNull(storageAccount1.networkSubnetsWithAccess());
         Assertions.assertEquals(0, storageAccount1.networkSubnetsWithAccess().size());
@@ -58,18 +56,17 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups().getByName(storageAccount1.resourceGroupName());
 
-        StorageAccount storageAccount2 =
-            storageManager
-                .storageAccounts()
-                .define(saName2)
-                .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(resourceGroup)
-                .withAccessFromIpAddress("23.20.0.0")
-                .create();
+        StorageAccount storageAccount2 = storageManager.storageAccounts()
+            .define(saName2)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(resourceGroup)
+            .withAccessFromIpAddress("23.20.0.0")
+            .create();
 
         Assertions.assertNotNull(storageAccount2.innerModel().networkRuleSet());
         Assertions.assertNotNull(storageAccount2.innerModel().networkRuleSet().defaultAction());
-        Assertions.assertNotNull(storageAccount2.innerModel().networkRuleSet().defaultAction().equals(DefaultAction.DENY));
+        Assertions
+            .assertNotNull(storageAccount2.innerModel().networkRuleSet().defaultAction().equals(DefaultAction.DENY));
 
         Assertions.assertNotNull(storageAccount2.networkSubnetsWithAccess());
         Assertions.assertEquals(0, storageAccount2.networkSubnetsWithAccess().size());
@@ -85,19 +82,18 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         Assertions.assertFalse(storageAccount2.canReadMetricsFromAnyNetwork());
         Assertions.assertFalse(storageAccount2.canReadMetricsFromAnyNetwork());
 
-        StorageAccount storageAccount3 =
-            storageManager
-                .storageAccounts()
-                .define(saName3)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAccessFromAllNetworks()
-                .withAccessFromIpAddress("23.20.0.0")
-                .create();
+        StorageAccount storageAccount3 = storageManager.storageAccounts()
+            .define(saName3)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAccessFromAllNetworks()
+            .withAccessFromIpAddress("23.20.0.0")
+            .create();
 
         Assertions.assertNotNull(storageAccount3.innerModel().networkRuleSet());
         Assertions.assertNotNull(storageAccount3.innerModel().networkRuleSet().defaultAction());
-        Assertions.assertNotNull(storageAccount3.innerModel().networkRuleSet().defaultAction().equals(DefaultAction.ALLOW));
+        Assertions
+            .assertNotNull(storageAccount3.innerModel().networkRuleSet().defaultAction().equals(DefaultAction.ALLOW));
 
         Assertions.assertNotNull(storageAccount3.networkSubnetsWithAccess());
         Assertions.assertEquals(0, storageAccount3.networkSubnetsWithAccess().size());
@@ -113,19 +109,18 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         Assertions.assertTrue(storageAccount3.canReadMetricsFromAnyNetwork());
         Assertions.assertTrue(storageAccount3.canReadLogEntriesFromAnyNetwork());
 
-        StorageAccount storageAccount4 =
-            storageManager
-                .storageAccounts()
-                .define(saName4)
-                .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(resourceGroup)
-                .withReadAccessToLogEntriesFromAnyNetwork()
-                .withReadAccessToMetricsFromAnyNetwork()
-                .create();
+        StorageAccount storageAccount4 = storageManager.storageAccounts()
+            .define(saName4)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(resourceGroup)
+            .withReadAccessToLogEntriesFromAnyNetwork()
+            .withReadAccessToMetricsFromAnyNetwork()
+            .create();
 
         Assertions.assertNotNull(storageAccount4.innerModel().networkRuleSet());
         Assertions.assertNotNull(storageAccount4.innerModel().networkRuleSet().defaultAction());
-        Assertions.assertNotNull(storageAccount4.innerModel().networkRuleSet().defaultAction().equals(DefaultAction.DENY));
+        Assertions
+            .assertNotNull(storageAccount4.innerModel().networkRuleSet().defaultAction().equals(DefaultAction.DENY));
 
         Assertions.assertNotNull(storageAccount4.networkSubnetsWithAccess());
         Assertions.assertEquals(0, storageAccount4.networkSubnetsWithAccess().size());
@@ -146,13 +141,11 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
     public void canConfigureNetworkRulesWithUpdate() throws Exception {
         String saName1 = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount1 =
-            storageManager
-                .storageAccounts()
-                .define(saName1)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount1 = storageManager.storageAccounts()
+            .define(saName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .create();
 
         Assertions.assertNotNull(storageAccount1.networkSubnetsWithAccess());
         Assertions.assertEquals(0, storageAccount1.networkSubnetsWithAccess().size());

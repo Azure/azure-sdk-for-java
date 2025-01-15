@@ -37,16 +37,13 @@ public final class ListVirtualMachineExtensionImages {
         // published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions
         // by browsing through extension image publishers, types, and versions
 
-        PagedIterable<VirtualMachinePublisher> publishers = azureResourceManager
-                .virtualMachineImages()
-                .publishers()
-                .listByRegion(region);
+        PagedIterable<VirtualMachinePublisher> publishers
+            = azureResourceManager.virtualMachineImages().publishers().listByRegion(region);
 
         VirtualMachinePublisher chosenPublisher;
 
-        System.out.println("US East data center: printing list of \n"
-                + "a) Publishers and\n"
-                + "b) virtual machine extension images published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions");
+        System.out.println("US East data center: printing list of \n" + "a) Publishers and\n"
+            + "b) virtual machine extension images published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions");
         System.out.println("=======================================================");
         System.out.println("\n");
 
@@ -55,7 +52,7 @@ public final class ListVirtualMachineExtensionImages {
             System.out.println("Publisher - " + publisher.name());
 
             if (publisher.name().equalsIgnoreCase("Microsoft.OSTCExtensions")
-                    || publisher.name().equalsIgnoreCase("Microsoft.Azure.Extensions")) {
+                || publisher.name().equalsIgnoreCase("Microsoft.Azure.Extensions")) {
 
                 chosenPublisher = publisher;
                 System.out.print("\n\n");
@@ -65,11 +62,10 @@ public final class ListVirtualMachineExtensionImages {
                 System.out.println("Printing entries as publisher/type/version");
 
                 for (VirtualMachineExtensionImageType imageType : chosenPublisher.extensionTypes().list()) {
-                    for (VirtualMachineExtensionImageVersion version: imageType.versions().list()) {
+                    for (VirtualMachineExtensionImageVersion version : imageType.versions().list()) {
                         VirtualMachineExtensionImage image = version.getImage();
-                        System.out.println("Image - " + chosenPublisher.name() + "/"
-                                + image.typeName() + "/"
-                                + image.versionName());
+                        System.out.println(
+                            "Image - " + chosenPublisher.name() + "/" + image.typeName() + "/" + image.versionName());
                     }
                 }
 
@@ -95,8 +91,7 @@ public final class ListVirtualMachineExtensionImages {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.azurestack.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
      * Returns the list of supported REST operations.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Operations as paginated response with {@link PagedIterable}.
@@ -20,7 +22,7 @@ public interface Operations {
 
     /**
      * Returns the list of supported REST operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

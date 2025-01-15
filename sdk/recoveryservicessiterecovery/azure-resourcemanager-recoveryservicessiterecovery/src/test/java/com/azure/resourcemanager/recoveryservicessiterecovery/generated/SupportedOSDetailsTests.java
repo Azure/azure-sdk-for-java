@@ -24,7 +24,8 @@ public final class SupportedOSDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedOSDetails model = new SupportedOSDetails().withOsName("izfavkjzwf").withOsType("yay")
+        SupportedOSDetails model = new SupportedOSDetails().withOsName("izfavkjzwf")
+            .withOsType("yay")
             .withOsVersions(Arrays.asList(new OSVersionWrapper().withVersion("zs").withServicePack("wxrzxmdewsrsxkrp"),
                 new OSVersionWrapper().withVersion("jazejwwviyoyp").withServicePack("hbrnnhjx")));
         model = BinaryData.fromObject(model).toObject(SupportedOSDetails.class);

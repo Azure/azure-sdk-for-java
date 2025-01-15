@@ -4,22 +4,25 @@
 
 package com.azure.resourcemanager.datalakeanalytics.generated;
 
-/** Samples for Accounts List. */
+/**
+ * Samples for Accounts List.
+ */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/stable/2016-11-01/examples/Accounts_List.json
+     * x-ms-original-file:
+     * specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/stable/2016-11-01/examples/
+     * Accounts_List.json
      */
     /**
      * Sample code: Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This
      * includes a link to the next page, if any.
-     *
+     * 
      * @param manager Entry point to DataLakeAnalyticsManager.
      */
     public static void
         getsTheFirstPageOfDataLakeAnalyticsAccountsIfAnyWithinTheCurrentSubscriptionThisIncludesALinkToTheNextPageIfAny(
             com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager manager) {
-        manager
-            .accounts()
+        manager.accounts()
             .list("test_filter", 1, 1, "test_select", "test_orderby", false, com.azure.core.util.Context.NONE);
     }
 }

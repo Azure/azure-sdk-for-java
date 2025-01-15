@@ -6,24 +6,32 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Cluster pool compute profile.
  */
 @Fluent
-public class ClusterPoolComputeProfile {
+public class ClusterPoolComputeProfile implements JsonSerializable<ClusterPoolComputeProfile> {
     /*
      * The virtual machine SKU.
      */
-    @JsonProperty(value = "vmSize", required = true)
     private String vmSize;
 
     /*
      * The number of virtual machines.
      */
-    @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
+
+    /*
+     * The list of Availability zones to use for AKS VMSS nodes.
+     */
+    private List<String> availabilityZones;
 
     /**
      * Creates an instance of ClusterPoolComputeProfile class.
@@ -61,16 +69,92 @@ public class ClusterPoolComputeProfile {
     }
 
     /**
+     * Set the count property: The number of virtual machines.
+     * 
+     * @param count the count value to set.
+     * @return the ClusterPoolComputeProfile object itself.
+     */
+    ClusterPoolComputeProfile withCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    /**
+     * Get the availabilityZones property: The list of Availability zones to use for AKS VMSS nodes.
+     * 
+     * @return the availabilityZones value.
+     */
+    public List<String> availabilityZones() {
+        return this.availabilityZones;
+    }
+
+    /**
+     * Set the availabilityZones property: The list of Availability zones to use for AKS VMSS nodes.
+     * 
+     * @param availabilityZones the availabilityZones value to set.
+     * @return the ClusterPoolComputeProfile object itself.
+     */
+    public ClusterPoolComputeProfile withAvailabilityZones(List<String> availabilityZones) {
+        this.availabilityZones = availabilityZones;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vmSize() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property vmSize in model ClusterPoolComputeProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmSize in model ClusterPoolComputeProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterPoolComputeProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPoolComputeProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPoolComputeProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterPoolComputeProfile.
+     */
+    public static ClusterPoolComputeProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPoolComputeProfile deserializedClusterPoolComputeProfile = new ClusterPoolComputeProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmSize".equals(fieldName)) {
+                    deserializedClusterPoolComputeProfile.vmSize = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedClusterPoolComputeProfile.count = reader.getNullable(JsonReader::getInt);
+                } else if ("availabilityZones".equals(fieldName)) {
+                    List<String> availabilityZones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterPoolComputeProfile.availabilityZones = availabilityZones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPoolComputeProfile;
+        });
+    }
 }

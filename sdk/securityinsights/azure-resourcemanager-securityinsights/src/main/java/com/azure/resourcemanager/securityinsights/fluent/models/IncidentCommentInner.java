@@ -5,30 +5,103 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ClientInfo;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Represents an incident comment. */
+/**
+ * Represents an incident comment.
+ */
 @Fluent
 public final class IncidentCommentInner extends ResourceWithEtag {
     /*
      * Incident comment properties
      */
-    @JsonProperty(value = "properties")
     private IncidentCommentProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IncidentCommentInner class.
+     */
+    public IncidentCommentInner() {
+    }
 
     /**
      * Get the innerProperties property: Incident comment properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IncidentCommentProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IncidentCommentInner withEtag(String etag) {
         super.withEtag(etag);
@@ -37,7 +110,7 @@ public final class IncidentCommentInner extends ResourceWithEtag {
 
     /**
      * Get the createdTimeUtc property: The time the comment was created.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -46,7 +119,7 @@ public final class IncidentCommentInner extends ResourceWithEtag {
 
     /**
      * Get the lastModifiedTimeUtc property: The time the comment was updated.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -55,7 +128,7 @@ public final class IncidentCommentInner extends ResourceWithEtag {
 
     /**
      * Get the message property: The comment message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -64,7 +137,7 @@ public final class IncidentCommentInner extends ResourceWithEtag {
 
     /**
      * Set the message property: The comment message.
-     *
+     * 
      * @param message the message value to set.
      * @return the IncidentCommentInner object itself.
      */
@@ -78,7 +151,7 @@ public final class IncidentCommentInner extends ResourceWithEtag {
 
     /**
      * Get the author property: Describes the client that created the comment.
-     *
+     * 
      * @return the author value.
      */
     public ClientInfo author() {
@@ -87,14 +160,61 @@ public final class IncidentCommentInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentCommentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentCommentInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IncidentCommentInner.
+     */
+    public static IncidentCommentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentCommentInner deserializedIncidentCommentInner = new IncidentCommentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIncidentCommentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIncidentCommentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIncidentCommentInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedIncidentCommentInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedIncidentCommentInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIncidentCommentInner.innerProperties = IncidentCommentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentCommentInner;
+        });
     }
 }

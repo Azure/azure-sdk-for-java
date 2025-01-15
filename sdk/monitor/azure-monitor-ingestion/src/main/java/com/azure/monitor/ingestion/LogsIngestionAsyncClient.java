@@ -291,8 +291,8 @@ public final class LogsIngestionAsyncClient {
                 uploadLogsErrorConsumer = options.getLogsUploadErrorConsumer();
             }
             if (uploadLogsErrorConsumer != null) {
-                uploadLogsErrorConsumer.accept(
-                    new LogsUploadError(responseHolder.getException(), responseHolder.getRequest().getLogs()));
+                uploadLogsErrorConsumer
+                    .accept(new LogsUploadError(responseHolder.getException(), responseHolder.getRequest().getLogs()));
                 return;
             }
             // emit the responseHolder without the original logs only if there's an error and there's no
@@ -304,10 +304,10 @@ public final class LogsIngestionAsyncClient {
 
     private Mono<UploadLogsResponseHolder> uploadToService(String ruleId, String streamName, Context context,
         LogsIngestionRequest request) {
-        RequestOptions requestOptions = new RequestOptions().addHeader(HttpHeaderName.CONTENT_ENCODING, GZIP)
-            .setContext(context);
-        return service.uploadWithResponse(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()),
-                requestOptions)
+        RequestOptions requestOptions
+            = new RequestOptions().addHeader(HttpHeaderName.CONTENT_ENCODING, GZIP).setContext(context);
+        return service
+            .uploadWithResponse(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()), requestOptions)
             .map(response -> new UploadLogsResponseHolder(null, null))
             .onErrorResume(HttpResponseException.class,
                 ex -> Mono.fromSupplier(() -> new UploadLogsResponseHolder(request, ex)));

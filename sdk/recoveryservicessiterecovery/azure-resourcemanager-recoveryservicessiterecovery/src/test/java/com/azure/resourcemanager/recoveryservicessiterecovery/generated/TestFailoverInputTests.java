@@ -23,9 +23,11 @@ public final class TestFailoverInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestFailoverInput model = new TestFailoverInput().withProperties(
-            new TestFailoverInputProperties().withFailoverDirection("chvcyyysfgdo").withNetworkType("ubiipuipwoqonma")
-                .withNetworkId("ekni").withProviderSpecificDetails(new TestFailoverProviderSpecificInput()));
+        TestFailoverInput model = new TestFailoverInput()
+            .withProperties(new TestFailoverInputProperties().withFailoverDirection("chvcyyysfgdo")
+                .withNetworkType("ubiipuipwoqonma")
+                .withNetworkId("ekni")
+                .withProviderSpecificDetails(new TestFailoverProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(TestFailoverInput.class);
         Assertions.assertEquals("chvcyyysfgdo", model.properties().failoverDirection());
         Assertions.assertEquals("ubiipuipwoqonma", model.properties().networkType());

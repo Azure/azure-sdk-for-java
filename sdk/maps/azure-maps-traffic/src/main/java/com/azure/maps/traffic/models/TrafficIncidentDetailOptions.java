@@ -32,7 +32,8 @@ public final class TrafficIncidentDetailOptions {
      * @param boundingZoom Zoom level for desired tile. 0 to 22 for raster tiles, 0 through 22 for vector tiles
      * @param trafficModelId Number referencing traffic model. This can be obtained from the Viewport API.
      */
-    public TrafficIncidentDetailOptions(GeoBoundingBox boundingBox, IncidentDetailStyle style, int boundingZoom, String trafficModelId) {
+    public TrafficIncidentDetailOptions(GeoBoundingBox boundingBox, IncidentDetailStyle style, int boundingZoom,
+        String trafficModelId) {
         this.boundingbox = boundingBox;
         this.style = style;
         this.boundingZoom = boundingZoom;
@@ -74,7 +75,7 @@ public final class TrafficIncidentDetailOptions {
         this.boundingbox = boundingbox;
         return this;
     }
-    
+
     /**
      * get bounding zoom
      * @return int

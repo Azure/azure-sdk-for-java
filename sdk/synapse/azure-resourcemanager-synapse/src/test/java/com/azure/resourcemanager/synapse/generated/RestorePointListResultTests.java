@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.RestorePointListResult;
 public final class RestorePointListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestorePointListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"xmedjvcsly\",\"properties\":{\"restorePointType\":\"DISCRETE\",\"earliestRestoreDate\":\"2021-06-18T01:03:59Z\",\"restorePointCreationDate\":\"2021-02-16T11:10:06Z\",\"restorePointLabel\":\"hxg\"},\"id\":\"trmgucnapkte\",\"name\":\"ellwptfdy\",\"type\":\"pfqbuaceopzf\"},{\"location\":\"hhuao\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-06-20T04:26:50Z\",\"restorePointCreationDate\":\"2021-08-17T00:04:54Z\",\"restorePointLabel\":\"lzdahzxctobgbkdm\"},\"id\":\"izpost\",\"name\":\"grcfb\",\"type\":\"nrmfqjhhk\"},{\"location\":\"pvjymjhxxjyng\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-03-03T06:08:52Z\",\"restorePointCreationDate\":\"2021-05-11T10:46:47Z\",\"restorePointLabel\":\"bxqz\"},\"id\":\"szjfauvjfdxxivet\",\"name\":\"t\",\"type\":\"qaqtdoqmcbxvwvxy\"},{\"location\":\"qbhsfxobl\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-11-17T19:10:27Z\",\"restorePointCreationDate\":\"2021-08-02T07:01:05Z\",\"restorePointLabel\":\"wwfbkrvrnsvshq\"},\"id\":\"ohxcrsbfova\",\"name\":\"rruvwbhsq\",\"type\":\"sub\"}],\"nextLink\":\"jbi\"}")
-                .toObject(RestorePointListResult.class);
+        RestorePointListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"jeknizshq\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-06-06T18:17:05Z\",\"restorePointCreationDate\":\"2020-12-31T19:03:55Z\",\"restorePointLabel\":\"mblrrilbywd\"},\"id\":\"smiccwrwfscj\",\"name\":\"n\",\"type\":\"nszqujiz\"},{\"location\":\"oqytibyowbblgy\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-11-26T06:56:03Z\",\"restorePointCreationDate\":\"2021-08-30T13:25:29Z\",\"restorePointLabel\":\"xoi\"},\"id\":\"msksbp\",\"name\":\"mlqoljx\",\"type\":\"cgxxlxs\"}],\"nextLink\":\"gcvizqzdwlvwlyou\"}")
+            .toObject(RestorePointListResult.class);
     }
 
     @org.junit.jupiter.api.Test

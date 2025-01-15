@@ -8,36 +8,38 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Quotas. */
+/**
+ * Resource collection API of Quotas.
+ */
 public interface Quotas {
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects as paginated response with {@link PagedIterable}.
+     * @return the response of a QuotaResource list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<QuotaResource> list(String location);
 
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects as paginated response with {@link PagedIterable}.
+     * @return the response of a QuotaResource list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<QuotaResource> list(String location, Context context);
 
     /**
      * Get the available quota for a quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,9 +50,9 @@ public interface Quotas {
 
     /**
      * Get the available quota for a quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -60,30 +62,29 @@ public interface Quotas {
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
-     * @param quotaBucketRequest Quota Bucket Request data.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return check quota availability response object along with {@link Response}.
      */
-    Response<CheckQuotaAvailabilityResponse> checkAvailabilityWithResponse(
-        String location, String quotaBucketName, QuotaBucketRequest quotaBucketRequest, Context context);
+    Response<CheckQuotaAvailabilityResponse> checkAvailabilityWithResponse(String location, String quotaBucketName,
+        QuotaBucketRequest body, Context context);
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
-     * @param quotaBucketRequest Quota Bucket Request data.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return check quota availability response object.
      */
-    CheckQuotaAvailabilityResponse checkAvailability(
-        String location, String quotaBucketName, QuotaBucketRequest quotaBucketRequest);
+    CheckQuotaAvailabilityResponse checkAvailability(String location, String quotaBucketName, QuotaBucketRequest body);
 }

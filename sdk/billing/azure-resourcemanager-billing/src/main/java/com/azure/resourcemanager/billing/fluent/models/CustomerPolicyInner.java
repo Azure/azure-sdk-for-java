@@ -5,65 +5,178 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.models.ViewCharges;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.CustomerPolicyProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
+import java.util.Map;
 
-/** The customer's Policy. */
+/**
+ * A policy at customer scope.
+ */
 @Fluent
-public final class CustomerPolicyInner extends ProxyResource {
+public final class CustomerPolicyInner extends ProxyResourceWithTags {
     /*
-     * The properties of a customer's policy.
+     * A policy at customer scope.
      */
-    @JsonProperty(value = "properties")
-    private CustomerPolicyProperties innerProperties;
+    private CustomerPolicyProperties properties;
 
-    /** Creates an instance of CustomerPolicyInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CustomerPolicyInner class.
+     */
     public CustomerPolicyInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of a customer's policy.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: A policy at customer scope.
+     * 
+     * @return the properties value.
      */
-    private CustomerPolicyProperties innerProperties() {
-        return this.innerProperties;
+    public CustomerPolicyProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the viewCharges property: The policy that controls whether the users in customer's organization can view
-     * charges at pay-as-you-go prices.
-     *
-     * @return the viewCharges value.
-     */
-    public ViewCharges viewCharges() {
-        return this.innerProperties() == null ? null : this.innerProperties().viewCharges();
-    }
-
-    /**
-     * Set the viewCharges property: The policy that controls whether the users in customer's organization can view
-     * charges at pay-as-you-go prices.
-     *
-     * @param viewCharges the viewCharges value to set.
+     * Set the properties property: A policy at customer scope.
+     * 
+     * @param properties the properties value to set.
      * @return the CustomerPolicyInner object itself.
      */
-    public CustomerPolicyInner withViewCharges(ViewCharges viewCharges) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CustomerPolicyProperties();
-        }
-        this.innerProperties().withViewCharges(viewCharges);
+    public CustomerPolicyInner withProperties(CustomerPolicyProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomerPolicyInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerPolicyInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomerPolicyInner.
+     */
+    public static CustomerPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerPolicyInner deserializedCustomerPolicyInner = new CustomerPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCustomerPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomerPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomerPolicyInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCustomerPolicyInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCustomerPolicyInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCustomerPolicyInner.properties = CustomerPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerPolicyInner;
+        });
     }
 }

@@ -16,14 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to autoscale management API in Azure. */
 @Fluent
-public interface AutoscaleSettings
-    extends SupportsCreating<AutoscaleSetting.DefinitionStages.Blank>,
-        SupportsListing<AutoscaleSetting>,
-        SupportsListingByResourceGroup<AutoscaleSetting>,
-        SupportsGettingById<AutoscaleSetting>,
-        SupportsBatchCreation<AutoscaleSetting>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchDeletion,
-        HasManager<MonitorManager> {
+public interface AutoscaleSettings extends SupportsCreating<AutoscaleSetting.DefinitionStages.Blank>,
+    SupportsListing<AutoscaleSetting>, SupportsListingByResourceGroup<AutoscaleSetting>,
+    SupportsGettingById<AutoscaleSetting>, SupportsBatchCreation<AutoscaleSetting>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, SupportsBatchDeletion, HasManager<MonitorManager> {
 }

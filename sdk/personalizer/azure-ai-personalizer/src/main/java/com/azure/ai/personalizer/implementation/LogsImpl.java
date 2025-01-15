@@ -28,17 +28,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Logs. */
+/**
+ * An instance of this class provides access to all the operations defined in Logs.
+ */
 public final class LogsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LogsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PersonalizerClientV1Preview3Impl client;
 
     /**
      * Initializes an instance of LogsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LogsImpl(PersonalizerClientV1Preview3Impl client) {
@@ -54,72 +60,53 @@ public final class LogsImpl {
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface LogsService {
         @Post("/logs/interactions")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> interactions(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> interactions(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/logs/interactions")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> interactions(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/octet-stream") BinaryData body,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> interactions(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/octet-stream") BinaryData body,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/logs/observations")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> observations(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> observations(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/logs/observations")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> observations(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/octet-stream") BinaryData body,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> observations(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/octet-stream") BinaryData body,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/logs")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("Endpoint") String endpoint, @HostParam("ApiVersion") String apiVersion, Context context);
+        Mono<Response<Void>> delete(@HostParam("Endpoint") String endpoint, @HostParam("ApiVersion") String apiVersion,
+            Context context);
 
         @Get("/logs/properties")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PersonalizerLogProperties>> getProperties(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PersonalizerLogProperties>> getProperties(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,25 +116,16 @@ public final class LogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> interactionsWithResponseAsync(Flux<ByteBuffer> body, long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.interactions(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                body,
-                                contentLength,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> interactionsWithResponseAsync(body, contentLength, context));
     }
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -157,20 +135,20 @@ public final class LogsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> interactionsWithResponseAsync(
-            Flux<ByteBuffer> body, long contentLength, Context context) {
+    public Mono<Response<Void>> interactionsWithResponseAsync(Flux<ByteBuffer> body, long contentLength,
+        Context context) {
         final String accept = "application/json";
-        return service.interactions(
-                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
+        return service.interactions(this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept,
+            context);
     }
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,11 +163,11 @@ public final class LogsImpl {
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -205,29 +183,11 @@ public final class LogsImpl {
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
-     * @param body Interactions binary payload.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void interactions(Flux<ByteBuffer> body, long contentLength) {
-        interactionsAsync(body, contentLength).block();
-    }
-
-    /**
-     * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
-     * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
-     * customer.
-     *
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -243,11 +203,29 @@ public final class LogsImpl {
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
+     * @param body Interactions binary payload.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void interactions(Flux<ByteBuffer> body, long contentLength) {
+        interactionsWithResponse(body, contentLength, Context.NONE);
+    }
+
+    /**
+     * Post interactions.
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
+     * customer.
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,25 +235,16 @@ public final class LogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> interactionsWithResponseAsync(BinaryData body, long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.interactions(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                body,
-                                contentLength,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> interactionsWithResponseAsync(body, contentLength, context));
     }
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -287,17 +256,17 @@ public final class LogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> interactionsWithResponseAsync(BinaryData body, long contentLength, Context context) {
         final String accept = "application/json";
-        return service.interactions(
-                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
+        return service.interactions(this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept,
+            context);
     }
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,11 +281,11 @@ public final class LogsImpl {
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -332,29 +301,11 @@ public final class LogsImpl {
 
     /**
      * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
-     * @param body Interactions binary payload.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void interactions(BinaryData body, long contentLength) {
-        interactionsAsync(body, contentLength).block();
-    }
-
-    /**
-     * Post interactions.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
-     * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
-     * customer.
-     *
+     * 
      * @param body Interactions binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -369,12 +320,30 @@ public final class LogsImpl {
     }
 
     /**
-     * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * Post interactions.
+     * 
+     * The endpoint is intended to be used from within a SDK for logging interactions and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
+     * @param body Interactions binary payload.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void interactions(BinaryData body, long contentLength) {
+        interactionsWithResponse(body, contentLength, Context.NONE);
+    }
+
+    /**
+     * Post observations.
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
+     * customer.
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -384,25 +353,16 @@ public final class LogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> observationsWithResponseAsync(Flux<ByteBuffer> body, long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.observations(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                body,
-                                contentLength,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> observationsWithResponseAsync(body, contentLength, context));
     }
 
     /**
      * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -412,20 +372,20 @@ public final class LogsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> observationsWithResponseAsync(
-            Flux<ByteBuffer> body, long contentLength, Context context) {
+    public Mono<Response<Void>> observationsWithResponseAsync(Flux<ByteBuffer> body, long contentLength,
+        Context context) {
         final String accept = "application/json";
-        return service.observations(
-                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
+        return service.observations(this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept,
+            context);
     }
 
     /**
      * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -440,11 +400,11 @@ public final class LogsImpl {
 
     /**
      * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -460,29 +420,11 @@ public final class LogsImpl {
 
     /**
      * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
-     * @param body Observations binary payload.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void observations(Flux<ByteBuffer> body, long contentLength) {
-        observationsAsync(body, contentLength).block();
-    }
-
-    /**
-     * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
-     * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
-     * customer.
-     *
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -498,11 +440,29 @@ public final class LogsImpl {
 
     /**
      * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
+     * @param body Observations binary payload.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void observations(Flux<ByteBuffer> body, long contentLength) {
+        observationsWithResponse(body, contentLength, Context.NONE);
+    }
+
+    /**
+     * Post observations.
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
+     * customer.
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -512,25 +472,16 @@ public final class LogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> observationsWithResponseAsync(BinaryData body, long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.observations(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                body,
-                                contentLength,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> observationsWithResponseAsync(body, contentLength, context));
     }
 
     /**
      * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -542,17 +493,17 @@ public final class LogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> observationsWithResponseAsync(BinaryData body, long contentLength, Context context) {
         final String accept = "application/json";
-        return service.observations(
-                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
+        return service.observations(this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept,
+            context);
     }
 
     /**
      * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -567,11 +518,11 @@ public final class LogsImpl {
 
     /**
      * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -587,29 +538,11 @@ public final class LogsImpl {
 
     /**
      * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
      * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
      * customer.
-     *
-     * @param body Observations binary payload.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void observations(BinaryData body, long contentLength) {
-        observationsAsync(body, contentLength).block();
-    }
-
-    /**
-     * Post observations.
-     *
-     * <p>The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
-     * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
-     * customer.
-     *
+     * 
      * @param body Observations binary payload.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -624,25 +557,42 @@ public final class LogsImpl {
     }
 
     /**
+     * Post observations.
+     * 
+     * The endpoint is intended to be used from within a SDK for logging observations and accepts specific format
+     * defined in https://github.com/VowpalWabbit/reinforcement_learning. This endpoint should not be used by the
+     * customer.
+     * 
+     * @param body Observations binary payload.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void observations(BinaryData body, long contentLength) {
+        observationsWithResponse(body, contentLength, Context.NONE);
+    }
+
+    /**
      * Deletes Logs.
-     *
-     * <p>Delete all logs of Rank and Reward calls stored by Personalizer.
-     *
+     * 
+     * Delete all logs of Rank and Reward calls stored by Personalizer.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync() {
-        return FluxUtil.withContext(
-                context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(context));
     }
 
     /**
      * Deletes Logs.
-     *
-     * <p>Delete all logs of Rank and Reward calls stored by Personalizer.
-     *
+     * 
+     * Delete all logs of Rank and Reward calls stored by Personalizer.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -656,9 +606,9 @@ public final class LogsImpl {
 
     /**
      * Deletes Logs.
-     *
-     * <p>Delete all logs of Rank and Reward calls stored by Personalizer.
-     *
+     * 
+     * Delete all logs of Rank and Reward calls stored by Personalizer.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
@@ -670,9 +620,9 @@ public final class LogsImpl {
 
     /**
      * Deletes Logs.
-     *
-     * <p>Delete all logs of Rank and Reward calls stored by Personalizer.
-     *
+     * 
+     * Delete all logs of Rank and Reward calls stored by Personalizer.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -686,22 +636,9 @@ public final class LogsImpl {
 
     /**
      * Deletes Logs.
-     *
-     * <p>Delete all logs of Rank and Reward calls stored by Personalizer.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete() {
-        deleteAsync().block();
-    }
-
-    /**
-     * Deletes Logs.
-     *
-     * <p>Delete all logs of Rank and Reward calls stored by Personalizer.
-     *
+     * 
+     * Delete all logs of Rank and Reward calls stored by Personalizer.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -714,27 +651,37 @@ public final class LogsImpl {
     }
 
     /**
+     * Deletes Logs.
+     * 
+     * Delete all logs of Rank and Reward calls stored by Personalizer.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete() {
+        deleteWithResponse(Context.NONE);
+    }
+
+    /**
      * Get Log Properties.
-     *
-     * <p>Get properties of the Personalizer logs.
-     *
+     * 
+     * Get properties of the Personalizer logs.
+     * 
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the Personalizer logs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerLogProperties>> getPropertiesWithResponseAsync() {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getProperties(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getPropertiesWithResponseAsync(context));
     }
 
     /**
      * Get Log Properties.
-     *
-     * <p>Get properties of the Personalizer logs.
-     *
+     * 
+     * Get properties of the Personalizer logs.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -749,9 +696,9 @@ public final class LogsImpl {
 
     /**
      * Get Log Properties.
-     *
-     * <p>Get properties of the Personalizer logs.
-     *
+     * 
+     * Get properties of the Personalizer logs.
+     * 
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the Personalizer logs on successful completion of {@link Mono}.
@@ -763,9 +710,9 @@ public final class LogsImpl {
 
     /**
      * Get Log Properties.
-     *
-     * <p>Get properties of the Personalizer logs.
-     *
+     * 
+     * Get properties of the Personalizer logs.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -779,23 +726,9 @@ public final class LogsImpl {
 
     /**
      * Get Log Properties.
-     *
-     * <p>Get properties of the Personalizer logs.
-     *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the Personalizer logs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerLogProperties getProperties() {
-        return getPropertiesAsync().block();
-    }
-
-    /**
-     * Get Log Properties.
-     *
-     * <p>Get properties of the Personalizer logs.
-     *
+     * 
+     * Get properties of the Personalizer logs.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -805,5 +738,19 @@ public final class LogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersonalizerLogProperties> getPropertiesWithResponse(Context context) {
         return getPropertiesWithResponseAsync(context).block();
+    }
+
+    /**
+     * Get Log Properties.
+     * 
+     * Get properties of the Personalizer logs.
+     * 
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of the Personalizer logs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PersonalizerLogProperties getProperties() {
+        return getPropertiesWithResponse(Context.NONE).getValue();
     }
 }

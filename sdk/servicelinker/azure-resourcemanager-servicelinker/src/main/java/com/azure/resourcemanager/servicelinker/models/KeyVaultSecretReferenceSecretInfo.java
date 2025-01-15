@@ -5,33 +5,51 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The secret info when type is keyVaultSecretReference. It's for scenario that user provides a secret stored in user's
  * keyvault and source is Azure Kubernetes. The key Vault's resource id is linked to secretStore.keyVaultId.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "secretType")
-@JsonTypeName("keyVaultSecretReference")
 @Fluent
 public final class KeyVaultSecretReferenceSecretInfo extends SecretInfoBase {
     /*
+     * The secret type.
+     */
+    private SecretType secretType = SecretType.KEY_VAULT_SECRET_REFERENCE;
+
+    /*
      * Name of the Key Vault secret.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Version of the Key Vault secret.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
+     * Creates an instance of KeyVaultSecretReferenceSecretInfo class.
+     */
+    public KeyVaultSecretReferenceSecretInfo() {
+    }
+
+    /**
+     * Get the secretType property: The secret type.
+     * 
+     * @return the secretType value.
+     */
+    @Override
+    public SecretType secretType() {
+        return this.secretType;
+    }
+
+    /**
      * Get the name property: Name of the Key Vault secret.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +58,7 @@ public final class KeyVaultSecretReferenceSecretInfo extends SecretInfoBase {
 
     /**
      * Set the name property: Name of the Key Vault secret.
-     *
+     * 
      * @param name the name value to set.
      * @return the KeyVaultSecretReferenceSecretInfo object itself.
      */
@@ -51,7 +69,7 @@ public final class KeyVaultSecretReferenceSecretInfo extends SecretInfoBase {
 
     /**
      * Get the version property: Version of the Key Vault secret.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -60,7 +78,7 @@ public final class KeyVaultSecretReferenceSecretInfo extends SecretInfoBase {
 
     /**
      * Set the version property: Version of the Key Vault secret.
-     *
+     * 
      * @param version the version value to set.
      * @return the KeyVaultSecretReferenceSecretInfo object itself.
      */
@@ -71,11 +89,54 @@ public final class KeyVaultSecretReferenceSecretInfo extends SecretInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretType", this.secretType == null ? null : this.secretType.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultSecretReferenceSecretInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultSecretReferenceSecretInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultSecretReferenceSecretInfo.
+     */
+    public static KeyVaultSecretReferenceSecretInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultSecretReferenceSecretInfo deserializedKeyVaultSecretReferenceSecretInfo
+                = new KeyVaultSecretReferenceSecretInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretType".equals(fieldName)) {
+                    deserializedKeyVaultSecretReferenceSecretInfo.secretType
+                        = SecretType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedKeyVaultSecretReferenceSecretInfo.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedKeyVaultSecretReferenceSecretInfo.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultSecretReferenceSecretInfo;
+        });
     }
 }

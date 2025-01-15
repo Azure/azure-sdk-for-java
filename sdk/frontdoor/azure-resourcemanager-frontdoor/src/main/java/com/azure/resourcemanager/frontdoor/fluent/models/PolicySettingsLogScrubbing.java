@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.WebApplicationFirewallScrubbingRules;
 import com.azure.resourcemanager.frontdoor.models.WebApplicationFirewallScrubbingState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines rules that scrub sensitive fields in the Web Application Firewall logs.
  */
 @Fluent
-public final class PolicySettingsLogScrubbing {
+public final class PolicySettingsLogScrubbing implements JsonSerializable<PolicySettingsLogScrubbing> {
     /*
      * State of the log scrubbing config. Default value is Enabled.
      */
-    @JsonProperty(value = "state")
     private WebApplicationFirewallScrubbingState state;
 
     /*
      * List of log scrubbing rules applied to the Web Application Firewall logs.
      */
-    @JsonProperty(value = "scrubbingRules")
     private List<WebApplicationFirewallScrubbingRules> scrubbingRules;
 
     /**
@@ -82,5 +84,48 @@ public final class PolicySettingsLogScrubbing {
         if (scrubbingRules() != null) {
             scrubbingRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeArrayField("scrubbingRules", this.scrubbingRules,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicySettingsLogScrubbing from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicySettingsLogScrubbing if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicySettingsLogScrubbing.
+     */
+    public static PolicySettingsLogScrubbing fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicySettingsLogScrubbing deserializedPolicySettingsLogScrubbing = new PolicySettingsLogScrubbing();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedPolicySettingsLogScrubbing.state
+                        = WebApplicationFirewallScrubbingState.fromString(reader.getString());
+                } else if ("scrubbingRules".equals(fieldName)) {
+                    List<WebApplicationFirewallScrubbingRules> scrubbingRules
+                        = reader.readArray(reader1 -> WebApplicationFirewallScrubbingRules.fromJson(reader1));
+                    deserializedPolicySettingsLogScrubbing.scrubbingRules = scrubbingRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicySettingsLogScrubbing;
+        });
     }
 }

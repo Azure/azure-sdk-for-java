@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The EncryptionProperties model. */
 @Fluent
 public class EncryptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EncryptionProperties.class);
 
     /*
      * vault base Url
@@ -99,20 +100,16 @@ public class EncryptionProperties {
      */
     public void validate() {
         if (vaultBaseUrl() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vaultBaseUrl in model EncryptionProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vaultBaseUrl in model EncryptionProperties"));
         }
         if (keyName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyName in model EncryptionProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyName in model EncryptionProperties"));
         }
         if (keyVersion() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyVersion in model EncryptionProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyVersion in model EncryptionProperties"));
         }
     }
 }

@@ -81,13 +81,12 @@ public final class SmsAsyncClient {
                 if (context != null) {
                     contextValue = context;
                 }
-                return smsClient.sendAsync(request, contextValue)
-                    .flatMap((SmsSendResponse response) -> {
-                        List<SmsSendResult> smsSendResults = convertSmsSendResults(response.getValue());
-                        return Mono.just(smsSendResults.get(0));
-                    });
+                return smsClient.sendAsync(request, contextValue).flatMap((SmsSendResponse response) -> {
+                    List<SmsSendResult> smsSendResults = convertSmsSendResults(response.getValue());
+                    return Mono.just(smsSendResults.get(0));
+                });
             });
-        } catch (RuntimeException  ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -102,8 +101,7 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Iterable<SmsSendResult>> send(String from, Iterable<String> to, String message) {
-        return sendWithResponse(from, to, message, null)
-            .map(response -> response.getValue());
+        return sendWithResponse(from, to, message, null).map(response -> response.getValue());
     }
 
     /**
@@ -117,11 +115,13 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Iterable<SmsSendResult>>> sendWithResponse(String from, Iterable<String> to, String message, SmsSendOptions options) {
+    public Mono<Response<Iterable<SmsSendResult>>> sendWithResponse(String from, Iterable<String> to, String message,
+        SmsSendOptions options) {
         return sendWithResponse(from, to, message, options, null);
     }
 
-    Mono<Response<Iterable<SmsSendResult>>> sendWithResponse(String from, Iterable<String> to, String message, SmsSendOptions options, Context context) {
+    Mono<Response<Iterable<SmsSendResult>>> sendWithResponse(String from, Iterable<String> to, String message,
+        SmsSendOptions options, Context context) {
         try {
             Objects.requireNonNull(from, "'from' cannot be null.");
             Objects.requireNonNull(to, "'to' cannot be null.");
@@ -144,32 +144,25 @@ public final class SmsAsyncClient {
     private List<SmsSendResult> convertSmsSendResults(Iterable<SmsSendResponseItem> resultsIterable) {
         List<SmsSendResult> iterableWrapper = new ArrayList<>();
         for (SmsSendResponseItem item : resultsIterable) {
-            iterableWrapper.add(new SmsSendResult(
-                item.getTo(),
-                item.getMessageId(),
-                item.getHttpStatusCode(),
-                item.isSuccessful(),
-                item.getErrorMessage()));
+            iterableWrapper.add(new SmsSendResult(item.getTo(), item.getMessageId(), item.getHttpStatusCode(),
+                item.isSuccessful(), item.getErrorMessage()));
         }
         return iterableWrapper;
     }
 
-    private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message, SmsSendOptions options) {
+    private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message,
+        SmsSendOptions options) {
         SendMessageRequest request = new SendMessageRequest();
         List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
 
         for (String s : smsRecipient) {
-            SmsRecipient recipient = new SmsRecipient()
-                .setTo(s)
+            SmsRecipient recipient = new SmsRecipient().setTo(s)
                 .setRepeatabilityRequestId(UUID.randomUUID().toString())
                 .setRepeatabilityFirstSent(OffsetDateTime.now(ZoneOffset.UTC)
                     .format(DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)));
             recipients.add(recipient);
         }
-        request.setFrom(from)
-            .setSmsRecipients(recipients)
-            .setMessage(message)
-            .setSmsSendOptions(options);
+        request.setFrom(from).setSmsRecipients(recipients).setMessage(message).setSmsSendOptions(options);
         return request;
     }
 }

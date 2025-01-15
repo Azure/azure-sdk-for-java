@@ -6,88 +6,57 @@ package com.azure.resourcemanager.powerbidedicated.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager;
 import com.azure.resourcemanager.powerbidedicated.models.AutoScaleVCore;
 import com.azure.resourcemanager.powerbidedicated.models.AutoScaleVCoreSku;
 import com.azure.resourcemanager.powerbidedicated.models.VCoreSkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AutoScaleVCoresCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"sku\":{\"name\":\"wlauwzizxbmpg\",\"tier\":\"AutoScale\",\"capacity\":85590242},\"properties\":{\"capacityObjectId\":\"uvpb\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":1773574052},\"location\":\"rp\",\"tags\":{\"fgohdneuelfphs\":\"bmnzbtbhjpgl\",\"v\":\"yhtozfikdowwqu\",\"lvithhqzonosgg\":\"zx\",\"ljuti\":\"hcohfwdsjnk\"},\"id\":\"swacffgdkzz\",\"name\":\"wkfvhqcrailvp\",\"type\":\"ppfufl\"}";
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"t\",\"tier\":\"AutoScale\",\"capacity\":1761160515},\"properties\":{\"capacityObjectId\":\"tfdygpfqb\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":519394000},\"location\":\"zfq\",\"tags\":{\"ol\":\"uaopppcqeq\",\"kdmoi\":\"dahzxctobg\"},\"id\":\"postmgrcfbunrm\",\"name\":\"qjhhkxbpv\",\"type\":\"ymjhxxjyngudivkr\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PowerBIDedicatedManager manager = PowerBIDedicatedManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AutoScaleVCore response = manager.autoScaleVCores()
+            .define("fiwjmygtdssls")
+            .withRegion("d")
+            .withExistingResourceGroup("erscdntne")
+            .withSku(new AutoScaleVCoreSku().withName("tmweriofzpyq")
+                .withTier(VCoreSkuTier.AUTO_SCALE)
+                .withCapacity(1966587888))
+            .withTags(mapOf("mbes", "wiwubm", "okonzmnsikvmkqz", "dnkwwtppjflcxog", "eodkwobda", "qqkdltfzxmhhvhgu",
+                "xndlkzgxhu", "xtibqdxbxwakbog"))
+            .withCapacityObjectId("ets")
+            .withCapacityLimit(199039203)
+            .create();
 
-        PowerBIDedicatedManager manager =
-            PowerBIDedicatedManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AutoScaleVCore response =
-            manager
-                .autoScaleVCores()
-                .define("aalnjixi")
-                .withRegion("nr")
-                .withExistingResourceGroup("vbxwyjsflhh")
-                .withSku(
-                    new AutoScaleVCoreSku()
-                        .withName("xyawj")
-                        .withTier(VCoreSkuTier.AUTO_SCALE)
-                        .withCapacity(1772436776))
-                .withTags(mapOf("hb", "o", "dtpnapnyiropuhp", "xknalaulppg", "gqgitxmedjvcsl", "gvpgy"))
-                .withCapacityObjectId("yjpkiidzyexz")
-                .withCapacityLimit(712721872)
-                .create();
-
-        Assertions.assertEquals("zfq", response.location());
-        Assertions.assertEquals("uaopppcqeq", response.tags().get("ol"));
-        Assertions.assertEquals("t", response.sku().name());
+        Assertions.assertEquals("rp", response.location());
+        Assertions.assertEquals("bmnzbtbhjpgl", response.tags().get("fgohdneuelfphs"));
+        Assertions.assertEquals("wlauwzizxbmpg", response.sku().name());
         Assertions.assertEquals(VCoreSkuTier.AUTO_SCALE, response.sku().tier());
-        Assertions.assertEquals(1761160515, response.sku().capacity());
-        Assertions.assertEquals("tfdygpfqb", response.capacityObjectId());
-        Assertions.assertEquals(519394000, response.capacityLimit());
+        Assertions.assertEquals(85590242, response.sku().capacity());
+        Assertions.assertEquals("uvpb", response.capacityObjectId());
+        Assertions.assertEquals(1773574052, response.capacityLimit());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -12,46 +12,48 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of NotificationChannel. */
+/**
+ * An immutable client-side representation of NotificationChannel.
+ */
 public interface NotificationChannel {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the webhookUrl property: The webhook URL to send notifications to.
-     *
+     * 
      * @return the webhookUrl value.
      */
     String webhookUrl();
@@ -59,7 +61,7 @@ public interface NotificationChannel {
     /**
      * Gets the emailRecipient property: The email recipient to send notifications to (can be a list of semi-colon
      * separated email addresses).
-     *
+     * 
      * @return the emailRecipient value.
      */
     String emailRecipient();
@@ -67,93 +69,98 @@ public interface NotificationChannel {
     /**
      * Gets the notificationLocale property: The locale to use when sending a notification (fallback for unsupported
      * languages is EN).
-     *
+     * 
      * @return the notificationLocale value.
      */
     String notificationLocale();
 
     /**
      * Gets the description property: Description of notification.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the events property: The list of event for which this notification is enabled.
-     *
+     * 
      * @return the events value.
      */
     List<Event> events();
 
     /**
      * Gets the createdDate property: The creation date of the notification channel.
-     *
+     * 
      * @return the createdDate value.
      */
     OffsetDateTime createdDate();
 
     /**
      * Gets the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     String uniqueIdentifier();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.NotificationChannelInner object.
-     *
+     * 
      * @return the inner object.
      */
     NotificationChannelInner innerModel();
 
-    /** The entirety of the NotificationChannel definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the NotificationChannel definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The NotificationChannel definition stages. */
+    /**
+     * The NotificationChannel definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the NotificationChannel definition. */
+        /**
+         * The first stage of the NotificationChannel definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the NotificationChannel definition allowing to specify location. */
+        /**
+         * The stage of the NotificationChannel definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -161,18 +168,20 @@ public interface NotificationChannel {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
 
-        /** The stage of the NotificationChannel definition allowing to specify parent resource. */
+        /**
+         * The stage of the NotificationChannel definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, labName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group.
              * @param labName The name of the lab.
              * @return the next definition stage.
@@ -185,92 +194,100 @@ public interface NotificationChannel {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithWebhookUrl,
-                DefinitionStages.WithEmailRecipient,
-                DefinitionStages.WithNotificationLocale,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithEvents {
+            extends DefinitionStages.WithTags, DefinitionStages.WithWebhookUrl, DefinitionStages.WithEmailRecipient,
+            DefinitionStages.WithNotificationLocale, DefinitionStages.WithDescription, DefinitionStages.WithEvents {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             NotificationChannel create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             NotificationChannel create(Context context);
         }
 
-        /** The stage of the NotificationChannel definition allowing to specify tags. */
+        /**
+         * The stage of the NotificationChannel definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the NotificationChannel definition allowing to specify webhookUrl. */
+        /**
+         * The stage of the NotificationChannel definition allowing to specify webhookUrl.
+         */
         interface WithWebhookUrl {
             /**
              * Specifies the webhookUrl property: The webhook URL to send notifications to..
-             *
+             * 
              * @param webhookUrl The webhook URL to send notifications to.
              * @return the next definition stage.
              */
             WithCreate withWebhookUrl(String webhookUrl);
         }
 
-        /** The stage of the NotificationChannel definition allowing to specify emailRecipient. */
+        /**
+         * The stage of the NotificationChannel definition allowing to specify emailRecipient.
+         */
         interface WithEmailRecipient {
             /**
              * Specifies the emailRecipient property: The email recipient to send notifications to (can be a list of
              * semi-colon separated email addresses)..
-             *
+             * 
              * @param emailRecipient The email recipient to send notifications to (can be a list of semi-colon separated
-             *     email addresses).
+             * email addresses).
              * @return the next definition stage.
              */
             WithCreate withEmailRecipient(String emailRecipient);
         }
 
-        /** The stage of the NotificationChannel definition allowing to specify notificationLocale. */
+        /**
+         * The stage of the NotificationChannel definition allowing to specify notificationLocale.
+         */
         interface WithNotificationLocale {
             /**
              * Specifies the notificationLocale property: The locale to use when sending a notification (fallback for
              * unsupported languages is EN)..
-             *
+             * 
              * @param notificationLocale The locale to use when sending a notification (fallback for unsupported
-             *     languages is EN).
+             * languages is EN).
              * @return the next definition stage.
              */
             WithCreate withNotificationLocale(String notificationLocale);
         }
 
-        /** The stage of the NotificationChannel definition allowing to specify description. */
+        /**
+         * The stage of the NotificationChannel definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Description of notification..
-             *
+             * 
              * @param description Description of notification.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the NotificationChannel definition allowing to specify events. */
+        /**
+         * The stage of the NotificationChannel definition allowing to specify events.
+         */
         interface WithEvents {
             /**
              * Specifies the events property: The list of event for which this notification is enabled..
-             *
+             * 
              * @param events The list of event for which this notification is enabled.
              * @return the next definition stage.
              */
@@ -280,36 +297,42 @@ public interface NotificationChannel {
 
     /**
      * Begins update for the NotificationChannel resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     NotificationChannel.Update update();
 
-    /** The template for NotificationChannel update. */
+    /**
+     * The template for NotificationChannel update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         NotificationChannel apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         NotificationChannel apply(Context context);
     }
 
-    /** The NotificationChannel update stages. */
+    /**
+     * The NotificationChannel update stages.
+     */
     interface UpdateStages {
-        /** The stage of the NotificationChannel update allowing to specify tags. */
+        /**
+         * The stage of the NotificationChannel update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: The tags of the resource..
-             *
+             * 
              * @param tags The tags of the resource.
              * @return the next definition stage.
              */
@@ -319,14 +342,14 @@ public interface NotificationChannel {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     NotificationChannel refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -334,7 +357,7 @@ public interface NotificationChannel {
 
     /**
      * Send notification to provided channel.
-     *
+     * 
      * @param notifyParameters Properties for generating a Notification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,7 +369,7 @@ public interface NotificationChannel {
 
     /**
      * Send notification to provided channel.
-     *
+     * 
      * @param notifyParameters Properties for generating a Notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

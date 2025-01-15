@@ -23,7 +23,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
     /*
      * Type of linked service.
      */
-    private String type;
+    private String type = "LinkedService";
 
     /*
      * The integration runtime reference.
@@ -46,7 +46,8 @@ public class LinkedService implements JsonSerializable<LinkedService> {
     private List<Object> annotations;
 
     /*
-     * The Azure Synapse nested object which contains the information and credential which can be used to connect with related store or compute resource.
+     * The Azure Synapse nested object which contains the information and credential which can be used to connect with
+     * related store or compute resource.
      */
     private Map<String, Object> additionalProperties;
 
@@ -54,7 +55,6 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * Creates an instance of LinkedService class.
      */
     public LinkedService() {
-        this.type = "LinkedService";
     }
 
     /**

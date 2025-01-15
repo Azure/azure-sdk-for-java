@@ -14,7 +14,8 @@ import java.util.List;
 /** Values returned by the List operation. */
 @Immutable
 public final class RemoteLoginInformationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemoteLoginInformationListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RemoteLoginInformationListResult.class);
 
     /*
      * The collection of returned remote login details.

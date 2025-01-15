@@ -17,8 +17,7 @@ public final class GuestUsagesResourceImpl
     implements GuestUsagesResource, GuestUsagesResource.Definition, GuestUsagesResource.Update {
     private GuestUsagesResourceInner innerObject;
 
-    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager
-        serviceManager;
+    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -81,27 +80,22 @@ public final class GuestUsagesResourceImpl
     }
 
     public GuestUsagesResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestUsages()
-                .createWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGuestUsages()
+            .createWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public GuestUsagesResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestUsages()
-                .createWithResponse(resourceGroupName, resourceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGuestUsages()
+            .createWithResponse(resourceGroupName, resourceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    GuestUsagesResourceImpl(
-        String name,
+    GuestUsagesResourceImpl(String name,
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager) {
         this.innerObject = new GuestUsagesResourceInner();
         this.serviceManager = serviceManager;
@@ -114,27 +108,22 @@ public final class GuestUsagesResourceImpl
     }
 
     public GuestUsagesResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestUsages()
-                .updateWithResponse(resourceGroupName, resourceName, updateResourcePatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGuestUsages()
+            .updateWithResponse(resourceGroupName, resourceName, updateResourcePatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GuestUsagesResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestUsages()
-                .updateWithResponse(resourceGroupName, resourceName, updateResourcePatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGuestUsages()
+            .updateWithResponse(resourceGroupName, resourceName, updateResourcePatch, context)
+            .getValue();
         return this;
     }
 
-    GuestUsagesResourceImpl(
-        GuestUsagesResourceInner innerObject,
+    GuestUsagesResourceImpl(GuestUsagesResourceInner innerObject,
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -143,22 +132,18 @@ public final class GuestUsagesResourceImpl
     }
 
     public GuestUsagesResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestUsages()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGuestUsages()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GuestUsagesResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestUsages()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGuestUsages()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogAnalyticsQueryPackQuerySearchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogAnalyticsQueryPackQuerySearchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"related\":{\"categories\":[\"c\",\"wnfnbacf\",\"onlebxetqgtzxdpn\",\"bqqwxrj\"],\"resourceTypes\":[\"llnwsubi\"],\"solutions\":[\"ampmngnz\",\"c\",\"aqw\",\"ochcbonqvpkvl\"]},\"tags\":{\"enjbdlwtgrhp\":[\"ea\",\"eipheoflokeyy\"],\"masxazjpqyegu\":[\"pj\"],\"cftadeh\":[\"hb\",\"xhejjzzvdud\",\"wdslfhotwmcy\",\"pwlbjnpg\"],\"xdn\":[\"ltyfsop\",\"usue\",\"nzwdejba\",\"orxzdmohctbqvud\"]}}")
-                .toObject(LogAnalyticsQueryPackQuerySearchProperties.class);
+        LogAnalyticsQueryPackQuerySearchProperties model = BinaryData.fromString(
+            "{\"related\":{\"categories\":[\"c\",\"wnfnbacf\",\"onlebxetqgtzxdpn\",\"bqqwxrj\"],\"resourceTypes\":[\"llnwsubi\"],\"solutions\":[\"ampmngnz\",\"c\",\"aqw\",\"ochcbonqvpkvl\"]},\"tags\":{\"enjbdlwtgrhp\":[\"ea\",\"eipheoflokeyy\"],\"masxazjpqyegu\":[\"pj\"],\"cftadeh\":[\"hb\",\"xhejjzzvdud\",\"wdslfhotwmcy\",\"pwlbjnpg\"],\"xdn\":[\"ltyfsop\",\"usue\",\"nzwdejba\",\"orxzdmohctbqvud\"]}}")
+            .toObject(LogAnalyticsQueryPackQuerySearchProperties.class);
         Assertions.assertEquals("c", model.related().categories().get(0));
         Assertions.assertEquals("llnwsubi", model.related().resourceTypes().get(0));
         Assertions.assertEquals("ampmngnz", model.related().solutions().get(0));
@@ -28,23 +26,14 @@ public final class LogAnalyticsQueryPackQuerySearchPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQueryPackQuerySearchProperties model =
-            new LogAnalyticsQueryPackQuerySearchProperties()
-                .withRelated(
-                    new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
-                        .withCategories(Arrays.asList("c", "wnfnbacf", "onlebxetqgtzxdpn", "bqqwxrj"))
-                        .withResourceTypes(Arrays.asList("llnwsubi"))
-                        .withSolutions(Arrays.asList("ampmngnz", "c", "aqw", "ochcbonqvpkvl")))
-                .withTags(
-                    mapOf(
-                        "enjbdlwtgrhp",
-                        Arrays.asList("ea", "eipheoflokeyy"),
-                        "masxazjpqyegu",
-                        Arrays.asList("pj"),
-                        "cftadeh",
-                        Arrays.asList("hb", "xhejjzzvdud", "wdslfhotwmcy", "pwlbjnpg"),
-                        "xdn",
-                        Arrays.asList("ltyfsop", "usue", "nzwdejba", "orxzdmohctbqvud")));
+        LogAnalyticsQueryPackQuerySearchProperties model = new LogAnalyticsQueryPackQuerySearchProperties()
+            .withRelated(new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
+                .withCategories(Arrays.asList("c", "wnfnbacf", "onlebxetqgtzxdpn", "bqqwxrj"))
+                .withResourceTypes(Arrays.asList("llnwsubi"))
+                .withSolutions(Arrays.asList("ampmngnz", "c", "aqw", "ochcbonqvpkvl")))
+            .withTags(mapOf("enjbdlwtgrhp", Arrays.asList("ea", "eipheoflokeyy"), "masxazjpqyegu", Arrays.asList("pj"),
+                "cftadeh", Arrays.asList("hb", "xhejjzzvdud", "wdslfhotwmcy", "pwlbjnpg"), "xdn",
+                Arrays.asList("ltyfsop", "usue", "nzwdejba", "orxzdmohctbqvud")));
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackQuerySearchProperties.class);
         Assertions.assertEquals("c", model.related().categories().get(0));
         Assertions.assertEquals("llnwsubi", model.related().resourceTypes().get(0));

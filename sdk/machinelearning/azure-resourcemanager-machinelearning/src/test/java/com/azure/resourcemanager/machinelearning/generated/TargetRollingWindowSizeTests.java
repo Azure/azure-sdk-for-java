@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.TargetRollingWindowSize;
 public final class TargetRollingWindowSizeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetRollingWindowSize model =
-            BinaryData.fromString("{\"mode\":\"TargetRollingWindowSize\"}").toObject(TargetRollingWindowSize.class);
+        TargetRollingWindowSize model
+            = BinaryData.fromString("{\"mode\":\"TargetRollingWindowSize\"}").toObject(TargetRollingWindowSize.class);
     }
 
     @org.junit.jupiter.api.Test

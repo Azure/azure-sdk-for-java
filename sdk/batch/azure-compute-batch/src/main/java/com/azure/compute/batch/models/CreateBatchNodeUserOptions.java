@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for adding a user Account to a certain compute node.
  */
 public class CreateBatchNodeUserOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link CreateBatchNodeUserOptions}.
+     */
+    public CreateBatchNodeUserOptions() {
+    }
 }

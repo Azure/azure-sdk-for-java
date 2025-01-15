@@ -12,18 +12,18 @@ public final class SelfDependencyTumblingWindowTriggerReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SelfDependencyTumblingWindowTriggerReference model = BinaryData.fromString(
-            "{\"type\":\"SelfDependencyTumblingWindowTriggerReference\",\"offset\":\"siaszqhpel\",\"size\":\"kwc\"}")
+            "{\"type\":\"SelfDependencyTumblingWindowTriggerReference\",\"offset\":\"jveujgsxrsxb\",\"size\":\"mv\"}")
             .toObject(SelfDependencyTumblingWindowTriggerReference.class);
-        Assertions.assertEquals("siaszqhpel", model.offset());
-        Assertions.assertEquals("kwc", model.size());
+        Assertions.assertEquals("jveujgsxrsxb", model.offset());
+        Assertions.assertEquals("mv", model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SelfDependencyTumblingWindowTriggerReference model
-            = new SelfDependencyTumblingWindowTriggerReference().withOffset("siaszqhpel").withSize("kwc");
+            = new SelfDependencyTumblingWindowTriggerReference().withOffset("jveujgsxrsxb").withSize("mv");
         model = BinaryData.fromObject(model).toObject(SelfDependencyTumblingWindowTriggerReference.class);
-        Assertions.assertEquals("siaszqhpel", model.offset());
-        Assertions.assertEquals("kwc", model.size());
+        Assertions.assertEquals("jveujgsxrsxb", model.offset());
+        Assertions.assertEquals("mv", model.size());
     }
 }

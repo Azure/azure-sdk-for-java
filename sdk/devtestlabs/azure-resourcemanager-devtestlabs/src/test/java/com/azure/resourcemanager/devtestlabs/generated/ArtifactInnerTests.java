@@ -13,19 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"title\":\"wjmy\",\"description\":\"dsslswt\",\"publisher\":\"eriofzpyqs\",\"filePath\":\"wab\",\"icon\":\"tshhszhedp\",\"targetOsType\":\"wiwubm\",\"parameters\":\"databesldnkwwtppjflc\",\"createdDate\":\"2021-04-27T19:54:46Z\"},\"location\":\"aokonzmnsik\",\"tags\":{\"hvhgureod\":\"qzeqqkdltfzxm\"},\"id\":\"wobdagxtibqdx\",\"name\":\"xwak\",\"type\":\"ogqxndlkzgxhuri\"}")
-                .toObject(ArtifactInner.class);
+        ArtifactInner model = BinaryData.fromString(
+            "{\"properties\":{\"title\":\"wjmy\",\"description\":\"dsslswt\",\"publisher\":\"eriofzpyqs\",\"filePath\":\"wab\",\"icon\":\"tshhszhedp\",\"targetOsType\":\"wiwubm\",\"parameters\":\"databesldnkwwtppjflc\",\"createdDate\":\"2021-04-27T19:54:46Z\"},\"location\":\"aokonzmnsik\",\"tags\":{\"hvhgureod\":\"qzeqqkdltfzxm\"},\"id\":\"wobdagxtibqdx\",\"name\":\"xwak\",\"type\":\"ogqxndlkzgxhuri\"}")
+            .toObject(ArtifactInner.class);
         Assertions.assertEquals("aokonzmnsik", model.location());
         Assertions.assertEquals("qzeqqkdltfzxm", model.tags().get("hvhgureod"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactInner model =
-            new ArtifactInner().withLocation("aokonzmnsik").withTags(mapOf("hvhgureod", "qzeqqkdltfzxm"));
+        ArtifactInner model
+            = new ArtifactInner().withLocation("aokonzmnsik").withTags(mapOf("hvhgureod", "qzeqqkdltfzxm"));
         model = BinaryData.fromObject(model).toObject(ArtifactInner.class);
         Assertions.assertEquals("aokonzmnsik", model.location());
         Assertions.assertEquals("qzeqqkdltfzxm", model.tags().get("hvhgureod"));

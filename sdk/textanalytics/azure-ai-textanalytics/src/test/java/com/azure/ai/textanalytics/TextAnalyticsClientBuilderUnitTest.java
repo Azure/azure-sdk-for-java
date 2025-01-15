@@ -88,11 +88,11 @@ public class TextAnalyticsClientBuilderUnitTest {
      */
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new TextAnalyticsClientBuilder()
-            .endpoint(VALID_HTTPS_LOCALHOST)
-            .credential(new AzureKeyCredential("foo"))
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new TextAnalyticsClientBuilder().endpoint(VALID_HTTPS_LOCALHOST)
+                .credential(new AzureKeyCredential("foo"))
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .buildClient());
     }
 }

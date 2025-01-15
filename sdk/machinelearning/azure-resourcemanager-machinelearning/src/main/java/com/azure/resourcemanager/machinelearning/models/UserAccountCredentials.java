@@ -6,44 +6,41 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Settings for user account that gets created on each on the nodes of a compute. */
+/**
+ * Settings for user account that gets created on each on the nodes of a compute.
+ */
 @Fluent
-public final class UserAccountCredentials {
+public final class UserAccountCredentials implements JsonSerializable<UserAccountCredentials> {
     /*
-     * User name.
-     *
      * Name of the administrator user account which can be used to SSH to nodes.
      */
-    @JsonProperty(value = "adminUserName", required = true)
     private String adminUsername;
 
     /*
-     * SSH public key.
-     *
      * SSH public key of the administrator user account.
      */
-    @JsonProperty(value = "adminUserSshPublicKey")
     private String adminUserSshPublicKey;
 
     /*
-     * Password.
-     *
      * Password of the administrator user account.
      */
-    @JsonProperty(value = "adminUserPassword")
     private String adminUserPassword;
 
-    /** Creates an instance of UserAccountCredentials class. */
+    /**
+     * Creates an instance of UserAccountCredentials class.
+     */
     public UserAccountCredentials() {
     }
 
     /**
-     * Get the adminUsername property: User name.
-     *
-     * <p>Name of the administrator user account which can be used to SSH to nodes.
-     *
+     * Get the adminUsername property: Name of the administrator user account which can be used to SSH to nodes.
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -51,10 +48,8 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Set the adminUsername property: User name.
-     *
-     * <p>Name of the administrator user account which can be used to SSH to nodes.
-     *
+     * Set the adminUsername property: Name of the administrator user account which can be used to SSH to nodes.
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the UserAccountCredentials object itself.
      */
@@ -64,10 +59,8 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Get the adminUserSshPublicKey property: SSH public key.
-     *
-     * <p>SSH public key of the administrator user account.
-     *
+     * Get the adminUserSshPublicKey property: SSH public key of the administrator user account.
+     * 
      * @return the adminUserSshPublicKey value.
      */
     public String adminUserSshPublicKey() {
@@ -75,10 +68,8 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Set the adminUserSshPublicKey property: SSH public key.
-     *
-     * <p>SSH public key of the administrator user account.
-     *
+     * Set the adminUserSshPublicKey property: SSH public key of the administrator user account.
+     * 
      * @param adminUserSshPublicKey the adminUserSshPublicKey value to set.
      * @return the UserAccountCredentials object itself.
      */
@@ -88,10 +79,8 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Get the adminUserPassword property: Password.
-     *
-     * <p>Password of the administrator user account.
-     *
+     * Get the adminUserPassword property: Password of the administrator user account.
+     * 
      * @return the adminUserPassword value.
      */
     public String adminUserPassword() {
@@ -99,10 +88,8 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Set the adminUserPassword property: Password.
-     *
-     * <p>Password of the administrator user account.
-     *
+     * Set the adminUserPassword property: Password of the administrator user account.
+     * 
      * @param adminUserPassword the adminUserPassword value to set.
      * @return the UserAccountCredentials object itself.
      */
@@ -113,17 +100,59 @@ public final class UserAccountCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adminUsername in model UserAccountCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property adminUsername in model UserAccountCredentials"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserAccountCredentials.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("adminUserName", this.adminUsername);
+        jsonWriter.writeStringField("adminUserSshPublicKey", this.adminUserSshPublicKey);
+        jsonWriter.writeStringField("adminUserPassword", this.adminUserPassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAccountCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAccountCredentials if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserAccountCredentials.
+     */
+    public static UserAccountCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAccountCredentials deserializedUserAccountCredentials = new UserAccountCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adminUserName".equals(fieldName)) {
+                    deserializedUserAccountCredentials.adminUsername = reader.getString();
+                } else if ("adminUserSshPublicKey".equals(fieldName)) {
+                    deserializedUserAccountCredentials.adminUserSshPublicKey = reader.getString();
+                } else if ("adminUserPassword".equals(fieldName)) {
+                    deserializedUserAccountCredentials.adminUserPassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAccountCredentials;
+        });
+    }
 }

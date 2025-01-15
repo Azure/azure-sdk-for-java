@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScaleType. */
+/**
+ * Defines values for ScaleType.
+ */
 public final class ScaleType extends ExpandableStringEnum<ScaleType> {
-    /** Static value Default for ScaleType. */
+    /**
+     * Static value Default for ScaleType.
+     */
     public static final ScaleType DEFAULT = fromString("Default");
 
-    /** Static value TargetUtilization for ScaleType. */
+    /**
+     * Static value TargetUtilization for ScaleType.
+     */
     public static final ScaleType TARGET_UTILIZATION = fromString("TargetUtilization");
 
     /**
      * Creates a new instance of ScaleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ScaleType extends ExpandableStringEnum<ScaleType> {
 
     /**
      * Creates or finds a ScaleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScaleType.
      */
-    @JsonCreator
     public static ScaleType fromString(String name) {
         return fromString(name, ScaleType.class);
     }
 
     /**
      * Gets known ScaleType values.
-     *
+     * 
      * @return known ScaleType values.
      */
     public static Collection<ScaleType> values() {

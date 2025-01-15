@@ -5,50 +5,53 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for endpoints. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@type",
-        defaultImpl = EndpointBase.class)
-@JsonTypeName("EndpointBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.UnsecuredEndpoint", value = UnsecuredEndpoint.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.TlsEndpoint", value = TlsEndpoint.class)
-})
+/**
+ * Base class for endpoints.
+ */
 @Fluent
-public class EndpointBase {
+public class EndpointBase implements JsonSerializable<EndpointBase> {
+    /*
+     * Type discriminator for the derived types.
+     */
+    private String type = "EndpointBase";
+
     /*
      * Credentials to be presented to the endpoint.
      */
-    @JsonProperty(value = "credentials")
     private CredentialsBase credentials;
 
     /*
      * The endpoint URL for Video Analyzer to connect to.
      */
-    @JsonProperty(value = "url", required = true)
-    private String url;
+    private final String url;
 
     /**
      * Creates an instance of EndpointBase class.
-     *
+     * 
      * @param url the url value to set.
      */
-    @JsonCreator
-    public EndpointBase(@JsonProperty(value = "url", required = true) String url) {
+    public EndpointBase(String url) {
         this.url = url;
     }
 
     /**
+     * Get the type property: Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Get the credentials property: Credentials to be presented to the endpoint.
-     *
+     * 
      * @return the credentials value.
      */
     public CredentialsBase getCredentials() {
@@ -57,7 +60,7 @@ public class EndpointBase {
 
     /**
      * Set the credentials property: Credentials to be presented to the endpoint.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the EndpointBase object itself.
      */
@@ -68,10 +71,90 @@ public class EndpointBase {
 
     /**
      * Get the url property: The endpoint URL for Video Analyzer to connect to.
-     *
+     * 
      * @return the url value.
      */
     public String getUrl() {
         return this.url;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("@type", this.type);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EndpointBase.
+     */
+    public static EndpointBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.VideoAnalyzer.UnsecuredEndpoint".equals(discriminatorValue)) {
+                    return UnsecuredEndpoint.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.TlsEndpoint".equals(discriminatorValue)) {
+                    return TlsEndpoint.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EndpointBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean urlFound = false;
+            String url = null;
+            String type = null;
+            CredentialsBase credentials = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                    urlFound = true;
+                } else if ("@type".equals(fieldName)) {
+                    type = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    credentials = CredentialsBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (urlFound) {
+                EndpointBase deserializedEndpointBase = new EndpointBase(url);
+                deserializedEndpointBase.type = type;
+                deserializedEndpointBase.credentials = credentials;
+
+                return deserializedEndpointBase;
+            }
+            throw new IllegalStateException("Missing required property: url");
+        });
     }
 }

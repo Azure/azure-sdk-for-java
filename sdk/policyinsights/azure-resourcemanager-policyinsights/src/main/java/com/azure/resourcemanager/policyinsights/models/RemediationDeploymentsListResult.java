@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.fluent.models.RemediationDeploymentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of deployments for a remediation. */
+/**
+ * List of deployments for a remediation.
+ */
 @Immutable
-public final class RemediationDeploymentsListResult {
+public final class RemediationDeploymentsListResult implements JsonSerializable<RemediationDeploymentsListResult> {
     /*
      * Array of deployments for the remediation.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RemediationDeploymentInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RemediationDeploymentsListResult class. */
+    /**
+     * Creates an instance of RemediationDeploymentsListResult class.
+     */
     public RemediationDeploymentsListResult() {
     }
 
     /**
      * Get the value property: Array of deployments for the remediation.
-     *
+     * 
      * @return the value value.
      */
     public List<RemediationDeploymentInner> value() {
@@ -39,7 +45,7 @@ public final class RemediationDeploymentsListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,52 @@ public final class RemediationDeploymentsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemediationDeploymentsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemediationDeploymentsListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemediationDeploymentsListResult.
+     */
+    public static RemediationDeploymentsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemediationDeploymentsListResult deserializedRemediationDeploymentsListResult
+                = new RemediationDeploymentsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RemediationDeploymentInner> value
+                        = reader.readArray(reader1 -> RemediationDeploymentInner.fromJson(reader1));
+                    deserializedRemediationDeploymentsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRemediationDeploymentsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemediationDeploymentsListResult;
+        });
     }
 }

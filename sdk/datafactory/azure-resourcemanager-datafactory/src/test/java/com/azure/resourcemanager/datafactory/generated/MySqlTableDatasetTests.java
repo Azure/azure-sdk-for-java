@@ -19,33 +19,34 @@ public final class MySqlTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MySqlTableDataset model = BinaryData.fromString(
-            "{\"type\":\"MySqlTable\",\"typeProperties\":{\"tableName\":\"datanqvxgvohd\"},\"description\":\"hhxmoevvud\",\"structure\":\"datapfhga\",\"schema\":\"datavwxqhpjhu\",\"linkedServiceName\":{\"referenceName\":\"ohxvzgaybvrhhoga\",\"parameters\":{\"uebpamq\":\"datanwfmzvzt\",\"eum\":\"datafcssanybzzghvd\",\"hookju\":\"datajsvcdhlyw\"}},\"parameters\":{\"apcqksaaapxjh\":{\"type\":\"Object\",\"defaultValue\":\"datariwgoe\"},\"hl\":{\"type\":\"Bool\",\"defaultValue\":\"dataibenwsdfpvda\"}},\"annotations\":[\"dataqklpmvzp\",\"datareszyaqgom\",\"databmfggeokfekcjjlw\"],\"folder\":{\"name\":\"ahhhutp\"},\"\":{\"nowrerjpx\":\"datarfcqufmcihp\",\"qqidqim\":\"datatchdw\"}}")
+            "{\"type\":\"MySqlTable\",\"typeProperties\":{\"tableName\":\"databgwzhbhflj\"},\"description\":\"od\",\"structure\":\"dataovnlhrwya\",\"schema\":\"datauafapwxsvdeatjio\",\"linkedServiceName\":{\"referenceName\":\"nirgoext\",\"parameters\":{\"tbsetko\":\"datawtgntimznupb\",\"aakghcrzmmmjyvdh\":\"datasqvhe\",\"etqjisjm\":\"datagdiwmlgstm\"}},\"parameters\":{\"kakhgkrv\":{\"type\":\"SecureString\",\"defaultValue\":\"dataq\"},\"ejqaw\":{\"type\":\"Object\",\"defaultValue\":\"datacvytv\"},\"pbbimh\":{\"type\":\"Float\",\"defaultValue\":\"dataqpfzxkczbd\"}},\"annotations\":[\"datazvoortc\",\"datanh\"],\"folder\":{\"name\":\"yuzly\"},\"\":{\"lkv\":\"datacibv\",\"nviulbylmgjzr\":\"datakcafnwqhawv\"}}")
             .toObject(MySqlTableDataset.class);
-        Assertions.assertEquals("hhxmoevvud", model.description());
-        Assertions.assertEquals("ohxvzgaybvrhhoga", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("apcqksaaapxjh").type());
-        Assertions.assertEquals("ahhhutp", model.folder().name());
+        Assertions.assertEquals("od", model.description());
+        Assertions.assertEquals("nirgoext", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("kakhgkrv").type());
+        Assertions.assertEquals("yuzly", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MySqlTableDataset model = new MySqlTableDataset().withDescription("hhxmoevvud")
-            .withStructure("datapfhga")
-            .withSchema("datavwxqhpjhu")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ohxvzgaybvrhhoga")
-                .withParameters(
-                    mapOf("uebpamq", "datanwfmzvzt", "eum", "datafcssanybzzghvd", "hookju", "datajsvcdhlyw")))
-            .withParameters(mapOf("apcqksaaapxjh",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datariwgoe"), "hl",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataibenwsdfpvda")))
-            .withAnnotations(Arrays.asList("dataqklpmvzp", "datareszyaqgom", "databmfggeokfekcjjlw"))
-            .withFolder(new DatasetFolder().withName("ahhhutp"))
-            .withTableName("datanqvxgvohd");
+        MySqlTableDataset model = new MySqlTableDataset().withDescription("od")
+            .withStructure("dataovnlhrwya")
+            .withSchema("datauafapwxsvdeatjio")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("nirgoext")
+                .withParameters(mapOf("tbsetko", "datawtgntimznupb", "aakghcrzmmmjyvdh", "datasqvhe", "etqjisjm",
+                    "datagdiwmlgstm")))
+            .withParameters(mapOf("kakhgkrv",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataq"), "ejqaw",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datacvytv"), "pbbimh",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataqpfzxkczbd")))
+            .withAnnotations(Arrays.asList("datazvoortc", "datanh"))
+            .withFolder(new DatasetFolder().withName("yuzly"))
+            .withTableName("databgwzhbhflj");
         model = BinaryData.fromObject(model).toObject(MySqlTableDataset.class);
-        Assertions.assertEquals("hhxmoevvud", model.description());
-        Assertions.assertEquals("ohxvzgaybvrhhoga", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("apcqksaaapxjh").type());
-        Assertions.assertEquals("ahhhutp", model.folder().name());
+        Assertions.assertEquals("od", model.description());
+        Assertions.assertEquals("nirgoext", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("kakhgkrv").type());
+        Assertions.assertEquals("yuzly", model.folder().name());
     }
 
     // Use "Map.of" if available

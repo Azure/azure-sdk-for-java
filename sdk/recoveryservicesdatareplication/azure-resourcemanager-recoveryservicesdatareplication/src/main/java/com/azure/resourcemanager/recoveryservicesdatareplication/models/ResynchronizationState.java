@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the resynchronization state. */
+/**
+ * Gets or sets the resynchronization state.
+ */
 public final class ResynchronizationState extends ExpandableStringEnum<ResynchronizationState> {
-    /** Static value None for ResynchronizationState. */
+    /**
+     * Static value None for ResynchronizationState.
+     */
     public static final ResynchronizationState NONE = fromString("None");
 
-    /** Static value ResynchronizationInitiated for ResynchronizationState. */
+    /**
+     * Static value ResynchronizationInitiated for ResynchronizationState.
+     */
     public static final ResynchronizationState RESYNCHRONIZATION_INITIATED = fromString("ResynchronizationInitiated");
 
-    /** Static value ResynchronizationCompleted for ResynchronizationState. */
+    /**
+     * Static value ResynchronizationCompleted for ResynchronizationState.
+     */
     public static final ResynchronizationState RESYNCHRONIZATION_COMPLETED = fromString("ResynchronizationCompleted");
 
-    /** Static value ResynchronizationFailed for ResynchronizationState. */
+    /**
+     * Static value ResynchronizationFailed for ResynchronizationState.
+     */
     public static final ResynchronizationState RESYNCHRONIZATION_FAILED = fromString("ResynchronizationFailed");
 
     /**
      * Creates a new instance of ResynchronizationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ResynchronizationState extends ExpandableStringEnum<Resynchro
 
     /**
      * Creates or finds a ResynchronizationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResynchronizationState.
      */
-    @JsonCreator
     public static ResynchronizationState fromString(String name) {
         return fromString(name, ResynchronizationState.class);
     }
 
     /**
      * Gets known ResynchronizationState values.
-     *
+     * 
      * @return known ResynchronizationState values.
      */
     public static Collection<ResynchronizationState> values() {

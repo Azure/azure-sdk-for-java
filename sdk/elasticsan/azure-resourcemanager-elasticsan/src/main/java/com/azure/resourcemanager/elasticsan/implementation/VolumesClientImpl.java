@@ -366,7 +366,8 @@ public final class VolumesClientImpl implements VolumesClient {
     private Mono<VolumeInner> createAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String volumeName, VolumeInner parameters, Context context) {
         return beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -635,7 +636,8 @@ public final class VolumesClientImpl implements VolumesClient {
     private Mono<VolumeInner> updateAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String volumeName, VolumeUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -871,8 +873,10 @@ public final class VolumesClientImpl implements VolumesClient {
         String volumeGroupName, String volumeName) {
         final XMsDeleteSnapshots xMsDeleteSnapshots = null;
         final XMsForceDelete xMsForceDelete = null;
-        return this.beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
-            xMsForceDelete).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
+                xMsForceDelete)
+            .getSyncPoller();
     }
 
     /**
@@ -896,8 +900,10 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
-            xMsForceDelete, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
+                xMsForceDelete, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1317,9 +1323,7 @@ public final class VolumesClientImpl implements VolumesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1345,9 +1349,7 @@ public final class VolumesClientImpl implements VolumesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

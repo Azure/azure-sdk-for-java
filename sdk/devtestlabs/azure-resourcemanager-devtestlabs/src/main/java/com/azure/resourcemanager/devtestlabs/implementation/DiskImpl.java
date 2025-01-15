@@ -128,20 +128,16 @@ public final class DiskImpl implements Disk, Disk.Definition, Disk.Update {
     }
 
     public Disk create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDisks()
-                .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDisks()
+            .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Disk create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDisks()
-                .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDisks()
+            .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), context);
         return this;
     }
 
@@ -157,53 +153,45 @@ public final class DiskImpl implements Disk, Disk.Definition, Disk.Update {
     }
 
     public Disk apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDisks()
-                .updateWithResponse(resourceGroupName, labName, username, name, updateDisk, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDisks()
+            .updateWithResponse(resourceGroupName, labName, username, name, updateDisk, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Disk apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDisks()
-                .updateWithResponse(resourceGroupName, labName, username, name, updateDisk, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDisks()
+            .updateWithResponse(resourceGroupName, labName, username, name, updateDisk, context)
+            .getValue();
         return this;
     }
 
     DiskImpl(DiskInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.username = Utils.getValueFromIdByName(innerObject.id(), "users");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "disks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.username = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "users");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "disks");
     }
 
     public Disk refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDisks()
-                .getWithResponse(resourceGroupName, labName, username, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDisks()
+            .getWithResponse(resourceGroupName, labName, username, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Disk refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDisks()
-                .getWithResponse(resourceGroupName, labName, username, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDisks()
+            .getWithResponse(resourceGroupName, labName, username, name, localExpand, context)
+            .getValue();
         return this;
     }
 

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.QueryExecutionResult;
 public final class QueryExecutionResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryExecutionResult model =
-            BinaryData
-                .fromString(
-                    "{\"queryText\":\"rriloz\",\"statementsInBatch\":3000055829145832796,\"sourceResult\":{\"executionCount\":6368017154430461078,\"cpuTimeMs\":81.507996,\"elapsedTimeMs\":51.30364,\"waitStats\":{\"edcg\":{\"waitType\":\"ziycslevufuztck\",\"waitTimeMs\":1.6041756,\"waitCount\":3080192913349706815},\"gkrvqeevto\":{\"waitType\":\"lwmmrqzzrrjv\",\"waitTimeMs\":35.945713,\"waitCount\":4625416343428044914},\"tpzdmovzvfvaawzq\":{\"waitType\":\"r\",\"waitTimeMs\":2.533424,\"waitCount\":2061235851967739080}},\"hasErrors\":false,\"sqlErrors\":[\"z\",\"riglaec\",\"ndtic\",\"kpvzmlq\"]},\"targetResult\":{\"executionCount\":1903894675207143490,\"cpuTimeMs\":59.404415,\"elapsedTimeMs\":76.44003,\"waitStats\":{\"yawfvjlboxq\":{\"waitType\":\"lnpkciay\",\"waitTimeMs\":25.842249,\"waitCount\":6591786682618428957},\"bnraauzzptjazysd\":{\"waitType\":\"jlmxhomdynhd\",\"waitTimeMs\":14.867181,\"waitCount\":2807759469982329757}},\"hasErrors\":false,\"sqlErrors\":[\"wva\",\"qyuvvfonkp\",\"hqyikvy\",\"auy\"]}}")
-                .toObject(QueryExecutionResult.class);
+        QueryExecutionResult model = BinaryData.fromString(
+            "{\"queryText\":\"ohu\",\"statementsInBatch\":4847614447596427316,\"sourceResult\":{\"executionCount\":2190117663402769089,\"cpuTimeMs\":47.507977,\"elapsedTimeMs\":24.088413,\"waitStats\":{\"hsnvkcdmxzrp\":{\"waitType\":\"awpfajnjwltlwtjj\",\"waitTimeMs\":82.267136,\"waitCount\":8518213803289262805}},\"hasErrors\":true,\"sqlErrors\":[\"nwiaaomyl\",\"eazulcs\",\"thwwn\"]},\"targetResult\":{\"executionCount\":384333340608707062,\"cpuTimeMs\":85.94433,\"elapsedTimeMs\":27.676027,\"waitStats\":{\"ewetwlyxgncxykxh\":{\"waitType\":\"ahfbous\",\"waitTimeMs\":31.302637,\"waitCount\":5746861636250891357},\"x\":{\"waitType\":\"h\",\"waitTimeMs\":57.31076,\"waitCount\":3977988438695654095},\"scjavftju\":{\"waitType\":\"bcporxvxcjzhqizx\",\"waitTimeMs\":81.577774,\"waitCount\":5031811828081098129}},\"hasErrors\":false,\"sqlErrors\":[\"k\",\"tgguwpijrajcivmm\",\"hfcf\",\"wrxgkneuvy\"]}}")
+            .toObject(QueryExecutionResult.class);
     }
 
     @org.junit.jupiter.api.Test

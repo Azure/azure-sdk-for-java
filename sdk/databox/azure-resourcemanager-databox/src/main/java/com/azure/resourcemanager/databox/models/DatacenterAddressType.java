@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Data center address type. */
+/**
+ * Data center address type.
+ */
 public enum DatacenterAddressType {
-    /** Enum value DatacenterAddressLocation. */
+    /**
+     * Enum value DatacenterAddressLocation.
+     */
     DATACENTER_ADDRESS_LOCATION("DatacenterAddressLocation"),
 
-    /** Enum value DatacenterAddressInstruction. */
+    /**
+     * Enum value DatacenterAddressInstruction.
+     */
     DATACENTER_ADDRESS_INSTRUCTION("DatacenterAddressInstruction");
 
-    /** The actual serialized value for a DatacenterAddressType instance. */
+    /**
+     * The actual serialized value for a DatacenterAddressType instance.
+     */
     private final String value;
 
     DatacenterAddressType(String value) {
@@ -24,11 +29,10 @@ public enum DatacenterAddressType {
 
     /**
      * Parses a serialized value to a DatacenterAddressType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DatacenterAddressType object, or null if unable to parse.
      */
-    @JsonCreator
     public static DatacenterAddressType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum DatacenterAddressType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

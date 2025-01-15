@@ -43,13 +43,11 @@ class DefaultTokenCredentialProviderTest {
     }
 
     private static Stream<Arguments> provideAuthorityHosts() {
-        return Stream.of(
-            Arguments.of("", AzureAuthorityHosts.AZURE_PUBLIC_CLOUD),
+        return Stream.of(Arguments.of("", AzureAuthorityHosts.AZURE_PUBLIC_CLOUD),
             Arguments.of(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD),
             Arguments.of(AzureAuthorityHosts.AZURE_CHINA, AzureAuthorityHosts.AZURE_CHINA),
             Arguments.of(AzureAuthorityHosts.AZURE_GERMANY, AzureAuthorityHosts.AZURE_GERMANY),
-            Arguments.of(AzureAuthorityHosts.AZURE_GOVERNMENT, AzureAuthorityHosts.AZURE_GOVERNMENT)
-        );
+            Arguments.of(AzureAuthorityHosts.AZURE_GOVERNMENT, AzureAuthorityHosts.AZURE_GOVERNMENT));
     }
 
     @ParameterizedTest

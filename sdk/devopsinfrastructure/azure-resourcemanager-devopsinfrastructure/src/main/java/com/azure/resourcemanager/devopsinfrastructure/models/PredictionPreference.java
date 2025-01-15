@@ -12,27 +12,27 @@ import java.util.Collection;
  */
 public final class PredictionPreference extends ExpandableStringEnum<PredictionPreference> {
     /**
-     * Static value Balanced for PredictionPreference.
+     * Balance between cost and performance.
      */
     public static final PredictionPreference BALANCED = fromString("Balanced");
 
     /**
-     * Static value MostCostEffective for PredictionPreference.
+     * Optimizes for cost over performance.
      */
     public static final PredictionPreference MOST_COST_EFFECTIVE = fromString("MostCostEffective");
 
     /**
-     * Static value MoreCostEffective for PredictionPreference.
+     * Halfway through cost and balanced.
      */
     public static final PredictionPreference MORE_COST_EFFECTIVE = fromString("MoreCostEffective");
 
     /**
-     * Static value MorePerformance for PredictionPreference.
+     * Halfway through balanced and performance.
      */
     public static final PredictionPreference MORE_PERFORMANCE = fromString("MorePerformance");
 
     /**
-     * Static value BestPerformance for PredictionPreference.
+     * Optimizes for performance over cost.
      */
     public static final PredictionPreference BEST_PERFORMANCE = fromString("BestPerformance");
 

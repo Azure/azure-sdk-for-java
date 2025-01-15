@@ -6,72 +6,73 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.DefaultPrincipalsModificationKind;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Class representing the an attached database configuration properties of kind specific. */
+/**
+ * Class representing the an attached database configuration properties of kind specific.
+ */
 @Fluent
-public final class AttachedDatabaseConfigurationProperties {
+public final class AttachedDatabaseConfigurationProperties
+    implements JsonSerializable<AttachedDatabaseConfigurationProperties> {
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The name of the database which you would like to attach, use * if you want to follow all current and future
      * databases.
      */
-    @JsonProperty(value = "databaseName", required = true)
     private String databaseName;
 
     /*
      * The resource id of the cluster where the databases you would like to attach reside.
      */
-    @JsonProperty(value = "clusterResourceId", required = true)
     private String clusterResourceId;
 
     /*
      * The list of databases from the clusterResourceId which are currently attached to the cluster.
      */
-    @JsonProperty(value = "attachedDatabaseNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> attachedDatabaseNames;
 
     /*
      * The default principals modification kind
      */
-    @JsonProperty(value = "defaultPrincipalsModificationKind", required = true)
     private DefaultPrincipalsModificationKind defaultPrincipalsModificationKind;
 
     /*
      * Table level sharing specifications
      */
-    @JsonProperty(value = "tableLevelSharingProperties")
     private TableLevelSharingProperties tableLevelSharingProperties;
 
     /*
      * Overrides the original database name. Relevant only when attaching to a specific database.
      */
-    @JsonProperty(value = "databaseNameOverride")
     private String databaseNameOverride;
 
     /*
-     * Adds a prefix to the attached databases name. When following an entire cluster, that prefix would be added to
-     * all of the databases original names from leader cluster.
+     * Adds a prefix to the attached databases name. When following an entire cluster, that prefix would be added to all
+     * of the databases original names from leader cluster.
      */
-    @JsonProperty(value = "databaseNamePrefix")
     private String databaseNamePrefix;
 
-    /** Creates an instance of AttachedDatabaseConfigurationProperties class. */
+    /**
+     * Creates an instance of AttachedDatabaseConfigurationProperties class.
+     */
     public AttachedDatabaseConfigurationProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -81,7 +82,7 @@ public final class AttachedDatabaseConfigurationProperties {
     /**
      * Get the databaseName property: The name of the database which you would like to attach, use * if you want to
      * follow all current and future databases.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -91,7 +92,7 @@ public final class AttachedDatabaseConfigurationProperties {
     /**
      * Set the databaseName property: The name of the database which you would like to attach, use * if you want to
      * follow all current and future databases.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the AttachedDatabaseConfigurationProperties object itself.
      */
@@ -103,7 +104,7 @@ public final class AttachedDatabaseConfigurationProperties {
     /**
      * Get the clusterResourceId property: The resource id of the cluster where the databases you would like to attach
      * reside.
-     *
+     * 
      * @return the clusterResourceId value.
      */
     public String clusterResourceId() {
@@ -113,7 +114,7 @@ public final class AttachedDatabaseConfigurationProperties {
     /**
      * Set the clusterResourceId property: The resource id of the cluster where the databases you would like to attach
      * reside.
-     *
+     * 
      * @param clusterResourceId the clusterResourceId value to set.
      * @return the AttachedDatabaseConfigurationProperties object itself.
      */
@@ -125,7 +126,7 @@ public final class AttachedDatabaseConfigurationProperties {
     /**
      * Get the attachedDatabaseNames property: The list of databases from the clusterResourceId which are currently
      * attached to the cluster.
-     *
+     * 
      * @return the attachedDatabaseNames value.
      */
     public List<String> attachedDatabaseNames() {
@@ -134,7 +135,7 @@ public final class AttachedDatabaseConfigurationProperties {
 
     /**
      * Get the defaultPrincipalsModificationKind property: The default principals modification kind.
-     *
+     * 
      * @return the defaultPrincipalsModificationKind value.
      */
     public DefaultPrincipalsModificationKind defaultPrincipalsModificationKind() {
@@ -143,19 +144,19 @@ public final class AttachedDatabaseConfigurationProperties {
 
     /**
      * Set the defaultPrincipalsModificationKind property: The default principals modification kind.
-     *
+     * 
      * @param defaultPrincipalsModificationKind the defaultPrincipalsModificationKind value to set.
      * @return the AttachedDatabaseConfigurationProperties object itself.
      */
-    public AttachedDatabaseConfigurationProperties withDefaultPrincipalsModificationKind(
-        DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
+    public AttachedDatabaseConfigurationProperties
+        withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
         this.defaultPrincipalsModificationKind = defaultPrincipalsModificationKind;
         return this;
     }
 
     /**
      * Get the tableLevelSharingProperties property: Table level sharing specifications.
-     *
+     * 
      * @return the tableLevelSharingProperties value.
      */
     public TableLevelSharingProperties tableLevelSharingProperties() {
@@ -164,12 +165,12 @@ public final class AttachedDatabaseConfigurationProperties {
 
     /**
      * Set the tableLevelSharingProperties property: Table level sharing specifications.
-     *
+     * 
      * @param tableLevelSharingProperties the tableLevelSharingProperties value to set.
      * @return the AttachedDatabaseConfigurationProperties object itself.
      */
-    public AttachedDatabaseConfigurationProperties withTableLevelSharingProperties(
-        TableLevelSharingProperties tableLevelSharingProperties) {
+    public AttachedDatabaseConfigurationProperties
+        withTableLevelSharingProperties(TableLevelSharingProperties tableLevelSharingProperties) {
         this.tableLevelSharingProperties = tableLevelSharingProperties;
         return this;
     }
@@ -177,7 +178,7 @@ public final class AttachedDatabaseConfigurationProperties {
     /**
      * Get the databaseNameOverride property: Overrides the original database name. Relevant only when attaching to a
      * specific database.
-     *
+     * 
      * @return the databaseNameOverride value.
      */
     public String databaseNameOverride() {
@@ -187,7 +188,7 @@ public final class AttachedDatabaseConfigurationProperties {
     /**
      * Set the databaseNameOverride property: Overrides the original database name. Relevant only when attaching to a
      * specific database.
-     *
+     * 
      * @param databaseNameOverride the databaseNameOverride value to set.
      * @return the AttachedDatabaseConfigurationProperties object itself.
      */
@@ -199,7 +200,7 @@ public final class AttachedDatabaseConfigurationProperties {
     /**
      * Get the databaseNamePrefix property: Adds a prefix to the attached databases name. When following an entire
      * cluster, that prefix would be added to all of the databases original names from leader cluster.
-     *
+     * 
      * @return the databaseNamePrefix value.
      */
     public String databaseNamePrefix() {
@@ -209,7 +210,7 @@ public final class AttachedDatabaseConfigurationProperties {
     /**
      * Set the databaseNamePrefix property: Adds a prefix to the attached databases name. When following an entire
      * cluster, that prefix would be added to all of the databases original names from leader cluster.
-     *
+     * 
      * @param databaseNamePrefix the databaseNamePrefix value to set.
      * @return the AttachedDatabaseConfigurationProperties object itself.
      */
@@ -220,29 +221,24 @@ public final class AttachedDatabaseConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (databaseName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseName in model AttachedDatabaseConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property databaseName in model AttachedDatabaseConfigurationProperties"));
         }
         if (clusterResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterResourceId in model"
-                            + " AttachedDatabaseConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clusterResourceId in model AttachedDatabaseConfigurationProperties"));
         }
         if (defaultPrincipalsModificationKind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property defaultPrincipalsModificationKind in model"
-                            + " AttachedDatabaseConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property defaultPrincipalsModificationKind in model AttachedDatabaseConfigurationProperties"));
         }
         if (tableLevelSharingProperties() != null) {
             tableLevelSharingProperties().validate();
@@ -250,4 +246,66 @@ public final class AttachedDatabaseConfigurationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AttachedDatabaseConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("clusterResourceId", this.clusterResourceId);
+        jsonWriter.writeStringField("defaultPrincipalsModificationKind",
+            this.defaultPrincipalsModificationKind == null ? null : this.defaultPrincipalsModificationKind.toString());
+        jsonWriter.writeJsonField("tableLevelSharingProperties", this.tableLevelSharingProperties);
+        jsonWriter.writeStringField("databaseNameOverride", this.databaseNameOverride);
+        jsonWriter.writeStringField("databaseNamePrefix", this.databaseNamePrefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttachedDatabaseConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttachedDatabaseConfigurationProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AttachedDatabaseConfigurationProperties.
+     */
+    public static AttachedDatabaseConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttachedDatabaseConfigurationProperties deserializedAttachedDatabaseConfigurationProperties
+                = new AttachedDatabaseConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationProperties.databaseName = reader.getString();
+                } else if ("clusterResourceId".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationProperties.clusterResourceId = reader.getString();
+                } else if ("defaultPrincipalsModificationKind".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationProperties.defaultPrincipalsModificationKind
+                        = DefaultPrincipalsModificationKind.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("attachedDatabaseNames".equals(fieldName)) {
+                    List<String> attachedDatabaseNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAttachedDatabaseConfigurationProperties.attachedDatabaseNames = attachedDatabaseNames;
+                } else if ("tableLevelSharingProperties".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationProperties.tableLevelSharingProperties
+                        = TableLevelSharingProperties.fromJson(reader);
+                } else if ("databaseNameOverride".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationProperties.databaseNameOverride = reader.getString();
+                } else if ("databaseNamePrefix".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationProperties.databaseNamePrefix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttachedDatabaseConfigurationProperties;
+        });
+    }
 }

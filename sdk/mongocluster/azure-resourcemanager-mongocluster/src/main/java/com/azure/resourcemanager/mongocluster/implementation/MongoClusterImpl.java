@@ -14,6 +14,7 @@ import com.azure.resourcemanager.mongocluster.models.MongoCluster;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterProperties;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdate;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdateProperties;
+import com.azure.resourcemanager.mongocluster.models.PromoteReplicaRequest;
 import java.util.Collections;
 import java.util.Map;
 
@@ -156,6 +157,14 @@ public final class MongoClusterImpl implements MongoCluster, MongoCluster.Defini
 
     public ListConnectionStringsResult listConnectionStrings() {
         return serviceManager.mongoClusters().listConnectionStrings(resourceGroupName, mongoClusterName);
+    }
+
+    public void promote(PromoteReplicaRequest body) {
+        serviceManager.mongoClusters().promote(resourceGroupName, mongoClusterName, body);
+    }
+
+    public void promote(PromoteReplicaRequest body, Context context) {
+        serviceManager.mongoClusters().promote(resourceGroupName, mongoClusterName, body, context);
     }
 
     public MongoClusterImpl withRegion(Region location) {

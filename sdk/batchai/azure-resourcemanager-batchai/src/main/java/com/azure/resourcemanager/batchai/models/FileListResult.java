@@ -14,7 +14,8 @@ import java.util.List;
 /** Values returned by the List operation. */
 @Immutable
 public final class FileListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FileListResult.class);
 
     /*
      * The collection of returned job directories and files.

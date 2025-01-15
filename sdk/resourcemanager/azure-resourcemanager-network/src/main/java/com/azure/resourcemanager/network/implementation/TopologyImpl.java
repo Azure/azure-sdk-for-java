@@ -81,9 +81,8 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
 
     @Override
     public TopologyImpl withTargetSubnet(String subnetName) {
-        parameters
-            .withTargetSubnet(
-                new SubResource().withId(parameters.targetVirtualNetwork().id() + "/subnets/" + subnetName));
+        parameters.withTargetSubnet(
+            new SubResource().withId(parameters.targetVirtualNetwork().id() + "/subnets/" + subnetName));
         return this;
     }
 
@@ -94,17 +93,15 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
 
     @Override
     public Mono<Topology> executeWorkAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()
             .getTopologyAsync(parent().resourceGroupName(), parent().name(), parameters)
-            .map(
-                topologyInner -> {
-                    TopologyImpl.this.inner = topologyInner;
-                    TopologyImpl.this.initializeResourcesFromInner();
-                    return TopologyImpl.this;
-                });
+            .map(topologyInner -> {
+                TopologyImpl.this.inner = topologyInner;
+                TopologyImpl.this.initializeResourcesFromInner();
+                return TopologyImpl.this;
+            });
     }
 }

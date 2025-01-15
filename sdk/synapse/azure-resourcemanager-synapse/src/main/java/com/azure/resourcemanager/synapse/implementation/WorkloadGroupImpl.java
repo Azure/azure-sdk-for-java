@@ -77,22 +77,18 @@ public final class WorkloadGroupImpl implements WorkloadGroup, WorkloadGroup.Def
     }
 
     public WorkloadGroup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadGroups()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadGroups()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public WorkloadGroup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadGroups()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadGroups()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -107,51 +103,43 @@ public final class WorkloadGroupImpl implements WorkloadGroup, WorkloadGroup.Def
     }
 
     public WorkloadGroup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadGroups()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadGroups()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public WorkloadGroup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadGroups()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadGroups()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, this.innerModel(),
+                context);
         return this;
     }
 
     WorkloadGroupImpl(WorkloadGroupInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
-        this.workloadGroupName = Utils.getValueFromIdByName(innerObject.id(), "workloadGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.workloadGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadGroups");
     }
 
     public WorkloadGroup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadGroups()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadGroups()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WorkloadGroup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadGroups()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadGroups()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context)
+            .getValue();
         return this;
     }
 

@@ -60,7 +60,7 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest",
+    "name": "com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
@@ -72,13 +72,13 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.AnalyzeResultOperation",
+    "name": "com.azure.ai.documentintelligence.models.AnalyzeOperation",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.AuthorizeCopyRequest",
+    "name": "com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
@@ -102,13 +102,13 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest",
+    "name": "com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.BuildDocumentModelRequest",
+    "name": "com.azure.ai.documentintelligence.models.BuildDocumentModelOptions",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
@@ -120,7 +120,7 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.ClassifyDocumentRequest",
+    "name": "com.azure.ai.documentintelligence.models.ClassifyDocumentOptions",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
@@ -138,7 +138,7 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.ContentFormat",
+    "name": "com.azure.ai.documentintelligence.models.DocumentContentFormat",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
@@ -150,7 +150,7 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.CopyAuthorization",
+    "name": "com.azure.ai.documentintelligence.models.ModelCopyAuthorization",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
@@ -168,7 +168,7 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.Document",
+    "name": "com.azure.ai.documentintelligence.models.AnalyzedDocument",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
@@ -396,19 +396,19 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.Error",
+    "name": "com.azure.ai.documentintelligence.models.DocumentIntelligenceError",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.FontStyle",
+    "name": "com.azure.ai.documentintelligence.models.DocumentFontStyle",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.FontWeight",
+    "name": "com.azure.ai.documentintelligence.models.DocumentFontWeight",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
@@ -426,7 +426,7 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.OperationDetails",
+    "name": "com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
@@ -450,7 +450,7 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.models.ResourceDetails",
+    "name": "com.azure.ai.documentintelligence.models.DocumentIntelligenceResourceDetails",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true

@@ -5,29 +5,48 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GrpcExtensionDataTransferMode. */
+/**
+ * Data transfer mode: embedded or sharedMemory.
+ */
 public final class GrpcExtensionDataTransferMode extends ExpandableStringEnum<GrpcExtensionDataTransferMode> {
-    /** Static value embedded for GrpcExtensionDataTransferMode. */
+    /**
+     * Media samples are embedded into the gRPC messages. This mode is less efficient but it requires a simpler
+     * implementations and can be used with plugins which are not on the same node as the Video Analyzer module.
+     */
     public static final GrpcExtensionDataTransferMode EMBEDDED = fromString("embedded");
 
-    /** Static value sharedMemory for GrpcExtensionDataTransferMode. */
+    /**
+     * Media samples are made available through shared memory. This mode enables efficient data transfers but it
+     * requires that the extension plugin to be co-located on the same node and sharing the same shared memory space.
+     */
     public static final GrpcExtensionDataTransferMode SHARED_MEMORY = fromString("sharedMemory");
 
     /**
+     * Creates a new instance of GrpcExtensionDataTransferMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GrpcExtensionDataTransferMode() {
+    }
+
+    /**
      * Creates or finds a GrpcExtensionDataTransferMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GrpcExtensionDataTransferMode.
      */
-    @JsonCreator
     public static GrpcExtensionDataTransferMode fromString(String name) {
         return fromString(name, GrpcExtensionDataTransferMode.class);
     }
 
-    /** @return known GrpcExtensionDataTransferMode values. */
+    /**
+     * Gets known GrpcExtensionDataTransferMode values.
+     * 
+     * @return known GrpcExtensionDataTransferMode values.
+     */
     public static Collection<GrpcExtensionDataTransferMode> values() {
         return values(GrpcExtensionDataTransferMode.class);
     }

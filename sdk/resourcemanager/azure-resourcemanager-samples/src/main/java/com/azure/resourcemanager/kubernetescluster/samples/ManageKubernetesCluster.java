@@ -45,21 +45,23 @@ public class ManageKubernetesCluster {
 
             Date t1 = new Date();
 
-            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters().define(aksName)
+            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters()
+                .define(aksName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDefaultVersion()
                 .withSystemAssignedManagedServiceIdentity()
                 .defineAgentPool("agentpool")
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
-                    .withAgentPoolVirtualMachineCount(1)
-                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .attach()
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .attach()
                 .withDnsPrefix("dns-" + aksName)
                 .create();
 
             Date t2 = new Date();
-            System.out.println("Created Azure Container Service (AKS) resource: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
+            System.out.println("Created Azure Container Service (AKS) resource: (took "
+                + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
             Utils.print(kubernetesCluster);
 
             //=============================================================
@@ -71,12 +73,13 @@ public class ManageKubernetesCluster {
 
             kubernetesCluster.update()
                 .updateAgentPool("agentpool")
-                    .withAgentPoolVirtualMachineCount(2)
-                    .parent()
+                .withAgentPoolVirtualMachineCount(2)
+                .parent()
                 .apply();
 
             t2 = new Date();
-            System.out.println("Updated Azure Container Service (AKS) resource: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
+            System.out.println("Updated Azure Container Service (AKS) resource: (took "
+                + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
             Utils.print(kubernetesCluster);
 
             return true;
@@ -108,8 +111,7 @@ public class ManageKubernetesCluster {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

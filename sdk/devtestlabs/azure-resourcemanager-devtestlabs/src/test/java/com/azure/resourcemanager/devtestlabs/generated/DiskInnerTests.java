@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"diskType\":\"StandardSSD\",\"diskSizeGiB\":186835160,\"leasedByLabVmId\":\"boxdfgsftufq\",\"diskBlobName\":\"rjlnacgcck\",\"diskUri\":\"hxkizvytnrzv\",\"storageAccountId\":\"jraaeranokqguk\",\"createdDate\":\"2021-02-25T03:05:59Z\",\"hostCaching\":\"vbroylaxxu\",\"managedDiskId\":\"disdosfjbjsvgj\",\"provisioningState\":\"hryvy\",\"uniqueIdentifier\":\"t\"},\"location\":\"c\",\"tags\":{\"vjdhttzaefedxih\":\"ccknfnwmbtmvp\"},\"id\":\"hrphkmcrjdqn\",\"name\":\"dfzpbgtgkylkdg\",\"type\":\"rjeuut\"}")
-                .toObject(DiskInner.class);
+        DiskInner model = BinaryData.fromString(
+            "{\"properties\":{\"diskType\":\"StandardSSD\",\"diskSizeGiB\":186835160,\"leasedByLabVmId\":\"boxdfgsftufq\",\"diskBlobName\":\"rjlnacgcck\",\"diskUri\":\"hxkizvytnrzv\",\"storageAccountId\":\"jraaeranokqguk\",\"createdDate\":\"2021-02-25T03:05:59Z\",\"hostCaching\":\"vbroylaxxu\",\"managedDiskId\":\"disdosfjbjsvgj\",\"provisioningState\":\"hryvy\",\"uniqueIdentifier\":\"t\"},\"location\":\"c\",\"tags\":{\"vjdhttzaefedxih\":\"ccknfnwmbtmvp\"},\"id\":\"hrphkmcrjdqn\",\"name\":\"dfzpbgtgkylkdg\",\"type\":\"rjeuut\"}")
+            .toObject(DiskInner.class);
         Assertions.assertEquals("c", model.location());
         Assertions.assertEquals("ccknfnwmbtmvp", model.tags().get("vjdhttzaefedxih"));
         Assertions.assertEquals(StorageType.STANDARD_SSD, model.diskType());
@@ -33,18 +31,16 @@ public final class DiskInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskInner model =
-            new DiskInner()
-                .withLocation("c")
-                .withTags(mapOf("vjdhttzaefedxih", "ccknfnwmbtmvp"))
-                .withDiskType(StorageType.STANDARD_SSD)
-                .withDiskSizeGiB(186835160)
-                .withLeasedByLabVmId("boxdfgsftufq")
-                .withDiskBlobName("rjlnacgcck")
-                .withDiskUri("hxkizvytnrzv")
-                .withStorageAccountId("jraaeranokqguk")
-                .withHostCaching("vbroylaxxu")
-                .withManagedDiskId("disdosfjbjsvgj");
+        DiskInner model = new DiskInner().withLocation("c")
+            .withTags(mapOf("vjdhttzaefedxih", "ccknfnwmbtmvp"))
+            .withDiskType(StorageType.STANDARD_SSD)
+            .withDiskSizeGiB(186835160)
+            .withLeasedByLabVmId("boxdfgsftufq")
+            .withDiskBlobName("rjlnacgcck")
+            .withDiskUri("hxkizvytnrzv")
+            .withStorageAccountId("jraaeranokqguk")
+            .withHostCaching("vbroylaxxu")
+            .withManagedDiskId("disdosfjbjsvgj");
         model = BinaryData.fromObject(model).toObject(DiskInner.class);
         Assertions.assertEquals("c", model.location());
         Assertions.assertEquals("ccknfnwmbtmvp", model.tags().get("vjdhttzaefedxih"));

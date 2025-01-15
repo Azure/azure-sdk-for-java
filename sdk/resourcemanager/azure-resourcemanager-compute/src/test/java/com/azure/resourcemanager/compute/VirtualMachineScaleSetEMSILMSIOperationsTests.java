@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManagementTest {
@@ -51,81 +52,66 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
         // Create a virtual network to which we will assign "EMSI" with reader access
         //
-        Network network =
-            networkManager
-                .networks()
-                .define(networkName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .create();
+        Network network = networkManager.networks()
+            .define(networkName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .create();
 
         // Create an "User Assigned (External) MSI" residing in the above RG and assign reader access to the virtual
         // network
         //
-        Identity createdIdentity =
-            msiManager
-                .identities()
-                .define(identityName1)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAccessTo(network, BuiltInRole.READER)
-                .create();
+        Identity createdIdentity = msiManager.identities()
+            .define(identityName1)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAccessTo(network, BuiltInRole.READER)
+            .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
         // resource group
         // it resides
         //
-        Creatable<Identity> creatableIdentity =
-            msiManager
-                .identities()
-                .define(identityName2)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
+        Creatable<Identity> creatableIdentity = msiManager.identities()
+            .define(identityName2)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Create a virtual network for VMSS
         //
-        Network vmssNetwork =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network vmssNetwork = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
         // Create a Load balancer for VMSS
         //
         LoadBalancer vmssInternalLoadBalancer = createInternalLoadBalancer(region, resourceGroup, vmssNetwork, "1");
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
-                .withoutPrimaryInternetFacingLoadBalancer()
-                .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
-                .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
+            .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
+            .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet);
         Assertions.assertNotNull(virtualMachineScaleSet.innerModel());
         Assertions.assertTrue(virtualMachineScaleSet.isManagedServiceIdentityEnabled());
-        Assertions
-            .assertNull(
-                virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId()); // No Local MSI enabled
-        Assertions
-            .assertNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId()); // No Local MSI enabled
+        Assertions.assertNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId()); // No Local MSI enabled
+        Assertions.assertNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId()); // No Local MSI enabled
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine scale set
         //
@@ -139,9 +125,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         for (String emsiId : emsiIds) {
             Identity identity = msiManager.identities().getById(emsiId);
             Assertions.assertNotNull(identity);
-            Assertions
-                .assertTrue(
-                    identity.name().equalsIgnoreCase(identityName1) || identity.name().equalsIgnoreCase(identityName2));
+            Assertions.assertTrue(
+                identity.name().equalsIgnoreCase(identityName1) || identity.name().equalsIgnoreCase(identityName2));
             Assertions.assertNotNull(identity.principalId());
 
             if (identity.name().equalsIgnoreCase(identityName2)) {
@@ -156,8 +141,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         RoleAssignment assignment;
         if (!isPlaybackMode()) {
             // principalId redacted
-            PagedIterable<RoleAssignment> roleAssignmentsForNetwork =
-                this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
+            PagedIterable<RoleAssignment> roleAssignmentsForNetwork
+                = this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
             for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
                 if (roleAssignment.principalId() != null
                     && roleAssignment.principalId().equalsIgnoreCase(createdIdentity.principalId())) {
@@ -165,23 +150,19 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                     break;
                 }
             }
-            Assertions
-                .assertTrue(
-                    found,
-                    "Expected role assignment not found for the virtual network for identity" + createdIdentity.name());
+            Assertions.assertTrue(found,
+                "Expected role assignment not found for the virtual network for identity" + createdIdentity.name());
 
-            assignment =
-                lookupRoleAssignmentUsingScopeAndRoleAsync(network.id(), BuiltInRole.READER, createdIdentity.principalId())
-                    .block();
+            assignment = lookupRoleAssignmentUsingScopeAndRoleAsync(network.id(), BuiltInRole.READER,
+                createdIdentity.principalId()).block();
 
-            Assertions
-                .assertNotNull(
-                    assignment, "Expected role assignment with ROLE not found for the virtual network for identity");
+            Assertions.assertNotNull(assignment,
+                "Expected role assignment with ROLE not found for the virtual network for identity");
 
             // Ensure expected role assignment exists for explicitly created EMSI
             //
-            PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup =
-                this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
+            PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup
+                = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
 
             found = false;
             for (RoleAssignment roleAssignment : roleAssignmentsForResourceGroup) {
@@ -191,27 +172,20 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                     break;
                 }
             }
-            Assertions
-                .assertTrue(
-                    found,
-                    "Expected role assignment not found for the resource group for identity"
-                        + implicitlyCreatedIdentity.name());
+            Assertions.assertTrue(found, "Expected role assignment not found for the resource group for identity"
+                + implicitlyCreatedIdentity.name());
 
-            assignment =
-                lookupRoleAssignmentUsingScopeAndRoleAsync(
-                    resourceGroup.id(), BuiltInRole.CONTRIBUTOR, implicitlyCreatedIdentity.principalId())
-                    .block();
+            assignment = lookupRoleAssignmentUsingScopeAndRoleAsync(resourceGroup.id(), BuiltInRole.CONTRIBUTOR,
+                implicitlyCreatedIdentity.principalId()).block();
 
-            Assertions
-                .assertNotNull(
-                    assignment, "Expected role assignment with ROLE not found for the resource group for identity");
+            Assertions.assertNotNull(assignment,
+                "Expected role assignment with ROLE not found for the resource group for identity");
         }
 
         emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
         Iterator<String> itr = emsiIds.iterator();
         // Remove both (all) identities
-        virtualMachineScaleSet
-            .update()
+        virtualMachineScaleSet.update()
             .withoutUserAssignedManagedServiceIdentity(itr.next())
             .withoutUserAssignedManagedServiceIdentity(itr.next())
             .apply();
@@ -237,8 +211,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         Identity identity2 = msiManager.identities().getById(itr.next());
         //
         // Update VM by enabling System-MSI and add two identities
-        virtualMachineScaleSet
-            .update()
+        virtualMachineScaleSet.update()
             .withSystemAssignedManagedServiceIdentity()
             .withExistingUserAssignedManagedServiceIdentity(identity1)
             .withExistingUserAssignedManagedServiceIdentity(identity2)
@@ -247,11 +220,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         Assertions.assertNotNull(virtualMachineScaleSet.userAssignedManagedServiceIdentityIds());
         Assertions.assertEquals(2, virtualMachineScaleSet.userAssignedManagedServiceIdentityIds().size());
         Assertions.assertNotNull(virtualMachineScaleSet.managedServiceIdentityType());
-        Assertions
-            .assertTrue(
-                virtualMachineScaleSet
-                    .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+        Assertions.assertTrue(virtualMachineScaleSet.managedServiceIdentityType()
+            .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
@@ -260,11 +230,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         Assertions.assertNotNull(virtualMachineScaleSet.userAssignedManagedServiceIdentityIds());
         Assertions.assertEquals(2, virtualMachineScaleSet.userAssignedManagedServiceIdentityIds().size());
         Assertions.assertNotNull(virtualMachineScaleSet.managedServiceIdentityType());
-        Assertions
-            .assertTrue(
-                virtualMachineScaleSet
-                    .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+        Assertions.assertTrue(virtualMachineScaleSet.managedServiceIdentityType()
+            .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
@@ -276,11 +243,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         Assertions.assertNotNull(virtualMachineScaleSet.userAssignedManagedServiceIdentityIds());
         Assertions.assertEquals(1, virtualMachineScaleSet.userAssignedManagedServiceIdentityIds().size());
         Assertions.assertNotNull(virtualMachineScaleSet.managedServiceIdentityType());
-        Assertions
-            .assertTrue(
-                virtualMachineScaleSet
-                    .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+        Assertions.assertTrue(virtualMachineScaleSet.managedServiceIdentityType()
+            .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
         // Remove identities one by one (second one)
@@ -288,9 +252,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         //
         Assertions.assertEquals(0, virtualMachineScaleSet.userAssignedManagedServiceIdentityIds().size());
         Assertions.assertNotNull(virtualMachineScaleSet.managedServiceIdentityType());
-        Assertions
-            .assertTrue(
-                virtualMachineScaleSet.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED));
+        Assertions.assertTrue(
+            virtualMachineScaleSet.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED));
         //
         virtualMachineScaleSet.update().withoutSystemAssignedManagedServiceIdentity().apply();
         Assertions.assertEquals(0, virtualMachineScaleSet.userAssignedManagedServiceIdentityIds().size());
@@ -309,61 +272,51 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
         // Create a virtual network to which we will assign "EMSI" with reader access
         //
-        Network network =
-            networkManager
-                .networks()
-                .define(networkName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .create();
+        Network network = networkManager.networks()
+            .define(networkName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
         // resource group
         // it resides
         //
-        Creatable<Identity> creatableIdentity =
-            msiManager
-                .identities()
-                .define(identityName1)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
+        Creatable<Identity> creatableIdentity = msiManager.identities()
+            .define(identityName1)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Create a virtual network for VMSS
         //
-        Network vmssNetwork =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network vmssNetwork = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
         // Create a Load balancer for VMSS
         //
         LoadBalancer vmssInternalLoadBalancer = createInternalLoadBalancer(region, resourceGroup, vmssNetwork, "1");
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
-                .withoutPrimaryInternetFacingLoadBalancer()
-                .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withSystemAssignedManagedServiceIdentity()
-                .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
-                .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
+            .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
+            .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet);
         Assertions.assertNotNull(virtualMachineScaleSet.innerModel());
@@ -385,45 +338,33 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         //
         if (!isPlaybackMode()) {
             // principalId redacted
-            PagedIterable<RoleAssignment> roleAssignmentsForNetwork =
-                this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
+            PagedIterable<RoleAssignment> roleAssignmentsForNetwork
+                = this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
             boolean found = false;
             for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
                 if (roleAssignment.principalId() != null
-                    && roleAssignment
-                        .principalId()
+                    && roleAssignment.principalId()
                         .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
                     found = true;
                     break;
                 }
             }
-            Assertions
-                .assertTrue(
-                    found,
-                    "Expected role assignment not found for the virtual network for local identity"
-                        + virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
+            Assertions.assertTrue(found, "Expected role assignment not found for the virtual network for local identity"
+                + virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
 
-            RoleAssignment assignment =
-                lookupRoleAssignmentUsingScopeAndRoleAsync(
-                    network.id(),
-                    BuiltInRole.CONTRIBUTOR,
-                    virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())
-                    .block();
+            RoleAssignment assignment
+                = lookupRoleAssignmentUsingScopeAndRoleAsync(network.id(), BuiltInRole.CONTRIBUTOR,
+                    virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId()).block();
 
-            Assertions
-                .assertNotNull(
-                    assignment,
-                    "Expected role assignment with ROLE not found for the virtual network for system assigned identity");
+            Assertions.assertNotNull(assignment,
+                "Expected role assignment with ROLE not found for the virtual network for system assigned identity");
 
             // Ensure expected role assignment exists for EMSI
             //
-            PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup =
-                this
-                    .msiManager
-                    .authorizationManager()
-                    .roleAssignments()
-                    .listByScope(
-                        resourceManager.resourceGroups().getByName(virtualMachineScaleSet.resourceGroupName()).id());
+            PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup = this.msiManager.authorizationManager()
+                .roleAssignments()
+                .listByScope(
+                    resourceManager.resourceGroups().getByName(virtualMachineScaleSet.resourceGroupName()).id());
             found = false;
             for (RoleAssignment roleAssignment : roleAssignmentsForResourceGroup) {
                 if (roleAssignment.principalId() != null
@@ -432,19 +373,14 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                     break;
                 }
             }
-            Assertions
-                .assertTrue(
-                    found, "Expected role assignment not found for the resource group for identity" + identity.name());
+            Assertions.assertTrue(found,
+                "Expected role assignment not found for the resource group for identity" + identity.name());
 
-            assignment =
-                lookupRoleAssignmentUsingScopeAndRoleAsync(
-                    resourceGroup.id(), BuiltInRole.CONTRIBUTOR, identity.principalId())
-                    .block();
+            assignment = lookupRoleAssignmentUsingScopeAndRoleAsync(resourceGroup.id(), BuiltInRole.CONTRIBUTOR,
+                identity.principalId()).block();
 
-            Assertions
-                .assertNotNull(
-                    assignment,
-                    "Expected role assignment with ROLE not found for the resource group for system assigned identity");
+            Assertions.assertNotNull(assignment,
+                "Expected role assignment with ROLE not found for the resource group for system assigned identity");
         }
     }
 
@@ -455,99 +391,89 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
         // Create a virtual network for VMSS
         //
-        Network vmssNetwork =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network vmssNetwork = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
         // Create a Load balancer for VMSS
         //
         LoadBalancer vmssInternalLoadBalancer = createInternalLoadBalancer(region, resourceGroup, vmssNetwork, "1");
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
-                .withoutPrimaryInternetFacingLoadBalancer()
-                .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
         // resource group
         // it resides
         //
-        Creatable<Identity> creatableIdentity =
-            msiManager
-                .identities()
-                .define(identityName1)
-                .withRegion(region)
-                .withExistingResourceGroup(virtualMachineScaleSet.resourceGroupName())
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
+        Creatable<Identity> creatableIdentity = msiManager.identities()
+            .define(identityName1)
+            .withRegion(region)
+            .withExistingResourceGroup(virtualMachineScaleSet.resourceGroupName())
+            .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Update virtual machine so that it depends on the EMSI
         //
-        virtualMachineScaleSet =
-            virtualMachineScaleSet.update().withNewUserAssignedManagedServiceIdentity(creatableIdentity).apply();
+        virtualMachineScaleSet
+            = virtualMachineScaleSet.update().withNewUserAssignedManagedServiceIdentity(creatableIdentity).apply();
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
         //
         Set<String> emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        Optional<String> emsiIdOptional
+            = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName1)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
-        Identity identity = msiManager.identities().getById(emsiIds.iterator().next());
+        Identity identity = msiManager.identities().getById(emsiIdOptional.get());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName1));
 
         // Update VMSS without modify MSI
-        virtualMachineScaleSet.update()
-            .withNewDataDisk(10)
-            .apply();
+        virtualMachineScaleSet.update().withNewDataDisk(10).apply();
         emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName1)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
         // Creates an EMSI
         //
-        Identity createdIdentity =
-            msiManager
-                .identities()
-                .define(identityName2)
-                .withRegion(region)
-                .withExistingResourceGroup(virtualMachineScaleSet.resourceGroupName())
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .create();
+        Identity createdIdentity = msiManager.identities()
+            .define(identityName2)
+            .withRegion(region)
+            .withExistingResourceGroup(virtualMachineScaleSet.resourceGroupName())
+            .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+            .create();
 
         // Update the virtual machine by removing the an EMSI and adding existing EMSI
         //
-        virtualMachineScaleSet =
-            virtualMachineScaleSet
-                .update()
-                .withoutUserAssignedManagedServiceIdentity(identity.id())
-                .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
-                .apply();
+        virtualMachineScaleSet = virtualMachineScaleSet.update()
+            .withoutUserAssignedManagedServiceIdentity(identity.id())
+            .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
+            .apply();
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
         //
-        emsiIds = virtualMachineScaleSet.innerModel().identity().userAssignedIdentities().keySet();
+        emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName2)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
-        identity = msiManager.identities().getById(emsiIds.iterator().next());
+        identity = msiManager.identities().getById(emsiIdOptional.get());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName2));
 
@@ -562,24 +488,17 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
     }
 
-    private Mono<RoleAssignment> lookupRoleAssignmentUsingScopeAndRoleAsync(
-        final String scope, BuiltInRole role, final String principalId) {
-        return this
-            .msiManager
-            .authorizationManager()
+    private Mono<RoleAssignment> lookupRoleAssignmentUsingScopeAndRoleAsync(final String scope, BuiltInRole role,
+        final String principalId) {
+        return this.msiManager.authorizationManager()
             .roleDefinitions()
             .getByScopeAndRoleNameAsync(scope, role.toString())
-            .flatMap(
-                roleDefinition ->
-                    msiManager
-                        .authorizationManager()
-                        .roleAssignments()
-                        .listByScopeAsync(scope)
-                        .filter(
-                            roleAssignment ->
-                                roleAssignment.roleDefinitionId().equalsIgnoreCase(roleDefinition.id())
-                                    && roleAssignment.principalId().equalsIgnoreCase(principalId))
-                        .singleOrEmpty())
+            .flatMap(roleDefinition -> msiManager.authorizationManager()
+                .roleAssignments()
+                .listByScopeAsync(scope)
+                .filter(roleAssignment -> roleAssignment.roleDefinitionId().equalsIgnoreCase(roleDefinition.id())
+                    && roleAssignment.principalId().equalsIgnoreCase(principalId))
+                .singleOrEmpty())
             .switchIfEmpty(Mono.defer(() -> Mono.empty()));
     }
 }

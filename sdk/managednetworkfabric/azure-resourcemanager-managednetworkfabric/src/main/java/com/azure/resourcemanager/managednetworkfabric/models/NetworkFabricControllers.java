@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkFabricControllers. */
+/**
+ * Resource collection API of NetworkFabricControllers.
+ */
 public interface NetworkFabricControllers {
     /**
      * Gets a Network Fabric Controller.
-     *
-     * <p>Shows the provisioning status of Network Fabric Controller.
-     *
+     * 
+     * Shows the provisioning status of Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface NetworkFabricControllers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Fabric Controller resource definition along with {@link Response}.
      */
-    Response<NetworkFabricController> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFabricControllerName, Context context);
+    Response<NetworkFabricController> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkFabricControllerName, Context context);
 
     /**
      * Gets a Network Fabric Controller.
-     *
-     * <p>Shows the provisioning status of Network Fabric Controller.
-     *
+     * 
+     * Shows the provisioning status of Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface NetworkFabricControllers {
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface NetworkFabricControllers {
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface NetworkFabricControllers {
 
     /**
      * List NetworkFabricControllers by resource group.
-     *
-     * <p>Lists all the NetworkFabricControllers thats available in the resource group.
-     *
+     * 
+     * Lists all the NetworkFabricControllers thats available in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface NetworkFabricControllers {
 
     /**
      * List NetworkFabricControllers by resource group.
-     *
-     * <p>Lists all the NetworkFabricControllers thats available in the resource group.
-     *
+     * 
+     * Lists all the NetworkFabricControllers thats available in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface NetworkFabricControllers {
 
     /**
      * List NetworkFabricControllers by subscription.
-     *
-     * <p>Lists all the NetworkFabricControllers by subscription.
-     *
+     * 
+     * Lists all the NetworkFabricControllers by subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface NetworkFabricControllers {
 
     /**
      * List NetworkFabricControllers by subscription.
-     *
-     * <p>Lists all the NetworkFabricControllers by subscription.
-     *
+     * 
+     * Lists all the NetworkFabricControllers by subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface NetworkFabricControllers {
 
     /**
      * Gets a Network Fabric Controller.
-     *
-     * <p>Shows the provisioning status of Network Fabric Controller.
-     *
+     * 
+     * Shows the provisioning status of Network Fabric Controller.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface NetworkFabricControllers {
 
     /**
      * Gets a Network Fabric Controller.
-     *
-     * <p>Shows the provisioning status of Network Fabric Controller.
-     *
+     * 
+     * Shows the provisioning status of Network Fabric Controller.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface NetworkFabricControllers {
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface NetworkFabricControllers {
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface NetworkFabricControllers {
 
     /**
      * Begins definition for a new NetworkFabricController resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkFabricController definition.
      */

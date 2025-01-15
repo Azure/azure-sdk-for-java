@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -24,6 +24,7 @@ import com.azure.resourcemanager.machinelearning.models.Sku;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import com.azure.resourcemanager.machinelearning.models.Workspace;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
@@ -33,7 +34,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class MachineLearningManagerTests extends TestBase {
+public class MachineLearningManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
@@ -49,31 +50,30 @@ public class MachineLearningManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        machineLearningManager = MachineLearningManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        storageManager = StorageManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        keyVaultManager = KeyVaultManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        applicationInsightsManager = ApplicationInsightsManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        machineLearningManager = MachineLearningManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
+
+        storageManager = StorageManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
+
+        keyVaultManager = KeyVaultManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
+
+        applicationInsightsManager = ApplicationInsightsManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -81,10 +81,7 @@ public class MachineLearningManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -113,44 +110,43 @@ public class MachineLearningManagerTests extends TestBase {
                 .withSku(new Sku().withName("Basic").withTier(SkuTier.BASIC))
                 .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
                 .withFriendlyName(workspaceName)
-                .withStorageAccount(
-                    storageManager.storageAccounts()
-                        .define(storageName)
-                        .withRegion(REGION)
-                        .withExistingResourceGroup(resourceGroupName)
-                        .withSku(StorageAccountSkuType.STANDARD_LRS)
-                        .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
-                        .withHnsEnabled(false)
-                        .withAccessFromAzureServices()
-                        .withOnlyHttpsTraffic()
-                        .withBlobStorageAccountKind().withAccessTier(AccessTier.HOT)
-                        .create()
-                        .id())
-                .withKeyVault(
-                    keyVaultManager.vaults()
-                        .define(keyVaultName)
-                        .withRegion(REGION)
-                        .withExistingResourceGroup(resourceGroupName)
-                        .withEmptyAccessPolicy()
-                        .withSku(SkuName.STANDARD)
-                        .withDeploymentDisabled()
-                        .withAccessFromAllNetworks()
-                        .create()
-                        .id())
-                .withApplicationInsights(
-                    applicationInsightsManager.components()
-                        .define(insightName)
-                        .withRegion(REGION)
-                        .withExistingResourceGroup(resourceGroupName)
-                        .withKind("web")
-                        .withApplicationType(ApplicationType.WEB)
-                        .create()
-                        .id())
+                .withStorageAccount(storageManager.storageAccounts()
+                    .define(storageName)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withSku(StorageAccountSkuType.STANDARD_LRS)
+                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
+                    .withHnsEnabled(false)
+                    .withAccessFromAzureServices()
+                    .withOnlyHttpsTraffic()
+                    .withBlobStorageAccountKind()
+                    .withAccessTier(AccessTier.HOT)
+                    .create()
+                    .id())
+                .withKeyVault(keyVaultManager.vaults()
+                    .define(keyVaultName)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withEmptyAccessPolicy()
+                    .withSku(SkuName.STANDARD)
+                    .withDeploymentDisabled()
+                    .withAccessFromAllNetworks()
+                    .create()
+                    .id())
+                .withApplicationInsights(applicationInsightsManager.components()
+                    .define(insightName)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withKind("web")
+                    .withApplicationType(ApplicationType.WEB)
+                    .create()
+                    .id())
                 .create();
             // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(workspace.name(), workspaceName);
-            Assertions.assertEquals(workspace.name(), machineLearningManager.workspaces().getById(workspace.id()).name());
+            Assertions.assertEquals(workspace.name(),
+                machineLearningManager.workspaces().getById(workspace.id()).name());
             Assertions.assertTrue(machineLearningManager.workspaces().list().stream().count() > 0);
         } finally {
             if (workspace != null) {

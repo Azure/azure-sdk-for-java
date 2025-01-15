@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
@@ -56,6 +55,8 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
 public class RxGatewayStoreModel implements RxStoreModel {
+    private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
+
     private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
     private final Map<String, String> defaultHeaders;
@@ -313,7 +314,10 @@ public class RxGatewayStoreModel implements RxStoreModel {
             path = StringUtils.EMPTY;
         }
 
-        return new URI("https",
+        // allow using http connections if customer opt in to use http for vnext emulator
+        String scheme = HTTP_CONNECTION_WITHOUT_TLS_ALLOWED ? rootUri.getScheme() : "https";
+
+        return new URI(scheme,
             null,
             rootUri.getHost(),
             rootUri.getPort(),

@@ -15,52 +15,41 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventIngestionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventIngestion model =
-            BinaryData
-                .fromString(
-                    "{\"streamName\":\"ivpdtiir\",\"begin\":\"2021-10-30T18:40:51Z\",\"end\":\"2021-05-16T22:52:08Z\",\"endReason\":\"xoruzfgsquyfxrx\",\"ingestInterruptions\":[{\"begin\":\"2021-03-08T21:24:21Z\",\"end\":\"2021-02-07T09:18:25Z\",\"duration\":\"PT185H23M6S\",\"reason\":\"ezw\"},{\"begin\":\"2020-12-20T08:57:46Z\",\"end\":\"2021-07-30T12:05:38Z\",\"duration\":\"PT194H47M22S\",\"reason\":\"cvydypatdoo\"}]}")
-                .toObject(LiveEventIngestion.class);
-        Assertions.assertEquals("ivpdtiir", model.streamName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T18:40:51Z"), model.begin());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T22:52:08Z"), model.end());
-        Assertions.assertEquals("xoruzfgsquyfxrx", model.endReason());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-03-08T21:24:21Z"), model.ingestInterruptions().get(0).begin());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T09:18:25Z"), model.ingestInterruptions().get(0).end());
-        Assertions.assertEquals(Duration.parse("PT185H23M6S"), model.ingestInterruptions().get(0).duration());
-        Assertions.assertEquals("ezw", model.ingestInterruptions().get(0).reason());
+        LiveEventIngestion model = BinaryData.fromString(
+            "{\"streamName\":\"dcqvpn\",\"begin\":\"2021-09-04T22:25:46Z\",\"end\":\"2021-07-28T02:37:45Z\",\"endReason\":\"ylwdshfssn\",\"ingestInterruptions\":[{\"begin\":\"2021-08-09T21:16:26Z\",\"end\":\"2021-02-17T11:04:17Z\",\"duration\":\"PT236H36M36S\",\"reason\":\"gaojf\"}]}")
+            .toObject(LiveEventIngestion.class);
+        Assertions.assertEquals("dcqvpn", model.streamName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T22:25:46Z"), model.begin());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T02:37:45Z"), model.end());
+        Assertions.assertEquals("ylwdshfssn", model.endReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T21:16:26Z"),
+            model.ingestInterruptions().get(0).begin());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T11:04:17Z"), model.ingestInterruptions().get(0).end());
+        Assertions.assertEquals(Duration.parse("PT236H36M36S"), model.ingestInterruptions().get(0).duration());
+        Assertions.assertEquals("gaojf", model.ingestInterruptions().get(0).reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventIngestion model =
-            new LiveEventIngestion()
-                .withStreamName("ivpdtiir")
-                .withBegin(OffsetDateTime.parse("2021-10-30T18:40:51Z"))
-                .withEnd(OffsetDateTime.parse("2021-05-16T22:52:08Z"))
-                .withEndReason("xoruzfgsquyfxrx")
-                .withIngestInterruptions(
-                    Arrays
-                        .asList(
-                            new LiveEventIngestInterruption()
-                                .withBegin(OffsetDateTime.parse("2021-03-08T21:24:21Z"))
-                                .withEnd(OffsetDateTime.parse("2021-02-07T09:18:25Z"))
-                                .withDuration(Duration.parse("PT185H23M6S"))
-                                .withReason("ezw"),
-                            new LiveEventIngestInterruption()
-                                .withBegin(OffsetDateTime.parse("2020-12-20T08:57:46Z"))
-                                .withEnd(OffsetDateTime.parse("2021-07-30T12:05:38Z"))
-                                .withDuration(Duration.parse("PT194H47M22S"))
-                                .withReason("cvydypatdoo")));
+        LiveEventIngestion model
+            = new LiveEventIngestion().withStreamName("dcqvpn")
+                .withBegin(OffsetDateTime.parse("2021-09-04T22:25:46Z"))
+                .withEnd(OffsetDateTime.parse("2021-07-28T02:37:45Z"))
+                .withEndReason("ylwdshfssn")
+                .withIngestInterruptions(Arrays
+                    .asList(new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-08-09T21:16:26Z"))
+                        .withEnd(OffsetDateTime.parse("2021-02-17T11:04:17Z"))
+                        .withDuration(Duration.parse("PT236H36M36S"))
+                        .withReason("gaojf")));
         model = BinaryData.fromObject(model).toObject(LiveEventIngestion.class);
-        Assertions.assertEquals("ivpdtiir", model.streamName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T18:40:51Z"), model.begin());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T22:52:08Z"), model.end());
-        Assertions.assertEquals("xoruzfgsquyfxrx", model.endReason());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-03-08T21:24:21Z"), model.ingestInterruptions().get(0).begin());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T09:18:25Z"), model.ingestInterruptions().get(0).end());
-        Assertions.assertEquals(Duration.parse("PT185H23M6S"), model.ingestInterruptions().get(0).duration());
-        Assertions.assertEquals("ezw", model.ingestInterruptions().get(0).reason());
+        Assertions.assertEquals("dcqvpn", model.streamName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T22:25:46Z"), model.begin());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T02:37:45Z"), model.end());
+        Assertions.assertEquals("ylwdshfssn", model.endReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T21:16:26Z"),
+            model.ingestInterruptions().get(0).begin());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T11:04:17Z"), model.ingestInterruptions().get(0).end());
+        Assertions.assertEquals(Duration.parse("PT236H36M36S"), model.ingestInterruptions().get(0).duration());
+        Assertions.assertEquals("gaojf", model.ingestInterruptions().get(0).reason());
     }
 }

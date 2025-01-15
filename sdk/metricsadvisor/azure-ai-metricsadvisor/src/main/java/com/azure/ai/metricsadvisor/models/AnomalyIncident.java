@@ -29,6 +29,7 @@ public final class AnomalyIncident {
      */
     public AnomalyIncident() {
     }
+
     static {
         IncidentHelper.setAccessor(new IncidentHelper.IncidentAccessor() {
             @Override
@@ -87,6 +88,7 @@ public final class AnomalyIncident {
             }
         });
     }
+
     /**
      * Gets the incident id.
      *

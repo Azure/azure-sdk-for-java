@@ -52,13 +52,11 @@ public class AvroParserStateTests {
     }
 
     private static Stream<Arguments> readSizeSupplier() {
-        return Stream.of(
-            Arguments.of(0, 12, new byte[0], 2),
+        return Stream.of(Arguments.of(0, 12, new byte[0], 2),
             Arguments.of(3, 9, "Hel".getBytes(StandardCharsets.UTF_8), 2),
             Arguments.of(6, 6, "Hello ".getBytes(StandardCharsets.UTF_8), 1),
             Arguments.of(7, 5, "Hello W".getBytes(StandardCharsets.UTF_8), 1),
-            Arguments.of(12, 0, "Hello World!".getBytes(StandardCharsets.UTF_8), 0)
-        );
+            Arguments.of(12, 0, "Hello World!".getBytes(StandardCharsets.UTF_8), 0));
     }
 
     @Test

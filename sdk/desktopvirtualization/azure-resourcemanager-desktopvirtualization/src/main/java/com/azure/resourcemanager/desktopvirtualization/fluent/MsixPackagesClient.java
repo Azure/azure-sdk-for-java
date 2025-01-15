@@ -14,11 +14,13 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.MsixPackage
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackagePatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MsixPackagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MsixPackagesClient.
+ */
 public interface MsixPackagesClient {
     /**
      * Get a msixpackage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -28,12 +30,12 @@ public interface MsixPackagesClient {
      * @return a msixpackage along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MsixPackageInner>> getWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName);
+    Mono<Response<MsixPackageInner>> getWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName);
 
     /**
      * Get a msixpackage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -47,7 +49,7 @@ public interface MsixPackagesClient {
 
     /**
      * Get a msixpackage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -58,12 +60,12 @@ public interface MsixPackagesClient {
      * @return a msixpackage along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MsixPackageInner> getWithResponse(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context);
+    Response<MsixPackageInner> getWithResponse(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, Context context);
 
     /**
      * Get a msixpackage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -77,7 +79,7 @@ public interface MsixPackagesClient {
 
     /**
      * Create or update a MSIX package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -88,12 +90,12 @@ public interface MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MsixPackageInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, MsixPackageInner msixPackage);
+    Mono<Response<MsixPackageInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackageInner msixPackage);
 
     /**
      * Create or update a MSIX package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -104,12 +106,12 @@ public interface MsixPackagesClient {
      * @return schema for MSIX Package properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MsixPackageInner> createOrUpdateAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, MsixPackageInner msixPackage);
+    Mono<MsixPackageInner> createOrUpdateAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackageInner msixPackage);
 
     /**
      * Create or update a MSIX package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -121,16 +123,12 @@ public interface MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MsixPackageInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String msixPackageFullName,
-        MsixPackageInner msixPackage,
-        Context context);
+    Response<MsixPackageInner> createOrUpdateWithResponse(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackageInner msixPackage, Context context);
 
     /**
      * Create or update a MSIX package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -141,12 +139,12 @@ public interface MsixPackagesClient {
      * @return schema for MSIX Package properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MsixPackageInner createOrUpdate(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, MsixPackageInner msixPackage);
+    MsixPackageInner createOrUpdate(String resourceGroupName, String hostPoolName, String msixPackageFullName,
+        MsixPackageInner msixPackage);
 
     /**
      * Remove an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -156,12 +154,12 @@ public interface MsixPackagesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName);
 
     /**
      * Remove an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -175,7 +173,7 @@ public interface MsixPackagesClient {
 
     /**
      * Remove an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -186,12 +184,12 @@ public interface MsixPackagesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String hostPoolName, String msixPackageFullName,
+        Context context);
 
     /**
      * Remove an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -204,7 +202,7 @@ public interface MsixPackagesClient {
 
     /**
      * Update an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -215,12 +213,12 @@ public interface MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MsixPackageInner>> updateWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, MsixPackagePatch msixPackage);
+    Mono<Response<MsixPackageInner>> updateWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackagePatch msixPackage);
 
     /**
      * Update an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -234,7 +232,7 @@ public interface MsixPackagesClient {
 
     /**
      * Update an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -246,16 +244,12 @@ public interface MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MsixPackageInner> updateWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String msixPackageFullName,
-        MsixPackagePatch msixPackage,
-        Context context);
+    Response<MsixPackageInner> updateWithResponse(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackagePatch msixPackage, Context context);
 
     /**
      * Update an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -269,7 +263,7 @@ public interface MsixPackagesClient {
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -281,12 +275,12 @@ public interface MsixPackagesClient {
      * @return msixPackageList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MsixPackageInner> listAsync(
-        String resourceGroupName, String hostPoolName, Integer pageSize, Boolean isDescending, Integer initialSkip);
+    PagedFlux<MsixPackageInner> listAsync(String resourceGroupName, String hostPoolName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip);
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,7 +293,7 @@ public interface MsixPackagesClient {
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,7 +306,7 @@ public interface MsixPackagesClient {
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -325,11 +319,6 @@ public interface MsixPackagesClient {
      * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MsixPackageInner> list(
-        String resourceGroupName,
-        String hostPoolName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<MsixPackageInner> list(String resourceGroupName, String hostPoolName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 }

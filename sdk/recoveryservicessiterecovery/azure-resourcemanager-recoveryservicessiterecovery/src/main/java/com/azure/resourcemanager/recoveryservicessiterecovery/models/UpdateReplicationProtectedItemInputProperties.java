@@ -5,73 +5,68 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Update protected item input properties.
  */
 @Fluent
-public final class UpdateReplicationProtectedItemInputProperties {
+public final class UpdateReplicationProtectedItemInputProperties
+    implements JsonSerializable<UpdateReplicationProtectedItemInputProperties> {
     /*
      * Target Azure VM name given by the user.
      */
-    @JsonProperty(value = "recoveryAzureVMName")
     private String recoveryAzureVMName;
 
     /*
      * Target Azure VM size.
      */
-    @JsonProperty(value = "recoveryAzureVMSize")
     private String recoveryAzureVMSize;
 
     /*
      * Target Azure Network Id.
      */
-    @JsonProperty(value = "selectedRecoveryAzureNetworkId")
     private String selectedRecoveryAzureNetworkId;
 
     /*
      * The Azure Network Id for test failover.
      */
-    @JsonProperty(value = "selectedTfoAzureNetworkId")
     private String selectedTfoAzureNetworkId;
 
     /*
      * The selected source nic Id which will be used as the primary nic during failover.
      */
-    @JsonProperty(value = "selectedSourceNicId")
     private String selectedSourceNicId;
 
     /*
      * The selected option to enable RDP\SSH on target vm after failover. String value of
      * SrsDataContract.EnableRDPOnTargetOption enum.
      */
-    @JsonProperty(value = "enableRdpOnTargetOption")
     private String enableRdpOnTargetOption;
 
     /*
      * The list of VM nic details.
      */
-    @JsonProperty(value = "vmNics")
     private List<VMNicInputDetails> vmNics;
 
     /*
      * License type.
      */
-    @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
     /*
      * The target availability set Id.
      */
-    @JsonProperty(value = "recoveryAvailabilitySetId")
     private String recoveryAvailabilitySetId;
 
     /*
      * The provider specific input to update replication protected item.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private UpdateReplicationProtectedItemProviderInput providerSpecificDetails;
 
     /**
@@ -300,5 +295,76 @@ public final class UpdateReplicationProtectedItemInputProperties {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryAzureVMName", this.recoveryAzureVMName);
+        jsonWriter.writeStringField("recoveryAzureVMSize", this.recoveryAzureVMSize);
+        jsonWriter.writeStringField("selectedRecoveryAzureNetworkId", this.selectedRecoveryAzureNetworkId);
+        jsonWriter.writeStringField("selectedTfoAzureNetworkId", this.selectedTfoAzureNetworkId);
+        jsonWriter.writeStringField("selectedSourceNicId", this.selectedSourceNicId);
+        jsonWriter.writeStringField("enableRdpOnTargetOption", this.enableRdpOnTargetOption);
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("recoveryAvailabilitySetId", this.recoveryAvailabilitySetId);
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateReplicationProtectedItemInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateReplicationProtectedItemInputProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateReplicationProtectedItemInputProperties.
+     */
+    public static UpdateReplicationProtectedItemInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateReplicationProtectedItemInputProperties deserializedUpdateReplicationProtectedItemInputProperties
+                = new UpdateReplicationProtectedItemInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryAzureVMName".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemInputProperties.recoveryAzureVMName = reader.getString();
+                } else if ("recoveryAzureVMSize".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemInputProperties.recoveryAzureVMSize = reader.getString();
+                } else if ("selectedRecoveryAzureNetworkId".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemInputProperties.selectedRecoveryAzureNetworkId
+                        = reader.getString();
+                } else if ("selectedTfoAzureNetworkId".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemInputProperties.selectedTfoAzureNetworkId
+                        = reader.getString();
+                } else if ("selectedSourceNicId".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemInputProperties.selectedSourceNicId = reader.getString();
+                } else if ("enableRdpOnTargetOption".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemInputProperties.enableRdpOnTargetOption
+                        = reader.getString();
+                } else if ("vmNics".equals(fieldName)) {
+                    List<VMNicInputDetails> vmNics = reader.readArray(reader1 -> VMNicInputDetails.fromJson(reader1));
+                    deserializedUpdateReplicationProtectedItemInputProperties.vmNics = vmNics;
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemInputProperties.licenseType
+                        = LicenseType.fromString(reader.getString());
+                } else if ("recoveryAvailabilitySetId".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemInputProperties.recoveryAvailabilitySetId
+                        = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemInputProperties.providerSpecificDetails
+                        = UpdateReplicationProtectedItemProviderInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateReplicationProtectedItemInputProperties;
+        });
     }
 }

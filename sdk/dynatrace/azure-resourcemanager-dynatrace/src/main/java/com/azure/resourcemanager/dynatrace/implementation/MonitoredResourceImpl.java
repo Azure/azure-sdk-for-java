@@ -14,8 +14,8 @@ public final class MonitoredResourceImpl implements MonitoredResource {
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    MonitoredResourceImpl(
-        MonitoredResourceInner innerObject, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
+    MonitoredResourceImpl(MonitoredResourceInner innerObject,
+        com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

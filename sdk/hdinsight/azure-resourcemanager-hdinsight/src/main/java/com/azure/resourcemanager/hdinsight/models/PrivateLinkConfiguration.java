@@ -6,44 +6,48 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.fluent.models.PrivateLinkConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The private link configuration. */
+/**
+ * The private link configuration.
+ */
 @Fluent
-public final class PrivateLinkConfiguration {
+public final class PrivateLinkConfiguration implements JsonSerializable<PrivateLinkConfiguration> {
     /*
      * The private link configuration id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of private link configuration.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The type of the private link configuration.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The private link configuration properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private PrivateLinkConfigurationProperties innerProperties = new PrivateLinkConfigurationProperties();
 
-    /** Creates an instance of PrivateLinkConfiguration class. */
+    /**
+     * Creates an instance of PrivateLinkConfiguration class.
+     */
     public PrivateLinkConfiguration() {
     }
 
     /**
      * Get the id property: The private link configuration id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -52,7 +56,7 @@ public final class PrivateLinkConfiguration {
 
     /**
      * Get the name property: The name of private link configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class PrivateLinkConfiguration {
 
     /**
      * Set the name property: The name of private link configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateLinkConfiguration object itself.
      */
@@ -72,7 +76,7 @@ public final class PrivateLinkConfiguration {
 
     /**
      * Get the type property: The type of the private link configuration.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,7 +85,7 @@ public final class PrivateLinkConfiguration {
 
     /**
      * Get the innerProperties property: The private link configuration properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkConfigurationProperties innerProperties() {
@@ -91,7 +95,7 @@ public final class PrivateLinkConfiguration {
     /**
      * Get the groupId property: The HDInsight private linkable sub-resource name to apply the private link
      * configuration to. For example, 'headnode', 'gateway', 'edgenode'.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -101,7 +105,7 @@ public final class PrivateLinkConfiguration {
     /**
      * Set the groupId property: The HDInsight private linkable sub-resource name to apply the private link
      * configuration to. For example, 'headnode', 'gateway', 'edgenode'.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the PrivateLinkConfiguration object itself.
      */
@@ -116,7 +120,7 @@ public final class PrivateLinkConfiguration {
     /**
      * Get the provisioningState property: The private link configuration provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PrivateLinkConfigurationProvisioningState provisioningState() {
@@ -125,7 +129,7 @@ public final class PrivateLinkConfiguration {
 
     /**
      * Get the ipConfigurations property: The IP configurations for the private link service.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<IpConfiguration> ipConfigurations() {
@@ -134,7 +138,7 @@ public final class PrivateLinkConfiguration {
 
     /**
      * Set the ipConfigurations property: The IP configurations for the private link service.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the PrivateLinkConfiguration object itself.
      */
@@ -148,24 +152,67 @@ public final class PrivateLinkConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model PrivateLinkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PrivateLinkConfiguration"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model PrivateLinkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PrivateLinkConfiguration"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateLinkConfiguration.
+     */
+    public static PrivateLinkConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkConfiguration deserializedPrivateLinkConfiguration = new PrivateLinkConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkConfiguration.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateLinkConfiguration.innerProperties
+                        = PrivateLinkConfigurationProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkConfiguration.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkConfiguration.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkConfiguration;
+        });
+    }
 }

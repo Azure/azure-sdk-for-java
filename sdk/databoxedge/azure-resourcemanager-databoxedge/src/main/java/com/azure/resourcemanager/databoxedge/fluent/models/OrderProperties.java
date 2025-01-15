@@ -6,67 +6,68 @@ package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.Address;
 import com.azure.resourcemanager.databoxedge.models.ContactDetails;
 import com.azure.resourcemanager.databoxedge.models.OrderStatus;
 import com.azure.resourcemanager.databoxedge.models.TrackingInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Order properties. */
+/**
+ * Order properties.
+ */
 @Fluent
-public final class OrderProperties {
+public final class OrderProperties implements JsonSerializable<OrderProperties> {
     /*
      * The contact details.
      */
-    @JsonProperty(value = "contactInformation", required = true)
     private ContactDetails contactInformation;
 
     /*
      * The shipping address.
      */
-    @JsonProperty(value = "shippingAddress", required = true)
     private Address shippingAddress;
 
     /*
      * Current status of the order.
      */
-    @JsonProperty(value = "currentStatus")
     private OrderStatus currentStatus;
 
     /*
      * List of status changes in the order.
      */
-    @JsonProperty(value = "orderHistory", access = JsonProperty.Access.WRITE_ONLY)
     private List<OrderStatus> orderHistory;
 
     /*
      * Serial number of the device.
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /*
      * Tracking information for the package delivered to the customer whether it has an original or a replacement
      * device.
      */
-    @JsonProperty(value = "deliveryTrackingInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrackingInfo> deliveryTrackingInfo;
 
     /*
      * Tracking information for the package returned from the customer whether it has an original or a replacement
      * device.
      */
-    @JsonProperty(value = "returnTrackingInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrackingInfo> returnTrackingInfo;
 
-    /** Creates an instance of OrderProperties class. */
+    /**
+     * Creates an instance of OrderProperties class.
+     */
     public OrderProperties() {
     }
 
     /**
      * Get the contactInformation property: The contact details.
-     *
+     * 
      * @return the contactInformation value.
      */
     public ContactDetails contactInformation() {
@@ -75,7 +76,7 @@ public final class OrderProperties {
 
     /**
      * Set the contactInformation property: The contact details.
-     *
+     * 
      * @param contactInformation the contactInformation value to set.
      * @return the OrderProperties object itself.
      */
@@ -86,7 +87,7 @@ public final class OrderProperties {
 
     /**
      * Get the shippingAddress property: The shipping address.
-     *
+     * 
      * @return the shippingAddress value.
      */
     public Address shippingAddress() {
@@ -95,7 +96,7 @@ public final class OrderProperties {
 
     /**
      * Set the shippingAddress property: The shipping address.
-     *
+     * 
      * @param shippingAddress the shippingAddress value to set.
      * @return the OrderProperties object itself.
      */
@@ -106,7 +107,7 @@ public final class OrderProperties {
 
     /**
      * Get the currentStatus property: Current status of the order.
-     *
+     * 
      * @return the currentStatus value.
      */
     public OrderStatus currentStatus() {
@@ -115,7 +116,7 @@ public final class OrderProperties {
 
     /**
      * Set the currentStatus property: Current status of the order.
-     *
+     * 
      * @param currentStatus the currentStatus value to set.
      * @return the OrderProperties object itself.
      */
@@ -126,7 +127,7 @@ public final class OrderProperties {
 
     /**
      * Get the orderHistory property: List of status changes in the order.
-     *
+     * 
      * @return the orderHistory value.
      */
     public List<OrderStatus> orderHistory() {
@@ -135,7 +136,7 @@ public final class OrderProperties {
 
     /**
      * Get the serialNumber property: Serial number of the device.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -145,7 +146,7 @@ public final class OrderProperties {
     /**
      * Get the deliveryTrackingInfo property: Tracking information for the package delivered to the customer whether it
      * has an original or a replacement device.
-     *
+     * 
      * @return the deliveryTrackingInfo value.
      */
     public List<TrackingInfo> deliveryTrackingInfo() {
@@ -155,7 +156,7 @@ public final class OrderProperties {
     /**
      * Get the returnTrackingInfo property: Tracking information for the package returned from the customer whether it
      * has an original or a replacement device.
-     *
+     * 
      * @return the returnTrackingInfo value.
      */
     public List<TrackingInfo> returnTrackingInfo() {
@@ -164,21 +165,20 @@ public final class OrderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contactInformation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property contactInformation in model OrderProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contactInformation in model OrderProperties"));
         } else {
             contactInformation().validate();
         }
         if (shippingAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property shippingAddress in model OrderProperties"));
         } else {
             shippingAddress().validate();
@@ -198,4 +198,59 @@ public final class OrderProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OrderProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactInformation", this.contactInformation);
+        jsonWriter.writeJsonField("shippingAddress", this.shippingAddress);
+        jsonWriter.writeJsonField("currentStatus", this.currentStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrderProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrderProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrderProperties.
+     */
+    public static OrderProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrderProperties deserializedOrderProperties = new OrderProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactInformation".equals(fieldName)) {
+                    deserializedOrderProperties.contactInformation = ContactDetails.fromJson(reader);
+                } else if ("shippingAddress".equals(fieldName)) {
+                    deserializedOrderProperties.shippingAddress = Address.fromJson(reader);
+                } else if ("currentStatus".equals(fieldName)) {
+                    deserializedOrderProperties.currentStatus = OrderStatus.fromJson(reader);
+                } else if ("orderHistory".equals(fieldName)) {
+                    List<OrderStatus> orderHistory = reader.readArray(reader1 -> OrderStatus.fromJson(reader1));
+                    deserializedOrderProperties.orderHistory = orderHistory;
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedOrderProperties.serialNumber = reader.getString();
+                } else if ("deliveryTrackingInfo".equals(fieldName)) {
+                    List<TrackingInfo> deliveryTrackingInfo
+                        = reader.readArray(reader1 -> TrackingInfo.fromJson(reader1));
+                    deserializedOrderProperties.deliveryTrackingInfo = deliveryTrackingInfo;
+                } else if ("returnTrackingInfo".equals(fieldName)) {
+                    List<TrackingInfo> returnTrackingInfo = reader.readArray(reader1 -> TrackingInfo.fromJson(reader1));
+                    deserializedOrderProperties.returnTrackingInfo = returnTrackingInfo;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrderProperties;
+        });
+    }
 }

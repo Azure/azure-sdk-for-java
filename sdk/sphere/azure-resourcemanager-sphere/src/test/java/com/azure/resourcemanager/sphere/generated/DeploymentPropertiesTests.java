@@ -29,10 +29,12 @@ public final class DeploymentPropertiesTests {
     public void testSerialize() throws Exception {
         DeploymentProperties model = new DeploymentProperties().withDeploymentId("hb")
             .withDeployedImages(Arrays.asList(
-                new ImageInner().withProperties(new ImageProperties().withImage("jzzvdud").withImageId("dslfhotwmcy")
+                new ImageInner().withProperties(new ImageProperties().withImage("jzzvdud")
+                    .withImageId("dslfhotwmcy")
                     .withRegionalDataBoundary(RegionalDataBoundary.EU)),
                 new ImageInner().withProperties(new ImageProperties().withImage("gdtjixhbkuofqwey")
-                    .withImageId("menevfyexfwh").withRegionalDataBoundary(RegionalDataBoundary.EU))));
+                    .withImageId("menevfyexfwh")
+                    .withRegionalDataBoundary(RegionalDataBoundary.EU))));
         model = BinaryData.fromObject(model).toObject(DeploymentProperties.class);
         Assertions.assertEquals("hb", model.deploymentId());
         Assertions.assertEquals("jzzvdud", model.deployedImages().get(0).properties().image());

@@ -78,7 +78,10 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     protected Mono<BlobContainerInner> getInnerAsync() {
-        return this.manager().serviceClient().getBlobContainers().getAsync(resourceGroupName, accountName, containerName);
+        return this.manager()
+            .serviceClient()
+            .getBlobContainers()
+            .getAsync(resourceGroupName, accountName, containerName);
     }
 
     @Override

@@ -5,87 +5,83 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateDataSource;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
-import com.azure.resourcemanager.securityinsights.models.FusionTemplateSourceSetting;
 import com.azure.resourcemanager.securityinsights.models.TemplateStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Fusion alert rule template properties. */
+/**
+ * Represents Fusion alert rule template properties.
+ */
 @Fluent
-public final class FusionAlertRuleTemplateProperties {
+public final class FusionAlertRuleTemplateProperties implements JsonSerializable<FusionAlertRuleTemplateProperties> {
     /*
      * the number of alert rules that were created by this template
      */
-    @JsonProperty(value = "alertRulesCreatedByTemplateCount")
     private Integer alertRulesCreatedByTemplateCount;
 
     /*
      * The time that this alert rule template has been added.
      */
-    @JsonProperty(value = "createdDateUTC", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateUtc;
 
     /*
      * The time that this alert rule template was last updated.
      */
-    @JsonProperty(value = "lastUpdatedDateUTC", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedDateUtc;
 
     /*
      * The description of the alert rule template.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display name for alert rule template.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The required data connectors for this template
      */
-    @JsonProperty(value = "requiredDataConnectors")
     private List<AlertRuleTemplateDataSource> requiredDataConnectors;
 
     /*
      * The alert rule template status.
      */
-    @JsonProperty(value = "status")
     private TemplateStatus status;
 
     /*
      * The severity for alerts created by this alert rule.
      */
-    @JsonProperty(value = "severity")
     private AlertSeverity severity;
 
     /*
      * The tactics of the alert rule template
      */
-    @JsonProperty(value = "tactics")
     private List<AttackTactic> tactics;
 
     /*
-     * The techniques of the alert rule
+     * The techniques of the alert rule template
      */
-    @JsonProperty(value = "techniques")
     private List<String> techniques;
 
-    /*
-     * All supported source signal configurations consumed in fusion detection.
+    /**
+     * Creates an instance of FusionAlertRuleTemplateProperties class.
      */
-    @JsonProperty(value = "sourceSettings")
-    private List<FusionTemplateSourceSetting> sourceSettings;
+    public FusionAlertRuleTemplateProperties() {
+    }
 
     /**
      * Get the alertRulesCreatedByTemplateCount property: the number of alert rules that were created by this template.
-     *
+     * 
      * @return the alertRulesCreatedByTemplateCount value.
      */
     public Integer alertRulesCreatedByTemplateCount() {
@@ -94,19 +90,19 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Set the alertRulesCreatedByTemplateCount property: the number of alert rules that were created by this template.
-     *
+     * 
      * @param alertRulesCreatedByTemplateCount the alertRulesCreatedByTemplateCount value to set.
      * @return the FusionAlertRuleTemplateProperties object itself.
      */
-    public FusionAlertRuleTemplateProperties withAlertRulesCreatedByTemplateCount(
-        Integer alertRulesCreatedByTemplateCount) {
+    public FusionAlertRuleTemplateProperties
+        withAlertRulesCreatedByTemplateCount(Integer alertRulesCreatedByTemplateCount) {
         this.alertRulesCreatedByTemplateCount = alertRulesCreatedByTemplateCount;
         return this;
     }
 
     /**
      * Get the createdDateUtc property: The time that this alert rule template has been added.
-     *
+     * 
      * @return the createdDateUtc value.
      */
     public OffsetDateTime createdDateUtc() {
@@ -115,7 +111,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Get the lastUpdatedDateUtc property: The time that this alert rule template was last updated.
-     *
+     * 
      * @return the lastUpdatedDateUtc value.
      */
     public OffsetDateTime lastUpdatedDateUtc() {
@@ -124,7 +120,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Get the description property: The description of the alert rule template.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -133,7 +129,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Set the description property: The description of the alert rule template.
-     *
+     * 
      * @param description the description value to set.
      * @return the FusionAlertRuleTemplateProperties object itself.
      */
@@ -144,7 +140,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Get the displayName property: The display name for alert rule template.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -153,7 +149,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Set the displayName property: The display name for alert rule template.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the FusionAlertRuleTemplateProperties object itself.
      */
@@ -164,7 +160,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Get the requiredDataConnectors property: The required data connectors for this template.
-     *
+     * 
      * @return the requiredDataConnectors value.
      */
     public List<AlertRuleTemplateDataSource> requiredDataConnectors() {
@@ -173,19 +169,19 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Set the requiredDataConnectors property: The required data connectors for this template.
-     *
+     * 
      * @param requiredDataConnectors the requiredDataConnectors value to set.
      * @return the FusionAlertRuleTemplateProperties object itself.
      */
-    public FusionAlertRuleTemplateProperties withRequiredDataConnectors(
-        List<AlertRuleTemplateDataSource> requiredDataConnectors) {
+    public FusionAlertRuleTemplateProperties
+        withRequiredDataConnectors(List<AlertRuleTemplateDataSource> requiredDataConnectors) {
         this.requiredDataConnectors = requiredDataConnectors;
         return this;
     }
 
     /**
      * Get the status property: The alert rule template status.
-     *
+     * 
      * @return the status value.
      */
     public TemplateStatus status() {
@@ -194,7 +190,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Set the status property: The alert rule template status.
-     *
+     * 
      * @param status the status value to set.
      * @return the FusionAlertRuleTemplateProperties object itself.
      */
@@ -205,7 +201,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -214,7 +210,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Set the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the FusionAlertRuleTemplateProperties object itself.
      */
@@ -225,7 +221,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Get the tactics property: The tactics of the alert rule template.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -234,7 +230,7 @@ public final class FusionAlertRuleTemplateProperties {
 
     /**
      * Set the tactics property: The tactics of the alert rule template.
-     *
+     * 
      * @param tactics the tactics value to set.
      * @return the FusionAlertRuleTemplateProperties object itself.
      */
@@ -244,8 +240,8 @@ public final class FusionAlertRuleTemplateProperties {
     }
 
     /**
-     * Get the techniques property: The techniques of the alert rule.
-     *
+     * Get the techniques property: The techniques of the alert rule template.
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -253,8 +249,8 @@ public final class FusionAlertRuleTemplateProperties {
     }
 
     /**
-     * Set the techniques property: The techniques of the alert rule.
-     *
+     * Set the techniques property: The techniques of the alert rule template.
+     * 
      * @param techniques the techniques value to set.
      * @return the FusionAlertRuleTemplateProperties object itself.
      */
@@ -264,36 +260,87 @@ public final class FusionAlertRuleTemplateProperties {
     }
 
     /**
-     * Get the sourceSettings property: All supported source signal configurations consumed in fusion detection.
-     *
-     * @return the sourceSettings value.
-     */
-    public List<FusionTemplateSourceSetting> sourceSettings() {
-        return this.sourceSettings;
-    }
-
-    /**
-     * Set the sourceSettings property: All supported source signal configurations consumed in fusion detection.
-     *
-     * @param sourceSettings the sourceSettings value to set.
-     * @return the FusionAlertRuleTemplateProperties object itself.
-     */
-    public FusionAlertRuleTemplateProperties withSourceSettings(List<FusionTemplateSourceSetting> sourceSettings) {
-        this.sourceSettings = sourceSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (requiredDataConnectors() != null) {
             requiredDataConnectors().forEach(e -> e.validate());
         }
-        if (sourceSettings() != null) {
-            sourceSettings().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("alertRulesCreatedByTemplateCount", this.alertRulesCreatedByTemplateCount);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("requiredDataConnectors", this.requiredDataConnectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeArrayField("tactics", this.tactics,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("techniques", this.techniques, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FusionAlertRuleTemplateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FusionAlertRuleTemplateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FusionAlertRuleTemplateProperties.
+     */
+    public static FusionAlertRuleTemplateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FusionAlertRuleTemplateProperties deserializedFusionAlertRuleTemplateProperties
+                = new FusionAlertRuleTemplateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertRulesCreatedByTemplateCount".equals(fieldName)) {
+                    deserializedFusionAlertRuleTemplateProperties.alertRulesCreatedByTemplateCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("createdDateUTC".equals(fieldName)) {
+                    deserializedFusionAlertRuleTemplateProperties.createdDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedDateUTC".equals(fieldName)) {
+                    deserializedFusionAlertRuleTemplateProperties.lastUpdatedDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedFusionAlertRuleTemplateProperties.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedFusionAlertRuleTemplateProperties.displayName = reader.getString();
+                } else if ("requiredDataConnectors".equals(fieldName)) {
+                    List<AlertRuleTemplateDataSource> requiredDataConnectors
+                        = reader.readArray(reader1 -> AlertRuleTemplateDataSource.fromJson(reader1));
+                    deserializedFusionAlertRuleTemplateProperties.requiredDataConnectors = requiredDataConnectors;
+                } else if ("status".equals(fieldName)) {
+                    deserializedFusionAlertRuleTemplateProperties.status
+                        = TemplateStatus.fromString(reader.getString());
+                } else if ("severity".equals(fieldName)) {
+                    deserializedFusionAlertRuleTemplateProperties.severity
+                        = AlertSeverity.fromString(reader.getString());
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedFusionAlertRuleTemplateProperties.tactics = tactics;
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFusionAlertRuleTemplateProperties.techniques = techniques;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFusionAlertRuleTemplateProperties;
+        });
     }
 }

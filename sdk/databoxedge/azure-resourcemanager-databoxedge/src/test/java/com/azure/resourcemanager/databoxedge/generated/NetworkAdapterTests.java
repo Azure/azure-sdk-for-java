@@ -13,23 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkAdapterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkAdapter model =
-            BinaryData
-                .fromString(
-                    "{\"adapterId\":\"wbavxbniwdj\",\"adapterPosition\":{\"networkGroup\":\"RDMA\",\"port\":670634549},\"index\":551724215,\"nodeId\":\"nxytxh\",\"networkAdapterName\":\"xbzpfzab\",\"label\":\"cuh\",\"macAddress\":\"tcty\",\"linkSpeed\":3791870776302603545,\"status\":\"Inactive\",\"rdmaStatus\":\"Incapable\",\"dhcpStatus\":\"Enabled\",\"ipv4Configuration\":{\"ipAddress\":\"bhvgy\",\"subnet\":\"uosvmkfssxqukk\",\"gateway\":\"l\"},\"ipv6Configuration\":{\"ipAddress\":\"sxnkjzkdeslpvlo\",\"prefixLength\":158765093,\"gateway\":\"ighxpk\"},\"ipv6LinkLocalAddress\":\"zb\",\"dnsServers\":[\"ebb\",\"umnyqu\",\"edeojnabc\"]}")
-                .toObject(NetworkAdapter.class);
+        NetworkAdapter model = BinaryData.fromString(
+            "{\"adapterId\":\"hashsfwxosow\",\"adapterPosition\":{\"networkGroup\":\"NonRDMA\",\"port\":11356345},\"index\":229570932,\"nodeId\":\"oxdjebwpuc\",\"networkAdapterName\":\"fvovbvmeuecivy\",\"label\":\"ce\",\"macAddress\":\"jgjrwjueiotwm\",\"linkSpeed\":7939345805777152857,\"status\":\"Inactive\",\"rdmaStatus\":\"Incapable\",\"dhcpStatus\":\"Disabled\",\"ipv4Configuration\":{\"ipAddress\":\"jawgqwg\",\"subnet\":\"ni\",\"gateway\":\"x\"},\"ipv6Configuration\":{\"ipAddress\":\"py\",\"prefixLength\":1553337592,\"gateway\":\"wndnhj\"},\"ipv6LinkLocalAddress\":\"uwhvylwzbtdhxujz\",\"dnsServers\":[\"pow\",\"wpr\"]}")
+            .toObject(NetworkAdapter.class);
         Assertions.assertEquals(NetworkAdapterRdmaStatus.INCAPABLE, model.rdmaStatus());
-        Assertions.assertEquals(NetworkAdapterDhcpStatus.ENABLED, model.dhcpStatus());
+        Assertions.assertEquals(NetworkAdapterDhcpStatus.DISABLED, model.dhcpStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkAdapter model =
-            new NetworkAdapter()
-                .withRdmaStatus(NetworkAdapterRdmaStatus.INCAPABLE)
-                .withDhcpStatus(NetworkAdapterDhcpStatus.ENABLED);
+        NetworkAdapter model = new NetworkAdapter().withRdmaStatus(NetworkAdapterRdmaStatus.INCAPABLE)
+            .withDhcpStatus(NetworkAdapterDhcpStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(NetworkAdapter.class);
         Assertions.assertEquals(NetworkAdapterRdmaStatus.INCAPABLE, model.rdmaStatus());
-        Assertions.assertEquals(NetworkAdapterDhcpStatus.ENABLED, model.dhcpStatus());
+        Assertions.assertEquals(NetworkAdapterDhcpStatus.DISABLED, model.dhcpStatus());
     }
 }

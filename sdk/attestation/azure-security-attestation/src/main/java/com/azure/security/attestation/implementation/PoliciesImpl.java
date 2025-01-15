@@ -93,17 +93,7 @@ public final class PoliciesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> getWithResponseAsync(AttestationType attestationType) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (attestationType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getInstanceUrl(), this.client.getApiVersion(),
-            attestationType, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(attestationType, context));
     }
 
     /**
@@ -174,21 +164,7 @@ public final class PoliciesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> setWithResponseAsync(AttestationType attestationType,
         String newAttestationPolicy) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (attestationType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
-        }
-        if (newAttestationPolicy == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter newAttestationPolicy is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.set(this.client.getInstanceUrl(), this.client.getApiVersion(),
-            attestationType, newAttestationPolicy, accept, context));
+        return FluxUtil.withContext(context -> setWithResponseAsync(attestationType, newAttestationPolicy, context));
     }
 
     /**
@@ -270,20 +246,7 @@ public final class PoliciesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> resetWithResponseAsync(AttestationType attestationType, String policyJws) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (attestationType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
-        }
-        if (policyJws == null) {
-            return Mono.error(new IllegalArgumentException("Parameter policyJws is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.reset(this.client.getInstanceUrl(), this.client.getApiVersion(),
-            attestationType, policyJws, accept, context));
+        return FluxUtil.withContext(context -> resetWithResponseAsync(attestationType, policyJws, context));
     }
 
     /**

@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Resource log configuration of a Microsoft.SignalRService resource. */
+/**
+ * Resource log configuration of a Microsoft.SignalRService resource.
+ */
 @Fluent
-public final class ResourceLogConfiguration {
+public final class ResourceLogConfiguration implements JsonSerializable<ResourceLogConfiguration> {
     /*
      * Gets or sets the list of category configurations.
      */
-    @JsonProperty(value = "categories")
     private List<ResourceLogCategory> categories;
 
-    /** Creates an instance of ResourceLogConfiguration class. */
+    /**
+     * Creates an instance of ResourceLogConfiguration class.
+     */
     public ResourceLogConfiguration() {
     }
 
     /**
      * Get the categories property: Gets or sets the list of category configurations.
-     *
+     * 
      * @return the categories value.
      */
     public List<ResourceLogCategory> categories() {
@@ -32,7 +39,7 @@ public final class ResourceLogConfiguration {
 
     /**
      * Set the categories property: Gets or sets the list of category configurations.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the ResourceLogConfiguration object itself.
      */
@@ -43,12 +50,50 @@ public final class ResourceLogConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (categories() != null) {
             categories().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceLogConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceLogConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceLogConfiguration.
+     */
+    public static ResourceLogConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceLogConfiguration deserializedResourceLogConfiguration = new ResourceLogConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("categories".equals(fieldName)) {
+                    List<ResourceLogCategory> categories
+                        = reader.readArray(reader1 -> ResourceLogCategory.fromJson(reader1));
+                    deserializedResourceLogConfiguration.categories = categories;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceLogConfiguration;
+        });
     }
 }

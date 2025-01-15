@@ -151,7 +151,8 @@ public final class CreateJobWithClassificationPolicyOptions {
      *   satisfy in order to process this job.
      * @return this
      */
-    public CreateJobWithClassificationPolicyOptions setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
+    public CreateJobWithClassificationPolicyOptions
+        setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
     }

@@ -11,7 +11,8 @@ import com.azure.core.test.TestProxyTestBase;
 
 class ModelsRepositoryTestBase extends TestProxyTestBase {
 
-    protected ModelsRepositoryClientBuilder getModelsRepositoryClientbuilder(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryEndpoint) {
+    protected ModelsRepositoryClientBuilder getModelsRepositoryClientbuilder(HttpClient httpClient,
+        ModelsRepositoryServiceVersion serviceVersion, String repositoryEndpoint) {
         ModelsRepositoryClientBuilder builder = new ModelsRepositoryClientBuilder();
         builder.serviceVersion(serviceVersion);
 
@@ -35,13 +36,13 @@ class ModelsRepositoryTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected ModelsRepositoryClient getClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryEndpoint) {
-        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryEndpoint)
-            .buildClient();
+    protected ModelsRepositoryClient getClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion,
+        String repositoryEndpoint) {
+        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryEndpoint).buildClient();
     }
 
-    protected ModelsRepositoryAsyncClient getAsyncClient(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryEndpoint) {
-        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryEndpoint)
-            .buildAsyncClient();
+    protected ModelsRepositoryAsyncClient getAsyncClient(HttpClient httpClient,
+        ModelsRepositoryServiceVersion serviceVersion, String repositoryEndpoint) {
+        return getModelsRepositoryClientbuilder(httpClient, serviceVersion, repositoryEndpoint).buildAsyncClient();
     }
 }

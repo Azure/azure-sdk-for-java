@@ -13,7 +13,8 @@ import java.util.Map;
 /** The ModelEnvironmentDefinition model. */
 @Fluent
 public class ModelEnvironmentDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinition.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinition.class);
 
     /*
      * The name of the environment.

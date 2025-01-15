@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -99,6 +100,9 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -126,8 +130,8 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedAcsSmsDeliveryAttemptProperties.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsSmsDeliveryAttemptProperties.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("segmentsSucceeded".equals(fieldName)) {
                     deserializedAcsSmsDeliveryAttemptProperties.segmentsSucceeded
                         = reader.getNullable(JsonReader::getInt);

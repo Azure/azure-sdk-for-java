@@ -29,8 +29,7 @@ public class CommunicationIdentityResponseMocker {
     }
 
     public static HttpResponse getTokenResult(HttpRequest request) {
-        String body = String.format("{\"id\": \"Sanitized\",\n"
-            + "\"token\": \"Sanitized\",\n"
+        String body = String.format("{\"id\": \"Sanitized\",\n" + "\"token\": \"Sanitized\",\n"
             + "\"expiresOn\": \"2020-08-14T17:37:34.4564877-07:00\"}");
 
         return generateMockResponse(body, request, 200);

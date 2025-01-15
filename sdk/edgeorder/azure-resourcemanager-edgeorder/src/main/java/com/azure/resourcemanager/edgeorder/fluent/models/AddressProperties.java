@@ -6,38 +6,44 @@ package com.azure.resourcemanager.edgeorder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.models.AddressValidationStatus;
 import com.azure.resourcemanager.edgeorder.models.ContactDetails;
 import com.azure.resourcemanager.edgeorder.models.ShippingAddress;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Address Properties. */
+/**
+ * Address Properties.
+ */
 @Fluent
-public final class AddressProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressProperties.class);
-
+public final class AddressProperties implements JsonSerializable<AddressProperties> {
     /*
      * Shipping details for the address
      */
-    @JsonProperty(value = "shippingAddress")
     private ShippingAddress shippingAddress;
 
     /*
      * Contact details for the address
      */
-    @JsonProperty(value = "contactDetails", required = true)
     private ContactDetails contactDetails;
 
     /*
      * Status of address validation
      */
-    @JsonProperty(value = "addressValidationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private AddressValidationStatus addressValidationStatus;
 
     /**
+     * Creates an instance of AddressProperties class.
+     */
+    public AddressProperties() {
+    }
+
+    /**
      * Get the shippingAddress property: Shipping details for the address.
-     *
+     * 
      * @return the shippingAddress value.
      */
     public ShippingAddress shippingAddress() {
@@ -46,7 +52,7 @@ public final class AddressProperties {
 
     /**
      * Set the shippingAddress property: Shipping details for the address.
-     *
+     * 
      * @param shippingAddress the shippingAddress value to set.
      * @return the AddressProperties object itself.
      */
@@ -57,7 +63,7 @@ public final class AddressProperties {
 
     /**
      * Get the contactDetails property: Contact details for the address.
-     *
+     * 
      * @return the contactDetails value.
      */
     public ContactDetails contactDetails() {
@@ -66,7 +72,7 @@ public final class AddressProperties {
 
     /**
      * Set the contactDetails property: Contact details for the address.
-     *
+     * 
      * @param contactDetails the contactDetails value to set.
      * @return the AddressProperties object itself.
      */
@@ -77,7 +83,7 @@ public final class AddressProperties {
 
     /**
      * Get the addressValidationStatus property: Status of address validation.
-     *
+     * 
      * @return the addressValidationStatus value.
      */
     public AddressValidationStatus addressValidationStatus() {
@@ -86,7 +92,7 @@ public final class AddressProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -94,12 +100,56 @@ public final class AddressProperties {
             shippingAddress().validate();
         }
         if (contactDetails() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property contactDetails in model AddressProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contactDetails in model AddressProperties"));
         } else {
             contactDetails().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AddressProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactDetails", this.contactDetails);
+        jsonWriter.writeJsonField("shippingAddress", this.shippingAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddressProperties.
+     */
+    public static AddressProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressProperties deserializedAddressProperties = new AddressProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactDetails".equals(fieldName)) {
+                    deserializedAddressProperties.contactDetails = ContactDetails.fromJson(reader);
+                } else if ("shippingAddress".equals(fieldName)) {
+                    deserializedAddressProperties.shippingAddress = ShippingAddress.fromJson(reader);
+                } else if ("addressValidationStatus".equals(fieldName)) {
+                    deserializedAddressProperties.addressValidationStatus
+                        = AddressValidationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressProperties;
+        });
     }
 }

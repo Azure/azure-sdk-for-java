@@ -12,8 +12,8 @@ public final class PeeringServiceCountryImpl implements PeeringServiceCountry {
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    PeeringServiceCountryImpl(
-        PeeringServiceCountryInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    PeeringServiceCountryImpl(PeeringServiceCountryInner innerObject,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

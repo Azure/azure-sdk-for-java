@@ -55,15 +55,16 @@ public final class ManageVpnGatewayPoint2SiteConnection {
             //============================================================
             // Create virtual network with address spaces 192.168.0.0/16 and 10.254.0.0/16 and 3 subnets
             System.out.println("Creating virtual network...");
-            Network network = azureResourceManager.networks().define(vnetName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withAddressSpace("192.168.0.0/16")
-                    .withAddressSpace("10.254.0.0/16")
-                    .withSubnet("GatewaySubnet", "192.168.200.0/24")
-                    .withSubnet("FrontEnd", "192.168.1.0/24")
-                    .withSubnet("BackEnd", "10.254.1.0/24")
-                    .create();
+            Network network = azureResourceManager.networks()
+                .define(vnetName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("192.168.0.0/16")
+                .withAddressSpace("10.254.0.0/16")
+                .withSubnet("GatewaySubnet", "192.168.200.0/24")
+                .withSubnet("FrontEnd", "192.168.1.0/24")
+                .withSubnet("BackEnd", "10.254.1.0/24")
+                .create();
             System.out.println("Created network");
             // Print the virtual network
             Utils.print(network);
@@ -71,31 +72,33 @@ public final class ManageVpnGatewayPoint2SiteConnection {
             //============================================================
             // Create virtual network gateway
             System.out.println("Creating virtual network gateway...");
-            VirtualNetworkGateway vngw1 = azureResourceManager.virtualNetworkGateways().define(vpnGatewayName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingNetwork(network)
-                    .withRouteBasedVpn()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .create();
+            VirtualNetworkGateway vngw1 = azureResourceManager.virtualNetworkGateways()
+                .define(vpnGatewayName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingNetwork(network)
+                .withRouteBasedVpn()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                .create();
             System.out.println("Created virtual network gateway");
 
             //============================================================
             // Update virtual network gateway with Point-to-Site connection configuration
             System.out.println("Creating Point-to-Site configuration...");
             vngw1.update()
-                    .definePointToSiteConfiguration()
-                    .withAddressPool("172.16.201.0/24")
-                    .withAzureCertificateFromFile("p2scert.cer", new File(certPath))
-                    .attach()
-                    .apply();
+                .definePointToSiteConfiguration()
+                .withAddressPool("172.16.201.0/24")
+                .withAzureCertificateFromFile("p2scert.cer", new File(certPath))
+                .attach()
+                .apply();
             System.out.println("Created Point-to-Site configuration");
 
             //============================================================
             // Generate and download VPN client configuration package. Now it can be used to create VPN connection to Azure.
             System.out.println("Generating VPN profile...");
             String profile = vngw1.generateVpnProfile();
-            System.out.println(String.format("Profile generation is done. Please download client package at: %s", profile));
+            System.out
+                .println(String.format("Profile generation is done. Please download client package at: %s", profile));
 
             // At this point vpn client package can be downloaded from provided link. Unzip it and run the configuration corresponding to your OS.
             // For Windows machine, VPN client .exe can be run. For non-Windows, please use configuration from downloaded VpnSettings.xml
@@ -103,10 +106,11 @@ public final class ManageVpnGatewayPoint2SiteConnection {
             //============================================================
             // Revoke a client certificate. After this command, you will no longer available to connect with the corresponding client certificate.
             System.out.println("Revoking client certificate...");
-            vngw1.update().updatePointToSiteConfiguration()
-                    .withRevokedCertificate("p2sclientcert.cer", clientCertThumbprint)
-                    .parent()
-                    .apply();
+            vngw1.update()
+                .updatePointToSiteConfiguration()
+                .withRevokedCertificate("p2sclientcert.cer", clientCertThumbprint)
+                .parent()
+                .apply();
             System.out.println("Revoked client certificate");
 
             return true;
@@ -137,8 +141,7 @@ public final class ManageVpnGatewayPoint2SiteConnection {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

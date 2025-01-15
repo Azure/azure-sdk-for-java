@@ -156,6 +156,7 @@ public final class VectorStoreOptions implements JsonSerializable<VectorStoreOpt
         jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("expires_after", this.expiresAfter);
+        jsonWriter.writeJsonField("chunking_strategy", this.chunkingStrategy);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -182,6 +183,9 @@ public final class VectorStoreOptions implements JsonSerializable<VectorStoreOpt
                     deserializedVectorStoreOptions.name = reader.getString();
                 } else if ("expires_after".equals(fieldName)) {
                     deserializedVectorStoreOptions.expiresAfter = VectorStoreExpirationPolicy.fromJson(reader);
+                } else if ("chunking_strategy".equals(fieldName)) {
+                    deserializedVectorStoreOptions.chunkingStrategy
+                        = VectorStoreChunkingStrategyRequest.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedVectorStoreOptions.metadata = metadata;
@@ -191,5 +195,36 @@ public final class VectorStoreOptions implements JsonSerializable<VectorStoreOpt
             }
             return deserializedVectorStoreOptions;
         });
+    }
+
+    /*
+     * The chunking strategy used to chunk the file(s). If not set, will use the auto strategy. Only applicable if
+     * file_ids is non-empty.
+     */
+    @Generated
+    private VectorStoreChunkingStrategyRequest chunkingStrategy;
+
+    /**
+     * Get the chunkingStrategy property: The chunking strategy used to chunk the file(s). If not set, will use the auto
+     * strategy. Only applicable if file_ids is non-empty.
+     *
+     * @return the chunkingStrategy value.
+     */
+    @Generated
+    public VectorStoreChunkingStrategyRequest getChunkingStrategy() {
+        return this.chunkingStrategy;
+    }
+
+    /**
+     * Set the chunkingStrategy property: The chunking strategy used to chunk the file(s). If not set, will use the auto
+     * strategy. Only applicable if file_ids is non-empty.
+     *
+     * @param chunkingStrategy the chunkingStrategy value to set.
+     * @return the VectorStoreOptions object itself.
+     */
+    @Generated
+    public VectorStoreOptions setChunkingStrategy(VectorStoreChunkingStrategyRequest chunkingStrategy) {
+        this.chunkingStrategy = chunkingStrategy;
+        return this;
     }
 }

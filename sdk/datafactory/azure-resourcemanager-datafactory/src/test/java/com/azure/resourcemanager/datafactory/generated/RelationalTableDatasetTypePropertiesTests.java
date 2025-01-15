@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.RelationalTableDatase
 public final class RelationalTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RelationalTableDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"dataqwcublehhk\"}")
+        RelationalTableDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"datadrznlaxozqthkwxf\"}")
             .toObject(RelationalTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RelationalTableDatasetTypeProperties model
-            = new RelationalTableDatasetTypeProperties().withTableName("dataqwcublehhk");
+            = new RelationalTableDatasetTypeProperties().withTableName("datadrznlaxozqthkwxf");
         model = BinaryData.fromObject(model).toObject(RelationalTableDatasetTypeProperties.class);
     }
 }

@@ -38,7 +38,7 @@ public class CommunicationConnectionString {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
             if (pair.length != 2) {
                 throw new IllegalArgumentException(
-                        String.format("Connection string has invalid key value pair: %s", tokenValuePair));
+                    String.format("Connection string has invalid key value pair: %s", tokenValuePair));
             }
             final String key = pair[0].trim();
             final String value = pair[1].trim();
@@ -63,13 +63,12 @@ public class CommunicationConnectionString {
         return endpoint;
     }
 
-      /**
-     * The value of the access key to be used for connecting to Azure
-     * @return The value of the access key.
-     */
+    /**
+    * The value of the access key to be used for connecting to Azure
+    * @return The value of the access key.
+    */
     public String getAccessKey() {
         return accessKey;
     }
-
 
 }

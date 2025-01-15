@@ -25,7 +25,8 @@ public final class FqdnObjectTests {
     public void testSerialize() throws Exception {
         FqdnObject model = new FqdnObject().withDescription("auu")
             .withFqdnList(Arrays.asList("jmvxie", "uugidyjrrfby", "osvexcsonpclhoc", "hslkevleggzf"))
-            .withEtag("hfmvfaxkffe").withAuditComment("th");
+            .withEtag("hfmvfaxkffe")
+            .withAuditComment("th");
         model = BinaryData.fromObject(model).toObject(FqdnObject.class);
         Assertions.assertEquals("auu", model.description());
         Assertions.assertEquals("jmvxie", model.fqdnList().get(0));

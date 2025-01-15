@@ -5,57 +5,52 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Incident additional data property bag. */
+/**
+ * Incident additional data property bag.
+ */
 @Immutable
-public final class IncidentAdditionalData {
+public final class IncidentAdditionalData implements JsonSerializable<IncidentAdditionalData> {
     /*
      * The number of alerts in the incident
      */
-    @JsonProperty(value = "alertsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer alertsCount;
 
     /*
      * The number of bookmarks in the incident
      */
-    @JsonProperty(value = "bookmarksCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer bookmarksCount;
 
     /*
      * The number of comments in the incident
      */
-    @JsonProperty(value = "commentsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer commentsCount;
 
     /*
      * List of product names of alerts in the incident
      */
-    @JsonProperty(value = "alertProductNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> alertProductNames;
-
-    /*
-     * The provider incident url to the incident in Microsoft 365 Defender portal
-     */
-    @JsonProperty(value = "providerIncidentUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String providerIncidentUrl;
 
     /*
      * The tactics associated with incident
      */
-    @JsonProperty(value = "tactics", access = JsonProperty.Access.WRITE_ONLY)
     private List<AttackTactic> tactics;
 
-    /*
-     * The techniques associated with incident's tactics'
+    /**
+     * Creates an instance of IncidentAdditionalData class.
      */
-    @JsonProperty(value = "techniques", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> techniques;
+    public IncidentAdditionalData() {
+    }
 
     /**
      * Get the alertsCount property: The number of alerts in the incident.
-     *
+     * 
      * @return the alertsCount value.
      */
     public Integer alertsCount() {
@@ -64,7 +59,7 @@ public final class IncidentAdditionalData {
 
     /**
      * Get the bookmarksCount property: The number of bookmarks in the incident.
-     *
+     * 
      * @return the bookmarksCount value.
      */
     public Integer bookmarksCount() {
@@ -73,7 +68,7 @@ public final class IncidentAdditionalData {
 
     /**
      * Get the commentsCount property: The number of comments in the incident.
-     *
+     * 
      * @return the commentsCount value.
      */
     public Integer commentsCount() {
@@ -82,7 +77,7 @@ public final class IncidentAdditionalData {
 
     /**
      * Get the alertProductNames property: List of product names of alerts in the incident.
-     *
+     * 
      * @return the alertProductNames value.
      */
     public List<String> alertProductNames() {
@@ -90,17 +85,8 @@ public final class IncidentAdditionalData {
     }
 
     /**
-     * Get the providerIncidentUrl property: The provider incident url to the incident in Microsoft 365 Defender portal.
-     *
-     * @return the providerIncidentUrl value.
-     */
-    public String providerIncidentUrl() {
-        return this.providerIncidentUrl;
-    }
-
-    /**
      * Get the tactics property: The tactics associated with incident.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -108,19 +94,56 @@ public final class IncidentAdditionalData {
     }
 
     /**
-     * Get the techniques property: The techniques associated with incident's tactics'.
-     *
-     * @return the techniques value.
-     */
-    public List<String> techniques() {
-        return this.techniques;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentAdditionalData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentAdditionalData if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IncidentAdditionalData.
+     */
+    public static IncidentAdditionalData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentAdditionalData deserializedIncidentAdditionalData = new IncidentAdditionalData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertsCount".equals(fieldName)) {
+                    deserializedIncidentAdditionalData.alertsCount = reader.getNullable(JsonReader::getInt);
+                } else if ("bookmarksCount".equals(fieldName)) {
+                    deserializedIncidentAdditionalData.bookmarksCount = reader.getNullable(JsonReader::getInt);
+                } else if ("commentsCount".equals(fieldName)) {
+                    deserializedIncidentAdditionalData.commentsCount = reader.getNullable(JsonReader::getInt);
+                } else if ("alertProductNames".equals(fieldName)) {
+                    List<String> alertProductNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIncidentAdditionalData.alertProductNames = alertProductNames;
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedIncidentAdditionalData.tactics = tactics;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentAdditionalData;
+        });
     }
 }

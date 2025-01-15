@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterMetricsConfigurationPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,33 +19,27 @@ import java.util.Map;
  * cluster.
  */
 @Fluent
-public final class ClusterMetricsConfigurationPatchParameters {
+public final class ClusterMetricsConfigurationPatchParameters
+    implements JsonSerializable<ClusterMetricsConfigurationPatchParameters> {
     /*
-     * ClusterMetricsConfigurationPatchProperties represents the properties of metrics configuration for the cluster
-     * for patching.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties")
     private ClusterMetricsConfigurationPatchProperties innerProperties;
 
     /*
      * The Azure resource tags that will replace the existing ones.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ClusterMetricsConfigurationPatchParameters class. */
+    /**
+     * Creates an instance of ClusterMetricsConfigurationPatchParameters class.
+     */
     public ClusterMetricsConfigurationPatchParameters() {
     }
 
     /**
-     * Get the innerProperties property: ClusterMetricsConfigurationPatchProperties represents the properties of metrics
-     * configuration for the cluster for patching.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private ClusterMetricsConfigurationPatchProperties innerProperties() {
@@ -51,7 +48,7 @@ public final class ClusterMetricsConfigurationPatchParameters {
 
     /**
      * Get the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -60,7 +57,7 @@ public final class ClusterMetricsConfigurationPatchParameters {
 
     /**
      * Set the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ClusterMetricsConfigurationPatchParameters object itself.
      */
@@ -71,7 +68,7 @@ public final class ClusterMetricsConfigurationPatchParameters {
 
     /**
      * Get the collectionInterval property: The interval in minutes by which metrics will be collected.
-     *
+     * 
      * @return the collectionInterval value.
      */
     public Long collectionInterval() {
@@ -80,7 +77,7 @@ public final class ClusterMetricsConfigurationPatchParameters {
 
     /**
      * Set the collectionInterval property: The interval in minutes by which metrics will be collected.
-     *
+     * 
      * @param collectionInterval the collectionInterval value to set.
      * @return the ClusterMetricsConfigurationPatchParameters object itself.
      */
@@ -95,7 +92,7 @@ public final class ClusterMetricsConfigurationPatchParameters {
     /**
      * Get the enabledMetrics property: The list of metric names that have been chosen to be enabled in addition to the
      * core set of enabled metrics.
-     *
+     * 
      * @return the enabledMetrics value.
      */
     public List<String> enabledMetrics() {
@@ -105,7 +102,7 @@ public final class ClusterMetricsConfigurationPatchParameters {
     /**
      * Set the enabledMetrics property: The list of metric names that have been chosen to be enabled in addition to the
      * core set of enabled metrics.
-     *
+     * 
      * @param enabledMetrics the enabledMetrics value to set.
      * @return the ClusterMetricsConfigurationPatchParameters object itself.
      */
@@ -119,12 +116,54 @@ public final class ClusterMetricsConfigurationPatchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterMetricsConfigurationPatchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterMetricsConfigurationPatchParameters if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterMetricsConfigurationPatchParameters.
+     */
+    public static ClusterMetricsConfigurationPatchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterMetricsConfigurationPatchParameters deserializedClusterMetricsConfigurationPatchParameters
+                = new ClusterMetricsConfigurationPatchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationPatchParameters.innerProperties
+                        = ClusterMetricsConfigurationPatchProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterMetricsConfigurationPatchParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterMetricsConfigurationPatchParameters;
+        });
     }
 }

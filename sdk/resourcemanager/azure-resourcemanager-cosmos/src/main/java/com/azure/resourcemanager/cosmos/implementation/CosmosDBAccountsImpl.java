@@ -27,9 +27,8 @@ import java.util.List;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for Registries. */
-public class CosmosDBAccountsImpl
-    extends GroupableResourcesImpl<
-        CosmosDBAccount, CosmosDBAccountImpl, DatabaseAccountGetResultsInner, DatabaseAccountsClient, CosmosManager>
+public class CosmosDBAccountsImpl extends
+    GroupableResourcesImpl<CosmosDBAccount, CosmosDBAccountImpl, DatabaseAccountGetResultsInner, DatabaseAccountsClient, CosmosManager>
     implements CosmosDBAccounts {
 
     public CosmosDBAccountsImpl(final CosmosManager manager) {
@@ -43,17 +42,15 @@ public class CosmosDBAccountsImpl
 
     @Override
     public PagedFlux<CosmosDBAccount> listAsync() {
-        return PagedConverter.mapPage(this
-            .inner()
-            .listAsync(),
+        return PagedConverter.mapPage(this.inner().listAsync(),
             inner -> new CosmosDBAccountImpl(inner.name(), inner, this.manager()));
     }
 
     @Override
     public PagedFlux<CosmosDBAccount> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
@@ -102,8 +99,8 @@ public class CosmosDBAccountsImpl
     }
 
     @Override
-    public Mono<Void> failoverPriorityChangeAsync(
-        String groupName, String accountName, List<Location> failoverLocations) {
+    public Mono<Void> failoverPriorityChangeAsync(String groupName, String accountName,
+        List<Location> failoverLocations) {
         List<FailoverPolicy> policyInners = new ArrayList<FailoverPolicy>();
         for (int i = 0; i < failoverLocations.size(); i++) {
             Location location = failoverLocations.get(i);
@@ -113,8 +110,7 @@ public class CosmosDBAccountsImpl
             policyInners.add(policyInner);
         }
 
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getDatabaseAccounts()
             .failoverPriorityChangeAsync(groupName, accountName,
@@ -133,26 +129,22 @@ public class CosmosDBAccountsImpl
 
     @Override
     public Mono<DatabaseAccountListKeysResult> listKeysAsync(String groupName, String accountName) {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getDatabaseAccounts()
             .listKeysAsync(groupName, accountName)
-            .map(
-                databaseAccountListKeysResultInner ->
-                    new DatabaseAccountListKeysResultImpl(databaseAccountListKeysResultInner));
+            .map(databaseAccountListKeysResultInner -> new DatabaseAccountListKeysResultImpl(
+                databaseAccountListKeysResultInner));
     }
 
     @Override
     public Mono<DatabaseAccountListReadOnlyKeysResult> listReadOnlyKeysAsync(String groupName, String accountName) {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getDatabaseAccounts()
             .listReadOnlyKeysAsync(groupName, accountName)
-            .map(
-                databaseAccountListReadOnlyKeysResultInner ->
-                    new DatabaseAccountListReadOnlyKeysResultImpl(databaseAccountListReadOnlyKeysResultInner));
+            .map(databaseAccountListReadOnlyKeysResultInner -> new DatabaseAccountListReadOnlyKeysResultImpl(
+                databaseAccountListReadOnlyKeysResultInner));
     }
 
     @Override
@@ -161,17 +153,14 @@ public class CosmosDBAccountsImpl
     }
 
     @Override
-    public Mono<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync(
-        String groupName, String accountName) {
-        return this
-            .manager()
+    public Mono<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync(String groupName,
+        String accountName) {
+        return this.manager()
             .serviceClient()
             .getDatabaseAccounts()
             .listConnectionStringsAsync(groupName, accountName)
-            .map(
-                databaseAccountListConnectionStringsResultInner ->
-                    new DatabaseAccountListConnectionStringsResultImpl(
-                        databaseAccountListConnectionStringsResultInner));
+            .map(databaseAccountListConnectionStringsResultInner -> new DatabaseAccountListConnectionStringsResultImpl(
+                databaseAccountListConnectionStringsResultInner));
     }
 
     @Override
@@ -181,7 +170,10 @@ public class CosmosDBAccountsImpl
 
     @Override
     public Mono<Void> regenerateKeyAsync(String groupName, String accountName, KeyKind keyKind) {
-        return this.manager().serviceClient().getDatabaseAccounts().regenerateKeyAsync(groupName, accountName,
-            new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
+        return this.manager()
+            .serviceClient()
+            .getDatabaseAccounts()
+            .regenerateKeyAsync(groupName, accountName,
+                new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
     }
 }

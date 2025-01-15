@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AnnotationResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AnnotationResource model =
-            BinaryData.fromString("{\"annotation\":\"heyd\"}").toObject(AnnotationResource.class);
-        Assertions.assertEquals("heyd", model.annotation());
+        AnnotationResource model
+            = BinaryData.fromString("{\"annotation\":\"odtji\"}").toObject(AnnotationResource.class);
+        Assertions.assertEquals("odtji", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AnnotationResource model = new AnnotationResource().withAnnotation("heyd");
+        AnnotationResource model = new AnnotationResource().withAnnotation("odtji");
         model = BinaryData.fromObject(model).toObject(AnnotationResource.class);
-        Assertions.assertEquals("heyd", model.annotation());
+        Assertions.assertEquals("odtji", model.annotation());
     }
 }

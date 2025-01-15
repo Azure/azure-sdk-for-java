@@ -22,11 +22,11 @@ import java.util.Map;
 @JsonTypeName("CreateServiceRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ACI", value = AciServiceCreateRequest.class),
-    @JsonSubTypes.Type(name = "Custom", value = CreateEndpointVariantRequest.class)
-})
+    @JsonSubTypes.Type(name = "Custom", value = CreateEndpointVariantRequest.class) })
 @Fluent
 public class CreateServiceRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateServiceRequest.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CreateServiceRequest.class);
 
     /*
      * The description of the service.
@@ -159,8 +159,8 @@ public class CreateServiceRequest {
      * @param environmentImageRequest the environmentImageRequest value to set.
      * @return the CreateServiceRequest object itself.
      */
-    public CreateServiceRequest withEnvironmentImageRequest(
-        CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
+    public CreateServiceRequest
+        withEnvironmentImageRequest(CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
         this.environmentImageRequest = environmentImageRequest;
         return this;
     }

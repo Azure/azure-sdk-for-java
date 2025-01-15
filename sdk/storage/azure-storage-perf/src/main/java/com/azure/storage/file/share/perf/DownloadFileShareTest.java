@@ -39,9 +39,9 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> setupAsync() {
-        return super.setupAsync()
-            .then(shareFileAsyncClient.create(options.getSize()))
-            .then(shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), new ParallelTransferOptions()))
+        return super.setupAsync().then(shareFileAsyncClient.create(options.getSize()))
+            .then(shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()),
+                new ParallelTransferOptions()))
             .then();
     }
 
@@ -53,16 +53,15 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return shareFileAsyncClient.download()
-            .map(b -> {
-                int readCount = 0;
-                int remaining = b.remaining();
-                while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, bufferSize);
-                    b.get(buffer, 0, expectedReadCount);
-                    readCount += expectedReadCount;
-                }
-                return 1;
-            }).then();
+        return shareFileAsyncClient.download().map(b -> {
+            int readCount = 0;
+            int remaining = b.remaining();
+            while (readCount < remaining) {
+                int expectedReadCount = Math.min(remaining - readCount, bufferSize);
+                b.get(buffer, 0, expectedReadCount);
+                readCount += expectedReadCount;
+            }
+            return 1;
+        }).then();
     }
 }

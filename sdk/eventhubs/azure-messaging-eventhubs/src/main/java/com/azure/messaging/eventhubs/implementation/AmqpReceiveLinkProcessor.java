@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
+import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationScope;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -73,20 +74,18 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private volatile String currentLinkName;
     private volatile Disposable currentLinkSubscriptions;
 
-
     // Opting to use AtomicReferenceFieldUpdater because Project Reactor provides utility methods that calculates
     // backpressure requests, sets the upstream correctly, and reports its state.
     private volatile Subscription upstream;
-    private static final AtomicReferenceFieldUpdater<AmqpReceiveLinkProcessor, Subscription> UPSTREAM =
-        AtomicReferenceFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, Subscription.class,
-            "upstream");
+    private static final AtomicReferenceFieldUpdater<AmqpReceiveLinkProcessor, Subscription> UPSTREAM
+        = AtomicReferenceFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, Subscription.class, "upstream");
 
     /**
      * The number of requested messages.
      */
     private volatile long requested;
-    private static final AtomicLongFieldUpdater<AmqpReceiveLinkProcessor> REQUESTED =
-        AtomicLongFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "requested");
+    private static final AtomicLongFieldUpdater<AmqpReceiveLinkProcessor> REQUESTED
+        = AtomicLongFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "requested");
 
     /**
      * Creates an instance of {@link AmqpReceiveLinkProcessor}.
@@ -102,11 +101,11 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public AmqpReceiveLinkProcessor(String entityPath, int prefetch, String partitionId,  Disposable connectionProcessor, EventHubsConsumerInstrumentation instrumentation) {
+    public AmqpReceiveLinkProcessor(String entityPath, int prefetch, String partitionId, Disposable connectionProcessor,
+        EventHubsConsumerInstrumentation instrumentation) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.partitionId = Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
-            "'connectionProcessor' cannot be null.");
+        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
 
         String subscriberId = StringUtil.getRandomString("rlp");
         Map<String, Object> loggingContext = new HashMap<>(1);
@@ -233,116 +232,111 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
             currentLinkSubscriptions = Disposables.composite(
                 // For a new link, add the prefetch as credits.
-                next.getEndpointStates().filter(e -> e == AmqpEndpointState.ACTIVE).next()
-                    .flatMap(state -> {
-                        // If there was already a subscriber downstream who made a request, see if that is more than
-                        // the prefetch. If it is, then add the difference. (ie. if they requested 500, but our
-                        // prefetch is 100, we'll add 500 credits rather than 100.
-                        final Mono<Void> operation;
-                        synchronized (creditsAdded) {
-                            final int creditsToAdd = getCreditsToAdd();
-                            final int total = Math.max(prefetch, creditsToAdd);
+                next.getEndpointStates().filter(e -> e == AmqpEndpointState.ACTIVE).next().flatMap(state -> {
+                    // If there was already a subscriber downstream who made a request, see if that is more than
+                    // the prefetch. If it is, then add the difference. (ie. if they requested 500, but our
+                    // prefetch is 100, we'll add 500 credits rather than 100.
+                    final Mono<Void> operation;
+                    synchronized (creditsAdded) {
+                        final int creditsToAdd = getCreditsToAdd();
+                        final int total = Math.max(prefetch, creditsToAdd);
 
-                            logger.atVerbose()
-                                .addKeyValue(LINK_NAME_KEY, linkName)
-                                .addKeyValue("prefetch", prefetch)
-                                .addKeyValue(CREDITS_KEY, creditsToAdd)
-                                .log("Adding initial credits.");
+                        logger.atVerbose()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue("prefetch", prefetch)
+                            .addKeyValue(CREDITS_KEY, creditsToAdd)
+                            .log("Adding initial credits.");
 
-                            operation = next.addCredits(total);
-                        }
+                        operation = next.addCredits(total);
+                    }
 
-                        return operation;
-                    })
-                    .subscribe(noop -> {
-                    }, error -> logger.atInfo().addKeyValue(LINK_NAME_KEY, linkName).log("Link was already closed. Could not add credits.")),
-                next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(
-                    state -> {
-                        // Connection was successfully opened, we can reset the retry interval.
-                        if (state == AmqpEndpointState.ACTIVE) {
-                            logger.atInfo()
-                                .addKeyValue(LINK_NAME_KEY, linkName)
-                                .addKeyValue(CREDITS_KEY, next.getCredits())
-                                .log("Link is active.");
-                            retryAttempts.set(0);
-                        }
-                    },
-                    error -> {
-                        if (error instanceof AmqpException) {
-                            AmqpException amqpException = (AmqpException) error;
-                            if (amqpException.getErrorCondition() == AmqpErrorCondition.LINK_STOLEN
-                                && amqpException.getContext() != null
-                                && amqpException.getContext() instanceof LinkErrorContext) {
-                                LinkErrorContext errorContext = (LinkErrorContext) amqpException.getContext();
-                                if (currentLink != null
-                                    && !currentLink.getLinkName().equals(errorContext.getTrackingId())) {
-                                    logger.atInfo()
-                                        .addKeyValue(LINK_NAME_KEY, linkName)
-                                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                                        .addKeyValue(TRACKING_ID_KEY, errorContext.getTrackingId())
-                                        .log("Link lost signal received for a link that is not current. Ignoring the error.");
-                                    return;
-                                }
-                            }
-                        }
-
-                        currentLink = null;
-                        onError(error);
-                    },
-                    () -> {
-                        if (connectionProcessor.isDisposed() || isTerminated()
-                            || UPSTREAM.get(this) == Operators.cancelledSubscription()) {
-
-                            logger.atInfo()
-                                .addKeyValue(LINK_NAME_KEY, linkName)
-                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                                .log("Terminal state reached. Disposing of link processor.");
-
-                            dispose();
-                        } else {
-                            logger.atInfo()
-                                .addKeyValue(LINK_NAME_KEY, linkName)
-                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                                .log("Receive link endpoint states are closed. Requesting another.");
-
-                            final AmqpReceiveLink existing = currentLink;
-                            currentLink = null;
-                            currentLinkName = null;
-
-                            disposeReceiver(existing);
-                            requestUpstream();
-                        }
-                    }),
-                next.receive()
-                    .onBackpressureBuffer(maxQueueSize, BufferOverflowStrategy.ERROR)
-                    .subscribe(
-                        message -> {
-                            messageQueue.add(message);
-
-                            if (currentLinkName != null && !currentLinkName.equals(linkName)) {
-                                logger.atWarning()
-                                    .addKeyValue("currentLinkName", currentLinkName)
+                    return operation;
+                }).subscribe(noop -> {
+                }, error -> logger.atInfo()
+                    .addKeyValue(LINK_NAME_KEY, linkName)
+                    .log("Link was already closed. Could not add credits.")),
+                next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(state -> {
+                    // Connection was successfully opened, we can reset the retry interval.
+                    if (state == AmqpEndpointState.ACTIVE) {
+                        logger.atInfo()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue(CREDITS_KEY, next.getCredits())
+                            .log("Link is active.");
+                        retryAttempts.set(0);
+                    }
+                }, error -> {
+                    if (error instanceof AmqpException) {
+                        AmqpException amqpException = (AmqpException) error;
+                        if (amqpException.getErrorCondition() == AmqpErrorCondition.LINK_STOLEN
+                            && amqpException.getContext() != null
+                            && amqpException.getContext() instanceof LinkErrorContext) {
+                            LinkErrorContext errorContext = (LinkErrorContext) amqpException.getContext();
+                            if (currentLink != null
+                                && !currentLink.getLinkName().equals(errorContext.getTrackingId())) {
+                                logger.atInfo()
                                     .addKeyValue(LINK_NAME_KEY, linkName)
-                                    .log("Current link is not the same as one being notified.");
+                                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                    .addKeyValue(TRACKING_ID_KEY, errorContext.getTrackingId())
+                                    .log(
+                                        "Link lost signal received for a link that is not current. Ignoring the error.");
+                                return;
                             }
+                        }
+                    }
 
-                            drain();
-                        },
-                        error -> {
-                            // If the receive() on upstream ReactorReceiver (the var 'next' here) terminates with an
-                            // error, the ReceiveLinkProcessor (RLP) will not propagate the error to the downstream
-                            // subscriber; for the downstream subscriber, an error is a terminal event.
-                            // The purpose of RLP is to recover transparently.
-                            // Given the ReactorReceiver completes the getEndpointStates() Flux upon it's termination,
-                            // the RLP will recover by obtaining a new ReactorReceiver; this way, the downstream
-                            // continues to be served using later ReactorReceiver rather than terminating from
-                            // intermediate errors.
-                            //
-                            logger.atVerbose()
-                                .addKeyValue(LINK_NAME_KEY, linkName)
-                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                                .log("Receiver is terminated.", error);
-                        }));
+                    currentLink = null;
+                    onError(error);
+                }, () -> {
+                    if (connectionProcessor.isDisposed()
+                        || isTerminated()
+                        || UPSTREAM.get(this) == Operators.cancelledSubscription()) {
+
+                        logger.atInfo()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .log("Terminal state reached. Disposing of link processor.");
+
+                        dispose();
+                    } else {
+                        logger.atInfo()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .log("Receive link endpoint states are closed. Requesting another.");
+
+                        final AmqpReceiveLink existing = currentLink;
+                        currentLink = null;
+                        currentLinkName = null;
+
+                        disposeReceiver(existing);
+                        requestUpstream();
+                    }
+                }),
+                next.receive().onBackpressureBuffer(maxQueueSize, BufferOverflowStrategy.ERROR).subscribe(message -> {
+                    messageQueue.add(message);
+
+                    if (currentLinkName != null && !currentLinkName.equals(linkName)) {
+                        logger.atWarning()
+                            .addKeyValue("currentLinkName", currentLinkName)
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .log("Current link is not the same as one being notified.");
+                    }
+
+                    drain();
+                }, error -> {
+                    // If the receive() on upstream ReactorReceiver (the var 'next' here) terminates with an
+                    // error, the ReceiveLinkProcessor (RLP) will not propagate the error to the downstream
+                    // subscriber; for the downstream subscriber, an error is a terminal event.
+                    // The purpose of RLP is to recover transparently.
+                    // Given the ReactorReceiver completes the getEndpointStates() Flux upon it's termination,
+                    // the RLP will recover by obtaining a new ReactorReceiver; this way, the downstream
+                    // continues to be served using later ReactorReceiver rather than terminating from
+                    // intermediate errors.
+                    //
+                    logger.atVerbose()
+                        .addKeyValue(LINK_NAME_KEY, linkName)
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .log("Receiver is terminated.", error);
+                }));
         }
 
         disposeReceiver(oldChannel);
@@ -363,8 +357,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     public void subscribe(CoreSubscriber<? super Message> actual) {
         Objects.requireNonNull(actual, "'actual' cannot be null.");
 
-        final boolean terminateSubscriber = isTerminated()
-            || (currentLink == null && upstream == Operators.cancelledSubscription());
+        final boolean terminateSubscriber
+            = isTerminated() || (currentLink == null && upstream == Operators.cancelledSubscription());
         if (isTerminated()) {
             logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, currentLinkName)
@@ -389,7 +383,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             actual.onSubscribe(this);
             drain();
         } else {
-            Operators.error(actual, logger.logThrowableAsError(new IllegalStateException("There is already one downstream subscriber.'")));
+            Operators.error(actual,
+                logger.logThrowableAsError(new IllegalStateException("There is already one downstream subscriber.'")));
         }
     }
 
@@ -403,9 +398,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     public void onError(Throwable throwable) {
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
-        logger.atInfo()
-            .addKeyValue(LINK_NAME_KEY, currentLinkName)
-            .log("Error on receive link.", throwable);
+        logger.atInfo().addKeyValue(LINK_NAME_KEY, currentLinkName).log("Error on receive link.", throwable);
 
         if (isTerminated() || isCancelled) {
             logger.atInfo()
@@ -437,9 +430,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     @Override
     public void onComplete() {
-        logger.atInfo()
-            .addKeyValue(LINK_NAME_KEY, currentLinkName)
-            .log("Receive link completed from upstream.");
+        logger.atInfo().addKeyValue(LINK_NAME_KEY, currentLinkName).log("Receive link completed from upstream.");
 
         UPSTREAM.set(this, Operators.cancelledSubscription());
     }
@@ -450,9 +441,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        logger.atInfo()
-            .addKeyValue(LINK_NAME_KEY, currentLinkName)
-            .log("Disposing receive link.");
+        logger.atInfo().addKeyValue(LINK_NAME_KEY, currentLinkName).log("Disposing receive link.");
 
         drain();
         onDispose();
@@ -574,22 +563,20 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     return;
                 }
 
-                Exception exception = null;
-                com.azure.core.util.Context span = instrumentation.asyncConsume("EventHubs.consume", message, partitionId, com.azure.core.util.Context.NONE);
-                AutoCloseable scope = instrumentation.getTracer().makeSpanCurrent(span);
+                InstrumentationScope scope = instrumentation.startAsyncConsume(message, partitionId);
                 try {
                     subscriber.onNext(message);
                 } catch (Exception e) {
-                    exception = e;
+                    scope.setError(e);
                     logger.atError()
                         .addKeyValue(LINK_NAME_KEY, currentLinkName)
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                         .log("Exception occurred while handling downstream onNext operation.", e);
 
-                    throw logger.logExceptionAsError(Exceptions.propagate(
-                        Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
+                    throw logger.logExceptionAsError(Exceptions
+                        .propagate(Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 } finally {
-                    instrumentation.getTracer().endSpan(exception, span, scope);
+                    scope.close();
                 }
 
                 numberEmitted++;

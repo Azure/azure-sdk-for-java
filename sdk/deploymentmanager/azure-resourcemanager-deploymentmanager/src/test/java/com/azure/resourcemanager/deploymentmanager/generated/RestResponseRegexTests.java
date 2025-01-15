@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RestResponseRegexTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestResponseRegex model =
-            BinaryData
-                .fromString("{\"matches\":[\"vuujq\"],\"matchQuantifier\":\"All\"}")
-                .toObject(RestResponseRegex.class);
+        RestResponseRegex model = BinaryData.fromString("{\"matches\":[\"vuujq\"],\"matchQuantifier\":\"All\"}")
+            .toObject(RestResponseRegex.class);
         Assertions.assertEquals("vuujq", model.matches().get(0));
         Assertions.assertEquals(RestMatchQuantifier.ALL, model.matchQuantifier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestResponseRegex model =
-            new RestResponseRegex().withMatches(Arrays.asList("vuujq")).withMatchQuantifier(RestMatchQuantifier.ALL);
+        RestResponseRegex model
+            = new RestResponseRegex().withMatches(Arrays.asList("vuujq")).withMatchQuantifier(RestMatchQuantifier.ALL);
         model = BinaryData.fromObject(model).toObject(RestResponseRegex.class);
         Assertions.assertEquals("vuujq", model.matches().get(0));
         Assertions.assertEquals(RestMatchQuantifier.ALL, model.matchQuantifier());

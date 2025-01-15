@@ -6,39 +6,44 @@ package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the request body for resource move operation. */
+/**
+ * Defines the request body for resource move operation.
+ */
 @Fluent
-public final class ResourceMoveRequest {
+public final class ResourceMoveRequest implements JsonSerializable<ResourceMoveRequest> {
     /*
      * Gets or sets a value indicating whether the operation needs to only run pre-requisite.
      */
-    @JsonProperty(value = "validateOnly")
     private Boolean validateOnly;
 
     /*
      * Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is
      * switched via moveResourceInputType property.
      */
-    @JsonProperty(value = "moveResources", required = true)
     private List<String> moveResources;
 
     /*
      * Defines the move resource input type.
      */
-    @JsonProperty(value = "moveResourceInputType")
     private MoveResourceInputType moveResourceInputType;
 
-    /** Creates an instance of ResourceMoveRequest class. */
+    /**
+     * Creates an instance of ResourceMoveRequest class.
+     */
     public ResourceMoveRequest() {
     }
 
     /**
      * Get the validateOnly property: Gets or sets a value indicating whether the operation needs to only run
      * pre-requisite.
-     *
+     * 
      * @return the validateOnly value.
      */
     public Boolean validateOnly() {
@@ -48,7 +53,7 @@ public final class ResourceMoveRequest {
     /**
      * Set the validateOnly property: Gets or sets a value indicating whether the operation needs to only run
      * pre-requisite.
-     *
+     * 
      * @param validateOnly the validateOnly value to set.
      * @return the ResourceMoveRequest object itself.
      */
@@ -60,7 +65,7 @@ public final class ResourceMoveRequest {
     /**
      * Get the moveResources property: Gets or sets the list of resource Id's, by default it accepts move resource id's
      * unless the input type is switched via moveResourceInputType property.
-     *
+     * 
      * @return the moveResources value.
      */
     public List<String> moveResources() {
@@ -70,7 +75,7 @@ public final class ResourceMoveRequest {
     /**
      * Set the moveResources property: Gets or sets the list of resource Id's, by default it accepts move resource id's
      * unless the input type is switched via moveResourceInputType property.
-     *
+     * 
      * @param moveResources the moveResources value to set.
      * @return the ResourceMoveRequest object itself.
      */
@@ -81,7 +86,7 @@ public final class ResourceMoveRequest {
 
     /**
      * Get the moveResourceInputType property: Defines the move resource input type.
-     *
+     * 
      * @return the moveResourceInputType value.
      */
     public MoveResourceInputType moveResourceInputType() {
@@ -90,7 +95,7 @@ public final class ResourceMoveRequest {
 
     /**
      * Set the moveResourceInputType property: Defines the move resource input type.
-     *
+     * 
      * @param moveResourceInputType the moveResourceInputType value to set.
      * @return the ResourceMoveRequest object itself.
      */
@@ -101,17 +106,63 @@ public final class ResourceMoveRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (moveResources() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property moveResources in model ResourceMoveRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property moveResources in model ResourceMoveRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceMoveRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("moveResources", this.moveResources,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("validateOnly", this.validateOnly);
+        jsonWriter.writeStringField("moveResourceInputType",
+            this.moveResourceInputType == null ? null : this.moveResourceInputType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceMoveRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceMoveRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceMoveRequest.
+     */
+    public static ResourceMoveRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceMoveRequest deserializedResourceMoveRequest = new ResourceMoveRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("moveResources".equals(fieldName)) {
+                    List<String> moveResources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceMoveRequest.moveResources = moveResources;
+                } else if ("validateOnly".equals(fieldName)) {
+                    deserializedResourceMoveRequest.validateOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("moveResourceInputType".equals(fieldName)) {
+                    deserializedResourceMoveRequest.moveResourceInputType
+                        = MoveResourceInputType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceMoveRequest;
+        });
+    }
 }

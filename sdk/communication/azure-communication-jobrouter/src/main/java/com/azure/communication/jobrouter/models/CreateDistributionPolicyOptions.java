@@ -39,7 +39,8 @@ public final class CreateDistributionPolicyOptions {
      * @param offerExpiresAfter The expiry time of any offers created under this policy.
      * @param mode Abstract base class for defining a distribution mode.
      */
-    public CreateDistributionPolicyOptions(String distributionPolicyId, Duration offerExpiresAfter, DistributionMode mode) {
+    public CreateDistributionPolicyOptions(String distributionPolicyId, Duration offerExpiresAfter,
+        DistributionMode mode) {
         this.distributionPolicyId = distributionPolicyId;
         this.offerExpiresAfter = offerExpiresAfter;
         this.mode = mode;

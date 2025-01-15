@@ -5,24 +5,45 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Email channel definition. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "channelName")
-@JsonTypeName("EmailChannel")
+/**
+ * Email channel definition.
+ */
 @Fluent
 public final class EmailChannel extends Channel {
     /*
+     * The channel name
+     */
+    private String channelName = "EmailChannel";
+
+    /*
      * The set of properties specific to email channel resource
      */
-    @JsonProperty(value = "properties")
     private EmailChannelProperties properties;
 
     /**
+     * Creates an instance of EmailChannel class.
+     */
+    public EmailChannel() {
+    }
+
+    /**
+     * Get the channelName property: The channel name.
+     * 
+     * @return the channelName value.
+     */
+    @Override
+    public String channelName() {
+        return this.channelName;
+    }
+
+    /**
      * Get the properties property: The set of properties specific to email channel resource.
-     *
+     * 
      * @return the properties value.
      */
     public EmailChannelProperties properties() {
@@ -31,7 +52,7 @@ public final class EmailChannel extends Channel {
 
     /**
      * Set the properties property: The set of properties specific to email channel resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the EmailChannel object itself.
      */
@@ -40,14 +61,18 @@ public final class EmailChannel extends Channel {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailChannel withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailChannel withLocation(String location) {
         super.withLocation(location);
@@ -56,14 +81,60 @@ public final class EmailChannel extends Channel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeStringField("channelName", this.channelName);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailChannel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailChannel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EmailChannel.
+     */
+    public static EmailChannel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailChannel deserializedEmailChannel = new EmailChannel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("etag".equals(fieldName)) {
+                    deserializedEmailChannel.withEtag(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEmailChannel.withProvisioningState(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedEmailChannel.withLocation(reader.getString());
+                } else if ("channelName".equals(fieldName)) {
+                    deserializedEmailChannel.channelName = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEmailChannel.properties = EmailChannelProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailChannel;
+        });
     }
 }

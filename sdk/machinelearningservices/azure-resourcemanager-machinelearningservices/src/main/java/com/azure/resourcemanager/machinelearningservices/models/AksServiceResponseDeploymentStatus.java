@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The deployment status. */
 @Immutable
 public final class AksServiceResponseDeploymentStatus extends AksReplicaStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksServiceResponseDeploymentStatus.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksServiceResponseDeploymentStatus.class);
 
     /** {@inheritDoc} */
     @Override

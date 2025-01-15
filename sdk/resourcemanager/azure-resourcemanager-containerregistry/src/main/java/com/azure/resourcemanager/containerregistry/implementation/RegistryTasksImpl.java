@@ -28,11 +28,8 @@ public class RegistryTasksImpl implements RegistryTasks {
 
     @Override
     public PagedFlux<RegistryTask> listByRegistryAsync(String resourceGroupName, String registryName) {
-        return PagedConverter.mapPage(this
-            .registryManager
-            .serviceClient()
-            .getTasks()
-            .listAsync(resourceGroupName, registryName),
+        return PagedConverter.mapPage(
+            this.registryManager.serviceClient().getTasks().listAsync(resourceGroupName, registryName),
             inner -> wrapModel(inner));
     }
 
@@ -42,19 +39,15 @@ public class RegistryTasksImpl implements RegistryTasks {
     }
 
     @Override
-    public Mono<RegistryTask> getByRegistryAsync(
-        String resourceGroupName, String registryName, String taskName, boolean includeSecrets) {
+    public Mono<RegistryTask> getByRegistryAsync(String resourceGroupName, String registryName, String taskName,
+        boolean includeSecrets) {
         if (includeSecrets) {
-            return this
-                .registryManager
-                .serviceClient()
+            return this.registryManager.serviceClient()
                 .getTasks()
                 .getDetailsAsync(resourceGroupName, registryName, taskName)
                 .map(taskInner -> new RegistryTaskImpl(registryManager, taskInner));
         } else {
-            return this
-                .registryManager
-                .serviceClient()
+            return this.registryManager.serviceClient()
                 .getTasks()
                 .getAsync(resourceGroupName, registryName, taskName)
                 .map(taskInner -> new RegistryTaskImpl(registryManager, taskInner));
@@ -62,8 +55,8 @@ public class RegistryTasksImpl implements RegistryTasks {
     }
 
     @Override
-    public RegistryTask getByRegistry(
-        String resourceGroupName, String registryName, String taskName, boolean includeSecrets) {
+    public RegistryTask getByRegistry(String resourceGroupName, String registryName, String taskName,
+        boolean includeSecrets) {
         return this.getByRegistryAsync(resourceGroupName, registryName, taskName, includeSecrets).block();
     }
 

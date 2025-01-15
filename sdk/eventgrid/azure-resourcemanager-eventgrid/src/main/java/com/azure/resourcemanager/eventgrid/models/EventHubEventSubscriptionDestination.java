@@ -5,35 +5,26 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventHubEventSubscriptionDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information about the event hub destination for an event subscription.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = EventHubEventSubscriptionDestination.class,
-    visible = true)
-@JsonTypeName("EventHub")
 @Fluent
 public final class EventHubEventSubscriptionDestination extends EventSubscriptionDestination {
     /*
      * Type of the endpoint for the event subscription destination.
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
     private EndpointType endpointType = EndpointType.EVENT_HUB;
 
     /*
      * Event Hub Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties")
     private EventHubEventSubscriptionDestinationProperties innerProperties;
 
     /**
@@ -117,9 +108,50 @@ public final class EventHubEventSubscriptionDestination extends EventSubscriptio
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubEventSubscriptionDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubEventSubscriptionDestination if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubEventSubscriptionDestination.
+     */
+    public static EventHubEventSubscriptionDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubEventSubscriptionDestination deserializedEventHubEventSubscriptionDestination
+                = new EventHubEventSubscriptionDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedEventHubEventSubscriptionDestination.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEventHubEventSubscriptionDestination.innerProperties
+                        = EventHubEventSubscriptionDestinationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubEventSubscriptionDestination;
+        });
     }
 }

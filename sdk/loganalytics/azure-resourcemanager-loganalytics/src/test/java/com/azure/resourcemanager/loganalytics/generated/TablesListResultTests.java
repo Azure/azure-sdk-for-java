@@ -19,110 +19,95 @@ import org.junit.jupiter.api.Assertions;
 public final class TablesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TablesListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"retentionInDays\":1528263402,\"totalRetentionInDays\":2021027348,\"archiveRetentionInDays\":1595182067,\"searchResults\":{\"query\":\"uzvx\",\"description\":\"i\",\"limit\":657702258,\"startSearchTime\":\"2021-02-10T22:06:59Z\",\"endSearchTime\":\"2021-02-28T18:44:38Z\",\"sourceTable\":\"ifqjz\",\"azureAsyncOperationId\":\"mrhublwpc\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-05-30T11:00:48Z\",\"endRestoreTime\":\"2021-10-26T03:51:19Z\",\"sourceTable\":\"upauut\",\"azureAsyncOperationId\":\"oqh\"},\"resultStatistics\":{\"progress\":33.277763,\"ingestedRecords\":89548348,\"scannedGb\":77.23144},\"plan\":\"Basic\",\"lastPlanModifiedDate\":\"qntcypsxjvfoimwk\",\"schema\":{\"name\":\"rcizjxvyd\",\"displayName\":\"eacvl\",\"description\":\"ygdyftumrtw\",\"columns\":[{},{},{},{}],\"standardColumns\":[{}],\"categories\":[\"iw\",\"ojgcyzt\",\"fmznba\"],\"labels\":[\"hchqnrnrpx\"],\"source\":\"customer\",\"tableType\":\"SearchResults\",\"tableSubType\":\"DataCollectionRuleBased\",\"solutions\":[\"aifmvikl\",\"ydv\"]},\"provisioningState\":\"Succeeded\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":false},\"systemData\":{\"createdBy\":\"cvdsrhnj\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2020-12-31T10:30:45Z\",\"lastModifiedBy\":\"novqfzge\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-03-01T12:10:43Z\"},\"id\":\"uljltduceamtmcz\",\"name\":\"o\",\"type\":\"ejwcwwqiok\"},{\"properties\":{\"retentionInDays\":603460584,\"totalRetentionInDays\":1605221592,\"archiveRetentionInDays\":2132194654,\"searchResults\":{\"query\":\"p\",\"description\":\"prvkwcfzqljyxgtc\",\"limit\":1540711967,\"startSearchTime\":\"2020-12-22T20:00:46Z\",\"endSearchTime\":\"2021-09-18T23:49:01Z\",\"sourceTable\":\"shmkxmaehvbbxur\",\"azureAsyncOperationId\":\"ltfnhtbaxkgx\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-10-25T12:11:17Z\",\"endRestoreTime\":\"2021-03-11T22:09:20Z\",\"sourceTable\":\"kl\",\"azureAsyncOperationId\":\"pluodpv\"},\"resultStatistics\":{\"progress\":87.415924,\"ingestedRecords\":1795826446,\"scannedGb\":86.28688},\"plan\":\"Basic\",\"lastPlanModifiedDate\":\"ostgkts\",\"schema\":{\"name\":\"xeclzedqbcvhzlhp\",\"displayName\":\"dqkdlwwqfbu\",\"description\":\"kxtrq\",\"columns\":[{},{},{},{}],\"standardColumns\":[{},{},{},{}],\"categories\":[\"txhwgfws\"],\"labels\":[\"wcoezbrhub\"],\"source\":\"microsoft\",\"tableType\":\"Microsoft\",\"tableSubType\":\"DataCollectionRuleBased\",\"solutions\":[\"okkqfqjbvleo\"]},\"provisioningState\":\"Updating\",\"retentionInDaysAsDefault\":true,\"totalRetentionInDaysAsDefault\":true},\"systemData\":{\"createdBy\":\"zf\",\"createdByType\":\"Key\",\"createdAt\":\"2021-06-05T20:28:23Z\",\"lastModifiedBy\":\"qybaryeua\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-04-14T17:43:50Z\"},\"id\":\"bqgzslesjcbhern\",\"name\":\"tiewdj\",\"type\":\"vbquwr\"}]}")
-                .toObject(TablesListResult.class);
-        Assertions.assertEquals(1528263402, model.value().get(0).retentionInDays());
-        Assertions.assertEquals(2021027348, model.value().get(0).totalRetentionInDays());
-        Assertions.assertEquals("uzvx", model.value().get(0).searchResults().query());
-        Assertions.assertEquals("i", model.value().get(0).searchResults().description());
-        Assertions.assertEquals(657702258, model.value().get(0).searchResults().limit());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-10T22:06:59Z"), model.value().get(0).searchResults().startSearchTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-28T18:44:38Z"), model.value().get(0).searchResults().endSearchTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-05-30T11:00:48Z"), model.value().get(0).restoredLogs().startRestoreTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-10-26T03:51:19Z"), model.value().get(0).restoredLogs().endRestoreTime());
-        Assertions.assertEquals("upauut", model.value().get(0).restoredLogs().sourceTable());
-        Assertions.assertEquals(TablePlanEnum.BASIC, model.value().get(0).plan());
-        Assertions.assertEquals("rcizjxvyd", model.value().get(0).schema().name());
-        Assertions.assertEquals("eacvl", model.value().get(0).schema().displayName());
-        Assertions.assertEquals("ygdyftumrtw", model.value().get(0).schema().description());
+        TablesListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"retentionInDays\":1152356837,\"totalRetentionInDays\":230467636,\"archiveRetentionInDays\":1993035285,\"searchResults\":{\"query\":\"fmviklby\",\"description\":\"khbejdznxc\",\"limit\":2045200930,\"startSearchTime\":\"2021-03-13T18:49:59Z\",\"endSearchTime\":\"2020-12-24T21:57:15Z\",\"sourceTable\":\"volvtn\",\"azureAsyncOperationId\":\"qfzgemjdftul\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-11-05T22:04:39Z\",\"endRestoreTime\":\"2021-04-12T02:20:30Z\",\"sourceTable\":\"amtmcz\",\"azureAsyncOperationId\":\"m\"},\"resultStatistics\":{\"progress\":45.98984,\"ingestedRecords\":1157846345,\"scannedGb\":57.057808},\"plan\":\"Analytics\",\"lastPlanModifiedDate\":\"ssxmojms\",\"schema\":{\"name\":\"jpr\",\"displayName\":\"wcfzqljyxgt\",\"description\":\"heyd\",\"columns\":[{},{},{},{}],\"standardColumns\":[{},{},{}],\"categories\":[\"xmaehvbbxu\"],\"labels\":[\"ltfnhtbaxkgx\",\"wrck\",\"yklyhpluodpvruud\"],\"source\":\"microsoft\",\"tableType\":\"Microsoft\",\"tableSubType\":\"Classic\",\"solutions\":[\"tgk\",\"stvdxeclz\"]},\"provisioningState\":\"Succeeded\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":true},\"systemData\":{\"createdBy\":\"h\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-07-07T17:09:43Z\",\"lastModifiedBy\":\"dlwwqfbumlkxt\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-08-10T18:01:13Z\"},\"id\":\"mlmbtxhwgfwsrta\",\"name\":\"coezbrhubskh\",\"type\":\"dyg\"},{\"properties\":{\"retentionInDays\":328293320,\"totalRetentionInDays\":1039197688,\"archiveRetentionInDays\":870237510,\"searchResults\":{\"query\":\"vleo\",\"description\":\"ml\",\"limit\":16475569,\"startSearchTime\":\"2021-06-03T05:33:27Z\",\"endSearchTime\":\"2021-06-07T14:08:39Z\",\"sourceTable\":\"vyvnqqyb\",\"azureAsyncOperationId\":\"yeua\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-05-25T11:37:10Z\",\"endRestoreTime\":\"2021-04-19T19:49:12Z\",\"sourceTable\":\"gzslesjcbhernnti\",\"azureAsyncOperationId\":\"djc\"},\"resultStatistics\":{\"progress\":67.018715,\"ingestedRecords\":584080581,\"scannedGb\":39.08969},\"plan\":\"Analytics\",\"lastPlanModifiedDate\":\"gohbuffkmrq\",\"schema\":{\"name\":\"vhmxtdrjfu\",\"displayName\":\"coebjvewzcj\",\"description\":\"m\",\"columns\":[{},{},{},{}],\"standardColumns\":[{},{},{},{}],\"categories\":[\"adraufactkahzo\",\"ajjziuxxpshne\",\"kulfg\",\"lqubkwdlen\"],\"labels\":[\"utujba\",\"pjuohminyfl\"],\"source\":\"microsoft\",\"tableType\":\"CustomLog\",\"tableSubType\":\"DataCollectionRuleBased\",\"solutions\":[\"pklvxw\",\"ygdxpgpqchis\"]},\"provisioningState\":\"InProgress\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":true},\"systemData\":{\"createdBy\":\"xgibbda\",\"createdByType\":\"User\",\"createdAt\":\"2021-04-14T22:25:17Z\",\"lastModifiedBy\":\"zauorsuk\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-09-20T10:27:45Z\"},\"id\":\"plhlvnuuepzlrp\",\"name\":\"wzsoldweyuqdunv\",\"type\":\"nnrwrbiork\"},{\"properties\":{\"retentionInDays\":476504183,\"totalRetentionInDays\":681185824,\"archiveRetentionInDays\":1038080670,\"searchResults\":{\"query\":\"nhxmsi\",\"description\":\"omi\",\"limit\":1723847557,\"startSearchTime\":\"2021-10-29T08:24:04Z\",\"endSearchTime\":\"2021-01-25T20:05:05Z\",\"sourceTable\":\"iqndieuzaofj\",\"azureAsyncOperationId\":\"vcyy\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-05-03T11:29:59Z\",\"endRestoreTime\":\"2021-05-09T21:38:39Z\",\"sourceTable\":\"cubiipuipw\",\"azureAsyncOperationId\":\"onmacjekniz\"},\"resultStatistics\":{\"progress\":38.670307,\"ingestedRecords\":1591499316,\"scannedGb\":21.702797},\"plan\":\"Analytics\",\"lastPlanModifiedDate\":\"gmblrri\",\"schema\":{\"name\":\"wdxsm\",\"displayName\":\"cwrwfs\",\"description\":\"fnynszqujizdvoqy\",\"columns\":[{},{},{},{}],\"standardColumns\":[{}],\"categories\":[\"blgyavutpthj\",\"xoi\",\"msksbp\"],\"labels\":[\"qolj\"],\"source\":\"microsoft\",\"tableType\":\"SearchResults\",\"tableSubType\":\"Classic\",\"solutions\":[\"ffgcvizqz\",\"wlvwlyoupf\",\"fbkjubdyhgkfmi\"]},\"provisioningState\":\"Updating\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":false},\"systemData\":{\"createdBy\":\"sttktlahbqa\",\"createdByType\":\"Key\",\"createdAt\":\"2021-10-13T12:53:05Z\",\"lastModifiedBy\":\"ukxit\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-06-28T23:57:13Z\"},\"id\":\"qqqxhrnxrx\",\"name\":\"pjui\",\"type\":\"av\"}]}")
+            .toObject(TablesListResult.class);
+        Assertions.assertEquals(1152356837, model.value().get(0).retentionInDays());
+        Assertions.assertEquals(230467636, model.value().get(0).totalRetentionInDays());
+        Assertions.assertEquals("fmviklby", model.value().get(0).searchResults().query());
+        Assertions.assertEquals("khbejdznxc", model.value().get(0).searchResults().description());
+        Assertions.assertEquals(2045200930, model.value().get(0).searchResults().limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T18:49:59Z"),
+            model.value().get(0).searchResults().startSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T21:57:15Z"),
+            model.value().get(0).searchResults().endSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T22:04:39Z"),
+            model.value().get(0).restoredLogs().startRestoreTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T02:20:30Z"),
+            model.value().get(0).restoredLogs().endRestoreTime());
+        Assertions.assertEquals("amtmcz", model.value().get(0).restoredLogs().sourceTable());
+        Assertions.assertEquals(TablePlanEnum.ANALYTICS, model.value().get(0).plan());
+        Assertions.assertEquals("jpr", model.value().get(0).schema().name());
+        Assertions.assertEquals("wcfzqljyxgt", model.value().get(0).schema().displayName());
+        Assertions.assertEquals("heyd", model.value().get(0).schema().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TablesListResult model =
-            new TablesListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new TableInner()
-                                .withRetentionInDays(1528263402)
-                                .withTotalRetentionInDays(2021027348)
-                                .withSearchResults(
-                                    new SearchResults()
-                                        .withQuery("uzvx")
-                                        .withDescription("i")
-                                        .withLimit(657702258)
-                                        .withStartSearchTime(OffsetDateTime.parse("2021-02-10T22:06:59Z"))
-                                        .withEndSearchTime(OffsetDateTime.parse("2021-02-28T18:44:38Z")))
-                                .withRestoredLogs(
-                                    new RestoredLogs()
-                                        .withStartRestoreTime(OffsetDateTime.parse("2021-05-30T11:00:48Z"))
-                                        .withEndRestoreTime(OffsetDateTime.parse("2021-10-26T03:51:19Z"))
-                                        .withSourceTable("upauut"))
-                                .withPlan(TablePlanEnum.BASIC)
-                                .withSchema(
-                                    new Schema()
-                                        .withName("rcizjxvyd")
-                                        .withDisplayName("eacvl")
-                                        .withDescription("ygdyftumrtw")
-                                        .withColumns(
-                                            Arrays.asList(new Column(), new Column(), new Column(), new Column()))),
-                            new TableInner()
-                                .withRetentionInDays(603460584)
-                                .withTotalRetentionInDays(1605221592)
-                                .withSearchResults(
-                                    new SearchResults()
-                                        .withQuery("p")
-                                        .withDescription("prvkwcfzqljyxgtc")
-                                        .withLimit(1540711967)
-                                        .withStartSearchTime(OffsetDateTime.parse("2020-12-22T20:00:46Z"))
-                                        .withEndSearchTime(OffsetDateTime.parse("2021-09-18T23:49:01Z")))
-                                .withRestoredLogs(
-                                    new RestoredLogs()
-                                        .withStartRestoreTime(OffsetDateTime.parse("2021-10-25T12:11:17Z"))
-                                        .withEndRestoreTime(OffsetDateTime.parse("2021-03-11T22:09:20Z"))
-                                        .withSourceTable("kl"))
-                                .withPlan(TablePlanEnum.BASIC)
-                                .withSchema(
-                                    new Schema()
-                                        .withName("xeclzedqbcvhzlhp")
-                                        .withDisplayName("dqkdlwwqfbu")
-                                        .withDescription("kxtrq")
-                                        .withColumns(
-                                            Arrays.asList(new Column(), new Column(), new Column(), new Column())))));
+        TablesListResult model = new TablesListResult().withValue(Arrays.asList(
+            new TableInner().withRetentionInDays(1152356837)
+                .withTotalRetentionInDays(230467636)
+                .withSearchResults(new SearchResults().withQuery("fmviklby")
+                    .withDescription("khbejdznxc")
+                    .withLimit(2045200930)
+                    .withStartSearchTime(OffsetDateTime.parse("2021-03-13T18:49:59Z"))
+                    .withEndSearchTime(OffsetDateTime.parse("2020-12-24T21:57:15Z")))
+                .withRestoredLogs(new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-11-05T22:04:39Z"))
+                    .withEndRestoreTime(OffsetDateTime.parse("2021-04-12T02:20:30Z"))
+                    .withSourceTable("amtmcz"))
+                .withPlan(TablePlanEnum.ANALYTICS)
+                .withSchema(new Schema().withName("jpr")
+                    .withDisplayName("wcfzqljyxgt")
+                    .withDescription("heyd")
+                    .withColumns(Arrays.asList(new Column(), new Column(), new Column(), new Column()))),
+            new TableInner().withRetentionInDays(328293320)
+                .withTotalRetentionInDays(1039197688)
+                .withSearchResults(new SearchResults().withQuery("vleo")
+                    .withDescription("ml")
+                    .withLimit(16475569)
+                    .withStartSearchTime(OffsetDateTime.parse("2021-06-03T05:33:27Z"))
+                    .withEndSearchTime(OffsetDateTime.parse("2021-06-07T14:08:39Z")))
+                .withRestoredLogs(new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-05-25T11:37:10Z"))
+                    .withEndRestoreTime(OffsetDateTime.parse("2021-04-19T19:49:12Z"))
+                    .withSourceTable("gzslesjcbhernnti"))
+                .withPlan(TablePlanEnum.ANALYTICS)
+                .withSchema(new Schema().withName("vhmxtdrjfu")
+                    .withDisplayName("coebjvewzcj")
+                    .withDescription("m")
+                    .withColumns(Arrays.asList(new Column(), new Column(), new Column(), new Column()))),
+            new TableInner().withRetentionInDays(476504183)
+                .withTotalRetentionInDays(681185824)
+                .withSearchResults(new SearchResults().withQuery("nhxmsi")
+                    .withDescription("omi")
+                    .withLimit(1723847557)
+                    .withStartSearchTime(OffsetDateTime.parse("2021-10-29T08:24:04Z"))
+                    .withEndSearchTime(OffsetDateTime.parse("2021-01-25T20:05:05Z")))
+                .withRestoredLogs(new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-05-03T11:29:59Z"))
+                    .withEndRestoreTime(OffsetDateTime.parse("2021-05-09T21:38:39Z"))
+                    .withSourceTable("cubiipuipw"))
+                .withPlan(TablePlanEnum.ANALYTICS)
+                .withSchema(new Schema().withName("wdxsm")
+                    .withDisplayName("cwrwfs")
+                    .withDescription("fnynszqujizdvoqy")
+                    .withColumns(Arrays.asList(new Column(), new Column(), new Column(), new Column())))));
         model = BinaryData.fromObject(model).toObject(TablesListResult.class);
-        Assertions.assertEquals(1528263402, model.value().get(0).retentionInDays());
-        Assertions.assertEquals(2021027348, model.value().get(0).totalRetentionInDays());
-        Assertions.assertEquals("uzvx", model.value().get(0).searchResults().query());
-        Assertions.assertEquals("i", model.value().get(0).searchResults().description());
-        Assertions.assertEquals(657702258, model.value().get(0).searchResults().limit());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-10T22:06:59Z"), model.value().get(0).searchResults().startSearchTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-28T18:44:38Z"), model.value().get(0).searchResults().endSearchTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-05-30T11:00:48Z"), model.value().get(0).restoredLogs().startRestoreTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-10-26T03:51:19Z"), model.value().get(0).restoredLogs().endRestoreTime());
-        Assertions.assertEquals("upauut", model.value().get(0).restoredLogs().sourceTable());
-        Assertions.assertEquals(TablePlanEnum.BASIC, model.value().get(0).plan());
-        Assertions.assertEquals("rcizjxvyd", model.value().get(0).schema().name());
-        Assertions.assertEquals("eacvl", model.value().get(0).schema().displayName());
-        Assertions.assertEquals("ygdyftumrtw", model.value().get(0).schema().description());
+        Assertions.assertEquals(1152356837, model.value().get(0).retentionInDays());
+        Assertions.assertEquals(230467636, model.value().get(0).totalRetentionInDays());
+        Assertions.assertEquals("fmviklby", model.value().get(0).searchResults().query());
+        Assertions.assertEquals("khbejdznxc", model.value().get(0).searchResults().description());
+        Assertions.assertEquals(2045200930, model.value().get(0).searchResults().limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T18:49:59Z"),
+            model.value().get(0).searchResults().startSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T21:57:15Z"),
+            model.value().get(0).searchResults().endSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T22:04:39Z"),
+            model.value().get(0).restoredLogs().startRestoreTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T02:20:30Z"),
+            model.value().get(0).restoredLogs().endRestoreTime());
+        Assertions.assertEquals("amtmcz", model.value().get(0).restoredLogs().sourceTable());
+        Assertions.assertEquals(TablePlanEnum.ANALYTICS, model.value().get(0).plan());
+        Assertions.assertEquals("jpr", model.value().get(0).schema().name());
+        Assertions.assertEquals("wcfzqljyxgt", model.value().get(0).schema().displayName());
+        Assertions.assertEquals("heyd", model.value().get(0).schema().description());
     }
 }

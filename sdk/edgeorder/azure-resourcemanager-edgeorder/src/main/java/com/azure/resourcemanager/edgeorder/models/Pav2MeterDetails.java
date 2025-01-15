@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Billing type PAV2 meter details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "billingType")
-@JsonTypeName("Pav2")
+/**
+ * Billing type PAV2 meter details.
+ */
 @Immutable
 public final class Pav2MeterDetails extends MeterDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Pav2MeterDetails.class);
+    /*
+     * Represents billing type.
+     */
+    private BillingType billingType = BillingType.PAV2;
 
     /*
      * Validation status of requested data center and transport.
      */
-    @JsonProperty(value = "meterGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String meterGuid;
 
     /**
+     * Creates an instance of Pav2MeterDetails class.
+     */
+    public Pav2MeterDetails() {
+    }
+
+    /**
+     * Get the billingType property: Represents billing type.
+     * 
+     * @return the billingType value.
+     */
+    @Override
+    public BillingType billingType() {
+        return this.billingType;
+    }
+
+    /**
      * Get the meterGuid property: Validation status of requested data center and transport.
-     *
+     * 
      * @return the meterGuid value.
      */
     public String meterGuid() {
@@ -35,11 +52,52 @@ public final class Pav2MeterDetails extends MeterDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingType", this.billingType == null ? null : this.billingType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Pav2MeterDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Pav2MeterDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Pav2MeterDetails.
+     */
+    public static Pav2MeterDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Pav2MeterDetails deserializedPav2MeterDetails = new Pav2MeterDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("multiplier".equals(fieldName)) {
+                    deserializedPav2MeterDetails.withMultiplier(reader.getNullable(JsonReader::getDouble));
+                } else if ("chargingType".equals(fieldName)) {
+                    deserializedPav2MeterDetails.withChargingType(ChargingType.fromString(reader.getString()));
+                } else if ("billingType".equals(fieldName)) {
+                    deserializedPav2MeterDetails.billingType = BillingType.fromString(reader.getString());
+                } else if ("meterGuid".equals(fieldName)) {
+                    deserializedPav2MeterDetails.meterGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPav2MeterDetails;
+        });
     }
 }

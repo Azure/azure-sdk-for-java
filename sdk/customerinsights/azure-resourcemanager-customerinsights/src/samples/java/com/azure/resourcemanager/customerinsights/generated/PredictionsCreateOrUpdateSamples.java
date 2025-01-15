@@ -9,20 +9,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Predictions CreateOrUpdate. */
+/**
+ * Samples for Predictions CreateOrUpdate.
+ */
 public final class PredictionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/PredictionsCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * PredictionsCreateOrUpdate.json
      */
     /**
      * Sample code: Predictions_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
-    public static void predictionsCreateOrUpdate(
-        com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
-        manager
-            .predictions()
+    public static void
+        predictionsCreateOrUpdate(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
+        manager.predictions()
             .define("sdktest")
             .withExistingHub("TestHubRG", "sdkTestHub")
             .withDescription(mapOf("en-us", "sdktest"))
@@ -36,16 +39,15 @@ public final class PredictionsCreateOrUpdateSamples {
             .withPredictionName("sdktest")
             .withScopeExpression("*")
             .withAutoAnalyze(true)
-            .withMappings(
-                new PredictionMappings()
-                    .withScore("sdktest_Score")
-                    .withGrade("sdktest_Grade")
-                    .withReason("sdktest_Reason"))
+            .withMappings(new PredictionMappings().withScore("sdktest_Score")
+                .withGrade("sdktest_Grade")
+                .withReason("sdktest_Reason"))
             .withScoreLabel("score label")
             .withGrades(Arrays.asList())
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

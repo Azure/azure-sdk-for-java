@@ -6,227 +6,198 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.botservice.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The parameters to provide for the Bot. */
+/**
+ * The parameters to provide for the Bot.
+ */
 @Fluent
-public final class BotProperties {
+public final class BotProperties implements JsonSerializable<BotProperties> {
     /*
      * The Name of the bot
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * The description of the bot
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The Icon Url of the bot
      */
-    @JsonProperty(value = "iconUrl")
     private String iconUrl;
 
     /*
      * The bot's endpoint
      */
-    @JsonProperty(value = "endpoint", required = true)
     private String endpoint;
 
     /*
      * The bot's endpoint version
      */
-    @JsonProperty(value = "endpointVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String endpointVersion;
 
     /*
      * Contains resource all settings defined as key/value pairs.
      */
-    @JsonProperty(value = "allSettings")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> allSettings;
 
     /*
      * Contains resource parameters defined as key/value pairs.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * The bot's manifest url
      */
-    @JsonProperty(value = "manifestUrl")
     private String manifestUrl;
 
     /*
      * Microsoft App Type for the bot
      */
-    @JsonProperty(value = "msaAppType")
     private MsaAppType msaAppType;
 
     /*
      * Microsoft App Id for the bot
      */
-    @JsonProperty(value = "msaAppId", required = true)
     private String msaAppId;
 
     /*
      * Microsoft App Tenant Id for the bot
      */
-    @JsonProperty(value = "msaAppTenantId")
     private String msaAppTenantId;
 
     /*
      * Microsoft App Managed Identity Resource Id for the bot
      */
-    @JsonProperty(value = "msaAppMSIResourceId")
     private String msaAppMsiResourceId;
 
     /*
      * Collection of channels for which the bot is configured
      */
-    @JsonProperty(value = "configuredChannels", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> configuredChannels;
 
     /*
      * Collection of channels for which the bot is enabled
      */
-    @JsonProperty(value = "enabledChannels", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> enabledChannels;
 
     /*
      * The Application Insights key
      */
-    @JsonProperty(value = "developerAppInsightKey")
     private String developerAppInsightKey;
 
     /*
      * The Application Insights Api Key
      */
-    @JsonProperty(value = "developerAppInsightsApiKey")
     private String developerAppInsightsApiKey;
 
     /*
      * The Application Insights App Id
      */
-    @JsonProperty(value = "developerAppInsightsApplicationId")
     private String developerAppInsightsApplicationId;
 
     /*
      * Collection of LUIS App Ids
      */
-    @JsonProperty(value = "luisAppIds")
     private List<String> luisAppIds;
 
     /*
      * The LUIS Key
      */
-    @JsonProperty(value = "luisKey")
     private String luisKey;
 
     /*
      * Whether Cmek is enabled
      */
-    @JsonProperty(value = "isCmekEnabled")
     private Boolean isCmekEnabled;
 
     /*
      * The CMK Url
      */
-    @JsonProperty(value = "cmekKeyVaultUrl")
     private String cmekKeyVaultUrl;
 
     /*
      * The CMK encryption status
      */
-    @JsonProperty(value = "cmekEncryptionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String cmekEncryptionStatus;
+
+    /*
+     * The Tenant Id for the bot
+     */
+    private String tenantId;
 
     /*
      * Whether the bot is in an isolated network
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * Whether the bot is streaming supported
      */
-    @JsonProperty(value = "isStreamingSupported")
     private Boolean isStreamingSupported;
 
     /*
      * Whether the bot is developerAppInsightsApiKey set
      */
-    @JsonProperty(value = "isDeveloperAppInsightsApiKeySet", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDeveloperAppInsightsApiKeySet;
 
     /*
      * Token used to migrate non Azure bot to azure subscription
      */
-    @JsonProperty(value = "migrationToken", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationToken;
 
     /*
-     * Opt-out of local authentication and ensure only MSI and AAD can be used
-     * exclusively for authentication.
+     * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
      * The channel schema transformation version for the bot
      */
-    @JsonProperty(value = "schemaTransformationVersion")
     private String schemaTransformationVersion;
 
     /*
      * The storage resourceId for the bot
      */
-    @JsonProperty(value = "storageResourceId")
     private String storageResourceId;
 
     /*
-     * List of Private Endpoint Connections configured for the bot
+     * The hint to browser (e.g. protocol handler) on how to open the bot for authoring
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
-
-    /*
-     * The hint to browser (e.g. protocol handler) on how to open the bot for
-     * authoring
-     */
-    @JsonProperty(value = "openWithHint")
     private String openWithHint;
 
     /*
-     * The hint (e.g. keyVault secret resourceId) on how to fetch the app
-     * secret
+     * The hint (e.g. keyVault secret resourceId) on how to fetch the app secret
      */
-    @JsonProperty(value = "appPasswordHint")
     private String appPasswordHint;
 
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Publishing credentials of the resource
      */
-    @JsonProperty(value = "publishingCredentials")
     private String publishingCredentials;
 
     /**
+     * Creates an instance of BotProperties class.
+     */
+    public BotProperties() {
+    }
+
+    /**
      * Get the displayName property: The Name of the bot.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -235,7 +206,7 @@ public final class BotProperties {
 
     /**
      * Set the displayName property: The Name of the bot.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the BotProperties object itself.
      */
@@ -246,7 +217,7 @@ public final class BotProperties {
 
     /**
      * Get the description property: The description of the bot.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -255,7 +226,7 @@ public final class BotProperties {
 
     /**
      * Set the description property: The description of the bot.
-     *
+     * 
      * @param description the description value to set.
      * @return the BotProperties object itself.
      */
@@ -266,7 +237,7 @@ public final class BotProperties {
 
     /**
      * Get the iconUrl property: The Icon Url of the bot.
-     *
+     * 
      * @return the iconUrl value.
      */
     public String iconUrl() {
@@ -275,7 +246,7 @@ public final class BotProperties {
 
     /**
      * Set the iconUrl property: The Icon Url of the bot.
-     *
+     * 
      * @param iconUrl the iconUrl value to set.
      * @return the BotProperties object itself.
      */
@@ -286,7 +257,7 @@ public final class BotProperties {
 
     /**
      * Get the endpoint property: The bot's endpoint.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -295,7 +266,7 @@ public final class BotProperties {
 
     /**
      * Set the endpoint property: The bot's endpoint.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the BotProperties object itself.
      */
@@ -306,7 +277,7 @@ public final class BotProperties {
 
     /**
      * Get the endpointVersion property: The bot's endpoint version.
-     *
+     * 
      * @return the endpointVersion value.
      */
     public String endpointVersion() {
@@ -315,7 +286,7 @@ public final class BotProperties {
 
     /**
      * Get the allSettings property: Contains resource all settings defined as key/value pairs.
-     *
+     * 
      * @return the allSettings value.
      */
     public Map<String, String> allSettings() {
@@ -324,7 +295,7 @@ public final class BotProperties {
 
     /**
      * Set the allSettings property: Contains resource all settings defined as key/value pairs.
-     *
+     * 
      * @param allSettings the allSettings value to set.
      * @return the BotProperties object itself.
      */
@@ -335,7 +306,7 @@ public final class BotProperties {
 
     /**
      * Get the parameters property: Contains resource parameters defined as key/value pairs.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -344,7 +315,7 @@ public final class BotProperties {
 
     /**
      * Set the parameters property: Contains resource parameters defined as key/value pairs.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the BotProperties object itself.
      */
@@ -355,7 +326,7 @@ public final class BotProperties {
 
     /**
      * Get the manifestUrl property: The bot's manifest url.
-     *
+     * 
      * @return the manifestUrl value.
      */
     public String manifestUrl() {
@@ -364,7 +335,7 @@ public final class BotProperties {
 
     /**
      * Set the manifestUrl property: The bot's manifest url.
-     *
+     * 
      * @param manifestUrl the manifestUrl value to set.
      * @return the BotProperties object itself.
      */
@@ -375,7 +346,7 @@ public final class BotProperties {
 
     /**
      * Get the msaAppType property: Microsoft App Type for the bot.
-     *
+     * 
      * @return the msaAppType value.
      */
     public MsaAppType msaAppType() {
@@ -384,7 +355,7 @@ public final class BotProperties {
 
     /**
      * Set the msaAppType property: Microsoft App Type for the bot.
-     *
+     * 
      * @param msaAppType the msaAppType value to set.
      * @return the BotProperties object itself.
      */
@@ -395,7 +366,7 @@ public final class BotProperties {
 
     /**
      * Get the msaAppId property: Microsoft App Id for the bot.
-     *
+     * 
      * @return the msaAppId value.
      */
     public String msaAppId() {
@@ -404,7 +375,7 @@ public final class BotProperties {
 
     /**
      * Set the msaAppId property: Microsoft App Id for the bot.
-     *
+     * 
      * @param msaAppId the msaAppId value to set.
      * @return the BotProperties object itself.
      */
@@ -415,7 +386,7 @@ public final class BotProperties {
 
     /**
      * Get the msaAppTenantId property: Microsoft App Tenant Id for the bot.
-     *
+     * 
      * @return the msaAppTenantId value.
      */
     public String msaAppTenantId() {
@@ -424,7 +395,7 @@ public final class BotProperties {
 
     /**
      * Set the msaAppTenantId property: Microsoft App Tenant Id for the bot.
-     *
+     * 
      * @param msaAppTenantId the msaAppTenantId value to set.
      * @return the BotProperties object itself.
      */
@@ -435,7 +406,7 @@ public final class BotProperties {
 
     /**
      * Get the msaAppMsiResourceId property: Microsoft App Managed Identity Resource Id for the bot.
-     *
+     * 
      * @return the msaAppMsiResourceId value.
      */
     public String msaAppMsiResourceId() {
@@ -444,7 +415,7 @@ public final class BotProperties {
 
     /**
      * Set the msaAppMsiResourceId property: Microsoft App Managed Identity Resource Id for the bot.
-     *
+     * 
      * @param msaAppMsiResourceId the msaAppMsiResourceId value to set.
      * @return the BotProperties object itself.
      */
@@ -455,7 +426,7 @@ public final class BotProperties {
 
     /**
      * Get the configuredChannels property: Collection of channels for which the bot is configured.
-     *
+     * 
      * @return the configuredChannels value.
      */
     public List<String> configuredChannels() {
@@ -464,7 +435,7 @@ public final class BotProperties {
 
     /**
      * Get the enabledChannels property: Collection of channels for which the bot is enabled.
-     *
+     * 
      * @return the enabledChannels value.
      */
     public List<String> enabledChannels() {
@@ -473,7 +444,7 @@ public final class BotProperties {
 
     /**
      * Get the developerAppInsightKey property: The Application Insights key.
-     *
+     * 
      * @return the developerAppInsightKey value.
      */
     public String developerAppInsightKey() {
@@ -482,7 +453,7 @@ public final class BotProperties {
 
     /**
      * Set the developerAppInsightKey property: The Application Insights key.
-     *
+     * 
      * @param developerAppInsightKey the developerAppInsightKey value to set.
      * @return the BotProperties object itself.
      */
@@ -493,7 +464,7 @@ public final class BotProperties {
 
     /**
      * Get the developerAppInsightsApiKey property: The Application Insights Api Key.
-     *
+     * 
      * @return the developerAppInsightsApiKey value.
      */
     public String developerAppInsightsApiKey() {
@@ -502,7 +473,7 @@ public final class BotProperties {
 
     /**
      * Set the developerAppInsightsApiKey property: The Application Insights Api Key.
-     *
+     * 
      * @param developerAppInsightsApiKey the developerAppInsightsApiKey value to set.
      * @return the BotProperties object itself.
      */
@@ -513,7 +484,7 @@ public final class BotProperties {
 
     /**
      * Get the developerAppInsightsApplicationId property: The Application Insights App Id.
-     *
+     * 
      * @return the developerAppInsightsApplicationId value.
      */
     public String developerAppInsightsApplicationId() {
@@ -522,7 +493,7 @@ public final class BotProperties {
 
     /**
      * Set the developerAppInsightsApplicationId property: The Application Insights App Id.
-     *
+     * 
      * @param developerAppInsightsApplicationId the developerAppInsightsApplicationId value to set.
      * @return the BotProperties object itself.
      */
@@ -533,7 +504,7 @@ public final class BotProperties {
 
     /**
      * Get the luisAppIds property: Collection of LUIS App Ids.
-     *
+     * 
      * @return the luisAppIds value.
      */
     public List<String> luisAppIds() {
@@ -542,7 +513,7 @@ public final class BotProperties {
 
     /**
      * Set the luisAppIds property: Collection of LUIS App Ids.
-     *
+     * 
      * @param luisAppIds the luisAppIds value to set.
      * @return the BotProperties object itself.
      */
@@ -553,7 +524,7 @@ public final class BotProperties {
 
     /**
      * Get the luisKey property: The LUIS Key.
-     *
+     * 
      * @return the luisKey value.
      */
     public String luisKey() {
@@ -562,7 +533,7 @@ public final class BotProperties {
 
     /**
      * Set the luisKey property: The LUIS Key.
-     *
+     * 
      * @param luisKey the luisKey value to set.
      * @return the BotProperties object itself.
      */
@@ -573,7 +544,7 @@ public final class BotProperties {
 
     /**
      * Get the isCmekEnabled property: Whether Cmek is enabled.
-     *
+     * 
      * @return the isCmekEnabled value.
      */
     public Boolean isCmekEnabled() {
@@ -582,7 +553,7 @@ public final class BotProperties {
 
     /**
      * Set the isCmekEnabled property: Whether Cmek is enabled.
-     *
+     * 
      * @param isCmekEnabled the isCmekEnabled value to set.
      * @return the BotProperties object itself.
      */
@@ -593,7 +564,7 @@ public final class BotProperties {
 
     /**
      * Get the cmekKeyVaultUrl property: The CMK Url.
-     *
+     * 
      * @return the cmekKeyVaultUrl value.
      */
     public String cmekKeyVaultUrl() {
@@ -602,7 +573,7 @@ public final class BotProperties {
 
     /**
      * Set the cmekKeyVaultUrl property: The CMK Url.
-     *
+     * 
      * @param cmekKeyVaultUrl the cmekKeyVaultUrl value to set.
      * @return the BotProperties object itself.
      */
@@ -613,7 +584,7 @@ public final class BotProperties {
 
     /**
      * Get the cmekEncryptionStatus property: The CMK encryption status.
-     *
+     * 
      * @return the cmekEncryptionStatus value.
      */
     public String cmekEncryptionStatus() {
@@ -621,8 +592,28 @@ public final class BotProperties {
     }
 
     /**
+     * Get the tenantId property: The Tenant Id for the bot.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: The Tenant Id for the bot.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the BotProperties object itself.
+     */
+    public BotProperties withTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: Whether the bot is in an isolated network.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -631,7 +622,7 @@ public final class BotProperties {
 
     /**
      * Set the publicNetworkAccess property: Whether the bot is in an isolated network.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the BotProperties object itself.
      */
@@ -642,7 +633,7 @@ public final class BotProperties {
 
     /**
      * Get the isStreamingSupported property: Whether the bot is streaming supported.
-     *
+     * 
      * @return the isStreamingSupported value.
      */
     public Boolean isStreamingSupported() {
@@ -651,7 +642,7 @@ public final class BotProperties {
 
     /**
      * Set the isStreamingSupported property: Whether the bot is streaming supported.
-     *
+     * 
      * @param isStreamingSupported the isStreamingSupported value to set.
      * @return the BotProperties object itself.
      */
@@ -662,7 +653,7 @@ public final class BotProperties {
 
     /**
      * Get the isDeveloperAppInsightsApiKeySet property: Whether the bot is developerAppInsightsApiKey set.
-     *
+     * 
      * @return the isDeveloperAppInsightsApiKeySet value.
      */
     public Boolean isDeveloperAppInsightsApiKeySet() {
@@ -671,7 +662,7 @@ public final class BotProperties {
 
     /**
      * Get the migrationToken property: Token used to migrate non Azure bot to azure subscription.
-     *
+     * 
      * @return the migrationToken value.
      */
     public String migrationToken() {
@@ -681,7 +672,7 @@ public final class BotProperties {
     /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -691,7 +682,7 @@ public final class BotProperties {
     /**
      * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the BotProperties object itself.
      */
@@ -702,7 +693,7 @@ public final class BotProperties {
 
     /**
      * Get the schemaTransformationVersion property: The channel schema transformation version for the bot.
-     *
+     * 
      * @return the schemaTransformationVersion value.
      */
     public String schemaTransformationVersion() {
@@ -711,7 +702,7 @@ public final class BotProperties {
 
     /**
      * Set the schemaTransformationVersion property: The channel schema transformation version for the bot.
-     *
+     * 
      * @param schemaTransformationVersion the schemaTransformationVersion value to set.
      * @return the BotProperties object itself.
      */
@@ -722,7 +713,7 @@ public final class BotProperties {
 
     /**
      * Get the storageResourceId property: The storage resourceId for the bot.
-     *
+     * 
      * @return the storageResourceId value.
      */
     public String storageResourceId() {
@@ -731,7 +722,7 @@ public final class BotProperties {
 
     /**
      * Set the storageResourceId property: The storage resourceId for the bot.
-     *
+     * 
      * @param storageResourceId the storageResourceId value to set.
      * @return the BotProperties object itself.
      */
@@ -741,17 +732,8 @@ public final class BotProperties {
     }
 
     /**
-     * Get the privateEndpointConnections property: List of Private Endpoint Connections configured for the bot.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
      * Get the openWithHint property: The hint to browser (e.g. protocol handler) on how to open the bot for authoring.
-     *
+     * 
      * @return the openWithHint value.
      */
     public String openWithHint() {
@@ -760,7 +742,7 @@ public final class BotProperties {
 
     /**
      * Set the openWithHint property: The hint to browser (e.g. protocol handler) on how to open the bot for authoring.
-     *
+     * 
      * @param openWithHint the openWithHint value to set.
      * @return the BotProperties object itself.
      */
@@ -771,7 +753,7 @@ public final class BotProperties {
 
     /**
      * Get the appPasswordHint property: The hint (e.g. keyVault secret resourceId) on how to fetch the app secret.
-     *
+     * 
      * @return the appPasswordHint value.
      */
     public String appPasswordHint() {
@@ -780,7 +762,7 @@ public final class BotProperties {
 
     /**
      * Set the appPasswordHint property: The hint (e.g. keyVault secret resourceId) on how to fetch the app secret.
-     *
+     * 
      * @param appPasswordHint the appPasswordHint value to set.
      * @return the BotProperties object itself.
      */
@@ -791,7 +773,7 @@ public final class BotProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -800,7 +782,7 @@ public final class BotProperties {
 
     /**
      * Get the publishingCredentials property: Publishing credentials of the resource.
-     *
+     * 
      * @return the publishingCredentials value.
      */
     public String publishingCredentials() {
@@ -809,7 +791,7 @@ public final class BotProperties {
 
     /**
      * Set the publishingCredentials property: Publishing credentials of the resource.
-     *
+     * 
      * @param publishingCredentials the publishingCredentials value to set.
      * @return the BotProperties object itself.
      */
@@ -820,29 +802,159 @@ public final class BotProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property displayName in model BotProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property displayName in model BotProperties"));
         }
         if (endpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endpoint in model BotProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property endpoint in model BotProperties"));
         }
         if (msaAppId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property msaAppId in model BotProperties"));
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property msaAppId in model BotProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BotProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeStringField("msaAppId", this.msaAppId);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("iconUrl", this.iconUrl);
+        jsonWriter.writeMapField("allSettings", this.allSettings, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("manifestUrl", this.manifestUrl);
+        jsonWriter.writeStringField("msaAppType", this.msaAppType == null ? null : this.msaAppType.toString());
+        jsonWriter.writeStringField("msaAppTenantId", this.msaAppTenantId);
+        jsonWriter.writeStringField("msaAppMSIResourceId", this.msaAppMsiResourceId);
+        jsonWriter.writeStringField("developerAppInsightKey", this.developerAppInsightKey);
+        jsonWriter.writeStringField("developerAppInsightsApiKey", this.developerAppInsightsApiKey);
+        jsonWriter.writeStringField("developerAppInsightsApplicationId", this.developerAppInsightsApplicationId);
+        jsonWriter.writeArrayField("luisAppIds", this.luisAppIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("luisKey", this.luisKey);
+        jsonWriter.writeBooleanField("isCmekEnabled", this.isCmekEnabled);
+        jsonWriter.writeStringField("cmekKeyVaultUrl", this.cmekKeyVaultUrl);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeBooleanField("isStreamingSupported", this.isStreamingSupported);
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeStringField("schemaTransformationVersion", this.schemaTransformationVersion);
+        jsonWriter.writeStringField("storageResourceId", this.storageResourceId);
+        jsonWriter.writeStringField("openWithHint", this.openWithHint);
+        jsonWriter.writeStringField("appPasswordHint", this.appPasswordHint);
+        jsonWriter.writeStringField("publishingCredentials", this.publishingCredentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BotProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BotProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BotProperties.
+     */
+    public static BotProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BotProperties deserializedBotProperties = new BotProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedBotProperties.displayName = reader.getString();
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedBotProperties.endpoint = reader.getString();
+                } else if ("msaAppId".equals(fieldName)) {
+                    deserializedBotProperties.msaAppId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedBotProperties.description = reader.getString();
+                } else if ("iconUrl".equals(fieldName)) {
+                    deserializedBotProperties.iconUrl = reader.getString();
+                } else if ("endpointVersion".equals(fieldName)) {
+                    deserializedBotProperties.endpointVersion = reader.getString();
+                } else if ("allSettings".equals(fieldName)) {
+                    Map<String, String> allSettings = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBotProperties.allSettings = allSettings;
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBotProperties.parameters = parameters;
+                } else if ("manifestUrl".equals(fieldName)) {
+                    deserializedBotProperties.manifestUrl = reader.getString();
+                } else if ("msaAppType".equals(fieldName)) {
+                    deserializedBotProperties.msaAppType = MsaAppType.fromString(reader.getString());
+                } else if ("msaAppTenantId".equals(fieldName)) {
+                    deserializedBotProperties.msaAppTenantId = reader.getString();
+                } else if ("msaAppMSIResourceId".equals(fieldName)) {
+                    deserializedBotProperties.msaAppMsiResourceId = reader.getString();
+                } else if ("configuredChannels".equals(fieldName)) {
+                    List<String> configuredChannels = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBotProperties.configuredChannels = configuredChannels;
+                } else if ("enabledChannels".equals(fieldName)) {
+                    List<String> enabledChannels = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBotProperties.enabledChannels = enabledChannels;
+                } else if ("developerAppInsightKey".equals(fieldName)) {
+                    deserializedBotProperties.developerAppInsightKey = reader.getString();
+                } else if ("developerAppInsightsApiKey".equals(fieldName)) {
+                    deserializedBotProperties.developerAppInsightsApiKey = reader.getString();
+                } else if ("developerAppInsightsApplicationId".equals(fieldName)) {
+                    deserializedBotProperties.developerAppInsightsApplicationId = reader.getString();
+                } else if ("luisAppIds".equals(fieldName)) {
+                    List<String> luisAppIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBotProperties.luisAppIds = luisAppIds;
+                } else if ("luisKey".equals(fieldName)) {
+                    deserializedBotProperties.luisKey = reader.getString();
+                } else if ("isCmekEnabled".equals(fieldName)) {
+                    deserializedBotProperties.isCmekEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cmekKeyVaultUrl".equals(fieldName)) {
+                    deserializedBotProperties.cmekKeyVaultUrl = reader.getString();
+                } else if ("cmekEncryptionStatus".equals(fieldName)) {
+                    deserializedBotProperties.cmekEncryptionStatus = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedBotProperties.tenantId = reader.getString();
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedBotProperties.publicNetworkAccess = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("isStreamingSupported".equals(fieldName)) {
+                    deserializedBotProperties.isStreamingSupported = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDeveloperAppInsightsApiKeySet".equals(fieldName)) {
+                    deserializedBotProperties.isDeveloperAppInsightsApiKeySet
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("migrationToken".equals(fieldName)) {
+                    deserializedBotProperties.migrationToken = reader.getString();
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedBotProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("schemaTransformationVersion".equals(fieldName)) {
+                    deserializedBotProperties.schemaTransformationVersion = reader.getString();
+                } else if ("storageResourceId".equals(fieldName)) {
+                    deserializedBotProperties.storageResourceId = reader.getString();
+                } else if ("openWithHint".equals(fieldName)) {
+                    deserializedBotProperties.openWithHint = reader.getString();
+                } else if ("appPasswordHint".equals(fieldName)) {
+                    deserializedBotProperties.appPasswordHint = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBotProperties.provisioningState = reader.getString();
+                } else if ("publishingCredentials".equals(fieldName)) {
+                    deserializedBotProperties.publishingCredentials = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBotProperties;
+        });
+    }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class NotificationLevel extends ExpandableStringEnum<NotificationLe
      * @param name a name to look for.
      * @return the corresponding NotificationLevel.
      */
-    @JsonCreator
     public static NotificationLevel fromString(String name) {
         return fromString(name, NotificationLevel.class);
     }

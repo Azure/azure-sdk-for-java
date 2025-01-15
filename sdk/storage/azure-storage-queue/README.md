@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.23.0-beta.1</version>
+  <version>12.24.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -449,7 +449,7 @@ When you interact with queue using this Java client library, errors returned by 
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
@@ -487,15 +487,15 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-queue/src
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-queue/src/samples/README.md
-[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
-[storage_docs]: https://docs.microsoft.com/azure/storage/queues/storage-queues-introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[api_documentation]: https://learn.microsoft.com/rest/api/storageservices/queue-service-rest-api
+[storage_docs]: https://learn.microsoft.com/azure/storage/queues/storage-queues-introduction
+[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/free/
-[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[storage_rest]: https://docs.microsoft.com/rest/api/storageservices/queue-service-error-codes
+[storage_account]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[azure_cli]: https://learn.microsoft.com/cli/azure
+[sas_token]: https://learn.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[storage_rest]: https://learn.microsoft.com/rest/api/storageservices/queue-service-error-codes
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-queue/src/samples
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,22 +12,30 @@ import java.util.Collection;
  * only be accessed via private endpoints.
  */
 public final class HostpoolPublicNetworkAccess extends ExpandableStringEnum<HostpoolPublicNetworkAccess> {
-    /** Static value Enabled for HostpoolPublicNetworkAccess. */
+    /**
+     * Static value Enabled for HostpoolPublicNetworkAccess.
+     */
     public static final HostpoolPublicNetworkAccess ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for HostpoolPublicNetworkAccess. */
+    /**
+     * Static value Disabled for HostpoolPublicNetworkAccess.
+     */
     public static final HostpoolPublicNetworkAccess DISABLED = fromString("Disabled");
 
-    /** Static value EnabledForSessionHostsOnly for HostpoolPublicNetworkAccess. */
-    public static final HostpoolPublicNetworkAccess ENABLED_FOR_SESSION_HOSTS_ONLY =
-        fromString("EnabledForSessionHostsOnly");
+    /**
+     * Static value EnabledForSessionHostsOnly for HostpoolPublicNetworkAccess.
+     */
+    public static final HostpoolPublicNetworkAccess ENABLED_FOR_SESSION_HOSTS_ONLY
+        = fromString("EnabledForSessionHostsOnly");
 
-    /** Static value EnabledForClientsOnly for HostpoolPublicNetworkAccess. */
+    /**
+     * Static value EnabledForClientsOnly for HostpoolPublicNetworkAccess.
+     */
     public static final HostpoolPublicNetworkAccess ENABLED_FOR_CLIENTS_ONLY = fromString("EnabledForClientsOnly");
 
     /**
      * Creates a new instance of HostpoolPublicNetworkAccess value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,18 +44,17 @@ public final class HostpoolPublicNetworkAccess extends ExpandableStringEnum<Host
 
     /**
      * Creates or finds a HostpoolPublicNetworkAccess from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HostpoolPublicNetworkAccess.
      */
-    @JsonCreator
     public static HostpoolPublicNetworkAccess fromString(String name) {
         return fromString(name, HostpoolPublicNetworkAccess.class);
     }
 
     /**
      * Gets known HostpoolPublicNetworkAccess values.
-     *
+     * 
      * @return known HostpoolPublicNetworkAccess values.
      */
     public static Collection<HostpoolPublicNetworkAccess> values() {

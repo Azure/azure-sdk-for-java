@@ -4,21 +4,24 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for StorageAppliances DisableRemoteVendorManagement. */
+/**
+ * Samples for StorageAppliances DisableRemoteVendorManagement.
+ */
 public final class StorageAppliancesDisableRemoteVendorManagementSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_DisableRemoteVendorManagement.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * StorageAppliances_DisableRemoteVendorManagement.json
      */
     /**
      * Sample code: Turn off remote vendor management for storage appliance.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void turnOffRemoteVendorManagementForStorageAppliance(
         com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .storageAppliances()
-            .disableRemoteVendorManagement(
-                "resourceGroupName", "storageApplianceName", com.azure.core.util.Context.NONE);
+        manager.storageAppliances()
+            .disableRemoteVendorManagement("resourceGroupName", "storageApplianceName",
+                com.azure.core.util.Context.NONE);
     }
 }

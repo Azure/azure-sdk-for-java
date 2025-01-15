@@ -54,8 +54,7 @@ public class ServiceBusRuleManagerClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code asyncClient} or {@code operationTimeout} is null.
      */
-    ServiceBusRuleManagerClient(ServiceBusRuleManagerAsyncClient asyncClient,
-                                Duration operationTimeout) {
+    ServiceBusRuleManagerClient(ServiceBusRuleManagerAsyncClient asyncClient, Duration operationTimeout) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
     }

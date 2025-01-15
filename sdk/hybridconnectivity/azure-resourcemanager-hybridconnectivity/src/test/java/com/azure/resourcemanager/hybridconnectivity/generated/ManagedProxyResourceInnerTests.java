@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedProxyResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedProxyResourceInner model =
-            BinaryData
-                .fromString("{\"proxy\":\"rl\",\"expiresOn\":6676746623961683086}")
-                .toObject(ManagedProxyResourceInner.class);
+        ManagedProxyResourceInner model = BinaryData.fromString("{\"proxy\":\"rl\",\"expiresOn\":6676746623961683086}")
+            .toObject(ManagedProxyResourceInner.class);
         Assertions.assertEquals("rl", model.proxy());
         Assertions.assertEquals(6676746623961683086L, model.expiresOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedProxyResourceInner model =
-            new ManagedProxyResourceInner().withProxy("rl").withExpiresOn(6676746623961683086L);
+        ManagedProxyResourceInner model
+            = new ManagedProxyResourceInner().withProxy("rl").withExpiresOn(6676746623961683086L);
         model = BinaryData.fromObject(model).toObject(ManagedProxyResourceInner.class);
         Assertions.assertEquals("rl", model.proxy());
         Assertions.assertEquals(6676746623961683086L, model.expiresOn());

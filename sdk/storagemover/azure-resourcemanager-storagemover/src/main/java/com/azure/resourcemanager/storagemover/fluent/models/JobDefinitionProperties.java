@@ -6,98 +6,88 @@ package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Job definition properties.
  */
 @Fluent
-public final class JobDefinitionProperties {
+public final class JobDefinitionProperties implements JsonSerializable<JobDefinitionProperties> {
     /*
      * A description for the Job Definition.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Strategy to use for copy.
      */
-    @JsonProperty(value = "copyMode", required = true)
     private CopyMode copyMode;
 
     /*
      * The name of the source Endpoint.
      */
-    @JsonProperty(value = "sourceName", required = true)
     private String sourceName;
 
     /*
      * Fully qualified resource ID of the source Endpoint.
      */
-    @JsonProperty(value = "sourceResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceResourceId;
 
     /*
      * The subpath to use when reading from the source Endpoint.
      */
-    @JsonProperty(value = "sourceSubpath")
     private String sourceSubpath;
 
     /*
      * The name of the target Endpoint.
      */
-    @JsonProperty(value = "targetName", required = true)
     private String targetName;
 
     /*
      * Fully qualified resource ID of the target Endpoint.
      */
-    @JsonProperty(value = "targetResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceId;
 
     /*
      * The subpath to use when writing to the target Endpoint.
      */
-    @JsonProperty(value = "targetSubpath")
     private String targetSubpath;
 
     /*
      * The name of the Job Run in a non-terminal state, if exists.
      */
-    @JsonProperty(value = "latestJobRunName", access = JsonProperty.Access.WRITE_ONLY)
     private String latestJobRunName;
 
     /*
      * The fully qualified resource ID of the Job Run in a non-terminal state, if exists.
      */
-    @JsonProperty(value = "latestJobRunResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String latestJobRunResourceId;
 
     /*
      * The current status of the Job Run in a non-terminal state, if exists.
      */
-    @JsonProperty(value = "latestJobRunStatus", access = JsonProperty.Access.WRITE_ONLY)
     private JobRunStatus latestJobRunStatus;
 
     /*
      * Name of the Agent to assign for new Job Runs of this Job Definition.
      */
-    @JsonProperty(value = "agentName")
     private String agentName;
 
     /*
      * Fully qualified resource id of the Agent to assign for new Job Runs of this Job Definition.
      */
-    @JsonProperty(value = "agentResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String agentResourceId;
 
     /*
      * The provisioning state of this resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -335,4 +325,75 @@ public final class JobDefinitionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobDefinitionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("copyMode", this.copyMode == null ? null : this.copyMode.toString());
+        jsonWriter.writeStringField("sourceName", this.sourceName);
+        jsonWriter.writeStringField("targetName", this.targetName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("sourceSubpath", this.sourceSubpath);
+        jsonWriter.writeStringField("targetSubpath", this.targetSubpath);
+        jsonWriter.writeStringField("agentName", this.agentName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobDefinitionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobDefinitionProperties.
+     */
+    public static JobDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobDefinitionProperties deserializedJobDefinitionProperties = new JobDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("copyMode".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.copyMode = CopyMode.fromString(reader.getString());
+                } else if ("sourceName".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.sourceName = reader.getString();
+                } else if ("targetName".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.targetName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.description = reader.getString();
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.sourceResourceId = reader.getString();
+                } else if ("sourceSubpath".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.sourceSubpath = reader.getString();
+                } else if ("targetResourceId".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.targetResourceId = reader.getString();
+                } else if ("targetSubpath".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.targetSubpath = reader.getString();
+                } else if ("latestJobRunName".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.latestJobRunName = reader.getString();
+                } else if ("latestJobRunResourceId".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.latestJobRunResourceId = reader.getString();
+                } else if ("latestJobRunStatus".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.latestJobRunStatus
+                        = JobRunStatus.fromString(reader.getString());
+                } else if ("agentName".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.agentName = reader.getString();
+                } else if ("agentResourceId".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.agentResourceId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobDefinitionProperties;
+        });
+    }
 }

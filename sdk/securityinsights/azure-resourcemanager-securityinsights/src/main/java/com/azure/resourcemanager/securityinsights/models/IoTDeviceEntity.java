@@ -4,30 +4,71 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.IoTDeviceEntityProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** Represents an IoT device entity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("IoTDevice")
-@Fluent
-public final class IoTDeviceEntity extends EntityInner {
+/**
+ * Represents an IoT device entity.
+ */
+@Immutable
+public final class IoTDeviceEntity extends Entity {
+    /*
+     * The kind of the entity.
+     */
+    private EntityKindEnum kind = EntityKindEnum.IO_TDEVICE;
+
     /*
      * IoTDevice entity properties
      */
-    @JsonProperty(value = "properties")
     private IoTDeviceEntityProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IoTDeviceEntity class.
+     */
+    public IoTDeviceEntity() {
+    }
+
+    /**
+     * Get the kind property: The kind of the entity.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityKindEnum kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: IoTDevice entity properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTDeviceEntityProperties innerProperties() {
@@ -35,8 +76,48 @@ public final class IoTDeviceEntity extends EntityInner {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the deviceId property: The ID of the IoT Device in the IoT Hub.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -45,7 +126,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the deviceName property: The friendly name of the device.
-     *
+     * 
      * @return the deviceName value.
      */
     public String deviceName() {
@@ -54,7 +135,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the source property: The source of the device.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -63,7 +144,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the iotSecurityAgentId property: The ID of the security agent running on the device.
-     *
+     * 
      * @return the iotSecurityAgentId value.
      */
     public UUID iotSecurityAgentId() {
@@ -72,7 +153,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the deviceType property: The type of the device.
-     *
+     * 
      * @return the deviceType value.
      */
     public String deviceType() {
@@ -81,7 +162,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the vendor property: The vendor of the device.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -90,7 +171,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the edgeId property: The ID of the edge device.
-     *
+     * 
      * @return the edgeId value.
      */
     public String edgeId() {
@@ -99,7 +180,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the macAddress property: The MAC address of the device.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -108,7 +189,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the model property: The model of the device.
-     *
+     * 
      * @return the model value.
      */
     public String model() {
@@ -117,7 +198,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the serialNumber property: The serial number of the device.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -126,7 +207,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the firmwareVersion property: The firmware version of the device.
-     *
+     * 
      * @return the firmwareVersion value.
      */
     public String firmwareVersion() {
@@ -135,7 +216,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the operatingSystem property: The operating system of the device.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public String operatingSystem() {
@@ -144,7 +225,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the iotHubEntityId property: The AzureResource entity id of the IoT Hub.
-     *
+     * 
      * @return the iotHubEntityId value.
      */
     public String iotHubEntityId() {
@@ -153,7 +234,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the hostEntityId property: The Host entity id of this device.
-     *
+     * 
      * @return the hostEntityId value.
      */
     public String hostEntityId() {
@@ -162,7 +243,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the ipAddressEntityId property: The IP entity if of this device.
-     *
+     * 
      * @return the ipAddressEntityId value.
      */
     public String ipAddressEntityId() {
@@ -171,7 +252,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the threatIntelligence property: A list of TI contexts attached to the IoTDevice entity.
-     *
+     * 
      * @return the threatIntelligence value.
      */
     public List<ThreatIntelligence> threatIntelligence() {
@@ -180,7 +261,7 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Get the protocols property: A list of protocols of the IoTDevice entity.
-     *
+     * 
      * @return the protocols value.
      */
     public List<String> protocols() {
@@ -188,122 +269,9 @@ public final class IoTDeviceEntity extends EntityInner {
     }
 
     /**
-     * Get the owners property: A list of owners of the IoTDevice entity.
-     *
-     * @return the owners value.
-     */
-    public List<String> owners() {
-        return this.innerProperties() == null ? null : this.innerProperties().owners();
-    }
-
-    /**
-     * Get the nicEntityIds property: A list of Nic entity ids of the IoTDevice entity.
-     *
-     * @return the nicEntityIds value.
-     */
-    public List<String> nicEntityIds() {
-        return this.innerProperties() == null ? null : this.innerProperties().nicEntityIds();
-    }
-
-    /**
-     * Get the site property: The site of the device.
-     *
-     * @return the site value.
-     */
-    public String site() {
-        return this.innerProperties() == null ? null : this.innerProperties().site();
-    }
-
-    /**
-     * Get the zone property: The zone location of the device within a site.
-     *
-     * @return the zone value.
-     */
-    public String zone() {
-        return this.innerProperties() == null ? null : this.innerProperties().zone();
-    }
-
-    /**
-     * Get the sensor property: The sensor the device is monitored by.
-     *
-     * @return the sensor value.
-     */
-    public String sensor() {
-        return this.innerProperties() == null ? null : this.innerProperties().sensor();
-    }
-
-    /**
-     * Get the deviceSubType property: The subType of the device ('PLC', 'HMI', 'EWS', etc.).
-     *
-     * @return the deviceSubType value.
-     */
-    public String deviceSubType() {
-        return this.innerProperties() == null ? null : this.innerProperties().deviceSubType();
-    }
-
-    /**
-     * Get the importance property: Device importance, determines if the device classified as 'crown jewel'.
-     *
-     * @return the importance value.
-     */
-    public DeviceImportance importance() {
-        return this.innerProperties() == null ? null : this.innerProperties().importance();
-    }
-
-    /**
-     * Set the importance property: Device importance, determines if the device classified as 'crown jewel'.
-     *
-     * @param importance the importance value to set.
-     * @return the IoTDeviceEntity object itself.
-     */
-    public IoTDeviceEntity withImportance(DeviceImportance importance) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new IoTDeviceEntityProperties();
-        }
-        this.innerProperties().withImportance(importance);
-        return this;
-    }
-
-    /**
-     * Get the purdueLayer property: The Purdue Layer of the device.
-     *
-     * @return the purdueLayer value.
-     */
-    public String purdueLayer() {
-        return this.innerProperties() == null ? null : this.innerProperties().purdueLayer();
-    }
-
-    /**
-     * Get the isAuthorized property: Determines whether the device classified as authorized device.
-     *
-     * @return the isAuthorized value.
-     */
-    public Boolean isAuthorized() {
-        return this.innerProperties() == null ? null : this.innerProperties().isAuthorized();
-    }
-
-    /**
-     * Get the isProgramming property: Determines whether the device classified as programming device.
-     *
-     * @return the isProgramming value.
-     */
-    public Boolean isProgramming() {
-        return this.innerProperties() == null ? null : this.innerProperties().isProgramming();
-    }
-
-    /**
-     * Get the isScanner property: Is the device classified as a scanner device.
-     *
-     * @return the isScanner value.
-     */
-    public Boolean isScanner() {
-        return this.innerProperties() == null ? null : this.innerProperties().isScanner();
-    }
-
-    /**
      * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, Object> additionalData() {
@@ -313,7 +281,7 @@ public final class IoTDeviceEntity extends EntityInner {
     /**
      * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
      * graph item instance. This property is optional and might be system generated.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -322,14 +290,61 @@ public final class IoTDeviceEntity extends EntityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTDeviceEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTDeviceEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IoTDeviceEntity.
+     */
+    public static IoTDeviceEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTDeviceEntity deserializedIoTDeviceEntity = new IoTDeviceEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIoTDeviceEntity.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIoTDeviceEntity.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIoTDeviceEntity.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedIoTDeviceEntity.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedIoTDeviceEntity.kind = EntityKindEnum.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIoTDeviceEntity.innerProperties = IoTDeviceEntityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTDeviceEntity;
+        });
     }
 }

@@ -13,31 +13,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactContentPropertiesDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactContentPropertiesDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"content\":\"datandsytgadg\",\"contentType\":\"aeaeneqnzarrw\",\"contentLink\":{\"uri\":\"uijfqk\",\"contentVersion\":\"e\",\"contentSize\":9040428680411345053,\"contentHash\":{\"algorithm\":\"ubjibww\",\"value\":\"tohqkvpuvksgp\"},\"metadata\":\"dataaknynfsynljphuop\"},\"createdTime\":\"2021-05-14T18:56:32Z\",\"changedTime\":\"2021-08-24T08:24:23Z\",\"metadata\":\"dataynt\"}")
-                .toObject(ArtifactContentPropertiesDefinition.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T18:56:32Z"), model.createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T08:24:23Z"), model.changedTime());
-        Assertions.assertEquals("aeaeneqnzarrw", model.contentType());
-        Assertions.assertEquals("uijfqk", model.contentLink().uri());
+        ArtifactContentPropertiesDefinition model = BinaryData.fromString(
+            "{\"content\":\"datadlwwqfbumlkxt\",\"contentType\":\"jfsmlmbtxhwgfwsr\",\"contentLink\":{\"uri\":\"coezbrhubskh\",\"contentVersion\":\"ygo\",\"contentSize\":1410009075037068900,\"contentHash\":{\"algorithm\":\"qjbvleorfmlu\",\"value\":\"tqzfavyv\"},\"metadata\":\"dataqybaryeua\"},\"createdTime\":\"2021-06-23T02:25:47Z\",\"changedTime\":\"2021-04-14T17:43:50Z\",\"metadata\":\"dataqgzsles\"}")
+            .toObject(ArtifactContentPropertiesDefinition.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T02:25:47Z"), model.createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T17:43:50Z"), model.changedTime());
+        Assertions.assertEquals("jfsmlmbtxhwgfwsr", model.contentType());
+        Assertions.assertEquals("coezbrhubskh", model.contentLink().uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactContentPropertiesDefinition model =
-            new ArtifactContentPropertiesDefinition()
-                .withCreatedTime(OffsetDateTime.parse("2021-05-14T18:56:32Z"))
-                .withChangedTime(OffsetDateTime.parse("2021-08-24T08:24:23Z"))
-                .withMetadata("dataynt")
-                .withContent("datandsytgadg")
-                .withContentType("aeaeneqnzarrw")
-                .withContentLink(new ContentLink().withUri("uijfqk"));
+        ArtifactContentPropertiesDefinition model
+            = new ArtifactContentPropertiesDefinition().withCreatedTime(OffsetDateTime.parse("2021-06-23T02:25:47Z"))
+                .withChangedTime(OffsetDateTime.parse("2021-04-14T17:43:50Z"))
+                .withMetadata("dataqgzsles")
+                .withContent("datadlwwqfbumlkxt")
+                .withContentType("jfsmlmbtxhwgfwsr")
+                .withContentLink(new ContentLink().withUri("coezbrhubskh"));
         model = BinaryData.fromObject(model).toObject(ArtifactContentPropertiesDefinition.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T18:56:32Z"), model.createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T08:24:23Z"), model.changedTime());
-        Assertions.assertEquals("aeaeneqnzarrw", model.contentType());
-        Assertions.assertEquals("uijfqk", model.contentLink().uri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T02:25:47Z"), model.createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T17:43:50Z"), model.changedTime());
+        Assertions.assertEquals("jfsmlmbtxhwgfwsr", model.contentType());
+        Assertions.assertEquals("coezbrhubskh", model.contentLink().uri());
     }
 }

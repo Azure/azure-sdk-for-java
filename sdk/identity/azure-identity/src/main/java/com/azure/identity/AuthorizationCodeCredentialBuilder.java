@@ -31,8 +31,8 @@ import java.net.URISyntaxException;
  *
  * <!-- src_embed com.azure.identity.credential.authorizationcodecredential.construct -->
  * <pre>
- * TokenCredential authorizationCodeCredential = new AuthorizationCodeCredentialBuilder&#40;&#41;
- *     .authorizationCode&#40;&quot;&#123;authorization-code-received-at-redirectURL&#125;&quot;&#41;
+ * TokenCredential authorizationCodeCredential = new AuthorizationCodeCredentialBuilder&#40;&#41;.authorizationCode&#40;
+ *         &quot;&#123;authorization-code-received-at-redirectURL&#125;&quot;&#41;
  *     .redirectUrl&#40;&quot;&#123;redirectUrl-where-authorization-code-is-received&#125;&quot;&#41;
  *     .clientId&#40;&quot;&#123;clientId-of-application-being-authenticated&quot;&#41;
  *     .build&#40;&#41;;
@@ -101,8 +101,8 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
      * @return a {@link AuthorizationCodeCredential} with the current configurations.
      */
     public AuthorizationCodeCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "authorizationCode", authCode,
-            "redirectUrl", redirectUrl);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "authorizationCode", authCode, "redirectUrl",
+            redirectUrl);
 
         try {
             return new AuthorizationCodeCredential(clientId, clientSecret, tenantId, authCode, new URI(redirectUrl),

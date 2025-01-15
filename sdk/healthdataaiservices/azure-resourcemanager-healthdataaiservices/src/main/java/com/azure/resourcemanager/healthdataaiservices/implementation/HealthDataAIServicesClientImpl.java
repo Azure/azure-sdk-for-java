@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -43,12 +43,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = HealthDataAIServicesClientBuilder.class)
 public final class HealthDataAIServicesClientImpl implements HealthDataAIServicesClient {
     /**
-     * Server parameter.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -189,7 +189,7 @@ public final class HealthDataAIServicesClientImpl implements HealthDataAIService
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
     HealthDataAIServicesClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -199,7 +199,7 @@ public final class HealthDataAIServicesClientImpl implements HealthDataAIService
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-02-28-preview";
+        this.apiVersion = "2024-09-20";
         this.operations = new OperationsClientImpl(this);
         this.deidServices = new DeidServicesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);

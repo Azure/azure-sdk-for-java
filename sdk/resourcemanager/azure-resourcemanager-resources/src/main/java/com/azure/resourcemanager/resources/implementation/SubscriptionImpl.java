@@ -17,10 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * The implementation of {@link Subscription}.
  */
-final class SubscriptionImpl extends
-        IndexableWrapperImpl<SubscriptionInner>
-        implements
-        Subscription  {
+final class SubscriptionImpl extends IndexableWrapperImpl<SubscriptionInner> implements Subscription {
 
     private final SubscriptionsClient client;
 

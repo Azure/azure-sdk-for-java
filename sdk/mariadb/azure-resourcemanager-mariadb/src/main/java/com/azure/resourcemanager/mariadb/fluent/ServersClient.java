@@ -15,11 +15,13 @@ import com.azure.resourcemanager.mariadb.fluent.models.ServerInner;
 import com.azure.resourcemanager.mariadb.models.ServerForCreate;
 import com.azure.resourcemanager.mariadb.models.ServerUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in ServersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServersClient.
+ */
 public interface ServersClient {
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
@@ -29,12 +31,12 @@ public interface ServersClient {
      * @return the {@link SyncPoller} for polling of represents a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(
-        String resourceGroupName, String serverName, ServerForCreate parameters);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
+        ServerForCreate parameters);
 
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
@@ -45,12 +47,12 @@ public interface ServersClient {
      * @return the {@link SyncPoller} for polling of represents a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(
-        String resourceGroupName, String serverName, ServerForCreate parameters, Context context);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
+        ServerForCreate parameters, Context context);
 
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
@@ -64,7 +66,7 @@ public interface ServersClient {
 
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
@@ -80,7 +82,7 @@ public interface ServersClient {
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal
      * server definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
@@ -90,13 +92,13 @@ public interface ServersClient {
      * @return the {@link SyncPoller} for polling of represents a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
-        String resourceGroupName, String serverName, ServerUpdateParameters parameters);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
+        ServerUpdateParameters parameters);
 
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal
      * server definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
@@ -107,13 +109,13 @@ public interface ServersClient {
      * @return the {@link SyncPoller} for polling of represents a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
-        String resourceGroupName, String serverName, ServerUpdateParameters parameters, Context context);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
+        ServerUpdateParameters parameters, Context context);
 
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal
      * server definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
@@ -128,7 +130,7 @@ public interface ServersClient {
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal
      * server definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
@@ -143,7 +145,7 @@ public interface ServersClient {
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +158,7 @@ public interface ServersClient {
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -170,7 +172,7 @@ public interface ServersClient {
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +184,7 @@ public interface ServersClient {
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -195,7 +197,7 @@ public interface ServersClient {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -209,7 +211,7 @@ public interface ServersClient {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +224,7 @@ public interface ServersClient {
 
     /**
      * List all the servers in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,7 +236,7 @@ public interface ServersClient {
 
     /**
      * List all the servers in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -247,7 +249,7 @@ public interface ServersClient {
 
     /**
      * List all the servers in a given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of servers as paginated response with {@link PagedIterable}.
@@ -257,7 +259,7 @@ public interface ServersClient {
 
     /**
      * List all the servers in a given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -269,7 +271,7 @@ public interface ServersClient {
 
     /**
      * Restarts a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +284,7 @@ public interface ServersClient {
 
     /**
      * Restarts a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -296,7 +298,7 @@ public interface ServersClient {
 
     /**
      * Restarts a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,7 +310,7 @@ public interface ServersClient {
 
     /**
      * Restarts a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -321,7 +323,7 @@ public interface ServersClient {
 
     /**
      * Starts a stopped server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,7 +336,7 @@ public interface ServersClient {
 
     /**
      * Starts a stopped server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -348,7 +350,7 @@ public interface ServersClient {
 
     /**
      * Starts a stopped server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -360,7 +362,7 @@ public interface ServersClient {
 
     /**
      * Starts a stopped server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -373,7 +375,7 @@ public interface ServersClient {
 
     /**
      * Stops a running server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -386,7 +388,7 @@ public interface ServersClient {
 
     /**
      * Stops a running server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -400,7 +402,7 @@ public interface ServersClient {
 
     /**
      * Stops a running server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -412,7 +414,7 @@ public interface ServersClient {
 
     /**
      * Stops a running server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.

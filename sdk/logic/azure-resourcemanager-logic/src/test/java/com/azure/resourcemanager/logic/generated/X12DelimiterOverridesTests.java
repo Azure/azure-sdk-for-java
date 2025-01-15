@@ -12,44 +12,40 @@ import org.junit.jupiter.api.Assertions;
 public final class X12DelimiterOverridesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        X12DelimiterOverrides model =
-            BinaryData
-                .fromString(
-                    "{\"protocolVersion\":\"h\",\"messageId\":\"qedcgzulwm\",\"dataElementSeparator\":874924204,\"componentSeparator\":652058818,\"segmentTerminator\":201174669,\"segmentTerminatorSuffix\":\"None\",\"replaceCharacter\":401684399,\"replaceSeparatorsInPayload\":true,\"targetNamespace\":\"vpglydz\"}")
-                .toObject(X12DelimiterOverrides.class);
-        Assertions.assertEquals("h", model.protocolVersion());
-        Assertions.assertEquals("qedcgzulwm", model.messageId());
-        Assertions.assertEquals(874924204, model.dataElementSeparator());
-        Assertions.assertEquals(652058818, model.componentSeparator());
-        Assertions.assertEquals(201174669, model.segmentTerminator());
+        X12DelimiterOverrides model = BinaryData.fromString(
+            "{\"protocolVersion\":\"bwvqvxkdi\",\"messageId\":\"ihebwtsw\",\"dataElementSeparator\":2078185567,\"componentSeparator\":1832502698,\"segmentTerminator\":256725056,\"segmentTerminatorSuffix\":\"None\",\"replaceCharacter\":59905727,\"replaceSeparatorsInPayload\":true,\"targetNamespace\":\"ragegi\"}")
+            .toObject(X12DelimiterOverrides.class);
+        Assertions.assertEquals("bwvqvxkdi", model.protocolVersion());
+        Assertions.assertEquals("ihebwtsw", model.messageId());
+        Assertions.assertEquals(2078185567, model.dataElementSeparator());
+        Assertions.assertEquals(1832502698, model.componentSeparator());
+        Assertions.assertEquals(256725056, model.segmentTerminator());
         Assertions.assertEquals(SegmentTerminatorSuffix.NONE, model.segmentTerminatorSuffix());
-        Assertions.assertEquals(401684399, model.replaceCharacter());
+        Assertions.assertEquals(59905727, model.replaceCharacter());
         Assertions.assertEquals(true, model.replaceSeparatorsInPayload());
-        Assertions.assertEquals("vpglydz", model.targetNamespace());
+        Assertions.assertEquals("ragegi", model.targetNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        X12DelimiterOverrides model =
-            new X12DelimiterOverrides()
-                .withProtocolVersion("h")
-                .withMessageId("qedcgzulwm")
-                .withDataElementSeparator(874924204)
-                .withComponentSeparator(652058818)
-                .withSegmentTerminator(201174669)
-                .withSegmentTerminatorSuffix(SegmentTerminatorSuffix.NONE)
-                .withReplaceCharacter(401684399)
-                .withReplaceSeparatorsInPayload(true)
-                .withTargetNamespace("vpglydz");
+        X12DelimiterOverrides model = new X12DelimiterOverrides().withProtocolVersion("bwvqvxkdi")
+            .withMessageId("ihebwtsw")
+            .withDataElementSeparator(2078185567)
+            .withComponentSeparator(1832502698)
+            .withSegmentTerminator(256725056)
+            .withSegmentTerminatorSuffix(SegmentTerminatorSuffix.NONE)
+            .withReplaceCharacter(59905727)
+            .withReplaceSeparatorsInPayload(true)
+            .withTargetNamespace("ragegi");
         model = BinaryData.fromObject(model).toObject(X12DelimiterOverrides.class);
-        Assertions.assertEquals("h", model.protocolVersion());
-        Assertions.assertEquals("qedcgzulwm", model.messageId());
-        Assertions.assertEquals(874924204, model.dataElementSeparator());
-        Assertions.assertEquals(652058818, model.componentSeparator());
-        Assertions.assertEquals(201174669, model.segmentTerminator());
+        Assertions.assertEquals("bwvqvxkdi", model.protocolVersion());
+        Assertions.assertEquals("ihebwtsw", model.messageId());
+        Assertions.assertEquals(2078185567, model.dataElementSeparator());
+        Assertions.assertEquals(1832502698, model.componentSeparator());
+        Assertions.assertEquals(256725056, model.segmentTerminator());
         Assertions.assertEquals(SegmentTerminatorSuffix.NONE, model.segmentTerminatorSuffix());
-        Assertions.assertEquals(401684399, model.replaceCharacter());
+        Assertions.assertEquals(59905727, model.replaceCharacter());
         Assertions.assertEquals(true, model.replaceSeparatorsInPayload());
-        Assertions.assertEquals("vpglydz", model.targetNamespace());
+        Assertions.assertEquals("ragegi", model.targetNamespace());
     }
 }

@@ -31,7 +31,8 @@ public final class ListRoleAssignmentsImpl implements ListRoleAssignments {
         List<RoleAssignmentDetailInner> inner = this.innerModel().roleAssignmentResponse();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new RoleAssignmentDetailImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new RoleAssignmentDetailImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

@@ -10,42 +10,77 @@ import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.ValueFormat;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPropertiesV2;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"PythonFeed\",\"target\":\"yqsemwa\",\"value\":\"ets\",\"valueFormat\":\"JSON\"},\"id\":\"h\",\"name\":\"d\",\"type\":\"lvwiwubmwmbesl\"}],\"nextLink\":\"k\"}")
-                .toObject(WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult.class);
-        Assertions.assertEquals(ConnectionCategory.PYTHON_FEED, model.value().get(0).properties().category());
-        Assertions.assertEquals("yqsemwa", model.value().get(0).properties().target());
-        Assertions.assertEquals("ets", model.value().get(0).properties().value());
+        WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"MySql\",\"createdByWorkspaceArmId\":\"ashrt\",\"expiryTime\":\"2021-03-25T05:20:51Z\",\"group\":\"ServicesAndApps\",\"isSharedToAll\":true,\"target\":\"bpokulpiujwaasip\",\"metadata\":{\"erpqlpqwcciuqg\":\"obyu\",\"hykojoxafnndlpic\":\"dbutauvfbtkuwhh\"},\"sharedUserList\":[\"ymkcdyhb\"],\"value\":\"kpw\",\"valueFormat\":\"JSON\"},\"id\":\"novvqfovljxy\",\"name\":\"suwsyrsnds\",\"type\":\"tgadgvraeaen\"},{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"MySql\",\"createdByWorkspaceArmId\":\"arrwlquu\",\"expiryTime\":\"2021-08-08T16:39:53Z\",\"group\":\"File\",\"isSharedToAll\":true,\"target\":\"wiipfpub\",\"metadata\":{\"sgplsakn\":\"wwiftohqkvpuv\",\"synljphuopxodl\":\"n\"},\"sharedUserList\":[\"ntorzihleosjswsr\"],\"value\":\"lyzrpzbchckqqzqi\",\"valueFormat\":\"JSON\"},\"id\":\"suiizynkedyat\",\"name\":\"wyhqmibzyhwits\",\"type\":\"ypyynpcdpumnzg\"}],\"nextLink\":\"z\"}")
+            .toObject(WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult.class);
+        Assertions.assertEquals(ConnectionCategory.MY_SQL, model.value().get(0).properties().category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-25T05:20:51Z"),
+            model.value().get(0).properties().expiryTime());
+        Assertions.assertEquals(true, model.value().get(0).properties().isSharedToAll());
+        Assertions.assertEquals("bpokulpiujwaasip", model.value().get(0).properties().target());
+        Assertions.assertEquals("obyu", model.value().get(0).properties().metadata().get("erpqlpqwcciuqg"));
+        Assertions.assertEquals("ymkcdyhb", model.value().get(0).properties().sharedUserList().get(0));
+        Assertions.assertEquals("kpw", model.value().get(0).properties().value());
         Assertions.assertEquals(ValueFormat.JSON, model.value().get(0).properties().valueFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult model =
-            new WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult()
+        WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult model
+            = new WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new WorkspaceConnectionPropertiesV2BasicResourceInner()
-                                .withProperties(
-                                    new WorkspaceConnectionPropertiesV2()
-                                        .withCategory(ConnectionCategory.PYTHON_FEED)
-                                        .withTarget("yqsemwa")
-                                        .withValue("ets")
-                                        .withValueFormat(ValueFormat.JSON))));
-        model =
-            BinaryData.fromObject(model).toObject(WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult.class);
-        Assertions.assertEquals(ConnectionCategory.PYTHON_FEED, model.value().get(0).properties().category());
-        Assertions.assertEquals("yqsemwa", model.value().get(0).properties().target());
-        Assertions.assertEquals("ets", model.value().get(0).properties().value());
+                            new WorkspaceConnectionPropertiesV2BasicResourceInner().withProperties(
+                                new WorkspaceConnectionPropertiesV2().withCategory(ConnectionCategory.MY_SQL)
+                                    .withExpiryTime(OffsetDateTime.parse("2021-03-25T05:20:51Z"))
+                                    .withIsSharedToAll(true)
+                                    .withTarget("bpokulpiujwaasip")
+                                    .withMetadata(
+                                        mapOf("erpqlpqwcciuqg", "obyu", "hykojoxafnndlpic", "dbutauvfbtkuwhh"))
+                                    .withSharedUserList(Arrays.asList("ymkcdyhb"))
+                                    .withValue("kpw")
+                                    .withValueFormat(ValueFormat.JSON)),
+                            new WorkspaceConnectionPropertiesV2BasicResourceInner().withProperties(
+                                new WorkspaceConnectionPropertiesV2().withCategory(ConnectionCategory.MY_SQL)
+                                    .withExpiryTime(OffsetDateTime.parse("2021-08-08T16:39:53Z"))
+                                    .withIsSharedToAll(true)
+                                    .withTarget("wiipfpub")
+                                    .withMetadata(mapOf("sgplsakn", "wwiftohqkvpuv", "synljphuopxodl", "n"))
+                                    .withSharedUserList(Arrays.asList("ntorzihleosjswsr"))
+                                    .withValue("lyzrpzbchckqqzqi")
+                                    .withValueFormat(ValueFormat.JSON))));
+        model = BinaryData.fromObject(model)
+            .toObject(WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult.class);
+        Assertions.assertEquals(ConnectionCategory.MY_SQL, model.value().get(0).properties().category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-25T05:20:51Z"),
+            model.value().get(0).properties().expiryTime());
+        Assertions.assertEquals(true, model.value().get(0).properties().isSharedToAll());
+        Assertions.assertEquals("bpokulpiujwaasip", model.value().get(0).properties().target());
+        Assertions.assertEquals("obyu", model.value().get(0).properties().metadata().get("erpqlpqwcciuqg"));
+        Assertions.assertEquals("ymkcdyhb", model.value().get(0).properties().sharedUserList().get(0));
+        Assertions.assertEquals("kpw", model.value().get(0).properties().value());
         Assertions.assertEquals(ValueFormat.JSON, model.value().get(0).properties().valueFormat());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

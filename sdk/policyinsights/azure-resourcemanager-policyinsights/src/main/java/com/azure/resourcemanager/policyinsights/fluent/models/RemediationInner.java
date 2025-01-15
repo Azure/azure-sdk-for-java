@@ -7,35 +7,55 @@ package com.azure.resourcemanager.policyinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.models.RemediationDeploymentSummary;
 import com.azure.resourcemanager.policyinsights.models.RemediationFilters;
 import com.azure.resourcemanager.policyinsights.models.RemediationPropertiesFailureThreshold;
 import com.azure.resourcemanager.policyinsights.models.ResourceDiscoveryMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The remediation definition. */
+/**
+ * The remediation definition.
+ */
 @Fluent
 public final class RemediationInner extends ProxyResource {
     /*
      * Properties for the remediation.
      */
-    @JsonProperty(value = "properties")
     private RemediationProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of RemediationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RemediationInner class.
+     */
     public RemediationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties for the remediation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RemediationProperties innerProperties() {
@@ -44,7 +64,7 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,8 +72,38 @@ public final class RemediationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the policyAssignmentId property: The resource ID of the policy assignment that should be remediated.
-     *
+     * 
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
@@ -62,7 +112,7 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Set the policyAssignmentId property: The resource ID of the policy assignment that should be remediated.
-     *
+     * 
      * @param policyAssignmentId the policyAssignmentId value to set.
      * @return the RemediationInner object itself.
      */
@@ -77,7 +127,7 @@ public final class RemediationInner extends ProxyResource {
     /**
      * Get the policyDefinitionReferenceId property: The policy definition reference ID of the individual definition
      * that should be remediated. Required when the policy assignment being remediated assigns a policy set definition.
-     *
+     * 
      * @return the policyDefinitionReferenceId value.
      */
     public String policyDefinitionReferenceId() {
@@ -87,7 +137,7 @@ public final class RemediationInner extends ProxyResource {
     /**
      * Set the policyDefinitionReferenceId property: The policy definition reference ID of the individual definition
      * that should be remediated. Required when the policy assignment being remediated assigns a policy set definition.
-     *
+     * 
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set.
      * @return the RemediationInner object itself.
      */
@@ -102,7 +152,7 @@ public final class RemediationInner extends ProxyResource {
     /**
      * Get the resourceDiscoveryMode property: The way resources to remediate are discovered. Defaults to
      * ExistingNonCompliant if not specified.
-     *
+     * 
      * @return the resourceDiscoveryMode value.
      */
     public ResourceDiscoveryMode resourceDiscoveryMode() {
@@ -112,7 +162,7 @@ public final class RemediationInner extends ProxyResource {
     /**
      * Set the resourceDiscoveryMode property: The way resources to remediate are discovered. Defaults to
      * ExistingNonCompliant if not specified.
-     *
+     * 
      * @param resourceDiscoveryMode the resourceDiscoveryMode value to set.
      * @return the RemediationInner object itself.
      */
@@ -125,8 +175,9 @@ public final class RemediationInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: The status of the remediation.
-     *
+     * Get the provisioningState property: The status of the remediation. This refers to the entire remediation task,
+     * not individual deployments. Allowed values are Evaluating, Canceled, Cancelling, Failed, Complete, or Succeeded.
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -135,7 +186,7 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Get the createdOn property: The time at which the remediation was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -144,7 +195,7 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Get the lastUpdatedOn property: The time at which the remediation was last updated.
-     *
+     * 
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime lastUpdatedOn() {
@@ -153,7 +204,7 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Get the filters property: The filters that will be applied to determine which resources to remediate.
-     *
+     * 
      * @return the filters value.
      */
     public RemediationFilters filters() {
@@ -162,7 +213,7 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Set the filters property: The filters that will be applied to determine which resources to remediate.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the RemediationInner object itself.
      */
@@ -176,7 +227,7 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Get the deploymentStatus property: The deployment status summary for all deployments created by the remediation.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public RemediationDeploymentSummary deploymentStatus() {
@@ -186,7 +237,7 @@ public final class RemediationInner extends ProxyResource {
     /**
      * Get the statusMessage property: The remediation status message. Provides additional details regarding the state
      * of the remediation.
-     *
+     * 
      * @return the statusMessage value.
      */
     public String statusMessage() {
@@ -196,7 +247,7 @@ public final class RemediationInner extends ProxyResource {
     /**
      * Get the correlationId property: The remediation correlation Id. Can be used to find events related to the
      * remediation in the activity log.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -206,7 +257,7 @@ public final class RemediationInner extends ProxyResource {
     /**
      * Get the resourceCount property: Determines the max number of resources that can be remediated by the remediation
      * job. If not provided, the default resource count is used.
-     *
+     * 
      * @return the resourceCount value.
      */
     public Integer resourceCount() {
@@ -216,7 +267,7 @@ public final class RemediationInner extends ProxyResource {
     /**
      * Set the resourceCount property: Determines the max number of resources that can be remediated by the remediation
      * job. If not provided, the default resource count is used.
-     *
+     * 
      * @param resourceCount the resourceCount value to set.
      * @return the RemediationInner object itself.
      */
@@ -232,7 +283,7 @@ public final class RemediationInner extends ProxyResource {
      * Get the parallelDeployments property: Determines how many resources to remediate at any given time. Can be used
      * to increase or reduce the pace of the remediation. If not provided, the default parallel deployments value is
      * used.
-     *
+     * 
      * @return the parallelDeployments value.
      */
     public Integer parallelDeployments() {
@@ -243,7 +294,7 @@ public final class RemediationInner extends ProxyResource {
      * Set the parallelDeployments property: Determines how many resources to remediate at any given time. Can be used
      * to increase or reduce the pace of the remediation. If not provided, the default parallel deployments value is
      * used.
-     *
+     * 
      * @param parallelDeployments the parallelDeployments value to set.
      * @return the RemediationInner object itself.
      */
@@ -257,7 +308,7 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Get the failureThreshold property: The remediation failure threshold settings.
-     *
+     * 
      * @return the failureThreshold value.
      */
     public RemediationPropertiesFailureThreshold failureThreshold() {
@@ -266,7 +317,7 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Set the failureThreshold property: The remediation failure threshold settings.
-     *
+     * 
      * @param failureThreshold the failureThreshold value to set.
      * @return the RemediationInner object itself.
      */
@@ -280,12 +331,57 @@ public final class RemediationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemediationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemediationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RemediationInner.
+     */
+    public static RemediationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemediationInner deserializedRemediationInner = new RemediationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRemediationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRemediationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRemediationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRemediationInner.innerProperties = RemediationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRemediationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemediationInner;
+        });
     }
 }

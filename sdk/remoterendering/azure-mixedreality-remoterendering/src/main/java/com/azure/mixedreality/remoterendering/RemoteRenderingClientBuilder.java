@@ -30,7 +30,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /** A builder for creating instances of RemoteRenderingClient and RemoteRenderingAsyncClient. */
-@ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { RemoteRenderingClient.class, RemoteRenderingAsyncClient.class })
 public final class RemoteRenderingClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(RemoteRenderingClientBuilder.class);
@@ -73,7 +73,8 @@ public final class RemoteRenderingClientBuilder {
 
         if (clientOptions != null) {
             List<HttpHeader> httpHeaderList = new ArrayList<HttpHeader>();
-            clientOptions.getHeaders().forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            clientOptions.getHeaders()
+                .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
             builder.addPolicy(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
             // generated code uses deprecated httpLogOptions.getApplicationId(), so we set that here.
@@ -100,7 +101,8 @@ public final class RemoteRenderingClientBuilder {
         try {
             this.accountId = UUID.fromString(accountId);
         } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The 'accountId' must be a UUID formatted value.", ex));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The 'accountId' must be a UUID formatted value.", ex));
         }
 
         this.stsBuilder.accountId(accountId);
@@ -117,7 +119,8 @@ public final class RemoteRenderingClientBuilder {
         Objects.requireNonNull(accountDomain, "'accountDomain' cannot be null.");
 
         if (accountDomain.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'accountDomain' cannot be an empty string."));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'accountDomain' cannot be an empty string."));
         }
 
         this.stsBuilder.accountDomain(accountDomain);
@@ -131,7 +134,8 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      */
     public RemoteRenderingClientBuilder credential(AzureKeyCredential accountKeyCredential) {
-        this.stsBuilder.credential(Objects.requireNonNull(accountKeyCredential, "'accountKeyCredential' cannot be null."));
+        this.stsBuilder
+            .credential(Objects.requireNonNull(accountKeyCredential, "'accountKeyCredential' cannot be null."));
         return this;
     }
 

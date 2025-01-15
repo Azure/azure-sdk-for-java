@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class SuppressionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SuppressionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"suppressionId\":\"ocfs\",\"ttl\":\"s\",\"expirationTimeStamp\":\"2021-06-13T04:15:30Z\"}")
-                .toObject(SuppressionProperties.class);
-        Assertions.assertEquals("ocfs", model.suppressionId());
-        Assertions.assertEquals("s", model.ttl());
+        SuppressionProperties model = BinaryData.fromString(
+            "{\"suppressionId\":\"a\",\"ttl\":\"nyqupedeojnabck\",\"expirationTimeStamp\":\"2021-08-06T08:04:06Z\"}")
+            .toObject(SuppressionProperties.class);
+        Assertions.assertEquals("a", model.suppressionId());
+        Assertions.assertEquals("nyqupedeojnabck", model.ttl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SuppressionProperties model = new SuppressionProperties().withSuppressionId("ocfs").withTtl("s");
+        SuppressionProperties model = new SuppressionProperties().withSuppressionId("a").withTtl("nyqupedeojnabck");
         model = BinaryData.fromObject(model).toObject(SuppressionProperties.class);
-        Assertions.assertEquals("ocfs", model.suppressionId());
-        Assertions.assertEquals("s", model.ttl());
+        Assertions.assertEquals("a", model.suppressionId());
+        Assertions.assertEquals("nyqupedeojnabck", model.ttl());
     }
 }

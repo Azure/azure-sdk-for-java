@@ -6,32 +6,34 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.resourcemanager.hdinsight.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
      * Gets the name property: The operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the display property: The display of operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the properties property: The operation properties.
-     *
+     * 
      * @return the properties value.
      */
     OperationProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

@@ -24,12 +24,14 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     private String type = "HDInsightSpark";
 
     /*
-     * The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType string).
+     * The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType
+     * string).
      */
     private Object rootPath;
 
     /*
-     * The relative path to the root folder of the code/package to be executed. Type: string (or Expression with resultType string).
+     * The relative path to the root folder of the code/package to be executed. Type: string (or Expression with
+     * resultType string).
      */
     private Object entryFilePath;
 

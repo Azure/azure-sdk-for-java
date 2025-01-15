@@ -12,7 +12,7 @@ import com.azure.resourcemanager.streamanalytics.models.StreamingJob;
 public final class StreamingJobsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Update.json
      */
     /**
@@ -22,7 +22,8 @@ public final class StreamingJobsUpdateSamples {
      */
     public static void updateAStreamingJob(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         StreamingJob resource = manager.streamingJobs()
-            .getByResourceGroupWithResponse("sjrg6936", "sj59", null, com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("sjrg6936", "sj59", null, com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withEventsOutOfOrderMaxDelayInSeconds(21).withEventsLateArrivalMaxDelayInSeconds(13).apply();
     }
 }

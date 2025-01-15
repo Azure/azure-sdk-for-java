@@ -6,8 +6,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.ScheduleInner;
+import com.azure.resourcemanager.machinelearning.models.ScheduleActionBase;
 import com.azure.resourcemanager.machinelearning.models.ScheduleProperties;
 import com.azure.resourcemanager.machinelearning.models.ScheduleResourceArmPaginatedResult;
+import com.azure.resourcemanager.machinelearning.models.TriggerBase;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,64 +18,71 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleResourceArmPaginatedResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"bmhyreeudz\",\"value\":[{\"properties\":{\"displayName\":\"pdqmjxlyyzglgouw\",\"isEnabled\":false,\"provisioningState\":\"Updating\",\"description\":\"uojqt\",\"properties\":{},\"tags\":{}},\"id\":\"kjeytunl\",\"name\":\"fjkwrusnkq\",\"type\":\"hsyrqunj\"},{\"properties\":{\"displayName\":\"denxau\",\"isEnabled\":true,\"provisioningState\":\"Creating\",\"description\":\"kifmjn\",\"properties\":{},\"tags\":{}},\"id\":\"qabpxuckpggqow\",\"name\":\"yirdhlisngwflqq\",\"type\":\"pizruwnpqxpxiw\"},{\"properties\":{\"displayName\":\"ngjsaasi\",\"isEnabled\":true,\"provisioningState\":\"Failed\",\"description\":\"jvkviirhgfgrws\",\"properties\":{},\"tags\":{}},\"id\":\"atzv\",\"name\":\"bglbyvict\",\"type\":\"tbrxkjz\"},{\"properties\":{\"displayName\":\"gxffmshkwf\",\"isEnabled\":false,\"provisioningState\":\"Creating\",\"description\":\"wopdbydpiz\",\"properties\":{},\"tags\":{}},\"id\":\"napxbiygnug\",\"name\":\"knfsmfcttuxuuyil\",\"type\":\"lq\"}]}")
-                .toObject(ScheduleResourceArmPaginatedResult.class);
-        Assertions.assertEquals("bmhyreeudz", model.nextLink());
-        Assertions.assertEquals("uojqt", model.value().get(0).properties().description());
-        Assertions.assertEquals("pdqmjxlyyzglgouw", model.value().get(0).properties().displayName());
+        ScheduleResourceArmPaginatedResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"dmkrrb\",\"isEnabled\":false,\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"ulubefgybp\",\"startTime\":\"bfununmpzkrv\",\"timeZone\":\"ifkdschlzvf\"},\"action\":{\"actionType\":\"ScheduleActionBase\"},\"provisioningState\":\"Creating\",\"description\":\"kjjwgcwn\",\"tags\":{\"rtogmhmj\":\"kgf\",\"fp\":\"jsc\",\"fv\":\"qwtygevgwmseharx\",\"x\":\"n\"},\"properties\":{\"wjhrsidqpxlbtpa\":\"pjptn\",\"ngatwmy\":\"f\",\"mfjhpycvjqdvdwkq\":\"yutrymd\",\"n\":\"ldrlefgnaavua\"}},\"id\":\"taoutnpdct\",\"name\":\"hspfefyihd\",\"type\":\"yeuyldph\"},{\"properties\":{\"displayName\":\"ybkcgsuthhllnmwy\",\"isEnabled\":true,\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"exlfciatxtjrrl\",\"startTime\":\"dskjhhxdlaj\",\"timeZone\":\"xcxscvslxlh\"},\"action\":{\"actionType\":\"ScheduleActionBase\"},\"provisioningState\":\"Failed\",\"description\":\"rmukmyjmkxett\",\"tags\":{\"dnqtoqxjhqx\":\"ojfkq\",\"htkbtnq\":\"s\",\"mbiipsnawwlqk\":\"rngl\"},\"properties\":{\"xricctkwmuqq\":\"hhl\",\"rwvaexhdc\":\"ajxeiygle\",\"hdmljz\":\"rceqnkbrupob\"}},\"id\":\"vume\",\"name\":\"jpbi\",\"type\":\"nzpphepife\"},{\"properties\":{\"displayName\":\"eqir\",\"isEnabled\":false,\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"ly\",\"startTime\":\"gxvrpjl\",\"timeZone\":\"zuodacpun\"},\"action\":{\"actionType\":\"ScheduleActionBase\"},\"provisioningState\":\"Updating\",\"description\":\"pdjxqeskoynu\",\"tags\":{\"vesk\":\"pckaewse\",\"fn\":\"xegqphr\",\"bcbcpz\":\"hctmjtsgh\",\"ldtzmpypefcp\":\"rpzeqac\"},\"properties\":{\"fkhuytu\":\"hnuqndaizu\",\"mtvtvegwqiukvzwy\":\"zx\"}},\"id\":\"tthaokgkskj\",\"name\":\"vb\",\"type\":\"shajqf\"},{\"properties\":{\"displayName\":\"peexpgeumilhwuit\",\"isEnabled\":true,\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"yion\",\"startTime\":\"ninbdbzsxcwqqrs\",\"timeZone\":\"cbbprtugav\"},\"action\":{\"actionType\":\"ScheduleActionBase\"},\"provisioningState\":\"Canceled\",\"description\":\"yksivmfogdrtbfc\",\"tags\":{\"xsgm\":\"ftsjcwj\",\"if\":\"awvifdxke\",\"loozrvt\":\"ocjxw\"},\"properties\":{\"cpxxvirye\":\"mufun\",\"lpmcrdc\":\"ngjgvrquvpyg\",\"x\":\"eljtiahxmfqryarv\"}},\"id\":\"bglcjkayspthzodu\",\"name\":\"tl\",\"type\":\"jtgblios\"}],\"nextLink\":\"fmkmfdjxyxgbkkq\"}")
+            .toObject(ScheduleResourceArmPaginatedResult.class);
+        Assertions.assertEquals("kjjwgcwn", model.value().get(0).properties().description());
+        Assertions.assertEquals("kgf", model.value().get(0).properties().tags().get("rtogmhmj"));
+        Assertions.assertEquals("pjptn", model.value().get(0).properties().properties().get("wjhrsidqpxlbtpa"));
+        Assertions.assertEquals("dmkrrb", model.value().get(0).properties().displayName());
         Assertions.assertEquals(false, model.value().get(0).properties().isEnabled());
+        Assertions.assertEquals("ulubefgybp", model.value().get(0).properties().trigger().endTime());
+        Assertions.assertEquals("bfununmpzkrv", model.value().get(0).properties().trigger().startTime());
+        Assertions.assertEquals("ifkdschlzvf", model.value().get(0).properties().trigger().timeZone());
+        Assertions.assertEquals("fmkmfdjxyxgbkkq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleResourceArmPaginatedResult model =
-            new ScheduleResourceArmPaginatedResult()
-                .withNextLink("bmhyreeudz")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ScheduleInner()
-                                .withProperties(
-                                    new ScheduleProperties()
-                                        .withDescription("uojqt")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withDisplayName("pdqmjxlyyzglgouw")
-                                        .withIsEnabled(false)),
-                            new ScheduleInner()
-                                .withProperties(
-                                    new ScheduleProperties()
-                                        .withDescription("kifmjn")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withDisplayName("denxau")
-                                        .withIsEnabled(true)),
-                            new ScheduleInner()
-                                .withProperties(
-                                    new ScheduleProperties()
-                                        .withDescription("jvkviirhgfgrws")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withDisplayName("ngjsaasi")
-                                        .withIsEnabled(true)),
-                            new ScheduleInner()
-                                .withProperties(
-                                    new ScheduleProperties()
-                                        .withDescription("wopdbydpiz")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withDisplayName("gxffmshkwf")
-                                        .withIsEnabled(false))));
+        ScheduleResourceArmPaginatedResult model = new ScheduleResourceArmPaginatedResult().withValue(Arrays.asList(
+            new ScheduleInner().withProperties(new ScheduleProperties().withDescription("kjjwgcwn")
+                .withTags(mapOf("rtogmhmj", "kgf", "fp", "jsc", "fv", "qwtygevgwmseharx", "x", "n"))
+                .withProperties(mapOf("wjhrsidqpxlbtpa", "pjptn", "ngatwmy", "f", "mfjhpycvjqdvdwkq", "yutrymd", "n",
+                    "ldrlefgnaavua"))
+                .withDisplayName("dmkrrb")
+                .withIsEnabled(false)
+                .withTrigger(new TriggerBase().withEndTime("ulubefgybp")
+                    .withStartTime("bfununmpzkrv")
+                    .withTimeZone("ifkdschlzvf"))
+                .withAction(new ScheduleActionBase())),
+            new ScheduleInner().withProperties(new ScheduleProperties().withDescription("rmukmyjmkxett")
+                .withTags(mapOf("dnqtoqxjhqx", "ojfkq", "htkbtnq", "s", "mbiipsnawwlqk", "rngl"))
+                .withProperties(mapOf("xricctkwmuqq", "hhl", "rwvaexhdc", "ajxeiygle", "hdmljz", "rceqnkbrupob"))
+                .withDisplayName("ybkcgsuthhllnmwy")
+                .withIsEnabled(true)
+                .withTrigger(new TriggerBase().withEndTime("exlfciatxtjrrl")
+                    .withStartTime("dskjhhxdlaj")
+                    .withTimeZone("xcxscvslxlh"))
+                .withAction(new ScheduleActionBase())),
+            new ScheduleInner().withProperties(new ScheduleProperties().withDescription("pdjxqeskoynu")
+                .withTags(mapOf("vesk", "pckaewse", "fn", "xegqphr", "bcbcpz", "hctmjtsgh", "ldtzmpypefcp", "rpzeqac"))
+                .withProperties(mapOf("fkhuytu", "hnuqndaizu", "mtvtvegwqiukvzwy", "zx"))
+                .withDisplayName("eqir")
+                .withIsEnabled(false)
+                .withTrigger(new TriggerBase().withEndTime("ly").withStartTime("gxvrpjl").withTimeZone("zuodacpun"))
+                .withAction(new ScheduleActionBase())),
+            new ScheduleInner().withProperties(new ScheduleProperties().withDescription("yksivmfogdrtbfc")
+                .withTags(mapOf("xsgm", "ftsjcwj", "if", "awvifdxke", "loozrvt", "ocjxw"))
+                .withProperties(mapOf("cpxxvirye", "mufun", "lpmcrdc", "ngjgvrquvpyg", "x", "eljtiahxmfqryarv"))
+                .withDisplayName("peexpgeumilhwuit")
+                .withIsEnabled(true)
+                .withTrigger(
+                    new TriggerBase().withEndTime("yion").withStartTime("ninbdbzsxcwqqrs").withTimeZone("cbbprtugav"))
+                .withAction(new ScheduleActionBase()))))
+            .withNextLink("fmkmfdjxyxgbkkq");
         model = BinaryData.fromObject(model).toObject(ScheduleResourceArmPaginatedResult.class);
-        Assertions.assertEquals("bmhyreeudz", model.nextLink());
-        Assertions.assertEquals("uojqt", model.value().get(0).properties().description());
-        Assertions.assertEquals("pdqmjxlyyzglgouw", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("kjjwgcwn", model.value().get(0).properties().description());
+        Assertions.assertEquals("kgf", model.value().get(0).properties().tags().get("rtogmhmj"));
+        Assertions.assertEquals("pjptn", model.value().get(0).properties().properties().get("wjhrsidqpxlbtpa"));
+        Assertions.assertEquals("dmkrrb", model.value().get(0).properties().displayName());
         Assertions.assertEquals(false, model.value().get(0).properties().isEnabled());
+        Assertions.assertEquals("ulubefgybp", model.value().get(0).properties().trigger().endTime());
+        Assertions.assertEquals("bfununmpzkrv", model.value().get(0).properties().trigger().startTime());
+        Assertions.assertEquals("ifkdschlzvf", model.value().get(0).properties().trigger().timeZone());
+        Assertions.assertEquals("fmkmfdjxyxgbkkq", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

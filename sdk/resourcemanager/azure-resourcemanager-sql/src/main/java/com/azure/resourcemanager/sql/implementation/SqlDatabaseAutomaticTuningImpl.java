@@ -32,20 +32,12 @@ public class SqlDatabaseAutomaticTuningImpl
     private Map<String, AutomaticTuningOptions> automaticTuningOptionsMap;
 
     SqlDatabaseAutomaticTuningImpl(SqlDatabaseImpl database, DatabaseAutomaticTuningInner innerObject) {
-        this(
-            database.resourceGroupName,
-            database.sqlServerName,
-            database.name(),
-            innerObject,
+        this(database.resourceGroupName, database.sqlServerName, database.name(), innerObject,
             database.sqlServerManager);
     }
 
-    SqlDatabaseAutomaticTuningImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        String sqlDatabaseName,
-        DatabaseAutomaticTuningInner innerObject,
-        SqlServerManager sqlServerManager) {
+    SqlDatabaseAutomaticTuningImpl(String resourceGroupName, String sqlServerName, String sqlDatabaseName,
+        DatabaseAutomaticTuningInner innerObject, SqlServerManager sqlServerManager) {
         super(innerObject);
         Objects.requireNonNull(innerObject);
         Objects.requireNonNull(sqlServerManager);
@@ -70,11 +62,9 @@ public class SqlDatabaseAutomaticTuningImpl
 
     @Override
     public Map<String, AutomaticTuningOptions> tuningOptions() {
-        return Collections
-            .unmodifiableMap(
-                this.innerModel().options() != null
-                    ? this.innerModel().options()
-                    : new HashMap<String, AutomaticTuningOptions>());
+        return Collections.unmodifiableMap(this.innerModel().options() != null
+            ? this.innerModel().options()
+            : new HashMap<String, AutomaticTuningOptions>());
     }
 
     @Override
@@ -84,20 +74,19 @@ public class SqlDatabaseAutomaticTuningImpl
     }
 
     @Override
-    public SqlDatabaseAutomaticTuningImpl withAutomaticTuningOption(
-        String tuningOptionName, AutomaticTuningOptionModeDesired desiredState) {
+    public SqlDatabaseAutomaticTuningImpl withAutomaticTuningOption(String tuningOptionName,
+        AutomaticTuningOptionModeDesired desiredState) {
         if (this.automaticTuningOptionsMap == null) {
             this.automaticTuningOptionsMap = new HashMap<String, AutomaticTuningOptions>();
         }
-        this
-            .automaticTuningOptionsMap
-            .put(tuningOptionName, new AutomaticTuningOptions().withDesiredState(desiredState));
+        this.automaticTuningOptionsMap.put(tuningOptionName,
+            new AutomaticTuningOptions().withDesiredState(desiredState));
         return this;
     }
 
     @Override
-    public SqlDatabaseAutomaticTuningImpl withAutomaticTuningOptions(
-        Map<String, AutomaticTuningOptionModeDesired> tuningOptions) {
+    public SqlDatabaseAutomaticTuningImpl
+        withAutomaticTuningOptions(Map<String, AutomaticTuningOptionModeDesired> tuningOptions) {
         if (tuningOptions != null) {
             for (Map.Entry<String, AutomaticTuningOptionModeDesired> option : tuningOptions.entrySet()) {
                 this.withAutomaticTuningOption(option.getKey(), option.getValue());
@@ -113,9 +102,7 @@ public class SqlDatabaseAutomaticTuningImpl
 
     @Override
     protected Mono<DatabaseAutomaticTuningInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getDatabaseAutomaticTunings()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName);
     }
@@ -139,18 +126,15 @@ public class SqlDatabaseAutomaticTuningImpl
     public Mono<SqlDatabaseAutomaticTuning> applyAsync(Context context) {
         final SqlDatabaseAutomaticTuningImpl self = this;
         this.innerModel().withOptions(this.automaticTuningOptionsMap);
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getDatabaseAutomaticTunings()
             .updateAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.innerModel())
             .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
-            .map(
-                databaseAutomaticTuningInner -> {
-                    self.setInner(databaseAutomaticTuningInner);
-                    self.automaticTuningOptionsMap.clear();
-                    return self;
-                });
+            .map(databaseAutomaticTuningInner -> {
+                self.setInner(databaseAutomaticTuningInner);
+                self.automaticTuningOptionsMap.clear();
+                return self;
+            });
     }
 
     @Override

@@ -42,7 +42,8 @@ public final class TypedDocumentFieldHelper {
      *
      * @param typedDocumentFieldAccessor The accessor.
      */
-    public static void setAccessor(final TypedDocumentFieldHelper.TypedDocumentFieldAccessor typedDocumentFieldAccessor) {
+    public static void
+        setAccessor(final TypedDocumentFieldHelper.TypedDocumentFieldAccessor typedDocumentFieldAccessor) {
         accessor = typedDocumentFieldAccessor;
     }
 

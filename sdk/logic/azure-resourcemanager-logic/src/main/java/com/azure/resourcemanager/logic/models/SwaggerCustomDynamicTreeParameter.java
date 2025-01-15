@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The swagger custom dynamic tree parameter. */
+/**
+ * The swagger custom dynamic tree parameter.
+ */
 @Fluent
-public final class SwaggerCustomDynamicTreeParameter {
+public final class SwaggerCustomDynamicTreeParameter implements JsonSerializable<SwaggerCustomDynamicTreeParameter> {
     /*
      * Gets or sets a path to a property in the currently selected item to pass as a value to a parameter for the given
      * operation.
      */
-    @JsonProperty(value = "selectedItemValuePath")
     private String selectedItemValuePath;
 
     /*
      * The parameter value.
      */
-    @JsonProperty(value = "value")
     private Object value;
 
     /*
      * The parameter reference.
      */
-    @JsonProperty(value = "parameterReference")
     private String parameterReference;
 
     /*
      * Indicates whether the parameter is required.
      */
-    @JsonProperty(value = "required")
     private Boolean required;
 
-    /** Creates an instance of SwaggerCustomDynamicTreeParameter class. */
+    /**
+     * Creates an instance of SwaggerCustomDynamicTreeParameter class.
+     */
     public SwaggerCustomDynamicTreeParameter() {
     }
 
     /**
      * Get the selectedItemValuePath property: Gets or sets a path to a property in the currently selected item to pass
      * as a value to a parameter for the given operation.
-     *
+     * 
      * @return the selectedItemValuePath value.
      */
     public String selectedItemValuePath() {
@@ -52,7 +56,7 @@ public final class SwaggerCustomDynamicTreeParameter {
     /**
      * Set the selectedItemValuePath property: Gets or sets a path to a property in the currently selected item to pass
      * as a value to a parameter for the given operation.
-     *
+     * 
      * @param selectedItemValuePath the selectedItemValuePath value to set.
      * @return the SwaggerCustomDynamicTreeParameter object itself.
      */
@@ -63,7 +67,7 @@ public final class SwaggerCustomDynamicTreeParameter {
 
     /**
      * Get the value property: The parameter value.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -72,7 +76,7 @@ public final class SwaggerCustomDynamicTreeParameter {
 
     /**
      * Set the value property: The parameter value.
-     *
+     * 
      * @param value the value value to set.
      * @return the SwaggerCustomDynamicTreeParameter object itself.
      */
@@ -83,7 +87,7 @@ public final class SwaggerCustomDynamicTreeParameter {
 
     /**
      * Get the parameterReference property: The parameter reference.
-     *
+     * 
      * @return the parameterReference value.
      */
     public String parameterReference() {
@@ -92,7 +96,7 @@ public final class SwaggerCustomDynamicTreeParameter {
 
     /**
      * Set the parameterReference property: The parameter reference.
-     *
+     * 
      * @param parameterReference the parameterReference value to set.
      * @return the SwaggerCustomDynamicTreeParameter object itself.
      */
@@ -103,7 +107,7 @@ public final class SwaggerCustomDynamicTreeParameter {
 
     /**
      * Get the required property: Indicates whether the parameter is required.
-     *
+     * 
      * @return the required value.
      */
     public Boolean required() {
@@ -112,7 +116,7 @@ public final class SwaggerCustomDynamicTreeParameter {
 
     /**
      * Set the required property: Indicates whether the parameter is required.
-     *
+     * 
      * @param required the required value to set.
      * @return the SwaggerCustomDynamicTreeParameter object itself.
      */
@@ -123,9 +127,55 @@ public final class SwaggerCustomDynamicTreeParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("selectedItemValuePath", this.selectedItemValuePath);
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeStringField("parameterReference", this.parameterReference);
+        jsonWriter.writeBooleanField("required", this.required);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerCustomDynamicTreeParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerCustomDynamicTreeParameter if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerCustomDynamicTreeParameter.
+     */
+    public static SwaggerCustomDynamicTreeParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerCustomDynamicTreeParameter deserializedSwaggerCustomDynamicTreeParameter
+                = new SwaggerCustomDynamicTreeParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("selectedItemValuePath".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeParameter.selectedItemValuePath = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeParameter.value = reader.readUntyped();
+                } else if ("parameterReference".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeParameter.parameterReference = reader.getString();
+                } else if ("required".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeParameter.required = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerCustomDynamicTreeParameter;
+        });
     }
 }

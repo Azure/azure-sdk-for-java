@@ -12,8 +12,8 @@ public final class AccountKeysImpl implements AccountKeys {
 
     private final com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager;
 
-    AccountKeysImpl(
-        AccountKeysInner innerObject, com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager) {
+    AccountKeysImpl(AccountKeysInner innerObject,
+        com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

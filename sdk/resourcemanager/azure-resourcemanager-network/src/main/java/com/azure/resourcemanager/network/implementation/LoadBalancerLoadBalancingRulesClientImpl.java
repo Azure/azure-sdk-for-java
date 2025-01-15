@@ -11,6 +11,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -23,11 +24,17 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.LoadBalancerLoadBalancingRulesClient;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerHealthPerRuleInner;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
 import com.azure.resourcemanager.network.models.LoadBalancerLoadBalancingRuleListResult;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -83,6 +90,16 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/loadBalancingRules/{loadBalancingRuleName}/health")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> health(@HostParam("$host") String endpoint,
+            @PathParam("groupName") String groupName, @PathParam("loadBalancerName") String loadBalancerName,
+            @PathParam("loadBalancingRuleName") String loadBalancingRuleName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -121,7 +138,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -162,7 +179,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -273,7 +290,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -317,7 +334,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, loadBalancerName, loadBalancingRuleName,
@@ -374,6 +391,241 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancingRuleInner get(String resourceGroupName, String loadBalancerName, String loadBalancingRuleName) {
         return getWithResponse(resourceGroupName, loadBalancerName, loadBalancingRuleName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> healthWithResponseAsync(String groupName, String loadBalancerName,
+        String loadBalancingRuleName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (groupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        if (loadBalancerName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
+        }
+        if (loadBalancingRuleName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter loadBalancingRuleName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.health(this.client.getEndpoint(), groupName, loadBalancerName,
+                loadBalancingRuleName, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> healthWithResponseAsync(String groupName, String loadBalancerName,
+        String loadBalancingRuleName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (groupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        if (loadBalancerName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
+        }
+        if (loadBalancingRuleName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter loadBalancingRuleName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.health(this.client.getEndpoint(), groupName, loadBalancerName, loadBalancingRuleName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner>
+        beginHealthAsync(String groupName, String loadBalancerName, String loadBalancingRuleName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = healthWithResponseAsync(groupName, loadBalancerName, loadBalancingRuleName);
+        return this.client.<LoadBalancerHealthPerRuleInner, LoadBalancerHealthPerRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LoadBalancerHealthPerRuleInner.class, LoadBalancerHealthPerRuleInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner>
+        beginHealthAsync(String groupName, String loadBalancerName, String loadBalancingRuleName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = healthWithResponseAsync(groupName, loadBalancerName, loadBalancingRuleName, context);
+        return this.client.<LoadBalancerHealthPerRuleInner, LoadBalancerHealthPerRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LoadBalancerHealthPerRuleInner.class, LoadBalancerHealthPerRuleInner.class,
+            context);
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner>
+        beginHealth(String groupName, String loadBalancerName, String loadBalancingRuleName) {
+        return this.beginHealthAsync(groupName, loadBalancerName, loadBalancingRuleName).getSyncPoller();
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner>
+        beginHealth(String groupName, String loadBalancerName, String loadBalancingRuleName, Context context) {
+        return this.beginHealthAsync(groupName, loadBalancerName, loadBalancingRuleName, context).getSyncPoller();
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LoadBalancerHealthPerRuleInner> healthAsync(String groupName, String loadBalancerName,
+        String loadBalancingRuleName) {
+        return beginHealthAsync(groupName, loadBalancerName, loadBalancingRuleName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LoadBalancerHealthPerRuleInner> healthAsync(String groupName, String loadBalancerName,
+        String loadBalancingRuleName, Context context) {
+        return beginHealthAsync(groupName, loadBalancerName, loadBalancingRuleName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LoadBalancerHealthPerRuleInner health(String groupName, String loadBalancerName,
+        String loadBalancingRuleName) {
+        return healthAsync(groupName, loadBalancerName, loadBalancingRuleName).block();
+    }
+
+    /**
+     * Get health details of a load balancing rule.
+     * 
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health details of a load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LoadBalancerHealthPerRuleInner health(String groupName, String loadBalancerName,
+        String loadBalancingRuleName, Context context) {
+        return healthAsync(groupName, loadBalancerName, loadBalancingRuleName, context).block();
     }
 
     /**

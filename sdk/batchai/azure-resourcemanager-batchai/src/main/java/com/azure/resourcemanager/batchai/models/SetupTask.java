@@ -13,7 +13,8 @@ import java.util.List;
 /** Specifies a setup task which can be used to customize the compute nodes of the cluster. */
 @Fluent
 public final class SetupTask {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SetupTask.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SetupTask.class);
 
     /*
      * The command line to be executed on each cluster's node after it being
@@ -163,9 +164,8 @@ public final class SetupTask {
      */
     public void validate() {
         if (commandLine() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property commandLine in model SetupTask"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property commandLine in model SetupTask"));
         }
         if (environmentVariables() != null) {
             environmentVariables().forEach(e -> e.validate());
@@ -174,9 +174,8 @@ public final class SetupTask {
             secrets().forEach(e -> e.validate());
         }
         if (stdOutErrPathPrefix() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property stdOutErrPathPrefix in model SetupTask"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property stdOutErrPathPrefix in model SetupTask"));
         }
     }
 }

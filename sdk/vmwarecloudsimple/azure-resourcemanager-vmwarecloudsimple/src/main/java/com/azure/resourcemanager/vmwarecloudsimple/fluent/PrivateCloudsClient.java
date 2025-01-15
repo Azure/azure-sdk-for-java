@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.PrivateCloudInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateCloudsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateCloudsClient.
+ */
 public interface PrivateCloudsClient {
     /**
      * Implements private cloud list GET method
-     *
-     * <p>Returns list of private clouds in particular region.
-     *
+     * 
+     * Returns list of private clouds in particular region.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,9 +31,9 @@ public interface PrivateCloudsClient {
 
     /**
      * Implements private cloud list GET method
-     *
-     * <p>Returns list of private clouds in particular region.
-     *
+     * 
+     * Returns list of private clouds in particular region.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,9 +46,9 @@ public interface PrivateCloudsClient {
 
     /**
      * Implements private cloud GET method
-     *
-     * <p>Returns private cloud by its name.
-     *
+     * 
+     * Returns private cloud by its name.
+     * 
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
      * @param context The context to associate with this operation.
@@ -60,9 +62,9 @@ public interface PrivateCloudsClient {
 
     /**
      * Implements private cloud GET method
-     *
-     * <p>Returns private cloud by its name.
-     *
+     * 
+     * Returns private cloud by its name.
+     * 
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -14,29 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringSku model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"xofpdvhpfxxypi\",\"tier\":\"Premium\",\"family\":\"Direct\",\"size\":\"Unlimited\"}")
-                .toObject(PeeringSku.class);
-        Assertions.assertEquals("xofpdvhpfxxypi", model.name());
-        Assertions.assertEquals(Tier.PREMIUM, model.tier());
-        Assertions.assertEquals(Family.DIRECT, model.family());
+        PeeringSku model = BinaryData
+            .fromString("{\"name\":\"p\",\"tier\":\"Basic\",\"family\":\"Exchange\",\"size\":\"Unlimited\"}")
+            .toObject(PeeringSku.class);
+        Assertions.assertEquals("p", model.name());
+        Assertions.assertEquals(Tier.BASIC, model.tier());
+        Assertions.assertEquals(Family.EXCHANGE, model.family());
         Assertions.assertEquals(Size.UNLIMITED, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringSku model =
-            new PeeringSku()
-                .withName("xofpdvhpfxxypi")
-                .withTier(Tier.PREMIUM)
-                .withFamily(Family.DIRECT)
-                .withSize(Size.UNLIMITED);
+        PeeringSku model
+            = new PeeringSku().withName("p").withTier(Tier.BASIC).withFamily(Family.EXCHANGE).withSize(Size.UNLIMITED);
         model = BinaryData.fromObject(model).toObject(PeeringSku.class);
-        Assertions.assertEquals("xofpdvhpfxxypi", model.name());
-        Assertions.assertEquals(Tier.PREMIUM, model.tier());
-        Assertions.assertEquals(Family.DIRECT, model.family());
+        Assertions.assertEquals("p", model.name());
+        Assertions.assertEquals(Tier.BASIC, model.tier());
+        Assertions.assertEquals(Family.EXCHANGE, model.family());
         Assertions.assertEquals(Size.UNLIMITED, model.size());
     }
 }

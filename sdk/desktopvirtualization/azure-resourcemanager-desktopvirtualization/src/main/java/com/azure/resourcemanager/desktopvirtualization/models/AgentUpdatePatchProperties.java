@@ -5,22 +5,26 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The session host configuration for updating agent, monitoring agent, and stack component. */
+/**
+ * The session host configuration for updating agent, monitoring agent, and stack component.
+ */
 @Fluent
-public final class AgentUpdatePatchProperties {
+public final class AgentUpdatePatchProperties implements JsonSerializable<AgentUpdatePatchProperties> {
     /*
      * The type of maintenance for session host components.
      */
-    @JsonProperty(value = "type")
     private SessionHostComponentUpdateType type;
 
     /*
      * Whether to use localTime of the virtual machine.
      */
-    @JsonProperty(value = "useSessionHostLocalTime")
     private Boolean useSessionHostLocalTime;
 
     /*
@@ -28,22 +32,22 @@ public final class AgentUpdatePatchProperties {
      * https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0. Must be set
      * if useLocalTime is true.
      */
-    @JsonProperty(value = "maintenanceWindowTimeZone")
     private String maintenanceWindowTimeZone;
 
     /*
      * List of maintenance windows. Maintenance windows are 2 hours long.
      */
-    @JsonProperty(value = "maintenanceWindows")
     private List<MaintenanceWindowPatchProperties> maintenanceWindows;
 
-    /** Creates an instance of AgentUpdatePatchProperties class. */
+    /**
+     * Creates an instance of AgentUpdatePatchProperties class.
+     */
     public AgentUpdatePatchProperties() {
     }
 
     /**
      * Get the type property: The type of maintenance for session host components.
-     *
+     * 
      * @return the type value.
      */
     public SessionHostComponentUpdateType type() {
@@ -52,7 +56,7 @@ public final class AgentUpdatePatchProperties {
 
     /**
      * Set the type property: The type of maintenance for session host components.
-     *
+     * 
      * @param type the type value to set.
      * @return the AgentUpdatePatchProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class AgentUpdatePatchProperties {
 
     /**
      * Get the useSessionHostLocalTime property: Whether to use localTime of the virtual machine.
-     *
+     * 
      * @return the useSessionHostLocalTime value.
      */
     public Boolean useSessionHostLocalTime() {
@@ -72,7 +76,7 @@ public final class AgentUpdatePatchProperties {
 
     /**
      * Set the useSessionHostLocalTime property: Whether to use localTime of the virtual machine.
-     *
+     * 
      * @param useSessionHostLocalTime the useSessionHostLocalTime value to set.
      * @return the AgentUpdatePatchProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class AgentUpdatePatchProperties {
      * Get the maintenanceWindowTimeZone property: Time zone for maintenance as defined in
      * https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0. Must be set
      * if useLocalTime is true.
-     *
+     * 
      * @return the maintenanceWindowTimeZone value.
      */
     public String maintenanceWindowTimeZone() {
@@ -96,7 +100,7 @@ public final class AgentUpdatePatchProperties {
      * Set the maintenanceWindowTimeZone property: Time zone for maintenance as defined in
      * https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0. Must be set
      * if useLocalTime is true.
-     *
+     * 
      * @param maintenanceWindowTimeZone the maintenanceWindowTimeZone value to set.
      * @return the AgentUpdatePatchProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class AgentUpdatePatchProperties {
 
     /**
      * Get the maintenanceWindows property: List of maintenance windows. Maintenance windows are 2 hours long.
-     *
+     * 
      * @return the maintenanceWindows value.
      */
     public List<MaintenanceWindowPatchProperties> maintenanceWindows() {
@@ -116,24 +120,74 @@ public final class AgentUpdatePatchProperties {
 
     /**
      * Set the maintenanceWindows property: List of maintenance windows. Maintenance windows are 2 hours long.
-     *
+     * 
      * @param maintenanceWindows the maintenanceWindows value to set.
      * @return the AgentUpdatePatchProperties object itself.
      */
-    public AgentUpdatePatchProperties withMaintenanceWindows(
-        List<MaintenanceWindowPatchProperties> maintenanceWindows) {
+    public AgentUpdatePatchProperties
+        withMaintenanceWindows(List<MaintenanceWindowPatchProperties> maintenanceWindows) {
         this.maintenanceWindows = maintenanceWindows;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (maintenanceWindows() != null) {
             maintenanceWindows().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("useSessionHostLocalTime", this.useSessionHostLocalTime);
+        jsonWriter.writeStringField("maintenanceWindowTimeZone", this.maintenanceWindowTimeZone);
+        jsonWriter.writeArrayField("maintenanceWindows", this.maintenanceWindows,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentUpdatePatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentUpdatePatchProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentUpdatePatchProperties.
+     */
+    public static AgentUpdatePatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentUpdatePatchProperties deserializedAgentUpdatePatchProperties = new AgentUpdatePatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAgentUpdatePatchProperties.type
+                        = SessionHostComponentUpdateType.fromString(reader.getString());
+                } else if ("useSessionHostLocalTime".equals(fieldName)) {
+                    deserializedAgentUpdatePatchProperties.useSessionHostLocalTime
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maintenanceWindowTimeZone".equals(fieldName)) {
+                    deserializedAgentUpdatePatchProperties.maintenanceWindowTimeZone = reader.getString();
+                } else if ("maintenanceWindows".equals(fieldName)) {
+                    List<MaintenanceWindowPatchProperties> maintenanceWindows
+                        = reader.readArray(reader1 -> MaintenanceWindowPatchProperties.fromJson(reader1));
+                    deserializedAgentUpdatePatchProperties.maintenanceWindows = maintenanceWindows;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentUpdatePatchProperties;
+        });
     }
 }

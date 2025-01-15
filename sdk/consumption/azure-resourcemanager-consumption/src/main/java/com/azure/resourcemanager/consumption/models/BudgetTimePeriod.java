@@ -5,32 +5,40 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The start and end date for a budget. */
+/**
+ * The start and end date for a budget.
+ */
 @Fluent
-public final class BudgetTimePeriod {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetTimePeriod.class);
-
+public final class BudgetTimePeriod implements JsonSerializable<BudgetTimePeriod> {
     /*
      * The start date for the budget.
      */
-    @JsonProperty(value = "startDate", required = true)
     private OffsetDateTime startDate;
 
     /*
-     * The end date for the budget. If not provided, we default this to 10
-     * years from the start date.
+     * The end date for the budget. If not provided, we default this to 10 years from the start date.
      */
-    @JsonProperty(value = "endDate")
     private OffsetDateTime endDate;
 
     /**
+     * Creates an instance of BudgetTimePeriod class.
+     */
+    public BudgetTimePeriod() {
+    }
+
+    /**
      * Get the startDate property: The start date for the budget.
-     *
+     * 
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
@@ -39,7 +47,7 @@ public final class BudgetTimePeriod {
 
     /**
      * Set the startDate property: The start date for the budget.
-     *
+     * 
      * @param startDate the startDate value to set.
      * @return the BudgetTimePeriod object itself.
      */
@@ -51,7 +59,7 @@ public final class BudgetTimePeriod {
     /**
      * Get the endDate property: The end date for the budget. If not provided, we default this to 10 years from the
      * start date.
-     *
+     * 
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
@@ -61,7 +69,7 @@ public final class BudgetTimePeriod {
     /**
      * Set the endDate property: The end date for the budget. If not provided, we default this to 10 years from the
      * start date.
-     *
+     * 
      * @param endDate the endDate value to set.
      * @return the BudgetTimePeriod object itself.
      */
@@ -72,14 +80,59 @@ public final class BudgetTimePeriod {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startDate() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startDate in model BudgetTimePeriod"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property startDate in model BudgetTimePeriod"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BudgetTimePeriod.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startDate",
+            this.startDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDate));
+        jsonWriter.writeStringField("endDate",
+            this.endDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BudgetTimePeriod from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BudgetTimePeriod if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BudgetTimePeriod.
+     */
+    public static BudgetTimePeriod fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BudgetTimePeriod deserializedBudgetTimePeriod = new BudgetTimePeriod();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startDate".equals(fieldName)) {
+                    deserializedBudgetTimePeriod.startDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDate".equals(fieldName)) {
+                    deserializedBudgetTimePeriod.endDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBudgetTimePeriod;
+        });
     }
 }

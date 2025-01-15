@@ -22,7 +22,7 @@ public final class DataFlowDebugSessionsQueryByFactoryMockTests {
     @Test
     public void testQueryByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"dataFlowName\":\"ccpg\",\"computeType\":\"ixxxgltqldlh\",\"coreCount\":911012397,\"nodeCount\":209988622,\"integrationRuntimeName\":\"dam\",\"sessionId\":\"ajh\",\"startTime\":\"bpsnogyvpfyjlfn\",\"timeToLiveInMinutes\":1285291253,\"lastActivityTime\":\"toqhyprpwkvz\",\"\":{\"o\":\"datadlhc\",\"jqz\":\"datakmpxtfcrugitjnw\",\"eaqnbkcqoyqmbu\":\"datagq\"}}]}";
+            = "{\"value\":[{\"dataFlowName\":\"zqcymdj\",\"computeType\":\"ojykytpyirctdaoj\",\"coreCount\":733493660,\"nodeCount\":550438817,\"integrationRuntimeName\":\"ikqagmlhs\",\"sessionId\":\"pihenvhlpuobha\",\"startTime\":\"aowpm\",\"timeToLiveInMinutes\":701601830,\"lastActivityTime\":\"uziogboaimwxswfy\",\"\":{\"gtgc\":\"datacjhjrwn\",\"w\":\"datampjdrhxfg\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class DataFlowDebugSessionsQueryByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DataFlowDebugSessionInfo> response = manager.dataFlowDebugSessions()
-            .queryByFactory("enpihtgi", "aeeqgpviroz", com.azure.core.util.Context.NONE);
+            .queryByFactory("lbjccjorovr", "dfgdvifo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ccpg", response.iterator().next().dataFlowName());
-        Assertions.assertEquals("ixxxgltqldlh", response.iterator().next().computeType());
-        Assertions.assertEquals(911012397, response.iterator().next().coreCount());
-        Assertions.assertEquals(209988622, response.iterator().next().nodeCount());
-        Assertions.assertEquals("dam", response.iterator().next().integrationRuntimeName());
-        Assertions.assertEquals("ajh", response.iterator().next().sessionId());
-        Assertions.assertEquals("bpsnogyvpfyjlfn", response.iterator().next().startTime());
-        Assertions.assertEquals(1285291253, response.iterator().next().timeToLiveInMinutes());
-        Assertions.assertEquals("toqhyprpwkvz", response.iterator().next().lastActivityTime());
+        Assertions.assertEquals("zqcymdj", response.iterator().next().dataFlowName());
+        Assertions.assertEquals("ojykytpyirctdaoj", response.iterator().next().computeType());
+        Assertions.assertEquals(733493660, response.iterator().next().coreCount());
+        Assertions.assertEquals(550438817, response.iterator().next().nodeCount());
+        Assertions.assertEquals("ikqagmlhs", response.iterator().next().integrationRuntimeName());
+        Assertions.assertEquals("pihenvhlpuobha", response.iterator().next().sessionId());
+        Assertions.assertEquals("aowpm", response.iterator().next().startTime());
+        Assertions.assertEquals(701601830, response.iterator().next().timeToLiveInMinutes());
+        Assertions.assertEquals("uziogboaimwxswfy", response.iterator().next().lastActivityTime());
     }
 }

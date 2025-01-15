@@ -117,6 +117,9 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

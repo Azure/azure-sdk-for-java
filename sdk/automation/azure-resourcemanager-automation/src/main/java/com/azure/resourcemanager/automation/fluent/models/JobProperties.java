@@ -5,106 +5,105 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.JobProvisioningState;
 import com.azure.resourcemanager.automation.models.JobStatus;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Definition of job properties. */
+/**
+ * Definition of job properties.
+ */
 @Fluent
-public final class JobProperties {
+public final class JobProperties implements JsonSerializable<JobProperties> {
     /*
      * Gets or sets the runbook.
      */
-    @JsonProperty(value = "runbook")
     private RunbookAssociationProperty runbook;
 
     /*
      * Gets or sets the job started by.
      */
-    @JsonProperty(value = "startedBy")
     private String startedBy;
 
     /*
      * Gets or sets the runOn which specifies the group name where the job is to be executed.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /*
      * Gets or sets the id of the job.
      */
-    @JsonProperty(value = "jobId")
     private UUID jobId;
 
     /*
      * Gets or sets the creation time of the job.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the status of the job.
      */
-    @JsonProperty(value = "status")
     private JobStatus status;
 
     /*
      * Gets or sets the status details of the job.
      */
-    @JsonProperty(value = "statusDetails")
     private String statusDetails;
 
     /*
      * Gets or sets the start time of the job.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Gets or sets the end time of the job.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Gets or sets the exception of the job.
      */
-    @JsonProperty(value = "exception")
     private String exception;
 
     /*
      * Gets or sets the last modified time of the job.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the last status modified time of the job.
      */
-    @JsonProperty(value = "lastStatusModifiedTime")
     private OffsetDateTime lastStatusModifiedTime;
 
     /*
      * Gets or sets the parameters of the job.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * The current provisioning state of the job.
      */
-    @JsonProperty(value = "provisioningState")
     private JobProvisioningState provisioningState;
 
     /**
+     * Creates an instance of JobProperties class.
+     */
+    public JobProperties() {
+    }
+
+    /**
      * Get the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -113,7 +112,7 @@ public final class JobProperties {
 
     /**
      * Set the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the JobProperties object itself.
      */
@@ -124,7 +123,7 @@ public final class JobProperties {
 
     /**
      * Get the startedBy property: Gets or sets the job started by.
-     *
+     * 
      * @return the startedBy value.
      */
     public String startedBy() {
@@ -133,7 +132,7 @@ public final class JobProperties {
 
     /**
      * Set the startedBy property: Gets or sets the job started by.
-     *
+     * 
      * @param startedBy the startedBy value to set.
      * @return the JobProperties object itself.
      */
@@ -144,7 +143,7 @@ public final class JobProperties {
 
     /**
      * Get the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -153,7 +152,7 @@ public final class JobProperties {
 
     /**
      * Set the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the JobProperties object itself.
      */
@@ -164,7 +163,7 @@ public final class JobProperties {
 
     /**
      * Get the jobId property: Gets or sets the id of the job.
-     *
+     * 
      * @return the jobId value.
      */
     public UUID jobId() {
@@ -173,7 +172,7 @@ public final class JobProperties {
 
     /**
      * Set the jobId property: Gets or sets the id of the job.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the JobProperties object itself.
      */
@@ -184,7 +183,7 @@ public final class JobProperties {
 
     /**
      * Get the creationTime property: Gets or sets the creation time of the job.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -193,7 +192,7 @@ public final class JobProperties {
 
     /**
      * Set the creationTime property: Gets or sets the creation time of the job.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the JobProperties object itself.
      */
@@ -204,7 +203,7 @@ public final class JobProperties {
 
     /**
      * Get the status property: Gets or sets the status of the job.
-     *
+     * 
      * @return the status value.
      */
     public JobStatus status() {
@@ -213,7 +212,7 @@ public final class JobProperties {
 
     /**
      * Set the status property: Gets or sets the status of the job.
-     *
+     * 
      * @param status the status value to set.
      * @return the JobProperties object itself.
      */
@@ -224,7 +223,7 @@ public final class JobProperties {
 
     /**
      * Get the statusDetails property: Gets or sets the status details of the job.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -233,7 +232,7 @@ public final class JobProperties {
 
     /**
      * Set the statusDetails property: Gets or sets the status details of the job.
-     *
+     * 
      * @param statusDetails the statusDetails value to set.
      * @return the JobProperties object itself.
      */
@@ -244,7 +243,7 @@ public final class JobProperties {
 
     /**
      * Get the startTime property: Gets or sets the start time of the job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -253,7 +252,7 @@ public final class JobProperties {
 
     /**
      * Set the startTime property: Gets or sets the start time of the job.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the JobProperties object itself.
      */
@@ -264,7 +263,7 @@ public final class JobProperties {
 
     /**
      * Get the endTime property: Gets or sets the end time of the job.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -273,7 +272,7 @@ public final class JobProperties {
 
     /**
      * Set the endTime property: Gets or sets the end time of the job.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the JobProperties object itself.
      */
@@ -284,7 +283,7 @@ public final class JobProperties {
 
     /**
      * Get the exception property: Gets or sets the exception of the job.
-     *
+     * 
      * @return the exception value.
      */
     public String exception() {
@@ -293,7 +292,7 @@ public final class JobProperties {
 
     /**
      * Set the exception property: Gets or sets the exception of the job.
-     *
+     * 
      * @param exception the exception value to set.
      * @return the JobProperties object itself.
      */
@@ -304,7 +303,7 @@ public final class JobProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time of the job.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -313,7 +312,7 @@ public final class JobProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time of the job.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the JobProperties object itself.
      */
@@ -324,7 +323,7 @@ public final class JobProperties {
 
     /**
      * Get the lastStatusModifiedTime property: Gets or sets the last status modified time of the job.
-     *
+     * 
      * @return the lastStatusModifiedTime value.
      */
     public OffsetDateTime lastStatusModifiedTime() {
@@ -333,7 +332,7 @@ public final class JobProperties {
 
     /**
      * Set the lastStatusModifiedTime property: Gets or sets the last status modified time of the job.
-     *
+     * 
      * @param lastStatusModifiedTime the lastStatusModifiedTime value to set.
      * @return the JobProperties object itself.
      */
@@ -344,7 +343,7 @@ public final class JobProperties {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -353,7 +352,7 @@ public final class JobProperties {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the JobProperties object itself.
      */
@@ -364,7 +363,7 @@ public final class JobProperties {
 
     /**
      * Get the provisioningState property: The current provisioning state of the job.
-     *
+     * 
      * @return the provisioningState value.
      */
     public JobProvisioningState provisioningState() {
@@ -373,7 +372,7 @@ public final class JobProperties {
 
     /**
      * Set the provisioningState property: The current provisioning state of the job.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the JobProperties object itself.
      */
@@ -384,12 +383,104 @@ public final class JobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runbook() != null) {
             runbook().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("runbook", this.runbook);
+        jsonWriter.writeStringField("startedBy", this.startedBy);
+        jsonWriter.writeStringField("runOn", this.runOn);
+        jsonWriter.writeStringField("jobId", Objects.toString(this.jobId, null));
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("statusDetails", this.statusDetails);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("exception", this.exception);
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("lastStatusModifiedTime",
+            this.lastStatusModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastStatusModifiedTime));
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobProperties.
+     */
+    public static JobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobProperties deserializedJobProperties = new JobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runbook".equals(fieldName)) {
+                    deserializedJobProperties.runbook = RunbookAssociationProperty.fromJson(reader);
+                } else if ("startedBy".equals(fieldName)) {
+                    deserializedJobProperties.startedBy = reader.getString();
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedJobProperties.runOn = reader.getString();
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedJobProperties.jobId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedJobProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedJobProperties.status = JobStatus.fromString(reader.getString());
+                } else if ("statusDetails".equals(fieldName)) {
+                    deserializedJobProperties.statusDetails = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedJobProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedJobProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("exception".equals(fieldName)) {
+                    deserializedJobProperties.exception = reader.getString();
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedJobProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastStatusModifiedTime".equals(fieldName)) {
+                    deserializedJobProperties.lastStatusModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedJobProperties.parameters = parameters;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedJobProperties.provisioningState = JobProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobProperties;
+        });
     }
 }

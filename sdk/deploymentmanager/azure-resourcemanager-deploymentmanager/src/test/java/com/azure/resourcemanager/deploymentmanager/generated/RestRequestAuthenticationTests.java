@@ -10,8 +10,8 @@ import com.azure.resourcemanager.deploymentmanager.models.RestRequestAuthenticat
 public final class RestRequestAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestRequestAuthentication model =
-            BinaryData.fromString("{\"type\":\"RestRequestAuthentication\"}").toObject(RestRequestAuthentication.class);
+        RestRequestAuthentication model = BinaryData.fromString("{\"type\":\"RestRequestAuthentication\"}")
+            .toObject(RestRequestAuthentication.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -6,18 +6,20 @@ package com.azure.resourcemanager.reservations.models;
 
 import com.azure.resourcemanager.reservations.fluent.models.CalculatePriceResponseInner;
 
-/** An immutable client-side representation of CalculatePriceResponse. */
+/**
+ * An immutable client-side representation of CalculatePriceResponse.
+ */
 public interface CalculatePriceResponse {
     /**
      * Gets the properties property: Properties for calculate price response.
-     *
+     * 
      * @return the properties value.
      */
     CalculatePriceResponseProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.reservations.fluent.models.CalculatePriceResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     CalculatePriceResponseInner innerModel();

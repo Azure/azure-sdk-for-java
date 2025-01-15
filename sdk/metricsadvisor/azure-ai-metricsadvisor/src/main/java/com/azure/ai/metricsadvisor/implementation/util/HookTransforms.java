@@ -40,8 +40,8 @@ public final class HookTransforms {
         if (notificationHook instanceof EmailNotificationHook) {
             EmailNotificationHook emailHook = (EmailNotificationHook) notificationHook;
             if (CoreUtils.isNullOrEmpty(emailHook.getName())) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("The notificationHook.name is required."));
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("The notificationHook.name is required."));
             }
             if (emailHook.getEmailsToAlert().isEmpty()) {
                 throw logger.logExceptionAsError(
@@ -53,27 +53,25 @@ public final class HookTransforms {
             innerEmailHook.setExternalLink(emailHook.getExternalLink());
             List<String> emailsToAlert = HookHelper.getEmailsToAlertRaw(emailHook);
             if (emailsToAlert != null) {
-                innerEmailHook.setHookParameter(new EmailHookParameter()
-                    .setToList(emailsToAlert));
+                innerEmailHook.setHookParameter(new EmailHookParameter().setToList(emailsToAlert));
             }
             innerEmailHook.setAdmins(HookHelper.getAdminsRaw(emailHook));
             return innerEmailHook;
         } else if (notificationHook instanceof WebNotificationHook) {
             WebNotificationHook webHook = (WebNotificationHook) notificationHook;
             if (CoreUtils.isNullOrEmpty(webHook.getName())) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("The notificationHook.name is required."));
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("The notificationHook.name is required."));
             }
             if (CoreUtils.isNullOrEmpty(webHook.getEndpoint())) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("The notificationHook.endpoint is required."));
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("The notificationHook.endpoint is required."));
             }
             WebhookHookInfo innerWebHook = new WebhookHookInfo();
             innerWebHook.setHookName(webHook.getName());
             innerWebHook.setDescription(webHook.getDescription());
             innerWebHook.setExternalLink(webHook.getExternalLink());
-            WebhookHookParameter hookParameter = new WebhookHookParameter()
-                .setEndpoint(webHook.getEndpoint())
+            WebhookHookParameter hookParameter = new WebhookHookParameter().setEndpoint(webHook.getEndpoint())
                 .setUsername(webHook.getUsername())
                 .setPassword(webHook.getPassword())
                 .setCertificateKey(webHook.getClientCertificate())
@@ -86,9 +84,8 @@ public final class HookTransforms {
             innerWebHook.setHookParameter(hookParameter);
             return innerWebHook;
         } else {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException(String.format(
-                    "The notificationHook type %s not supported", notificationHook.getClass().getCanonicalName())));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String
+                .format("The notificationHook type %s not supported", notificationHook.getClass().getCanonicalName())));
         }
     }
 
@@ -101,8 +98,7 @@ public final class HookTransforms {
             innerEmailHook.setExternalLink(emailHook.getExternalLink());
             List<String> emailsToAlert = HookHelper.getEmailsToAlertRaw(emailHook);
             if (emailsToAlert != null) {
-                innerEmailHook.setHookParameter(new EmailHookParameterPatch()
-                    .setToList(emailsToAlert));
+                innerEmailHook.setHookParameter(new EmailHookParameterPatch().setToList(emailsToAlert));
             }
             innerEmailHook.setAdmins(HookHelper.getAdminsRaw(emailHook));
             return innerEmailHook;
@@ -112,8 +108,7 @@ public final class HookTransforms {
             innerWebHook.setHookName(webHook.getName());
             innerWebHook.setDescription(webHook.getDescription());
             innerWebHook.setExternalLink(webHook.getExternalLink());
-            WebhookHookParameterPatch hookParameter = new WebhookHookParameterPatch()
-                .setEndpoint(webHook.getEndpoint())
+            WebhookHookParameterPatch hookParameter = new WebhookHookParameterPatch().setEndpoint(webHook.getEndpoint())
                 .setUsername(webHook.getUsername())
                 .setPassword(webHook.getPassword())
                 .setCertificateKey(webHook.getClientCertificate())
@@ -126,9 +121,8 @@ public final class HookTransforms {
             innerWebHook.setAdmins(HookHelper.getAdminsRaw(webHook));
             return innerWebHook;
         } else {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException(String.format(
-                    "The notificationHook type %s not supported", notificationHook.getClass().getCanonicalName())));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String
+                .format("The notificationHook type %s not supported", notificationHook.getClass().getCanonicalName())));
         }
     }
 
@@ -148,8 +142,8 @@ public final class HookTransforms {
             return emailHook;
         } else if (innerHook instanceof WebhookHookInfo) {
             WebhookHookInfo innerWebHook = (WebhookHookInfo) innerHook;
-            WebNotificationHook webHook = new WebNotificationHook(innerWebHook.getHookName(),
-                innerWebHook.getHookParameter().getEndpoint());
+            WebNotificationHook webHook
+                = new WebNotificationHook(innerWebHook.getHookName(), innerWebHook.getHookParameter().getEndpoint());
 
             webHook.setDescription(innerWebHook.getDescription());
             webHook.setExternalLink(innerWebHook.getExternalLink());
@@ -171,32 +165,27 @@ public final class HookTransforms {
 
             return webHook;
         } else {
-            throw logger.logExceptionAsError(Exceptions.propagate(new RuntimeException(String.format(
-                "The hook type %s not supported", innerHook.getClass().getCanonicalName()))));
+            throw logger.logExceptionAsError(Exceptions.propagate(new RuntimeException(
+                String.format("The hook type %s not supported", innerHook.getClass().getCanonicalName()))));
         }
     }
 
     public static PagedResponse<NotificationHook> fromInnerPagedResponse(ClientLogger logger,
-                                                             PagedResponse<HookInfo> innerResponse) {
+        PagedResponse<HookInfo> innerResponse) {
         List<NotificationHook> notificationHookList;
         final List<HookInfo> innerHookList = innerResponse.getValue();
         if (innerHookList == null || innerHookList.isEmpty()) {
             notificationHookList = new ArrayList<>();
         } else {
-            notificationHookList = innerHookList
-                .stream()
+            notificationHookList = innerHookList.stream()
                 .map(innerAnomaly -> fromInner(logger, innerAnomaly))
                 .collect(Collectors.toList());
         }
 
-        final IterableStream<NotificationHook> pageElements
-            = new IterableStream<>(notificationHookList);
+        final IterableStream<NotificationHook> pageElements = new IterableStream<>(notificationHookList);
 
-        return new PagedResponseBase<Void, NotificationHook>(innerResponse.getRequest(),
-            innerResponse.getStatusCode(),
-            innerResponse.getHeaders(),
-            new HookPage(pageElements, innerResponse.getContinuationToken()),
-            null);
+        return new PagedResponseBase<Void, NotificationHook>(innerResponse.getRequest(), innerResponse.getStatusCode(),
+            innerResponse.getHeaders(), new HookPage(pageElements, innerResponse.getContinuationToken()), null);
     }
 
     private static final class HookPage implements Page<NotificationHook> {

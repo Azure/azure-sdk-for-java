@@ -19,77 +19,68 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessControlListMatchConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessControlListMatchCondition model =
-            BinaryData
-                .fromString(
-                    "{\"etherTypes\":[\"pmdtz\"],\"fragments\":[\"tfvnz\",\"yj\"],\"ipLengths\":[\"p\",\"opv\",\"bdb\"],\"ttlValues\":[\"qqihedsvqwthmk\",\"ibcysihsgqc\",\"dhohsdtmcdzsuf\"],\"dscpMarkings\":[\"dxbzlmcmuap\",\"vhdbevwqqxey\"],\"portCondition\":{\"flags\":[\"qzinkfkbg\"],\"portType\":\"SourcePort\",\"layer4Protocol\":\"UDP\",\"ports\":[\"eqocljmygvk\",\"qkjjeokbz\"],\"portGroupNames\":[\"zrxcczurt\",\"e\",\"pqxbkwvzgnzvdf\",\"zdix\"]},\"protocolTypes\":[\"pnodawopqhe\"],\"vlanMatchCondition\":{\"vlans\":[\"mcgsbostzelnd\"],\"innerVlans\":[\"utmzlbiojlvfhrbb\",\"neqvcwwyyurmo\"],\"vlanGroupNames\":[\"prprsnmokay\"]},\"ipCondition\":{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"pbzpcpiljhahz\"],\"ipGroupNames\":[\"h\",\"dbn\",\"ieholewjwi\"]}}")
-                .toObject(AccessControlListMatchCondition.class);
-        Assertions.assertEquals("pnodawopqhe", model.protocolTypes().get(0));
-        Assertions.assertEquals("mcgsbostzelnd", model.vlanMatchCondition().vlans().get(0));
-        Assertions.assertEquals("utmzlbiojlvfhrbb", model.vlanMatchCondition().innerVlans().get(0));
-        Assertions.assertEquals("prprsnmokay", model.vlanMatchCondition().vlanGroupNames().get(0));
-        Assertions.assertEquals(SourceDestinationType.SOURCE_IP, model.ipCondition().type());
-        Assertions.assertEquals(PrefixType.PREFIX, model.ipCondition().prefixType());
-        Assertions.assertEquals("pbzpcpiljhahz", model.ipCondition().ipPrefixValues().get(0));
-        Assertions.assertEquals("h", model.ipCondition().ipGroupNames().get(0));
-        Assertions.assertEquals("pmdtz", model.etherTypes().get(0));
-        Assertions.assertEquals("tfvnz", model.fragments().get(0));
-        Assertions.assertEquals("p", model.ipLengths().get(0));
-        Assertions.assertEquals("qqihedsvqwthmk", model.ttlValues().get(0));
-        Assertions.assertEquals("dxbzlmcmuap", model.dscpMarkings().get(0));
+        AccessControlListMatchCondition model = BinaryData.fromString(
+            "{\"etherTypes\":[\"pmguaadraufac\",\"kahzo\",\"ajjziuxxpshne\",\"kulfg\"],\"fragments\":[\"ubkwdle\",\"rds\"],\"ipLengths\":[\"jbazpjuohminy\",\"lnorwmdu\",\"wpklvxw\",\"ygdxpgpqchis\"],\"ttlValues\":[\"nnbj\",\"rxgibbd\"],\"dscpMarkings\":[\"onfo\",\"auorsukokw\",\"qplhlvnu\"],\"portCondition\":{\"flags\":[\"lrphwzsoldw\",\"yuqdu\"],\"portType\":\"SourcePort\",\"layer4Protocol\":\"UDP\",\"ports\":[\"wrbiorkt\",\"lywjhh\"],\"portGroupNames\":[\"hxmsivfo\",\"iloxggdufiq\"]},\"protocolTypes\":[\"euzaof\",\"chvcyyysfgdo\",\"cubiipuipw\",\"qonmacj\"],\"vlanMatchCondition\":{\"vlans\":[\"zshq\"],\"innerVlans\":[\"m\",\"ev\"],\"vlanGroupNames\":[\"b\",\"rrilbywdxsmic\",\"wrwfscjfnyns\"]},\"ipCondition\":{\"type\":\"DestinationIP\",\"prefixType\":\"LongestPrefix\",\"ipPrefixValues\":[\"oqytibyowbblgy\",\"vutpthjoxo\"],\"ipGroupNames\":[\"sks\",\"pi\"]}}")
+            .toObject(AccessControlListMatchCondition.class);
+        Assertions.assertEquals("euzaof", model.protocolTypes().get(0));
+        Assertions.assertEquals("zshq", model.vlanMatchCondition().vlans().get(0));
+        Assertions.assertEquals("m", model.vlanMatchCondition().innerVlans().get(0));
+        Assertions.assertEquals("b", model.vlanMatchCondition().vlanGroupNames().get(0));
+        Assertions.assertEquals(SourceDestinationType.DESTINATION_IP, model.ipCondition().type());
+        Assertions.assertEquals(PrefixType.LONGEST_PREFIX, model.ipCondition().prefixType());
+        Assertions.assertEquals("oqytibyowbblgy", model.ipCondition().ipPrefixValues().get(0));
+        Assertions.assertEquals("sks", model.ipCondition().ipGroupNames().get(0));
+        Assertions.assertEquals("pmguaadraufac", model.etherTypes().get(0));
+        Assertions.assertEquals("ubkwdle", model.fragments().get(0));
+        Assertions.assertEquals("jbazpjuohminy", model.ipLengths().get(0));
+        Assertions.assertEquals("nnbj", model.ttlValues().get(0));
+        Assertions.assertEquals("onfo", model.dscpMarkings().get(0));
         Assertions.assertEquals(PortType.SOURCE_PORT, model.portCondition().portType());
         Assertions.assertEquals(Layer4Protocol.UDP, model.portCondition().layer4Protocol());
-        Assertions.assertEquals("eqocljmygvk", model.portCondition().ports().get(0));
-        Assertions.assertEquals("zrxcczurt", model.portCondition().portGroupNames().get(0));
-        Assertions.assertEquals("qzinkfkbg", model.portCondition().flags().get(0));
+        Assertions.assertEquals("wrbiorkt", model.portCondition().ports().get(0));
+        Assertions.assertEquals("hxmsivfo", model.portCondition().portGroupNames().get(0));
+        Assertions.assertEquals("lrphwzsoldw", model.portCondition().flags().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessControlListMatchCondition model =
-            new AccessControlListMatchCondition()
-                .withProtocolTypes(Arrays.asList("pnodawopqhe"))
-                .withVlanMatchCondition(
-                    new VlanMatchCondition()
-                        .withVlans(Arrays.asList("mcgsbostzelnd"))
-                        .withInnerVlans(Arrays.asList("utmzlbiojlvfhrbb", "neqvcwwyyurmo"))
-                        .withVlanGroupNames(Arrays.asList("prprsnmokay")))
-                .withIpCondition(
-                    new IpMatchCondition()
-                        .withType(SourceDestinationType.SOURCE_IP)
-                        .withPrefixType(PrefixType.PREFIX)
-                        .withIpPrefixValues(Arrays.asList("pbzpcpiljhahz"))
-                        .withIpGroupNames(Arrays.asList("h", "dbn", "ieholewjwi")))
-                .withEtherTypes(Arrays.asList("pmdtz"))
-                .withFragments(Arrays.asList("tfvnz", "yj"))
-                .withIpLengths(Arrays.asList("p", "opv", "bdb"))
-                .withTtlValues(Arrays.asList("qqihedsvqwthmk", "ibcysihsgqc", "dhohsdtmcdzsuf"))
-                .withDscpMarkings(Arrays.asList("dxbzlmcmuap", "vhdbevwqqxey"))
-                .withPortCondition(
-                    new AccessControlListPortCondition()
-                        .withPortType(PortType.SOURCE_PORT)
-                        .withLayer4Protocol(Layer4Protocol.UDP)
-                        .withPorts(Arrays.asList("eqocljmygvk", "qkjjeokbz"))
-                        .withPortGroupNames(Arrays.asList("zrxcczurt", "e", "pqxbkwvzgnzvdf", "zdix"))
-                        .withFlags(Arrays.asList("qzinkfkbg")));
+        AccessControlListMatchCondition model = new AccessControlListMatchCondition()
+            .withProtocolTypes(Arrays.asList("euzaof", "chvcyyysfgdo", "cubiipuipw", "qonmacj"))
+            .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("zshq"))
+                .withInnerVlans(Arrays.asList("m", "ev"))
+                .withVlanGroupNames(Arrays.asList("b", "rrilbywdxsmic", "wrwfscjfnyns")))
+            .withIpCondition(new IpMatchCondition().withType(SourceDestinationType.DESTINATION_IP)
+                .withPrefixType(PrefixType.LONGEST_PREFIX)
+                .withIpPrefixValues(Arrays.asList("oqytibyowbblgy", "vutpthjoxo"))
+                .withIpGroupNames(Arrays.asList("sks", "pi")))
+            .withEtherTypes(Arrays.asList("pmguaadraufac", "kahzo", "ajjziuxxpshne", "kulfg"))
+            .withFragments(Arrays.asList("ubkwdle", "rds"))
+            .withIpLengths(Arrays.asList("jbazpjuohminy", "lnorwmdu", "wpklvxw", "ygdxpgpqchis"))
+            .withTtlValues(Arrays.asList("nnbj", "rxgibbd"))
+            .withDscpMarkings(Arrays.asList("onfo", "auorsukokw", "qplhlvnu"))
+            .withPortCondition(new AccessControlListPortCondition().withPortType(PortType.SOURCE_PORT)
+                .withLayer4Protocol(Layer4Protocol.UDP)
+                .withPorts(Arrays.asList("wrbiorkt", "lywjhh"))
+                .withPortGroupNames(Arrays.asList("hxmsivfo", "iloxggdufiq"))
+                .withFlags(Arrays.asList("lrphwzsoldw", "yuqdu")));
         model = BinaryData.fromObject(model).toObject(AccessControlListMatchCondition.class);
-        Assertions.assertEquals("pnodawopqhe", model.protocolTypes().get(0));
-        Assertions.assertEquals("mcgsbostzelnd", model.vlanMatchCondition().vlans().get(0));
-        Assertions.assertEquals("utmzlbiojlvfhrbb", model.vlanMatchCondition().innerVlans().get(0));
-        Assertions.assertEquals("prprsnmokay", model.vlanMatchCondition().vlanGroupNames().get(0));
-        Assertions.assertEquals(SourceDestinationType.SOURCE_IP, model.ipCondition().type());
-        Assertions.assertEquals(PrefixType.PREFIX, model.ipCondition().prefixType());
-        Assertions.assertEquals("pbzpcpiljhahz", model.ipCondition().ipPrefixValues().get(0));
-        Assertions.assertEquals("h", model.ipCondition().ipGroupNames().get(0));
-        Assertions.assertEquals("pmdtz", model.etherTypes().get(0));
-        Assertions.assertEquals("tfvnz", model.fragments().get(0));
-        Assertions.assertEquals("p", model.ipLengths().get(0));
-        Assertions.assertEquals("qqihedsvqwthmk", model.ttlValues().get(0));
-        Assertions.assertEquals("dxbzlmcmuap", model.dscpMarkings().get(0));
+        Assertions.assertEquals("euzaof", model.protocolTypes().get(0));
+        Assertions.assertEquals("zshq", model.vlanMatchCondition().vlans().get(0));
+        Assertions.assertEquals("m", model.vlanMatchCondition().innerVlans().get(0));
+        Assertions.assertEquals("b", model.vlanMatchCondition().vlanGroupNames().get(0));
+        Assertions.assertEquals(SourceDestinationType.DESTINATION_IP, model.ipCondition().type());
+        Assertions.assertEquals(PrefixType.LONGEST_PREFIX, model.ipCondition().prefixType());
+        Assertions.assertEquals("oqytibyowbblgy", model.ipCondition().ipPrefixValues().get(0));
+        Assertions.assertEquals("sks", model.ipCondition().ipGroupNames().get(0));
+        Assertions.assertEquals("pmguaadraufac", model.etherTypes().get(0));
+        Assertions.assertEquals("ubkwdle", model.fragments().get(0));
+        Assertions.assertEquals("jbazpjuohminy", model.ipLengths().get(0));
+        Assertions.assertEquals("nnbj", model.ttlValues().get(0));
+        Assertions.assertEquals("onfo", model.dscpMarkings().get(0));
         Assertions.assertEquals(PortType.SOURCE_PORT, model.portCondition().portType());
         Assertions.assertEquals(Layer4Protocol.UDP, model.portCondition().layer4Protocol());
-        Assertions.assertEquals("eqocljmygvk", model.portCondition().ports().get(0));
-        Assertions.assertEquals("zrxcczurt", model.portCondition().portGroupNames().get(0));
-        Assertions.assertEquals("qzinkfkbg", model.portCondition().flags().get(0));
+        Assertions.assertEquals("wrbiorkt", model.portCondition().ports().get(0));
+        Assertions.assertEquals("hxmsivfo", model.portCondition().portGroupNames().get(0));
+        Assertions.assertEquals("lrphwzsoldw", model.portCondition().flags().get(0));
     }
 }

@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class StatusResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StatusResult model =
-            BinaryData
-                .fromString(
-                    "{\"trustModel\":\"vyq\",\"status\":\"Ready\",\"attestUri\":\"ybrk\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Creating\"},\"id\":\"rtfw\",\"name\":\"ukxgaud\",\"type\":\"cs\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"nyejhkryhtnap\",\"name\":\"zw\",\"type\":\"okjye\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"ipjoxzjnchgejs\",\"name\":\"odmailzyd\",\"type\":\"h\"}]}")
-                .toObject(StatusResult.class);
-        Assertions.assertEquals("vyq", model.trustModel());
-        Assertions.assertEquals(AttestationServiceStatus.READY, model.status());
-        Assertions.assertEquals("ybrk", model.attestUri());
+        StatusResult model = BinaryData.fromString(
+            "{\"trustModel\":\"ctazakljlahbcryf\",\"status\":\"NotReady\",\"attestUri\":\"osygex\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"hmsbzjhcrzevdp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"olthqtrgqjbp\",\"actionsRequired\":\"fsinzgvfcjrwzoxx\"},\"provisioningState\":\"Failed\"},\"id\":\"elluwfziton\",\"name\":\"eqfpj\",\"type\":\"jlxofpdvhpfxxyp\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"mayhuybbkpodepoo\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"vamih\",\"actionsRequired\":\"gnarxzxtheo\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ivyevcciqihnhun\",\"name\":\"bwjzr\",\"type\":\"fygxgispemvtzfk\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"ljofxqeofjaeqjh\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"s\",\"actionsRequired\":\"smjqulngsntnbyb\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cwrwclxxwrljdous\",\"name\":\"cqvkocrcjdkwtn\",\"type\":\"xbnjbiksq\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"sainqpjwnzl\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ppeebvmgxsab\",\"actionsRequired\":\"qduujitcjczdz\"},\"provisioningState\":\"Creating\"},\"id\":\"dhkrwpdappdsbdk\",\"name\":\"wrwjfeu\",\"type\":\"nhutjeltmrldhugj\"}]}")
+            .toObject(StatusResult.class);
+        Assertions.assertEquals("ctazakljlahbcryf", model.trustModel());
+        Assertions.assertEquals(AttestationServiceStatus.NOT_READY, model.status());
+        Assertions.assertEquals("osygex", model.attestUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StatusResult model =
-            new StatusResult().withTrustModel("vyq").withStatus(AttestationServiceStatus.READY).withAttestUri("ybrk");
+        StatusResult model = new StatusResult().withTrustModel("ctazakljlahbcryf")
+            .withStatus(AttestationServiceStatus.NOT_READY)
+            .withAttestUri("osygex");
         model = BinaryData.fromObject(model).toObject(StatusResult.class);
-        Assertions.assertEquals("vyq", model.trustModel());
-        Assertions.assertEquals(AttestationServiceStatus.READY, model.status());
-        Assertions.assertEquals("ybrk", model.attestUri());
+        Assertions.assertEquals("ctazakljlahbcryf", model.trustModel());
+        Assertions.assertEquals(AttestationServiceStatus.NOT_READY, model.status());
+        Assertions.assertEquals("osygex", model.attestUri());
     }
 }

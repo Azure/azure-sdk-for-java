@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.IpFirewallRuleInfoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of IP firewall rules. */
+/**
+ * List of IP firewall rules.
+ */
 @Fluent
-public final class IpFirewallRuleInfoListResult {
+public final class IpFirewallRuleInfoListResult implements JsonSerializable<IpFirewallRuleInfoListResult> {
     /*
      * Link to next page of results
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of IP firewall rules
      */
-    @JsonProperty(value = "value")
     private List<IpFirewallRuleInfoInner> value;
 
-    /** Creates an instance of IpFirewallRuleInfoListResult class. */
+    /**
+     * Creates an instance of IpFirewallRuleInfoListResult class.
+     */
     public IpFirewallRuleInfoListResult() {
     }
 
     /**
      * Get the nextLink property: Link to next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class IpFirewallRuleInfoListResult {
 
     /**
      * Set the nextLink property: Link to next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IpFirewallRuleInfoListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class IpFirewallRuleInfoListResult {
 
     /**
      * Get the value property: List of IP firewall rules.
-     *
+     * 
      * @return the value value.
      */
     public List<IpFirewallRuleInfoInner> value() {
@@ -59,7 +65,7 @@ public final class IpFirewallRuleInfoListResult {
 
     /**
      * Set the value property: List of IP firewall rules.
-     *
+     * 
      * @param value the value value to set.
      * @return the IpFirewallRuleInfoListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class IpFirewallRuleInfoListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpFirewallRuleInfoListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpFirewallRuleInfoListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpFirewallRuleInfoListResult.
+     */
+    public static IpFirewallRuleInfoListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpFirewallRuleInfoListResult deserializedIpFirewallRuleInfoListResult = new IpFirewallRuleInfoListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedIpFirewallRuleInfoListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<IpFirewallRuleInfoInner> value
+                        = reader.readArray(reader1 -> IpFirewallRuleInfoInner.fromJson(reader1));
+                    deserializedIpFirewallRuleInfoListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpFirewallRuleInfoListResult;
+        });
     }
 }

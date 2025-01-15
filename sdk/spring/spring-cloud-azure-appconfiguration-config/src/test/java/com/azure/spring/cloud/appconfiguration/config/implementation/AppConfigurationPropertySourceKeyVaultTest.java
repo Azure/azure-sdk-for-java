@@ -102,7 +102,8 @@ public class AppConfigurationPropertySourceKeyVaultTest {
             .thenReturn(keyVaultSecretListMock);
 
         KeyVaultSecret secret = new KeyVaultSecret("mySecret", "mySecretValue");
-        when(keyVaultClientFactoryMock.getClient(Mockito.eq("https://test.key.vault.com"))).thenReturn(clientManagerMock);
+        when(keyVaultClientFactoryMock.getClient(Mockito.eq("https://test.key.vault.com")))
+            .thenReturn(clientManagerMock);
         when(clientManagerMock.getSecret(Mockito.any(URI.class))).thenReturn(secret);
 
         try {
@@ -141,7 +142,8 @@ public class AppConfigurationPropertySourceKeyVaultTest {
             .thenReturn(Collections.emptyIterator());
         when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
-        when(keyVaultClientFactoryMock.getClient(Mockito.eq("https://test.key.vault.com"))).thenReturn(clientManagerMock);
+        when(keyVaultClientFactoryMock.getClient(Mockito.eq("https://test.key.vault.com")))
+            .thenReturn(clientManagerMock);
         when(clientManagerMock.getSecret(Mockito.any())).thenThrow(new RuntimeException("Parse Failed"));
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> propertySource.initProperties(null, false));

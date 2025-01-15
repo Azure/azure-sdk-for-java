@@ -48,19 +48,22 @@ public final class TableAccountSasService {
                 case 'b':
                     services.blob = true;
                     break;
+
                 case 'f':
                     services.file = true;
                     break;
+
                 case 'q':
                     services.queue = true;
                     break;
+
                 case 't':
                     services.table = true;
                     break;
+
                 default:
-                    throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, StorageConstants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Services",
-                            servicesString, c));
+                    throw new IllegalArgumentException(String.format(Locale.ROOT,
+                        StorageConstants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Services", servicesString, c));
             }
         }
 

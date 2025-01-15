@@ -6,32 +6,34 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.AmlUserFeatureInner;
 
-/** An immutable client-side representation of AmlUserFeature. */
+/**
+ * An immutable client-side representation of AmlUserFeature.
+ */
 public interface AmlUserFeature {
     /**
      * Gets the id property: Specifies the feature ID.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the displayName property: Specifies the feature name.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the description property: Describes the feature for user experience.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.AmlUserFeatureInner object.
-     *
+     * 
      * @return the inner object.
      */
     AmlUserFeatureInner innerModel();

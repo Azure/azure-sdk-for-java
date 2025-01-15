@@ -99,6 +99,9 @@ public final class RuntimeData implements JsonSerializable<RuntimeData> {
     public void validate() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

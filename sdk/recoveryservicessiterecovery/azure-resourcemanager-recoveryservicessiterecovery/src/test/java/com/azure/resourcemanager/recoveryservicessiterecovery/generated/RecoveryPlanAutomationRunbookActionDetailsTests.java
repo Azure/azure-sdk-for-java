@@ -24,7 +24,8 @@ public final class RecoveryPlanAutomationRunbookActionDetailsTests {
     public void testSerialize() throws Exception {
         RecoveryPlanAutomationRunbookActionDetails model
             = new RecoveryPlanAutomationRunbookActionDetails().withRunbookId("xljzvdovbrbl")
-                .withTimeout("lprdaqccddcbnygd").withFabricLocation(RecoveryPlanActionLocation.PRIMARY);
+                .withTimeout("lprdaqccddcbnygd")
+                .withFabricLocation(RecoveryPlanActionLocation.PRIMARY);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanAutomationRunbookActionDetails.class);
         Assertions.assertEquals("xljzvdovbrbl", model.runbookId());
         Assertions.assertEquals("lprdaqccddcbnygd", model.timeout());

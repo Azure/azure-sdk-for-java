@@ -10,8 +10,8 @@ import com.azure.resourcemanager.workloads.models.OSConfiguration;
 public final class OSConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSConfiguration model =
-            BinaryData.fromString("{\"osType\":\"OSConfiguration\"}").toObject(OSConfiguration.class);
+        OSConfiguration model
+            = BinaryData.fromString("{\"osType\":\"OSConfiguration\"}").toObject(OSConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

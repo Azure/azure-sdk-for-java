@@ -12,13 +12,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.GeoBackupPolicyInner;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyName;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolGeoBackupPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolGeoBackupPoliciesClient.
+ */
 public interface SqlPoolGeoBackupPoliciesClient {
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -32,9 +34,9 @@ public interface SqlPoolGeoBackupPoliciesClient {
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -45,12 +47,12 @@ public interface SqlPoolGeoBackupPoliciesClient {
      * @return list of SQL pool geo backup policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GeoBackupPolicyInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<GeoBackupPolicyInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -63,17 +65,12 @@ public interface SqlPoolGeoBackupPoliciesClient {
      * @return a database geo backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GeoBackupPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyInner parameters,
-        Context context);
+    Response<GeoBackupPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName, GeoBackupPolicyInner parameters, Context context);
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -85,18 +82,14 @@ public interface SqlPoolGeoBackupPoliciesClient {
      * @return a database geo backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GeoBackupPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyInner parameters);
+    GeoBackupPolicyInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        GeoBackupPolicyName geoBackupPolicyName, GeoBackupPolicyInner parameters);
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -108,18 +101,14 @@ public interface SqlPoolGeoBackupPoliciesClient {
      * @return the specified SQL pool geo backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GeoBackupPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        Context context);
+    Response<GeoBackupPolicyInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        GeoBackupPolicyName geoBackupPolicyName, Context context);
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -130,6 +119,6 @@ public interface SqlPoolGeoBackupPoliciesClient {
      * @return the specified SQL pool geo backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GeoBackupPolicyInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName);
+    GeoBackupPolicyInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        GeoBackupPolicyName geoBackupPolicyName);
 }

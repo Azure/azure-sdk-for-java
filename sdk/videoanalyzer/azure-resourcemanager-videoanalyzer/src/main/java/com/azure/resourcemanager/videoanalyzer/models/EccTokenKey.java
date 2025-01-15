@@ -109,9 +109,8 @@ public final class EccTokenKey extends TokenKey {
     public void validate() {
         super.validate();
         if (alg() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property alg in model EccTokenKey"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property alg in model EccTokenKey"));
         }
         if (x() == null) {
             throw LOGGER

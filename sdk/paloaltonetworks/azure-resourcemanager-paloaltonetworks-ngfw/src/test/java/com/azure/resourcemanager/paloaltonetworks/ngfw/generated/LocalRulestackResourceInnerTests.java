@@ -64,13 +64,21 @@ public final class LocalRulestackResourceInnerTests {
                             "b",
                             new AzureResourceManagerUserAssignedIdentity().withClientId("xakvvjgslor")
                                 .withPrincipalId("lmywwtkgkxnyed"))))
-                .withPanEtag("ywdxsmic").withPanLocation("rwfscjfnynszquj").withScope(ScopeType.LOCAL)
+                .withPanEtag("ywdxsmic")
+                .withPanLocation("rwfscjfnynszquj")
+                .withScope(ScopeType.LOCAL)
                 .withAssociatedSubscriptions(Arrays.asList("qytibyowbblgyavu", "pthjoxo", "smsks", "pi"))
-                .withDescription("qolj").withDefaultMode(DefaultMode.NONE).withMinAppIdVersion("xxlxsffgcvizq")
+                .withDescription("qolj")
+                .withDefaultMode(DefaultMode.NONE)
+                .withMinAppIdVersion("xxlxsffgcvizq")
                 .withSecurityServices(new SecurityServices().withVulnerabilityProfile("w")
-                    .withAntiSpywareProfile("oupfgfb").withAntiVirusProfile("ubdyhgk").withUrlFilteringProfile("in")
-                    .withFileBlockingProfile("owzfttsttkt").withDnsSubscription("hbq")
-                    .withOutboundUnTrustCertificate("tx").withOutboundTrustCertificate("zukxitmmqtgqq"));
+                    .withAntiSpywareProfile("oupfgfb")
+                    .withAntiVirusProfile("ubdyhgk")
+                    .withUrlFilteringProfile("in")
+                    .withFileBlockingProfile("owzfttsttkt")
+                    .withDnsSubscription("hbq")
+                    .withOutboundUnTrustCertificate("tx")
+                    .withOutboundTrustCertificate("zukxitmmqtgqq"));
         model = BinaryData.fromObject(model).toObject(LocalRulestackResourceInner.class);
         Assertions.assertEquals("vudtjuewbcihx", model.location());
         Assertions.assertEquals("hcjyxc", model.tags().get("ybvpay"));

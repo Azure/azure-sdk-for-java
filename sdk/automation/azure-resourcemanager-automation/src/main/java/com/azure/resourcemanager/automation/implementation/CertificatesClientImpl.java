@@ -36,22 +36,28 @@ import com.azure.resourcemanager.automation.models.CertificateListResult;
 import com.azure.resourcemanager.automation.models.CertificateUpdateParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CertificatesClient.
+ */
 public final class CertificatesClientImpl implements CertificatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CertificatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of CertificatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CertificatesClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,102 +67,73 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientCert")
-    private interface CertificatesService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+    public interface CertificatesService {
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("certificateName") String certificateName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CertificateInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("certificateName") String certificateName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/certificates/{certificateName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CertificateInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("certificateName") String certificateName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CertificateCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CertificateInner>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("certificateName") String certificateName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CertificateUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") CertificateUpdateParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/certificates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateListResult>> listByAutomationAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CertificateListResult>> listByAutomationAccount(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateListResult>> listByAutomationAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Delete the certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -166,13 +143,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String certificateName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -187,32 +162,20 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            certificateName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                certificateName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -223,13 +186,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String certificateName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -244,29 +205,19 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                certificateName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, automationAccountName, certificateName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Delete the certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -283,22 +234,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Delete the certificate.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String certificateName) {
-        deleteAsync(resourceGroupName, automationAccountName, certificateName).block();
-    }
-
-    /**
-     * Delete the certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -309,14 +245,29 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String certificateName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String certificateName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, certificateName, context).block();
     }
 
     /**
+     * Delete the certificate.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The name of certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String certificateName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, certificateName, Context.NONE);
+    }
+
+    /**
      * Retrieve the certificate identified by certificate name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -326,13 +277,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String certificateName) {
+    private Mono<Response<CertificateInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -347,32 +296,20 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            certificateName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                certificateName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the certificate identified by certificate name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -383,13 +320,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String certificateName, Context context) {
+    private Mono<Response<CertificateInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -404,29 +339,19 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                certificateName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName, certificateName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve the certificate identified by certificate name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -436,15 +361,33 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> getAsync(
-        String resourceGroupName, String automationAccountName, String certificateName) {
+    private Mono<CertificateInner> getAsync(String resourceGroupName, String automationAccountName,
+        String certificateName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, certificateName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the certificate identified by certificate name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The name of certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the certificate along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CertificateInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String certificateName, Context context) {
+        return getWithResponseAsync(resourceGroupName, automationAccountName, certificateName, context).block();
+    }
+
+    /**
+     * Retrieve the certificate identified by certificate name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The name of certificate.
@@ -455,30 +398,12 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner get(String resourceGroupName, String automationAccountName, String certificateName) {
-        return getAsync(resourceGroupName, automationAccountName, certificateName).block();
-    }
-
-    /**
-     * Retrieve the certificate identified by certificate name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The name of certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the certificate along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String certificateName, Context context) {
-        return getWithResponseAsync(resourceGroupName, automationAccountName, certificateName, context).block();
+        return getWithResponse(resourceGroupName, automationAccountName, certificateName, Context.NONE).getValue();
     }
 
     /**
      * Create a certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the create or update certificate operation.
@@ -489,16 +414,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters) {
+    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String certificateName, CertificateCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -513,10 +433,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -527,24 +445,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            certificateName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                    certificateName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the create or update certificate operation.
@@ -556,17 +464,12 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters,
+    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String certificateName, CertificateCreateOrUpdateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -581,10 +484,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -594,22 +495,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                certificateName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+            certificateName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Create a certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the create or update certificate operation.
@@ -620,39 +512,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters) {
+    private Mono<CertificateInner> createOrUpdateAsync(String resourceGroupName, String automationAccountName,
+        String certificateName, CertificateCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, certificateName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create a certificate.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The parameters supplied to the create or update certificate operation.
-     * @param parameters The parameters supplied to the create or update certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, certificateName, parameters).block();
-    }
-
-    /**
-     * Create a certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the create or update certificate operation.
@@ -664,20 +532,34 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, automationAccountName, certificateName, parameters, context)
-            .block();
+    public Response<CertificateInner> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String certificateName, CertificateCreateOrUpdateParameters parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, certificateName, parameters,
+            context).block();
+    }
+
+    /**
+     * Create a certificate.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The parameters supplied to the create or update certificate operation.
+     * @param parameters The parameters supplied to the create or update certificate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        String certificateName, CertificateCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, automationAccountName, certificateName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Update a certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the update certificate operation.
@@ -688,16 +570,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateUpdateParameters parameters) {
+    private Mono<Response<CertificateInner>> updateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String certificateName, CertificateUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -712,10 +589,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -725,25 +600,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            certificateName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                certificateName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the update certificate operation.
@@ -755,17 +619,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateUpdateParameters parameters,
-        Context context) {
+    private Mono<Response<CertificateInner>> updateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String certificateName, CertificateUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -780,10 +638,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -793,22 +649,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                certificateName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, automationAccountName, certificateName,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Update a certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the update certificate operation.
@@ -819,39 +666,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> updateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateUpdateParameters parameters) {
+    private Mono<CertificateInner> updateAsync(String resourceGroupName, String automationAccountName,
+        String certificateName, CertificateUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, certificateName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a certificate.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param certificateName The parameters supplied to the update certificate operation.
-     * @param parameters The parameters supplied to the update certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, certificateName, parameters).block();
-    }
-
-    /**
-     * Update a certificate.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param certificateName The parameters supplied to the update certificate operation.
@@ -863,35 +686,48 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return definition of the certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String certificateName,
-        CertificateUpdateParameters parameters,
-        Context context) {
+    public Response<CertificateInner> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String certificateName, CertificateUpdateParameters parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, certificateName, parameters, context)
             .block();
     }
 
     /**
+     * Update a certificate.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param certificateName The parameters supplied to the update certificate operation.
+     * @param parameters The parameters supplied to the update certificate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner update(String resourceGroupName, String automationAccountName, String certificateName,
+        CertificateUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, certificateName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Retrieve a list of certificates.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list certificate operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName) {
+    private Mono<PagedResponse<CertificateInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -902,40 +738,22 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAutomationAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAutomationAccount(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of certificates.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -943,16 +761,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list certificate operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName, Context context) {
+    private Mono<PagedResponse<CertificateInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -963,37 +779,22 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAutomationAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAutomationAccount(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve a list of certificates.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1002,16 +803,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response model for the list certificate operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName) {
-        return new PagedFlux<>(
-            () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName),
+    private PagedFlux<CertificateInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName) {
+        return new PagedFlux<>(() -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieve a list of certificates.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -1021,8 +821,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response model for the list certificate operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName, Context context) {
+    private PagedFlux<CertificateInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName, Context context) {
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, context),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink, context));
@@ -1030,7 +830,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Retrieve a list of certificates.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1039,14 +839,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response model for the list certificate operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
+    public PagedIterable<CertificateInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
         return new PagedIterable<>(listByAutomationAccountAsync(resourceGroupName, automationAccountName));
     }
 
     /**
      * Retrieve a list of certificates.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -1056,21 +856,20 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response model for the list certificate operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context) {
+    public PagedIterable<CertificateInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, Context context) {
         return new PagedIterable<>(listByAutomationAccountAsync(resourceGroupName, automationAccountName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list certificate operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -1078,63 +877,43 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list certificate operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByAutomationAccountNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CertificateInner>> listByAutomationAccountNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

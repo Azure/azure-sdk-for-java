@@ -38,14 +38,13 @@ public abstract class EventHubsScenario implements AutoCloseable {
         return closeable;
     }
 
-    protected Disposable toClose(Disposable closeable) {
+    protected void toClose(Disposable closeable) {
         toClose.add(() -> closeable.dispose());
-        return closeable;
     }
 
     @Override
     public synchronized void close() {
-        if (toClose == null || toClose.size() == 0) {
+        if (toClose.isEmpty()) {
             return;
         }
 

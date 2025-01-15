@@ -7,18 +7,20 @@ package com.azure.resourcemanager.machinelearning.models;
 import com.azure.resourcemanager.machinelearning.fluent.models.VirtualMachineSizeListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of VirtualMachineSizeListResult. */
+/**
+ * An immutable client-side representation of VirtualMachineSizeListResult.
+ */
 public interface VirtualMachineSizeListResult {
     /**
      * Gets the value property: The list of virtual machine sizes supported by AmlCompute.
-     *
+     * 
      * @return the value value.
      */
     List<VirtualMachineSize> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.VirtualMachineSizeListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     VirtualMachineSizeListResultInner innerModel();

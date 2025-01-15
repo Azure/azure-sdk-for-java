@@ -5,44 +5,49 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.PrivateEndpointConnectionWrapperProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Remote Private Endpoint Connection resource. */
+/**
+ * Remote Private Endpoint Connection resource.
+ */
 @Fluent
-public final class RemotePrivateEndpointConnectionWrapper {
+public final class RemotePrivateEndpointConnectionWrapper
+    implements JsonSerializable<RemotePrivateEndpointConnectionWrapper> {
     /*
      * Private Endpoint connection resource id
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Private Endpoint Connection Name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Private Endpoint Connection Resource Type
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private PrivateEndpointConnectionWrapperProperties innerProperties;
 
-    /** Creates an instance of RemotePrivateEndpointConnectionWrapper class. */
+    /**
+     * Creates an instance of RemotePrivateEndpointConnectionWrapper class.
+     */
     public RemotePrivateEndpointConnectionWrapper() {
     }
 
     /**
      * Get the id property: Private Endpoint connection resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +56,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Set the id property: Private Endpoint connection resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the RemotePrivateEndpointConnectionWrapper object itself.
      */
@@ -62,7 +67,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Get the name property: Private Endpoint Connection Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +76,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Set the name property: Private Endpoint Connection Name.
-     *
+     * 
      * @param name the name value to set.
      * @return the RemotePrivateEndpointConnectionWrapper object itself.
      */
@@ -82,7 +87,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Get the type property: Private Endpoint Connection Resource Type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -91,7 +96,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Set the type property: Private Endpoint Connection Resource Type.
-     *
+     * 
      * @param type the type value to set.
      * @return the RemotePrivateEndpointConnectionWrapper object itself.
      */
@@ -102,7 +107,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateEndpointConnectionWrapperProperties innerProperties() {
@@ -111,7 +116,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Get the privateEndpoint property: The resource of private end point.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public ArmIdWrapper privateEndpoint() {
@@ -120,7 +125,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Set the privateEndpoint property: The resource of private end point.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the RemotePrivateEndpointConnectionWrapper object itself.
      */
@@ -135,7 +140,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
     /**
      * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -145,12 +150,12 @@ public final class RemotePrivateEndpointConnectionWrapper {
     /**
      * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the RemotePrivateEndpointConnectionWrapper object itself.
      */
-    public RemotePrivateEndpointConnectionWrapper withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public RemotePrivateEndpointConnectionWrapper
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointConnectionWrapperProperties();
         }
@@ -160,7 +165,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -169,7 +174,7 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Get the groupIds property: All the Group ids.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -178,12 +183,59 @@ public final class RemotePrivateEndpointConnectionWrapper {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemotePrivateEndpointConnectionWrapper from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemotePrivateEndpointConnectionWrapper if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemotePrivateEndpointConnectionWrapper.
+     */
+    public static RemotePrivateEndpointConnectionWrapper fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemotePrivateEndpointConnectionWrapper deserializedRemotePrivateEndpointConnectionWrapper
+                = new RemotePrivateEndpointConnectionWrapper();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnectionWrapper.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnectionWrapper.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnectionWrapper.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnectionWrapper.innerProperties
+                        = PrivateEndpointConnectionWrapperProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemotePrivateEndpointConnectionWrapper;
+        });
     }
 }

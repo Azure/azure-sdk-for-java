@@ -6,24 +6,51 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a StartMenuItem definition. */
+/**
+ * Represents a StartMenuItem definition.
+ */
 @Fluent
 public final class StartMenuItemInner extends ProxyResource {
     /*
      * Detailed properties for StartMenuItem
      */
-    @JsonProperty(value = "properties")
     private StartMenuItemProperties innerProperties;
 
-    /** Creates an instance of StartMenuItemInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StartMenuItemInner class.
+     */
     public StartMenuItemInner() {
     }
 
     /**
      * Get the innerProperties property: Detailed properties for StartMenuItem.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StartMenuItemProperties innerProperties() {
@@ -31,8 +58,47 @@ public final class StartMenuItemInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the appAlias property: Alias of StartMenuItem.
-     *
+     * 
      * @return the appAlias value.
      */
     public String appAlias() {
@@ -41,7 +107,7 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Set the appAlias property: Alias of StartMenuItem.
-     *
+     * 
      * @param appAlias the appAlias value to set.
      * @return the StartMenuItemInner object itself.
      */
@@ -55,7 +121,7 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Get the filePath property: Path to the file of StartMenuItem.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -64,7 +130,7 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Set the filePath property: Path to the file of StartMenuItem.
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the StartMenuItemInner object itself.
      */
@@ -78,7 +144,7 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Get the commandLineArguments property: Command line arguments for StartMenuItem.
-     *
+     * 
      * @return the commandLineArguments value.
      */
     public String commandLineArguments() {
@@ -87,7 +153,7 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Set the commandLineArguments property: Command line arguments for StartMenuItem.
-     *
+     * 
      * @param commandLineArguments the commandLineArguments value to set.
      * @return the StartMenuItemInner object itself.
      */
@@ -101,7 +167,7 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Get the iconPath property: Path to the icon.
-     *
+     * 
      * @return the iconPath value.
      */
     public String iconPath() {
@@ -110,7 +176,7 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Set the iconPath property: Path to the icon.
-     *
+     * 
      * @param iconPath the iconPath value to set.
      * @return the StartMenuItemInner object itself.
      */
@@ -124,7 +190,7 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Get the iconIndex property: Index of the icon.
-     *
+     * 
      * @return the iconIndex value.
      */
     public Integer iconIndex() {
@@ -133,7 +199,7 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Set the iconIndex property: Index of the icon.
-     *
+     * 
      * @param iconIndex the iconIndex value to set.
      * @return the StartMenuItemInner object itself.
      */
@@ -147,12 +213,57 @@ public final class StartMenuItemInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StartMenuItemInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StartMenuItemInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StartMenuItemInner.
+     */
+    public static StartMenuItemInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StartMenuItemInner deserializedStartMenuItemInner = new StartMenuItemInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStartMenuItemInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStartMenuItemInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStartMenuItemInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStartMenuItemInner.innerProperties = StartMenuItemProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStartMenuItemInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStartMenuItemInner;
+        });
     }
 }

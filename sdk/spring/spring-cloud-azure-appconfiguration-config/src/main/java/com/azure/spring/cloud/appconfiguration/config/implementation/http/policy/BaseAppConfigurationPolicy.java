@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
 
 import reactor.core.publisher.Mono;
+
 /**
  * HttpPipelinePolicy for connecting to Azure App Configuration.
  */
@@ -49,13 +50,6 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
             tracingInfo.getValue(watchRequests));
 
         return next.process();
-    }
-
-    /**
-     * @param watchRequests the watchRequests to set
-     */
-    public static void setWatchRequests(Boolean watchRequests) {
-        BaseAppConfigurationPolicy.watchRequests = watchRequests;
     }
 
 }

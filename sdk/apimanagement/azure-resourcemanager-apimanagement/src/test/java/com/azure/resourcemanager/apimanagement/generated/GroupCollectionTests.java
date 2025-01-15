@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"dgwxfkzsifcu\",\"description\":\"dujgcwxve\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"rdxrizagbbgiarks\"},\"id\":\"kpgdqxwabzrwiq\",\"name\":\"xhaclcdosqkptjq\",\"type\":\"kifmmainw\"},{\"properties\":{\"displayName\":\"d\",\"description\":\"pbqwuntobu\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"lw\"},\"id\":\"vydjufbnk\",\"name\":\"blaxpegj\",\"type\":\"dabalfdxaglzfytl\"}],\"count\":3895152665051881707,\"nextLink\":\"opxouvmrsif\"}")
-                .toObject(GroupCollection.class);
+        GroupCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"dgwxfkzsifcu\",\"description\":\"dujgcwxve\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"rdxrizagbbgiarks\"},\"id\":\"kpgdqxwabzrwiq\",\"name\":\"xhaclcdosqkptjq\",\"type\":\"kifmmainw\"},{\"properties\":{\"displayName\":\"d\",\"description\":\"pbqwuntobu\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"lw\"},\"id\":\"vydjufbnk\",\"name\":\"blaxpegj\",\"type\":\"dabalfdxaglzfytl\"}],\"count\":3895152665051881707,\"nextLink\":\"opxouvmrsif\"}")
+            .toObject(GroupCollection.class);
         Assertions.assertEquals("dgwxfkzsifcu", model.value().get(0).displayName());
         Assertions.assertEquals("dujgcwxve", model.value().get(0).description());
         Assertions.assertEquals(GroupType.EXTERNAL, model.value().get(0).typePropertiesType());
@@ -29,23 +27,17 @@ public final class GroupCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupCollection model =
-            new GroupCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new GroupContractInner()
-                                .withDisplayName("dgwxfkzsifcu")
-                                .withDescription("dujgcwxve")
-                                .withTypePropertiesType(GroupType.EXTERNAL)
-                                .withExternalId("rdxrizagbbgiarks"),
-                            new GroupContractInner()
-                                .withDisplayName("d")
-                                .withDescription("pbqwuntobu")
-                                .withTypePropertiesType(GroupType.SYSTEM)
-                                .withExternalId("lw")))
-                .withCount(3895152665051881707L)
-                .withNextLink("opxouvmrsif");
+        GroupCollection model = new GroupCollection().withValue(Arrays.asList(
+            new GroupContractInner().withDisplayName("dgwxfkzsifcu")
+                .withDescription("dujgcwxve")
+                .withTypePropertiesType(GroupType.EXTERNAL)
+                .withExternalId("rdxrizagbbgiarks"),
+            new GroupContractInner().withDisplayName("d")
+                .withDescription("pbqwuntobu")
+                .withTypePropertiesType(GroupType.SYSTEM)
+                .withExternalId("lw")))
+            .withCount(3895152665051881707L)
+            .withNextLink("opxouvmrsif");
         model = BinaryData.fromObject(model).toObject(GroupCollection.class);
         Assertions.assertEquals("dgwxfkzsifcu", model.value().get(0).displayName());
         Assertions.assertEquals("dujgcwxve", model.value().get(0).description());

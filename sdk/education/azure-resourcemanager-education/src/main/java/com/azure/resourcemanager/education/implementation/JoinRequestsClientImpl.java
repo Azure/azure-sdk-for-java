@@ -31,22 +31,28 @@ import com.azure.resourcemanager.education.fluent.models.JoinRequestDetailsInner
 import com.azure.resourcemanager.education.models.JoinRequestList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JoinRequestsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JoinRequestsClient.
+ */
 public final class JoinRequestsClientImpl implements JoinRequestsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JoinRequestsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EducationManagementClientImpl client;
 
     /**
      * Initializes an instance of JoinRequestsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JoinRequestsClientImpl(EducationManagementClientImpl client) {
-        this.service =
-            RestProxy.create(JoinRequestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(JoinRequestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,91 +62,65 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "EducationManagementC")
-    private interface JoinRequestsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests")
-        @ExpectedResponses({200})
+    public interface JoinRequestsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JoinRequestList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JoinRequestList>> list(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
             @PathParam("invoiceSectionName") String invoiceSectionName,
-            @QueryParam("includeDenied") Boolean includeDenied,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("includeDenied") Boolean includeDenied, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests"
-                + "/{joinRequestName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests/{joinRequestName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JoinRequestDetailsInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JoinRequestDetailsInner>> get(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
             @PathParam("invoiceSectionName") String invoiceSectionName,
-            @PathParam("joinRequestName") String joinRequestName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("joinRequestName") String joinRequestName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests"
-                + "/{joinRequestName}/approve")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests/{joinRequestName}/approve")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> approve(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> approve(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
             @PathParam("invoiceSectionName") String invoiceSectionName,
-            @PathParam("joinRequestName") String joinRequestName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("joinRequestName") String joinRequestName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests"
-                + "/{joinRequestName}/deny")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/joinRequests/{joinRequestName}/deny")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deny(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> deny(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
             @PathParam("invoiceSectionName") String invoiceSectionName,
-            @PathParam("joinRequestName") String joinRequestName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("joinRequestName") String joinRequestName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JoinRequestList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<JoinRequestList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDenied Include denied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -148,13 +128,11 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return student join requests along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JoinRequestDetailsInner>> listSinglePageAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Boolean includeDenied) {
+    private Mono<PagedResponse<JoinRequestDetailsInner>> listSinglePageAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, Boolean includeDenied) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -170,36 +148,19 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            includeDenied,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<JoinRequestDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, includeDenied, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<JoinRequestDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDenied Include denied.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,17 +169,11 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return student join requests along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JoinRequestDetailsInner>> listSinglePageAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDenied,
-        Context context) {
+    private Mono<PagedResponse<JoinRequestDetailsInner>> listSinglePageAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, Boolean includeDenied, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -235,32 +190,18 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                includeDenied,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName, includeDenied,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDenied Include denied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -268,8 +209,8 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return student join requests as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JoinRequestDetailsInner> listAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Boolean includeDenied) {
+    private PagedFlux<JoinRequestDetailsInner> listAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDenied) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName, includeDenied),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -277,18 +218,18 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JoinRequestDetailsInner> listAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    private PagedFlux<JoinRequestDetailsInner> listAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
         final Boolean includeDenied = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName, includeDenied),
@@ -297,10 +238,10 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDenied Include denied.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,32 +250,26 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return student join requests as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JoinRequestDetailsInner> listAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDenied,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName, includeDenied, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<JoinRequestDetailsInner> listAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDenied, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName,
+            includeDenied, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JoinRequestDetailsInner> list(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    public PagedIterable<JoinRequestDetailsInner> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
         final Boolean includeDenied = null;
         return new PagedIterable<>(
             listAsync(billingAccountName, billingProfileName, invoiceSectionName, includeDenied));
@@ -342,10 +277,10 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDenied Include denied.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,36 +289,30 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return student join requests as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JoinRequestDetailsInner> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDenied,
-        Context context) {
+    public PagedIterable<JoinRequestDetailsInner> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDenied, Context context) {
         return new PagedIterable<>(
             listAsync(billingAccountName, billingProfileName, invoiceSectionName, includeDenied, context));
     }
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JoinRequestDetailsInner>> getWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    private Mono<Response<JoinRequestDetailsInner>> getWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, String joinRequestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -403,28 +332,18 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            joinRequestName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, joinRequestName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -432,17 +351,11 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return student join requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JoinRequestDetailsInner>> getWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context) {
+    private Mono<Response<JoinRequestDetailsInner>> getWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, String joinRequestName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -462,44 +375,36 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                joinRequestName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName,
+            joinRequestName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JoinRequestDetailsInner> getAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    private Mono<JoinRequestDetailsInner> getAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName) {
         return getWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -507,57 +412,49 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return student join requests along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JoinRequestDetailsInner> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context) {
-        return getWithResponseAsync(
-                billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, context)
-            .block();
+    public Response<JoinRequestDetailsInner> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context) {
+        return getWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName,
+            context).block();
     }
 
     /**
      * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return student join requests.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JoinRequestDetailsInner get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
-        return getWithResponse(
-                billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, Context.NONE)
-            .getValue();
+    public JoinRequestDetailsInner get(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName) {
+        return getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName,
+            Context.NONE).getValue();
     }
 
     /**
      * Approve student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> approveWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    private Mono<Response<Void>> approveWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -577,28 +474,18 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .approve(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            joinRequestName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.approve(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, joinRequestName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Approve student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -606,17 +493,11 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> approveWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context) {
+    private Mono<Response<Void>> approveWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -636,44 +517,36 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .approve(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                joinRequestName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.approve(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName,
+            joinRequestName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Approve student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> approveAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    private Mono<Void> approveAsync(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName) {
         return approveWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Approve student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -681,54 +554,47 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> approveWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context) {
-        return approveWithResponseAsync(
-                billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, context)
-            .block();
+    public Response<Void> approveWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context) {
+        return approveWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName,
+            context).block();
     }
 
     /**
      * Approve student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void approve(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    public void approve(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName) {
         approveWithResponse(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, Context.NONE);
     }
 
     /**
      * Deny student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> denyWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    private Mono<Response<Void>> denyWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -748,28 +614,18 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deny(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            joinRequestName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.deny(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, joinRequestName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deny student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -777,17 +633,11 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> denyWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context) {
+    private Mono<Response<Void>> denyWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -807,44 +657,36 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deny(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                joinRequestName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.deny(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName,
+            joinRequestName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deny student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> denyAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    private Mono<Void> denyAsync(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName) {
         return denyWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deny student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -852,39 +694,33 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> denyWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context) {
-        return denyWithResponseAsync(
-                billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, context)
-            .block();
+    public Response<Void> denyWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context) {
+        return denyWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName,
+            context).block();
     }
 
     /**
      * Deny student joining the redeemable lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param joinRequestName The ID that uniquely identifies a join request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deny(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    public void deny(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName) {
         denyWithResponse(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -896,31 +732,20 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JoinRequestDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<JoinRequestDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -933,23 +758,13 @@ public final class JoinRequestsClientImpl implements JoinRequestsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

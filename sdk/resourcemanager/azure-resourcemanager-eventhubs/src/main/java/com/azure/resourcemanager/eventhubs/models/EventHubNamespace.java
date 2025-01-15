@@ -20,71 +20,95 @@ import java.time.OffsetDateTime;
  *  Type representing an Azure EventHub namespace.
  */
 @Fluent
-public interface EventHubNamespace extends
-    GroupableResource<EventHubsManager, EHNamespaceInner>,
-    Refreshable<EventHubNamespace>,
-    Updatable<EventHubNamespace.Update> {
+public interface EventHubNamespace extends GroupableResource<EventHubsManager, EHNamespaceInner>,
+    Refreshable<EventHubNamespace>, Updatable<EventHubNamespace.Update> {
     /**
+     * Gets namespace sku.
+     *
      * @return namespace sku
      */
     EventHubNamespaceSkuType sku();
 
     /**
+     * Gets resource id of the Azure Insights metrics associated with the namespace.
+     *
      * @return resource id of the Azure Insights metrics associated with the namespace
      */
     String azureInsightMetricId();
 
     /**
+     * Gets the service bus endpoint associated with the namespace.
+     *
      * @return the service bus endpoint associated with the namespace
      */
     String serviceBusEndpoint();
 
     /**
+     * Gets namespace created time.
+     *
      * @return namespace created time
      */
     OffsetDateTime createdAt();
 
     /**
+     * Gets namespace last modified time.
+     *
      * @return namespace last modified time
      */
     OffsetDateTime updatedAt();
 
     /**
+     * Gets provisioning state of the namespace.
+     *
      * @return provisioning state of the namespace
      */
     String provisioningState();
 
     /**
+     * Checks whether auto-scale is enabled for the namespace.
+     *
      * @return true if auto-scale is enabled for the namespace, false otherwise
      */
     boolean isAutoScaleEnabled();
 
     /**
+     * Gets current throughput units set for the namespace.
+     *
      * @return current throughput units set for the namespace
      */
     int currentThroughputUnits();
 
     /**
+     * Gets maximum throughput unit that auto-scalar is allowed to set.
+     *
      * @return maximum throughput unit that auto-scalar is allowed to set
      */
     int throughputUnitsUpperLimit();
 
     /**
+     * Gets the event hubs in the namespace.
+     *
      * @return the event hubs in the namespace
      */
     PagedFlux<EventHub> listEventHubsAsync();
 
-     /**
-     * @return the authorization rules for the event hub namespace
-     */
+    /**
+     * Gets the authorization rules for the event hub namespace.
+     *
+    * @return the authorization rules for the event hub namespace
+    */
     PagedFlux<EventHubNamespaceAuthorizationRule> listAuthorizationRulesAsync();
 
     /**
+     * Gets list of event hubs in the namespace.
+     *
      * @return list of event hubs in the namespace
      */
     PagedIterable<EventHub> listEventHubs();
 
     /**
+     * Gets list of authorization rules for the event hub namespace.
+     *
      * @return list of authorization rules for the event hub namespace
      */
     PagedIterable<EventHubNamespaceAuthorizationRule> listAuthorizationRules();
@@ -107,10 +131,8 @@ public interface EventHubNamespace extends
     /**
      * The entirety of the event hub namespace definition.
      */
-    interface Definition extends
-            EventHubNamespace.DefinitionStages.Blank,
-            EventHubNamespace.DefinitionStages.WithGroup,
-            EventHubNamespace.DefinitionStages.WithCreate {
+    interface Definition extends EventHubNamespace.DefinitionStages.Blank, EventHubNamespace.DefinitionStages.WithGroup,
+        EventHubNamespace.DefinitionStages.WithCreate {
     }
 
     /**
@@ -218,6 +240,7 @@ public interface EventHubNamespace extends
              * @return next stage of the event hub namespace definition
              */
             WithCreate withAutoScaling();
+
             /**
              * Specifies the current throughput units.
              *
@@ -266,11 +289,8 @@ public interface EventHubNamespace extends
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            Creatable<EventHubNamespace>,
-            Resource.DefinitionWithTags<WithCreate>,
-            EventHubNamespace.DefinitionStages.WithSku,
-            EventHubNamespace.DefinitionStages.WithEventHub,
+        interface WithCreate extends Creatable<EventHubNamespace>, Resource.DefinitionWithTags<WithCreate>,
+            EventHubNamespace.DefinitionStages.WithSku, EventHubNamespace.DefinitionStages.WithEventHub,
             EventHubNamespace.DefinitionStages.WithAuthorizationRule,
             EventHubNamespace.DefinitionStages.WithThroughputConfiguration,
             EventHubNamespace.DefinitionStages.WithMinimumTlsVersion,
@@ -281,12 +301,9 @@ public interface EventHubNamespace extends
     /**
      * The template for a event hub namespace update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-        Appliable<EventHubNamespace>,
-        Resource.UpdateWithTags<Update>,
-        EventHubNamespace.UpdateStages.WithSku,
-        EventHubNamespace.UpdateStages.WithEventHub,
-        EventHubNamespace.UpdateStages.WithAuthorizationRule,
+    interface Update
+        extends Appliable<EventHubNamespace>, Resource.UpdateWithTags<Update>, EventHubNamespace.UpdateStages.WithSku,
+        EventHubNamespace.UpdateStages.WithEventHub, EventHubNamespace.UpdateStages.WithAuthorizationRule,
         EventHubNamespace.UpdateStages.WithThroughputConfiguration,
         EventHubNamespace.UpdateStages.WithMinimumTlsVersion {
     }

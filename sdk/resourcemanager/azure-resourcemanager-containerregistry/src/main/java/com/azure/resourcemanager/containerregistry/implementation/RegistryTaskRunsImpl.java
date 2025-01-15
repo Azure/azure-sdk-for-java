@@ -37,9 +37,7 @@ public class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public Mono<String> getLogSasUrlAsync(String rgName, String acrName, String runId) {
-        return this
-            .registryManager
-            .serviceClient()
+        return this.registryManager.serviceClient()
             .getRuns()
             .getLogSasUrlAsync(rgName, acrName, runId)
             .map(runGetLogResultInner -> runGetLogResultInner.logLink());

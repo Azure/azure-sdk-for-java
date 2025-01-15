@@ -33,22 +33,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KeyValuesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KeyValuesClient.
+ */
 public final class KeyValuesClientImpl implements KeyValuesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KeyValuesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppConfigurationManagementClientImpl client;
 
     /**
      * Initializes an instance of KeyValuesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KeyValuesClientImpl(AppConfigurationManagementClientImpl client) {
-        this.service =
-            RestProxy.create(KeyValuesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(KeyValuesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,80 +65,64 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @Host("{$host}")
     @ServiceInterface(name = "AppConfigurationMana")
     public interface KeyValuesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<KeyValueInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<KeyValueInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("keyValueName") String keyValueName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<KeyValueInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
             @PathParam("keyValueName") String keyValueName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") KeyValueInner keyValueParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<KeyValueInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("keyValueName") String keyValueName,
-            @BodyParam("application/json") KeyValueInner keyValueParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("keyValueName") String keyValueName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("keyValueName") String keyValueName, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the specified key-value along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> getWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName) {
+    private Mono<Response<KeyValueInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
+        String keyValueName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -147,49 +137,37 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            keyValueName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), keyValueName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the specified key-value along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> getWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    private Mono<Response<KeyValueInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -204,25 +182,19 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                keyValueName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), keyValueName, accept, context);
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -235,12 +207,14 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -248,18 +222,20 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the properties of the specified key-value along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyValueInner> getWithResponse(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    public Response<KeyValueInner> getWithResponse(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         return getWithResponseAsync(resourceGroupName, configStoreName, keyValueName, context).block();
     }
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -271,33 +247,30 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param keyValueParameters The parameters for creating a key-value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key-value resource along with all resource properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, KeyValueInner keyValueParameters) {
+    private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String configStoreName, String keyValueName, KeyValueInner keyValueParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -315,55 +288,38 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            keyValueName,
-                            keyValueParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), keyValueName, keyValueParameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param keyValueParameters The parameters for creating a key-value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key-value resource along with all resource properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String configStoreName,
-        String keyValueName,
-        KeyValueInner keyValueParameters,
-        Context context) {
+    private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String configStoreName, String keyValueName, KeyValueInner keyValueParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -381,46 +337,39 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                keyValueName,
-                keyValueParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), keyValueName, keyValueParameters, accept, context);
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key-value resource along with all resource properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<KeyValueInner> createOrUpdateAsync(
-        String resourceGroupName, String configStoreName, String keyValueName) {
+    private Mono<KeyValueInner> createOrUpdateAsync(String resourceGroupName, String configStoreName,
+        String keyValueName) {
         final KeyValueInner keyValueParameters = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, configStoreName, keyValueName, keyValueParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param keyValueParameters The parameters for creating a key-value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -429,24 +378,20 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the key-value resource along with all resource properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyValueInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String configStoreName,
-        String keyValueName,
-        KeyValueInner keyValueParameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, configStoreName, keyValueName, keyValueParameters, context)
-            .block();
+    public Response<KeyValueInner> createOrUpdateWithResponse(String resourceGroupName, String configStoreName,
+        String keyValueName, KeyValueInner keyValueParameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, configStoreName, keyValueName, keyValueParameters,
+            context).block();
     }
 
     /**
-     * Creates a key-value.
-     *
+     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -455,37 +400,33 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValueInner createOrUpdate(String resourceGroupName, String configStoreName, String keyValueName) {
         final KeyValueInner keyValueParameters = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, configStoreName, keyValueName, keyValueParameters, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, configStoreName, keyValueName, keyValueParameters,
+            Context.NONE).getValue();
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+        String keyValueName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -500,28 +441,19 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            keyValueName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), keyValueName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -529,19 +461,15 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,48 +484,40 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                keyValueName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), keyValueName, accept, context);
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String configStoreName, String keyValueName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, configStoreName, keyValueName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
+        String keyValueName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, configStoreName, keyValueName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -605,41 +525,42 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, configStoreName, keyValueName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, configStoreName, keyValueName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String keyValueName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String keyValueName) {
         return this.beginDeleteAsync(resourceGroupName, configStoreName, keyValueName).getSyncPoller();
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -647,18 +568,19 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, configStoreName, keyValueName, context).getSyncPoller();
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -666,18 +588,18 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName, String keyValueName) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, keyValueName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, configStoreName, keyValueName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -685,20 +607,20 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, keyValueName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName, String keyValueName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, configStoreName, keyValueName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -709,12 +631,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     }
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

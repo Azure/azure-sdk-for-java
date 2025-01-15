@@ -31,8 +31,11 @@ public final class TargetComputeSizePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetComputeSizeProperties model = new TargetComputeSizeProperties().withName("ajjziuxxpshne")
-            .withFriendlyName("ulfgslqu").withCpuCoresCount(471639164).withMemoryInGB(97.2663718138851D)
-            .withMaxDataDiskCount(1732882534).withMaxNicsCount(203229589)
+            .withFriendlyName("ulfgslqu")
+            .withCpuCoresCount(471639164)
+            .withMemoryInGB(97.2663718138851D)
+            .withMaxDataDiskCount(1732882534)
+            .withMaxNicsCount(203229589)
             .withErrors(Arrays.asList(new ComputeSizeErrorDetails().withMessage("a").withSeverity("juohminyflnorw"),
                 new ComputeSizeErrorDetails().withMessage("uvwpklvxwmyg").withSeverity("pgpqchiszepnnb"),
                 new ComputeSizeErrorDetails().withMessage("rxgibbd").withSeverity("confozauors"),

@@ -4,36 +4,53 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The computation function for the KPI. */
+/**
+ * The computation function for the KPI.
+ */
 public enum KpiFunctions {
-    /** Enum value Sum. */
+    /**
+     * Enum value Sum.
+     */
     SUM("Sum"),
 
-    /** Enum value Avg. */
+    /**
+     * Enum value Avg.
+     */
     AVG("Avg"),
 
-    /** Enum value Min. */
+    /**
+     * Enum value Min.
+     */
     MIN("Min"),
 
-    /** Enum value Max. */
+    /**
+     * Enum value Max.
+     */
     MAX("Max"),
 
-    /** Enum value Last. */
+    /**
+     * Enum value Last.
+     */
     LAST("Last"),
 
-    /** Enum value Count. */
+    /**
+     * Enum value Count.
+     */
     COUNT("Count"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value CountDistinct. */
+    /**
+     * Enum value CountDistinct.
+     */
     COUNT_DISTINCT("CountDistinct");
 
-    /** The actual serialized value for a KpiFunctions instance. */
+    /**
+     * The actual serialized value for a KpiFunctions instance.
+     */
     private final String value;
 
     KpiFunctions(String value) {
@@ -42,11 +59,10 @@ public enum KpiFunctions {
 
     /**
      * Parses a serialized value to a KpiFunctions instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed KpiFunctions object, or null if unable to parse.
      */
-    @JsonCreator
     public static KpiFunctions fromString(String value) {
         if (value == null) {
             return null;
@@ -60,8 +76,9 @@ public enum KpiFunctions {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

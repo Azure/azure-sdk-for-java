@@ -25,10 +25,8 @@ import java.util.stream.Collectors;
 /** Implementation for {@link NetworkSecurityRule} and its create and update interfaces. */
 class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl, NetworkSecurityGroup>
-    implements NetworkSecurityRule,
-        NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionStages.WithCreate>,
-        NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>,
-        NetworkSecurityRule.Update {
+    implements NetworkSecurityRule, NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionStages.WithCreate>,
+    NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>, NetworkSecurityRule.Update {
     private Map<String, ApplicationSecurityGroupInner> sourceAsgs = new HashMap<>();
     private Map<String, ApplicationSecurityGroupInner> destinationAsgs = new HashMap<>();
     private final ClientLogger logger = new ClientLogger(getClass());
@@ -282,10 +280,8 @@ class NetworkSecurityRuleImpl
     @Override
     public NetworkSecurityRuleImpl withPriority(int priority) {
         if (priority < 100 || priority > 4096) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "The priority number of a network security rule must be between 100 and 4096."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "The priority number of a network security rule must be between 100 and 4096."));
         }
 
         this.innerModel().withPriority(priority);

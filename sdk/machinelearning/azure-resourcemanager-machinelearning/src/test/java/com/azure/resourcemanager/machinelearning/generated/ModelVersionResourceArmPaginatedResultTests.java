@@ -6,6 +6,7 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.ModelVersionInner;
+import com.azure.resourcemanager.machinelearning.models.FlavorData;
 import com.azure.resourcemanager.machinelearning.models.ModelVersionProperties;
 import com.azure.resourcemanager.machinelearning.models.ModelVersionResourceArmPaginatedResult;
 import java.util.Arrays;
@@ -16,74 +17,67 @@ import org.junit.jupiter.api.Assertions;
 public final class ModelVersionResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ModelVersionResourceArmPaginatedResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"xkyxvxevblbj\",\"value\":[{\"properties\":{\"flavors\":{},\"jobName\":\"lageuaulxun\",\"modelType\":\"jbnkpp\",\"modelUri\":\"nenlsvxeizzg\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"mffeycxcktpi\",\"properties\":{},\"tags\":{}},\"id\":\"teeammxqiekkkzd\",\"name\":\"rtkgdojbmxvavref\",\"type\":\"eesvecu\"},{\"properties\":{\"flavors\":{},\"jobName\":\"xtxsuwprtujw\",\"modelType\":\"wddji\",\"modelUri\":\"bxv\",\"isAnonymous\":true,\"isArchived\":false,\"description\":\"zeexavoxtfgle\",\"properties\":{},\"tags\":{}},\"id\":\"qbw\",\"name\":\"ypq\",\"type\":\"gsfjac\"},{\"properties\":{\"flavors\":{},\"jobName\":\"hhxud\",\"modelType\":\"vodhtn\",\"modelUri\":\"rudhzmmesckdl\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"x\",\"properties\":{},\"tags\":{}},\"id\":\"cfxwmdbox\",\"name\":\"fgsftufqob\",\"type\":\"jln\"}]}")
-                .toObject(ModelVersionResourceArmPaginatedResult.class);
-        Assertions.assertEquals("xkyxvxevblbj", model.nextLink());
-        Assertions.assertEquals("mffeycxcktpi", model.value().get(0).properties().description());
+        ModelVersionResourceArmPaginatedResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"flavors\":{\"jjrcgegydc\":{\"data\":{\"ibn\":\"xqnrkcxk\",\"swqrntvlwijp\":\"mysu\",\"uncuw\":\"ttexoqqpwcyyufmh\",\"unqndyfpchrqb\":\"qspkcdqzhlctd\"}}},\"modelType\":\"oxjumvqqo\",\"modelUri\":\"hrraiouaubrj\",\"jobName\":\"oq\",\"provisioningState\":\"Deleting\",\"stage\":\"jrngif\",\"isArchived\":false,\"isAnonymous\":false,\"description\":\"ccbiuimzdlyjdfq\",\"tags\":{\"lzo\":\"yoqufdvruz\",\"fnmdxotn\":\"hpc\"},\"properties\":{\"i\":\"gugey\"}},\"id\":\"rkyui\",\"name\":\"absnmfpp\",\"type\":\"ojeevy\"},{\"properties\":{\"flavors\":{\"eglqgleohibetn\":{\"data\":{\"mfg\":\"zfczbg\"}}},\"modelType\":\"ankrrfxee\",\"modelUri\":\"tijv\",\"jobName\":\"vbmqzbqq\",\"provisioningState\":\"Creating\",\"stage\":\"rnwxacevehjkuyxo\",\"isArchived\":false,\"isAnonymous\":false,\"description\":\"lt\",\"tags\":{\"nm\":\"yl\"},\"properties\":{\"oqeyhlqhykprl\":\"xirpghriy\",\"mexiitdfuxt\":\"yznuciqd\",\"nlj\":\"asiibmiybnnust\"}},\"id\":\"mgixhcmavmqfou\",\"name\":\"or\",\"type\":\"cgyypro\"}],\"nextLink\":\"ypundmbxhugc\"}")
+            .toObject(ModelVersionResourceArmPaginatedResult.class);
+        Assertions.assertEquals("ccbiuimzdlyjdfq", model.value().get(0).properties().description());
+        Assertions.assertEquals("yoqufdvruz", model.value().get(0).properties().tags().get("lzo"));
+        Assertions.assertEquals("gugey", model.value().get(0).properties().properties().get("i"));
+        Assertions.assertEquals(false, model.value().get(0).properties().isArchived());
         Assertions.assertEquals(false, model.value().get(0).properties().isAnonymous());
-        Assertions.assertEquals(true, model.value().get(0).properties().isArchived());
-        Assertions.assertEquals("lageuaulxun", model.value().get(0).properties().jobName());
-        Assertions.assertEquals("jbnkpp", model.value().get(0).properties().modelType());
-        Assertions.assertEquals("nenlsvxeizzg", model.value().get(0).properties().modelUri());
+        Assertions.assertEquals("xqnrkcxk",
+            model.value().get(0).properties().flavors().get("jjrcgegydc").data().get("ibn"));
+        Assertions.assertEquals("oxjumvqqo", model.value().get(0).properties().modelType());
+        Assertions.assertEquals("hrraiouaubrj", model.value().get(0).properties().modelUri());
+        Assertions.assertEquals("oq", model.value().get(0).properties().jobName());
+        Assertions.assertEquals("jrngif", model.value().get(0).properties().stage());
+        Assertions.assertEquals("ypundmbxhugc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ModelVersionResourceArmPaginatedResult model =
-            new ModelVersionResourceArmPaginatedResult()
-                .withNextLink("xkyxvxevblbj")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ModelVersionInner()
-                                .withProperties(
-                                    new ModelVersionProperties()
-                                        .withDescription("mffeycxcktpi")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withIsAnonymous(false)
-                                        .withIsArchived(true)
-                                        .withFlavors(mapOf())
-                                        .withJobName("lageuaulxun")
-                                        .withModelType("jbnkpp")
-                                        .withModelUri("nenlsvxeizzg")),
-                            new ModelVersionInner()
-                                .withProperties(
-                                    new ModelVersionProperties()
-                                        .withDescription("zeexavoxtfgle")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withIsAnonymous(true)
-                                        .withIsArchived(false)
-                                        .withFlavors(mapOf())
-                                        .withJobName("xtxsuwprtujw")
-                                        .withModelType("wddji")
-                                        .withModelUri("bxv")),
-                            new ModelVersionInner()
-                                .withProperties(
-                                    new ModelVersionProperties()
-                                        .withDescription("x")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withIsAnonymous(true)
-                                        .withIsArchived(true)
-                                        .withFlavors(mapOf())
-                                        .withJobName("hhxud")
-                                        .withModelType("vodhtn")
-                                        .withModelUri("rudhzmmesckdl"))));
+        ModelVersionResourceArmPaginatedResult model
+            = new ModelVersionResourceArmPaginatedResult().withValue(Arrays.asList(
+                new ModelVersionInner().withProperties(new ModelVersionProperties().withDescription("ccbiuimzdlyjdfq")
+                    .withTags(mapOf("lzo", "yoqufdvruz", "fnmdxotn", "hpc"))
+                    .withProperties(mapOf("i", "gugey"))
+                    .withIsArchived(false)
+                    .withIsAnonymous(false)
+                    .withFlavors(mapOf("jjrcgegydc",
+                        new FlavorData().withData(mapOf("ibn", "xqnrkcxk", "swqrntvlwijp", "mysu", "uncuw",
+                            "ttexoqqpwcyyufmh", "unqndyfpchrqb", "qspkcdqzhlctd"))))
+                    .withModelType("oxjumvqqo")
+                    .withModelUri("hrraiouaubrj")
+                    .withJobName("oq")
+                    .withStage("jrngif")),
+                new ModelVersionInner().withProperties(new ModelVersionProperties().withDescription("lt")
+                    .withTags(mapOf("nm", "yl"))
+                    .withProperties(
+                        mapOf("oqeyhlqhykprl", "xirpghriy", "mexiitdfuxt", "yznuciqd", "nlj", "asiibmiybnnust"))
+                    .withIsArchived(false)
+                    .withIsAnonymous(false)
+                    .withFlavors(mapOf("eglqgleohibetn", new FlavorData().withData(mapOf("mfg", "zfczbg"))))
+                    .withModelType("ankrrfxee")
+                    .withModelUri("tijv")
+                    .withJobName("vbmqzbqq")
+                    .withStage("rnwxacevehjkuyxo"))))
+                .withNextLink("ypundmbxhugc");
         model = BinaryData.fromObject(model).toObject(ModelVersionResourceArmPaginatedResult.class);
-        Assertions.assertEquals("xkyxvxevblbj", model.nextLink());
-        Assertions.assertEquals("mffeycxcktpi", model.value().get(0).properties().description());
+        Assertions.assertEquals("ccbiuimzdlyjdfq", model.value().get(0).properties().description());
+        Assertions.assertEquals("yoqufdvruz", model.value().get(0).properties().tags().get("lzo"));
+        Assertions.assertEquals("gugey", model.value().get(0).properties().properties().get("i"));
+        Assertions.assertEquals(false, model.value().get(0).properties().isArchived());
         Assertions.assertEquals(false, model.value().get(0).properties().isAnonymous());
-        Assertions.assertEquals(true, model.value().get(0).properties().isArchived());
-        Assertions.assertEquals("lageuaulxun", model.value().get(0).properties().jobName());
-        Assertions.assertEquals("jbnkpp", model.value().get(0).properties().modelType());
-        Assertions.assertEquals("nenlsvxeizzg", model.value().get(0).properties().modelUri());
+        Assertions.assertEquals("xqnrkcxk",
+            model.value().get(0).properties().flavors().get("jjrcgegydc").data().get("ibn"));
+        Assertions.assertEquals("oxjumvqqo", model.value().get(0).properties().modelType());
+        Assertions.assertEquals("hrraiouaubrj", model.value().get(0).properties().modelUri());
+        Assertions.assertEquals("oq", model.value().get(0).properties().jobName());
+        Assertions.assertEquals("jrngif", model.value().get(0).properties().stage());
+        Assertions.assertEquals("ypundmbxhugc", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

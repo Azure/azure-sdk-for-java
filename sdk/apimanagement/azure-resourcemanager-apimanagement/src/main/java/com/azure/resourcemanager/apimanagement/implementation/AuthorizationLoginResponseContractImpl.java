@@ -12,8 +12,7 @@ public final class AuthorizationLoginResponseContractImpl implements Authorizati
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    AuthorizationLoginResponseContractImpl(
-        AuthorizationLoginResponseContractInner innerObject,
+    AuthorizationLoginResponseContractImpl(AuthorizationLoginResponseContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

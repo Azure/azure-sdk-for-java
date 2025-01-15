@@ -6,24 +6,31 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The X12 message identifier. */
+/**
+ * The X12 message identifier.
+ */
 @Fluent
-public final class X12MessageIdentifier {
+public final class X12MessageIdentifier implements JsonSerializable<X12MessageIdentifier> {
     /*
      * The message id.
      */
-    @JsonProperty(value = "messageId", required = true)
     private String messageId;
 
-    /** Creates an instance of X12MessageIdentifier class. */
+    /**
+     * Creates an instance of X12MessageIdentifier class.
+     */
     public X12MessageIdentifier() {
     }
 
     /**
      * Get the messageId property: The message id.
-     *
+     * 
      * @return the messageId value.
      */
     public String messageId() {
@@ -32,7 +39,7 @@ public final class X12MessageIdentifier {
 
     /**
      * Set the messageId property: The message id.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the X12MessageIdentifier object itself.
      */
@@ -43,16 +50,52 @@ public final class X12MessageIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (messageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property messageId in model X12MessageIdentifier"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property messageId in model X12MessageIdentifier"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(X12MessageIdentifier.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", this.messageId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12MessageIdentifier from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12MessageIdentifier if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12MessageIdentifier.
+     */
+    public static X12MessageIdentifier fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12MessageIdentifier deserializedX12MessageIdentifier = new X12MessageIdentifier();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageId".equals(fieldName)) {
+                    deserializedX12MessageIdentifier.messageId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12MessageIdentifier;
+        });
+    }
 }

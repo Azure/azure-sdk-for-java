@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The quota assigned to a resource. */
 @Immutable
 public final class ResourceQuotaInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceQuotaInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceQuotaInner.class);
 
     /*
      * Specifies the resource ID.

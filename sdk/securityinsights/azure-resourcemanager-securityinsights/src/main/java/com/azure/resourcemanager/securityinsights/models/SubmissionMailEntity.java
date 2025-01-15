@@ -4,30 +4,71 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.SubmissionMailEntityProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** Represents a submission mail entity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("SubmissionMail")
-@Fluent
-public final class SubmissionMailEntity extends EntityInner {
+/**
+ * Represents a submission mail entity.
+ */
+@Immutable
+public final class SubmissionMailEntity extends Entity {
+    /*
+     * The kind of the entity.
+     */
+    private EntityKindEnum kind = EntityKindEnum.SUBMISSION_MAIL;
+
     /*
      * Submission mail entity properties
      */
-    @JsonProperty(value = "properties")
     private SubmissionMailEntityProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SubmissionMailEntity class.
+     */
+    public SubmissionMailEntity() {
+    }
+
+    /**
+     * Get the kind property: The kind of the entity.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityKindEnum kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: Submission mail entity properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubmissionMailEntityProperties innerProperties() {
@@ -35,8 +76,48 @@ public final class SubmissionMailEntity extends EntityInner {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the networkMessageId property: The network message id of email to which submission belongs.
-     *
+     * 
      * @return the networkMessageId value.
      */
     public UUID networkMessageId() {
@@ -45,7 +126,7 @@ public final class SubmissionMailEntity extends EntityInner {
 
     /**
      * Get the submissionId property: The submission id.
-     *
+     * 
      * @return the submissionId value.
      */
     public UUID submissionId() {
@@ -54,7 +135,7 @@ public final class SubmissionMailEntity extends EntityInner {
 
     /**
      * Get the submitter property: The submitter.
-     *
+     * 
      * @return the submitter value.
      */
     public String submitter() {
@@ -63,7 +144,7 @@ public final class SubmissionMailEntity extends EntityInner {
 
     /**
      * Get the submissionDate property: The submission date.
-     *
+     * 
      * @return the submissionDate value.
      */
     public OffsetDateTime submissionDate() {
@@ -72,7 +153,7 @@ public final class SubmissionMailEntity extends EntityInner {
 
     /**
      * Get the timestamp property: The Time stamp when the message is received (Mail).
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -81,7 +162,7 @@ public final class SubmissionMailEntity extends EntityInner {
 
     /**
      * Get the recipient property: The recipient of the mail.
-     *
+     * 
      * @return the recipient value.
      */
     public String recipient() {
@@ -90,7 +171,7 @@ public final class SubmissionMailEntity extends EntityInner {
 
     /**
      * Get the sender property: The sender of the mail.
-     *
+     * 
      * @return the sender value.
      */
     public String sender() {
@@ -99,7 +180,7 @@ public final class SubmissionMailEntity extends EntityInner {
 
     /**
      * Get the senderIp property: The sender's IP.
-     *
+     * 
      * @return the senderIp value.
      */
     public String senderIp() {
@@ -108,7 +189,7 @@ public final class SubmissionMailEntity extends EntityInner {
 
     /**
      * Get the subject property: The subject of submission mail.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -118,7 +199,7 @@ public final class SubmissionMailEntity extends EntityInner {
     /**
      * Get the reportType property: The submission type for the given instance. This maps to Junk, Phish, Malware or
      * NotJunk.
-     *
+     * 
      * @return the reportType value.
      */
     public String reportType() {
@@ -128,7 +209,7 @@ public final class SubmissionMailEntity extends EntityInner {
     /**
      * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, Object> additionalData() {
@@ -138,7 +219,7 @@ public final class SubmissionMailEntity extends EntityInner {
     /**
      * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
      * graph item instance. This property is optional and might be system generated.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -147,14 +228,61 @@ public final class SubmissionMailEntity extends EntityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubmissionMailEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubmissionMailEntity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubmissionMailEntity.
+     */
+    public static SubmissionMailEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubmissionMailEntity deserializedSubmissionMailEntity = new SubmissionMailEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubmissionMailEntity.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSubmissionMailEntity.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSubmissionMailEntity.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSubmissionMailEntity.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSubmissionMailEntity.kind = EntityKindEnum.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSubmissionMailEntity.innerProperties = SubmissionMailEntityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubmissionMailEntity;
+        });
     }
 }

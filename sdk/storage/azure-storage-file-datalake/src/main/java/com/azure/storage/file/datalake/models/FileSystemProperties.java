@@ -24,13 +24,13 @@ public final class FileSystemProperties {
     private String encryptionScope;
     private Boolean encryptionScopeOverridePrevented;
 
-
     static {
-        AccessorUtility.setFileSystemPropertiesAccessor((properties, encryptionScope, encryptionScopeOverridePrevented) -> {
-            properties.encryptionScope = encryptionScope;
-            properties.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
-            return properties;
-        });
+        AccessorUtility
+            .setFileSystemPropertiesAccessor((properties, encryptionScope, encryptionScopeOverridePrevented) -> {
+                properties.encryptionScope = encryptionScope;
+                properties.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
+                return properties;
+            });
     }
 
     /**
@@ -62,6 +62,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the metadata associated with the file system.
+     *
      * @return the metadata associated with the file system
      */
     public Map<String, String> getMetadata() {
@@ -69,6 +71,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the eTag of the file system.
+     *
      * @return the eTag of the file system
      */
     public String getETag() {
@@ -76,6 +80,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the time the file system was last modified.
+     *
      * @return the time the file system was last modified
      */
     public OffsetDateTime getLastModified() {
@@ -83,6 +89,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the type of lease on the file system.
+     *
      * @return the type of lease on the file system
      */
     public LeaseDurationType getLeaseDuration() {
@@ -90,6 +98,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the lease state of the file system.
+     *
      * @return the lease state of the file system
      */
     public LeaseStateType getLeaseState() {
@@ -97,6 +107,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the lease status of the file system.
+     *
      * @return the lease status of the file system
      */
     public LeaseStatusType getLeaseStatus() {
@@ -104,6 +116,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the access type for the file system.
+     *
      * @return the access type for the file system
      */
     public PublicAccessType getDataLakePublicAccess() {
@@ -111,6 +125,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the immutability status for the file system.
+     *
      * @return the immutability status for the file system
      */
     public boolean hasImmutabilityPolicy() {
@@ -118,6 +134,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the legal hold status for the file system.
+     *
      * @return the legal hold status for the file system
      */
     public boolean hasLegalHold() {
@@ -125,6 +143,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the file system's encryption scope.
+     *
      * @return the file system's encryption scope
      */
     public String getEncryptionScope() {
@@ -132,6 +152,8 @@ public final class FileSystemProperties {
     }
 
     /**
+     * Gets the file system's deny encryption scope override property.
+     *
      * @return the file system's deny encryption scope override property.
      */
     public Boolean isEncryptionScopeOverridePrevented() {

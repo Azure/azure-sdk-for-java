@@ -75,24 +75,20 @@ public final class ContentTypeContractImpl
     }
 
     public ContentTypeContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, contentTypeId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentTypes()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContentTypeContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, contentTypeId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentTypes()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -109,54 +105,45 @@ public final class ContentTypeContractImpl
     }
 
     public ContentTypeContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, contentTypeId, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentTypes()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, this.innerModel(), updateIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContentTypeContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, contentTypeId, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentTypes()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, this.innerModel(), updateIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
-    ContentTypeContractImpl(
-        ContentTypeContractInner innerObject,
+    ContentTypeContractImpl(ContentTypeContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.contentTypeId = Utils.getValueFromIdByName(innerObject.id(), "contentTypes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.contentTypeId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contentTypes");
     }
 
     public ContentTypeContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentTypes()
-                .getWithResponse(resourceGroupName, serviceName, contentTypeId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentTypes()
+            .getWithResponse(resourceGroupName, serviceName, contentTypeId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContentTypeContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentTypes()
-                .getWithResponse(resourceGroupName, serviceName, contentTypeId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentTypes()
+            .getWithResponse(resourceGroupName, serviceName, contentTypeId, context)
+            .getValue();
         return this;
     }
 

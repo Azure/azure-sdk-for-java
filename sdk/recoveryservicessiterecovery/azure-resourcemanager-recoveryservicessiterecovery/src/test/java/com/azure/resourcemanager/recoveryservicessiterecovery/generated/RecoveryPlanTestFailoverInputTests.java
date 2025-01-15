@@ -28,9 +28,11 @@ public final class RecoveryPlanTestFailoverInputTests {
     public void testSerialize() throws Exception {
         RecoveryPlanTestFailoverInput model
             = new RecoveryPlanTestFailoverInput().withProperties(new RecoveryPlanTestFailoverInputProperties()
-                .withFailoverDirection(PossibleOperationsDirections.RECOVERY_TO_PRIMARY).withNetworkType("eshoygzcb")
-                .withNetworkId("qxkfaoytehqp").withProviderSpecificDetails(Arrays.asList(
-                    new RecoveryPlanProviderSpecificFailoverInput(), new RecoveryPlanProviderSpecificFailoverInput())));
+                .withFailoverDirection(PossibleOperationsDirections.RECOVERY_TO_PRIMARY)
+                .withNetworkType("eshoygzcb")
+                .withNetworkId("qxkfaoytehqp")
+                .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificFailoverInput(),
+                    new RecoveryPlanProviderSpecificFailoverInput())));
         model = BinaryData.fromObject(model).toObject(RecoveryPlanTestFailoverInput.class);
         Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
             model.properties().failoverDirection());

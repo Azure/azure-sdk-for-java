@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model =
-            BinaryData
-                .fromString(
-                    "{\"capacity\":\"lnrosfqp\",\"description\":\"ehzzvypyqrim\",\"family\":\"npvswjdkirso\",\"name\":\"dqxhcrmnohjtckwh\",\"tier\":\"oifiyipjxsqwpgr\"}")
-                .toObject(Sku.class);
-        Assertions.assertEquals("lnrosfqp", model.capacity());
-        Assertions.assertEquals("ehzzvypyqrim", model.description());
-        Assertions.assertEquals("npvswjdkirso", model.family());
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.name());
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.tier());
+        Sku model = BinaryData.fromString(
+            "{\"capacity\":\"masxazjpqyegu\",\"description\":\"hb\",\"family\":\"hejjz\",\"name\":\"v\",\"tier\":\"dgwdslfhot\"}")
+            .toObject(Sku.class);
+        Assertions.assertEquals("masxazjpqyegu", model.capacity());
+        Assertions.assertEquals("hb", model.description());
+        Assertions.assertEquals("hejjz", model.family());
+        Assertions.assertEquals("v", model.name());
+        Assertions.assertEquals("dgwdslfhot", model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model =
-            new Sku()
-                .withCapacity("lnrosfqp")
-                .withDescription("ehzzvypyqrim")
-                .withFamily("npvswjdkirso")
-                .withName("dqxhcrmnohjtckwh")
-                .withTier("oifiyipjxsqwpgr");
+        Sku model = new Sku().withCapacity("masxazjpqyegu")
+            .withDescription("hb")
+            .withFamily("hejjz")
+            .withName("v")
+            .withTier("dgwdslfhot");
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("lnrosfqp", model.capacity());
-        Assertions.assertEquals("ehzzvypyqrim", model.description());
-        Assertions.assertEquals("npvswjdkirso", model.family());
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.name());
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.tier());
+        Assertions.assertEquals("masxazjpqyegu", model.capacity());
+        Assertions.assertEquals("hb", model.description());
+        Assertions.assertEquals("hejjz", model.family());
+        Assertions.assertEquals("v", model.name());
+        Assertions.assertEquals("dgwdslfhot", model.tier());
     }
 }

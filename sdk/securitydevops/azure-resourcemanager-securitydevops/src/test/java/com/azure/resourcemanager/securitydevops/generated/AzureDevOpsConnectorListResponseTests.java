@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsConnectorListResponseTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsConnectorListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"orgs\":[]},\"location\":\"xpyb\",\"tags\":{\"sphrupidgs\":\"ehmtzop\"},\"id\":\"bb\",\"name\":\"jhphoyc\",\"type\":\"sx\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"orgs\":[]},\"location\":\"mtqio\",\"tags\":{\"fpownoizhwlr\":\"ehtbm\",\"dmbpazlobcufpdz\":\"ybqsoqijg\"},\"id\":\"rbt\",\"name\":\"qqjnqgl\",\"type\":\"qgn\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"orgs\":[]},\"location\":\"wifsq\",\"tags\":{\"xrifkwmrvkts\":\"agdfmglzlh\",\"ucmpoyfd\":\"zntocipaouajps\"},\"id\":\"fogknygjofjdde\",\"name\":\"s\",\"type\":\"deupewnwrei\"}],\"nextLink\":\"zyf\"}")
-                .toObject(AzureDevOpsConnectorListResponse.class);
+        AzureDevOpsConnectorListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"orgs\":[]},\"location\":\"xpyb\",\"tags\":{\"sphrupidgs\":\"ehmtzop\"},\"id\":\"bb\",\"name\":\"jhphoyc\",\"type\":\"sx\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"orgs\":[]},\"location\":\"mtqio\",\"tags\":{\"fpownoizhwlr\":\"ehtbm\",\"dmbpazlobcufpdz\":\"ybqsoqijg\"},\"id\":\"rbt\",\"name\":\"qqjnqgl\",\"type\":\"qgn\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"orgs\":[]},\"location\":\"wifsq\",\"tags\":{\"xrifkwmrvkts\":\"agdfmglzlh\",\"ucmpoyfd\":\"zntocipaouajps\"},\"id\":\"fogknygjofjdde\",\"name\":\"s\",\"type\":\"deupewnwrei\"}],\"nextLink\":\"zyf\"}")
+            .toObject(AzureDevOpsConnectorListResponse.class);
         Assertions.assertEquals("xpyb", model.value().get(0).location());
         Assertions.assertEquals("ehmtzop", model.value().get(0).tags().get("sphrupidgs"));
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).properties().provisioningState());
@@ -31,33 +29,20 @@ public final class AzureDevOpsConnectorListResponseTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsConnectorListResponse model =
-            new AzureDevOpsConnectorListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AzureDevOpsConnectorInner()
-                                .withLocation("xpyb")
-                                .withTags(mapOf("sphrupidgs", "ehmtzop"))
-                                .withProperties(
-                                    new AzureDevOpsConnectorProperties()
-                                        .withProvisioningState(ProvisioningState.SUCCEEDED)
-                                        .withOrgs(Arrays.asList())),
-                            new AzureDevOpsConnectorInner()
-                                .withLocation("mtqio")
-                                .withTags(mapOf("fpownoizhwlr", "ehtbm", "dmbpazlobcufpdz", "ybqsoqijg"))
-                                .withProperties(
-                                    new AzureDevOpsConnectorProperties()
-                                        .withProvisioningState(ProvisioningState.SUCCEEDED)
-                                        .withOrgs(Arrays.asList())),
-                            new AzureDevOpsConnectorInner()
-                                .withLocation("wifsq")
-                                .withTags(mapOf("xrifkwmrvkts", "agdfmglzlh", "ucmpoyfd", "zntocipaouajps"))
-                                .withProperties(
-                                    new AzureDevOpsConnectorProperties()
-                                        .withProvisioningState(ProvisioningState.SUCCEEDED)
-                                        .withOrgs(Arrays.asList()))))
-                .withNextLink("zyf");
+        AzureDevOpsConnectorListResponse model = new AzureDevOpsConnectorListResponse().withValue(Arrays.asList(
+            new AzureDevOpsConnectorInner().withLocation("xpyb")
+                .withTags(mapOf("sphrupidgs", "ehmtzop"))
+                .withProperties(new AzureDevOpsConnectorProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                    .withOrgs(Arrays.asList())),
+            new AzureDevOpsConnectorInner().withLocation("mtqio")
+                .withTags(mapOf("fpownoizhwlr", "ehtbm", "dmbpazlobcufpdz", "ybqsoqijg"))
+                .withProperties(new AzureDevOpsConnectorProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                    .withOrgs(Arrays.asList())),
+            new AzureDevOpsConnectorInner().withLocation("wifsq")
+                .withTags(mapOf("xrifkwmrvkts", "agdfmglzlh", "ucmpoyfd", "zntocipaouajps"))
+                .withProperties(new AzureDevOpsConnectorProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                    .withOrgs(Arrays.asList()))))
+            .withNextLink("zyf");
         model = BinaryData.fromObject(model).toObject(AzureDevOpsConnectorListResponse.class);
         Assertions.assertEquals("xpyb", model.value().get(0).location());
         Assertions.assertEquals("ehmtzop", model.value().get(0).tags().get("sphrupidgs"));

@@ -30,7 +30,8 @@ public final class EnvironmentPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentProperties model = new EnvironmentProperties().withTitle("bbtdzumvee").withDescription("pwo")
+        EnvironmentProperties model = new EnvironmentProperties().withTitle("bbtdzumvee")
+            .withDescription("pwo")
             .withKind(EnvironmentKind.DEVELOPMENT)
             .withServer(new EnvironmentServer().withType(EnvironmentServerType.KUBERNETES)
                 .withManagementPortalUri(Arrays.asList("sjyofdx", "uusdttouwa")))

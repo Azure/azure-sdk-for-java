@@ -5,43 +5,43 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.models.PackageState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Properties of an application package.
  */
 @Immutable
-public final class ApplicationPackageProperties {
+public final class ApplicationPackageProperties implements JsonSerializable<ApplicationPackageProperties> {
     /*
      * The current state of the application package.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private PackageState state;
 
     /*
      * The format of the application package, if the package is active.
      */
-    @JsonProperty(value = "format", access = JsonProperty.Access.WRITE_ONLY)
     private String format;
 
     /*
      * The URL for the application package in Azure Storage.
      */
-    @JsonProperty(value = "storageUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String storageUrl;
 
     /*
      * The UTC time at which the Azure Storage URL will expire.
      */
-    @JsonProperty(value = "storageUrlExpiry", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime storageUrlExpiry;
 
     /*
      * The time at which the package was last activated, if the package is active.
      */
-    @JsonProperty(value = "lastActivationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastActivationTime;
 
     /**
@@ -101,5 +101,50 @@ public final class ApplicationPackageProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationPackageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationPackageProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationPackageProperties.
+     */
+    public static ApplicationPackageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationPackageProperties deserializedApplicationPackageProperties = new ApplicationPackageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedApplicationPackageProperties.state = PackageState.fromString(reader.getString());
+                } else if ("format".equals(fieldName)) {
+                    deserializedApplicationPackageProperties.format = reader.getString();
+                } else if ("storageUrl".equals(fieldName)) {
+                    deserializedApplicationPackageProperties.storageUrl = reader.getString();
+                } else if ("storageUrlExpiry".equals(fieldName)) {
+                    deserializedApplicationPackageProperties.storageUrlExpiry = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastActivationTime".equals(fieldName)) {
+                    deserializedApplicationPackageProperties.lastActivationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationPackageProperties;
+        });
     }
 }

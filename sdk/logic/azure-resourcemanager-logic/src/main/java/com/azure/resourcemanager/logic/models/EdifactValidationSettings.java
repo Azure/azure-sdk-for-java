@@ -6,78 +6,76 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Edifact agreement validation settings. */
+/**
+ * The Edifact agreement validation settings.
+ */
 @Fluent
-public final class EdifactValidationSettings {
+public final class EdifactValidationSettings implements JsonSerializable<EdifactValidationSettings> {
     /*
      * The value indicating whether to validate character set in the message.
      */
-    @JsonProperty(value = "validateCharacterSet", required = true)
     private boolean validateCharacterSet;
 
     /*
      * The value indicating whether to check for duplicate interchange control number.
      */
-    @JsonProperty(value = "checkDuplicateInterchangeControlNumber", required = true)
     private boolean checkDuplicateInterchangeControlNumber;
 
     /*
      * The validity period of interchange control number.
      */
-    @JsonProperty(value = "interchangeControlNumberValidityDays", required = true)
     private int interchangeControlNumberValidityDays;
 
     /*
      * The value indicating whether to check for duplicate group control number.
      */
-    @JsonProperty(value = "checkDuplicateGroupControlNumber", required = true)
     private boolean checkDuplicateGroupControlNumber;
 
     /*
      * The value indicating whether to check for duplicate transaction set control number.
      */
-    @JsonProperty(value = "checkDuplicateTransactionSetControlNumber", required = true)
     private boolean checkDuplicateTransactionSetControlNumber;
 
     /*
      * The value indicating whether to Whether to validate EDI types.
      */
-    @JsonProperty(value = "validateEDITypes", required = true)
     private boolean validateEdiTypes;
 
     /*
      * The value indicating whether to Whether to validate XSD types.
      */
-    @JsonProperty(value = "validateXSDTypes", required = true)
     private boolean validateXsdTypes;
 
     /*
      * The value indicating whether to allow leading and trailing spaces and zeroes.
      */
-    @JsonProperty(value = "allowLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean allowLeadingAndTrailingSpacesAndZeroes;
 
     /*
      * The value indicating whether to trim leading and trailing spaces and zeroes.
      */
-    @JsonProperty(value = "trimLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean trimLeadingAndTrailingSpacesAndZeroes;
 
     /*
      * The trailing separator policy.
      */
-    @JsonProperty(value = "trailingSeparatorPolicy", required = true)
     private TrailingSeparatorPolicy trailingSeparatorPolicy;
 
-    /** Creates an instance of EdifactValidationSettings class. */
+    /**
+     * Creates an instance of EdifactValidationSettings class.
+     */
     public EdifactValidationSettings() {
     }
 
     /**
      * Get the validateCharacterSet property: The value indicating whether to validate character set in the message.
-     *
+     * 
      * @return the validateCharacterSet value.
      */
     public boolean validateCharacterSet() {
@@ -86,7 +84,7 @@ public final class EdifactValidationSettings {
 
     /**
      * Set the validateCharacterSet property: The value indicating whether to validate character set in the message.
-     *
+     * 
      * @param validateCharacterSet the validateCharacterSet value to set.
      * @return the EdifactValidationSettings object itself.
      */
@@ -98,7 +96,7 @@ public final class EdifactValidationSettings {
     /**
      * Get the checkDuplicateInterchangeControlNumber property: The value indicating whether to check for duplicate
      * interchange control number.
-     *
+     * 
      * @return the checkDuplicateInterchangeControlNumber value.
      */
     public boolean checkDuplicateInterchangeControlNumber() {
@@ -108,19 +106,19 @@ public final class EdifactValidationSettings {
     /**
      * Set the checkDuplicateInterchangeControlNumber property: The value indicating whether to check for duplicate
      * interchange control number.
-     *
+     * 
      * @param checkDuplicateInterchangeControlNumber the checkDuplicateInterchangeControlNumber value to set.
      * @return the EdifactValidationSettings object itself.
      */
-    public EdifactValidationSettings withCheckDuplicateInterchangeControlNumber(
-        boolean checkDuplicateInterchangeControlNumber) {
+    public EdifactValidationSettings
+        withCheckDuplicateInterchangeControlNumber(boolean checkDuplicateInterchangeControlNumber) {
         this.checkDuplicateInterchangeControlNumber = checkDuplicateInterchangeControlNumber;
         return this;
     }
 
     /**
      * Get the interchangeControlNumberValidityDays property: The validity period of interchange control number.
-     *
+     * 
      * @return the interchangeControlNumberValidityDays value.
      */
     public int interchangeControlNumberValidityDays() {
@@ -129,12 +127,12 @@ public final class EdifactValidationSettings {
 
     /**
      * Set the interchangeControlNumberValidityDays property: The validity period of interchange control number.
-     *
+     * 
      * @param interchangeControlNumberValidityDays the interchangeControlNumberValidityDays value to set.
      * @return the EdifactValidationSettings object itself.
      */
-    public EdifactValidationSettings withInterchangeControlNumberValidityDays(
-        int interchangeControlNumberValidityDays) {
+    public EdifactValidationSettings
+        withInterchangeControlNumberValidityDays(int interchangeControlNumberValidityDays) {
         this.interchangeControlNumberValidityDays = interchangeControlNumberValidityDays;
         return this;
     }
@@ -142,7 +140,7 @@ public final class EdifactValidationSettings {
     /**
      * Get the checkDuplicateGroupControlNumber property: The value indicating whether to check for duplicate group
      * control number.
-     *
+     * 
      * @return the checkDuplicateGroupControlNumber value.
      */
     public boolean checkDuplicateGroupControlNumber() {
@@ -152,7 +150,7 @@ public final class EdifactValidationSettings {
     /**
      * Set the checkDuplicateGroupControlNumber property: The value indicating whether to check for duplicate group
      * control number.
-     *
+     * 
      * @param checkDuplicateGroupControlNumber the checkDuplicateGroupControlNumber value to set.
      * @return the EdifactValidationSettings object itself.
      */
@@ -164,7 +162,7 @@ public final class EdifactValidationSettings {
     /**
      * Get the checkDuplicateTransactionSetControlNumber property: The value indicating whether to check for duplicate
      * transaction set control number.
-     *
+     * 
      * @return the checkDuplicateTransactionSetControlNumber value.
      */
     public boolean checkDuplicateTransactionSetControlNumber() {
@@ -174,19 +172,19 @@ public final class EdifactValidationSettings {
     /**
      * Set the checkDuplicateTransactionSetControlNumber property: The value indicating whether to check for duplicate
      * transaction set control number.
-     *
+     * 
      * @param checkDuplicateTransactionSetControlNumber the checkDuplicateTransactionSetControlNumber value to set.
      * @return the EdifactValidationSettings object itself.
      */
-    public EdifactValidationSettings withCheckDuplicateTransactionSetControlNumber(
-        boolean checkDuplicateTransactionSetControlNumber) {
+    public EdifactValidationSettings
+        withCheckDuplicateTransactionSetControlNumber(boolean checkDuplicateTransactionSetControlNumber) {
         this.checkDuplicateTransactionSetControlNumber = checkDuplicateTransactionSetControlNumber;
         return this;
     }
 
     /**
      * Get the validateEdiTypes property: The value indicating whether to Whether to validate EDI types.
-     *
+     * 
      * @return the validateEdiTypes value.
      */
     public boolean validateEdiTypes() {
@@ -195,7 +193,7 @@ public final class EdifactValidationSettings {
 
     /**
      * Set the validateEdiTypes property: The value indicating whether to Whether to validate EDI types.
-     *
+     * 
      * @param validateEdiTypes the validateEdiTypes value to set.
      * @return the EdifactValidationSettings object itself.
      */
@@ -206,7 +204,7 @@ public final class EdifactValidationSettings {
 
     /**
      * Get the validateXsdTypes property: The value indicating whether to Whether to validate XSD types.
-     *
+     * 
      * @return the validateXsdTypes value.
      */
     public boolean validateXsdTypes() {
@@ -215,7 +213,7 @@ public final class EdifactValidationSettings {
 
     /**
      * Set the validateXsdTypes property: The value indicating whether to Whether to validate XSD types.
-     *
+     * 
      * @param validateXsdTypes the validateXsdTypes value to set.
      * @return the EdifactValidationSettings object itself.
      */
@@ -227,7 +225,7 @@ public final class EdifactValidationSettings {
     /**
      * Get the allowLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to allow leading and
      * trailing spaces and zeroes.
-     *
+     * 
      * @return the allowLeadingAndTrailingSpacesAndZeroes value.
      */
     public boolean allowLeadingAndTrailingSpacesAndZeroes() {
@@ -237,12 +235,12 @@ public final class EdifactValidationSettings {
     /**
      * Set the allowLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to allow leading and
      * trailing spaces and zeroes.
-     *
+     * 
      * @param allowLeadingAndTrailingSpacesAndZeroes the allowLeadingAndTrailingSpacesAndZeroes value to set.
      * @return the EdifactValidationSettings object itself.
      */
-    public EdifactValidationSettings withAllowLeadingAndTrailingSpacesAndZeroes(
-        boolean allowLeadingAndTrailingSpacesAndZeroes) {
+    public EdifactValidationSettings
+        withAllowLeadingAndTrailingSpacesAndZeroes(boolean allowLeadingAndTrailingSpacesAndZeroes) {
         this.allowLeadingAndTrailingSpacesAndZeroes = allowLeadingAndTrailingSpacesAndZeroes;
         return this;
     }
@@ -250,7 +248,7 @@ public final class EdifactValidationSettings {
     /**
      * Get the trimLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to trim leading and trailing
      * spaces and zeroes.
-     *
+     * 
      * @return the trimLeadingAndTrailingSpacesAndZeroes value.
      */
     public boolean trimLeadingAndTrailingSpacesAndZeroes() {
@@ -260,19 +258,19 @@ public final class EdifactValidationSettings {
     /**
      * Set the trimLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to trim leading and trailing
      * spaces and zeroes.
-     *
+     * 
      * @param trimLeadingAndTrailingSpacesAndZeroes the trimLeadingAndTrailingSpacesAndZeroes value to set.
      * @return the EdifactValidationSettings object itself.
      */
-    public EdifactValidationSettings withTrimLeadingAndTrailingSpacesAndZeroes(
-        boolean trimLeadingAndTrailingSpacesAndZeroes) {
+    public EdifactValidationSettings
+        withTrimLeadingAndTrailingSpacesAndZeroes(boolean trimLeadingAndTrailingSpacesAndZeroes) {
         this.trimLeadingAndTrailingSpacesAndZeroes = trimLeadingAndTrailingSpacesAndZeroes;
         return this;
     }
 
     /**
      * Get the trailingSeparatorPolicy property: The trailing separator policy.
-     *
+     * 
      * @return the trailingSeparatorPolicy value.
      */
     public TrailingSeparatorPolicy trailingSeparatorPolicy() {
@@ -281,7 +279,7 @@ public final class EdifactValidationSettings {
 
     /**
      * Set the trailingSeparatorPolicy property: The trailing separator policy.
-     *
+     * 
      * @param trailingSeparatorPolicy the trailingSeparatorPolicy value to set.
      * @return the EdifactValidationSettings object itself.
      */
@@ -292,17 +290,87 @@ public final class EdifactValidationSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (trailingSeparatorPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trailingSeparatorPolicy in model EdifactValidationSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trailingSeparatorPolicy in model EdifactValidationSettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EdifactValidationSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("validateCharacterSet", this.validateCharacterSet);
+        jsonWriter.writeBooleanField("checkDuplicateInterchangeControlNumber",
+            this.checkDuplicateInterchangeControlNumber);
+        jsonWriter.writeIntField("interchangeControlNumberValidityDays", this.interchangeControlNumberValidityDays);
+        jsonWriter.writeBooleanField("checkDuplicateGroupControlNumber", this.checkDuplicateGroupControlNumber);
+        jsonWriter.writeBooleanField("checkDuplicateTransactionSetControlNumber",
+            this.checkDuplicateTransactionSetControlNumber);
+        jsonWriter.writeBooleanField("validateEDITypes", this.validateEdiTypes);
+        jsonWriter.writeBooleanField("validateXSDTypes", this.validateXsdTypes);
+        jsonWriter.writeBooleanField("allowLeadingAndTrailingSpacesAndZeroes",
+            this.allowLeadingAndTrailingSpacesAndZeroes);
+        jsonWriter.writeBooleanField("trimLeadingAndTrailingSpacesAndZeroes",
+            this.trimLeadingAndTrailingSpacesAndZeroes);
+        jsonWriter.writeStringField("trailingSeparatorPolicy",
+            this.trailingSeparatorPolicy == null ? null : this.trailingSeparatorPolicy.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactValidationSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactValidationSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdifactValidationSettings.
+     */
+    public static EdifactValidationSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactValidationSettings deserializedEdifactValidationSettings = new EdifactValidationSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validateCharacterSet".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.validateCharacterSet = reader.getBoolean();
+                } else if ("checkDuplicateInterchangeControlNumber".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.checkDuplicateInterchangeControlNumber = reader.getBoolean();
+                } else if ("interchangeControlNumberValidityDays".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.interchangeControlNumberValidityDays = reader.getInt();
+                } else if ("checkDuplicateGroupControlNumber".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.checkDuplicateGroupControlNumber = reader.getBoolean();
+                } else if ("checkDuplicateTransactionSetControlNumber".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.checkDuplicateTransactionSetControlNumber
+                        = reader.getBoolean();
+                } else if ("validateEDITypes".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.validateEdiTypes = reader.getBoolean();
+                } else if ("validateXSDTypes".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.validateXsdTypes = reader.getBoolean();
+                } else if ("allowLeadingAndTrailingSpacesAndZeroes".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.allowLeadingAndTrailingSpacesAndZeroes = reader.getBoolean();
+                } else if ("trimLeadingAndTrailingSpacesAndZeroes".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.trimLeadingAndTrailingSpacesAndZeroes = reader.getBoolean();
+                } else if ("trailingSeparatorPolicy".equals(fieldName)) {
+                    deserializedEdifactValidationSettings.trailingSeparatorPolicy
+                        = TrailingSeparatorPolicy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactValidationSettings;
+        });
+    }
 }

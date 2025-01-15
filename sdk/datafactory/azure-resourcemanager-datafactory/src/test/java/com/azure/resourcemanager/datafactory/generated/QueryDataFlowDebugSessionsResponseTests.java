@@ -16,45 +16,75 @@ public final class QueryDataFlowDebugSessionsResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QueryDataFlowDebugSessionsResponse model = BinaryData.fromString(
-            "{\"value\":[{\"dataFlowName\":\"noda\",\"computeType\":\"pqhe\",\"coreCount\":1635095275,\"nodeCount\":1244000330,\"integrationRuntimeName\":\"gsbos\",\"sessionId\":\"eln\",\"startTime\":\"atutmzlbiojlvfhr\",\"timeToLiveInMinutes\":438246123,\"lastActivityTime\":\"eqvcwwyyurmoch\",\"\":{\"lbkpb\":\"dataprsnmokayzejn\",\"hahzvechndbnwi\":\"datapcpil\"}}],\"nextLink\":\"olewjwi\"}")
+            "{\"value\":[{\"dataFlowName\":\"qpbtuodxes\",\"computeType\":\"bbelawumuaslzk\",\"coreCount\":602871579,\"nodeCount\":1954370073,\"integrationRuntimeName\":\"cqucwyhahnom\",\"sessionId\":\"kywuhpsvfuu\",\"startTime\":\"tlwexxwlalniexz\",\"timeToLiveInMinutes\":1922531139,\"lastActivityTime\":\"gepqtybbwwpg\",\"\":{\"xkjibnxmy\":\"datachzyvlixqnrk\"}},{\"dataFlowName\":\"xs\",\"computeType\":\"rntvlwijp\",\"coreCount\":169879542,\"nodeCount\":1924013089,\"integrationRuntimeName\":\"qqpwcyyuf\",\"sessionId\":\"runcuwmqspkcd\",\"startTime\":\"hlctddunqn\",\"timeToLiveInMinutes\":981773620,\"lastActivityTime\":\"chrqb\",\"\":{\"qqoli\":\"datarcgegydcwboxjum\"}},{\"dataFlowName\":\"raiouaubrjtl\",\"computeType\":\"xfuojrn\",\"coreCount\":1614609688,\"nodeCount\":2143335427,\"integrationRuntimeName\":\"pasccbi\",\"sessionId\":\"mzdlyjdfqwmkyo\",\"startTime\":\"fdvruz\",\"timeToLiveInMinutes\":605414939,\"lastActivityTime\":\"j\",\"\":{\"tngfdgugeyzihgr\":\"datatfnmdx\",\"absnmfpp\":\"datayui\",\"yhsgz\":\"dataojeevy\"}},{\"dataFlowName\":\"zbgomfgbeg\",\"computeType\":\"gleohi\",\"coreCount\":131865797,\"nodeCount\":974044007,\"integrationRuntimeName\":\"ankrrfxee\",\"sessionId\":\"tijv\",\"startTime\":\"vbmqzbqq\",\"timeToLiveInMinutes\":498607950,\"lastActivityTime\":\"rnwxacevehjkuyxo\",\"\":{\"inmfgvxirp\":\"dataaoqltfaey\",\"prlpy\":\"datahriypoqeyhlqhy\"}}],\"nextLink\":\"uciqdsme\"}")
             .toObject(QueryDataFlowDebugSessionsResponse.class);
-        Assertions.assertEquals("noda", model.value().get(0).dataFlowName());
-        Assertions.assertEquals("pqhe", model.value().get(0).computeType());
-        Assertions.assertEquals(1635095275, model.value().get(0).coreCount());
-        Assertions.assertEquals(1244000330, model.value().get(0).nodeCount());
-        Assertions.assertEquals("gsbos", model.value().get(0).integrationRuntimeName());
-        Assertions.assertEquals("eln", model.value().get(0).sessionId());
-        Assertions.assertEquals("atutmzlbiojlvfhr", model.value().get(0).startTime());
-        Assertions.assertEquals(438246123, model.value().get(0).timeToLiveInMinutes());
-        Assertions.assertEquals("eqvcwwyyurmoch", model.value().get(0).lastActivityTime());
-        Assertions.assertEquals("olewjwi", model.nextLink());
+        Assertions.assertEquals("qpbtuodxes", model.value().get(0).dataFlowName());
+        Assertions.assertEquals("bbelawumuaslzk", model.value().get(0).computeType());
+        Assertions.assertEquals(602871579, model.value().get(0).coreCount());
+        Assertions.assertEquals(1954370073, model.value().get(0).nodeCount());
+        Assertions.assertEquals("cqucwyhahnom", model.value().get(0).integrationRuntimeName());
+        Assertions.assertEquals("kywuhpsvfuu", model.value().get(0).sessionId());
+        Assertions.assertEquals("tlwexxwlalniexz", model.value().get(0).startTime());
+        Assertions.assertEquals(1922531139, model.value().get(0).timeToLiveInMinutes());
+        Assertions.assertEquals("gepqtybbwwpg", model.value().get(0).lastActivityTime());
+        Assertions.assertEquals("uciqdsme", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryDataFlowDebugSessionsResponse model = new QueryDataFlowDebugSessionsResponse()
-            .withValue(Arrays.asList(new DataFlowDebugSessionInfoInner().withDataFlowName("noda")
-                .withComputeType("pqhe")
-                .withCoreCount(1635095275)
-                .withNodeCount(1244000330)
-                .withIntegrationRuntimeName("gsbos")
-                .withSessionId("eln")
-                .withStartTime("atutmzlbiojlvfhr")
-                .withTimeToLiveInMinutes(438246123)
-                .withLastActivityTime("eqvcwwyyurmoch")
+        QueryDataFlowDebugSessionsResponse model = new QueryDataFlowDebugSessionsResponse().withValue(Arrays.asList(
+            new DataFlowDebugSessionInfoInner().withDataFlowName("qpbtuodxes")
+                .withComputeType("bbelawumuaslzk")
+                .withCoreCount(602871579)
+                .withNodeCount(1954370073)
+                .withIntegrationRuntimeName("cqucwyhahnom")
+                .withSessionId("kywuhpsvfuu")
+                .withStartTime("tlwexxwlalniexz")
+                .withTimeToLiveInMinutes(1922531139)
+                .withLastActivityTime("gepqtybbwwpg")
+                .withAdditionalProperties(mapOf()),
+            new DataFlowDebugSessionInfoInner().withDataFlowName("xs")
+                .withComputeType("rntvlwijp")
+                .withCoreCount(169879542)
+                .withNodeCount(1924013089)
+                .withIntegrationRuntimeName("qqpwcyyuf")
+                .withSessionId("runcuwmqspkcd")
+                .withStartTime("hlctddunqn")
+                .withTimeToLiveInMinutes(981773620)
+                .withLastActivityTime("chrqb")
+                .withAdditionalProperties(mapOf()),
+            new DataFlowDebugSessionInfoInner().withDataFlowName("raiouaubrjtl")
+                .withComputeType("xfuojrn")
+                .withCoreCount(1614609688)
+                .withNodeCount(2143335427)
+                .withIntegrationRuntimeName("pasccbi")
+                .withSessionId("mzdlyjdfqwmkyo")
+                .withStartTime("fdvruz")
+                .withTimeToLiveInMinutes(605414939)
+                .withLastActivityTime("j")
+                .withAdditionalProperties(mapOf()),
+            new DataFlowDebugSessionInfoInner().withDataFlowName("zbgomfgbeg")
+                .withComputeType("gleohi")
+                .withCoreCount(131865797)
+                .withNodeCount(974044007)
+                .withIntegrationRuntimeName("ankrrfxee")
+                .withSessionId("tijv")
+                .withStartTime("vbmqzbqq")
+                .withTimeToLiveInMinutes(498607950)
+                .withLastActivityTime("rnwxacevehjkuyxo")
                 .withAdditionalProperties(mapOf())))
-            .withNextLink("olewjwi");
+            .withNextLink("uciqdsme");
         model = BinaryData.fromObject(model).toObject(QueryDataFlowDebugSessionsResponse.class);
-        Assertions.assertEquals("noda", model.value().get(0).dataFlowName());
-        Assertions.assertEquals("pqhe", model.value().get(0).computeType());
-        Assertions.assertEquals(1635095275, model.value().get(0).coreCount());
-        Assertions.assertEquals(1244000330, model.value().get(0).nodeCount());
-        Assertions.assertEquals("gsbos", model.value().get(0).integrationRuntimeName());
-        Assertions.assertEquals("eln", model.value().get(0).sessionId());
-        Assertions.assertEquals("atutmzlbiojlvfhr", model.value().get(0).startTime());
-        Assertions.assertEquals(438246123, model.value().get(0).timeToLiveInMinutes());
-        Assertions.assertEquals("eqvcwwyyurmoch", model.value().get(0).lastActivityTime());
-        Assertions.assertEquals("olewjwi", model.nextLink());
+        Assertions.assertEquals("qpbtuodxes", model.value().get(0).dataFlowName());
+        Assertions.assertEquals("bbelawumuaslzk", model.value().get(0).computeType());
+        Assertions.assertEquals(602871579, model.value().get(0).coreCount());
+        Assertions.assertEquals(1954370073, model.value().get(0).nodeCount());
+        Assertions.assertEquals("cqucwyhahnom", model.value().get(0).integrationRuntimeName());
+        Assertions.assertEquals("kywuhpsvfuu", model.value().get(0).sessionId());
+        Assertions.assertEquals("tlwexxwlalniexz", model.value().get(0).startTime());
+        Assertions.assertEquals(1922531139, model.value().get(0).timeToLiveInMinutes());
+        Assertions.assertEquals("gepqtybbwwpg", model.value().get(0).lastActivityTime());
+        Assertions.assertEquals("uciqdsme", model.nextLink());
     }
 
     // Use "Map.of" if available

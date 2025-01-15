@@ -5,58 +5,89 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Field for a given condition. */
+/**
+ * Field for a given condition.
+ */
 public final class Field extends ExpandableStringEnum<Field> {
-    /** Static value Severity for Field. */
+    /**
+     * Static value Severity for Field.
+     */
     public static final Field SEVERITY = fromString("Severity");
 
-    /** Static value MonitorService for Field. */
+    /**
+     * Static value MonitorService for Field.
+     */
     public static final Field MONITOR_SERVICE = fromString("MonitorService");
 
-    /** Static value MonitorCondition for Field. */
+    /**
+     * Static value MonitorCondition for Field.
+     */
     public static final Field MONITOR_CONDITION = fromString("MonitorCondition");
 
-    /** Static value SignalType for Field. */
+    /**
+     * Static value SignalType for Field.
+     */
     public static final Field SIGNAL_TYPE = fromString("SignalType");
 
-    /** Static value TargetResourceType for Field. */
+    /**
+     * Static value TargetResourceType for Field.
+     */
     public static final Field TARGET_RESOURCE_TYPE = fromString("TargetResourceType");
 
-    /** Static value TargetResource for Field. */
+    /**
+     * Static value TargetResource for Field.
+     */
     public static final Field TARGET_RESOURCE = fromString("TargetResource");
 
-    /** Static value TargetResourceGroup for Field. */
+    /**
+     * Static value TargetResourceGroup for Field.
+     */
     public static final Field TARGET_RESOURCE_GROUP = fromString("TargetResourceGroup");
 
-    /** Static value AlertRuleId for Field. */
+    /**
+     * Static value AlertRuleId for Field.
+     */
     public static final Field ALERT_RULE_ID = fromString("AlertRuleId");
 
-    /** Static value AlertRuleName for Field. */
+    /**
+     * Static value AlertRuleName for Field.
+     */
     public static final Field ALERT_RULE_NAME = fromString("AlertRuleName");
 
-    /** Static value Description for Field. */
+    /**
+     * Static value Description for Field.
+     */
     public static final Field DESCRIPTION = fromString("Description");
 
-    /** Static value AlertContext for Field. */
+    /**
+     * Static value AlertContext for Field.
+     */
     public static final Field ALERT_CONTEXT = fromString("AlertContext");
 
     /**
+     * Creates a new instance of Field value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Field() {
+    }
+
+    /**
      * Creates or finds a Field from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Field.
      */
-    @JsonCreator
     public static Field fromString(String name) {
         return fromString(name, Field.class);
     }
 
     /**
      * Gets known Field values.
-     *
+     * 
      * @return known Field values.
      */
     public static Collection<Field> values() {

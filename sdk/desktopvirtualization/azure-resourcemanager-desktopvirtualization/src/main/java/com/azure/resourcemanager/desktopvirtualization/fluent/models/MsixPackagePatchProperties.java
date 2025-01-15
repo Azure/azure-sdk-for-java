@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** MSIX Package properties that can be patched. */
+/**
+ * MSIX Package properties that can be patched.
+ */
 @Fluent
-public final class MsixPackagePatchProperties {
+public final class MsixPackagePatchProperties implements JsonSerializable<MsixPackagePatchProperties> {
     /*
      * Set a version of the package to be active across hostpool.
      */
-    @JsonProperty(value = "isActive")
     private Boolean isActive;
 
     /*
      * Set Registration mode. Regular or Delayed.
      */
-    @JsonProperty(value = "isRegularRegistration")
     private Boolean isRegularRegistration;
 
     /*
      * Display name for MSIX Package.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of MsixPackagePatchProperties class. */
+    /**
+     * Creates an instance of MsixPackagePatchProperties class.
+     */
     public MsixPackagePatchProperties() {
     }
 
     /**
      * Get the isActive property: Set a version of the package to be active across hostpool.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -43,7 +48,7 @@ public final class MsixPackagePatchProperties {
 
     /**
      * Set the isActive property: Set a version of the package to be active across hostpool.
-     *
+     * 
      * @param isActive the isActive value to set.
      * @return the MsixPackagePatchProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class MsixPackagePatchProperties {
 
     /**
      * Get the isRegularRegistration property: Set Registration mode. Regular or Delayed.
-     *
+     * 
      * @return the isRegularRegistration value.
      */
     public Boolean isRegularRegistration() {
@@ -63,7 +68,7 @@ public final class MsixPackagePatchProperties {
 
     /**
      * Set the isRegularRegistration property: Set Registration mode. Regular or Delayed.
-     *
+     * 
      * @param isRegularRegistration the isRegularRegistration value to set.
      * @return the MsixPackagePatchProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class MsixPackagePatchProperties {
 
     /**
      * Get the displayName property: Display name for MSIX Package.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -83,7 +88,7 @@ public final class MsixPackagePatchProperties {
 
     /**
      * Set the displayName property: Display name for MSIX Package.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MsixPackagePatchProperties object itself.
      */
@@ -94,9 +99,52 @@ public final class MsixPackagePatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isActive", this.isActive);
+        jsonWriter.writeBooleanField("isRegularRegistration", this.isRegularRegistration);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MsixPackagePatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MsixPackagePatchProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MsixPackagePatchProperties.
+     */
+    public static MsixPackagePatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MsixPackagePatchProperties deserializedMsixPackagePatchProperties = new MsixPackagePatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isActive".equals(fieldName)) {
+                    deserializedMsixPackagePatchProperties.isActive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRegularRegistration".equals(fieldName)) {
+                    deserializedMsixPackagePatchProperties.isRegularRegistration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMsixPackagePatchProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMsixPackagePatchProperties;
+        });
     }
 }

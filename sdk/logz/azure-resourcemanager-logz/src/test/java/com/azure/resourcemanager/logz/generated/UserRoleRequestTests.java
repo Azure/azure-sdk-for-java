@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class UserRoleRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserRoleRequest model = BinaryData.fromString("{\"emailAddress\":\"ltyfsop\"}").toObject(UserRoleRequest.class);
-        Assertions.assertEquals("ltyfsop", model.emailAddress());
+        UserRoleRequest model = BinaryData.fromString("{\"emailAddress\":\"sa\"}").toObject(UserRoleRequest.class);
+        Assertions.assertEquals("sa", model.emailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserRoleRequest model = new UserRoleRequest().withEmailAddress("ltyfsop");
+        UserRoleRequest model = new UserRoleRequest().withEmailAddress("sa");
         model = BinaryData.fromObject(model).toObject(UserRoleRequest.class);
-        Assertions.assertEquals("ltyfsop", model.emailAddress());
+        Assertions.assertEquals("sa", model.emailAddress());
     }
 }

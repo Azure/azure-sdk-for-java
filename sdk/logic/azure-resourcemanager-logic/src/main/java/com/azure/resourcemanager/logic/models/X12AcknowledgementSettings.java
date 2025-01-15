@@ -5,108 +5,101 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The X12 agreement acknowledgement settings. */
+/**
+ * The X12 agreement acknowledgement settings.
+ */
 @Fluent
-public final class X12AcknowledgementSettings {
+public final class X12AcknowledgementSettings implements JsonSerializable<X12AcknowledgementSettings> {
     /*
      * The value indicating whether technical acknowledgement is needed.
      */
-    @JsonProperty(value = "needTechnicalAcknowledgement", required = true)
     private boolean needTechnicalAcknowledgement;
 
     /*
      * The value indicating whether to batch the technical acknowledgements.
      */
-    @JsonProperty(value = "batchTechnicalAcknowledgements", required = true)
     private boolean batchTechnicalAcknowledgements;
 
     /*
      * The value indicating whether functional acknowledgement is needed.
      */
-    @JsonProperty(value = "needFunctionalAcknowledgement", required = true)
     private boolean needFunctionalAcknowledgement;
 
     /*
      * The functional acknowledgement version.
      */
-    @JsonProperty(value = "functionalAcknowledgementVersion")
     private String functionalAcknowledgementVersion;
 
     /*
      * The value indicating whether to batch functional acknowledgements.
      */
-    @JsonProperty(value = "batchFunctionalAcknowledgements", required = true)
     private boolean batchFunctionalAcknowledgements;
 
     /*
      * The value indicating whether implementation acknowledgement is needed.
      */
-    @JsonProperty(value = "needImplementationAcknowledgement", required = true)
     private boolean needImplementationAcknowledgement;
 
     /*
      * The implementation acknowledgement version.
      */
-    @JsonProperty(value = "implementationAcknowledgementVersion")
     private String implementationAcknowledgementVersion;
 
     /*
      * The value indicating whether to batch implementation acknowledgements.
      */
-    @JsonProperty(value = "batchImplementationAcknowledgements", required = true)
     private boolean batchImplementationAcknowledgements;
 
     /*
      * The value indicating whether a loop is needed for valid messages.
      */
-    @JsonProperty(value = "needLoopForValidMessages", required = true)
     private boolean needLoopForValidMessages;
 
     /*
      * The value indicating whether to send synchronous acknowledgement.
      */
-    @JsonProperty(value = "sendSynchronousAcknowledgement", required = true)
     private boolean sendSynchronousAcknowledgement;
 
     /*
      * The acknowledgement control number prefix.
      */
-    @JsonProperty(value = "acknowledgementControlNumberPrefix")
     private String acknowledgementControlNumberPrefix;
 
     /*
      * The acknowledgement control number suffix.
      */
-    @JsonProperty(value = "acknowledgementControlNumberSuffix")
     private String acknowledgementControlNumberSuffix;
 
     /*
      * The acknowledgement control number lower bound.
      */
-    @JsonProperty(value = "acknowledgementControlNumberLowerBound", required = true)
     private int acknowledgementControlNumberLowerBound;
 
     /*
      * The acknowledgement control number upper bound.
      */
-    @JsonProperty(value = "acknowledgementControlNumberUpperBound", required = true)
     private int acknowledgementControlNumberUpperBound;
 
     /*
      * The value indicating whether to rollover acknowledgement control number.
      */
-    @JsonProperty(value = "rolloverAcknowledgementControlNumber", required = true)
     private boolean rolloverAcknowledgementControlNumber;
 
-    /** Creates an instance of X12AcknowledgementSettings class. */
+    /**
+     * Creates an instance of X12AcknowledgementSettings class.
+     */
     public X12AcknowledgementSettings() {
     }
 
     /**
      * Get the needTechnicalAcknowledgement property: The value indicating whether technical acknowledgement is needed.
-     *
+     * 
      * @return the needTechnicalAcknowledgement value.
      */
     public boolean needTechnicalAcknowledgement() {
@@ -115,7 +108,7 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Set the needTechnicalAcknowledgement property: The value indicating whether technical acknowledgement is needed.
-     *
+     * 
      * @param needTechnicalAcknowledgement the needTechnicalAcknowledgement value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
@@ -127,7 +120,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Get the batchTechnicalAcknowledgements property: The value indicating whether to batch the technical
      * acknowledgements.
-     *
+     * 
      * @return the batchTechnicalAcknowledgements value.
      */
     public boolean batchTechnicalAcknowledgements() {
@@ -137,7 +130,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Set the batchTechnicalAcknowledgements property: The value indicating whether to batch the technical
      * acknowledgements.
-     *
+     * 
      * @param batchTechnicalAcknowledgements the batchTechnicalAcknowledgements value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
@@ -149,7 +142,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Get the needFunctionalAcknowledgement property: The value indicating whether functional acknowledgement is
      * needed.
-     *
+     * 
      * @return the needFunctionalAcknowledgement value.
      */
     public boolean needFunctionalAcknowledgement() {
@@ -159,7 +152,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Set the needFunctionalAcknowledgement property: The value indicating whether functional acknowledgement is
      * needed.
-     *
+     * 
      * @param needFunctionalAcknowledgement the needFunctionalAcknowledgement value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
@@ -170,7 +163,7 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Get the functionalAcknowledgementVersion property: The functional acknowledgement version.
-     *
+     * 
      * @return the functionalAcknowledgementVersion value.
      */
     public String functionalAcknowledgementVersion() {
@@ -179,7 +172,7 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Set the functionalAcknowledgementVersion property: The functional acknowledgement version.
-     *
+     * 
      * @param functionalAcknowledgementVersion the functionalAcknowledgementVersion value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
@@ -191,7 +184,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Get the batchFunctionalAcknowledgements property: The value indicating whether to batch functional
      * acknowledgements.
-     *
+     * 
      * @return the batchFunctionalAcknowledgements value.
      */
     public boolean batchFunctionalAcknowledgements() {
@@ -201,7 +194,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Set the batchFunctionalAcknowledgements property: The value indicating whether to batch functional
      * acknowledgements.
-     *
+     * 
      * @param batchFunctionalAcknowledgements the batchFunctionalAcknowledgements value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
@@ -213,7 +206,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Get the needImplementationAcknowledgement property: The value indicating whether implementation acknowledgement
      * is needed.
-     *
+     * 
      * @return the needImplementationAcknowledgement value.
      */
     public boolean needImplementationAcknowledgement() {
@@ -223,7 +216,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Set the needImplementationAcknowledgement property: The value indicating whether implementation acknowledgement
      * is needed.
-     *
+     * 
      * @param needImplementationAcknowledgement the needImplementationAcknowledgement value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
@@ -234,7 +227,7 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Get the implementationAcknowledgementVersion property: The implementation acknowledgement version.
-     *
+     * 
      * @return the implementationAcknowledgementVersion value.
      */
     public String implementationAcknowledgementVersion() {
@@ -243,12 +236,12 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Set the implementationAcknowledgementVersion property: The implementation acknowledgement version.
-     *
+     * 
      * @param implementationAcknowledgementVersion the implementationAcknowledgementVersion value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
-    public X12AcknowledgementSettings withImplementationAcknowledgementVersion(
-        String implementationAcknowledgementVersion) {
+    public X12AcknowledgementSettings
+        withImplementationAcknowledgementVersion(String implementationAcknowledgementVersion) {
         this.implementationAcknowledgementVersion = implementationAcknowledgementVersion;
         return this;
     }
@@ -256,7 +249,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Get the batchImplementationAcknowledgements property: The value indicating whether to batch implementation
      * acknowledgements.
-     *
+     * 
      * @return the batchImplementationAcknowledgements value.
      */
     public boolean batchImplementationAcknowledgements() {
@@ -266,19 +259,19 @@ public final class X12AcknowledgementSettings {
     /**
      * Set the batchImplementationAcknowledgements property: The value indicating whether to batch implementation
      * acknowledgements.
-     *
+     * 
      * @param batchImplementationAcknowledgements the batchImplementationAcknowledgements value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
-    public X12AcknowledgementSettings withBatchImplementationAcknowledgements(
-        boolean batchImplementationAcknowledgements) {
+    public X12AcknowledgementSettings
+        withBatchImplementationAcknowledgements(boolean batchImplementationAcknowledgements) {
         this.batchImplementationAcknowledgements = batchImplementationAcknowledgements;
         return this;
     }
 
     /**
      * Get the needLoopForValidMessages property: The value indicating whether a loop is needed for valid messages.
-     *
+     * 
      * @return the needLoopForValidMessages value.
      */
     public boolean needLoopForValidMessages() {
@@ -287,7 +280,7 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Set the needLoopForValidMessages property: The value indicating whether a loop is needed for valid messages.
-     *
+     * 
      * @param needLoopForValidMessages the needLoopForValidMessages value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
@@ -299,7 +292,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Get the sendSynchronousAcknowledgement property: The value indicating whether to send synchronous
      * acknowledgement.
-     *
+     * 
      * @return the sendSynchronousAcknowledgement value.
      */
     public boolean sendSynchronousAcknowledgement() {
@@ -309,7 +302,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Set the sendSynchronousAcknowledgement property: The value indicating whether to send synchronous
      * acknowledgement.
-     *
+     * 
      * @param sendSynchronousAcknowledgement the sendSynchronousAcknowledgement value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
@@ -320,7 +313,7 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Get the acknowledgementControlNumberPrefix property: The acknowledgement control number prefix.
-     *
+     * 
      * @return the acknowledgementControlNumberPrefix value.
      */
     public String acknowledgementControlNumberPrefix() {
@@ -329,19 +322,19 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Set the acknowledgementControlNumberPrefix property: The acknowledgement control number prefix.
-     *
+     * 
      * @param acknowledgementControlNumberPrefix the acknowledgementControlNumberPrefix value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
-    public X12AcknowledgementSettings withAcknowledgementControlNumberPrefix(
-        String acknowledgementControlNumberPrefix) {
+    public X12AcknowledgementSettings
+        withAcknowledgementControlNumberPrefix(String acknowledgementControlNumberPrefix) {
         this.acknowledgementControlNumberPrefix = acknowledgementControlNumberPrefix;
         return this;
     }
 
     /**
      * Get the acknowledgementControlNumberSuffix property: The acknowledgement control number suffix.
-     *
+     * 
      * @return the acknowledgementControlNumberSuffix value.
      */
     public String acknowledgementControlNumberSuffix() {
@@ -350,19 +343,19 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Set the acknowledgementControlNumberSuffix property: The acknowledgement control number suffix.
-     *
+     * 
      * @param acknowledgementControlNumberSuffix the acknowledgementControlNumberSuffix value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
-    public X12AcknowledgementSettings withAcknowledgementControlNumberSuffix(
-        String acknowledgementControlNumberSuffix) {
+    public X12AcknowledgementSettings
+        withAcknowledgementControlNumberSuffix(String acknowledgementControlNumberSuffix) {
         this.acknowledgementControlNumberSuffix = acknowledgementControlNumberSuffix;
         return this;
     }
 
     /**
      * Get the acknowledgementControlNumberLowerBound property: The acknowledgement control number lower bound.
-     *
+     * 
      * @return the acknowledgementControlNumberLowerBound value.
      */
     public int acknowledgementControlNumberLowerBound() {
@@ -371,19 +364,19 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Set the acknowledgementControlNumberLowerBound property: The acknowledgement control number lower bound.
-     *
+     * 
      * @param acknowledgementControlNumberLowerBound the acknowledgementControlNumberLowerBound value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
-    public X12AcknowledgementSettings withAcknowledgementControlNumberLowerBound(
-        int acknowledgementControlNumberLowerBound) {
+    public X12AcknowledgementSettings
+        withAcknowledgementControlNumberLowerBound(int acknowledgementControlNumberLowerBound) {
         this.acknowledgementControlNumberLowerBound = acknowledgementControlNumberLowerBound;
         return this;
     }
 
     /**
      * Get the acknowledgementControlNumberUpperBound property: The acknowledgement control number upper bound.
-     *
+     * 
      * @return the acknowledgementControlNumberUpperBound value.
      */
     public int acknowledgementControlNumberUpperBound() {
@@ -392,12 +385,12 @@ public final class X12AcknowledgementSettings {
 
     /**
      * Set the acknowledgementControlNumberUpperBound property: The acknowledgement control number upper bound.
-     *
+     * 
      * @param acknowledgementControlNumberUpperBound the acknowledgementControlNumberUpperBound value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
-    public X12AcknowledgementSettings withAcknowledgementControlNumberUpperBound(
-        int acknowledgementControlNumberUpperBound) {
+    public X12AcknowledgementSettings
+        withAcknowledgementControlNumberUpperBound(int acknowledgementControlNumberUpperBound) {
         this.acknowledgementControlNumberUpperBound = acknowledgementControlNumberUpperBound;
         return this;
     }
@@ -405,7 +398,7 @@ public final class X12AcknowledgementSettings {
     /**
      * Get the rolloverAcknowledgementControlNumber property: The value indicating whether to rollover acknowledgement
      * control number.
-     *
+     * 
      * @return the rolloverAcknowledgementControlNumber value.
      */
     public boolean rolloverAcknowledgementControlNumber() {
@@ -415,21 +408,100 @@ public final class X12AcknowledgementSettings {
     /**
      * Set the rolloverAcknowledgementControlNumber property: The value indicating whether to rollover acknowledgement
      * control number.
-     *
+     * 
      * @param rolloverAcknowledgementControlNumber the rolloverAcknowledgementControlNumber value to set.
      * @return the X12AcknowledgementSettings object itself.
      */
-    public X12AcknowledgementSettings withRolloverAcknowledgementControlNumber(
-        boolean rolloverAcknowledgementControlNumber) {
+    public X12AcknowledgementSettings
+        withRolloverAcknowledgementControlNumber(boolean rolloverAcknowledgementControlNumber) {
         this.rolloverAcknowledgementControlNumber = rolloverAcknowledgementControlNumber;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("needTechnicalAcknowledgement", this.needTechnicalAcknowledgement);
+        jsonWriter.writeBooleanField("batchTechnicalAcknowledgements", this.batchTechnicalAcknowledgements);
+        jsonWriter.writeBooleanField("needFunctionalAcknowledgement", this.needFunctionalAcknowledgement);
+        jsonWriter.writeBooleanField("batchFunctionalAcknowledgements", this.batchFunctionalAcknowledgements);
+        jsonWriter.writeBooleanField("needImplementationAcknowledgement", this.needImplementationAcknowledgement);
+        jsonWriter.writeBooleanField("batchImplementationAcknowledgements", this.batchImplementationAcknowledgements);
+        jsonWriter.writeBooleanField("needLoopForValidMessages", this.needLoopForValidMessages);
+        jsonWriter.writeBooleanField("sendSynchronousAcknowledgement", this.sendSynchronousAcknowledgement);
+        jsonWriter.writeIntField("acknowledgementControlNumberLowerBound", this.acknowledgementControlNumberLowerBound);
+        jsonWriter.writeIntField("acknowledgementControlNumberUpperBound", this.acknowledgementControlNumberUpperBound);
+        jsonWriter.writeBooleanField("rolloverAcknowledgementControlNumber", this.rolloverAcknowledgementControlNumber);
+        jsonWriter.writeStringField("functionalAcknowledgementVersion", this.functionalAcknowledgementVersion);
+        jsonWriter.writeStringField("implementationAcknowledgementVersion", this.implementationAcknowledgementVersion);
+        jsonWriter.writeStringField("acknowledgementControlNumberPrefix", this.acknowledgementControlNumberPrefix);
+        jsonWriter.writeStringField("acknowledgementControlNumberSuffix", this.acknowledgementControlNumberSuffix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12AcknowledgementSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12AcknowledgementSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12AcknowledgementSettings.
+     */
+    public static X12AcknowledgementSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12AcknowledgementSettings deserializedX12AcknowledgementSettings = new X12AcknowledgementSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("needTechnicalAcknowledgement".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.needTechnicalAcknowledgement = reader.getBoolean();
+                } else if ("batchTechnicalAcknowledgements".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.batchTechnicalAcknowledgements = reader.getBoolean();
+                } else if ("needFunctionalAcknowledgement".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.needFunctionalAcknowledgement = reader.getBoolean();
+                } else if ("batchFunctionalAcknowledgements".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.batchFunctionalAcknowledgements = reader.getBoolean();
+                } else if ("needImplementationAcknowledgement".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.needImplementationAcknowledgement = reader.getBoolean();
+                } else if ("batchImplementationAcknowledgements".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.batchImplementationAcknowledgements = reader.getBoolean();
+                } else if ("needLoopForValidMessages".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.needLoopForValidMessages = reader.getBoolean();
+                } else if ("sendSynchronousAcknowledgement".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.sendSynchronousAcknowledgement = reader.getBoolean();
+                } else if ("acknowledgementControlNumberLowerBound".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.acknowledgementControlNumberLowerBound = reader.getInt();
+                } else if ("acknowledgementControlNumberUpperBound".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.acknowledgementControlNumberUpperBound = reader.getInt();
+                } else if ("rolloverAcknowledgementControlNumber".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.rolloverAcknowledgementControlNumber = reader.getBoolean();
+                } else if ("functionalAcknowledgementVersion".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.functionalAcknowledgementVersion = reader.getString();
+                } else if ("implementationAcknowledgementVersion".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.implementationAcknowledgementVersion = reader.getString();
+                } else if ("acknowledgementControlNumberPrefix".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.acknowledgementControlNumberPrefix = reader.getString();
+                } else if ("acknowledgementControlNumberSuffix".equals(fieldName)) {
+                    deserializedX12AcknowledgementSettings.acknowledgementControlNumberSuffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12AcknowledgementSettings;
+        });
     }
 }

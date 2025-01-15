@@ -6,30 +6,62 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.fluent.models.FileTriggerProperties;
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Trigger details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("FileEvent")
+/**
+ * Trigger details.
+ */
 @Fluent
 public final class FileEventTrigger extends TriggerInner {
     /*
+     * Trigger Kind.
+     */
+    private TriggerEventType kind = TriggerEventType.FILE_EVENT;
+
+    /*
      * File trigger properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private FileTriggerProperties innerProperties = new FileTriggerProperties();
 
-    /** Creates an instance of FileEventTrigger class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FileEventTrigger class.
+     */
     public FileEventTrigger() {
     }
 
     /**
+     * Get the kind property: Trigger Kind.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public TriggerEventType kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: File trigger properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FileTriggerProperties innerProperties() {
@@ -37,8 +69,38 @@ public final class FileEventTrigger extends TriggerInner {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the sourceInfo property: File event source details.
-     *
+     * 
      * @return the sourceInfo value.
      */
     public FileSourceInfo sourceInfo() {
@@ -47,7 +109,7 @@ public final class FileEventTrigger extends TriggerInner {
 
     /**
      * Set the sourceInfo property: File event source details.
-     *
+     * 
      * @param sourceInfo the sourceInfo value to set.
      * @return the FileEventTrigger object itself.
      */
@@ -61,7 +123,7 @@ public final class FileEventTrigger extends TriggerInner {
 
     /**
      * Get the sinkInfo property: Role sink info.
-     *
+     * 
      * @return the sinkInfo value.
      */
     public RoleSinkInfo sinkInfo() {
@@ -70,7 +132,7 @@ public final class FileEventTrigger extends TriggerInner {
 
     /**
      * Set the sinkInfo property: Role sink info.
-     *
+     * 
      * @param sinkInfo the sinkInfo value to set.
      * @return the FileEventTrigger object itself.
      */
@@ -86,7 +148,7 @@ public final class FileEventTrigger extends TriggerInner {
      * Get the customContextTag property: A custom context tag typically used to correlate the trigger against its
      * usage. For example, if a periodic timer trigger is intended for certain specific IoT modules in the device, the
      * tag can be the name or the image URL of the module.
-     *
+     * 
      * @return the customContextTag value.
      */
     public String customContextTag() {
@@ -97,7 +159,7 @@ public final class FileEventTrigger extends TriggerInner {
      * Set the customContextTag property: A custom context tag typically used to correlate the trigger against its
      * usage. For example, if a periodic timer trigger is intended for certain specific IoT modules in the device, the
      * tag can be the name or the image URL of the module.
-     *
+     * 
      * @param customContextTag the customContextTag value to set.
      * @return the FileEventTrigger object itself.
      */
@@ -111,21 +173,65 @@ public final class FileEventTrigger extends TriggerInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model FileEventTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model FileEventTrigger"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FileEventTrigger.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileEventTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileEventTrigger if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileEventTrigger.
+     */
+    public static FileEventTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileEventTrigger deserializedFileEventTrigger = new FileEventTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFileEventTrigger.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFileEventTrigger.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFileEventTrigger.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFileEventTrigger.innerProperties = FileTriggerProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedFileEventTrigger.kind = TriggerEventType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileEventTrigger;
+        });
+    }
 }

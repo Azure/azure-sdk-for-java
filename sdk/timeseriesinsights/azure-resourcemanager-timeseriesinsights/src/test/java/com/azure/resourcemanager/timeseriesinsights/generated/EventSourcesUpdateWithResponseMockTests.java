@@ -6,87 +6,44 @@ package com.azure.resourcemanager.timeseriesinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager;
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceResource;
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceUpdateParameters;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class EventSourcesUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"kind\":\"EventSourceResource\",\"location\":\"alm\",\"tags\":{\"aygdvwvgpioh\":\"d\",\"udxepxgyqagv\":\"wxrt\",\"wi\":\"vmnpkukghimdblx\"},\"id\":\"fnjhfjxwmszkkfo\",\"name\":\"rey\",\"type\":\"kzikfjawneaivxwc\"}";
 
-        String responseStr =
-            "{\"kind\":\"EventSourceResource\",\"location\":\"mnzb\",\"tags\":{\"el\":\"jpglkfgohdne\",\"fikdowwqu\":\"phsdyhto\"},\"id\":\"v\",\"name\":\"zx\",\"type\":\"lvithhqzonosgg\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        TimeSeriesInsightsManager manager = TimeSeriesInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        EventSourceResource response = manager.eventSources()
+            .updateWithResponse("gxk", "lla", "melwuipiccjz",
+                new EventSourceUpdateParameters().withTags(mapOf("vvcnayr", "v", "rdvstkwqqtch", "yrnxxmueedn")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        TimeSeriesInsightsManager manager =
-            TimeSeriesInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        EventSourceResource response =
-            manager
-                .eventSources()
-                .updateWithResponse(
-                    "fzxmhhvhgureodkw",
-                    "bdagxt",
-                    "bqdxbx",
-                    new EventSourceUpdateParameters()
-                        .withTags(
-                            mapOf(
-                                "iplbpodxunkbebxm",
-                                "bogqxndlkzgxhu",
-                                "oievseotgqrlltm",
-                                "byyntwlrbqt",
-                                "jefuzmuvpbttdumo",
-                                "wlauwzizxbmpg",
-                                "xe",
-                                "p")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("mnzb", response.location());
-        Assertions.assertEquals("jpglkfgohdne", response.tags().get("el"));
+        Assertions.assertEquals("alm", response.location());
+        Assertions.assertEquals("d", response.tags().get("aygdvwvgpioh"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

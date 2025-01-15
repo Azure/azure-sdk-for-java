@@ -4,7 +4,6 @@
 package com.azure.jedis;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.jedis.implementation.authentication.AccessTokenCache;
 import com.azure.jedis.implementation.authentication.AccessTokenResult;
 import com.azure.jedis.implementation.authentication.AuthenticationInfo;
@@ -19,11 +18,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * Authenticator manages authentication for Jedis client connection.
  */
 class Authenticator {
-    private final ClientLogger clientLogger = new ClientLogger(Authenticator.class);
-    private AccessTokenCache tokenCache;
-    private TokenRequestContext tokenRequestContext;
+    private final AccessTokenCache tokenCache;
+    private final TokenRequestContext tokenRequestContext;
     private volatile boolean authenticated;
-    ReentrantLock lock;
+    private final ReentrantLock lock;
 
     Authenticator(AccessTokenCache tokenCache) {
         this.tokenCache = tokenCache;
@@ -43,7 +41,6 @@ class Authenticator {
                     authenticationInfo.getAuthToken());
             }
             lock.unlock();
-            return;
         } else {
             authenticationInfo = getAuthInfo(false);
             if (authenticationInfo.isShouldAuthenticate()) {
@@ -79,13 +76,11 @@ class Authenticator {
         String[] parts = token.split("\\.");
         String base64 = parts[1];
 
-        switch (base64.length() % 4) {
-            case 2:
-                base64 += "==";
-                break;
-            case 3:
-                base64 += "=";
-                break;
+        int modulo = base64.length() % 4;
+        if (modulo == 2) {
+            base64 += "==";
+        } else if (modulo == 3) {
+            base64 += "=";
         }
 
         byte[] jsonBytes = Base64.getDecoder().decode(base64);

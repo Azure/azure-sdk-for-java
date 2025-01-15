@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyConfigurationsUpdate;
 import com.azure.resourcemanager.servicenetworking.models.TrafficControllerUpdate;
+import com.azure.resourcemanager.servicenetworking.models.TrafficControllerUpdateProperties;
+import com.azure.resourcemanager.servicenetworking.models.WafSecurityPolicyUpdate;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -14,17 +17,23 @@ public final class TrafficControllerUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficControllerUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"mgxsab\":\"lljfmppeeb\",\"jczdzevndh\":\"yqduujit\",\"feusnhut\":\"rwpdappdsbdkvwrw\",\"xhocdgeablgphuti\":\"eltmrldhugjzzdat\"}}")
+            "{\"tags\":{\"dgeablgphu\":\"atqxho\",\"xhurok\":\"icndvkaozwyifty\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\"},\"properties\":{\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"dhsgcba\"}}}}")
             .toObject(TrafficControllerUpdate.class);
-        Assertions.assertEquals("lljfmppeeb", model.tags().get("mgxsab"));
+        Assertions.assertEquals("atqxho", model.tags().get("dgeablgphu"));
+        Assertions.assertEquals("dhsgcba", model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficControllerUpdate model = new TrafficControllerUpdate().withTags(mapOf("mgxsab", "lljfmppeeb",
-            "jczdzevndh", "yqduujit", "feusnhut", "rwpdappdsbdkvwrw", "xhocdgeablgphuti", "eltmrldhugjzzdat"));
+        TrafficControllerUpdate model = new TrafficControllerUpdate()
+            .withTags(mapOf("dgeablgphu", "atqxho", "xhurok", "icndvkaozwyifty", "kjfkg", "tyxolniwpwc", "plwckbas",
+                "awxklr"))
+            .withProperties(new TrafficControllerUpdateProperties()
+                .withSecurityPolicyConfigurations(new SecurityPolicyConfigurationsUpdate()
+                    .withWafSecurityPolicy(new WafSecurityPolicyUpdate().withId("dhsgcba"))));
         model = BinaryData.fromObject(model).toObject(TrafficControllerUpdate.class);
-        Assertions.assertEquals("lljfmppeeb", model.tags().get("mgxsab"));
+        Assertions.assertEquals("atqxho", model.tags().get("dgeablgphu"));
+        Assertions.assertEquals("dhsgcba", model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
     }
 
     // Use "Map.of" if available

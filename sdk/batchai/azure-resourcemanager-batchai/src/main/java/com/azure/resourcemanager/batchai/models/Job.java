@@ -265,11 +265,13 @@ public interface Job {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Job definition stages. */
     interface DefinitionStages {
         /** The first stage of the Job definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Job definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -286,32 +288,21 @@ public interface Job {
              */
             WithCreate withExistingExperiment(String resourceGroupName, String workspaceName, String experimentName);
         }
+
         /**
          * The stage of the Job definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithSchedulingPriority,
-                DefinitionStages.WithCluster,
-                DefinitionStages.WithMountVolumes,
-                DefinitionStages.WithNodeCount,
-                DefinitionStages.WithContainerSettings,
-                DefinitionStages.WithCntkSettings,
-                DefinitionStages.WithPyTorchSettings,
-                DefinitionStages.WithTensorFlowSettings,
-                DefinitionStages.WithCaffeSettings,
-                DefinitionStages.WithCaffe2Settings,
-                DefinitionStages.WithChainerSettings,
-                DefinitionStages.WithCustomToolkitSettings,
-                DefinitionStages.WithCustomMpiSettings,
-                DefinitionStages.WithHorovodSettings,
-                DefinitionStages.WithJobPreparation,
-                DefinitionStages.WithStdOutErrPathPrefix,
-                DefinitionStages.WithInputDirectories,
-                DefinitionStages.WithOutputDirectories,
-                DefinitionStages.WithEnvironmentVariables,
-                DefinitionStages.WithSecrets,
-                DefinitionStages.WithConstraints {
+        interface WithCreate extends DefinitionStages.WithSchedulingPriority, DefinitionStages.WithCluster,
+            DefinitionStages.WithMountVolumes, DefinitionStages.WithNodeCount, DefinitionStages.WithContainerSettings,
+            DefinitionStages.WithCntkSettings, DefinitionStages.WithPyTorchSettings,
+            DefinitionStages.WithTensorFlowSettings, DefinitionStages.WithCaffeSettings,
+            DefinitionStages.WithCaffe2Settings, DefinitionStages.WithChainerSettings,
+            DefinitionStages.WithCustomToolkitSettings, DefinitionStages.WithCustomMpiSettings,
+            DefinitionStages.WithHorovodSettings, DefinitionStages.WithJobPreparation,
+            DefinitionStages.WithStdOutErrPathPrefix, DefinitionStages.WithInputDirectories,
+            DefinitionStages.WithOutputDirectories, DefinitionStages.WithEnvironmentVariables,
+            DefinitionStages.WithSecrets, DefinitionStages.WithConstraints {
             /**
              * Executes the create request.
              *
@@ -327,6 +318,7 @@ public interface Job {
              */
             Job create(Context context);
         }
+
         /** The stage of the Job definition allowing to specify schedulingPriority. */
         interface WithSchedulingPriority {
             /**
@@ -339,6 +331,7 @@ public interface Job {
              */
             WithCreate withSchedulingPriority(JobPriority schedulingPriority);
         }
+
         /** The stage of the Job definition allowing to specify cluster. */
         interface WithCluster {
             /**
@@ -349,6 +342,7 @@ public interface Job {
              */
             WithCreate withCluster(ResourceId cluster);
         }
+
         /** The stage of the Job definition allowing to specify mountVolumes. */
         interface WithMountVolumes {
             /**
@@ -363,6 +357,7 @@ public interface Job {
              */
             WithCreate withMountVolumes(MountVolumes mountVolumes);
         }
+
         /** The stage of the Job definition allowing to specify nodeCount. */
         interface WithNodeCount {
             /**
@@ -375,6 +370,7 @@ public interface Job {
              */
             WithCreate withNodeCount(Integer nodeCount);
         }
+
         /** The stage of the Job definition allowing to specify containerSettings. */
         interface WithContainerSettings {
             /**
@@ -387,6 +383,7 @@ public interface Job {
              */
             WithCreate withContainerSettings(ContainerSettings containerSettings);
         }
+
         /** The stage of the Job definition allowing to specify cntkSettings. */
         interface WithCntkSettings {
             /**
@@ -397,6 +394,7 @@ public interface Job {
              */
             WithCreate withCntkSettings(CntKsettings cntkSettings);
         }
+
         /** The stage of the Job definition allowing to specify pyTorchSettings. */
         interface WithPyTorchSettings {
             /**
@@ -407,6 +405,7 @@ public interface Job {
              */
             WithCreate withPyTorchSettings(PyTorchSettings pyTorchSettings);
         }
+
         /** The stage of the Job definition allowing to specify tensorFlowSettings. */
         interface WithTensorFlowSettings {
             /**
@@ -417,6 +416,7 @@ public interface Job {
              */
             WithCreate withTensorFlowSettings(TensorFlowSettings tensorFlowSettings);
         }
+
         /** The stage of the Job definition allowing to specify caffeSettings. */
         interface WithCaffeSettings {
             /**
@@ -427,6 +427,7 @@ public interface Job {
              */
             WithCreate withCaffeSettings(CaffeSettings caffeSettings);
         }
+
         /** The stage of the Job definition allowing to specify caffe2Settings. */
         interface WithCaffe2Settings {
             /**
@@ -437,6 +438,7 @@ public interface Job {
              */
             WithCreate withCaffe2Settings(Caffe2Settings caffe2Settings);
         }
+
         /** The stage of the Job definition allowing to specify chainerSettings. */
         interface WithChainerSettings {
             /**
@@ -447,6 +449,7 @@ public interface Job {
              */
             WithCreate withChainerSettings(ChainerSettings chainerSettings);
         }
+
         /** The stage of the Job definition allowing to specify customToolkitSettings. */
         interface WithCustomToolkitSettings {
             /**
@@ -457,6 +460,7 @@ public interface Job {
              */
             WithCreate withCustomToolkitSettings(CustomToolkitSettings customToolkitSettings);
         }
+
         /** The stage of the Job definition allowing to specify customMpiSettings. */
         interface WithCustomMpiSettings {
             /**
@@ -467,6 +471,7 @@ public interface Job {
              */
             WithCreate withCustomMpiSettings(CustomMpiSettings customMpiSettings);
         }
+
         /** The stage of the Job definition allowing to specify horovodSettings. */
         interface WithHorovodSettings {
             /**
@@ -477,6 +482,7 @@ public interface Job {
              */
             WithCreate withHorovodSettings(HorovodSettings horovodSettings);
         }
+
         /** The stage of the Job definition allowing to specify jobPreparation. */
         interface WithJobPreparation {
             /**
@@ -489,6 +495,7 @@ public interface Job {
              */
             WithCreate withJobPreparation(JobPreparation jobPreparation);
         }
+
         /** The stage of the Job definition allowing to specify stdOutErrPathPrefix. */
         interface WithStdOutErrPathPrefix {
             /**
@@ -501,6 +508,7 @@ public interface Job {
              */
             WithCreate withStdOutErrPathPrefix(String stdOutErrPathPrefix);
         }
+
         /** The stage of the Job definition allowing to specify inputDirectories. */
         interface WithInputDirectories {
             /**
@@ -511,6 +519,7 @@ public interface Job {
              */
             WithCreate withInputDirectories(List<InputDirectory> inputDirectories);
         }
+
         /** The stage of the Job definition allowing to specify outputDirectories. */
         interface WithOutputDirectories {
             /**
@@ -521,6 +530,7 @@ public interface Job {
              */
             WithCreate withOutputDirectories(List<OutputDirectory> outputDirectories);
         }
+
         /** The stage of the Job definition allowing to specify environmentVariables. */
         interface WithEnvironmentVariables {
             /**
@@ -532,6 +542,7 @@ public interface Job {
              */
             WithCreate withEnvironmentVariables(List<EnvironmentVariable> environmentVariables);
         }
+
         /** The stage of the Job definition allowing to specify secrets. */
         interface WithSecrets {
             /**
@@ -544,6 +555,7 @@ public interface Job {
              */
             WithCreate withSecrets(List<EnvironmentVariableWithSecretValue> secrets);
         }
+
         /** The stage of the Job definition allowing to specify constraints. */
         interface WithConstraints {
             /**
@@ -555,6 +567,7 @@ public interface Job {
             WithCreate withConstraints(JobBasePropertiesConstraints constraints);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

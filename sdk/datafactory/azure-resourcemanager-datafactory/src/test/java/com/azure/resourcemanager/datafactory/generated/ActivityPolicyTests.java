@@ -14,24 +14,24 @@ public final class ActivityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivityPolicy model = BinaryData.fromString(
-            "{\"timeout\":\"datazypmmyr\",\"retry\":\"datasdouzohihqlwy\",\"retryIntervalInSeconds\":1734763224,\"secureInput\":false,\"secureOutput\":true,\"\":{\"qztakov\":\"datamczcxouaneuep\",\"sdsnuqqg\":\"datalvwpvdmtfcstucmi\",\"ka\":\"dataqitiut\"}}")
+            "{\"timeout\":\"datamlsuuhwuox\",\"retry\":\"datai\",\"retryIntervalInSeconds\":1056891956,\"secureInput\":true,\"secureOutput\":true,\"\":{\"xxcruleimswxoi\":\"datagzjrkslqbafdb\",\"pgzetuvfps\":\"datanqumj\",\"ks\":\"datajpmeptnqsnpa\"}}")
             .toObject(ActivityPolicy.class);
-        Assertions.assertEquals(1734763224, model.retryIntervalInSeconds());
-        Assertions.assertEquals(false, model.secureInput());
+        Assertions.assertEquals(1056891956, model.retryIntervalInSeconds());
+        Assertions.assertEquals(true, model.secureInput());
         Assertions.assertEquals(true, model.secureOutput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivityPolicy model = new ActivityPolicy().withTimeout("datazypmmyr")
-            .withRetry("datasdouzohihqlwy")
-            .withRetryIntervalInSeconds(1734763224)
-            .withSecureInput(false)
+        ActivityPolicy model = new ActivityPolicy().withTimeout("datamlsuuhwuox")
+            .withRetry("datai")
+            .withRetryIntervalInSeconds(1056891956)
+            .withSecureInput(true)
             .withSecureOutput(true)
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityPolicy.class);
-        Assertions.assertEquals(1734763224, model.retryIntervalInSeconds());
-        Assertions.assertEquals(false, model.secureInput());
+        Assertions.assertEquals(1056891956, model.retryIntervalInSeconds());
+        Assertions.assertEquals(true, model.secureInput());
         Assertions.assertEquals(true, model.secureOutput());
     }
 

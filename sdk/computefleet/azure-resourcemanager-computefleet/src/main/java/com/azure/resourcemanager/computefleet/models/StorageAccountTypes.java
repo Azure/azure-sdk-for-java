@@ -22,37 +22,37 @@ import java.util.Collection;
  */
 public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccountTypes> {
     /**
-     * Static value Standard_LRS for StorageAccountTypes.
+     * Standard_LRS option.
      */
     public static final StorageAccountTypes STANDARD_LRS = fromString("Standard_LRS");
 
     /**
-     * Static value Premium_LRS for StorageAccountTypes.
+     * Premium_LRS option.
      */
     public static final StorageAccountTypes PREMIUM_LRS = fromString("Premium_LRS");
 
     /**
-     * Static value StandardSSD_LRS for StorageAccountTypes.
+     * StandardSSD_LRS option.
      */
     public static final StorageAccountTypes STANDARD_SSD_LRS = fromString("StandardSSD_LRS");
 
     /**
-     * Static value UltraSSD_LRS for StorageAccountTypes.
+     * UltraSSD_LRS option.
      */
     public static final StorageAccountTypes ULTRA_SSD_LRS = fromString("UltraSSD_LRS");
 
     /**
-     * Static value Premium_ZRS for StorageAccountTypes.
+     * Premium_ZRS option.
      */
     public static final StorageAccountTypes PREMIUM_ZRS = fromString("Premium_ZRS");
 
     /**
-     * Static value StandardSSD_ZRS for StorageAccountTypes.
+     * StandardSSD_ZRS option.
      */
     public static final StorageAccountTypes STANDARD_SSD_ZRS = fromString("StandardSSD_ZRS");
 
     /**
-     * Static value PremiumV2_LRS for StorageAccountTypes.
+     * PremiumV2_LRS option.
      */
     public static final StorageAccountTypes PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
 

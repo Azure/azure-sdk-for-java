@@ -93,13 +93,10 @@ import java.util.Objects;
  * @see DocumentAnalysisAsyncClient
  * @see DocumentAnalysisClient
  */
-@ServiceClientBuilder(serviceClients = {DocumentAnalysisAsyncClient.class, DocumentAnalysisClient.class})
-public final class DocumentAnalysisClientBuilder implements
-    AzureKeyCredentialTrait<DocumentAnalysisClientBuilder>,
-    ConfigurationTrait<DocumentAnalysisClientBuilder>,
-    EndpointTrait<DocumentAnalysisClientBuilder>,
-    HttpTrait<DocumentAnalysisClientBuilder>,
-    TokenCredentialTrait<DocumentAnalysisClientBuilder> {
+@ServiceClientBuilder(serviceClients = { DocumentAnalysisAsyncClient.class, DocumentAnalysisClient.class })
+public final class DocumentAnalysisClientBuilder implements AzureKeyCredentialTrait<DocumentAnalysisClientBuilder>,
+    ConfigurationTrait<DocumentAnalysisClientBuilder>, EndpointTrait<DocumentAnalysisClientBuilder>,
+    HttpTrait<DocumentAnalysisClientBuilder>, TokenCredentialTrait<DocumentAnalysisClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisClientBuilder.class);
 
     /**
@@ -149,17 +146,17 @@ public final class DocumentAnalysisClientBuilder implements
             audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
         }
         // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Service Version
-        final DocumentAnalysisServiceVersion serviceVersion =
-            version != null ? version : DocumentAnalysisServiceVersion.getLatest();
+        final DocumentAnalysisServiceVersion serviceVersion
+            = version != null ? version : DocumentAnalysisServiceVersion.getLatest();
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        return new DocumentAnalysisClient(new FormRecognizerClientImpl(pipeline, endpoint,
-            serviceVersion.getVersion()));
+        return new DocumentAnalysisClient(
+            new FormRecognizerClientImpl(pipeline, endpoint, serviceVersion.getVersion()));
     }
 
     /**
@@ -188,34 +185,25 @@ public final class DocumentAnalysisClientBuilder implements
             audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
         }
         // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Service Version
-        final DocumentAnalysisServiceVersion serviceVersion =
-            version != null ? version : DocumentAnalysisServiceVersion.getLatest();
+        final DocumentAnalysisServiceVersion serviceVersion
+            = version != null ? version : DocumentAnalysisServiceVersion.getLatest();
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        return new DocumentAnalysisAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
-            serviceVersion.getVersion()), serviceVersion);
+        return new DocumentAnalysisAsyncClient(
+            new FormRecognizerClientImpl(pipeline, endpoint, serviceVersion.getVersion()), serviceVersion);
     }
 
     private HttpPipeline getHttpPipeline(Configuration buildConfiguration) {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(
-                clientOptions,
-                httpLogOptions,
-                buildConfiguration,
-                retryPolicy,
-                retryOptions,
-                azureKeyCredential,
-                tokenCredential,
-                audience,
-                perCallPolicies,
-                perRetryPolicies,
+            pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration, retryPolicy,
+                retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies,
                 httpClient);
         }
         return pipeline;

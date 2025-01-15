@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LabPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabProperties model =
-            BinaryData
-                .fromString(
-                    "{\"defaultStorageAccount\":\"i\",\"defaultPremiumStorageAccount\":\"thz\",\"artifactsStorageAccount\":\"qdrabhjybigehoqf\",\"premiumDataDiskStorageAccount\":\"wska\",\"vaultName\":\"ktzlcuiywg\",\"labStorageType\":\"Standard\",\"mandatoryArtifactsResourceIdsLinux\":[\"drvyn\",\"zgpphrcgyncocpe\",\"fvm\"],\"mandatoryArtifactsResourceIdsWindows\":[\"ofsx\"],\"createdDate\":\"2021-10-25T19:09:19Z\",\"premiumDataDisks\":\"Enabled\",\"environmentPermission\":\"Reader\",\"announcement\":{\"title\":\"qabcypm\",\"markdown\":\"kwlzuvccfwnfn\",\"enabled\":\"Enabled\",\"expirationDate\":\"2021-02-24T21:18:31Z\",\"expired\":true,\"provisioningState\":\"ebxetqgtzxdp\",\"uniqueIdentifier\":\"bqqwxrj\"},\"support\":{\"enabled\":\"Enabled\",\"markdown\":\"nwsubisnj\"},\"vmCreationResourceGroup\":\"pmng\",\"publicIpId\":\"scxaq\",\"loadBalancerId\":\"ochcbonqvpkvl\",\"networkSecurityGroupId\":\"njeaseipheofloke\",\"extendedProperties\":{\"jp\":\"enjbdlwtgrhp\",\"e\":\"umasxazjpq\",\"zvdudgwdslfhotwm\":\"ualhbxxhejj\"},\"provisioningState\":\"npwlbjnpg\",\"uniqueIdentifier\":\"ftadehxnltyfs\"}")
-                .toObject(LabProperties.class);
+        LabProperties model = BinaryData.fromString(
+            "{\"defaultStorageAccount\":\"i\",\"defaultPremiumStorageAccount\":\"thz\",\"artifactsStorageAccount\":\"qdrabhjybigehoqf\",\"premiumDataDiskStorageAccount\":\"wska\",\"vaultName\":\"ktzlcuiywg\",\"labStorageType\":\"Standard\",\"mandatoryArtifactsResourceIdsLinux\":[\"drvyn\",\"zgpphrcgyncocpe\",\"fvm\"],\"mandatoryArtifactsResourceIdsWindows\":[\"ofsx\"],\"createdDate\":\"2021-10-25T19:09:19Z\",\"premiumDataDisks\":\"Enabled\",\"environmentPermission\":\"Reader\",\"announcement\":{\"title\":\"qabcypm\",\"markdown\":\"kwlzuvccfwnfn\",\"enabled\":\"Enabled\",\"expirationDate\":\"2021-02-24T21:18:31Z\",\"expired\":true,\"provisioningState\":\"ebxetqgtzxdp\",\"uniqueIdentifier\":\"bqqwxrj\"},\"support\":{\"enabled\":\"Enabled\",\"markdown\":\"nwsubisnj\"},\"vmCreationResourceGroup\":\"pmng\",\"publicIpId\":\"scxaq\",\"loadBalancerId\":\"ochcbonqvpkvl\",\"networkSecurityGroupId\":\"njeaseipheofloke\",\"extendedProperties\":{\"jp\":\"enjbdlwtgrhp\",\"e\":\"umasxazjpq\",\"zvdudgwdslfhotwm\":\"ualhbxxhejj\"},\"provisioningState\":\"npwlbjnpg\",\"uniqueIdentifier\":\"ftadehxnltyfs\"}")
+            .toObject(LabProperties.class);
         Assertions.assertEquals(StorageType.STANDARD, model.labStorageType());
         Assertions.assertEquals("drvyn", model.mandatoryArtifactsResourceIdsLinux().get(0));
         Assertions.assertEquals("ofsx", model.mandatoryArtifactsResourceIdsWindows().get(0));
@@ -43,23 +41,18 @@ public final class LabPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabProperties model =
-            new LabProperties()
-                .withLabStorageType(StorageType.STANDARD)
-                .withMandatoryArtifactsResourceIdsLinux(Arrays.asList("drvyn", "zgpphrcgyncocpe", "fvm"))
-                .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("ofsx"))
-                .withPremiumDataDisks(PremiumDataDisk.ENABLED)
-                .withEnvironmentPermission(EnvironmentPermission.READER)
-                .withAnnouncement(
-                    new LabAnnouncementProperties()
-                        .withTitle("qabcypm")
-                        .withMarkdown("kwlzuvccfwnfn")
-                        .withEnabled(EnableStatus.ENABLED)
-                        .withExpirationDate(OffsetDateTime.parse("2021-02-24T21:18:31Z"))
-                        .withExpired(true))
-                .withSupport(new LabSupportProperties().withEnabled(EnableStatus.ENABLED).withMarkdown("nwsubisnj"))
-                .withExtendedProperties(
-                    mapOf("jp", "enjbdlwtgrhp", "e", "umasxazjpq", "zvdudgwdslfhotwm", "ualhbxxhejj"));
+        LabProperties model = new LabProperties().withLabStorageType(StorageType.STANDARD)
+            .withMandatoryArtifactsResourceIdsLinux(Arrays.asList("drvyn", "zgpphrcgyncocpe", "fvm"))
+            .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("ofsx"))
+            .withPremiumDataDisks(PremiumDataDisk.ENABLED)
+            .withEnvironmentPermission(EnvironmentPermission.READER)
+            .withAnnouncement(new LabAnnouncementProperties().withTitle("qabcypm")
+                .withMarkdown("kwlzuvccfwnfn")
+                .withEnabled(EnableStatus.ENABLED)
+                .withExpirationDate(OffsetDateTime.parse("2021-02-24T21:18:31Z"))
+                .withExpired(true))
+            .withSupport(new LabSupportProperties().withEnabled(EnableStatus.ENABLED).withMarkdown("nwsubisnj"))
+            .withExtendedProperties(mapOf("jp", "enjbdlwtgrhp", "e", "umasxazjpq", "zvdudgwdslfhotwm", "ualhbxxhejj"));
         model = BinaryData.fromObject(model).toObject(LabProperties.class);
         Assertions.assertEquals(StorageType.STANDARD, model.labStorageType());
         Assertions.assertEquals("drvyn", model.mandatoryArtifactsResourceIdsLinux().get(0));

@@ -42,22 +42,22 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
     /**
      * The service client containing this operation class.
      */
-    private final DevOpsInfrastructureClientImpl client;
+    private final DevOpsInfrastructureManagementClientImpl client;
 
     /**
      * Initializes an instance of SubscriptionUsagesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SubscriptionUsagesClientImpl(DevOpsInfrastructureClientImpl client) {
+    SubscriptionUsagesClientImpl(DevOpsInfrastructureManagementClientImpl client) {
         this.service = RestProxy.create(SubscriptionUsagesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevOpsInfrastructureClientSubscriptionUsages to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for DevOpsInfrastructureManagementClientSubscriptionUsages to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "DevOpsInfrastructure")
@@ -68,20 +68,20 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PagedQuota>> usages(@HostParam("endpoint") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PagedQuota>> usagesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Quota resources by subscription ID.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -113,7 +113,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
     /**
      * List Quota resources by subscription ID.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -146,7 +146,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
     /**
      * List Quota resources by subscription ID.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -160,7 +160,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
     /**
      * List Quota resources by subscription ID.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -176,7 +176,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
     /**
      * List Quota resources by subscription ID.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -190,7 +190,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
     /**
      * List Quota resources by subscription ID.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

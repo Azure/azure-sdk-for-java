@@ -70,20 +70,16 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
      */
     public Mono<Void> sendRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, options.getUrl());
-        return httpPipeline
-            .send(request)
-            .flatMapMany(HttpResponse::getBody)
-            .map(b -> {
-                int readCount = 0;
-                int remaining = b.remaining();
-                while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
-                    b.get(buffer, 0, expectedReadCount);
-                    readCount += expectedReadCount;
-                }
+        return httpPipeline.send(request).flatMapMany(HttpResponse::getBody).map(b -> {
+            int readCount = 0;
+            int remaining = b.remaining();
+            while (readCount < remaining) {
+                int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
+                b.get(buffer, 0, expectedReadCount);
+                readCount += expectedReadCount;
+            }
 
-                return 1;
-            })
-            .then();
+            return 1;
+        }).then();
     }
 }

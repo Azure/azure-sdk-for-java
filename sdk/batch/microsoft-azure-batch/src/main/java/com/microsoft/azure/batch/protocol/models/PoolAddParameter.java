@@ -38,14 +38,8 @@ public class PoolAddParameter {
     /**
      * The size of virtual machines in the Pool. All virtual machines in a Pool
      * are the same size.
-     * For information about available sizes of virtual machines for Cloud
-     * Services Pools (pools created with cloudServiceConfiguration), see Sizes
-     * for Cloud Services
-     * (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
-     * Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and
-     * A2V2. For information about available VM sizes for Pools using Images
-     * from the Virtual Machines Marketplace (pools created with
-     * virtualMachineConfiguration) see Sizes for Virtual Machines (Linux)
+     * For information about available VM sizes, see Sizes for Virtual Machines
+     * (Linux)
      * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/)
      * or Sizes for Virtual Machines (Windows)
      * (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/).
@@ -56,19 +50,8 @@ public class PoolAddParameter {
     private String vmSize;
 
     /**
-     * The cloud service configuration for the Pool.
-     * This property and virtualMachineConfiguration are mutually exclusive and
-     * one of the properties must be specified. This property cannot be
-     * specified if the Batch Account was created with its poolAllocationMode
-     * property set to 'UserSubscription'.
-     */
-    @JsonProperty(value = "cloudServiceConfiguration")
-    private CloudServiceConfiguration cloudServiceConfiguration;
-
-    /**
      * The virtual machine configuration for the Pool.
-     * This property and cloudServiceConfiguration are mutually exclusive and
-     * one of the properties must be specified.
+     * This property must be specified.
      */
     @JsonProperty(value = "virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
@@ -195,16 +178,6 @@ public class PoolAddParameter {
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
-     * The list of application licenses the Batch service will make available
-     * on each Compute Node in the Pool.
-     * The list of application licenses must be a subset of available Batch
-     * service application licenses. If a license is requested which is not
-     * supported, Pool creation will fail.
-     */
-    @JsonProperty(value = "applicationLicenses")
-    private List<String> applicationLicenses;
-
-    /**
      * The number of task slots that can be used to run concurrent tasks on a
      * single compute node in the pool.
      * The default value is 1. The maximum value is the smaller of 4 times the
@@ -311,7 +284,7 @@ public class PoolAddParameter {
     }
 
     /**
-     * Get for information about available sizes of virtual machines for Cloud Services Pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and A2V2. For information about available VM sizes for Pools using Images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
+     * Get for information about available VM sizes, see Sizes for Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @return the vmSize value
      */
@@ -320,7 +293,7 @@ public class PoolAddParameter {
     }
 
     /**
-     * Set for information about available sizes of virtual machines for Cloud Services Pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and A2V2. For information about available VM sizes for Pools using Images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
+     * Set for information about available VM sizes, see Sizes for Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @param vmSize the vmSize value to set
      * @return the PoolAddParameter object itself.
@@ -331,27 +304,7 @@ public class PoolAddParameter {
     }
 
     /**
-     * Get this property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property cannot be specified if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @return the cloudServiceConfiguration value
-     */
-    public CloudServiceConfiguration cloudServiceConfiguration() {
-        return this.cloudServiceConfiguration;
-    }
-
-    /**
-     * Set this property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property cannot be specified if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @param cloudServiceConfiguration the cloudServiceConfiguration value to set
-     * @return the PoolAddParameter object itself.
-     */
-    public PoolAddParameter withCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
-        this.cloudServiceConfiguration = cloudServiceConfiguration;
-        return this;
-    }
-
-    /**
-     * Get this property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
+     * Get this property must be specified.
      *
      * @return the virtualMachineConfiguration value
      */
@@ -360,7 +313,7 @@ public class PoolAddParameter {
     }
 
     /**
-     * Set this property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
+     * Set this property must be specified.
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set
      * @return the PoolAddParameter object itself.
@@ -589,26 +542,6 @@ public class PoolAddParameter {
      */
     public PoolAddParameter withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
-        return this;
-    }
-
-    /**
-     * Get the list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail.
-     *
-     * @return the applicationLicenses value
-     */
-    public List<String> applicationLicenses() {
-        return this.applicationLicenses;
-    }
-
-    /**
-     * Set the list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail.
-     *
-     * @param applicationLicenses the applicationLicenses value to set
-     * @return the PoolAddParameter object itself.
-     */
-    public PoolAddParameter withApplicationLicenses(List<String> applicationLicenses) {
-        this.applicationLicenses = applicationLicenses;
         return this;
     }
 

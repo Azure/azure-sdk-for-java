@@ -17,28 +17,25 @@ public final class ParquetSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParquetSink model = BinaryData.fromString(
-            "{\"type\":\"ParquetSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datapzdpujywjmo\",\"disableMetricsCollection\":\"datazzkplqmcam\",\"copyBehavior\":\"dataia\",\"metadata\":[{\"name\":\"datangtjgfp\",\"value\":\"datawugfwp\"},{\"name\":\"datacewbqaibkyeysf\",\"value\":\"datahdydyybztlylh\"},{\"name\":\"datacjq\",\"value\":\"datacie\"},{\"name\":\"datak\",\"value\":\"dataxf\"}],\"\":{\"zieyx\":\"datavecjhbttmhneqd\",\"akkn\":\"dataidabq\",\"fcryqrrs\":\"dataacseqonlj\",\"eydmeuimlhyze\":\"dataqtd\"}},\"formatSettings\":{\"type\":\"ParquetWriteSettings\",\"maxRowsPerFile\":\"datavkzrvy\",\"fileNamePrefix\":\"datalqgyu\",\"\":{\"prrqcaglytxj\":\"dataelyjduzapnopoto\",\"rcehfwcecleaqa\":\"databdpczmzu\",\"fccnwmdpb\":\"dataiqskylwpqrc\"}},\"writeBatchSize\":\"datatknhfxpve\",\"writeBatchTimeout\":\"datauckrzwraqaptqy\",\"sinkRetryCount\":\"datalyu\",\"sinkRetryWait\":\"datapwwnqoub\",\"maxConcurrentConnections\":\"datassvfzjj\",\"disableMetricsCollection\":\"datacxeosylgjpp\",\"\":{\"mckzeaia\":\"datajbqrfwnpwvpnbgyx\",\"qpzqivfgemvuicxw\":\"datacauvlfsct\",\"jatj\":\"datayrydlvfnucgwfl\",\"dyfjsskvzv\":\"datandbrcdumkqhatcko\"}}")
+            "{\"type\":\"ParquetSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datadzh\",\"disableMetricsCollection\":\"datappqcgbp\",\"copyBehavior\":\"datani\",\"metadata\":[{\"name\":\"datalxuptbtl\",\"value\":\"datarjbakpasuugc\"}],\"\":{\"aimkoyrppsnljd\":\"dataulvdenhgu\",\"xbjqiabitevv\":\"datawkbozlmrhnghvlvd\"}},\"formatSettings\":{\"type\":\"ParquetWriteSettings\",\"maxRowsPerFile\":\"dataypyljz\",\"fileNamePrefix\":\"datakdfyvgcftaqydcr\",\"\":{\"azmrejzpxoqegerx\":\"datamneykxewem\",\"rt\":\"datalfnuglmyr\",\"zwgrs\":\"datakpo\",\"jzq\":\"dataitlmcaehjhwkl\"}},\"writeBatchSize\":\"dataypanwejbngojna\",\"writeBatchTimeout\":\"datawytkwtf\",\"sinkRetryCount\":\"dataafks\",\"sinkRetryWait\":\"datamfhruhw\",\"maxConcurrentConnections\":\"datanrdf\",\"disableMetricsCollection\":\"databhrvonea\",\"\":{\"to\":\"datamjigypbdfrtasaur\",\"ynn\":\"datalxojijttsyr\"}}")
             .toObject(ParquetSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParquetSink model = new ParquetSink().withWriteBatchSize("datatknhfxpve")
-            .withWriteBatchTimeout("datauckrzwraqaptqy")
-            .withSinkRetryCount("datalyu")
-            .withSinkRetryWait("datapwwnqoub")
-            .withMaxConcurrentConnections("datassvfzjj")
-            .withDisableMetricsCollection("datacxeosylgjpp")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datapzdpujywjmo")
-                .withDisableMetricsCollection("datazzkplqmcam")
-                .withCopyBehavior("dataia")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("datangtjgfp").withValue("datawugfwp"),
-                    new MetadataItem().withName("datacewbqaibkyeysf").withValue("datahdydyybztlylh"),
-                    new MetadataItem().withName("datacjq").withValue("datacie"),
-                    new MetadataItem().withName("datak").withValue("dataxf")))
+        ParquetSink model = new ParquetSink().withWriteBatchSize("dataypanwejbngojna")
+            .withWriteBatchTimeout("datawytkwtf")
+            .withSinkRetryCount("dataafks")
+            .withSinkRetryWait("datamfhruhw")
+            .withMaxConcurrentConnections("datanrdf")
+            .withDisableMetricsCollection("databhrvonea")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datadzh")
+                .withDisableMetricsCollection("datappqcgbp")
+                .withCopyBehavior("datani")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("datalxuptbtl").withValue("datarjbakpasuugc")))
                 .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
             .withFormatSettings(
-                new ParquetWriteSettings().withMaxRowsPerFile("datavkzrvy").withFileNamePrefix("datalqgyu"));
+                new ParquetWriteSettings().withMaxRowsPerFile("dataypyljz").withFileNamePrefix("datakdfyvgcftaqydcr"));
         model = BinaryData.fromObject(model).toObject(ParquetSink.class);
     }
 

@@ -12,26 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class WaitStatisticsInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WaitStatisticsInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"observationStartTime\":\"2021-07-28T14:37:17Z\",\"observationEndTime\":\"2021-05-07T17:14:51Z\",\"aggregationWindow\":\"bmehh\"}}")
-                .toObject(WaitStatisticsInput.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T14:37:17Z"), model.observationStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T17:14:51Z"), model.observationEndTime());
-        Assertions.assertEquals("bmehh", model.aggregationWindow());
+        WaitStatisticsInput model = BinaryData.fromString(
+            "{\"properties\":{\"observationStartTime\":\"2021-10-17T10:57:44Z\",\"observationEndTime\":\"2021-08-06T06:20:20Z\",\"aggregationWindow\":\"obglaocqxtcc\"}}")
+            .toObject(WaitStatisticsInput.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T10:57:44Z"), model.observationStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-06T06:20:20Z"), model.observationEndTime());
+        Assertions.assertEquals("obglaocqxtcc", model.aggregationWindow());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WaitStatisticsInput model =
-            new WaitStatisticsInput()
-                .withObservationStartTime(OffsetDateTime.parse("2021-07-28T14:37:17Z"))
-                .withObservationEndTime(OffsetDateTime.parse("2021-05-07T17:14:51Z"))
-                .withAggregationWindow("bmehh");
+        WaitStatisticsInput model
+            = new WaitStatisticsInput().withObservationStartTime(OffsetDateTime.parse("2021-10-17T10:57:44Z"))
+                .withObservationEndTime(OffsetDateTime.parse("2021-08-06T06:20:20Z"))
+                .withAggregationWindow("obglaocqxtcc");
         model = BinaryData.fromObject(model).toObject(WaitStatisticsInput.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T14:37:17Z"), model.observationStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-07T17:14:51Z"), model.observationEndTime());
-        Assertions.assertEquals("bmehh", model.aggregationWindow());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T10:57:44Z"), model.observationStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-06T06:20:20Z"), model.observationEndTime());
+        Assertions.assertEquals("obglaocqxtcc", model.aggregationWindow());
     }
 }

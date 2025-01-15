@@ -79,8 +79,8 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithValidApiKeyCredential(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithValidApiKeyCredentialRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
+        clientBuilderWithValidApiKeyCredentialRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
     }
 
     /**
@@ -90,8 +90,9 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithInvalidApiKeyCredential(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithInvalidApiKeyCredentialRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertThrows(HttpResponseException.class, () -> clientBuilder.buildClient().detectLanguage(input)));
+        clientBuilderWithInvalidApiKeyCredentialRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> assertThrows(HttpResponseException.class,
+                () -> clientBuilder.buildClient().detectLanguage(input)));
     }
 
     /**
@@ -99,10 +100,10 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void clientBuilderWithRotateToInvalidKey(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithRotateToInvalidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertThrows(HttpResponseException.class, () -> clientBuilder.buildClient().detectLanguage(input)));
+    public void clientBuilderWithRotateToInvalidKey(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        clientBuilderWithRotateToInvalidKeyRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> assertThrows(HttpResponseException.class,
+                () -> clientBuilder.buildClient().detectLanguage(input)));
     }
 
     /**
@@ -110,10 +111,9 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void clientBuilderWithRotateToValidKey(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithRotateToValidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
+    public void clientBuilderWithRotateToValidKey(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        clientBuilderWithRotateToValidKeyRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
     }
 
     /**
@@ -121,10 +121,9 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void clientBuilderWithNullServiceVersion(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
+    public void clientBuilderWithNullServiceVersion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
     }
 
     /**
@@ -133,8 +132,8 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
     }
 
     /**
@@ -143,8 +142,8 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithDefaultCountryHintRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
+        clientBuilderWithDefaultCountryHintRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input)));
     }
 
     /**
@@ -153,8 +152,8 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithDefaultCountryHintRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input, "MX")));
+        clientBuilderWithDefaultCountryHintRunner(httpClient, serviceVersion, clientBuilder -> (
+            input) -> validatePrimaryLanguage(clientBuilder.buildClient().detectLanguage(input, "MX")));
     }
 
     /**
@@ -166,8 +165,10 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         clientBuilderWithDefaultCountryHintForBatchOperationRunner(httpClient, serviceVersion,
             clientBuilder -> (input) -> {
-                final List<DetectLanguageResult> result =
-                    clientBuilder.buildClient().detectLanguageBatch(input, "MX", null).stream().collect(Collectors.toList());
+                final List<DetectLanguageResult> result = clientBuilder.buildClient()
+                    .detectLanguageBatch(input, "MX", null)
+                    .stream()
+                    .collect(Collectors.toList());
                 for (DetectLanguageResult detectLanguageResult : result) {
                     validatePrimaryLanguage(detectLanguageResult.getPrimaryLanguage());
                 }
@@ -181,14 +182,15 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewCountryHintForBatchOperation(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithNewCountryHintForBatchOperationRunner(httpClient, serviceVersion,
-            clientBuilder -> (input) -> {
-                final List<DetectLanguageResult> result = clientBuilder.buildClient().detectLanguageBatch(
-                        input, "US", null).stream().collect(Collectors.toList());
-                for (DetectLanguageResult detectLanguageResult : result) {
-                    validatePrimaryLanguage(detectLanguageResult.getPrimaryLanguage());
-                }
-            });
+        clientBuilderWithNewCountryHintForBatchOperationRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
+            final List<DetectLanguageResult> result = clientBuilder.buildClient()
+                .detectLanguageBatch(input, "US", null)
+                .stream()
+                .collect(Collectors.toList());
+            for (DetectLanguageResult detectLanguageResult : result) {
+                validatePrimaryLanguage(detectLanguageResult.getPrimaryLanguage());
+            }
+        });
     }
 
     /**
@@ -198,8 +200,8 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         clientBuilderWithDefaultLanguageRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            validateKeyPhrases(clientBuilder.buildClient().extractKeyPhrases(input)
-                    .stream().collect(Collectors.toList()));
+            validateKeyPhrases(
+                clientBuilder.buildClient().extractKeyPhrases(input).stream().collect(Collectors.toList()));
         });
     }
 
@@ -212,9 +214,10 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         clientBuilderWithDefaultLanguageForBatchOperationRunner(httpClient, serviceVersion,
             clientBuilder -> (input) -> {
-                final List<ExtractKeyPhraseResult> result =
-                    clientBuilder.buildClient().extractKeyPhrasesBatch(input, "FR", null)
-                        .stream().collect(Collectors.toList());
+                final List<ExtractKeyPhraseResult> result = clientBuilder.buildClient()
+                    .extractKeyPhrasesBatch(input, "FR", null)
+                    .stream()
+                    .collect(Collectors.toList());
                 for (ExtractKeyPhraseResult extractKeyPhraseResult : result) {
                     validateKeyPhrases(extractKeyPhraseResult.getKeyPhrases().stream().collect(Collectors.toList()));
                 }
@@ -228,71 +231,66 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewLanguageForBatchOperation(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithDefaultLanguageForBatchOperationRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            final List<ExtractKeyPhraseResult> result =
-                clientBuilder.buildClient().extractKeyPhrasesBatch(input, "EN", null).stream()
+        clientBuilderWithDefaultLanguageForBatchOperationRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> {
+                final List<ExtractKeyPhraseResult> result = clientBuilder.buildClient()
+                    .extractKeyPhrasesBatch(input, "EN", null)
+                    .stream()
                     .collect(Collectors.toList());
-            for (ExtractKeyPhraseResult extractKeyPhraseResult : result) {
-                validateKeyPhrases(extractKeyPhraseResult.getKeyPhrases().stream().collect(Collectors.toList()));
-            }
-        });
+                for (ExtractKeyPhraseResult extractKeyPhraseResult : result) {
+                    validateKeyPhrases(extractKeyPhraseResult.getKeyPhrases().stream().collect(Collectors.toList()));
+                }
+            });
     }
 
     @Test
     @DoNotRecord
     public void applicationIdFallsBackToLogOptions() {
-        TextAnalyticsClient textAnalyticsClient =
-            new TextAnalyticsClientBuilder()
-                .endpoint(getEndpoint(false))
-                .credential(new AzureKeyCredential(getApiKey(false)))
-                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                .httpClient(httpRequest -> {
-                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
+        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder().endpoint(getEndpoint(false))
+            .credential(new AzureKeyCredential(getApiKey(false)))
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
         assertThrows(HttpResponseException.class, () -> textAnalyticsClient.detectLanguage("hello world"));
     }
 
     @Test
     @DoNotRecord
     public void clientOptionsIsPreferredOverLogOptions() {
-        TextAnalyticsClient textAnalyticsClient =
-            new TextAnalyticsClientBuilder()
-                .endpoint(getEndpoint(false))
-                .credential(new AzureKeyCredential(getApiKey(false)))
-                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-                .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
-                .httpClient(httpRequest -> {
-                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
+        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder().endpoint(getEndpoint(false))
+            .credential(new AzureKeyCredential(getApiKey(false)))
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
         assertThrows(HttpResponseException.class, () -> textAnalyticsClient.detectLanguage("hello world"));
     }
 
     @Test
     @DoNotRecord
     public void clientOptionHeadersAreAddedLast() {
-        TextAnalyticsClient textAnalyticsClient =
-            new TextAnalyticsClientBuilder()
-                .endpoint(getEndpoint(false))
-                .credential(new AzureKeyCredential(getApiKey(false)))
-                .clientOptions(new ClientOptions()
-                    .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                .httpClient(httpRequest -> {
-                    assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
+        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder().endpoint(getEndpoint(false))
+            .credential(new AzureKeyCredential(getApiKey(false)))
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
         assertThrows(HttpResponseException.class, () -> textAnalyticsClient.detectLanguage("hello world"));
     }
 
     // Client builder runner
-    void clientBuilderWithValidApiKeyCredentialRunner(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion,
+    void clientBuilderWithValidApiKeyCredentialRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
         final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
             getEndpoint(false), new AzureKeyCredential(getApiKey(false)));
@@ -300,18 +298,17 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     }
 
     void clientBuilderWithInvalidApiKeyCredentialRunner(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion,
-        Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
-        final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
-            getEndpoint(false), new AzureKeyCredential(INVALID_KEY));
+        TextAnalyticsServiceVersion serviceVersion, Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
+        final TextAnalyticsClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(false), new AzureKeyCredential(INVALID_KEY));
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0));
     }
 
     void clientBuilderWithRotateToInvalidKeyRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
         final AzureKeyCredential credential = new AzureKeyCredential(getApiKey(false));
-        final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
-            getEndpoint(false), credential);
+        final TextAnalyticsClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(false), credential);
         // Update to invalid key
         credential.update(INVALID_KEY);
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0));
@@ -320,8 +317,8 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     void clientBuilderWithRotateToValidKeyRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
         final AzureKeyCredential credential = new AzureKeyCredential(INVALID_KEY);
-        final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
-            getEndpoint(false), credential);
+        final TextAnalyticsClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(false), credential);
         // Update to valid key
         credential.update(getApiKey(false));
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0));
@@ -329,28 +326,25 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
 
     void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
-        final TextAnalyticsClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
-                new AzureKeyCredential(getApiKey(false)))
-                .retryPolicy(new RetryPolicy())
-                .serviceVersion(null);
+        final TextAnalyticsClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+                new AzureKeyCredential(getApiKey(false))).retryPolicy(new RetryPolicy()).serviceVersion(null);
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0));
     }
 
     void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
-        final TextAnalyticsClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
-                new AzureKeyCredential(getApiKey(false)))
-                .configuration(Configuration.getGlobalConfiguration())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        final TextAnalyticsClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+                new AzureKeyCredential(getApiKey(false))).configuration(Configuration.getGlobalConfiguration())
+                    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0));
     }
 
     void clientBuilderWithDefaultCountryHintRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
-        testRunner.apply(
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+        testRunner
+            .apply(createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
                 new AzureKeyCredential(getApiKey(false))).defaultCountryHint("MX"))
             .accept(SPANISH_SAME_AS_ENGLISH_INPUTS.get(0));
     }
@@ -358,52 +352,49 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     void clientBuilderWithDefaultCountryHintForBatchOperationRunner(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<List<String>>> testRunner) {
-        testRunner.apply(
-            createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(false), new AzureKeyCredential(getApiKey(false))).defaultCountryHint("MX"))
+        testRunner
+            .apply(createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+                new AzureKeyCredential(getApiKey(false))).defaultCountryHint("MX"))
             .accept(SPANISH_SAME_AS_ENGLISH_INPUTS);
     }
 
     void clientBuilderWithNewCountryHintForBatchOperationRunner(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<List<String>>> testRunner) {
-        testRunner.apply(
-            createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(false), new AzureKeyCredential(getApiKey(false))).defaultCountryHint("MX"))
+        testRunner
+            .apply(createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+                new AzureKeyCredential(getApiKey(false))).defaultCountryHint("MX"))
             .accept(SPANISH_SAME_AS_ENGLISH_INPUTS);
     }
 
     void clientBuilderWithDefaultLanguageRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
-        testRunner.apply(
-            createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(false), new AzureKeyCredential(getApiKey(false))).defaultLanguage("FR"))
+        testRunner
+            .apply(createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+                new AzureKeyCredential(getApiKey(false))).defaultLanguage("FR"))
             .accept(KEY_PHRASE_FRENCH_INPUTS.get(0));
     }
 
     void clientBuilderWithDefaultLanguageForBatchOperationRunner(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion, Function<TextAnalyticsClientBuilder, Consumer<List<String>>> testRunner) {
-        testRunner.apply(
-            createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(false), new AzureKeyCredential(getApiKey(false))).defaultLanguage("FR"))
-            .accept(KEY_PHRASE_FRENCH_INPUTS);
+        TextAnalyticsServiceVersion serviceVersion,
+        Function<TextAnalyticsClientBuilder, Consumer<List<String>>> testRunner) {
+        testRunner.apply(createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+            new AzureKeyCredential(getApiKey(false))).defaultLanguage("FR")).accept(KEY_PHRASE_FRENCH_INPUTS);
     }
 
     void clientBuilderWithAadRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, Consumer<String>> testRunner) {
 
-        final TextAnalyticsClientBuilder clientBuilder =
-            new TextAnalyticsClientBuilder()
-                .endpoint(getEndpoint(false))
-                .pipeline(getHttpPipeline(httpClient))
-                .serviceVersion(serviceVersion);
+        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder().endpoint(getEndpoint(false))
+            .pipeline(getHttpPipeline(httpClient))
+            .serviceVersion(serviceVersion);
 
         if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {
             // since running in playback mode won't have the token credential, so skipping matching it.
-            interceptorManager.addMatchers(Arrays.asList(
-                new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization"))));
+            interceptorManager
+                .addMatchers(Arrays.asList(new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization"))));
 
             clientBuilder.credential(new MockTokenCredential());
         }
@@ -425,7 +416,7 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new AddHeadersPolicy(new HttpHeaders()));
         policies.add(new AddHeadersFromContextPolicy());
-        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone()));
+        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
         policies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -444,10 +435,9 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-                                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                                    .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-                                    .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .build();
 
         return pipeline;
     }
@@ -461,8 +451,7 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
      */
     TextAnalyticsClientBuilder createClientBuilder(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         String endpoint, AzureKeyCredential credential) {
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .credential(credential)
+        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder().credential(credential)
             .endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
@@ -475,12 +464,14 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     }
 
     String getEndpoint(boolean isStaticResource) {
-        return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
+        return interceptorManager.isPlaybackMode()
+            ? "https://localhost:8080"
             : isStaticResource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT : AZURE_TEXT_ANALYTICS_ENDPOINT;
     }
 
     String getApiKey(boolean isStaticSource) {
-        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
+        return interceptorManager.isPlaybackMode()
+            ? "apiKeyInPlayback"
             : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
     }
 }

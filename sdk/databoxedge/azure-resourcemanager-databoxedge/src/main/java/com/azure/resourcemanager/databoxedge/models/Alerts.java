@@ -8,38 +8,40 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Alerts. */
+/**
+ * Resource collection API of Alerts.
+ */
 public interface Alerts {
     /**
      * Gets all the alerts for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the alerts for a Data Box Edge/Data Box Gateway device as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the alerts for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Alert> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
     /**
      * Gets all the alerts for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the alerts for a Data Box Edge/Data Box Gateway device as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the alerts for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Alert> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, Context context);
 
     /**
      * Gets an alert by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The alert name.
      * @param resourceGroupName The resource group name.
@@ -53,7 +55,7 @@ public interface Alerts {
 
     /**
      * Gets an alert by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The alert name.
      * @param resourceGroupName The resource group name.

@@ -20,7 +20,8 @@ public final class ReplicationJobsCancelSamples {
      */
     public static void
         cancelsTheSpecifiedJob(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationJobs().cancel("vault1", "resourceGroupPS1", "2653c648-fc72-4316-86f3-fdf8eaa0066b",
-            com.azure.core.util.Context.NONE);
+        manager.replicationJobs()
+            .cancel("vault1", "resourceGroupPS1", "2653c648-fc72-4316-86f3-fdf8eaa0066b",
+                com.azure.core.util.Context.NONE);
     }
 }

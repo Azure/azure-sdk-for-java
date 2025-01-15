@@ -92,8 +92,24 @@ public final class DocumentClassifiersImpl {
         @Post("/documentClassifiers:build")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> buildClassifierNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BuildDocumentClassifierRequest buildRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/documentClassifiers:build")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void> buildClassifierSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BuildDocumentClassifierRequest buildRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/documentClassifiers:build")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> buildClassifierNoCustomHeadersSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") BuildDocumentClassifierRequest buildRequest,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -150,8 +166,28 @@ public final class DocumentClassifiersImpl {
         @Post("/documentClassifiers/{classifierId}:analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> classifyDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @PathParam("classifierId") String classifierId,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ClassifyDocumentRequest classifyRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/documentClassifiers/{classifierId}:analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> classifyDocumentSync(
             @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ClassifyDocumentRequest classifyRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/documentClassifiers/{classifierId}:analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> classifyDocumentNoCustomHeadersSync(@HostParam("endpoint") String endpoint,
+            @PathParam("classifierId") String classifierId,
             @QueryParam("stringIndexType") StringIndexType stringIndexType,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ClassifyDocumentRequest classifyRequest,
@@ -170,6 +206,16 @@ public final class DocumentClassifiersImpl {
         @Post("/documentClassifiers/{classifierId}:analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> classifyDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @PathParam("classifierId") String classifierId,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> classifyRequest,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/documentClassifiers/{classifierId}:analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocument(
             @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
             @QueryParam("stringIndexType") StringIndexType stringIndexType,
@@ -180,8 +226,28 @@ public final class DocumentClassifiersImpl {
         @Post("/documentClassifiers/{classifierId}:analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> classifyDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @PathParam("classifierId") String classifierId,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") BinaryData classifyRequest,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/documentClassifiers/{classifierId}:analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> classifyDocumentSync(
             @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") BinaryData classifyRequest,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/documentClassifiers/{classifierId}:analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> classifyDocumentNoCustomHeadersSync(@HostParam("endpoint") String endpoint,
+            @PathParam("classifierId") String classifierId,
             @QueryParam("stringIndexType") StringIndexType stringIndexType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") ContentType contentType,
             @BodyParam("application/octet-stream") BinaryData classifyRequest,
@@ -199,8 +265,26 @@ public final class DocumentClassifiersImpl {
         @Post("/documentClassifiers/{classifierId}:analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> classifyDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @PathParam("classifierId") String classifierId,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @QueryParam("api-version") String apiVersion, @BodyParam("text/html") String classifyRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/documentClassifiers/{classifierId}:analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> classifyDocumentSync(
             @HostParam("endpoint") String endpoint, @PathParam("classifierId") String classifierId,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @QueryParam("api-version") String apiVersion, @BodyParam("text/html") String classifyRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/documentClassifiers/{classifierId}:analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> classifyDocumentNoCustomHeadersSync(@HostParam("endpoint") String endpoint,
+            @PathParam("classifierId") String classifierId,
             @QueryParam("stringIndexType") StringIndexType stringIndexType,
             @QueryParam("api-version") String apiVersion, @BodyParam("text/html") String classifyRequest,
             @HeaderParam("Accept") String accept, Context context);
@@ -246,9 +330,7 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>>
         buildClassifierWithResponseAsync(BuildDocumentClassifierRequest buildRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.buildClassifier(this.client.getEndpoint(),
-            this.client.getApiVersion(), buildRequest, accept, context));
+        return FluxUtil.withContext(context -> buildClassifierWithResponseAsync(buildRequest, context));
     }
 
     /**
@@ -360,6 +442,139 @@ public final class DocumentClassifiersImpl {
         Context context) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.buildClassifierWithResponse(buildRequest, context),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Builds a custom document classifier.
+     * 
+     * @param buildRequest Building request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>>
+        buildClassifierNoCustomHeadersWithResponseAsync(BuildDocumentClassifierRequest buildRequest) {
+        return FluxUtil.withContext(context -> buildClassifierNoCustomHeadersWithResponseAsync(buildRequest, context));
+    }
+
+    /**
+     * Builds a custom document classifier.
+     * 
+     * @param buildRequest Building request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>>
+        buildClassifierNoCustomHeadersWithResponseAsync(BuildDocumentClassifierRequest buildRequest, Context context) {
+        final String accept = "application/json";
+        return service.buildClassifierNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            buildRequest, accept, context);
+    }
+
+    /**
+     * Builds a custom document classifier.
+     * 
+     * @param buildRequest Building request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> buildClassifierNoCustomHeadersWithResponse(BuildDocumentClassifierRequest buildRequest,
+        Context context) {
+        final String accept = "application/json";
+        return service.buildClassifierNoCustomHeadersSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            buildRequest, accept, context);
+    }
+
+    /**
+     * Builds a custom document classifier.
+     * 
+     * @param buildRequest Building request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData>
+        beginBuildClassifierNoCustomHeadersAsync(BuildDocumentClassifierRequest buildRequest) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.buildClassifierNoCustomHeadersWithResponseAsync(buildRequest),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Builds a custom document classifier.
+     * 
+     * @param buildRequest Building request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData>
+        beginBuildClassifierNoCustomHeadersAsync(BuildDocumentClassifierRequest buildRequest, Context context) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.buildClassifierNoCustomHeadersWithResponseAsync(buildRequest, context),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Builds a custom document classifier.
+     * 
+     * @param buildRequest Building request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData>
+        beginBuildClassifierNoCustomHeaders(BuildDocumentClassifierRequest buildRequest) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.buildClassifierNoCustomHeadersWithResponse(buildRequest, Context.NONE),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Builds a custom document classifier.
+     * 
+     * @param buildRequest Building request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData>
+        beginBuildClassifierNoCustomHeaders(BuildDocumentClassifierRequest buildRequest, Context context) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.buildClassifierNoCustomHeadersWithResponse(buildRequest, context),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(context)),
@@ -503,9 +718,7 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentClassifierDetails>> getClassifierWithResponseAsync(String classifierId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getClassifier(this.client.getEndpoint(), classifierId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getClassifierWithResponseAsync(classifierId, context));
     }
 
     /**
@@ -598,9 +811,7 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassifierWithResponseAsync(String classifierId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteClassifier(this.client.getEndpoint(), classifierId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteClassifierWithResponseAsync(classifierId, context));
     }
 
     /**
@@ -693,9 +904,8 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
         String classifierId, StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.classifyDocument(this.client.getEndpoint(), classifierId,
-            stringIndexType, this.client.getApiVersion(), classifyRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest, context));
     }
 
     /**
@@ -834,6 +1044,157 @@ public final class DocumentClassifiersImpl {
      * Classifies document with document classifier.
      * 
      * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> classifyDocumentNoCustomHeadersWithResponseAsync(String classifierId,
+        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
+        return FluxUtil.withContext(context -> classifyDocumentNoCustomHeadersWithResponseAsync(classifierId,
+            stringIndexType, classifyRequest, context));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> classifyDocumentNoCustomHeadersWithResponseAsync(String classifierId,
+        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest, Context context) {
+        final String accept = "application/json";
+        return service.classifyDocumentNoCustomHeaders(this.client.getEndpoint(), classifierId, stringIndexType,
+            this.client.getApiVersion(), classifyRequest, accept, context);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> classifyDocumentNoCustomHeadersWithResponse(String classifierId,
+        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest, Context context) {
+        final String accept = "application/json";
+        return service.classifyDocumentNoCustomHeadersSync(this.client.getEndpoint(), classifierId, stringIndexType,
+            this.client.getApiVersion(), classifyRequest, accept, context);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeadersAsync(String classifierId,
+        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponseAsync(classifierId, stringIndexType, classifyRequest),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeadersAsync(String classifierId,
+        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest, Context context) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponseAsync(classifierId, stringIndexType, classifyRequest,
+                context),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeaders(String classifierId,
+        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponse(classifierId, stringIndexType, classifyRequest,
+                Context.NONE),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeaders(String classifierId,
+        StringIndexType stringIndexType, ClassifyDocumentRequest classifyRequest, Context context) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponse(classifierId, stringIndexType, classifyRequest,
+                context),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
@@ -847,10 +1208,8 @@ public final class DocumentClassifiersImpl {
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
         String classifierId, ContentType contentType, StringIndexType stringIndexType, Flux<ByteBuffer> classifyRequest,
         Long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.classifyDocument(this.client.getEndpoint(), classifierId, stringIndexType,
-                this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context));
+        return FluxUtil.withContext(context -> classifyDocumentWithResponseAsync(classifierId, contentType,
+            stringIndexType, classifyRequest, contentLength, context));
     }
 
     /**
@@ -938,16 +1297,111 @@ public final class DocumentClassifiersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> classifyDocumentNoCustomHeadersWithResponseAsync(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, Flux<ByteBuffer> classifyRequest,
+        Long contentLength) {
+        return FluxUtil.withContext(context -> classifyDocumentNoCustomHeadersWithResponseAsync(classifierId,
+            contentType, stringIndexType, classifyRequest, contentLength, context));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> classifyDocumentNoCustomHeadersWithResponseAsync(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, Flux<ByteBuffer> classifyRequest, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        return service.classifyDocumentNoCustomHeaders(this.client.getEndpoint(), classifierId, stringIndexType,
+            this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeadersAsync(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, Flux<ByteBuffer> classifyRequest,
+        Long contentLength) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponseAsync(classifierId, contentType, stringIndexType,
+                classifyRequest, contentLength),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeadersAsync(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, Flux<ByteBuffer> classifyRequest, Long contentLength,
+        Context context) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponseAsync(classifierId, contentType, stringIndexType,
+                classifyRequest, contentLength, context),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
         String classifierId, ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest,
         Long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.classifyDocument(this.client.getEndpoint(), classifierId, stringIndexType,
-                this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context));
+        return FluxUtil.withContext(context -> classifyDocumentWithResponseAsync(classifierId, contentType,
+            stringIndexType, classifyRequest, contentLength, context));
     }
 
     /**
@@ -1102,6 +1556,175 @@ public final class DocumentClassifiersImpl {
      * Classifies document with document classifier.
      * 
      * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> classifyDocumentNoCustomHeadersWithResponseAsync(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength) {
+        return FluxUtil.withContext(context -> classifyDocumentNoCustomHeadersWithResponseAsync(classifierId,
+            contentType, stringIndexType, classifyRequest, contentLength, context));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> classifyDocumentNoCustomHeadersWithResponseAsync(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        return service.classifyDocumentNoCustomHeaders(this.client.getEndpoint(), classifierId, stringIndexType,
+            this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> classifyDocumentNoCustomHeadersWithResponse(String classifierId, ContentType contentType,
+        StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength, Context context) {
+        final String accept = "application/json";
+        return service.classifyDocumentNoCustomHeadersSync(this.client.getEndpoint(), classifierId, stringIndexType,
+            this.client.getApiVersion(), contentType, classifyRequest, contentLength, accept, context);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeadersAsync(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponseAsync(classifierId, contentType, stringIndexType,
+                classifyRequest, contentLength),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeadersAsync(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength,
+        Context context) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponseAsync(classifierId, contentType, stringIndexType,
+                classifyRequest, contentLength, context),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeaders(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponse(classifierId, contentType, stringIndexType,
+                classifyRequest, contentLength, Context.NONE),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param contentType Upload file type.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeaders(String classifierId,
+        ContentType contentType, StringIndexType stringIndexType, BinaryData classifyRequest, Long contentLength,
+        Context context) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponse(classifierId, contentType, stringIndexType,
+                classifyRequest, contentLength, context),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
      * @param classifyRequest Classify request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1112,9 +1735,8 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void>> classifyDocumentWithResponseAsync(
         String classifierId, StringIndexType stringIndexType, String classifyRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.classifyDocument(this.client.getEndpoint(), classifierId,
-            stringIndexType, this.client.getApiVersion(), classifyRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest, context));
     }
 
     /**
@@ -1248,6 +1870,157 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> classifyDocumentNoCustomHeadersWithResponseAsync(String classifierId,
+        StringIndexType stringIndexType, String classifyRequest) {
+        return FluxUtil.withContext(context -> classifyDocumentNoCustomHeadersWithResponseAsync(classifierId,
+            stringIndexType, classifyRequest, context));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> classifyDocumentNoCustomHeadersWithResponseAsync(String classifierId,
+        StringIndexType stringIndexType, String classifyRequest, Context context) {
+        final String accept = "application/json";
+        return service.classifyDocumentNoCustomHeaders(this.client.getEndpoint(), classifierId, stringIndexType,
+            this.client.getApiVersion(), classifyRequest, accept, context);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> classifyDocumentNoCustomHeadersWithResponse(String classifierId,
+        StringIndexType stringIndexType, String classifyRequest, Context context) {
+        final String accept = "application/json";
+        return service.classifyDocumentNoCustomHeadersSync(this.client.getEndpoint(), classifierId, stringIndexType,
+            this.client.getApiVersion(), classifyRequest, accept, context);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeadersAsync(String classifierId,
+        StringIndexType stringIndexType, String classifyRequest) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponseAsync(classifierId, stringIndexType, classifyRequest),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeadersAsync(String classifierId,
+        StringIndexType stringIndexType, String classifyRequest, Context context) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponseAsync(classifierId, stringIndexType, classifyRequest,
+                context),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeaders(String classifierId,
+        StringIndexType stringIndexType, String classifyRequest) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponse(classifierId, stringIndexType, classifyRequest,
+                Context.NONE),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(Context.NONE)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param classifyRequest Classify request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocumentNoCustomHeaders(String classifierId,
+        StringIndexType stringIndexType, String classifyRequest, Context context) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.classifyDocumentNoCustomHeadersWithResponse(classifierId, stringIndexType, classifyRequest,
+                context),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
+                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                .setContext(context)),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
      * Gets the result of document classifier.
      * 
      * @param classifierId Unique document classifier name.
@@ -1260,9 +2033,7 @@ public final class DocumentClassifiersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeResultOperation>> getClassifyResultWithResponseAsync(String classifierId,
         String resultId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getClassifyResult(this.client.getEndpoint(), classifierId,
-            resultId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getClassifyResultWithResponseAsync(classifierId, resultId, context));
     }
 
     /**
@@ -1354,9 +2125,7 @@ public final class DocumentClassifiersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1375,9 +2144,7 @@ public final class DocumentClassifiersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1397,9 +2164,7 @@ public final class DocumentClassifiersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1417,9 +2182,7 @@ public final class DocumentClassifiersImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

@@ -17,19 +17,14 @@ import java.io.IOException;
 @Fluent
 public final class ClassifierDocumentTypeDetails implements JsonSerializable<ClassifierDocumentTypeDetails> {
     /*
-     * Type of training data source.
-     */
-    private ContentSourceKind sourceKind;
-
-    /*
      * Azure Blob Storage location containing the training data for a classifier document type. Either azureBlobSource
      * or azureBlobFileListSource must be specified.
      */
     private AzureBlobContentSource azureBlobSource;
 
     /*
-     * Azure Blob Storage file list specifying the training data for a classifier document type. Either
-     * azureBlobSource or azureBlobFileListSource must be specified.
+     * Azure Blob Storage file list specifying the training data for a classifier document type. Either azureBlobSource
+     * or azureBlobFileListSource must be specified.
      */
     private AzureBlobFileListContentSource azureBlobFileListSource;
 
@@ -37,26 +32,6 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
      * Creates an instance of ClassifierDocumentTypeDetails class.
      */
     public ClassifierDocumentTypeDetails() {
-    }
-
-    /**
-     * Get the sourceKind property: Type of training data source.
-     * 
-     * @return the sourceKind value.
-     */
-    public ContentSourceKind getSourceKind() {
-        return this.sourceKind;
-    }
-
-    /**
-     * Set the sourceKind property: Type of training data source.
-     * 
-     * @param sourceKind the sourceKind value to set.
-     * @return the ClassifierDocumentTypeDetails object itself.
-     */
-    public ClassifierDocumentTypeDetails setSourceKind(ContentSourceKind sourceKind) {
-        this.sourceKind = sourceKind;
-        return this;
     }
 
     /**
@@ -104,10 +79,12 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("sourceKind", this.sourceKind == null ? null : this.sourceKind.toString());
         jsonWriter.writeJsonField("azureBlobSource", this.azureBlobSource);
         jsonWriter.writeJsonField("azureBlobFileListSource", this.azureBlobFileListSource);
         return jsonWriter.writeEndObject();
@@ -129,10 +106,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sourceKind".equals(fieldName)) {
-                    deserializedClassifierDocumentTypeDetails.sourceKind
-                        = ContentSourceKind.fromString(reader.getString());
-                } else if ("azureBlobSource".equals(fieldName)) {
+                if ("azureBlobSource".equals(fieldName)) {
                     deserializedClassifierDocumentTypeDetails.azureBlobSource = AzureBlobContentSource.fromJson(reader);
                 } else if ("azureBlobFileListSource".equals(fieldName)) {
                     deserializedClassifierDocumentTypeDetails.azureBlobFileListSource

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.recoveryservicesdatareplication.generated;
 
-/** Samples for ProtectedItem Get. */
+/**
+ * Samples for ProtectedItem Get.
+ */
 public final class ProtectedItemGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ProtectedItem_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ProtectedItem_Get.json
      */
     /**
      * Sample code: ProtectedItem_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .protectedItems()
+        manager.protectedItems()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "d", com.azure.core.util.Context.NONE);
     }
 }

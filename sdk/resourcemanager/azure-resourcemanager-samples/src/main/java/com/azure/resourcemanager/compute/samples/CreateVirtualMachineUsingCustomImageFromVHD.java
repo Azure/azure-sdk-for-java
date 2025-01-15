@@ -54,9 +54,10 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 10);
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallScript
+            = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
         List<String> apacheInstallScriptUris = new ArrayList<>();
         apacheInstallScriptUris.add(apacheInstallScript);
@@ -68,38 +69,39 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
 
             System.out.println("Creating a un-managed Linux VM");
 
-            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withUnmanagedDisks()
-                    .defineUnmanagedDataDisk("disk-1")
-                        .withNewVhd(100)
-                        .withLun(1)
-                        .attach()
-                    .defineUnmanagedDataDisk("disk-2")
-                        .withNewVhd(50)
-                        .withLun(2)
-                        .attach()
-                    .defineUnmanagedDataDisk("disk-3")
-                        .withNewVhd(60)
-                        .withLun(3)
-                        .attach()
-                    .defineNewExtension("CustomScriptForLinux")
-                        .withPublisher("Microsoft.OSTCExtensions")
-                        .withType("CustomScriptForLinux")
-                        .withVersion("1.4")
-                        .withMinorVersionAutoUpgrade()
-                        .withPublicSetting("fileUris", apacheInstallScriptUris)
-                        .withPublicSetting("commandToExecute", apacheInstallCommand)
-                        .attach()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines()
+                .define(linuxVMName1)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withUnmanagedDisks()
+                .defineUnmanagedDataDisk("disk-1")
+                .withNewVhd(100)
+                .withLun(1)
+                .attach()
+                .defineUnmanagedDataDisk("disk-2")
+                .withNewVhd(50)
+                .withLun(2)
+                .attach()
+                .defineUnmanagedDataDisk("disk-3")
+                .withNewVhd(60)
+                .withLun(3)
+                .attach()
+                .defineNewExtension("CustomScriptForLinux")
+                .withPublisher("Microsoft.OSTCExtensions")
+                .withType("CustomScriptForLinux")
+                .withVersion("1.4")
+                .withMinorVersionAutoUpgrade()
+                .withPublicSetting("fileUris", apacheInstallScriptUris)
+                .withPublicSetting("commandToExecute", apacheInstallCommand)
+                .attach()
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                .create();
 
             System.out.println("Created a Linux VM with un-managed OS and data disks: " + linuxVM.id());
             Utils.print(linuxVM);
@@ -129,24 +131,24 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
             System.out.println("Creating virtual machine custom image from un-managed disk VHDs: " + linuxVM.id());
 
             VirtualMachineCustomImage virtualMachineCustomImage = azureResourceManager.virtualMachineCustomImages()
-                    .define(customImageName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withLinuxFromVhd(linuxVM.osUnmanagedDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
-                    .defineDataDiskImage()
-                        .withLun(linuxVM.unmanagedDataDisks().get(1).lun())
-                        .fromVhd(linuxVM.unmanagedDataDisks().get(1).vhdUri())
-                        .attach()
-                    .defineDataDiskImage()
-                        .withLun(linuxVM.unmanagedDataDisks().get(2).lun())
-                        .fromVhd(linuxVM.unmanagedDataDisks().get(2).vhdUri())
-                        .attach()
-                    .defineDataDiskImage()
-                        .withLun(linuxVM.unmanagedDataDisks().get(3).lun())
-                        .fromVhd(linuxVM.unmanagedDataDisks().get(3).vhdUri())
-                        .withDiskCaching(CachingTypes.READ_ONLY)
-                        .attach()
-                    .create();
+                .define(customImageName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withLinuxFromVhd(linuxVM.osUnmanagedDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
+                .defineDataDiskImage()
+                .withLun(linuxVM.unmanagedDataDisks().get(1).lun())
+                .fromVhd(linuxVM.unmanagedDataDisks().get(1).vhdUri())
+                .attach()
+                .defineDataDiskImage()
+                .withLun(linuxVM.unmanagedDataDisks().get(2).lun())
+                .fromVhd(linuxVM.unmanagedDataDisks().get(2).vhdUri())
+                .attach()
+                .defineDataDiskImage()
+                .withLun(linuxVM.unmanagedDataDisks().get(3).lun())
+                .fromVhd(linuxVM.unmanagedDataDisks().get(3).vhdUri())
+                .withDiskCaching(CachingTypes.READ_ONLY)
+                .attach()
+                .create();
 
             System.out.println("Created custom image");
 
@@ -157,17 +159,18 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
 
             System.out.println("Creating a Linux VM using custom image: " + virtualMachineCustomImage.id());
 
-            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVMName2)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines()
+                .define(linuxVMName2)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withSize(VirtualMachineSizeTypes.STANDARD_B2S)
+                .create();
 
             System.out.println("Created Linux VM");
             Utils.print(linuxVM2);
@@ -176,21 +179,22 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
             // Create another Linux VM using custom image and configure the data disks from image and
             // add another data disk
 
-            VirtualMachine linuxVM3 = azureResourceManager.virtualMachines().define(linuxVMName3)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withNewDataDiskFromImage(1, 200, CachingTypes.READ_WRITE)
-                    .withNewDataDiskFromImage(2, 100, CachingTypes.READ_ONLY)
-                    .withNewDataDiskFromImage(3, 100, CachingTypes.READ_WRITE)
-                    .withNewDataDisk(50)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine linuxVM3 = azureResourceManager.virtualMachines()
+                .define(linuxVMName3)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withNewDataDiskFromImage(1, 200, CachingTypes.READ_WRITE)
+                .withNewDataDiskFromImage(2, 100, CachingTypes.READ_ONLY)
+                .withNewDataDiskFromImage(3, 100, CachingTypes.READ_WRITE)
+                .withNewDataDisk(50)
+                .withSize(VirtualMachineSizeTypes.STANDARD_B2S)
+                .create();
 
             Utils.print(linuxVM3);
 
@@ -255,8 +259,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -279,11 +282,12 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
     protected static void deprovisionAgentInLinuxVM(VirtualMachine virtualMachine) {
         System.out.println("Trying to de-provision");
 
-        virtualMachine.manager().serviceClient().getVirtualMachines().beginRunCommand(
-            virtualMachine.resourceGroupName(), virtualMachine.name(),
-            new RunCommandInput()
-                .withCommandId("RunShellScript")
-                .withScript(Collections.singletonList("sudo waagent -deprovision+user --force")));
+        virtualMachine.manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .beginRunCommand(virtualMachine.resourceGroupName(), virtualMachine.name(),
+                new RunCommandInput().withCommandId("RunShellScript")
+                    .withScript(Collections.singletonList("sudo waagent -deprovision+user --force")));
 
         // wait as above command will not return as sync
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));

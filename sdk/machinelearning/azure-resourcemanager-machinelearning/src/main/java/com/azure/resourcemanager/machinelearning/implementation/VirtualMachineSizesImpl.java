@@ -20,8 +20,7 @@ public final class VirtualMachineSizesImpl implements VirtualMachineSizes {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    public VirtualMachineSizesImpl(
-        VirtualMachineSizesClient innerClient,
+    public VirtualMachineSizesImpl(VirtualMachineSizesClient innerClient,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,10 +29,7 @@ public final class VirtualMachineSizesImpl implements VirtualMachineSizes {
     public Response<VirtualMachineSizeListResult> listWithResponse(String location, Context context) {
         Response<VirtualMachineSizeListResultInner> inner = this.serviceClient().listWithResponse(location, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualMachineSizeListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

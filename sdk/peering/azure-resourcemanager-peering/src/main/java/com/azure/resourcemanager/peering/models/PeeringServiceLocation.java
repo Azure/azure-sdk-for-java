@@ -6,53 +6,55 @@ package com.azure.resourcemanager.peering.models;
 
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceLocationInner;
 
-/** An immutable client-side representation of PeeringServiceLocation. */
+/**
+ * An immutable client-side representation of PeeringServiceLocation.
+ */
 public interface PeeringServiceLocation {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the country property: Country of the customer.
-     *
+     * 
      * @return the country value.
      */
     String country();
 
     /**
      * Gets the state property: State of the customer.
-     *
+     * 
      * @return the state value.
      */
     String state();
 
     /**
      * Gets the azureRegion property: Azure region for the location.
-     *
+     * 
      * @return the azureRegion value.
      */
     String azureRegion();
 
     /**
      * Gets the inner com.azure.resourcemanager.peering.fluent.models.PeeringServiceLocationInner object.
-     *
+     * 
      * @return the inner object.
      */
     PeeringServiceLocationInner innerModel();

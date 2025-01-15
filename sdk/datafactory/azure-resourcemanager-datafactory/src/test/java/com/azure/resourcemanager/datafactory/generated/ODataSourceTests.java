@@ -11,19 +11,19 @@ public final class ODataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ODataSource model = BinaryData.fromString(
-            "{\"type\":\"ODataSource\",\"query\":\"datawmtsmeaciy\",\"httpRequestTimeout\":\"datahnrgmg\",\"additionalColumns\":\"datacusvidkzbdbvlsn\",\"sourceRetryCount\":\"dataymrfomlh\",\"sourceRetryWait\":\"dataiktecs\",\"maxConcurrentConnections\":\"datacqweydaa\",\"disableMetricsCollection\":\"datattmfcx\",\"\":{\"afqiwlduot\":\"datafsqjxxb\",\"kfzpr\":\"datayjzdas\",\"lbddlnzmff\":\"dataqomuzohnpkof\"}}")
+            "{\"type\":\"ODataSource\",\"query\":\"datahuboqozx\",\"httpRequestTimeout\":\"dataxamxi\",\"additionalColumns\":\"datar\",\"sourceRetryCount\":\"datakglynbqpeoj\",\"sourceRetryWait\":\"databoggw\",\"maxConcurrentConnections\":\"datahtnywgtsodnxeir\",\"disableMetricsCollection\":\"datawjimcfrhtzgduvoa\",\"\":{\"zyqbggxcyram\":\"datacalptfp\",\"nyurxlpuwxsl\":\"datazuaxtbr\",\"bj\":\"dataqlgxxbnrurtn\",\"fbmdemohls\":\"dataysupck\"}}")
             .toObject(ODataSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataSource model = new ODataSource().withSourceRetryCount("dataymrfomlh")
-            .withSourceRetryWait("dataiktecs")
-            .withMaxConcurrentConnections("datacqweydaa")
-            .withDisableMetricsCollection("datattmfcx")
-            .withQuery("datawmtsmeaciy")
-            .withHttpRequestTimeout("datahnrgmg")
-            .withAdditionalColumns("datacusvidkzbdbvlsn");
+        ODataSource model = new ODataSource().withSourceRetryCount("datakglynbqpeoj")
+            .withSourceRetryWait("databoggw")
+            .withMaxConcurrentConnections("datahtnywgtsodnxeir")
+            .withDisableMetricsCollection("datawjimcfrhtzgduvoa")
+            .withQuery("datahuboqozx")
+            .withHttpRequestTimeout("dataxamxi")
+            .withAdditionalColumns("datar");
         model = BinaryData.fromObject(model).toObject(ODataSource.class);
     }
 }

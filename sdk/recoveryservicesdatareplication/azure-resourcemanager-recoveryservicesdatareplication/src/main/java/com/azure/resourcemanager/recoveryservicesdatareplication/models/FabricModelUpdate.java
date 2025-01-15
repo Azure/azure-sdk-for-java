@@ -6,39 +6,56 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Fabric model for update. */
+/**
+ * Fabric model for update.
+ */
 @Fluent
 public final class FabricModelUpdate extends ProxyResource {
     /*
      * Gets or sets the resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Fabric model properties.
      */
-    @JsonProperty(value = "properties")
     private FabricModelProperties properties;
 
     /*
      * The systemData property.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private FabricModelUpdateSystemData systemData;
 
-    /** Creates an instance of FabricModelUpdate class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FabricModelUpdate class.
+     */
     public FabricModelUpdate() {
     }
 
     /**
      * Get the tags property: Gets or sets the resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -47,7 +64,7 @@ public final class FabricModelUpdate extends ProxyResource {
 
     /**
      * Set the tags property: Gets or sets the resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FabricModelUpdate object itself.
      */
@@ -58,7 +75,7 @@ public final class FabricModelUpdate extends ProxyResource {
 
     /**
      * Get the properties property: Fabric model properties.
-     *
+     * 
      * @return the properties value.
      */
     public FabricModelProperties properties() {
@@ -67,7 +84,7 @@ public final class FabricModelUpdate extends ProxyResource {
 
     /**
      * Set the properties property: Fabric model properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FabricModelUpdate object itself.
      */
@@ -78,7 +95,7 @@ public final class FabricModelUpdate extends ProxyResource {
 
     /**
      * Get the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     public FabricModelUpdateSystemData systemData() {
@@ -86,8 +103,38 @@ public final class FabricModelUpdate extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -97,5 +144,54 @@ public final class FabricModelUpdate extends ProxyResource {
         if (systemData() != null) {
             systemData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FabricModelUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FabricModelUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FabricModelUpdate.
+     */
+    public static FabricModelUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FabricModelUpdate deserializedFabricModelUpdate = new FabricModelUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFabricModelUpdate.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFabricModelUpdate.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFabricModelUpdate.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFabricModelUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFabricModelUpdate.properties = FabricModelProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFabricModelUpdate.systemData = FabricModelUpdateSystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFabricModelUpdate;
+        });
     }
 }

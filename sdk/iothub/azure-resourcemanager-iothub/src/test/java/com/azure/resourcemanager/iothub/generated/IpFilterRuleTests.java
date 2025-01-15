@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class IpFilterRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpFilterRule model =
-            BinaryData
-                .fromString("{\"filterName\":\"git\",\"action\":\"Accept\",\"ipMask\":\"qhabifpikxwcz\"}")
+        IpFilterRule model
+            = BinaryData.fromString("{\"filterName\":\"git\",\"action\":\"Accept\",\"ipMask\":\"qhabifpikxwcz\"}")
                 .toObject(IpFilterRule.class);
         Assertions.assertEquals("git", model.filterName());
         Assertions.assertEquals(IpFilterActionType.ACCEPT, model.action());
@@ -23,8 +22,9 @@ public final class IpFilterRuleTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpFilterRule model =
-            new IpFilterRule().withFilterName("git").withAction(IpFilterActionType.ACCEPT).withIpMask("qhabifpikxwcz");
+        IpFilterRule model = new IpFilterRule().withFilterName("git")
+            .withAction(IpFilterActionType.ACCEPT)
+            .withIpMask("qhabifpikxwcz");
         model = BinaryData.fromObject(model).toObject(IpFilterRule.class);
         Assertions.assertEquals("git", model.filterName());
         Assertions.assertEquals(IpFilterActionType.ACCEPT, model.action());

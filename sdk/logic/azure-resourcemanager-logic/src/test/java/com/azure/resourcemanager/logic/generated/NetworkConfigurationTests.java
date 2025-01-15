@@ -15,30 +15,26 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"virtualNetworkAddressSpace\":\"osfjbjsv\",\"accessEndpoint\":{\"type\":\"Internal\"},\"subnets\":[{\"id\":\"vyc\",\"name\":\"dclxgc\",\"type\":\"nfnw\"}]}")
-                .toObject(NetworkConfiguration.class);
-        Assertions.assertEquals("osfjbjsv", model.virtualNetworkAddressSpace());
-        Assertions
-            .assertEquals(IntegrationServiceEnvironmentAccessEndpointType.INTERNAL, model.accessEndpoint().type());
-        Assertions.assertEquals("vyc", model.subnets().get(0).id());
+        NetworkConfiguration model = BinaryData.fromString(
+            "{\"virtualNetworkAddressSpace\":\"opionszon\",\"accessEndpoint\":{\"type\":\"External\"},\"subnets\":[{\"id\":\"n\",\"name\":\"xjawrt\",\"type\":\"fjmyccxlzhco\"},{\"id\":\"vnekhenlusfnrdtj\",\"name\":\"xrdcqtj\",\"type\":\"dt\"}]}")
+            .toObject(NetworkConfiguration.class);
+        Assertions.assertEquals("opionszon", model.virtualNetworkAddressSpace());
+        Assertions.assertEquals(IntegrationServiceEnvironmentAccessEndpointType.EXTERNAL,
+            model.accessEndpoint().type());
+        Assertions.assertEquals("n", model.subnets().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkConfiguration model =
-            new NetworkConfiguration()
-                .withVirtualNetworkAddressSpace("osfjbjsv")
-                .withAccessEndpoint(
-                    new IntegrationServiceEnvironmentAccessEndpoint()
-                        .withType(IntegrationServiceEnvironmentAccessEndpointType.INTERNAL))
-                .withSubnets(Arrays.asList(new ResourceReference().withId("vyc")));
+        NetworkConfiguration model = new NetworkConfiguration().withVirtualNetworkAddressSpace("opionszon")
+            .withAccessEndpoint(new IntegrationServiceEnvironmentAccessEndpoint()
+                .withType(IntegrationServiceEnvironmentAccessEndpointType.EXTERNAL))
+            .withSubnets(
+                Arrays.asList(new ResourceReference().withId("n"), new ResourceReference().withId("vnekhenlusfnrdtj")));
         model = BinaryData.fromObject(model).toObject(NetworkConfiguration.class);
-        Assertions.assertEquals("osfjbjsv", model.virtualNetworkAddressSpace());
-        Assertions
-            .assertEquals(IntegrationServiceEnvironmentAccessEndpointType.INTERNAL, model.accessEndpoint().type());
-        Assertions.assertEquals("vyc", model.subnets().get(0).id());
+        Assertions.assertEquals("opionszon", model.virtualNetworkAddressSpace());
+        Assertions.assertEquals(IntegrationServiceEnvironmentAccessEndpointType.EXTERNAL,
+            model.accessEndpoint().type());
+        Assertions.assertEquals("n", model.subnets().get(0).id());
     }
 }

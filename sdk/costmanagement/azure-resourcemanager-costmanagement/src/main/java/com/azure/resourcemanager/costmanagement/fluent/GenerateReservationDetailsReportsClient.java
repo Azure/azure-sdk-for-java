@@ -19,7 +19,7 @@ public interface GenerateReservationDetailsReportsClient {
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
-     *
+     * 
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
      * @param endDate End Date.
@@ -29,14 +29,14 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(
-        String billingAccountId, String startDate, String endDate);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(String billingAccountId,
+        String startDate, String endDate);
 
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
-     *
+     * 
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
      * @param endDate End Date.
@@ -47,14 +47,14 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(
-        String billingAccountId, String startDate, String endDate, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(String billingAccountId,
+        String startDate, String endDate, Context context);
 
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
-     *
+     * 
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
      * @param endDate End Date.
@@ -70,7 +70,7 @@ public interface GenerateReservationDetailsReportsClient {
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
-     *
+     * 
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
      * @param endDate End Date.
@@ -88,7 +88,7 @@ public interface GenerateReservationDetailsReportsClient {
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
@@ -99,15 +99,15 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(String billingAccountId,
+        String billingProfileId, String startDate, String endDate);
 
     /**
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
@@ -119,15 +119,15 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(String billingAccountId,
+        String billingProfileId, String startDate, String endDate, Context context);
 
     /**
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
@@ -138,15 +138,15 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate);
+    OperationStatusInner byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate);
 
     /**
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
@@ -158,6 +158,6 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context);
+    OperationStatusInner byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate, Context context);
 }

@@ -11,23 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowTriggerReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowTriggerReference model =
-            BinaryData
-                .fromString(
-                    "{\"flowName\":\"bavxbniwdjswzt\",\"triggerName\":\"bpg\",\"id\":\"ytxhp\",\"name\":\"bzpfzab\",\"type\":\"cuh\"}")
-                .toObject(WorkflowTriggerReference.class);
-        Assertions.assertEquals("ytxhp", model.id());
-        Assertions.assertEquals("bavxbniwdjswzt", model.flowName());
-        Assertions.assertEquals("bpg", model.triggerName());
+        WorkflowTriggerReference model = BinaryData.fromString(
+            "{\"flowName\":\"gsahmkycgrauw\",\"triggerName\":\"etaebu\",\"id\":\"vdmovsmzlxwabm\",\"name\":\"efkifr\",\"type\":\"puqujmqlgkfbtn\"}")
+            .toObject(WorkflowTriggerReference.class);
+        Assertions.assertEquals("vdmovsmzlxwabm", model.id());
+        Assertions.assertEquals("gsahmkycgrauw", model.flowName());
+        Assertions.assertEquals("etaebu", model.triggerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowTriggerReference model =
-            new WorkflowTriggerReference().withId("ytxhp").withFlowName("bavxbniwdjswzt").withTriggerName("bpg");
+        WorkflowTriggerReference model = new WorkflowTriggerReference().withId("vdmovsmzlxwabm")
+            .withFlowName("gsahmkycgrauw")
+            .withTriggerName("etaebu");
         model = BinaryData.fromObject(model).toObject(WorkflowTriggerReference.class);
-        Assertions.assertEquals("ytxhp", model.id());
-        Assertions.assertEquals("bavxbniwdjswzt", model.flowName());
-        Assertions.assertEquals("bpg", model.triggerName());
+        Assertions.assertEquals("vdmovsmzlxwabm", model.id());
+        Assertions.assertEquals("gsahmkycgrauw", model.flowName());
+        Assertions.assertEquals("etaebu", model.triggerName());
     }
 }

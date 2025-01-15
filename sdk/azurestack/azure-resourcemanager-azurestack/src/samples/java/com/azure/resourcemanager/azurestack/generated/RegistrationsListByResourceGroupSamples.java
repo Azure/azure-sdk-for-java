@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.azurestack.generated;
 
-/** Samples for Registrations ListByResourceGroup. */
+/**
+ * Samples for Registrations ListByResourceGroup.
+ */
 public final class RegistrationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/List.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/List.json
      */
     /**
      * Sample code: Returns a list of all registrations.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAListOfAllRegistrations(com.azure.resourcemanager.azurestack.AzureStackManager manager) {

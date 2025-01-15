@@ -43,9 +43,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for NetworkInterface and its create and update interfaces. */
-class NetworkInterfaceImpl
-    extends GroupableParentResourceWithTagsImpl<
-        NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl, NetworkManager>
+class NetworkInterfaceImpl extends
+    GroupableParentResourceWithTagsImpl<NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl, NetworkManager>
     implements NetworkInterface, NetworkInterface.Definition, NetworkInterface.Update {
 
     private final ClientLogger logger = new ClientLogger(this.getClass());
@@ -77,21 +76,17 @@ class NetworkInterfaceImpl
 
     @Override
     public Mono<NetworkInterface> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                networkInterface -> {
-                    NetworkInterfaceImpl impl = (NetworkInterfaceImpl) networkInterface;
-                    impl.clearCachedRelatedResources();
-                    impl.initializeChildrenFromInner();
-                    return impl;
-                });
+        return super.refreshAsync().map(networkInterface -> {
+            NetworkInterfaceImpl impl = (NetworkInterfaceImpl) networkInterface;
+            impl.clearCachedRelatedResources();
+            impl.initializeChildrenFromInner();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<NetworkInterfaceInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkInterfaces()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -99,8 +94,7 @@ class NetworkInterfaceImpl
 
     @Override
     protected Mono<NetworkInterfaceInner> applyTagsToInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkInterfaces()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
@@ -169,8 +163,8 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withExistingLoadBalancerInboundNatRule(
-        LoadBalancer loadBalancer, String inboundNatRuleName) {
+    public NetworkInterfaceImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer,
+        String inboundNatRuleName) {
         this.primaryIPConfiguration().withExistingLoadBalancerInboundNatRule(loadBalancer, inboundNatRuleName);
         return this;
     }
@@ -237,8 +231,8 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withExistingApplicationSecurityGroup(
-        ApplicationSecurityGroup applicationSecurityGroup) {
+    public NetworkInterfaceImpl
+        withExistingApplicationSecurityGroup(ApplicationSecurityGroup applicationSecurityGroup) {
         // update application security group for all ip configurations,
         // as nic requires same set for all ip configurations.
         for (NicIpConfiguration ipConfiguration : this.nicIPConfigurations.values()) {
@@ -261,8 +255,8 @@ class NetworkInterfaceImpl
 
         // copy application security group from primary to secondary,
         // as nic requires same set for all ip configurations.
-        List<ApplicationSecurityGroupInner> inners =
-            this.primaryIPConfiguration().innerModel().applicationSecurityGroups();
+        List<ApplicationSecurityGroupInner> inners
+            = this.primaryIPConfiguration().innerModel().applicationSecurityGroups();
         if (inners != null) {
             for (ApplicationSecurityGroupInner inner : inners) {
                 nicIpConfiguration.withExistingApplicationSecurityGroup(inner);
@@ -412,11 +406,8 @@ class NetworkInterfaceImpl
     public NetworkSecurityGroup getNetworkSecurityGroup() {
         if (this.networkSecurityGroup == null && this.networkSecurityGroupId() != null) {
             String id = this.networkSecurityGroupId();
-            this.networkSecurityGroup =
-                super
-                    .myManager
-                    .networkSecurityGroups()
-                    .getByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+            this.networkSecurityGroup = super.myManager.networkSecurityGroups()
+                .getByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
         }
         return this.networkSecurityGroup;
     }
@@ -466,8 +457,8 @@ class NetworkInterfaceImpl
         List<NetworkInterfaceIpConfigurationInner> inners = this.innerModel().ipConfigurations();
         if (inners != null) {
             for (NetworkInterfaceIpConfigurationInner inner : inners) {
-                NicIpConfigurationImpl nicIPConfiguration =
-                    new NicIpConfigurationImpl(inner, this, super.myManager, false);
+                NicIpConfigurationImpl nicIPConfiguration
+                    = new NicIpConfigurationImpl(inner, this, super.myManager, false);
                 this.nicIPConfigurations.put(nicIPConfiguration.name(), nicIPConfiguration);
             }
         }
@@ -481,8 +472,8 @@ class NetworkInterfaceImpl
      * @return {@link NicIpConfiguration}
      */
     private NicIpConfigurationImpl prepareNewNicIPConfiguration(String name) {
-        NicIpConfigurationImpl nicIPConfiguration =
-            NicIpConfigurationImpl.prepareNicIPConfiguration(name, this, super.myManager);
+        NicIpConfigurationImpl nicIPConfiguration
+            = NicIpConfigurationImpl.prepareNicIPConfiguration(name, this, super.myManager);
         return nicIPConfiguration;
     }
 
@@ -509,39 +500,29 @@ class NetworkInterfaceImpl
 
     @Override
     public Accepted<NetworkInterface> beginCreate() {
-        return AcceptedImpl
-            .newAccepted(
-                logger,
-                this.manager().serviceClient().getHttpPipeline(),
-                this.manager().serviceClient().getDefaultPollInterval(),
-                () ->
-                    this
-                        .manager()
-                        .serviceClient()
-                        .getNetworkInterfaces()
-                        .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
-                        .block(),
-                inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()),
-                NetworkInterfaceInner.class,
-                () -> {
-                    Flux<Indexable> dependencyTasksAsync =
-                        taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-                    dependencyTasksAsync.blockLast();
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.manager()
+                .serviceClient()
+                .getNetworkInterfaces()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                .block(),
+            inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()), NetworkInterfaceInner.class, () -> {
+                Flux<Indexable> dependencyTasksAsync
+                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                dependencyTasksAsync.blockLast();
 
-                    beforeCreating();
-                },
-                inner -> {
-                    innerToFluentMap(this);
-                    initializeChildrenFromInner();
-                    afterCreating();
-                },
-                Context.NONE);
+                beforeCreating();
+            }, inner -> {
+                innerToFluentMap(this);
+                initializeChildrenFromInner();
+                afterCreating();
+            }, Context.NONE);
     }
 
     @Override
     protected Mono<NetworkInterfaceInner> createInner() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkInterfaces()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
@@ -563,8 +544,7 @@ class NetworkInterfaceImpl
 
         // Associate an NSG if needed
         if (networkSecurityGroup != null) {
-            this
-                .innerModel()
+            this.innerModel()
                 .withNetworkSecurityGroup(new NetworkSecurityGroupInner().withId(networkSecurityGroup.id()));
         }
 

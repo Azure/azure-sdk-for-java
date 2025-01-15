@@ -5,239 +5,212 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.models.ComponentStateDetails;
 import com.azure.resourcemanager.policyinsights.models.PolicyEvaluationDetails;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Policy state record. */
+/**
+ * Policy state record.
+ */
 @Fluent
-public final class PolicyStateInner {
+public final class PolicyStateInner implements JsonSerializable<PolicyStateInner> {
     /*
      * OData entity ID; always set to null since policy state records do not have an entity ID.
      */
-    @JsonProperty(value = "@odata.id")
     private String odataId;
 
     /*
      * OData context string; used by OData clients to resolve type information based on metadata.
      */
-    @JsonProperty(value = "@odata.context")
     private String odataContext;
 
     /*
      * Timestamp for the policy state record.
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Policy assignment ID.
      */
-    @JsonProperty(value = "policyAssignmentId")
     private String policyAssignmentId;
 
     /*
      * Policy definition ID.
      */
-    @JsonProperty(value = "policyDefinitionId")
     private String policyDefinitionId;
 
     /*
      * Effective parameters for the policy assignment.
      */
-    @JsonProperty(value = "effectiveParameters")
     private String effectiveParameters;
 
     /*
      * Flag which states whether the resource is compliant against the policy assignment it was evaluated against. This
      * property is deprecated; please use ComplianceState instead.
      */
-    @JsonProperty(value = "isCompliant")
     private Boolean isCompliant;
 
     /*
      * Subscription ID.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * Resource location.
      */
-    @JsonProperty(value = "resourceLocation")
     private String resourceLocation;
 
     /*
      * Resource group name.
      */
-    @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
     /*
      * List of resource tags.
      */
-    @JsonProperty(value = "resourceTags")
     private String resourceTags;
 
     /*
      * Policy assignment name.
      */
-    @JsonProperty(value = "policyAssignmentName")
     private String policyAssignmentName;
 
     /*
      * Policy assignment owner.
      */
-    @JsonProperty(value = "policyAssignmentOwner")
     private String policyAssignmentOwner;
 
     /*
      * Policy assignment parameters.
      */
-    @JsonProperty(value = "policyAssignmentParameters")
     private String policyAssignmentParameters;
 
     /*
      * Policy assignment scope.
      */
-    @JsonProperty(value = "policyAssignmentScope")
     private String policyAssignmentScope;
 
     /*
      * Policy definition name.
      */
-    @JsonProperty(value = "policyDefinitionName")
     private String policyDefinitionName;
 
     /*
      * Policy definition action, i.e. effect.
      */
-    @JsonProperty(value = "policyDefinitionAction")
     private String policyDefinitionAction;
 
     /*
      * Policy definition category.
      */
-    @JsonProperty(value = "policyDefinitionCategory")
     private String policyDefinitionCategory;
 
     /*
      * Policy set definition ID, if the policy assignment is for a policy set.
      */
-    @JsonProperty(value = "policySetDefinitionId")
     private String policySetDefinitionId;
 
     /*
      * Policy set definition name, if the policy assignment is for a policy set.
      */
-    @JsonProperty(value = "policySetDefinitionName")
     private String policySetDefinitionName;
 
     /*
      * Policy set definition owner, if the policy assignment is for a policy set.
      */
-    @JsonProperty(value = "policySetDefinitionOwner")
     private String policySetDefinitionOwner;
 
     /*
      * Policy set definition category, if the policy assignment is for a policy set.
      */
-    @JsonProperty(value = "policySetDefinitionCategory")
     private String policySetDefinitionCategory;
 
     /*
      * Policy set definition parameters, if the policy assignment is for a policy set.
      */
-    @JsonProperty(value = "policySetDefinitionParameters")
     private String policySetDefinitionParameters;
 
     /*
-     * Comma separated list of management group IDs, which represent the hierarchy of the management groups the
-     * resource is under.
+     * Comma separated list of management group IDs, which represent the hierarchy of the management groups the resource
+     * is under.
      */
-    @JsonProperty(value = "managementGroupIds")
     private String managementGroupIds;
 
     /*
      * Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
      */
-    @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
 
     /*
      * Compliance state of the resource.
      */
-    @JsonProperty(value = "complianceState")
     private String complianceState;
 
     /*
      * Policy evaluation details.
      */
-    @JsonProperty(value = "policyEvaluationDetails")
     private PolicyEvaluationDetails policyEvaluationDetails;
 
     /*
      * Policy definition group names.
      */
-    @JsonProperty(value = "policyDefinitionGroupNames")
     private List<String> policyDefinitionGroupNames;
 
     /*
      * Components state compliance records populated only when URL contains $expand=components clause.
      */
-    @JsonProperty(value = "components")
     private List<ComponentStateDetails> components;
 
     /*
      * Evaluated policy definition version.
      */
-    @JsonProperty(value = "policyDefinitionVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String policyDefinitionVersion;
 
     /*
      * Evaluated policy set definition version.
      */
-    @JsonProperty(value = "policySetDefinitionVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String policySetDefinitionVersion;
 
     /*
      * Evaluated policy assignment version.
      */
-    @JsonProperty(value = "policyAssignmentVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String policyAssignmentVersion;
 
     /*
      * Policy state record.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of PolicyStateInner class. */
+    /**
+     * Creates an instance of PolicyStateInner class.
+     */
     public PolicyStateInner() {
     }
 
     /**
      * Get the odataId property: OData entity ID; always set to null since policy state records do not have an entity
      * ID.
-     *
+     * 
      * @return the odataId value.
      */
     public String odataId() {
@@ -247,7 +220,7 @@ public final class PolicyStateInner {
     /**
      * Set the odataId property: OData entity ID; always set to null since policy state records do not have an entity
      * ID.
-     *
+     * 
      * @param odataId the odataId value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -259,7 +232,7 @@ public final class PolicyStateInner {
     /**
      * Get the odataContext property: OData context string; used by OData clients to resolve type information based on
      * metadata.
-     *
+     * 
      * @return the odataContext value.
      */
     public String odataContext() {
@@ -269,7 +242,7 @@ public final class PolicyStateInner {
     /**
      * Set the odataContext property: OData context string; used by OData clients to resolve type information based on
      * metadata.
-     *
+     * 
      * @param odataContext the odataContext value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -280,7 +253,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the timestamp property: Timestamp for the policy state record.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -289,7 +262,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the timestamp property: Timestamp for the policy state record.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -300,7 +273,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the resourceId property: Resource ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -309,7 +282,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the resourceId property: Resource ID.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -320,7 +293,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyAssignmentId property: Policy assignment ID.
-     *
+     * 
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
@@ -329,7 +302,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyAssignmentId property: Policy assignment ID.
-     *
+     * 
      * @param policyAssignmentId the policyAssignmentId value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -340,7 +313,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyDefinitionId property: Policy definition ID.
-     *
+     * 
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
@@ -349,7 +322,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyDefinitionId property: Policy definition ID.
-     *
+     * 
      * @param policyDefinitionId the policyDefinitionId value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -360,7 +333,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the effectiveParameters property: Effective parameters for the policy assignment.
-     *
+     * 
      * @return the effectiveParameters value.
      */
     public String effectiveParameters() {
@@ -369,7 +342,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the effectiveParameters property: Effective parameters for the policy assignment.
-     *
+     * 
      * @param effectiveParameters the effectiveParameters value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -381,7 +354,7 @@ public final class PolicyStateInner {
     /**
      * Get the isCompliant property: Flag which states whether the resource is compliant against the policy assignment
      * it was evaluated against. This property is deprecated; please use ComplianceState instead.
-     *
+     * 
      * @return the isCompliant value.
      */
     public Boolean isCompliant() {
@@ -391,7 +364,7 @@ public final class PolicyStateInner {
     /**
      * Set the isCompliant property: Flag which states whether the resource is compliant against the policy assignment
      * it was evaluated against. This property is deprecated; please use ComplianceState instead.
-     *
+     * 
      * @param isCompliant the isCompliant value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -402,7 +375,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the subscriptionId property: Subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -411,7 +384,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the subscriptionId property: Subscription ID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -422,7 +395,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the resourceType property: Resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -431,7 +404,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the resourceType property: Resource type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -442,7 +415,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the resourceLocation property: Resource location.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -451,7 +424,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the resourceLocation property: Resource location.
-     *
+     * 
      * @param resourceLocation the resourceLocation value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -462,7 +435,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the resourceGroup property: Resource group name.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -471,7 +444,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the resourceGroup property: Resource group name.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -482,7 +455,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the resourceTags property: List of resource tags.
-     *
+     * 
      * @return the resourceTags value.
      */
     public String resourceTags() {
@@ -491,7 +464,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the resourceTags property: List of resource tags.
-     *
+     * 
      * @param resourceTags the resourceTags value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -502,7 +475,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyAssignmentName property: Policy assignment name.
-     *
+     * 
      * @return the policyAssignmentName value.
      */
     public String policyAssignmentName() {
@@ -511,7 +484,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyAssignmentName property: Policy assignment name.
-     *
+     * 
      * @param policyAssignmentName the policyAssignmentName value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -522,7 +495,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyAssignmentOwner property: Policy assignment owner.
-     *
+     * 
      * @return the policyAssignmentOwner value.
      */
     public String policyAssignmentOwner() {
@@ -531,7 +504,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyAssignmentOwner property: Policy assignment owner.
-     *
+     * 
      * @param policyAssignmentOwner the policyAssignmentOwner value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -542,7 +515,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyAssignmentParameters property: Policy assignment parameters.
-     *
+     * 
      * @return the policyAssignmentParameters value.
      */
     public String policyAssignmentParameters() {
@@ -551,7 +524,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyAssignmentParameters property: Policy assignment parameters.
-     *
+     * 
      * @param policyAssignmentParameters the policyAssignmentParameters value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -562,7 +535,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyAssignmentScope property: Policy assignment scope.
-     *
+     * 
      * @return the policyAssignmentScope value.
      */
     public String policyAssignmentScope() {
@@ -571,7 +544,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyAssignmentScope property: Policy assignment scope.
-     *
+     * 
      * @param policyAssignmentScope the policyAssignmentScope value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -582,7 +555,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyDefinitionName property: Policy definition name.
-     *
+     * 
      * @return the policyDefinitionName value.
      */
     public String policyDefinitionName() {
@@ -591,7 +564,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyDefinitionName property: Policy definition name.
-     *
+     * 
      * @param policyDefinitionName the policyDefinitionName value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -602,7 +575,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyDefinitionAction property: Policy definition action, i.e. effect.
-     *
+     * 
      * @return the policyDefinitionAction value.
      */
     public String policyDefinitionAction() {
@@ -611,7 +584,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyDefinitionAction property: Policy definition action, i.e. effect.
-     *
+     * 
      * @param policyDefinitionAction the policyDefinitionAction value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -622,7 +595,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyDefinitionCategory property: Policy definition category.
-     *
+     * 
      * @return the policyDefinitionCategory value.
      */
     public String policyDefinitionCategory() {
@@ -631,7 +604,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyDefinitionCategory property: Policy definition category.
-     *
+     * 
      * @param policyDefinitionCategory the policyDefinitionCategory value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -642,7 +615,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policySetDefinitionId property: Policy set definition ID, if the policy assignment is for a policy set.
-     *
+     * 
      * @return the policySetDefinitionId value.
      */
     public String policySetDefinitionId() {
@@ -651,7 +624,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policySetDefinitionId property: Policy set definition ID, if the policy assignment is for a policy set.
-     *
+     * 
      * @param policySetDefinitionId the policySetDefinitionId value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -663,7 +636,7 @@ public final class PolicyStateInner {
     /**
      * Get the policySetDefinitionName property: Policy set definition name, if the policy assignment is for a policy
      * set.
-     *
+     * 
      * @return the policySetDefinitionName value.
      */
     public String policySetDefinitionName() {
@@ -673,7 +646,7 @@ public final class PolicyStateInner {
     /**
      * Set the policySetDefinitionName property: Policy set definition name, if the policy assignment is for a policy
      * set.
-     *
+     * 
      * @param policySetDefinitionName the policySetDefinitionName value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -685,7 +658,7 @@ public final class PolicyStateInner {
     /**
      * Get the policySetDefinitionOwner property: Policy set definition owner, if the policy assignment is for a policy
      * set.
-     *
+     * 
      * @return the policySetDefinitionOwner value.
      */
     public String policySetDefinitionOwner() {
@@ -695,7 +668,7 @@ public final class PolicyStateInner {
     /**
      * Set the policySetDefinitionOwner property: Policy set definition owner, if the policy assignment is for a policy
      * set.
-     *
+     * 
      * @param policySetDefinitionOwner the policySetDefinitionOwner value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -707,7 +680,7 @@ public final class PolicyStateInner {
     /**
      * Get the policySetDefinitionCategory property: Policy set definition category, if the policy assignment is for a
      * policy set.
-     *
+     * 
      * @return the policySetDefinitionCategory value.
      */
     public String policySetDefinitionCategory() {
@@ -717,7 +690,7 @@ public final class PolicyStateInner {
     /**
      * Set the policySetDefinitionCategory property: Policy set definition category, if the policy assignment is for a
      * policy set.
-     *
+     * 
      * @param policySetDefinitionCategory the policySetDefinitionCategory value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -729,7 +702,7 @@ public final class PolicyStateInner {
     /**
      * Get the policySetDefinitionParameters property: Policy set definition parameters, if the policy assignment is for
      * a policy set.
-     *
+     * 
      * @return the policySetDefinitionParameters value.
      */
     public String policySetDefinitionParameters() {
@@ -739,7 +712,7 @@ public final class PolicyStateInner {
     /**
      * Set the policySetDefinitionParameters property: Policy set definition parameters, if the policy assignment is for
      * a policy set.
-     *
+     * 
      * @param policySetDefinitionParameters the policySetDefinitionParameters value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -751,7 +724,7 @@ public final class PolicyStateInner {
     /**
      * Get the managementGroupIds property: Comma separated list of management group IDs, which represent the hierarchy
      * of the management groups the resource is under.
-     *
+     * 
      * @return the managementGroupIds value.
      */
     public String managementGroupIds() {
@@ -761,7 +734,7 @@ public final class PolicyStateInner {
     /**
      * Set the managementGroupIds property: Comma separated list of management group IDs, which represent the hierarchy
      * of the management groups the resource is under.
-     *
+     * 
      * @param managementGroupIds the managementGroupIds value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -773,7 +746,7 @@ public final class PolicyStateInner {
     /**
      * Get the policyDefinitionReferenceId property: Reference ID for the policy definition inside the policy set, if
      * the policy assignment is for a policy set.
-     *
+     * 
      * @return the policyDefinitionReferenceId value.
      */
     public String policyDefinitionReferenceId() {
@@ -783,7 +756,7 @@ public final class PolicyStateInner {
     /**
      * Set the policyDefinitionReferenceId property: Reference ID for the policy definition inside the policy set, if
      * the policy assignment is for a policy set.
-     *
+     * 
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -794,7 +767,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the complianceState property: Compliance state of the resource.
-     *
+     * 
      * @return the complianceState value.
      */
     public String complianceState() {
@@ -803,7 +776,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the complianceState property: Compliance state of the resource.
-     *
+     * 
      * @param complianceState the complianceState value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -814,7 +787,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyEvaluationDetails property: Policy evaluation details.
-     *
+     * 
      * @return the policyEvaluationDetails value.
      */
     public PolicyEvaluationDetails policyEvaluationDetails() {
@@ -823,7 +796,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyEvaluationDetails property: Policy evaluation details.
-     *
+     * 
      * @param policyEvaluationDetails the policyEvaluationDetails value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -834,7 +807,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyDefinitionGroupNames property: Policy definition group names.
-     *
+     * 
      * @return the policyDefinitionGroupNames value.
      */
     public List<String> policyDefinitionGroupNames() {
@@ -843,7 +816,7 @@ public final class PolicyStateInner {
 
     /**
      * Set the policyDefinitionGroupNames property: Policy definition group names.
-     *
+     * 
      * @param policyDefinitionGroupNames the policyDefinitionGroupNames value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -855,7 +828,7 @@ public final class PolicyStateInner {
     /**
      * Get the components property: Components state compliance records populated only when URL contains
      * $expand=components clause.
-     *
+     * 
      * @return the components value.
      */
     public List<ComponentStateDetails> components() {
@@ -865,7 +838,7 @@ public final class PolicyStateInner {
     /**
      * Set the components property: Components state compliance records populated only when URL contains
      * $expand=components clause.
-     *
+     * 
      * @param components the components value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -876,7 +849,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyDefinitionVersion property: Evaluated policy definition version.
-     *
+     * 
      * @return the policyDefinitionVersion value.
      */
     public String policyDefinitionVersion() {
@@ -885,7 +858,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policySetDefinitionVersion property: Evaluated policy set definition version.
-     *
+     * 
      * @return the policySetDefinitionVersion value.
      */
     public String policySetDefinitionVersion() {
@@ -894,7 +867,7 @@ public final class PolicyStateInner {
 
     /**
      * Get the policyAssignmentVersion property: Evaluated policy assignment version.
-     *
+     * 
      * @return the policyAssignmentVersion value.
      */
     public String policyAssignmentVersion() {
@@ -903,17 +876,16 @@ public final class PolicyStateInner {
 
     /**
      * Get the additionalProperties property: Policy state record.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Policy state record.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the PolicyStateInner object itself.
      */
@@ -922,17 +894,9 @@ public final class PolicyStateInner {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -942,5 +906,154 @@ public final class PolicyStateInner {
         if (components() != null) {
             components().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.id", this.odataId);
+        jsonWriter.writeStringField("@odata.context", this.odataContext);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("policyAssignmentId", this.policyAssignmentId);
+        jsonWriter.writeStringField("policyDefinitionId", this.policyDefinitionId);
+        jsonWriter.writeStringField("effectiveParameters", this.effectiveParameters);
+        jsonWriter.writeBooleanField("isCompliant", this.isCompliant);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeStringField("resourceTags", this.resourceTags);
+        jsonWriter.writeStringField("policyAssignmentName", this.policyAssignmentName);
+        jsonWriter.writeStringField("policyAssignmentOwner", this.policyAssignmentOwner);
+        jsonWriter.writeStringField("policyAssignmentParameters", this.policyAssignmentParameters);
+        jsonWriter.writeStringField("policyAssignmentScope", this.policyAssignmentScope);
+        jsonWriter.writeStringField("policyDefinitionName", this.policyDefinitionName);
+        jsonWriter.writeStringField("policyDefinitionAction", this.policyDefinitionAction);
+        jsonWriter.writeStringField("policyDefinitionCategory", this.policyDefinitionCategory);
+        jsonWriter.writeStringField("policySetDefinitionId", this.policySetDefinitionId);
+        jsonWriter.writeStringField("policySetDefinitionName", this.policySetDefinitionName);
+        jsonWriter.writeStringField("policySetDefinitionOwner", this.policySetDefinitionOwner);
+        jsonWriter.writeStringField("policySetDefinitionCategory", this.policySetDefinitionCategory);
+        jsonWriter.writeStringField("policySetDefinitionParameters", this.policySetDefinitionParameters);
+        jsonWriter.writeStringField("managementGroupIds", this.managementGroupIds);
+        jsonWriter.writeStringField("policyDefinitionReferenceId", this.policyDefinitionReferenceId);
+        jsonWriter.writeStringField("complianceState", this.complianceState);
+        jsonWriter.writeJsonField("policyEvaluationDetails", this.policyEvaluationDetails);
+        jsonWriter.writeArrayField("policyDefinitionGroupNames", this.policyDefinitionGroupNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("components", this.components, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyStateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyStateInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyStateInner.
+     */
+    public static PolicyStateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyStateInner deserializedPolicyStateInner = new PolicyStateInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.id".equals(fieldName)) {
+                    deserializedPolicyStateInner.odataId = reader.getString();
+                } else if ("@odata.context".equals(fieldName)) {
+                    deserializedPolicyStateInner.odataContext = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedPolicyStateInner.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedPolicyStateInner.resourceId = reader.getString();
+                } else if ("policyAssignmentId".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyAssignmentId = reader.getString();
+                } else if ("policyDefinitionId".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyDefinitionId = reader.getString();
+                } else if ("effectiveParameters".equals(fieldName)) {
+                    deserializedPolicyStateInner.effectiveParameters = reader.getString();
+                } else if ("isCompliant".equals(fieldName)) {
+                    deserializedPolicyStateInner.isCompliant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedPolicyStateInner.subscriptionId = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedPolicyStateInner.resourceType = reader.getString();
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedPolicyStateInner.resourceLocation = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedPolicyStateInner.resourceGroup = reader.getString();
+                } else if ("resourceTags".equals(fieldName)) {
+                    deserializedPolicyStateInner.resourceTags = reader.getString();
+                } else if ("policyAssignmentName".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyAssignmentName = reader.getString();
+                } else if ("policyAssignmentOwner".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyAssignmentOwner = reader.getString();
+                } else if ("policyAssignmentParameters".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyAssignmentParameters = reader.getString();
+                } else if ("policyAssignmentScope".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyAssignmentScope = reader.getString();
+                } else if ("policyDefinitionName".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyDefinitionName = reader.getString();
+                } else if ("policyDefinitionAction".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyDefinitionAction = reader.getString();
+                } else if ("policyDefinitionCategory".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyDefinitionCategory = reader.getString();
+                } else if ("policySetDefinitionId".equals(fieldName)) {
+                    deserializedPolicyStateInner.policySetDefinitionId = reader.getString();
+                } else if ("policySetDefinitionName".equals(fieldName)) {
+                    deserializedPolicyStateInner.policySetDefinitionName = reader.getString();
+                } else if ("policySetDefinitionOwner".equals(fieldName)) {
+                    deserializedPolicyStateInner.policySetDefinitionOwner = reader.getString();
+                } else if ("policySetDefinitionCategory".equals(fieldName)) {
+                    deserializedPolicyStateInner.policySetDefinitionCategory = reader.getString();
+                } else if ("policySetDefinitionParameters".equals(fieldName)) {
+                    deserializedPolicyStateInner.policySetDefinitionParameters = reader.getString();
+                } else if ("managementGroupIds".equals(fieldName)) {
+                    deserializedPolicyStateInner.managementGroupIds = reader.getString();
+                } else if ("policyDefinitionReferenceId".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyDefinitionReferenceId = reader.getString();
+                } else if ("complianceState".equals(fieldName)) {
+                    deserializedPolicyStateInner.complianceState = reader.getString();
+                } else if ("policyEvaluationDetails".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyEvaluationDetails = PolicyEvaluationDetails.fromJson(reader);
+                } else if ("policyDefinitionGroupNames".equals(fieldName)) {
+                    List<String> policyDefinitionGroupNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPolicyStateInner.policyDefinitionGroupNames = policyDefinitionGroupNames;
+                } else if ("components".equals(fieldName)) {
+                    List<ComponentStateDetails> components
+                        = reader.readArray(reader1 -> ComponentStateDetails.fromJson(reader1));
+                    deserializedPolicyStateInner.components = components;
+                } else if ("policyDefinitionVersion".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyDefinitionVersion = reader.getString();
+                } else if ("policySetDefinitionVersion".equals(fieldName)) {
+                    deserializedPolicyStateInner.policySetDefinitionVersion = reader.getString();
+                } else if ("policyAssignmentVersion".equals(fieldName)) {
+                    deserializedPolicyStateInner.policyAssignmentVersion = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedPolicyStateInner.additionalProperties = additionalProperties;
+
+            return deserializedPolicyStateInner;
+        });
     }
 }

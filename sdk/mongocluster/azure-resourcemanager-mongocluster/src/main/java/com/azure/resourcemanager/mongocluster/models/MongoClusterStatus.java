@@ -12,37 +12,37 @@ import java.util.Collection;
  */
 public final class MongoClusterStatus extends ExpandableStringEnum<MongoClusterStatus> {
     /**
-     * Static value Ready for MongoClusterStatus.
+     * The mongo cluster resource is ready for use.
      */
     public static final MongoClusterStatus READY = fromString("Ready");
 
     /**
-     * Static value Provisioning for MongoClusterStatus.
+     * The mongo cluster resource is being provisioned.
      */
     public static final MongoClusterStatus PROVISIONING = fromString("Provisioning");
 
     /**
-     * Static value Updating for MongoClusterStatus.
+     * The mongo cluster resource is being updated.
      */
     public static final MongoClusterStatus UPDATING = fromString("Updating");
 
     /**
-     * Static value Starting for MongoClusterStatus.
+     * The mongo cluster resource is being started.
      */
     public static final MongoClusterStatus STARTING = fromString("Starting");
 
     /**
-     * Static value Stopping for MongoClusterStatus.
+     * The mongo cluster resource is being stopped.
      */
     public static final MongoClusterStatus STOPPING = fromString("Stopping");
 
     /**
-     * Static value Stopped for MongoClusterStatus.
+     * The mongo cluster resource is stopped.
      */
     public static final MongoClusterStatus STOPPED = fromString("Stopped");
 
     /**
-     * Static value Dropping for MongoClusterStatus.
+     * The mongo cluster resource is being dropped.
      */
     public static final MongoClusterStatus DROPPING = fromString("Dropping");
 

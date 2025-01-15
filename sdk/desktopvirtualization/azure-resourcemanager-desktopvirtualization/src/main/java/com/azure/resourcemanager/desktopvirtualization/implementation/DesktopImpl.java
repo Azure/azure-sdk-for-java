@@ -13,8 +13,7 @@ public final class DesktopImpl implements Desktop {
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    DesktopImpl(
-        DesktopInner innerObject,
+    DesktopImpl(DesktopInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

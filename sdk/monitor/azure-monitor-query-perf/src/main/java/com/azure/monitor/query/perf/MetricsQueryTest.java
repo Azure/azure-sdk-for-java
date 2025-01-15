@@ -34,12 +34,14 @@ public class MetricsQueryTest extends ServiceTest<PerfStressOptions> {
     @Override
     public void run() {
         metricsQueryClient.queryResourceWithResponse(resourceId, Arrays.asList("SuccessfulCalls"),
-                new MetricsQueryOptions().setTop(100), Context.NONE);
+            new MetricsQueryOptions().setTop(100), Context.NONE);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return metricsQueryAsyncClient.queryResourceWithResponse(resourceId, Arrays.asList("SuccessfulCalls"),
-                new MetricsQueryOptions().setTop(100)).then();
+        return metricsQueryAsyncClient
+            .queryResourceWithResponse(resourceId, Arrays.asList("SuccessfulCalls"),
+                new MetricsQueryOptions().setTop(100))
+            .then();
     }
 }

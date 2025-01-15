@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class TagContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"hnp\"},\"id\":\"myqwcab\",\"name\":\"nuilee\",\"type\":\"aswlp\"}")
-                .toObject(TagContractInner.class);
+        TagContractInner model = BinaryData
+            .fromString(
+                "{\"properties\":{\"displayName\":\"hnp\"},\"id\":\"myqwcab\",\"name\":\"nuilee\",\"type\":\"aswlp\"}")
+            .toObject(TagContractInner.class);
         Assertions.assertEquals("hnp", model.displayName());
     }
 

@@ -20,8 +20,9 @@ public final class AzureToAzureNetworkMappingSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureToAzureNetworkMappingSettings model = new AzureToAzureNetworkMappingSettings()
-            .withPrimaryFabricLocation("tmbqdabzfivfok").withRecoveryFabricLocation("sthhzagjfwy");
+        AzureToAzureNetworkMappingSettings model
+            = new AzureToAzureNetworkMappingSettings().withPrimaryFabricLocation("tmbqdabzfivfok")
+                .withRecoveryFabricLocation("sthhzagjfwy");
         model = BinaryData.fromObject(model).toObject(AzureToAzureNetworkMappingSettings.class);
         Assertions.assertEquals("tmbqdabzfivfok", model.primaryFabricLocation());
         Assertions.assertEquals("sthhzagjfwy", model.recoveryFabricLocation());

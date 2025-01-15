@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutomationRulePropertyArrayChangedConditionSupportedArrayType. */
+/**
+ * Defines values for AutomationRulePropertyArrayChangedConditionSupportedArrayType.
+ */
 public final class AutomationRulePropertyArrayChangedConditionSupportedArrayType
     extends ExpandableStringEnum<AutomationRulePropertyArrayChangedConditionSupportedArrayType> {
-    /** Static value Alerts for AutomationRulePropertyArrayChangedConditionSupportedArrayType. */
+    /**
+     * Static value Alerts for AutomationRulePropertyArrayChangedConditionSupportedArrayType.
+     */
     public static final AutomationRulePropertyArrayChangedConditionSupportedArrayType ALERTS = fromString("Alerts");
 
-    /** Static value Labels for AutomationRulePropertyArrayChangedConditionSupportedArrayType. */
+    /**
+     * Static value Labels for AutomationRulePropertyArrayChangedConditionSupportedArrayType.
+     */
     public static final AutomationRulePropertyArrayChangedConditionSupportedArrayType LABELS = fromString("Labels");
 
-    /** Static value Tactics for AutomationRulePropertyArrayChangedConditionSupportedArrayType. */
+    /**
+     * Static value Tactics for AutomationRulePropertyArrayChangedConditionSupportedArrayType.
+     */
     public static final AutomationRulePropertyArrayChangedConditionSupportedArrayType TACTICS = fromString("Tactics");
 
-    /** Static value Comments for AutomationRulePropertyArrayChangedConditionSupportedArrayType. */
+    /**
+     * Static value Comments for AutomationRulePropertyArrayChangedConditionSupportedArrayType.
+     */
     public static final AutomationRulePropertyArrayChangedConditionSupportedArrayType COMMENTS = fromString("Comments");
 
     /**
+     * Creates a new instance of AutomationRulePropertyArrayChangedConditionSupportedArrayType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutomationRulePropertyArrayChangedConditionSupportedArrayType() {
+    }
+
+    /**
      * Creates or finds a AutomationRulePropertyArrayChangedConditionSupportedArrayType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutomationRulePropertyArrayChangedConditionSupportedArrayType.
      */
-    @JsonCreator
     public static AutomationRulePropertyArrayChangedConditionSupportedArrayType fromString(String name) {
         return fromString(name, AutomationRulePropertyArrayChangedConditionSupportedArrayType.class);
     }
 
     /**
      * Gets known AutomationRulePropertyArrayChangedConditionSupportedArrayType values.
-     *
+     * 
      * @return known AutomationRulePropertyArrayChangedConditionSupportedArrayType values.
      */
     public static Collection<AutomationRulePropertyArrayChangedConditionSupportedArrayType> values() {

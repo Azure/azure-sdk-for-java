@@ -115,8 +115,8 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
             bundle.getAttributes().getRecoverableDays());
     }
 
-    CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags,
-                          byte[] wireThumbprint, Integer recoverableDays) {
+    CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags, byte[] wireThumbprint,
+        Integer recoverableDays) {
         IdMetadata idMetadata = getIdMetadata(id, 1, 2, 3, LOGGER);
         this.id = idMetadata.getId();
         this.vaultUrl = idMetadata.getVaultUrl();
@@ -140,8 +140,8 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
         }
 
         this.tags = tags;
-        this.x509Thumbprint = (wireThumbprint == null || wireThumbprint.length == 0)
-            ? null : Base64Url.encode(wireThumbprint);
+        this.x509Thumbprint
+            = (wireThumbprint == null || wireThumbprint.length == 0) ? null : Base64Url.encode(wireThumbprint);
         this.recoverableDays = recoverableDays;
     }
 
@@ -203,7 +203,6 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
         return updatedOn;
     }
 
-
     /**
      * Get the tags associated with the certificate.
      *
@@ -255,7 +254,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
     /**
      * Get the recovery level of the certificate.
-
+    
      * @return The recovery level of the certificate.
      */
     public String getRecoveryLevel() {
@@ -304,9 +303,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeMapField("tags", tags, JsonWriter::writeString)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeMapField("tags", tags, JsonWriter::writeString).writeEndObject();
     }
 
     /**

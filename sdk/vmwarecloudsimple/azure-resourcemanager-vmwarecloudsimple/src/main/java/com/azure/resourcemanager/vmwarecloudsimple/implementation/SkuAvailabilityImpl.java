@@ -12,8 +12,7 @@ public final class SkuAvailabilityImpl implements SkuAvailability {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    SkuAvailabilityImpl(
-        SkuAvailabilityInner innerObject,
+    SkuAvailabilityImpl(SkuAvailabilityInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

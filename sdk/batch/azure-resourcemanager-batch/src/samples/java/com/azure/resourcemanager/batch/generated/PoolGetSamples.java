@@ -10,7 +10,7 @@ package com.azure.resourcemanager.batch.generated;
 public final class PoolGetSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_SecurityProfile.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet_SecurityProfile.json
      */
     /**
      * Sample code: GetPool - SecurityProfile.
@@ -18,12 +18,13 @@ public final class PoolGetSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void getPoolSecurityProfile(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
-            com.azure.core.util.Context.NONE);
+        manager.pools()
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/
      * PoolGet_VirtualMachineConfiguration_Extensions.json
      */
     /**
@@ -33,12 +34,13 @@ public final class PoolGetSamples {
      */
     public static void
         getPoolVirtualMachineConfigurationExtensions(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
-            com.azure.core.util.Context.NONE);
+        manager.pools()
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/
      * PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
      */
     /**
@@ -47,13 +49,14 @@ public final class PoolGetSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void getPoolVirtualMachineConfigurationOSDisk(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
-            com.azure.core.util.Context.NONE);
+        manager.pools()
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_UpgradePolicy.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet_UpgradePolicy.json
      */
     /**
      * Sample code: GetPool - UpgradePolicy.
@@ -61,12 +64,13 @@ public final class PoolGetSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void getPoolUpgradePolicy(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
-            com.azure.core.util.Context.NONE);
+        manager.pools()
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/
      * PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
      */
     /**
@@ -76,13 +80,14 @@ public final class PoolGetSamples {
      */
     public static void getPoolVirtualMachineConfigurationServiceArtifactReference(
         com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
-            com.azure.core.util.Context.NONE);
+        manager.pools()
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_AcceleratedNetworking.
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet_AcceleratedNetworking.
      * json
      */
     /**
@@ -91,12 +96,13 @@ public final class PoolGetSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void getPoolAcceleratedNetworking(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
-            com.azure.core.util.Context.NONE);
+        manager.pools()
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet.json
      */
     /**
      * Sample code: GetPool.
@@ -104,7 +110,8 @@ public final class PoolGetSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void getPool(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
-            com.azure.core.util.Context.NONE);
+        manager.pools()
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
+                com.azure.core.util.Context.NONE);
     }
 }

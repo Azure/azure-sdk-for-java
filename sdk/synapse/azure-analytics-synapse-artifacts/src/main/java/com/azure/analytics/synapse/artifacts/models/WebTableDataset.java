@@ -24,12 +24,14 @@ public class WebTableDataset extends Dataset {
     private String type = "WebTable";
 
     /*
-     * The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer), minimum: 0.
+     * The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer),
+     * minimum: 0.
      */
     private Object index;
 
     /*
-     * The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType string).
+     * The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType
+     * string).
      */
     private Object path;
 

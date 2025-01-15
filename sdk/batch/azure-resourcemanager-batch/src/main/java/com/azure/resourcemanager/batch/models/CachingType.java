@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The type of caching to enable for the disk.
  */
@@ -41,7 +38,6 @@ public enum CachingType {
      * @param value the serialized value to parse.
      * @return the parsed CachingType object, or null if unable to parse.
      */
-    @JsonCreator
     public static CachingType fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum CachingType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

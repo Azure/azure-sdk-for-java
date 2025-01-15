@@ -124,8 +124,9 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     Mono<Response<TimeZoneResult>> getTimezoneByIdWithResponse(TimeZoneIdOptions options, Context context) {
-        return this.serviceClient.getTimezoneByIDWithResponseAsync(JsonFormat.JSON, options.getTimezoneId(),
-                options.getLanguage(), options.getOptions(), options.getTimestamp(), options.getDaylightSavingsTime(),
+        return this.serviceClient
+            .getTimezoneByIDWithResponseAsync(JsonFormat.JSON, options.getTimezoneId(), options.getLanguage(),
+                options.getOptions(), options.getTimestamp(), options.getDaylightSavingsTime(),
                 options.getDaylightSavingsTimeLastingYears(), context)
             .onErrorMap(TimeZoneAsyncClient::mapThrowable);
     }
@@ -206,10 +207,10 @@ public final class TimeZoneAsyncClient {
      */
     Mono<Response<TimeZoneResult>> getTimezoneByCoordinatesWithResponse(TimeZoneCoordinateOptions options,
         Context context) {
-        return this.serviceClient.getTimezoneByCoordinatesWithResponseAsync(JsonFormat.JSON,
-                Utility.toCoordinateList(options.getPosition()), options.getLanguage(), options.getTimezoneOptions(),
-                options.getTimestamp(), options.getDaylightSavingsTime(), options.getDaylightSavingsTimeLastingYears(),
-                context)
+        return this.serviceClient
+            .getTimezoneByCoordinatesWithResponseAsync(JsonFormat.JSON, Utility.toCoordinateList(options.getPosition()),
+                options.getLanguage(), options.getTimezoneOptions(), options.getTimestamp(),
+                options.getDaylightSavingsTime(), options.getDaylightSavingsTimeLastingYears(), context)
             .onErrorMap(TimeZoneAsyncClient::mapThrowable);
     }
 
@@ -468,8 +469,8 @@ public final class TimeZoneAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<IanaId>>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId,
         String windowsTerritoryCode) {
-        return withContext(context ->
-            convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode, context));
+        return withContext(
+            context -> convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode, context));
     }
 
     /**
@@ -496,8 +497,9 @@ public final class TimeZoneAsyncClient {
      */
     Mono<Response<List<IanaId>>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId,
         String windowsTerritoryCode, Context context) {
-        return this.serviceClient.convertWindowsTimezoneToIanaWithResponseAsync(
-            JsonFormat.JSON, windowsTimezoneId, windowsTerritoryCode, context)
+        return this.serviceClient
+            .convertWindowsTimezoneToIanaWithResponseAsync(JsonFormat.JSON, windowsTimezoneId, windowsTerritoryCode,
+                context)
             .onErrorMap(TimeZoneAsyncClient::mapThrowable);
     }
 

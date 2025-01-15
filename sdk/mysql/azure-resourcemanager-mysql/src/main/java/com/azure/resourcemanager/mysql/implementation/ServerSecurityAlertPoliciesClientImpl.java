@@ -55,10 +55,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @param client the instance of the service client containing this operation class.
      */
     ServerSecurityAlertPoliciesClientImpl(MySqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ServerSecurityAlertPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ServerSecurityAlertPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,63 +67,46 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
     private interface ServerSecurityAlertPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/securityAlertPolicies/{securityAlertPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/securityAlertPolicies/{securityAlertPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerSecurityAlertPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<ServerSecurityAlertPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("securityAlertPolicyName") SecurityAlertPolicyName securityAlertPolicyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/securityAlertPolicies/{securityAlertPolicyName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/securityAlertPolicies/{securityAlertPolicyName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("securityAlertPolicyName") SecurityAlertPolicyName securityAlertPolicyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ServerSecurityAlertPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/securityAlertPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/securityAlertPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerSecurityAlertPolicyListResult>> listByServer(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ServerSecurityAlertPolicyListResult>> listByServer(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerSecurityAlertPolicyListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -140,13 +121,11 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName) {
+    private Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, SecurityAlertPolicyName securityAlertPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -156,31 +135,18 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            securityAlertPolicyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName,
+                securityAlertPolicyName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -197,13 +163,11 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName, Context context) {
+    private Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, SecurityAlertPolicyName securityAlertPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -213,29 +177,18 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                securityAlertPolicyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, securityAlertPolicyName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -250,17 +203,16 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server's security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerSecurityAlertPolicyInner> getAsync(
-        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName) {
+    private Mono<ServerSecurityAlertPolicyInner> getAsync(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
         return getWithResponseAsync(resourceGroupName, serverName, securityAlertPolicyName)
-            .flatMap(
-                (Response<ServerSecurityAlertPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<ServerSecurityAlertPolicyInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -275,8 +227,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server's security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerSecurityAlertPolicyInner get(
-        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName) {
+    public ServerSecurityAlertPolicyInner get(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
         return getAsync(resourceGroupName, serverName, securityAlertPolicyName).block();
     }
 
@@ -293,8 +245,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server's security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerSecurityAlertPolicyInner> getWithResponse(
-        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName, Context context) {
+    public Response<ServerSecurityAlertPolicyInner> getWithResponse(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, securityAlertPolicyName, context).block();
     }
 
@@ -311,16 +263,11 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -330,15 +277,12 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -348,19 +292,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
         final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            securityAlertPolicyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                securityAlertPolicyName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -378,17 +311,12 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -398,15 +326,12 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -416,17 +341,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
         final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                securityAlertPolicyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, securityAlertPolicyName,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
@@ -443,21 +359,13 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            SecurityAlertPolicyName securityAlertPolicyName,
-            ServerSecurityAlertPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters);
-        return this
-            .client
-            .<ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerSecurityAlertPolicyInner.class,
-                ServerSecurityAlertPolicyInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+            SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters);
+        return this.client.<ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerSecurityAlertPolicyInner.class, ServerSecurityAlertPolicyInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -475,24 +383,15 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            SecurityAlertPolicyName securityAlertPolicyName,
-            ServerSecurityAlertPolicyInner parameters,
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+            SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters,
             Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, securityAlertPolicyName, parameters, context);
-        return this
-            .client
-            .<ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerSecurityAlertPolicyInner.class,
-                ServerSecurityAlertPolicyInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
+            securityAlertPolicyName, parameters, context);
+        return this.client.<ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerSecurityAlertPolicyInner.class, ServerSecurityAlertPolicyInner.class,
+            context);
     }
 
     /**
@@ -509,9 +408,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
+        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName,
         ServerSecurityAlertPolicyInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters)
             .getSyncPoller();
@@ -532,11 +429,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters,
-        Context context) {
+        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName,
+        ServerSecurityAlertPolicyInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters, context)
             .getSyncPoller();
     }
@@ -554,13 +448,9 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters)
-            .last()
+    private Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -578,12 +468,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters,
-        Context context) {
+    private Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -602,11 +488,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerSecurityAlertPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters) {
+    public ServerSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters).block();
     }
 
@@ -624,12 +507,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerSecurityAlertPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ServerSecurityAlertPolicyInner parameters,
-        Context context) {
+    public ServerSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters, context).block();
     }
 
@@ -645,13 +524,11 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
+    private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -661,34 +538,16 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<ServerSecurityAlertPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<ServerSecurityAlertPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -705,13 +564,11 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -721,32 +578,17 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -761,8 +603,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerSecurityAlertPolicyInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
@@ -778,10 +619,9 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return the server's threat detection policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerSecurityAlertPolicyInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+    private PagedFlux<ServerSecurityAlertPolicyInner> listByServerAsync(String resourceGroupName, String serverName,
+        Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
@@ -812,8 +652,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return the server's threat detection policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerSecurityAlertPolicyInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
+    public PagedIterable<ServerSecurityAlertPolicyInner> listByServer(String resourceGroupName, String serverName,
+        Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
@@ -833,23 +673,14 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServerSecurityAlertPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ServerSecurityAlertPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -865,29 +696,19 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

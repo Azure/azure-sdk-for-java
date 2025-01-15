@@ -42,8 +42,8 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
      * @param client the instance of the service client containing this operation class.
      */
     RecoverableServersClientImpl(MySqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RecoverableServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RecoverableServersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,20 +54,15 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
     private interface RecoverableServersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/recoverableServers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/recoverableServers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecoverableServerResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RecoverableServerResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -81,19 +76,15 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
      * @return a recoverable MySQL Server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoverableServerResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName) {
+    private Mono<Response<RecoverableServerResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -105,17 +96,8 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
         final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, serverName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -131,19 +113,15 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
      * @return a recoverable MySQL Server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoverableServerResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<Response<RecoverableServerResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -155,15 +133,8 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
         final String apiVersion = "2017-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            serverName, accept, context);
     }
 
     /**
@@ -179,14 +150,13 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecoverableServerResourceInner> getAsync(String resourceGroupName, String serverName) {
         return getWithResponseAsync(resourceGroupName, serverName)
-            .flatMap(
-                (Response<RecoverableServerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<RecoverableServerResourceInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -216,8 +186,8 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
      * @return a recoverable MySQL Server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecoverableServerResourceInner> getWithResponse(
-        String resourceGroupName, String serverName, Context context) {
+    public Response<RecoverableServerResourceInner> getWithResponse(String resourceGroupName, String serverName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, context).block();
     }
 }

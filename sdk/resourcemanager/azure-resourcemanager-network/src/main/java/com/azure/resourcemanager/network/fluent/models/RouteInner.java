@@ -204,21 +204,6 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Set the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
-     * regardless of LPM.
-     * 
-     * @param hasBgpOverride the hasBgpOverride value to set.
-     * @return the RouteInner object itself.
-     */
-    public RouteInner withHasBgpOverride(Boolean hasBgpOverride) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoutePropertiesFormat();
-        }
-        this.innerProperties().withHasBgpOverride(hasBgpOverride);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

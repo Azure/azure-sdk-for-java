@@ -13,29 +13,33 @@ public final class ResourceFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceFile model = BinaryData.fromString(
-            "{\"autoStorageContainerName\":\"youlp\",\"storageContainerUrl\":\"v\",\"httpUrl\":\"glrvimjwosytxi\",\"blobPrefix\":\"skfc\",\"filePath\":\"qumiek\",\"fileMode\":\"zzikhlyfjhdg\",\"identityReference\":{\"resourceId\":\"ebdunyg\"}}")
+            "{\"autoStorageContainerName\":\"mncwsobqwcsdb\",\"storageContainerUrl\":\"dcfhucqdpf\",\"httpUrl\":\"glsbjjc\",\"blobPrefix\":\"vxb\",\"filePath\":\"vudutncor\",\"fileMode\":\"lxqtvcofudfl\",\"identityReference\":{\"resourceId\":\"jub\"}}")
             .toObject(ResourceFile.class);
-        Assertions.assertEquals("youlp", model.autoStorageContainerName());
-        Assertions.assertEquals("v", model.storageContainerUrl());
-        Assertions.assertEquals("glrvimjwosytxi", model.httpUrl());
-        Assertions.assertEquals("skfc", model.blobPrefix());
-        Assertions.assertEquals("qumiek", model.filePath());
-        Assertions.assertEquals("zzikhlyfjhdg", model.fileMode());
-        Assertions.assertEquals("ebdunyg", model.identityReference().resourceId());
+        Assertions.assertEquals("mncwsobqwcsdb", model.autoStorageContainerName());
+        Assertions.assertEquals("dcfhucqdpf", model.storageContainerUrl());
+        Assertions.assertEquals("glsbjjc", model.httpUrl());
+        Assertions.assertEquals("vxb", model.blobPrefix());
+        Assertions.assertEquals("vudutncor", model.filePath());
+        Assertions.assertEquals("lxqtvcofudfl", model.fileMode());
+        Assertions.assertEquals("jub", model.identityReference().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceFile model = new ResourceFile().withAutoStorageContainerName("youlp").withStorageContainerUrl("v")
-            .withHttpUrl("glrvimjwosytxi").withBlobPrefix("skfc").withFilePath("qumiek").withFileMode("zzikhlyfjhdg")
-            .withIdentityReference(new ComputeNodeIdentityReference().withResourceId("ebdunyg"));
+        ResourceFile model = new ResourceFile().withAutoStorageContainerName("mncwsobqwcsdb")
+            .withStorageContainerUrl("dcfhucqdpf")
+            .withHttpUrl("glsbjjc")
+            .withBlobPrefix("vxb")
+            .withFilePath("vudutncor")
+            .withFileMode("lxqtvcofudfl")
+            .withIdentityReference(new ComputeNodeIdentityReference().withResourceId("jub"));
         model = BinaryData.fromObject(model).toObject(ResourceFile.class);
-        Assertions.assertEquals("youlp", model.autoStorageContainerName());
-        Assertions.assertEquals("v", model.storageContainerUrl());
-        Assertions.assertEquals("glrvimjwosytxi", model.httpUrl());
-        Assertions.assertEquals("skfc", model.blobPrefix());
-        Assertions.assertEquals("qumiek", model.filePath());
-        Assertions.assertEquals("zzikhlyfjhdg", model.fileMode());
-        Assertions.assertEquals("ebdunyg", model.identityReference().resourceId());
+        Assertions.assertEquals("mncwsobqwcsdb", model.autoStorageContainerName());
+        Assertions.assertEquals("dcfhucqdpf", model.storageContainerUrl());
+        Assertions.assertEquals("glsbjjc", model.httpUrl());
+        Assertions.assertEquals("vxb", model.blobPrefix());
+        Assertions.assertEquals("vudutncor", model.filePath());
+        Assertions.assertEquals("lxqtvcofudfl", model.fileMode());
+        Assertions.assertEquals("jub", model.identityReference().resourceId());
     }
 }

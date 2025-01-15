@@ -10,34 +10,44 @@ import com.azure.resourcemanager.batch.models.DiffDiskPlacement;
 import com.azure.resourcemanager.batch.models.DiffDiskSettings;
 import com.azure.resourcemanager.batch.models.ManagedDisk;
 import com.azure.resourcemanager.batch.models.OSDisk;
+import com.azure.resourcemanager.batch.models.SecurityEncryptionTypes;
 import com.azure.resourcemanager.batch.models.StorageAccountType;
+import com.azure.resourcemanager.batch.models.VMDiskSecurityProfile;
 import org.junit.jupiter.api.Assertions;
 
 public final class OSDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OSDisk model = BinaryData.fromString(
-            "{\"ephemeralOSDiskSettings\":{\"placement\":\"CacheDisk\"},\"caching\":\"None\",\"managedDisk\":{\"storageAccountType\":\"Standard_LRS\"},\"diskSizeGB\":406179535,\"writeAcceleratorEnabled\":true}")
+            "{\"ephemeralOSDiskSettings\":{\"placement\":\"CacheDisk\"},\"caching\":\"None\",\"managedDisk\":{\"storageAccountType\":\"StandardSSD_LRS\",\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\"}},\"diskSizeGB\":988727085,\"writeAcceleratorEnabled\":true}")
             .toObject(OSDisk.class);
         Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.ephemeralOSDiskSettings().placement());
         Assertions.assertEquals(CachingType.NONE, model.caching());
-        Assertions.assertEquals(StorageAccountType.STANDARD_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals(406179535, model.diskSizeGB());
+        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
+            model.managedDisk().securityProfile().securityEncryptionType());
+        Assertions.assertEquals(988727085, model.diskSizeGB());
         Assertions.assertEquals(true, model.writeAcceleratorEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OSDisk model = new OSDisk()
-            .withEphemeralOSDiskSettings(new DiffDiskSettings().withPlacement(DiffDiskPlacement.CACHE_DISK))
-            .withCaching(CachingType.NONE)
-            .withManagedDisk(new ManagedDisk().withStorageAccountType(StorageAccountType.STANDARD_LRS))
-            .withDiskSizeGB(406179535).withWriteAcceleratorEnabled(true);
+        OSDisk model
+            = new OSDisk()
+                .withEphemeralOSDiskSettings(new DiffDiskSettings().withPlacement(DiffDiskPlacement.CACHE_DISK))
+                .withCaching(CachingType.NONE)
+                .withManagedDisk(new ManagedDisk().withStorageAccountType(StorageAccountType.STANDARD_SSD_LRS)
+                    .withSecurityProfile(new VMDiskSecurityProfile()
+                        .withSecurityEncryptionType(SecurityEncryptionTypes.NON_PERSISTED_TPM)))
+                .withDiskSizeGB(988727085)
+                .withWriteAcceleratorEnabled(true);
         model = BinaryData.fromObject(model).toObject(OSDisk.class);
         Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.ephemeralOSDiskSettings().placement());
         Assertions.assertEquals(CachingType.NONE, model.caching());
-        Assertions.assertEquals(StorageAccountType.STANDARD_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals(406179535, model.diskSizeGB());
+        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
+            model.managedDisk().securityProfile().securityEncryptionType());
+        Assertions.assertEquals(988727085, model.diskSizeGB());
         Assertions.assertEquals(true, model.writeAcceleratorEnabled());
     }
 }

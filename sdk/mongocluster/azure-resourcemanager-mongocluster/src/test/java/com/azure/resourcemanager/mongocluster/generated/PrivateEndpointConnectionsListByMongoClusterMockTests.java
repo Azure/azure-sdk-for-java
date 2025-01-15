@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByMongoClusterMockTests {
     @Test
     public void testListByMongoCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"zfbuhf\"],\"privateEndpoint\":{\"id\":\"axkffei\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"vmezy\",\"actionsRequired\":\"hxmzsbbzoggig\"},\"provisioningState\":\"Failed\"},\"id\":\"ur\",\"name\":\"jx\",\"type\":\"jnspydp\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"zbinjeputtm\",\"ywnuzoq\",\"tiyqzrnkcqv\"],\"privateEndpoint\":{\"id\":\"whzlsicohoq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"lryav\",\"actionsRequired\":\"heun\"},\"provisioningState\":\"Failed\"},\"id\":\"gyxzk\",\"name\":\"noc\",\"type\":\"koklya\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PrivateEndpointConnectionsListByMongoClusterMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpointConnectionResource> response = manager.privateEndpointConnections()
-            .listByMongoCluster("onpc", "hocohslkev", com.azure.core.util.Context.NONE);
+            .listByMongoCluster("agalpbuxwgipwhon", "wkgshwa", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("vmezy",
+        Assertions.assertEquals("lryav",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("hxmzsbbzoggig",
+        Assertions.assertEquals("heun",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

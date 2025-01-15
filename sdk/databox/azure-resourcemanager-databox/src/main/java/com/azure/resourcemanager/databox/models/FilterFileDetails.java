@@ -6,30 +6,36 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the filter files to be used for data transfer. */
+/**
+ * Details of the filter files to be used for data transfer.
+ */
 @Fluent
-public final class FilterFileDetails {
+public final class FilterFileDetails implements JsonSerializable<FilterFileDetails> {
     /*
      * Type of the filter file.
      */
-    @JsonProperty(value = "filterFileType", required = true)
     private FilterFileType filterFileType;
 
     /*
      * Path of the file that contains the details of all items to transfer.
      */
-    @JsonProperty(value = "filterFilePath", required = true)
     private String filterFilePath;
 
-    /** Creates an instance of FilterFileDetails class. */
+    /**
+     * Creates an instance of FilterFileDetails class.
+     */
     public FilterFileDetails() {
     }
 
     /**
      * Get the filterFileType property: Type of the filter file.
-     *
+     * 
      * @return the filterFileType value.
      */
     public FilterFileType filterFileType() {
@@ -38,7 +44,7 @@ public final class FilterFileDetails {
 
     /**
      * Set the filterFileType property: Type of the filter file.
-     *
+     * 
      * @param filterFileType the filterFileType value to set.
      * @return the FilterFileDetails object itself.
      */
@@ -49,7 +55,7 @@ public final class FilterFileDetails {
 
     /**
      * Get the filterFilePath property: Path of the file that contains the details of all items to transfer.
-     *
+     * 
      * @return the filterFilePath value.
      */
     public String filterFilePath() {
@@ -58,7 +64,7 @@ public final class FilterFileDetails {
 
     /**
      * Set the filterFilePath property: Path of the file that contains the details of all items to transfer.
-     *
+     * 
      * @param filterFilePath the filterFilePath value to set.
      * @return the FilterFileDetails object itself.
      */
@@ -69,23 +75,62 @@ public final class FilterFileDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filterFileType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filterFileType in model FilterFileDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property filterFileType in model FilterFileDetails"));
         }
         if (filterFilePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filterFilePath in model FilterFileDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property filterFilePath in model FilterFileDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FilterFileDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filterFileType",
+            this.filterFileType == null ? null : this.filterFileType.toString());
+        jsonWriter.writeStringField("filterFilePath", this.filterFilePath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FilterFileDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FilterFileDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FilterFileDetails.
+     */
+    public static FilterFileDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FilterFileDetails deserializedFilterFileDetails = new FilterFileDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filterFileType".equals(fieldName)) {
+                    deserializedFilterFileDetails.filterFileType = FilterFileType.fromString(reader.getString());
+                } else if ("filterFilePath".equals(fieldName)) {
+                    deserializedFilterFileDetails.filterFilePath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFilterFileDetails;
+        });
+    }
 }

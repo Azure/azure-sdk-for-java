@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LiveEvent action input parameter definition. */
+/**
+ * The LiveEvent action input parameter definition.
+ */
 @Fluent
-public final class LiveEventActionInput {
+public final class LiveEventActionInput implements JsonSerializable<LiveEventActionInput> {
     /*
-     * The flag indicates whether live outputs are automatically deleted when live event is being stopped. Deleting
-     * live outputs do not delete the underlying assets.
+     * The flag indicates whether live outputs are automatically deleted when live event is being stopped. Deleting live
+     * outputs do not delete the underlying assets.
      */
-    @JsonProperty(value = "removeOutputsOnStop")
     private Boolean removeOutputsOnStop;
 
-    /** Creates an instance of LiveEventActionInput class. */
+    /**
+     * Creates an instance of LiveEventActionInput class.
+     */
     public LiveEventActionInput() {
     }
 
     /**
      * Get the removeOutputsOnStop property: The flag indicates whether live outputs are automatically deleted when live
      * event is being stopped. Deleting live outputs do not delete the underlying assets.
-     *
+     * 
      * @return the removeOutputsOnStop value.
      */
     public Boolean removeOutputsOnStop() {
@@ -34,7 +41,7 @@ public final class LiveEventActionInput {
     /**
      * Set the removeOutputsOnStop property: The flag indicates whether live outputs are automatically deleted when live
      * event is being stopped. Deleting live outputs do not delete the underlying assets.
-     *
+     * 
      * @param removeOutputsOnStop the removeOutputsOnStop value to set.
      * @return the LiveEventActionInput object itself.
      */
@@ -45,9 +52,45 @@ public final class LiveEventActionInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("removeOutputsOnStop", this.removeOutputsOnStop);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiveEventActionInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiveEventActionInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LiveEventActionInput.
+     */
+    public static LiveEventActionInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiveEventActionInput deserializedLiveEventActionInput = new LiveEventActionInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("removeOutputsOnStop".equals(fieldName)) {
+                    deserializedLiveEventActionInput.removeOutputsOnStop = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiveEventActionInput;
+        });
     }
 }

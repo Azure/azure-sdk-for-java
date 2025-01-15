@@ -21,7 +21,7 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
     @Test
     public void testGetMonitoringDataWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"nisinpkcww\",\"nodes\":[{\"nodeName\":\"b\",\"availableMemoryInMB\":26795964,\"cpuUtilization\":2078169809,\"concurrentJobsLimit\":1586982490,\"concurrentJobsRunning\":597607505,\"maxConcurrentJobs\":1140443642,\"sentBytes\":0.19900799,\"receivedBytes\":92.48324,\"\":{\"zxotwralnl\":\"datauptnhuybtmtokohy\",\"sarfmjschcxud\":\"datazlnrellwfgyabg\",\"qlltoiud\":\"dataomhhsumzfvrak\",\"bsbhaqsu\":\"dataeoibehrholjjxi\"}}]}";
+            = "{\"name\":\"pkskbidmzzjp\",\"nodes\":[{\"nodeName\":\"esbteqfenhli\",\"availableMemoryInMB\":346827501,\"cpuUtilization\":981268010,\"concurrentJobsLimit\":855967901,\"concurrentJobsRunning\":1611200927,\"maxConcurrentJobs\":2069802386,\"sentBytes\":88.11751,\"receivedBytes\":6.6926837,\"\":{\"rjkinofwzci\":\"datadhxamjhpqfjpef\",\"qesyifdrbkprblw\":\"datal\",\"qqts\":\"databjse\"}},{\"nodeName\":\"pogtrwkuwna\",\"availableMemoryInMB\":560037150,\"cpuUtilization\":692226376,\"concurrentJobsLimit\":34678653,\"concurrentJobsRunning\":1020953911,\"maxConcurrentJobs\":142241566,\"sentBytes\":79.9216,\"receivedBytes\":71.34564,\"\":{\"tsgovnr\":\"dataovgipq\",\"tcrxcnuyfvri\":\"datayb\",\"onnvay\":\"datazqoi\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeMonitoringData response = manager.integrationRuntimes()
-            .getMonitoringDataWithResponse("yuukhssretugorc", "kcsevq", "dwktogmcblwh",
+            .getMonitoringDataWithResponse("owvjupxibu", "gtrnjzbvbwabily", "mfaxepuvwahfnlks",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nisinpkcww", response.name());
+        Assertions.assertEquals("pkskbidmzzjp", response.name());
     }
 }

@@ -17,15 +17,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Network Watcher API in Azure. */
 @Fluent
-public interface NetworkWatchers
-    extends SupportsListing<NetworkWatcher>,
-        SupportsCreating<NetworkWatcher.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsListingByResourceGroup<NetworkWatcher>,
-        SupportsGettingByResourceGroup<NetworkWatcher>,
-        SupportsGettingById<NetworkWatcher>,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<NetworkWatcher>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+public interface NetworkWatchers extends SupportsListing<NetworkWatcher>,
+    SupportsCreating<NetworkWatcher.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListingByResourceGroup<NetworkWatcher>, SupportsGettingByResourceGroup<NetworkWatcher>,
+    SupportsGettingById<NetworkWatcher>, SupportsDeletingByResourceGroup, SupportsBatchCreation<NetworkWatcher>,
+    SupportsBatchDeletion, HasManager<NetworkManager> {
 }

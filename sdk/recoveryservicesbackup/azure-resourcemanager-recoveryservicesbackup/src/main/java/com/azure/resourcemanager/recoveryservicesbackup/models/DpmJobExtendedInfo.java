@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,24 +17,20 @@ import java.util.Map;
  * Additional information on the DPM workload-specific job.
  */
 @Fluent
-public final class DpmJobExtendedInfo {
+public final class DpmJobExtendedInfo implements JsonSerializable<DpmJobExtendedInfo> {
     /*
      * List of tasks associated with this job.
      */
-    @JsonProperty(value = "tasksList")
     private List<DpmJobTaskDetails> tasksList;
 
     /*
      * The job properties.
      */
-    @JsonProperty(value = "propertyBag")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> propertyBag;
 
     /*
      * Non localized error message on job execution.
      */
-    @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
     /**
@@ -109,5 +108,50 @@ public final class DpmJobExtendedInfo {
         if (tasksList() != null) {
             tasksList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tasksList", this.tasksList, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("propertyBag", this.propertyBag, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("dynamicErrorMessage", this.dynamicErrorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DpmJobExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DpmJobExtendedInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DpmJobExtendedInfo.
+     */
+    public static DpmJobExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DpmJobExtendedInfo deserializedDpmJobExtendedInfo = new DpmJobExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tasksList".equals(fieldName)) {
+                    List<DpmJobTaskDetails> tasksList
+                        = reader.readArray(reader1 -> DpmJobTaskDetails.fromJson(reader1));
+                    deserializedDpmJobExtendedInfo.tasksList = tasksList;
+                } else if ("propertyBag".equals(fieldName)) {
+                    Map<String, String> propertyBag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDpmJobExtendedInfo.propertyBag = propertyBag;
+                } else if ("dynamicErrorMessage".equals(fieldName)) {
+                    deserializedDpmJobExtendedInfo.dynamicErrorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDpmJobExtendedInfo;
+        });
     }
 }

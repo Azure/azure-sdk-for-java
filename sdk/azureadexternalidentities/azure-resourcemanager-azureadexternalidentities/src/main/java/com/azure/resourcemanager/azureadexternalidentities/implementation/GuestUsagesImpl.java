@@ -19,11 +19,9 @@ public final class GuestUsagesImpl implements GuestUsages {
 
     private final GuestUsagesClient innerClient;
 
-    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager
-        serviceManager;
+    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager;
 
-    public GuestUsagesImpl(
-        GuestUsagesClient innerClient,
+    public GuestUsagesImpl(GuestUsagesClient innerClient,
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -46,15 +44,12 @@ public final class GuestUsagesImpl implements GuestUsages {
         }
     }
 
-    public Response<GuestUsagesResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<GuestUsagesResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+    public Response<GuestUsagesResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<GuestUsagesResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GuestUsagesResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -77,26 +72,21 @@ public final class GuestUsagesImpl implements GuestUsages {
     }
 
     public PagedIterable<GuestUsagesResource> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<GuestUsagesResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        PagedIterable<GuestUsagesResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new GuestUsagesResourceImpl(inner1, this.manager()));
     }
 
     public GuestUsagesResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "guestUsages");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'guestUsages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'guestUsages'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
@@ -104,18 +94,13 @@ public final class GuestUsagesImpl implements GuestUsages {
     public Response<GuestUsagesResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "guestUsages");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'guestUsages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'guestUsages'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
@@ -123,18 +108,13 @@ public final class GuestUsagesImpl implements GuestUsages {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "guestUsages");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'guestUsages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'guestUsages'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
@@ -142,18 +122,13 @@ public final class GuestUsagesImpl implements GuestUsages {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "guestUsages");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'guestUsages'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'guestUsages'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, resourceName, context);
     }

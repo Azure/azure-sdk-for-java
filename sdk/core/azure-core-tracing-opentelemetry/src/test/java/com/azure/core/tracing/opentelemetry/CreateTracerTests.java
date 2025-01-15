@@ -4,8 +4,7 @@
 package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.tracing.SpanKind;
-import com.azure.core.util.tracing.StartSpanOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import io.opentelemetry.api.OpenTelemetry;
@@ -100,19 +99,13 @@ public class CreateTracerTests {
     public void defaultSchemaVersion() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null, options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer(new LibraryTelemetryOptions("test"), options);
 
-        StartSpanOptions startSpanOptions
-            = new StartSpanOptions(SpanKind.PRODUCER).setAttribute("hostname", "addr").setAttribute("not-mapped", 42);
+        Context span = tracer.start("test", Context.NONE);
+        tracer.end(null, null, span);
 
-        Context span = tracer.start("test", startSpanOptions, Context.NONE);
-        tracer.setAttribute("entity-path", "foo", span);
-
-        SpanData data = getSpanData(span);
-        assertEquals(3, data.getAttributes().size());
-        assertEquals("foo", data.getAttributes().get(AttributeKey.stringKey("messaging.destination.name")));
-        assertEquals("addr", data.getAttributes().get(AttributeKey.stringKey("server.address")));
-        assertEquals(42, data.getAttributes().get(AttributeKey.longKey("not-mapped")));
+        assertEquals("https://opentelemetry.io/schemas/1.23.1",
+            getSpanData(span).getInstrumentationScopeInfo().getSchemaUrl());
     }
 
     @Test
@@ -141,6 +134,24 @@ public class CreateTracerTests {
         assertEquals("https://opentelemetry.io/schemas/1.23.1",
             readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
         assertEquals("1.2.3-beta.45", readableSpan.getInstrumentationScopeInfo().getVersion());
+    }
+
+    @Test
+    public void testSdkOptions() {
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
+
+        LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions("test").setLibraryVersion("1.2.3-beta.45")
+            .setResourceProviderNamespace("namespace")
+            .setSchemaUrl("https://aka.ms/az/sdk/schema:1.42.0");
+
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer(libraryOptions, options);
+
+        Context span = tracer.start("test", Context.NONE);
+        ReadableSpan readableSpan = getReadableSpan(span);
+        assertEquals("test", readableSpan.getInstrumentationScopeInfo().getName());
+        assertEquals("https://aka.ms/az/sdk/schema:1.42.0", readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
+        assertEquals("1.2.3-beta.45", readableSpan.getInstrumentationScopeInfo().getVersion());
+        assertEquals("namespace", readableSpan.getAttributes().get(AttributeKey.stringKey("az.namespace")));
     }
 
     private static SpanData getSpanData(Context context) {

@@ -23,6 +23,8 @@ public class PageBlobCreateOptions {
     private Boolean legalHold;
 
     /**
+     * Creates a new instance of {@link PageBlobCreateOptions}.
+     *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      */
@@ -31,6 +33,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Gets the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a 512-byte boundary.
+     *
      * @return Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      */
@@ -39,6 +43,9 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Gets a user-controlled value that you can use to track requests. The value of the sequence number must be
+     * between 0 and 2^63 - 1.The default value is 0.
+     *
      * @return A user-controlled value that you can use to track requests. The value of the sequence
      * number must be between 0 and 2^63 - 1.The default value is 0.
      */
@@ -47,6 +54,9 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Sets a user-controlled value that you can use to track requests. The value of the sequence number must be
+     * between 0 and 2^63 - 1.The default value is 0.
+     *
      * @param sequenceNumber A user-controlled value that you can use to track requests. The value of the sequence
      * number must be between 0 and 2^63 - 1.The default value is 0.
      * @return The updated options.
@@ -57,6 +67,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Gets the {@link BlobHttpHeaders}.
+     *
      * @return {@link BlobHttpHeaders}
      */
     public BlobHttpHeaders getHeaders() {
@@ -64,6 +76,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Sets the {@link BlobHttpHeaders}.
+     *
      * @param headers {@link BlobHttpHeaders}
      * @return The updated {@code AppendBlobCreateOptions}
      */
@@ -73,6 +87,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Gets the metadata to associate with the blob.
+     *
      * @return The metadata to associate with the blob.
      */
     public Map<String, String> getMetadata() {
@@ -80,6 +96,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Sets the metadata to associate with the blob.
+     *
      * @param metadata The metadata to associate with the blob.
      * @return The updated options.
      */
@@ -89,6 +107,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Gets the tags to associate with the blob.
+     *
      * @return The tags to associate with the blob.
      */
     public Map<String, String> getTags() {
@@ -96,6 +116,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Sets the tags to associate with the blob.
+     *
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
@@ -105,6 +127,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -112,6 +136,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
@@ -121,6 +147,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Gets the {@link BlobImmutabilityPolicy}.
+     *
      * @return {@link BlobImmutabilityPolicy}
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
@@ -128,8 +156,11 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Sets the {@link BlobImmutabilityPolicy}.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
      * @return The updated options.
      */
@@ -139,6 +170,8 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Gets if a legal hold should be placed on the blob.
+     *
      * @return If a legal hold should be placed on the blob.
      */
     public Boolean isLegalHold() {
@@ -146,8 +179,11 @@ public class PageBlobCreateOptions {
     }
 
     /**
+     * Sets if a legal hold should be placed on the blob.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param legalHold Indicates if a legal hold should be placed on the blob.
      * @return The updated options.
      */

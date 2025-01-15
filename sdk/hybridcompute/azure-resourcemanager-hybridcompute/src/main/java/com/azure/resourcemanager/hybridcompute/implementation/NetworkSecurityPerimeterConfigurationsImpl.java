@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkSecurityPerimeterConfigurationInner;
+import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkSecurityPerimeterConfigurationReconcileResultInner;
 import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterConfiguration;
+import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterConfigurationReconcileResult;
 import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterConfigurations;
 
 public final class NetworkSecurityPerimeterConfigurationsImpl implements NetworkSecurityPerimeterConfigurations {
@@ -66,13 +68,26 @@ public final class NetworkSecurityPerimeterConfigurationsImpl implements Network
             inner1 -> new NetworkSecurityPerimeterConfigurationImpl(inner1, this.manager()));
     }
 
-    public void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName) {
-        this.serviceClient().reconcileForPrivateLinkScope(resourceGroupName, scopeName, perimeterName);
+    public NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(String resourceGroupName,
+        String scopeName, String perimeterName) {
+        NetworkSecurityPerimeterConfigurationReconcileResultInner inner
+            = this.serviceClient().reconcileForPrivateLinkScope(resourceGroupName, scopeName, perimeterName);
+        if (inner != null) {
+            return new NetworkSecurityPerimeterConfigurationReconcileResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName,
-        Context context) {
-        this.serviceClient().reconcileForPrivateLinkScope(resourceGroupName, scopeName, perimeterName, context);
+    public NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(String resourceGroupName,
+        String scopeName, String perimeterName, Context context) {
+        NetworkSecurityPerimeterConfigurationReconcileResultInner inner
+            = this.serviceClient().reconcileForPrivateLinkScope(resourceGroupName, scopeName, perimeterName, context);
+        if (inner != null) {
+            return new NetworkSecurityPerimeterConfigurationReconcileResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private NetworkSecurityPerimeterConfigurationsClient serviceClient() {

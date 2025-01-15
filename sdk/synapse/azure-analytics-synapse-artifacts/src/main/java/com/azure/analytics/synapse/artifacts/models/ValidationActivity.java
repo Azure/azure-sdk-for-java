@@ -24,22 +24,27 @@ public class ValidationActivity extends ControlActivity {
     private String type = "Validation";
 
     /*
-     * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of
+     * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object timeout;
 
     /*
-     * A delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default. Type: integer (or Expression with resultType integer).
+     * A delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default.
+     * Type: integer (or Expression with resultType integer).
      */
     private Object sleep;
 
     /*
-     * Can be used if dataset points to a file. The file must be greater than or equal in size to the value specified. Type: integer (or Expression with resultType integer).
+     * Can be used if dataset points to a file. The file must be greater than or equal in size to the value specified.
+     * Type: integer (or Expression with resultType integer).
      */
     private Object minimumSize;
 
     /*
-     * Can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
+     * Can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to
+     * false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      */
     private Object childItems;
 

@@ -54,8 +54,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @param client the instance of the service client containing this operation class.
      */
     ExperimentsClientImpl(BatchAIImpl client) {
-        this.service =
-            RestProxy.create(ExperimentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExperimentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,79 +66,53 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     @Host("{$host}")
     @ServiceInterface(name = "BatchAIExperiments")
     private interface ExperimentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExperimentListResult>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("maxresults") Integer maxResults,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExperimentListResult>> listByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("maxresults") Integer maxResults, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExperimentInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExperimentInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExperimentListResult>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -154,13 +128,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return a list of Experiments within the specified Workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExperimentInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Integer maxResults) {
+    private Mono<PagedResponse<ExperimentInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Integer maxResults) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -170,34 +142,15 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            maxResults,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ExperimentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                maxResults, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ExperimentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -215,13 +168,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return a list of Experiments within the specified Workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExperimentInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context) {
+    private Mono<PagedResponse<ExperimentInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Integer maxResults, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -231,32 +182,16 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                maxResults,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName, maxResults,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -272,10 +207,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return a list of Experiments within the specified Workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExperimentInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Integer maxResults) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults),
+    private PagedFlux<ExperimentInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Integer maxResults) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
@@ -293,8 +227,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExperimentInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
         final Integer maxResults = null;
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults),
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
@@ -312,8 +245,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return a list of Experiments within the specified Workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExperimentInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context) {
+    private PagedFlux<ExperimentInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Integer maxResults, Context context) {
         return new PagedFlux<>(
             () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, maxResults, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
@@ -350,8 +283,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return a list of Experiments within the specified Workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExperimentInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context) {
+    public PagedIterable<ExperimentInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Integer maxResults, Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, maxResults, context));
     }
 
@@ -369,13 +302,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -388,25 +319,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                experimentName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -425,13 +344,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -444,23 +361,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -477,14 +384,12 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<ExperimentInner>, ExperimentInner> beginCreateAsync(
-        String resourceGroupName, String workspaceName, String experimentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, experimentName);
-        return this
-            .client
-            .<ExperimentInner, ExperimentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ExperimentInner.class, ExperimentInner.class, Context.NONE);
+    private PollerFlux<PollResult<ExperimentInner>, ExperimentInner> beginCreateAsync(String resourceGroupName,
+        String workspaceName, String experimentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, experimentName);
+        return this.client.<ExperimentInner, ExperimentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExperimentInner.class, ExperimentInner.class, Context.NONE);
     }
 
     /**
@@ -502,15 +407,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<ExperimentInner>, ExperimentInner> beginCreateAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
+    private PollerFlux<PollResult<ExperimentInner>, ExperimentInner> beginCreateAsync(String resourceGroupName,
+        String workspaceName, String experimentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, experimentName, context);
-        return this
-            .client
-            .<ExperimentInner, ExperimentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ExperimentInner.class, ExperimentInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, experimentName, context);
+        return this.client.<ExperimentInner, ExperimentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExperimentInner.class, ExperimentInner.class, context);
     }
 
     /**
@@ -527,8 +430,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreate(
-        String resourceGroupName, String workspaceName, String experimentName) {
+    public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreate(String resourceGroupName,
+        String workspaceName, String experimentName) {
         return beginCreateAsync(resourceGroupName, workspaceName, experimentName).getSyncPoller();
     }
 
@@ -547,8 +450,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreate(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
+    public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreate(String resourceGroupName,
+        String workspaceName, String experimentName, Context context) {
         return beginCreateAsync(resourceGroupName, workspaceName, experimentName, context).getSyncPoller();
     }
 
@@ -567,8 +470,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExperimentInner> createAsync(String resourceGroupName, String workspaceName, String experimentName) {
-        return beginCreateAsync(resourceGroupName, workspaceName, experimentName)
-            .last()
+        return beginCreateAsync(resourceGroupName, workspaceName, experimentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -587,10 +489,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExperimentInner> createAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
-        return beginCreateAsync(resourceGroupName, workspaceName, experimentName, context)
-            .last()
+    private Mono<ExperimentInner> createAsync(String resourceGroupName, String workspaceName, String experimentName,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, workspaceName, experimentName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -627,8 +528,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExperimentInner create(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
+    public ExperimentInner create(String resourceGroupName, String workspaceName, String experimentName,
+        Context context) {
         return createAsync(resourceGroupName, workspaceName, experimentName, context).block();
     }
 
@@ -646,13 +547,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -665,25 +564,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                experimentName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -702,13 +589,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -721,23 +606,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -754,13 +629,12 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String experimentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, experimentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String experimentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, experimentName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            Context.NONE);
     }
 
     /**
@@ -778,14 +652,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String experimentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, experimentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, experimentName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -802,8 +675,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String experimentName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String experimentName) {
         return beginDeleteAsync(resourceGroupName, workspaceName, experimentName).getSyncPoller();
     }
 
@@ -822,8 +695,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String experimentName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, experimentName, context).getSyncPoller();
     }
 
@@ -842,8 +715,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String experimentName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, experimentName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, workspaceName, experimentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -862,10 +734,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, experimentName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String experimentName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, experimentName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -918,13 +789,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return information about an Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExperimentInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName) {
+    private Mono<Response<ExperimentInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -937,25 +806,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                experimentName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -974,13 +831,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return information about an Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExperimentInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
+    private Mono<Response<ExperimentInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -993,23 +848,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1028,14 +873,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExperimentInner> getAsync(String resourceGroupName, String workspaceName, String experimentName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, experimentName)
-            .flatMap(
-                (Response<ExperimentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<ExperimentInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1071,8 +915,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @return information about an Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExperimentInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
+    public Response<ExperimentInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String experimentName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, experimentName, context).block();
     }
 
@@ -1091,23 +935,14 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ExperimentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ExperimentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1127,23 +962,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -14,48 +14,41 @@ import org.junit.jupiter.api.Assertions;
 public final class TrainingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrainingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"enableDnnTraining\":false,\"enableModelExplainability\":false,\"enableOnnxCompatibleModels\":true,\"enableStackEnsemble\":false,\"enableVoteEnsemble\":false,\"ensembleModelDownloadTimeout\":\"PT109H29M10S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"datajtasbvwispk\",\"stackMetaLearnerTrainPercentage\":99.23936213293845,\"stackMetaLearnerType\":\"LogisticRegressionCV\"}}")
-                .toObject(TrainingSettings.class);
-        Assertions.assertEquals(false, model.enableDnnTraining());
-        Assertions.assertEquals(false, model.enableModelExplainability());
+        TrainingSettings model = BinaryData.fromString(
+            "{\"enableOnnxCompatibleModels\":true,\"stackEnsembleSettings\":{\"stackMetaLearnerType\":\"LinearRegression\",\"stackMetaLearnerTrainPercentage\":20.375480617497665,\"stackMetaLearnerKWargs\":\"datauhktq\"},\"enableStackEnsemble\":true,\"enableVoteEnsemble\":true,\"ensembleModelDownloadTimeout\":\"PT238H33M9S\",\"enableModelExplainability\":false,\"enableDnnTraining\":true}")
+            .toObject(TrainingSettings.class);
         Assertions.assertEquals(true, model.enableOnnxCompatibleModels());
-        Assertions.assertEquals(false, model.enableStackEnsemble());
-        Assertions.assertEquals(false, model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT109H29M10S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(99.23936213293845D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions
-            .assertEquals(
-                StackMetaLearnerType.LOGISTIC_REGRESSION_CV, model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(StackMetaLearnerType.LINEAR_REGRESSION,
+            model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(20.375480617497665D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(true, model.enableStackEnsemble());
+        Assertions.assertEquals(true, model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT238H33M9S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(false, model.enableModelExplainability());
+        Assertions.assertEquals(true, model.enableDnnTraining());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrainingSettings model =
-            new TrainingSettings()
-                .withEnableDnnTraining(false)
-                .withEnableModelExplainability(false)
-                .withEnableOnnxCompatibleModels(true)
-                .withEnableStackEnsemble(false)
-                .withEnableVoteEnsemble(false)
-                .withEnsembleModelDownloadTimeout(Duration.parse("PT109H29M10S"))
-                .withStackEnsembleSettings(
-                    new StackEnsembleSettings()
-                        .withStackMetaLearnerKWargs("datajtasbvwispk")
-                        .withStackMetaLearnerTrainPercentage(99.23936213293845D)
-                        .withStackMetaLearnerType(StackMetaLearnerType.LOGISTIC_REGRESSION_CV));
+        TrainingSettings model = new TrainingSettings().withEnableOnnxCompatibleModels(true)
+            .withStackEnsembleSettings(
+                new StackEnsembleSettings().withStackMetaLearnerType(StackMetaLearnerType.LINEAR_REGRESSION)
+                    .withStackMetaLearnerTrainPercentage(20.375480617497665D)
+                    .withStackMetaLearnerKWargs("datauhktq"))
+            .withEnableStackEnsemble(true)
+            .withEnableVoteEnsemble(true)
+            .withEnsembleModelDownloadTimeout(Duration.parse("PT238H33M9S"))
+            .withEnableModelExplainability(false)
+            .withEnableDnnTraining(true);
         model = BinaryData.fromObject(model).toObject(TrainingSettings.class);
-        Assertions.assertEquals(false, model.enableDnnTraining());
-        Assertions.assertEquals(false, model.enableModelExplainability());
         Assertions.assertEquals(true, model.enableOnnxCompatibleModels());
-        Assertions.assertEquals(false, model.enableStackEnsemble());
-        Assertions.assertEquals(false, model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT109H29M10S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(99.23936213293845D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions
-            .assertEquals(
-                StackMetaLearnerType.LOGISTIC_REGRESSION_CV, model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(StackMetaLearnerType.LINEAR_REGRESSION,
+            model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(20.375480617497665D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(true, model.enableStackEnsemble());
+        Assertions.assertEquals(true, model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT238H33M9S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(false, model.enableModelExplainability());
+        Assertions.assertEquals(true, model.enableDnnTraining());
     }
 }

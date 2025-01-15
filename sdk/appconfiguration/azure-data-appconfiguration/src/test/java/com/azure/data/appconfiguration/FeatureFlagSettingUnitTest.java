@@ -32,12 +32,12 @@ public class FeatureFlagSettingUnitTest {
     @Test
     public void accessingStronglyTypedPropertiesAfterSettingDifferentFeatureFlagJSON() {
         // Create a new feature flag configuration setting,
-        final List<FeatureFlagFilter> featureFlagFilters = Arrays.asList(
-            getFlagFilter(FILTER_NAME, getFilterParameters()));
+        final List<FeatureFlagFilter> featureFlagFilters
+            = Arrays.asList(getFlagFilter(FILTER_NAME, getFilterParameters()));
         FeatureFlagConfigurationSetting setting = getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
             DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
-        String expectedNewSettingValue = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE,
-            DISPLAY_NAME_VALUE, IS_ENABLED);
+        String expectedNewSettingValue
+            = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE, DISPLAY_NAME_VALUE, IS_ENABLED);
         assertEquals(expectedNewSettingValue, setting.getValue());
 
         String expectedUpdatedSettingValue = getFeatureFlagConfigurationSettingValue(UPDATED_KEY,
@@ -55,8 +55,8 @@ public class FeatureFlagSettingUnitTest {
     @Test
     public void accessingValueAfterChangingStronglyTypedProperties() {
         FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
-        String expectedNewSettingValue = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE,
-            DISPLAY_NAME_VALUE, IS_ENABLED);
+        String expectedNewSettingValue
+            = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE, DISPLAY_NAME_VALUE, IS_ENABLED);
         // Test getValue()
         assertEquals(expectedNewSettingValue, setting.getValue());
         // Update strongly-type properties.
@@ -75,8 +75,8 @@ public class FeatureFlagSettingUnitTest {
     @Test
     public void throwExceptionWhenInvalidNonJsonFeatureFlagValue() {
         FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
-        String expectedValue = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE,
-            DISPLAY_NAME_VALUE, IS_ENABLED);
+        String expectedValue
+            = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE, DISPLAY_NAME_VALUE, IS_ENABLED);
 
         String originalValue = setting.getValue();
         assertEquals(expectedValue, originalValue);
@@ -93,8 +93,8 @@ public class FeatureFlagSettingUnitTest {
     @Test
     public void reserveUnknownPropertiesTest() {
         FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
-        String newSettingValueJSON = getUnknownPropertiesFeatureFlagConfigurationSettingValue(
-            UPDATED_KEY, UPDATED_DESCRIPTION_VALUE, UPDATED_DISPLAY_NAME_VALUE, UPDATED_IS_ENABLED);
+        String newSettingValueJSON = getUnknownPropertiesFeatureFlagConfigurationSettingValue(UPDATED_KEY,
+            UPDATED_DESCRIPTION_VALUE, UPDATED_DISPLAY_NAME_VALUE, UPDATED_IS_ENABLED);
 
         setting.setValue(newSettingValueJSON);
         assertEquals(newSettingValueJSON, setting.getValue());
@@ -126,25 +126,25 @@ public class FeatureFlagSettingUnitTest {
 
     private FeatureFlagConfigurationSetting createFeatureFlagConfigurationSetting() {
         // Create a new feature flag configuration setting,
-        final List<FeatureFlagFilter> featureFlagFilters = Arrays.asList(
-            getFlagFilter(FILTER_NAME, getFilterParameters()));
-        return getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
-            DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
+        final List<FeatureFlagFilter> featureFlagFilters
+            = Arrays.asList(getFlagFilter(FILTER_NAME, getFilterParameters()));
+        return getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE, DISPLAY_NAME_VALUE, IS_ENABLED,
+            featureFlagFilters);
     }
 
     private String getFeatureFlagConfigurationSettingValue(String id, String description, String displayName,
-                                                           boolean isEnabled) {
-        return String.format("{\"id\":\"%s\",\"description\":\"%s\",\"display_name\":\"%s\","
-                + "\"enabled\":%s,"
+        boolean isEnabled) {
+        return String.format(
+            "{\"id\":\"%s\",\"description\":\"%s\",\"display_name\":\"%s\"," + "\"enabled\":%s,"
                 + "\"conditions\":{\"client_filters\":"
-                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]"
-                + "}}",
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]" + "}}",
             id, description, displayName, isEnabled);
     }
 
     private String getUnknownPropertiesFeatureFlagConfigurationSettingValue(String id, String description,
         String displayName, boolean isEnabled) {
-        return String.format("{\"id\":\"%s\",\"additional_field_1\":\"additional_value_1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
+        return String.format(
+            "{\"id\":\"%s\",\"additional_field_1\":\"additional_value_1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
                 + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
                 + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]"
                 + "},\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
@@ -154,10 +154,9 @@ public class FeatureFlagSettingUnitTest {
 
     private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String id, String description,
         String displayName, boolean isEnabled, List<FeatureFlagFilter> filters) {
-        return new FeatureFlagConfigurationSetting(id, isEnabled)
-                   .setDescription(description)
-                   .setDisplayName(displayName)
-                   .setClientFilters(filters);
+        return new FeatureFlagConfigurationSetting(id, isEnabled).setDescription(description)
+            .setDisplayName(displayName)
+            .setClientFilters(filters);
     }
 
     private FeatureFlagFilter getFlagFilter(String filterName, Map<String, Object> filterParameters) {

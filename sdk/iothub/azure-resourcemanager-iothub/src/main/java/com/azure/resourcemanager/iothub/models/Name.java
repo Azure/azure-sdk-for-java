@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Name of Iot Hub type. */
+/**
+ * Name of Iot Hub type.
+ */
 @Fluent
-public final class Name {
+public final class Name implements JsonSerializable<Name> {
     /*
      * IotHub type
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Localized value of name
      */
-    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of Name class. */
+    /**
+     * Creates an instance of Name class.
+     */
     public Name() {
     }
 
     /**
      * Get the value property: IotHub type.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +43,7 @@ public final class Name {
 
     /**
      * Set the value property: IotHub type.
-     *
+     * 
      * @param value the value value to set.
      * @return the Name object itself.
      */
@@ -48,7 +54,7 @@ public final class Name {
 
     /**
      * Get the localizedValue property: Localized value of name.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +63,7 @@ public final class Name {
 
     /**
      * Set the localizedValue property: Localized value of name.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the Name object itself.
      */
@@ -68,9 +74,48 @@ public final class Name {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("localizedValue", this.localizedValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Name from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Name if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Name.
+     */
+    public static Name fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Name deserializedName = new Name();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedName.value = reader.getString();
+                } else if ("localizedValue".equals(fieldName)) {
+                    deserializedName.localizedValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedName;
+        });
     }
 }

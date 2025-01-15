@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The job error information containing the list of job errors. */
+/**
+ * The job error information containing the list of job errors.
+ */
 @Immutable
-public final class JobErrorDetails {
+public final class JobErrorDetails implements JsonSerializable<JobErrorDetails> {
     /*
      * The error details.
      */
-    @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobErrorItem> errorDetails;
 
     /*
      * The code intended for programmatic access.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * The message that describes the error in detail.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of JobErrorDetails class. */
+    /**
+     * Creates an instance of JobErrorDetails class.
+     */
     public JobErrorDetails() {
     }
 
     /**
      * Get the errorDetails property: The error details.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<JobErrorItem> errorDetails() {
@@ -44,7 +49,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the code property: The code intended for programmatic access.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -53,7 +58,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the message property: The message that describes the error in detail.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -62,12 +67,52 @@ public final class JobErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (errorDetails() != null) {
             errorDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobErrorDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobErrorDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobErrorDetails.
+     */
+    public static JobErrorDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobErrorDetails deserializedJobErrorDetails = new JobErrorDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorDetails".equals(fieldName)) {
+                    List<JobErrorItem> errorDetails = reader.readArray(reader1 -> JobErrorItem.fromJson(reader1));
+                    deserializedJobErrorDetails.errorDetails = errorDetails;
+                } else if ("code".equals(fieldName)) {
+                    deserializedJobErrorDetails.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedJobErrorDetails.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobErrorDetails;
+        });
     }
 }

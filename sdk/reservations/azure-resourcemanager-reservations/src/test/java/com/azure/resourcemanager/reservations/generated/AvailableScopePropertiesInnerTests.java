@@ -14,27 +14,20 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableScopePropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableScopePropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"scopes\":[{\"scope\":\"xbmtqioqjz\",\"valid\":false},{\"scope\":\"muf\",\"valid\":false},{\"scope\":\"oizh\",\"valid\":false}]}}")
-                .toObject(AvailableScopePropertiesInner.class);
+        AvailableScopePropertiesInner model = BinaryData.fromString(
+            "{\"properties\":{\"scopes\":[{\"scope\":\"xbmtqioqjz\",\"valid\":false},{\"scope\":\"muf\",\"valid\":false},{\"scope\":\"oizh\",\"valid\":false}]}}")
+            .toObject(AvailableScopePropertiesInner.class);
         Assertions.assertEquals("xbmtqioqjz", model.properties().scopes().get(0).scope());
         Assertions.assertEquals(false, model.properties().scopes().get(0).valid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableScopePropertiesInner model =
-            new AvailableScopePropertiesInner()
-                .withProperties(
-                    new SubscriptionScopeProperties()
-                        .withScopes(
-                            Arrays
-                                .asList(
-                                    new ScopeProperties().withScope("xbmtqioqjz").withValid(false),
-                                    new ScopeProperties().withScope("muf").withValid(false),
-                                    new ScopeProperties().withScope("oizh").withValid(false))));
+        AvailableScopePropertiesInner model
+            = new AvailableScopePropertiesInner().withProperties(new SubscriptionScopeProperties()
+                .withScopes(Arrays.asList(new ScopeProperties().withScope("xbmtqioqjz").withValid(false),
+                    new ScopeProperties().withScope("muf").withValid(false),
+                    new ScopeProperties().withScope("oizh").withValid(false))));
         model = BinaryData.fromObject(model).toObject(AvailableScopePropertiesInner.class);
         Assertions.assertEquals("xbmtqioqjz", model.properties().scopes().get(0).scope());
         Assertions.assertEquals(false, model.properties().scopes().get(0).valid());

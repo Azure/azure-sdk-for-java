@@ -5,7 +5,7 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for Error. */
@@ -62,12 +62,20 @@ public final class Error extends ExpandableStringEnum<Error> {
     public static final Error UNKNOWN_SEARCH_ERROR = fromString("UnknownSearchError");
 
     /**
+     * Creates an instance of {@link Error} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link Error} instead.
+     */
+    @Deprecated
+    public Error() {
+    }
+
+    /**
      * Creates or finds a Error from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding Error.
      */
-    @JsonCreator
     public static Error fromString(String name) {
         return fromString(name, Error.class);
     }

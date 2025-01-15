@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.samples;
 
-
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplate;
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplateAsync;
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplateWithDeploymentOperations;

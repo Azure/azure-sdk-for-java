@@ -6,30 +6,36 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The integration account partner's business identity. */
+/**
+ * The integration account partner's business identity.
+ */
 @Fluent
-public class BusinessIdentity {
+public final class BusinessIdentity implements JsonSerializable<BusinessIdentity> {
     /*
      * The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32
      */
-    @JsonProperty(value = "qualifier", required = true)
     private String qualifier;
 
     /*
      * The user defined business identity value.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of BusinessIdentity class. */
+    /**
+     * Creates an instance of BusinessIdentity class.
+     */
     public BusinessIdentity() {
     }
 
     /**
      * Get the qualifier property: The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32.
-     *
+     * 
      * @return the qualifier value.
      */
     public String qualifier() {
@@ -38,7 +44,7 @@ public class BusinessIdentity {
 
     /**
      * Set the qualifier property: The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32.
-     *
+     * 
      * @param qualifier the qualifier value to set.
      * @return the BusinessIdentity object itself.
      */
@@ -49,7 +55,7 @@ public class BusinessIdentity {
 
     /**
      * Get the value property: The user defined business identity value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,7 +64,7 @@ public class BusinessIdentity {
 
     /**
      * Set the value property: The user defined business identity value.
-     *
+     * 
      * @param value the value value to set.
      * @return the BusinessIdentity object itself.
      */
@@ -69,21 +75,59 @@ public class BusinessIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (qualifier() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property qualifier in model BusinessIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property qualifier in model BusinessIdentity"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model BusinessIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model BusinessIdentity"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BusinessIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("qualifier", this.qualifier);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BusinessIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BusinessIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BusinessIdentity.
+     */
+    public static BusinessIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BusinessIdentity deserializedBusinessIdentity = new BusinessIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("qualifier".equals(fieldName)) {
+                    deserializedBusinessIdentity.qualifier = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedBusinessIdentity.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBusinessIdentity;
+        });
+    }
 }

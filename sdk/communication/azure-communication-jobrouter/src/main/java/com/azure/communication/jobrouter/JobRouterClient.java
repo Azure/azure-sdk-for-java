@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
+import com.azure.communication.jobrouter.implementation.converters.OptionBagAdapters;
 import com.azure.communication.jobrouter.implementation.models.CancelJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CloseJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CompleteJobResultInternal;
@@ -13,6 +14,9 @@ import com.azure.communication.jobrouter.implementation.models.ReclassifyJobOpti
 import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResultInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CancelJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
@@ -37,10 +41,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
-import com.azure.communication.jobrouter.implementation.converters.OptionBagAdapters;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 
 /**
  * Initializes a new instance of the synchronous JobRouterClient type.
@@ -75,7 +75,8 @@ public final class JobRouterClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -127,11 +128,13 @@ public final class JobRouterClient {
      *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -183,7 +186,8 @@ public final class JobRouterClient {
      *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param resource The resource instance.
@@ -233,7 +237,8 @@ public final class JobRouterClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     channelReference: String (Optional)
@@ -280,12 +285,14 @@ public final class JobRouterClient {
      *     matchingMode (Optional): {
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     channelReference: String (Optional)
@@ -332,7 +339,8 @@ public final class JobRouterClient {
      *     matchingMode (Optional): {
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The jobId of the job.
      * @param resource The resource instance.
@@ -382,7 +390,8 @@ public final class JobRouterClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     channelReference: String (Optional)
@@ -429,12 +438,14 @@ public final class JobRouterClient {
      *     matchingMode (Optional): {
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     channelReference: String (Optional)
@@ -481,7 +492,8 @@ public final class JobRouterClient {
      *     matchingMode (Optional): {
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The jobId of the job.
      * @param resource The resource instance.
@@ -617,7 +629,8 @@ public final class JobRouterClient {
      * Retrieves an existing job by Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -669,7 +682,8 @@ public final class JobRouterClient {
      *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -708,17 +722,21 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -739,17 +757,21 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -770,20 +792,24 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -804,20 +830,24 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -854,7 +884,8 @@ public final class JobRouterClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -906,7 +937,8 @@ public final class JobRouterClient {
      *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -925,7 +957,8 @@ public final class JobRouterClient {
      * Gets a job's position details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     position: int (Required)
@@ -933,7 +966,8 @@ public final class JobRouterClient {
      *     queueLength: int (Required)
      *     estimatedWaitTimeMinutes: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -961,20 +995,24 @@ public final class JobRouterClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     unassignmentCount: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -996,13 +1034,15 @@ public final class JobRouterClient {
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assignmentId: String (Required)
      *     jobId: String (Required)
      *     workerId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -1027,19 +1067,23 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -1062,19 +1106,23 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -1094,7 +1142,8 @@ public final class JobRouterClient {
      * Retrieves a queue's statistics.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     queueId: String (Required)
      *     length: int (Required)
@@ -1103,7 +1152,8 @@ public final class JobRouterClient {
      *     }
      *     longestJobWaitTimeMinutes: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1133,7 +1183,8 @@ public final class JobRouterClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1176,11 +1227,13 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1223,7 +1276,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param resource The resource instance.
@@ -1273,7 +1327,8 @@ public final class JobRouterClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
@@ -1315,12 +1370,14 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
@@ -1362,7 +1419,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of the worker.
      * @param resource The resource instance.
@@ -1412,7 +1470,8 @@ public final class JobRouterClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
@@ -1454,12 +1513,14 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
@@ -1501,7 +1562,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of the worker.
      * @param resource The resource instance.
@@ -1574,7 +1636,8 @@ public final class JobRouterClient {
      * Retrieves an existing worker by Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1617,7 +1680,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1670,7 +1734,8 @@ public final class JobRouterClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1713,7 +1778,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2075,19 +2141,23 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     note: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -2110,19 +2180,23 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     note: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -2144,21 +2218,25 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dispositionCode: String (Optional)
      *     closeAt: OffsetDateTime (Optional)
      *     note: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -2180,21 +2258,25 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dispositionCode: String (Optional)
      *     closeAt: OffsetDateTime (Optional)
      *     note: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.

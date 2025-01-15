@@ -21,15 +21,13 @@ public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpA
     public PublicIpAddress createResource(PublicIpAddresses pips) throws Exception {
         final String newPipName = pips.manager().resourceManager().internalContext().randomResourceName("pip", 10);
 
-        PublicIpAddress pip =
-            pips
-                .define(newPipName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup()
-                .withDynamicIP()
-                .withLeafDomainLabel(newPipName)
-                .withIdleTimeoutInMinutes(10)
-                .create();
+        PublicIpAddress pip = pips.define(newPipName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup()
+            .withDynamicIP()
+            .withLeafDomainLabel(newPipName)
+            .withIdleTimeoutInMinutes(10)
+            .create();
         return pip;
     }
 
@@ -37,16 +35,14 @@ public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpA
     public PublicIpAddress updateResource(PublicIpAddress resource) throws Exception {
         final String updatedDnsName = resource.leafDomainLabel() + "xx";
         final int updatedIdleTimeout = 15;
-        resource =
-            resource
-                .update()
-                .withStaticIP()
-                .withLeafDomainLabel(updatedDnsName)
-                .withReverseFqdn(resource.leafDomainLabel() + "." + resource.region() + ".cloudapp.azure.com")
-                .withIdleTimeoutInMinutes(updatedIdleTimeout)
-                .withTag("tag1", "value1")
-                .withTag("tag2", "value2")
-                .apply();
+        resource = resource.update()
+            .withStaticIP()
+            .withLeafDomainLabel(updatedDnsName)
+            .withReverseFqdn(resource.leafDomainLabel() + "." + resource.region() + ".cloudapp.azure.com")
+            .withIdleTimeoutInMinutes(updatedIdleTimeout)
+            .withTag("tag1", "value1")
+            .withTag("tag2", "value2")
+            .apply();
         Assertions.assertTrue(resource.leafDomainLabel().equalsIgnoreCase(updatedDnsName));
         Assertions.assertEquals(updatedIdleTimeout, resource.idleTimeoutInMinutes());
         Assertions.assertEquals("value2", resource.tags().get("tag2"));
@@ -63,40 +59,37 @@ public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpA
     }
 
     public static void printPIP(PublicIpAddress resource) {
-        StringBuilder info =
-            new StringBuilder()
-                .append("Public IP Address: ")
-                .append(resource.id())
-                .append("\n\tName: ")
-                .append(resource.name())
-                .append("\n\tResource group: ")
-                .append(resource.resourceGroupName())
-                .append("\n\tRegion: ")
-                .append(resource.region())
-                .append("\n\tTags: ")
-                .append(resource.tags())
-                .append("\n\tIP Address: ")
-                .append(resource.ipAddress())
-                .append("\n\tLeaf domain label: ")
-                .append(resource.leafDomainLabel())
-                .append("\n\tFQDN: ")
-                .append(resource.fqdn())
-                .append("\n\tReverse FQDN: ")
-                .append(resource.reverseFqdn())
-                .append("\n\tIdle timeout (minutes): ")
-                .append(resource.idleTimeoutInMinutes())
-                .append("\n\tIP allocation method: ")
-                .append(resource.ipAllocationMethod().toString())
-                .append("\n\tIP version: ")
-                .append(resource.version().toString());
+        StringBuilder info = new StringBuilder().append("Public IP Address: ")
+            .append(resource.id())
+            .append("\n\tName: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .append("\n\tIP Address: ")
+            .append(resource.ipAddress())
+            .append("\n\tLeaf domain label: ")
+            .append(resource.leafDomainLabel())
+            .append("\n\tFQDN: ")
+            .append(resource.fqdn())
+            .append("\n\tReverse FQDN: ")
+            .append(resource.reverseFqdn())
+            .append("\n\tIdle timeout (minutes): ")
+            .append(resource.idleTimeoutInMinutes())
+            .append("\n\tIP allocation method: ")
+            .append(resource.ipAllocationMethod().toString())
+            .append("\n\tIP version: ")
+            .append(resource.version().toString());
 
         // Show the associated load balancer if any
         info.append("\n\tLoad balancer association: ");
         if (resource.hasAssignedLoadBalancer()) {
             final LoadBalancerPublicFrontend frontend = resource.getAssignedLoadBalancerFrontend();
             final LoadBalancer lb = frontend.parent();
-            info
-                .append("\n\t\tLoad balancer ID: ")
+            info.append("\n\t\tLoad balancer ID: ")
                 .append(lb.id())
                 .append("\n\t\tFrontend name: ")
                 .append(frontend.name());
@@ -109,8 +102,7 @@ public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpA
         if (resource.hasAssignedNetworkInterface()) {
             final NicIpConfiguration nicIp = resource.getAssignedNetworkInterfaceIPConfiguration();
             final NetworkInterface nic = nicIp.parent();
-            info
-                .append("\n\t\tNetwork interface ID: ")
+            info.append("\n\t\tNetwork interface ID: ")
                 .append(nic.id())
                 .append("\n\t\tIP config name: ")
                 .append(nicIp.name());

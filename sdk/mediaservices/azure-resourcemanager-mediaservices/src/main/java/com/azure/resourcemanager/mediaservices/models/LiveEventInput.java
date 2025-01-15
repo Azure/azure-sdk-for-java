@@ -6,22 +6,26 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The live event input. */
+/**
+ * The live event input.
+ */
 @Fluent
-public final class LiveEventInput {
+public final class LiveEventInput implements JsonSerializable<LiveEventInput> {
     /*
      * The input protocol for the live event. This is specified at creation time and cannot be updated.
      */
-    @JsonProperty(value = "streamingProtocol", required = true)
     private LiveEventInputProtocol streamingProtocol;
 
     /*
      * Access control for live event input.
      */
-    @JsonProperty(value = "accessControl")
     private LiveEventInputAccessControl accessControl;
 
     /*
@@ -29,36 +33,34 @@ public final class LiveEventInput {
      * property in the HLS output. For example, use PT2S to indicate 2 seconds. Leave the value empty for encoding live
      * events.
      */
-    @JsonProperty(value = "keyFrameIntervalDuration")
     private String keyFrameIntervalDuration;
 
     /*
      * A UUID in string form to uniquely identify the stream. This can be specified at creation time but cannot be
      * updated. If omitted, the service will generate a unique value.
      */
-    @JsonProperty(value = "accessToken")
     private String accessToken;
 
     /*
      * The input endpoints for the live event.
      */
-    @JsonProperty(value = "endpoints")
     private List<LiveEventEndpoint> endpoints;
 
     /*
      * The metadata endpoints for the live event.
      */
-    @JsonProperty(value = "timedMetadataEndpoints")
     private List<LiveEventTimedMetadataEndpoint> timedMetadataEndpoints;
 
-    /** Creates an instance of LiveEventInput class. */
+    /**
+     * Creates an instance of LiveEventInput class.
+     */
     public LiveEventInput() {
     }
 
     /**
      * Get the streamingProtocol property: The input protocol for the live event. This is specified at creation time and
      * cannot be updated.
-     *
+     * 
      * @return the streamingProtocol value.
      */
     public LiveEventInputProtocol streamingProtocol() {
@@ -68,7 +70,7 @@ public final class LiveEventInput {
     /**
      * Set the streamingProtocol property: The input protocol for the live event. This is specified at creation time and
      * cannot be updated.
-     *
+     * 
      * @param streamingProtocol the streamingProtocol value to set.
      * @return the LiveEventInput object itself.
      */
@@ -79,7 +81,7 @@ public final class LiveEventInput {
 
     /**
      * Get the accessControl property: Access control for live event input.
-     *
+     * 
      * @return the accessControl value.
      */
     public LiveEventInputAccessControl accessControl() {
@@ -88,7 +90,7 @@ public final class LiveEventInput {
 
     /**
      * Set the accessControl property: Access control for live event input.
-     *
+     * 
      * @param accessControl the accessControl value to set.
      * @return the LiveEventInput object itself.
      */
@@ -101,7 +103,7 @@ public final class LiveEventInput {
      * Get the keyFrameIntervalDuration property: ISO 8601 time duration of the key frame interval duration of the
      * input. This value sets the EXT-X-TARGETDURATION property in the HLS output. For example, use PT2S to indicate 2
      * seconds. Leave the value empty for encoding live events.
-     *
+     * 
      * @return the keyFrameIntervalDuration value.
      */
     public String keyFrameIntervalDuration() {
@@ -112,7 +114,7 @@ public final class LiveEventInput {
      * Set the keyFrameIntervalDuration property: ISO 8601 time duration of the key frame interval duration of the
      * input. This value sets the EXT-X-TARGETDURATION property in the HLS output. For example, use PT2S to indicate 2
      * seconds. Leave the value empty for encoding live events.
-     *
+     * 
      * @param keyFrameIntervalDuration the keyFrameIntervalDuration value to set.
      * @return the LiveEventInput object itself.
      */
@@ -124,7 +126,7 @@ public final class LiveEventInput {
     /**
      * Get the accessToken property: A UUID in string form to uniquely identify the stream. This can be specified at
      * creation time but cannot be updated. If omitted, the service will generate a unique value.
-     *
+     * 
      * @return the accessToken value.
      */
     public String accessToken() {
@@ -134,7 +136,7 @@ public final class LiveEventInput {
     /**
      * Set the accessToken property: A UUID in string form to uniquely identify the stream. This can be specified at
      * creation time but cannot be updated. If omitted, the service will generate a unique value.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the LiveEventInput object itself.
      */
@@ -145,7 +147,7 @@ public final class LiveEventInput {
 
     /**
      * Get the endpoints property: The input endpoints for the live event.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<LiveEventEndpoint> endpoints() {
@@ -154,7 +156,7 @@ public final class LiveEventInput {
 
     /**
      * Set the endpoints property: The input endpoints for the live event.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the LiveEventInput object itself.
      */
@@ -165,7 +167,7 @@ public final class LiveEventInput {
 
     /**
      * Get the timedMetadataEndpoints property: The metadata endpoints for the live event.
-     *
+     * 
      * @return the timedMetadataEndpoints value.
      */
     public List<LiveEventTimedMetadataEndpoint> timedMetadataEndpoints() {
@@ -174,7 +176,7 @@ public final class LiveEventInput {
 
     /**
      * Set the timedMetadataEndpoints property: The metadata endpoints for the live event.
-     *
+     * 
      * @param timedMetadataEndpoints the timedMetadataEndpoints value to set.
      * @return the LiveEventInput object itself.
      */
@@ -185,15 +187,14 @@ public final class LiveEventInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (streamingProtocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property streamingProtocol in model LiveEventInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property streamingProtocol in model LiveEventInput"));
         }
         if (accessControl() != null) {
             accessControl().validate();
@@ -207,4 +208,63 @@ public final class LiveEventInput {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LiveEventInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("streamingProtocol",
+            this.streamingProtocol == null ? null : this.streamingProtocol.toString());
+        jsonWriter.writeJsonField("accessControl", this.accessControl);
+        jsonWriter.writeStringField("keyFrameIntervalDuration", this.keyFrameIntervalDuration);
+        jsonWriter.writeStringField("accessToken", this.accessToken);
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("timedMetadataEndpoints", this.timedMetadataEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiveEventInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiveEventInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LiveEventInput.
+     */
+    public static LiveEventInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiveEventInput deserializedLiveEventInput = new LiveEventInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("streamingProtocol".equals(fieldName)) {
+                    deserializedLiveEventInput.streamingProtocol
+                        = LiveEventInputProtocol.fromString(reader.getString());
+                } else if ("accessControl".equals(fieldName)) {
+                    deserializedLiveEventInput.accessControl = LiveEventInputAccessControl.fromJson(reader);
+                } else if ("keyFrameIntervalDuration".equals(fieldName)) {
+                    deserializedLiveEventInput.keyFrameIntervalDuration = reader.getString();
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedLiveEventInput.accessToken = reader.getString();
+                } else if ("endpoints".equals(fieldName)) {
+                    List<LiveEventEndpoint> endpoints
+                        = reader.readArray(reader1 -> LiveEventEndpoint.fromJson(reader1));
+                    deserializedLiveEventInput.endpoints = endpoints;
+                } else if ("timedMetadataEndpoints".equals(fieldName)) {
+                    List<LiveEventTimedMetadataEndpoint> timedMetadataEndpoints
+                        = reader.readArray(reader1 -> LiveEventTimedMetadataEndpoint.fromJson(reader1));
+                    deserializedLiveEventInput.timedMetadataEndpoints = timedMetadataEndpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiveEventInput;
+        });
+    }
 }

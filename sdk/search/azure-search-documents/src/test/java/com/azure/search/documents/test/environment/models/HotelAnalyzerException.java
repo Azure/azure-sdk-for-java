@@ -29,5 +29,4 @@ public class HotelAnalyzerException extends RuntimeException {
         return this;
     }
 
-
 }

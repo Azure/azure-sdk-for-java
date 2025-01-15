@@ -144,7 +144,7 @@ function Get-Toc-Children($package, $docRepoLocation) {
 }
 
 # Given a library, groupId and version, return the list of namespaces
-function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
+function Fetch-Namespaces-From-Javadoc($package, $groupId, $version, $javadocJarFile = $null) {
 
     $namespaces = @()
     # Create a temporary directory to drop the jar into
@@ -152,19 +152,31 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
     New-Item $tempDirectory -ItemType Directory | Out-Null
     $artifact = "${groupId}:${package}:${version}:jar:javadoc"
     try {
-        # Download the Jar file
-        Write-Host "mvn dependency:copy -Dartifact=""$artifact"" -DoutputDirectory=""$tempDirectory"""
-        $mvnResults = mvn `
-          dependency:copy `
-          -Dartifact="$artifact" `
-          -DoutputDirectory="$tempDirectory"
-
-        if ($LASTEXITCODE -ne 0) {
-            LogWarning "Could not download javadoc artifact: $artifact"
-            $mvnResults | Write-Host
+        # If the $javadocJarFile is passed in, copy it to the $tempDirectory, otherwise download it
+        # from the dev feed or maven
+        if ($javadocJarFile) {
+            if (Test-Path $javadocJarFile -PathType Leaf) {
+                Copy-Item $javadocJarFile -Destination $tempDirectory
+            } else {
+                LogWarning "$javadocJarFile, does not exist."
+            }
         } else {
+            # Download the Jar file
+            Write-Host "mvn dependency:copy -Dartifact=""$artifact"" -DoutputDirectory=""$tempDirectory"""
+            $mvnResults = mvn `
+            dependency:copy `
+            -Dartifact="$artifact" `
+            -DoutputDirectory="$tempDirectory"
+            if ($LASTEXITCODE -ne 0) {
+                LogWarning "Could not download javadoc artifact: $artifact"
+                $mvnResults | Write-Host
+            }
+        }
+        $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
+        # If the Jar file doesn't exit the error has already been reported above and
+        # processing will return an empty namespaces list
+        if (Test-Path $javadocLocation -PathType Leaf) {
             # Unpack the Jar file
-            $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
             $unpackDirectory = Join-Path $tempDirectory "unpackedJavadoc"
             New-Item $unpackDirectory -ItemType Directory | Out-Null
             Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -205,12 +217,12 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
                 }
             }
             else {
-                LogWarning "Unable to determine namespaces from $artifact."
+                LogWarning "Unable to determine namespaces from $artifact. Please ensure that the a javadoc jar is being built for the artifact and that it's not empty (ex. START/END: Empty Java Doc & Sources isn't in the POM file)."
             }
         }
     }
     catch {
-        LogError "Exception while trying to download: $artifact"
+        LogError "Exception while trying to retrieve namespaces from: $artifact"
         LogError $_
         LogError $_.ScriptStackTrace
     }

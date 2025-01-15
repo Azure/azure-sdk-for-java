@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.models.QueryTextsResultList;
 public final class QueryTextsResultListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryTextsResultList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"queryId\":\"fsnkymuctq\",\"queryText\":\"fbebrjcxer\"},\"id\":\"uwutttxfvjrbi\",\"name\":\"phxepcyvahf\",\"type\":\"ljkyqxjvuuj\"},{\"properties\":{\"queryId\":\"dokgjl\",\"queryText\":\"oxgvclt\"},\"id\":\"gsncghkjeszz\",\"name\":\"bijhtxfvgxbf\",\"type\":\"mxnehmp\"},{\"properties\":{\"queryId\":\"xgodebfqkkrbmp\",\"queryText\":\"gr\"},\"id\":\"wflzlfbxzpuzy\",\"name\":\"ispnqzahmgkbrp\",\"type\":\"y\"},{\"properties\":{\"queryId\":\"bnuqqkpik\",\"queryText\":\"rgvtqag\"},\"id\":\"buynhijggm\",\"name\":\"bfs\",\"type\":\"arbu\"}],\"nextLink\":\"cvpnazzmhjrunmpx\"}")
-                .toObject(QueryTextsResultList.class);
+        QueryTextsResultList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"queryId\":\"rp\",\"queryText\":\"epcyvahfnlj\"},\"id\":\"yq\",\"name\":\"j\",\"type\":\"uujqgidokgjljyo\"},{\"properties\":{\"queryId\":\"cltbgsncghkjesz\",\"queryText\":\"bijhtxfvgxbf\"},\"id\":\"mxnehmp\",\"name\":\"ec\",\"type\":\"godebfqkkrbmpu\"}],\"nextLink\":\"riwflzlfb\"}")
+            .toObject(QueryTextsResultList.class);
     }
 
     @org.junit.jupiter.api.Test

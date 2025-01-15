@@ -11,40 +11,32 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsForwardingRulesetInnerTests {
-    @Test
-    public void testDeserialize() {
-        DnsForwardingRulesetInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"kudjkrlkhb\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"epgzgqexz\"},{\"id\":\"c\"},{\"id\":\"c\"}],\"provisioningState\":\"Creating\",\"resourceGuid\":\"rhhbcs\"},\"location\":\"ummajtjaod\",\"tags\":{\"pxokajionp\":\"nbdxk\",\"dg\":\"mexgstxgcp\",\"djwzrlov\":\"aajrm\",\"qsqsy\":\"clwhijcoejctbz\"},\"id\":\"bkbfkgukdkex\",\"name\":\"ppofmxaxcfjpgdd\",\"type\":\"ocjjxhvpmouexh\"}")
-                .toObject(DnsForwardingRulesetInner.class);
-        Assertions.assertEquals("ummajtjaod", model.location());
-        Assertions.assertEquals("nbdxk", model.tags().get("pxokajionp"));
-        Assertions.assertEquals("epgzgqexz", model.dnsResolverOutboundEndpoints().get(0).id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DnsForwardingRulesetInner model = BinaryData.fromString(
+            "{\"etag\":\"s\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"cbkbfkg\"},{\"id\":\"dkexxppofm\"}],\"provisioningState\":\"Deleting\",\"resourceGuid\":\"fjpgddtocjjxhvp\"},\"location\":\"uexhdzx\",\"tags\":{\"wndeicbtwnp\":\"eojnxqbzvddn\",\"hcffcyddglmjthjq\":\"aoqvuh\",\"hix\":\"wpyeicxmqciwqvh\",\"og\":\"igdtopbob\"},\"id\":\"m\",\"name\":\"w\",\"type\":\"a\"}")
+            .toObject(DnsForwardingRulesetInner.class);
+        Assertions.assertEquals("uexhdzx", model.location());
+        Assertions.assertEquals("eojnxqbzvddn", model.tags().get("wndeicbtwnp"));
+        Assertions.assertEquals("cbkbfkg", model.dnsResolverOutboundEndpoints().get(0).id());
     }
 
-    @Test
-    public void testSerialize() {
-        DnsForwardingRulesetInner model =
-            new DnsForwardingRulesetInner()
-                .withLocation("ummajtjaod")
-                .withTags(
-                    mapOf("pxokajionp", "nbdxk", "dg", "mexgstxgcp", "djwzrlov", "aajrm", "qsqsy", "clwhijcoejctbz"))
-                .withDnsResolverOutboundEndpoints(
-                    Arrays
-                        .asList(
-                            new SubResource().withId("epgzgqexz"),
-                            new SubResource().withId("c"),
-                            new SubResource().withId("c")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DnsForwardingRulesetInner model = new DnsForwardingRulesetInner().withLocation("uexhdzx")
+            .withTags(mapOf("wndeicbtwnp", "eojnxqbzvddn", "hcffcyddglmjthjq", "aoqvuh", "hix", "wpyeicxmqciwqvh", "og",
+                "igdtopbob"))
+            .withDnsResolverOutboundEndpoints(
+                Arrays.asList(new SubResource().withId("cbkbfkg"), new SubResource().withId("dkexxppofm")));
         model = BinaryData.fromObject(model).toObject(DnsForwardingRulesetInner.class);
-        Assertions.assertEquals("ummajtjaod", model.location());
-        Assertions.assertEquals("nbdxk", model.tags().get("pxokajionp"));
-        Assertions.assertEquals("epgzgqexz", model.dnsResolverOutboundEndpoints().get(0).id());
+        Assertions.assertEquals("uexhdzx", model.location());
+        Assertions.assertEquals("eojnxqbzvddn", model.tags().get("wndeicbtwnp"));
+        Assertions.assertEquals("cbkbfkg", model.dnsResolverOutboundEndpoints().get(0).id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

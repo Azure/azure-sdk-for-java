@@ -38,15 +38,15 @@ public final class DeviceGroupsImpl implements DeviceGroups {
 
     public PagedIterable<DeviceGroup> listByProduct(String resourceGroupName, String catalogName, String productName,
         String filter, Integer top, Integer skip, Integer maxpagesize, Context context) {
-        PagedIterable<DeviceGroupInner> inner = this.serviceClient().listByProduct(resourceGroupName, catalogName,
-            productName, filter, top, skip, maxpagesize, context);
+        PagedIterable<DeviceGroupInner> inner = this.serviceClient()
+            .listByProduct(resourceGroupName, catalogName, productName, filter, top, skip, maxpagesize, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DeviceGroupImpl(inner1, this.manager()));
     }
 
     public Response<DeviceGroup> getWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, Context context) {
-        Response<DeviceGroupInner> inner = this.serviceClient().getWithResponse(resourceGroupName, catalogName,
-            productName, deviceGroupName, context);
+        Response<DeviceGroupInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeviceGroupImpl(inner.getValue(), this.manager()));
@@ -75,20 +75,20 @@ public final class DeviceGroupsImpl implements DeviceGroups {
 
     public void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         ClaimDevicesRequest claimDevicesRequest) {
-        this.serviceClient().claimDevices(resourceGroupName, catalogName, productName, deviceGroupName,
-            claimDevicesRequest);
+        this.serviceClient()
+            .claimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest);
     }
 
     public void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         ClaimDevicesRequest claimDevicesRequest, Context context) {
-        this.serviceClient().claimDevices(resourceGroupName, catalogName, productName, deviceGroupName,
-            claimDevicesRequest, context);
+        this.serviceClient()
+            .claimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest, context);
     }
 
     public Response<CountDevicesResponse> countDevicesWithResponse(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, Context context) {
-        Response<CountDevicesResponseInner> inner = this.serviceClient().countDevicesWithResponse(resourceGroupName,
-            catalogName, productName, deviceGroupName, context);
+        Response<CountDevicesResponseInner> inner = this.serviceClient()
+            .countDevicesWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CountDevicesResponseImpl(inner.getValue(), this.manager()));

@@ -19,33 +19,36 @@ public final class OracleServiceCloudObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleServiceCloudObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"OracleServiceCloudObject\",\"typeProperties\":{\"tableName\":\"datazgfhzdzahktxvcbi\"},\"description\":\"ecthotbkjwh\",\"structure\":\"datapxjvtwk\",\"schema\":\"datadpay\",\"linkedServiceName\":{\"referenceName\":\"opqiwuzrg\",\"parameters\":{\"qqjobsyn\":\"datajfkgb\",\"onjqhdheosx\":\"dataen\",\"wypphtjtntcwgpd\":\"datawfudmpf\",\"spkvrmp\":\"databglaecctokfspvjr\"}},\"parameters\":{\"gmc\":{\"type\":\"Float\",\"defaultValue\":\"datatwjwiyyeo\"},\"ioxbgom\":{\"type\":\"Object\",\"defaultValue\":\"datamvphwfnugslvfz\"}},\"annotations\":[\"dataprpmo\",\"dataxnwcgzuoxixtx\"],\"folder\":{\"name\":\"jsehbknnrnk\"},\"\":{\"zehcz\":\"dataawpcbso\",\"sxvppkjealkdb\":\"datanivco\",\"vbmyzuqfdqdktrj\":\"datawho\",\"szhh\":\"datao\"}}")
+            "{\"type\":\"OracleServiceCloudObject\",\"typeProperties\":{\"tableName\":\"datasyajmmczupd\"},\"description\":\"grufsdbkuxkdi\",\"structure\":\"datagsivxwkscwbsh\",\"schema\":\"datahvlms\",\"linkedServiceName\":{\"referenceName\":\"eylaulpuexy\",\"parameters\":{\"lspgnndefyhsb\":\"dataztyecxd\",\"ltaprq\":\"datahwlvsvs\",\"cuhbgftfvqukkmvz\":\"datafkmvzrkpmonxdw\",\"dqrjylwqqsemjhh\":\"dataneg\"}},\"parameters\":{\"tdpfz\":{\"type\":\"String\",\"defaultValue\":\"dataehztbejrdzwy\"},\"mjkykqflkm\":{\"type\":\"Bool\",\"defaultValue\":\"dataifnjwj\"},\"hc\":{\"type\":\"Bool\",\"defaultValue\":\"dataxmysmkbndnrihpja\"},\"ig\":{\"type\":\"Object\",\"defaultValue\":\"datajn\"}},\"annotations\":[\"datalkrnpsbnmrmhkip\"],\"folder\":{\"name\":\"dvdpfgwdxm\"},\"\":{\"unddvjlpbjszqj\":\"datalnpbiec\",\"ypbrzwi\":\"dataskjvaycxrwknsbg\",\"cebtpgvut\":\"datapzcyhk\"}}")
             .toObject(OracleServiceCloudObjectDataset.class);
-        Assertions.assertEquals("ecthotbkjwh", model.description());
-        Assertions.assertEquals("opqiwuzrg", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("gmc").type());
-        Assertions.assertEquals("jsehbknnrnk", model.folder().name());
+        Assertions.assertEquals("grufsdbkuxkdi", model.description());
+        Assertions.assertEquals("eylaulpuexy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tdpfz").type());
+        Assertions.assertEquals("dvdpfgwdxm", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleServiceCloudObjectDataset model = new OracleServiceCloudObjectDataset().withDescription("ecthotbkjwh")
-            .withStructure("datapxjvtwk")
-            .withSchema("datadpay")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("opqiwuzrg")
-                .withParameters(mapOf("qqjobsyn", "datajfkgb", "onjqhdheosx", "dataen", "wypphtjtntcwgpd",
-                    "datawfudmpf", "spkvrmp", "databglaecctokfspvjr")))
-            .withParameters(mapOf("gmc",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datatwjwiyyeo"), "ioxbgom",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datamvphwfnugslvfz")))
-            .withAnnotations(Arrays.asList("dataprpmo", "dataxnwcgzuoxixtx"))
-            .withFolder(new DatasetFolder().withName("jsehbknnrnk"))
-            .withTableName("datazgfhzdzahktxvcbi");
+        OracleServiceCloudObjectDataset model = new OracleServiceCloudObjectDataset().withDescription("grufsdbkuxkdi")
+            .withStructure("datagsivxwkscwbsh")
+            .withSchema("datahvlms")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("eylaulpuexy")
+                .withParameters(mapOf("lspgnndefyhsb", "dataztyecxd", "ltaprq", "datahwlvsvs", "cuhbgftfvqukkmvz",
+                    "datafkmvzrkpmonxdw", "dqrjylwqqsemjhh", "dataneg")))
+            .withParameters(mapOf("tdpfz",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataehztbejrdzwy"),
+                "mjkykqflkm", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataifnjwj"),
+                "hc",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataxmysmkbndnrihpja"),
+                "ig", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datajn")))
+            .withAnnotations(Arrays.asList("datalkrnpsbnmrmhkip"))
+            .withFolder(new DatasetFolder().withName("dvdpfgwdxm"))
+            .withTableName("datasyajmmczupd");
         model = BinaryData.fromObject(model).toObject(OracleServiceCloudObjectDataset.class);
-        Assertions.assertEquals("ecthotbkjwh", model.description());
-        Assertions.assertEquals("opqiwuzrg", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("gmc").type());
-        Assertions.assertEquals("jsehbknnrnk", model.folder().name());
+        Assertions.assertEquals("grufsdbkuxkdi", model.description());
+        Assertions.assertEquals("eylaulpuexy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tdpfz").type());
+        Assertions.assertEquals("dvdpfgwdxm", model.folder().name());
     }
 
     // Use "Map.of" if available

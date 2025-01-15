@@ -63,7 +63,8 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         null);
 
-    private static final ConfigurationSetting ITEM_INVALID_JSON = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
+    private static final ConfigurationSetting ITEM_INVALID_JSON = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3,
+        TEST_LABEL_3,
         JSON_CONTENT_TYPE);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();

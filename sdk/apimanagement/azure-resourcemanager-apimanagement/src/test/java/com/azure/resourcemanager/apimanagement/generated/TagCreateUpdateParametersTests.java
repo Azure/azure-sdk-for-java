@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class TagCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagCreateUpdateParameters model =
-            BinaryData
-                .fromString("{\"properties\":{\"displayName\":\"gbth\"}}")
-                .toObject(TagCreateUpdateParameters.class);
+        TagCreateUpdateParameters model = BinaryData.fromString("{\"properties\":{\"displayName\":\"gbth\"}}")
+            .toObject(TagCreateUpdateParameters.class);
         Assertions.assertEquals("gbth", model.displayName());
     }
 

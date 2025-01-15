@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class BackendReconnectContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackendReconnectContract model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"after\":\"PT143H2M24S\"},\"id\":\"d\",\"name\":\"djchlr\",\"type\":\"pwctofl\"}")
-                .toObject(BackendReconnectContract.class);
+        BackendReconnectContract model = BinaryData
+            .fromString(
+                "{\"properties\":{\"after\":\"PT143H2M24S\"},\"id\":\"d\",\"name\":\"djchlr\",\"type\":\"pwctofl\"}")
+            .toObject(BackendReconnectContract.class);
         Assertions.assertEquals(Duration.parse("PT143H2M24S"), model.after());
     }
 

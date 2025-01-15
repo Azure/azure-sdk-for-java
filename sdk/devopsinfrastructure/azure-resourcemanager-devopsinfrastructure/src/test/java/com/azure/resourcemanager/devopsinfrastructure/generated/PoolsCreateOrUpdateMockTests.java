@@ -33,7 +33,7 @@ public final class PoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1068546777,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"eddgssofw\"},\"identity\":{\"principalId\":\"qal\",\"tenantId\":\"mnjijpxacqqudf\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"evfdnwnwm\":{\"principalId\":\"aaabjyvayff\",\"clientId\":\"rzrtuzqogsex\"},\"thzvaytdwkqbrqu\":{\"principalId\":\"zsyyceuzso\",\"clientId\":\"judpfrxt\"},\"oaxoruzfgsqu\":{\"principalId\":\"axhexiilivp\",\"clientId\":\"iirqtd\"}}},\"location\":\"xrxxlep\",\"tags\":{\"wxuqlcvydypatdoo\":\"mxjezwlw\",\"kooebwnu\":\"ojknio\",\"vdkcrodtj\":\"hemms\"},\"id\":\"nfwjlfltkacjvefk\",\"name\":\"lfoakg\",\"type\":\"kfpagao\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":665760554,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"anvx\"},\"identity\":{\"principalId\":\"vudutncor\",\"tenantId\":\"lxqtvcofudfl\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"sgsahmkycgr\":{\"principalId\":\"bgdknnqv\",\"clientId\":\"znqntoru\"}}},\"location\":\"wjue\",\"tags\":{\"ovsm\":\"buruvd\",\"wabm\":\"l\"},\"id\":\"oefki\",\"name\":\"rvtp\",\"type\":\"qujmqlgkf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -44,29 +44,29 @@ public final class PoolsCreateOrUpdateMockTests {
 
         Pool response
             = manager.pools()
-                .define("dxbjhwuaanozj")
-                .withRegion("varmywdmj")
-                .withExistingResourceGroup("abfatkl")
-                .withTags(mapOf("rw", "bjhhyx"))
-                .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.DELETING)
-                    .withMaximumConcurrency(1082355314)
+                .define("fw")
+                .withRegion("fz")
+                .withExistingResourceGroup("odtji")
+                .withTags(mapOf("xzfe", "xxbuyq"))
+                .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.PROVISIONING)
+                    .withMaximumConcurrency(1139569570)
                     .withOrganizationProfile(new OrganizationProfile())
                     .withAgentProfile(new AgentProfile().withResourcePredictions(new ResourcePredictions())
                         .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
                     .withFabricProfile(new FabricProfile())
-                    .withDevCenterProjectResourceId("l"))
+                    .withDevCenterProjectResourceId("cjvefkdlfo"))
                 .withIdentity(
                     new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("jhdgqggebdunyga", new UserAssignedIdentity(), "rxcyjmoad",
+                        .withUserAssignedIdentities(mapOf("beyvpnqicvinvkjj", new UserAssignedIdentity(), "pofncck",
                             new UserAssignedIdentity())))
                 .create();
 
-        Assertions.assertEquals("xrxxlep", response.location());
-        Assertions.assertEquals("mxjezwlw", response.tags().get("wxuqlcvydypatdoo"));
+        Assertions.assertEquals("wjue", response.location());
+        Assertions.assertEquals("buruvd", response.tags().get("ovsm"));
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals(1068546777, response.properties().maximumConcurrency());
-        Assertions.assertEquals("eddgssofw", response.properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(665760554, response.properties().maximumConcurrency());
+        Assertions.assertEquals("anvx", response.properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

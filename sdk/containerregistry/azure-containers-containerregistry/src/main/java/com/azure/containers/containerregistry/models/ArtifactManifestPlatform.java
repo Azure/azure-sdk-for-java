@@ -10,9 +10,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The artifact's platform, consisting of operating system and architecture. */
+/**
+ * The artifact's platform, consisting of operating system and architecture.
+ */
 @Immutable
 public final class ArtifactManifestPlatform implements JsonSerializable<ArtifactManifestPlatform> {
     /*
@@ -30,12 +31,15 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
      */
     private ArtifactOperatingSystem operatingSystem;
 
-    /** Creates an instance of ArtifactManifestPlatform class. */
-    public ArtifactManifestPlatform() {}
+    /**
+     * Creates an instance of ArtifactManifestPlatform class.
+     */
+    public ArtifactManifestPlatform() {
+    }
 
     /**
      * Get the digest property: Manifest digest.
-     *
+     * 
      * @return the digest value.
      */
     public String getDigest() {
@@ -44,7 +48,7 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
 
     /**
      * Get the architecture property: CPU architecture.
-     *
+     * 
      * @return the architecture value.
      */
     public ArtifactArchitecture getArchitecture() {
@@ -53,53 +57,52 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
 
     /**
      * Get the operatingSystem property: Operating system.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("digest", this.digest);
-        jsonWriter.writeStringField("architecture", Objects.toString(this.architecture, null));
-        jsonWriter.writeStringField("os", Objects.toString(this.operatingSystem, null));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ArtifactManifestPlatform from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ArtifactManifestPlatform if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ArtifactManifestPlatform.
      */
     public static ArtifactManifestPlatform fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ArtifactManifestPlatform deserializedArtifactManifestPlatform = new ArtifactManifestPlatform();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ArtifactManifestPlatform deserializedArtifactManifestPlatform = new ArtifactManifestPlatform();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("digest".equals(fieldName)) {
-                            deserializedArtifactManifestPlatform.digest = reader.getString();
-                        } else if ("architecture".equals(fieldName)) {
-                            deserializedArtifactManifestPlatform.architecture =
-                                    ArtifactArchitecture.fromString(reader.getString());
-                        } else if ("os".equals(fieldName)) {
-                            deserializedArtifactManifestPlatform.operatingSystem =
-                                    ArtifactOperatingSystem.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("digest".equals(fieldName)) {
+                    deserializedArtifactManifestPlatform.digest = reader.getString();
+                } else if ("architecture".equals(fieldName)) {
+                    deserializedArtifactManifestPlatform.architecture
+                        = ArtifactArchitecture.fromString(reader.getString());
+                } else if ("os".equals(fieldName)) {
+                    deserializedArtifactManifestPlatform.operatingSystem
+                        = ArtifactOperatingSystem.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedArtifactManifestPlatform;
-                });
+            return deserializedArtifactManifestPlatform;
+        });
     }
 }

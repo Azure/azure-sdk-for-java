@@ -14,7 +14,8 @@ import com.azure.resourcemanager.mysql.models.LogFiles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LogFilesImpl implements LogFiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogFilesImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LogFilesImpl.class);
 
     private final LogFilesClient innerClient;
 

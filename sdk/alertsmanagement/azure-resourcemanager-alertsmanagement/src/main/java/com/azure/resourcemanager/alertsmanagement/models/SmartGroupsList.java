@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.alertsmanagement.fluent.models.SmartGroupInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List the alerts. */
+/**
+ * List the alerts.
+ */
 @Fluent
-public final class SmartGroupsList {
+public final class SmartGroupsList implements JsonSerializable<SmartGroupsList> {
     /*
      * URL to fetch the next set of alerts.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of alerts
      */
-    @JsonProperty(value = "value")
     private List<SmartGroupInner> value;
 
     /**
+     * Creates an instance of SmartGroupsList class.
+     */
+    public SmartGroupsList() {
+    }
+
+    /**
      * Get the nextLink property: URL to fetch the next set of alerts.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class SmartGroupsList {
 
     /**
      * Set the nextLink property: URL to fetch the next set of alerts.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SmartGroupsList object itself.
      */
@@ -46,7 +56,7 @@ public final class SmartGroupsList {
 
     /**
      * Get the value property: List of alerts.
-     *
+     * 
      * @return the value value.
      */
     public List<SmartGroupInner> value() {
@@ -55,7 +65,7 @@ public final class SmartGroupsList {
 
     /**
      * Set the value property: List of alerts.
-     *
+     * 
      * @param value the value value to set.
      * @return the SmartGroupsList object itself.
      */
@@ -66,12 +76,52 @@ public final class SmartGroupsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmartGroupsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmartGroupsList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SmartGroupsList.
+     */
+    public static SmartGroupsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmartGroupsList deserializedSmartGroupsList = new SmartGroupsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedSmartGroupsList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<SmartGroupInner> value = reader.readArray(reader1 -> SmartGroupInner.fromJson(reader1));
+                    deserializedSmartGroupsList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmartGroupsList;
+        });
     }
 }

@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.CertificateUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the update certificate operation. */
+/**
+ * The parameters supplied to the update certificate operation.
+ */
 @Fluent
-public final class CertificateUpdateParameters {
+public final class CertificateUpdateParameters implements JsonSerializable<CertificateUpdateParameters> {
     /*
      * Gets or sets the name of the certificate.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the properties of the certificate.
      */
-    @JsonProperty(value = "properties")
     private CertificateUpdateProperties innerProperties;
 
     /**
+     * Creates an instance of CertificateUpdateParameters class.
+     */
+    public CertificateUpdateParameters() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the certificate.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -34,7 +44,7 @@ public final class CertificateUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the certificate.
-     *
+     * 
      * @param name the name value to set.
      * @return the CertificateUpdateParameters object itself.
      */
@@ -45,7 +55,7 @@ public final class CertificateUpdateParameters {
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the certificate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CertificateUpdateProperties innerProperties() {
@@ -54,7 +64,7 @@ public final class CertificateUpdateParameters {
 
     /**
      * Get the description property: Gets or sets the description of the certificate.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -63,7 +73,7 @@ public final class CertificateUpdateParameters {
 
     /**
      * Set the description property: Gets or sets the description of the certificate.
-     *
+     * 
      * @param description the description value to set.
      * @return the CertificateUpdateParameters object itself.
      */
@@ -77,12 +87,52 @@ public final class CertificateUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateUpdateParameters.
+     */
+    public static CertificateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateUpdateParameters deserializedCertificateUpdateParameters = new CertificateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCertificateUpdateParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCertificateUpdateParameters.innerProperties
+                        = CertificateUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateUpdateParameters;
+        });
     }
 }

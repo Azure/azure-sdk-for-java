@@ -6,42 +6,48 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.ModuleCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the create or update module operation. */
+/**
+ * The parameters supplied to the create or update module operation.
+ */
 @Fluent
-public final class ModuleCreateOrUpdateParameters {
+public final class ModuleCreateOrUpdateParameters implements JsonSerializable<ModuleCreateOrUpdateParameters> {
     /*
      * Gets or sets the module create properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private ModuleCreateOrUpdateProperties innerProperties = new ModuleCreateOrUpdateProperties();
 
     /*
      * Gets or sets name of the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Gets or sets the tags attached to the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of ModuleCreateOrUpdateParameters class.
+     */
+    public ModuleCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Gets or sets the module create properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ModuleCreateOrUpdateProperties innerProperties() {
@@ -50,7 +56,7 @@ public final class ModuleCreateOrUpdateParameters {
 
     /**
      * Get the name property: Gets or sets name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +65,7 @@ public final class ModuleCreateOrUpdateParameters {
 
     /**
      * Set the name property: Gets or sets name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ModuleCreateOrUpdateParameters object itself.
      */
@@ -70,7 +76,7 @@ public final class ModuleCreateOrUpdateParameters {
 
     /**
      * Get the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -79,7 +85,7 @@ public final class ModuleCreateOrUpdateParameters {
 
     /**
      * Set the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ModuleCreateOrUpdateParameters object itself.
      */
@@ -90,7 +96,7 @@ public final class ModuleCreateOrUpdateParameters {
 
     /**
      * Get the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -99,7 +105,7 @@ public final class ModuleCreateOrUpdateParameters {
 
     /**
      * Set the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ModuleCreateOrUpdateParameters object itself.
      */
@@ -110,7 +116,7 @@ public final class ModuleCreateOrUpdateParameters {
 
     /**
      * Get the contentLink property: Gets or sets the module content link.
-     *
+     * 
      * @return the contentLink value.
      */
     public ContentLink contentLink() {
@@ -119,7 +125,7 @@ public final class ModuleCreateOrUpdateParameters {
 
     /**
      * Set the contentLink property: Gets or sets the module content link.
-     *
+     * 
      * @param contentLink the contentLink value to set.
      * @return the ModuleCreateOrUpdateParameters object itself.
      */
@@ -133,19 +139,67 @@ public final class ModuleCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ModuleCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ModuleCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ModuleCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ModuleCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ModuleCreateOrUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ModuleCreateOrUpdateParameters.
+     */
+    public static ModuleCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ModuleCreateOrUpdateParameters deserializedModuleCreateOrUpdateParameters
+                = new ModuleCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedModuleCreateOrUpdateParameters.innerProperties
+                        = ModuleCreateOrUpdateProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedModuleCreateOrUpdateParameters.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedModuleCreateOrUpdateParameters.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedModuleCreateOrUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedModuleCreateOrUpdateParameters;
+        });
+    }
 }

@@ -5,172 +5,171 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AntispamMailDirection;
 import com.azure.resourcemanager.securityinsights.models.DeliveryAction;
 import com.azure.resourcemanager.securityinsights.models.DeliveryLocation;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-/** Mail message entity property bag. */
+/**
+ * Mail message entity property bag.
+ */
 @Fluent
 public final class MailMessageEntityProperties extends EntityCommonProperties {
     /*
      * The File entity ids of this mail message's attachments
      */
-    @JsonProperty(value = "fileEntityIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> fileEntityIds;
 
     /*
      * The recipient of this mail message. Note that in case of multiple recipients the mail message is forked and each
      * copy has one recipient
      */
-    @JsonProperty(value = "recipient", access = JsonProperty.Access.WRITE_ONLY)
     private String recipient;
 
     /*
      * The Urls contained in this mail message
      */
-    @JsonProperty(value = "urls", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> urls;
 
     /*
      * The threats of this mail message
      */
-    @JsonProperty(value = "threats", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> threats;
 
     /*
      * The p1 sender's email address
      */
-    @JsonProperty(value = "p1Sender", access = JsonProperty.Access.WRITE_ONLY)
     private String p1Sender;
 
     /*
      * The p1 sender's display name
      */
-    @JsonProperty(value = "p1SenderDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String p1SenderDisplayName;
 
     /*
      * The p1 sender's domain
      */
-    @JsonProperty(value = "p1SenderDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String p1SenderDomain;
 
     /*
      * The sender's IP address
      */
-    @JsonProperty(value = "senderIP", access = JsonProperty.Access.WRITE_ONLY)
     private String senderIp;
 
     /*
      * The p2 sender's email address
      */
-    @JsonProperty(value = "p2Sender", access = JsonProperty.Access.WRITE_ONLY)
     private String p2Sender;
 
     /*
      * The p2 sender's display name
      */
-    @JsonProperty(value = "p2SenderDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String p2SenderDisplayName;
 
     /*
      * The p2 sender's domain
      */
-    @JsonProperty(value = "p2SenderDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String p2SenderDomain;
 
     /*
      * The receive date of this message
      */
-    @JsonProperty(value = "receiveDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime receiveDate;
 
     /*
      * The network message id of this mail message
      */
-    @JsonProperty(value = "networkMessageId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID networkMessageId;
 
     /*
      * The internet message id of this mail message
      */
-    @JsonProperty(value = "internetMessageId", access = JsonProperty.Access.WRITE_ONLY)
     private String internetMessageId;
 
     /*
      * The subject of this mail message
      */
-    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
     private String subject;
 
     /*
      * The language of this mail message
      */
-    @JsonProperty(value = "language", access = JsonProperty.Access.WRITE_ONLY)
     private String language;
 
     /*
      * The threat detection methods
      */
-    @JsonProperty(value = "threatDetectionMethods", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> threatDetectionMethods;
 
     /*
      * The bodyFingerprintBin1
      */
-    @JsonProperty(value = "bodyFingerprintBin1")
     private Integer bodyFingerprintBin1;
 
     /*
      * The bodyFingerprintBin2
      */
-    @JsonProperty(value = "bodyFingerprintBin2")
     private Integer bodyFingerprintBin2;
 
     /*
      * The bodyFingerprintBin3
      */
-    @JsonProperty(value = "bodyFingerprintBin3")
     private Integer bodyFingerprintBin3;
 
     /*
      * The bodyFingerprintBin4
      */
-    @JsonProperty(value = "bodyFingerprintBin4")
     private Integer bodyFingerprintBin4;
 
     /*
      * The bodyFingerprintBin5
      */
-    @JsonProperty(value = "bodyFingerprintBin5")
     private Integer bodyFingerprintBin5;
 
     /*
      * The directionality of this mail message
      */
-    @JsonProperty(value = "antispamDirection")
     private AntispamMailDirection antispamDirection;
 
     /*
      * The delivery action of this mail message like Delivered, Blocked, Replaced etc
      */
-    @JsonProperty(value = "deliveryAction")
     private DeliveryAction deliveryAction;
 
     /*
      * The delivery location of this mail message like Inbox, JunkFolder etc
      */
-    @JsonProperty(value = "deliveryLocation")
     private DeliveryLocation deliveryLocation;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of MailMessageEntityProperties class.
+     */
+    public MailMessageEntityProperties() {
+    }
 
     /**
      * Get the fileEntityIds property: The File entity ids of this mail message's attachments.
-     *
+     * 
      * @return the fileEntityIds value.
      */
     public List<String> fileEntityIds() {
@@ -180,7 +179,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
     /**
      * Get the recipient property: The recipient of this mail message. Note that in case of multiple recipients the mail
      * message is forked and each copy has one recipient.
-     *
+     * 
      * @return the recipient value.
      */
     public String recipient() {
@@ -189,7 +188,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the urls property: The Urls contained in this mail message.
-     *
+     * 
      * @return the urls value.
      */
     public List<String> urls() {
@@ -198,7 +197,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the threats property: The threats of this mail message.
-     *
+     * 
      * @return the threats value.
      */
     public List<String> threats() {
@@ -207,7 +206,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the p1Sender property: The p1 sender's email address.
-     *
+     * 
      * @return the p1Sender value.
      */
     public String p1Sender() {
@@ -216,7 +215,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the p1SenderDisplayName property: The p1 sender's display name.
-     *
+     * 
      * @return the p1SenderDisplayName value.
      */
     public String p1SenderDisplayName() {
@@ -225,7 +224,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the p1SenderDomain property: The p1 sender's domain.
-     *
+     * 
      * @return the p1SenderDomain value.
      */
     public String p1SenderDomain() {
@@ -234,7 +233,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the senderIp property: The sender's IP address.
-     *
+     * 
      * @return the senderIp value.
      */
     public String senderIp() {
@@ -243,7 +242,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the p2Sender property: The p2 sender's email address.
-     *
+     * 
      * @return the p2Sender value.
      */
     public String p2Sender() {
@@ -252,7 +251,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the p2SenderDisplayName property: The p2 sender's display name.
-     *
+     * 
      * @return the p2SenderDisplayName value.
      */
     public String p2SenderDisplayName() {
@@ -261,7 +260,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the p2SenderDomain property: The p2 sender's domain.
-     *
+     * 
      * @return the p2SenderDomain value.
      */
     public String p2SenderDomain() {
@@ -270,7 +269,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the receiveDate property: The receive date of this message.
-     *
+     * 
      * @return the receiveDate value.
      */
     public OffsetDateTime receiveDate() {
@@ -279,7 +278,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the networkMessageId property: The network message id of this mail message.
-     *
+     * 
      * @return the networkMessageId value.
      */
     public UUID networkMessageId() {
@@ -288,7 +287,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the internetMessageId property: The internet message id of this mail message.
-     *
+     * 
      * @return the internetMessageId value.
      */
     public String internetMessageId() {
@@ -297,7 +296,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the subject property: The subject of this mail message.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -306,7 +305,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the language property: The language of this mail message.
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -315,7 +314,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the threatDetectionMethods property: The threat detection methods.
-     *
+     * 
      * @return the threatDetectionMethods value.
      */
     public List<String> threatDetectionMethods() {
@@ -324,7 +323,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the bodyFingerprintBin1 property: The bodyFingerprintBin1.
-     *
+     * 
      * @return the bodyFingerprintBin1 value.
      */
     public Integer bodyFingerprintBin1() {
@@ -333,7 +332,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Set the bodyFingerprintBin1 property: The bodyFingerprintBin1.
-     *
+     * 
      * @param bodyFingerprintBin1 the bodyFingerprintBin1 value to set.
      * @return the MailMessageEntityProperties object itself.
      */
@@ -344,7 +343,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the bodyFingerprintBin2 property: The bodyFingerprintBin2.
-     *
+     * 
      * @return the bodyFingerprintBin2 value.
      */
     public Integer bodyFingerprintBin2() {
@@ -353,7 +352,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Set the bodyFingerprintBin2 property: The bodyFingerprintBin2.
-     *
+     * 
      * @param bodyFingerprintBin2 the bodyFingerprintBin2 value to set.
      * @return the MailMessageEntityProperties object itself.
      */
@@ -364,7 +363,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the bodyFingerprintBin3 property: The bodyFingerprintBin3.
-     *
+     * 
      * @return the bodyFingerprintBin3 value.
      */
     public Integer bodyFingerprintBin3() {
@@ -373,7 +372,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Set the bodyFingerprintBin3 property: The bodyFingerprintBin3.
-     *
+     * 
      * @param bodyFingerprintBin3 the bodyFingerprintBin3 value to set.
      * @return the MailMessageEntityProperties object itself.
      */
@@ -384,7 +383,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the bodyFingerprintBin4 property: The bodyFingerprintBin4.
-     *
+     * 
      * @return the bodyFingerprintBin4 value.
      */
     public Integer bodyFingerprintBin4() {
@@ -393,7 +392,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Set the bodyFingerprintBin4 property: The bodyFingerprintBin4.
-     *
+     * 
      * @param bodyFingerprintBin4 the bodyFingerprintBin4 value to set.
      * @return the MailMessageEntityProperties object itself.
      */
@@ -404,7 +403,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the bodyFingerprintBin5 property: The bodyFingerprintBin5.
-     *
+     * 
      * @return the bodyFingerprintBin5 value.
      */
     public Integer bodyFingerprintBin5() {
@@ -413,7 +412,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Set the bodyFingerprintBin5 property: The bodyFingerprintBin5.
-     *
+     * 
      * @param bodyFingerprintBin5 the bodyFingerprintBin5 value to set.
      * @return the MailMessageEntityProperties object itself.
      */
@@ -424,7 +423,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the antispamDirection property: The directionality of this mail message.
-     *
+     * 
      * @return the antispamDirection value.
      */
     public AntispamMailDirection antispamDirection() {
@@ -433,7 +432,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Set the antispamDirection property: The directionality of this mail message.
-     *
+     * 
      * @param antispamDirection the antispamDirection value to set.
      * @return the MailMessageEntityProperties object itself.
      */
@@ -444,7 +443,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the deliveryAction property: The delivery action of this mail message like Delivered, Blocked, Replaced etc.
-     *
+     * 
      * @return the deliveryAction value.
      */
     public DeliveryAction deliveryAction() {
@@ -453,7 +452,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Set the deliveryAction property: The delivery action of this mail message like Delivered, Blocked, Replaced etc.
-     *
+     * 
      * @param deliveryAction the deliveryAction value to set.
      * @return the MailMessageEntityProperties object itself.
      */
@@ -464,7 +463,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the deliveryLocation property: The delivery location of this mail message like Inbox, JunkFolder etc.
-     *
+     * 
      * @return the deliveryLocation value.
      */
     public DeliveryLocation deliveryLocation() {
@@ -473,7 +472,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
 
     /**
      * Set the deliveryLocation property: The delivery location of this mail message like Inbox, JunkFolder etc.
-     *
+     * 
      * @param deliveryLocation the deliveryLocation value to set.
      * @return the MailMessageEntityProperties object itself.
      */
@@ -483,12 +482,146 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("bodyFingerprintBin1", this.bodyFingerprintBin1);
+        jsonWriter.writeNumberField("bodyFingerprintBin2", this.bodyFingerprintBin2);
+        jsonWriter.writeNumberField("bodyFingerprintBin3", this.bodyFingerprintBin3);
+        jsonWriter.writeNumberField("bodyFingerprintBin4", this.bodyFingerprintBin4);
+        jsonWriter.writeNumberField("bodyFingerprintBin5", this.bodyFingerprintBin5);
+        jsonWriter.writeStringField("antispamDirection",
+            this.antispamDirection == null ? null : this.antispamDirection.toString());
+        jsonWriter.writeStringField("deliveryAction",
+            this.deliveryAction == null ? null : this.deliveryAction.toString());
+        jsonWriter.writeStringField("deliveryLocation",
+            this.deliveryLocation == null ? null : this.deliveryLocation.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MailMessageEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MailMessageEntityProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MailMessageEntityProperties.
+     */
+    public static MailMessageEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MailMessageEntityProperties deserializedMailMessageEntityProperties = new MailMessageEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMailMessageEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.friendlyName = reader.getString();
+                } else if ("fileEntityIds".equals(fieldName)) {
+                    List<String> fileEntityIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMailMessageEntityProperties.fileEntityIds = fileEntityIds;
+                } else if ("recipient".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.recipient = reader.getString();
+                } else if ("urls".equals(fieldName)) {
+                    List<String> urls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMailMessageEntityProperties.urls = urls;
+                } else if ("threats".equals(fieldName)) {
+                    List<String> threats = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMailMessageEntityProperties.threats = threats;
+                } else if ("p1Sender".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.p1Sender = reader.getString();
+                } else if ("p1SenderDisplayName".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.p1SenderDisplayName = reader.getString();
+                } else if ("p1SenderDomain".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.p1SenderDomain = reader.getString();
+                } else if ("senderIP".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.senderIp = reader.getString();
+                } else if ("p2Sender".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.p2Sender = reader.getString();
+                } else if ("p2SenderDisplayName".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.p2SenderDisplayName = reader.getString();
+                } else if ("p2SenderDomain".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.p2SenderDomain = reader.getString();
+                } else if ("receiveDate".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.receiveDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("networkMessageId".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.networkMessageId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("internetMessageId".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.internetMessageId = reader.getString();
+                } else if ("subject".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.subject = reader.getString();
+                } else if ("language".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.language = reader.getString();
+                } else if ("threatDetectionMethods".equals(fieldName)) {
+                    List<String> threatDetectionMethods = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMailMessageEntityProperties.threatDetectionMethods = threatDetectionMethods;
+                } else if ("bodyFingerprintBin1".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.bodyFingerprintBin1
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("bodyFingerprintBin2".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.bodyFingerprintBin2
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("bodyFingerprintBin3".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.bodyFingerprintBin3
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("bodyFingerprintBin4".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.bodyFingerprintBin4
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("bodyFingerprintBin5".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.bodyFingerprintBin5
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("antispamDirection".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.antispamDirection
+                        = AntispamMailDirection.fromString(reader.getString());
+                } else if ("deliveryAction".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.deliveryAction
+                        = DeliveryAction.fromString(reader.getString());
+                } else if ("deliveryLocation".equals(fieldName)) {
+                    deserializedMailMessageEntityProperties.deliveryLocation
+                        = DeliveryLocation.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMailMessageEntityProperties;
+        });
     }
 }

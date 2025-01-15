@@ -7,52 +7,105 @@ package com.azure.resourcemanager.networkfunction.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkfunction.fluent.models.CollectorPolicyInner;
 import com.azure.resourcemanager.networkfunction.models.CollectorPolicyListResult;
+import com.azure.resourcemanager.networkfunction.models.EmissionPoliciesPropertiesFormat;
+import com.azure.resourcemanager.networkfunction.models.EmissionPolicyDestination;
+import com.azure.resourcemanager.networkfunction.models.EmissionType;
+import com.azure.resourcemanager.networkfunction.models.IngestionPolicyPropertiesFormat;
+import com.azure.resourcemanager.networkfunction.models.IngestionSourcesPropertiesFormat;
+import com.azure.resourcemanager.networkfunction.models.IngestionType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CollectorPolicyListResultTests {
-    @Test
-    public void testDeserialize() {
-        CollectorPolicyListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"emissionPolicies\":[],\"provisioningState\":\"Updating\"},\"etag\":\"fxqeof\",\"location\":\"e\",\"tags\":{\"jqul\":\"qjbasvms\",\"clxxwrljdo\":\"gsntnbybkzgcwr\",\"wtnhxbnjbiksqr\":\"skcqvkocrcjd\"},\"id\":\"lssai\",\"name\":\"qpjwnzlljfm\",\"type\":\"pee\"},{\"properties\":{\"emissionPolicies\":[],\"provisioningState\":\"Failed\"},\"etag\":\"bkyqduu\",\"location\":\"tcj\",\"tags\":{\"dkvwrwjfe\":\"zevndhkrwpdappds\",\"je\":\"snhu\",\"hocdgeab\":\"tmrldhugjzzdatq\"},\"id\":\"gphuticndvka\",\"name\":\"zwyiftyhxhur\",\"type\":\"k\"}],\"nextLink\":\"yxolniwp\"}")
-                .toObject(CollectorPolicyListResult.class);
-        Assertions.assertEquals("e", model.value().get(0).location());
-        Assertions.assertEquals("qjbasvms", model.value().get(0).tags().get("jqul"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CollectorPolicyListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"ingestionPolicy\":{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[{}]},\"emissionPolicies\":[{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{},{},{},{}]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{},{},{},{}]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{},{},{}]}],\"provisioningState\":\"Succeeded\"},\"etag\":\"ppdsbdkvwrwj\",\"location\":\"usnhutje\",\"tags\":{\"hugjzzdatqxhoc\":\"rl\",\"ozwyiftyhxhuro\":\"geablgphuticndvk\"},\"id\":\"ftyxolniw\",\"name\":\"wcukjfkgiawxk\",\"type\":\"ryplwckbasyypn\"},{\"properties\":{\"ingestionPolicy\":{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[{},{},{}]},\"emissionPolicies\":[{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{}]}],\"provisioningState\":\"Succeeded\"},\"etag\":\"ynqgoulzndlikwyq\",\"location\":\"fgibmadgakeq\",\"tags\":{\"qqedqytbciqfou\":\"yb\"},\"id\":\"lmmnkzsmodmglo\",\"name\":\"gpbkwtmut\",\"type\":\"uqktap\"},{\"properties\":{\"ingestionPolicy\":{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[{},{}]},\"emissionPolicies\":[{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{},{},{},{}]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{}]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{},{},{}]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{}]}],\"provisioningState\":\"Succeeded\"},\"etag\":\"dgmb\",\"location\":\"ex\",\"tags\":{\"psalgbqux\":\"htqqrolfp\",\"n\":\"gjyjgzjaoyfhrtxi\",\"vlejuvfqa\":\"rkujy\",\"xgjvtbv\":\"rlyxwjkcprbnw\"},\"id\":\"ysszdnrujqguh\",\"name\":\"uouq\",\"type\":\"prwzwbnguitnwui\"},{\"properties\":{\"ingestionPolicy\":{\"ingestionType\":\"IPFIX\",\"ingestionSources\":[{},{}]},\"emissionPolicies\":[{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{}]},{\"emissionType\":\"IPFIX\",\"emissionDestinations\":[{},{},{}]}],\"provisioningState\":\"Succeeded\"},\"etag\":\"fvzwdzuhty\",\"location\":\"isdkfthwxmnteiw\",\"tags\":{\"fsrpymzidnse\":\"vkmijcmmxdcuf\",\"yc\":\"cxtbzsg\",\"mdwzjeiachboo\":\"sne\",\"ypyqrimzinp\":\"flnrosfqpteehzz\"},\"id\":\"swjdkirso\",\"name\":\"dqxhcrmnohjtckwh\",\"type\":\"soifiyipjxsqw\"}],\"nextLink\":\"rjb\"}")
+            .toObject(CollectorPolicyListResult.class);
+        Assertions.assertEquals("usnhutje", model.value().get(0).location());
+        Assertions.assertEquals("rl", model.value().get(0).tags().get("hugjzzdatqxhoc"));
+        Assertions.assertEquals(IngestionType.IPFIX, model.value().get(0).ingestionPolicy().ingestionType());
+        Assertions.assertEquals(EmissionType.IPFIX, model.value().get(0).emissionPolicies().get(0).emissionType());
     }
 
-    @Test
-    public void testSerialize() {
-        CollectorPolicyListResult model =
-            new CollectorPolicyListResult()
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CollectorPolicyListResult model
+            = new CollectorPolicyListResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new CollectorPolicyInner()
-                                .withLocation("e")
-                                .withTags(
-                                    mapOf(
-                                        "jqul",
-                                        "qjbasvms",
-                                        "clxxwrljdo",
-                                        "gsntnbybkzgcwr",
-                                        "wtnhxbnjbiksqr",
-                                        "skcqvkocrcjd"))
-                                .withEmissionPolicies(Arrays.asList()),
-                            new CollectorPolicyInner()
-                                .withLocation("tcj")
-                                .withTags(
-                                    mapOf("dkvwrwjfe", "zevndhkrwpdappds", "je", "snhu", "hocdgeab", "tmrldhugjzzdatq"))
-                                .withEmissionPolicies(Arrays.asList())));
+                            new CollectorPolicyInner().withLocation("usnhutje")
+                                .withTags(mapOf("hugjzzdatqxhoc", "rl", "ozwyiftyhxhuro", "geablgphuticndvk"))
+                                .withIngestionPolicy(
+                                    new IngestionPolicyPropertiesFormat().withIngestionType(IngestionType.IPFIX)
+                                        .withIngestionSources(Arrays.asList(new IngestionSourcesPropertiesFormat())))
+                                .withEmissionPolicies(Arrays.asList(
+                                    new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                                        .withEmissionDestinations(Arrays.asList(
+                                            new EmissionPolicyDestination(), new EmissionPolicyDestination(),
+                                            new EmissionPolicyDestination(), new EmissionPolicyDestination())),
+                                    new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                                        .withEmissionDestinations(Arrays.asList(new EmissionPolicyDestination(),
+                                            new EmissionPolicyDestination(), new EmissionPolicyDestination(),
+                                            new EmissionPolicyDestination())),
+                                    new EmissionPoliciesPropertiesFormat()
+                                        .withEmissionType(EmissionType.IPFIX)
+                                        .withEmissionDestinations(Arrays.asList(new EmissionPolicyDestination(),
+                                            new EmissionPolicyDestination(), new EmissionPolicyDestination())))),
+                            new CollectorPolicyInner().withLocation("fgibmadgakeq")
+                                .withTags(mapOf("qqedqytbciqfou", "yb"))
+                                .withIngestionPolicy(
+                                    new IngestionPolicyPropertiesFormat().withIngestionType(IngestionType.IPFIX)
+                                        .withIngestionSources(Arrays.asList(new IngestionSourcesPropertiesFormat(),
+                                            new IngestionSourcesPropertiesFormat(),
+                                            new IngestionSourcesPropertiesFormat())))
+                                .withEmissionPolicies(Arrays.asList(
+                                    new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                                        .withEmissionDestinations(Arrays.asList(new EmissionPolicyDestination())))),
+                            new CollectorPolicyInner().withLocation("ex")
+                                .withTags(mapOf("psalgbqux", "htqqrolfp", "n", "gjyjgzjaoyfhrtxi", "vlejuvfqa", "rkujy",
+                                    "xgjvtbv", "rlyxwjkcprbnw"))
+                                .withIngestionPolicy(
+                                    new IngestionPolicyPropertiesFormat().withIngestionType(IngestionType.IPFIX)
+                                        .withIngestionSources(Arrays.asList(new IngestionSourcesPropertiesFormat(),
+                                            new IngestionSourcesPropertiesFormat())))
+                                .withEmissionPolicies(Arrays
+                                    .asList(
+                                        new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                                            .withEmissionDestinations(Arrays.asList(new EmissionPolicyDestination(),
+                                                new EmissionPolicyDestination(), new EmissionPolicyDestination(),
+                                                new EmissionPolicyDestination())),
+                                        new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                                            .withEmissionDestinations(Arrays.asList(new EmissionPolicyDestination())),
+                                        new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                                            .withEmissionDestinations(Arrays.asList(new EmissionPolicyDestination(),
+                                                new EmissionPolicyDestination(), new EmissionPolicyDestination())),
+                                        new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                                            .withEmissionDestinations(Arrays.asList(new EmissionPolicyDestination())))),
+                            new CollectorPolicyInner().withLocation("isdkfthwxmnteiw")
+                                .withTags(mapOf("fsrpymzidnse", "vkmijcmmxdcuf", "yc", "cxtbzsg", "mdwzjeiachboo",
+                                    "sne", "ypyqrimzinp", "flnrosfqpteehzz"))
+                                .withIngestionPolicy(
+                                    new IngestionPolicyPropertiesFormat().withIngestionType(IngestionType.IPFIX)
+                                        .withIngestionSources(Arrays.asList(new IngestionSourcesPropertiesFormat(),
+                                            new IngestionSourcesPropertiesFormat())))
+                                .withEmissionPolicies(Arrays.asList(
+                                    new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                                        .withEmissionDestinations(Arrays.asList(new EmissionPolicyDestination())),
+                                    new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                                        .withEmissionDestinations(Arrays.asList(new EmissionPolicyDestination(),
+                                            new EmissionPolicyDestination(), new EmissionPolicyDestination()))))));
         model = BinaryData.fromObject(model).toObject(CollectorPolicyListResult.class);
-        Assertions.assertEquals("e", model.value().get(0).location());
-        Assertions.assertEquals("qjbasvms", model.value().get(0).tags().get("jqul"));
+        Assertions.assertEquals("usnhutje", model.value().get(0).location());
+        Assertions.assertEquals("rl", model.value().get(0).tags().get("hugjzzdatqxhoc"));
+        Assertions.assertEquals(IngestionType.IPFIX, model.value().get(0).ingestionPolicy().ingestionType());
+        Assertions.assertEquals(EmissionType.IPFIX, model.value().get(0).emissionPolicies().get(0).emissionType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

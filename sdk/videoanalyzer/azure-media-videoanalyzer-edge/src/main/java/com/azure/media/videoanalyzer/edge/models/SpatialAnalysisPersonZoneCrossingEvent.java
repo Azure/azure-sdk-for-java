@@ -5,20 +5,30 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines a Spatial Analysis person crossing zone operation eventing configuration. */
+/**
+ * Defines a Spatial Analysis person crossing zone operation eventing configuration.
+ */
 @Fluent
 public final class SpatialAnalysisPersonZoneCrossingEvent extends SpatialAnalysisOperationEventBase {
     /*
      * The event type.
      */
-    @JsonProperty(value = "eventType")
     private SpatialAnalysisPersonZoneCrossingEventType eventType;
 
     /**
+     * Creates an instance of SpatialAnalysisPersonZoneCrossingEvent class.
+     */
+    public SpatialAnalysisPersonZoneCrossingEvent() {
+    }
+
+    /**
      * Get the eventType property: The event type.
-     *
+     * 
      * @return the eventType value.
      */
     public SpatialAnalysisPersonZoneCrossingEventType getEventType() {
@@ -27,7 +37,7 @@ public final class SpatialAnalysisPersonZoneCrossingEvent extends SpatialAnalysi
 
     /**
      * Set the eventType property: The event type.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the SpatialAnalysisPersonZoneCrossingEvent object itself.
      */
@@ -36,17 +46,66 @@ public final class SpatialAnalysisPersonZoneCrossingEvent extends SpatialAnalysi
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonZoneCrossingEvent setThreshold(String threshold) {
         super.setThreshold(threshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonZoneCrossingEvent setFocus(SpatialAnalysisOperationFocus focus) {
         super.setFocus(focus);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("threshold", getThreshold());
+        jsonWriter.writeStringField("focus", getFocus() == null ? null : getFocus().toString());
+        jsonWriter.writeStringField("eventType", this.eventType == null ? null : this.eventType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialAnalysisPersonZoneCrossingEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialAnalysisPersonZoneCrossingEvent if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpatialAnalysisPersonZoneCrossingEvent.
+     */
+    public static SpatialAnalysisPersonZoneCrossingEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpatialAnalysisPersonZoneCrossingEvent deserializedSpatialAnalysisPersonZoneCrossingEvent
+                = new SpatialAnalysisPersonZoneCrossingEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("threshold".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonZoneCrossingEvent.setThreshold(reader.getString());
+                } else if ("focus".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonZoneCrossingEvent
+                        .setFocus(SpatialAnalysisOperationFocus.fromString(reader.getString()));
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonZoneCrossingEvent.eventType
+                        = SpatialAnalysisPersonZoneCrossingEventType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpatialAnalysisPersonZoneCrossingEvent;
+        });
     }
 }

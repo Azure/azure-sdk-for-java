@@ -5,66 +5,73 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ScheduleFrequency;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationTasks;
 import com.azure.resourcemanager.automation.models.UpdateConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Software update configuration collection item properties. */
+/**
+ * Software update configuration collection item properties.
+ */
 @Fluent
-public final class SoftwareUpdateConfigurationCollectionItemProperties {
+public final class SoftwareUpdateConfigurationCollectionItemProperties
+    implements JsonSerializable<SoftwareUpdateConfigurationCollectionItemProperties> {
     /*
      * Update specific properties of the software update configuration.
      */
-    @JsonProperty(value = "updateConfiguration")
     private UpdateConfiguration updateConfiguration;
 
     /*
      * Pre and Post Tasks defined
      */
-    @JsonProperty(value = "tasks")
     private SoftwareUpdateConfigurationTasks tasks;
 
     /*
      * execution frequency of the schedule associated with the software update configuration
      */
-    @JsonProperty(value = "frequency")
     private ScheduleFrequency frequency;
 
     /*
      * the start time of the update.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Creation time of the software update configuration, which only appears in the response.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Last time software update configuration was modified, which only appears in the response.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Provisioning state for the software update configuration, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * ext run time of the update.
      */
-    @JsonProperty(value = "nextRun")
     private OffsetDateTime nextRun;
 
     /**
+     * Creates an instance of SoftwareUpdateConfigurationCollectionItemProperties class.
+     */
+    public SoftwareUpdateConfigurationCollectionItemProperties() {
+    }
+
+    /**
      * Get the updateConfiguration property: Update specific properties of the software update configuration.
-     *
+     * 
      * @return the updateConfiguration value.
      */
     public UpdateConfiguration updateConfiguration() {
@@ -73,19 +80,19 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
 
     /**
      * Set the updateConfiguration property: Update specific properties of the software update configuration.
-     *
+     * 
      * @param updateConfiguration the updateConfiguration value to set.
      * @return the SoftwareUpdateConfigurationCollectionItemProperties object itself.
      */
-    public SoftwareUpdateConfigurationCollectionItemProperties withUpdateConfiguration(
-        UpdateConfiguration updateConfiguration) {
+    public SoftwareUpdateConfigurationCollectionItemProperties
+        withUpdateConfiguration(UpdateConfiguration updateConfiguration) {
         this.updateConfiguration = updateConfiguration;
         return this;
     }
 
     /**
      * Get the tasks property: Pre and Post Tasks defined.
-     *
+     * 
      * @return the tasks value.
      */
     public SoftwareUpdateConfigurationTasks tasks() {
@@ -94,7 +101,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
 
     /**
      * Set the tasks property: Pre and Post Tasks defined.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the SoftwareUpdateConfigurationCollectionItemProperties object itself.
      */
@@ -106,7 +113,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
     /**
      * Get the frequency property: execution frequency of the schedule associated with the software update
      * configuration.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
@@ -116,7 +123,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
     /**
      * Set the frequency property: execution frequency of the schedule associated with the software update
      * configuration.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the SoftwareUpdateConfigurationCollectionItemProperties object itself.
      */
@@ -127,7 +134,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
 
     /**
      * Get the startTime property: the start time of the update.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -136,7 +143,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
 
     /**
      * Set the startTime property: the start time of the update.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the SoftwareUpdateConfigurationCollectionItemProperties object itself.
      */
@@ -148,7 +155,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
     /**
      * Get the creationTime property: Creation time of the software update configuration, which only appears in the
      * response.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -158,7 +165,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
     /**
      * Get the lastModifiedTime property: Last time software update configuration was modified, which only appears in
      * the response.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -168,7 +175,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
     /**
      * Get the provisioningState property: Provisioning state for the software update configuration, which only appears
      * in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -177,7 +184,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
 
     /**
      * Get the nextRun property: ext run time of the update.
-     *
+     * 
      * @return the nextRun value.
      */
     public OffsetDateTime nextRun() {
@@ -186,7 +193,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
 
     /**
      * Set the nextRun property: ext run time of the update.
-     *
+     * 
      * @param nextRun the nextRun value to set.
      * @return the SoftwareUpdateConfigurationCollectionItemProperties object itself.
      */
@@ -197,7 +204,7 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -207,5 +214,71 @@ public final class SoftwareUpdateConfigurationCollectionItemProperties {
         if (tasks() != null) {
             tasks().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("updateConfiguration", this.updateConfiguration);
+        jsonWriter.writeJsonField("tasks", this.tasks);
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("nextRun",
+            this.nextRun == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextRun));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationCollectionItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationCollectionItemProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationCollectionItemProperties.
+     */
+    public static SoftwareUpdateConfigurationCollectionItemProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationCollectionItemProperties deserializedSoftwareUpdateConfigurationCollectionItemProperties
+                = new SoftwareUpdateConfigurationCollectionItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("updateConfiguration".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItemProperties.updateConfiguration
+                        = UpdateConfiguration.fromJson(reader);
+                } else if ("tasks".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItemProperties.tasks
+                        = SoftwareUpdateConfigurationTasks.fromJson(reader);
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItemProperties.frequency
+                        = ScheduleFrequency.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItemProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItemProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItemProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItemProperties.provisioningState
+                        = reader.getString();
+                } else if ("nextRun".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationCollectionItemProperties.nextRun = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationCollectionItemProperties;
+        });
     }
 }

@@ -7,7 +7,8 @@ import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.implementation.util.IterableOfByteBuffersInputStream;
 import io.clientcore.core.implementation.util.StreamUtil;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
@@ -142,6 +143,13 @@ public final class InputStreamBinaryData extends BinaryData {
     }
 
     @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeBinary(toBytes());
+    }
+
+    @Override
     public Long getLength() {
         byte[] data = BYTES_UPDATER.get(this);
         if (data != null) {
@@ -179,11 +187,11 @@ public final class InputStreamBinaryData extends BinaryData {
 
     private static InputStreamBinaryData readAndBuffer(InputStream inputStream, Long length) {
         try {
-            List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
-                inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
+            List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(inputStream, length,
+                INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
 
-            return new InputStreamBinaryData(() -> new IterableOfByteBuffersInputStream(byteBuffers),
-                length, byteBuffers);
+            return new InputStreamBinaryData(() -> new IterableOfByteBuffersInputStream(byteBuffers), length,
+                byteBuffers);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }

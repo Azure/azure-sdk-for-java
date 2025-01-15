@@ -5,90 +5,100 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
-/** Account entity property bag. */
+/**
+ * Account entity property bag.
+ */
 @Immutable
 public final class AccountEntityProperties extends EntityCommonProperties {
     /*
      * The Azure Active Directory tenant id.
      */
-    @JsonProperty(value = "aadTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String aadTenantId;
 
     /*
      * The Azure Active Directory user id.
      */
-    @JsonProperty(value = "aadUserId", access = JsonProperty.Access.WRITE_ONLY)
     private String aadUserId;
 
     /*
-     * The name of the account. This field should hold only the name without any domain added to it, i.e.
-     * administrator.
+     * The name of the account. This field should hold only the name without any domain added to it, i.e. administrator.
      */
-    @JsonProperty(value = "accountName", access = JsonProperty.Access.WRITE_ONLY)
     private String accountName;
 
     /*
      * The display name of the account.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The Host entity id that contains the account in case it is a local account (not domain joined)
      */
-    @JsonProperty(value = "hostEntityId", access = JsonProperty.Access.WRITE_ONLY)
     private String hostEntityId;
 
     /*
      * Determines whether this is a domain account.
      */
-    @JsonProperty(value = "isDomainJoined", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDomainJoined;
 
     /*
-     * The NetBIOS domain name as it appears in the alert format domain/username. Examples: NT AUTHORITY.
+     * The NetBIOS domain name as it appears in the alert format - domain/username. Examples: NT AUTHORITY.
      */
-    @JsonProperty(value = "ntDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String ntDomain;
 
     /*
      * The objectGUID attribute is a single-value attribute that is the unique identifier for the object, assigned by
      * active directory.
      */
-    @JsonProperty(value = "objectGuid", access = JsonProperty.Access.WRITE_ONLY)
     private UUID objectGuid;
 
     /*
      * The Azure Active Directory Passport User ID.
      */
-    @JsonProperty(value = "puid", access = JsonProperty.Access.WRITE_ONLY)
     private String puid;
 
     /*
      * The account security identifier, e.g. S-1-5-18.
      */
-    @JsonProperty(value = "sid", access = JsonProperty.Access.WRITE_ONLY)
     private String sid;
 
     /*
      * The user principal name suffix for the account, in some cases it is also the domain name. Examples: contoso.com.
      */
-    @JsonProperty(value = "upnSuffix", access = JsonProperty.Access.WRITE_ONLY)
     private String upnSuffix;
 
     /*
      * The fully qualified domain DNS name.
      */
-    @JsonProperty(value = "dnsDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsDomain;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of AccountEntityProperties class.
+     */
+    public AccountEntityProperties() {
+    }
 
     /**
      * Get the aadTenantId property: The Azure Active Directory tenant id.
-     *
+     * 
      * @return the aadTenantId value.
      */
     public String aadTenantId() {
@@ -97,7 +107,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the aadUserId property: The Azure Active Directory user id.
-     *
+     * 
      * @return the aadUserId value.
      */
     public String aadUserId() {
@@ -107,7 +117,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     /**
      * Get the accountName property: The name of the account. This field should hold only the name without any domain
      * added to it, i.e. administrator.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -116,7 +126,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the displayName property: The display name of the account.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -126,7 +136,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     /**
      * Get the hostEntityId property: The Host entity id that contains the account in case it is a local account (not
      * domain joined).
-     *
+     * 
      * @return the hostEntityId value.
      */
     public String hostEntityId() {
@@ -135,7 +145,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the isDomainJoined property: Determines whether this is a domain account.
-     *
+     * 
      * @return the isDomainJoined value.
      */
     public Boolean isDomainJoined() {
@@ -143,9 +153,9 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     }
 
     /**
-     * Get the ntDomain property: The NetBIOS domain name as it appears in the alert format domain/username. Examples:
+     * Get the ntDomain property: The NetBIOS domain name as it appears in the alert format - domain/username. Examples:
      * NT AUTHORITY.
-     *
+     * 
      * @return the ntDomain value.
      */
     public String ntDomain() {
@@ -155,7 +165,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     /**
      * Get the objectGuid property: The objectGUID attribute is a single-value attribute that is the unique identifier
      * for the object, assigned by active directory.
-     *
+     * 
      * @return the objectGuid value.
      */
     public UUID objectGuid() {
@@ -164,7 +174,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the puid property: The Azure Active Directory Passport User ID.
-     *
+     * 
      * @return the puid value.
      */
     public String puid() {
@@ -173,7 +183,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the sid property: The account security identifier, e.g. S-1-5-18.
-     *
+     * 
      * @return the sid value.
      */
     public String sid() {
@@ -183,7 +193,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     /**
      * Get the upnSuffix property: The user principal name suffix for the account, in some cases it is also the domain
      * name. Examples: contoso.com.
-     *
+     * 
      * @return the upnSuffix value.
      */
     public String upnSuffix() {
@@ -192,7 +202,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the dnsDomain property: The fully qualified domain DNS name.
-     *
+     * 
      * @return the dnsDomain value.
      */
     public String dnsDomain() {
@@ -200,12 +210,96 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountEntityProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountEntityProperties.
+     */
+    public static AccountEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountEntityProperties deserializedAccountEntityProperties = new AccountEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAccountEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAccountEntityProperties.friendlyName = reader.getString();
+                } else if ("aadTenantId".equals(fieldName)) {
+                    deserializedAccountEntityProperties.aadTenantId = reader.getString();
+                } else if ("aadUserId".equals(fieldName)) {
+                    deserializedAccountEntityProperties.aadUserId = reader.getString();
+                } else if ("accountName".equals(fieldName)) {
+                    deserializedAccountEntityProperties.accountName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAccountEntityProperties.displayName = reader.getString();
+                } else if ("hostEntityId".equals(fieldName)) {
+                    deserializedAccountEntityProperties.hostEntityId = reader.getString();
+                } else if ("isDomainJoined".equals(fieldName)) {
+                    deserializedAccountEntityProperties.isDomainJoined = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ntDomain".equals(fieldName)) {
+                    deserializedAccountEntityProperties.ntDomain = reader.getString();
+                } else if ("objectGuid".equals(fieldName)) {
+                    deserializedAccountEntityProperties.objectGuid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("puid".equals(fieldName)) {
+                    deserializedAccountEntityProperties.puid = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    deserializedAccountEntityProperties.sid = reader.getString();
+                } else if ("upnSuffix".equals(fieldName)) {
+                    deserializedAccountEntityProperties.upnSuffix = reader.getString();
+                } else if ("dnsDomain".equals(fieldName)) {
+                    deserializedAccountEntityProperties.dnsDomain = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountEntityProperties;
+        });
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of workbook. Choices are user and shared. */
+/**
+ * The kind of workbook. Choices are user and shared.
+ */
 public final class OrchestratorKind extends ExpandableStringEnum<OrchestratorKind> {
-    /** Static value Kubernetes for OrchestratorKind. */
+    /**
+     * Static value Kubernetes for OrchestratorKind.
+     */
     public static final OrchestratorKind KUBERNETES = fromString("Kubernetes");
 
     /**
      * Creates a new instance of OrchestratorKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class OrchestratorKind extends ExpandableStringEnum<OrchestratorKin
 
     /**
      * Creates or finds a OrchestratorKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OrchestratorKind.
      */
-    @JsonCreator
     public static OrchestratorKind fromString(String name) {
         return fromString(name, OrchestratorKind.class);
     }
 
     /**
      * Gets known OrchestratorKind values.
-     *
+     * 
      * @return known OrchestratorKind values.
      */
     public static Collection<OrchestratorKind> values() {

@@ -5,36 +5,44 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.DscNodeConfigurationCreateOrUpdateParametersProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the create or update node configuration operation. */
+/**
+ * The parameters supplied to the create or update node configuration operation.
+ */
 @Fluent
-public final class DscNodeConfigurationCreateOrUpdateParameters {
+public final class DscNodeConfigurationCreateOrUpdateParameters
+    implements JsonSerializable<DscNodeConfigurationCreateOrUpdateParameters> {
     /*
      * Node configuration properties
      */
-    @JsonProperty(value = "properties")
     private DscNodeConfigurationCreateOrUpdateParametersProperties innerProperties;
 
     /*
      * Name of the node configuration.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the tags attached to the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of DscNodeConfigurationCreateOrUpdateParameters class.
+     */
+    public DscNodeConfigurationCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Node configuration properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DscNodeConfigurationCreateOrUpdateParametersProperties innerProperties() {
@@ -43,7 +51,7 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the name property: Name of the node configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +60,7 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the name property: Name of the node configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the DscNodeConfigurationCreateOrUpdateParameters object itself.
      */
@@ -63,7 +71,7 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -72,7 +80,7 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DscNodeConfigurationCreateOrUpdateParameters object itself.
      */
@@ -83,7 +91,7 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the source property: Gets or sets the source.
-     *
+     * 
      * @return the source value.
      */
     public ContentSource source() {
@@ -92,7 +100,7 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the source property: Gets or sets the source.
-     *
+     * 
      * @param source the source value to set.
      * @return the DscNodeConfigurationCreateOrUpdateParameters object itself.
      */
@@ -106,7 +114,7 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the configuration property: Gets or sets the configuration of the node.
-     *
+     * 
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
@@ -115,12 +123,12 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the configuration property: Gets or sets the configuration of the node.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the DscNodeConfigurationCreateOrUpdateParameters object itself.
      */
-    public DscNodeConfigurationCreateOrUpdateParameters withConfiguration(
-        DscConfigurationAssociationProperty configuration) {
+    public DscNodeConfigurationCreateOrUpdateParameters
+        withConfiguration(DscConfigurationAssociationProperty configuration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DscNodeConfigurationCreateOrUpdateParametersProperties();
         }
@@ -130,7 +138,7 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the incrementNodeConfigurationBuild property: If a new build version of NodeConfiguration is required.
-     *
+     * 
      * @return the incrementNodeConfigurationBuild value.
      */
     public Boolean incrementNodeConfigurationBuild() {
@@ -139,12 +147,12 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the incrementNodeConfigurationBuild property: If a new build version of NodeConfiguration is required.
-     *
+     * 
      * @param incrementNodeConfigurationBuild the incrementNodeConfigurationBuild value to set.
      * @return the DscNodeConfigurationCreateOrUpdateParameters object itself.
      */
-    public DscNodeConfigurationCreateOrUpdateParameters withIncrementNodeConfigurationBuild(
-        Boolean incrementNodeConfigurationBuild) {
+    public DscNodeConfigurationCreateOrUpdateParameters
+        withIncrementNodeConfigurationBuild(Boolean incrementNodeConfigurationBuild) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DscNodeConfigurationCreateOrUpdateParametersProperties();
         }
@@ -154,12 +162,57 @@ public final class DscNodeConfigurationCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscNodeConfigurationCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscNodeConfigurationCreateOrUpdateParameters if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscNodeConfigurationCreateOrUpdateParameters.
+     */
+    public static DscNodeConfigurationCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscNodeConfigurationCreateOrUpdateParameters deserializedDscNodeConfigurationCreateOrUpdateParameters
+                = new DscNodeConfigurationCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDscNodeConfigurationCreateOrUpdateParameters.innerProperties
+                        = DscNodeConfigurationCreateOrUpdateParametersProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedDscNodeConfigurationCreateOrUpdateParameters.name = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDscNodeConfigurationCreateOrUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscNodeConfigurationCreateOrUpdateParameters;
+        });
     }
 }

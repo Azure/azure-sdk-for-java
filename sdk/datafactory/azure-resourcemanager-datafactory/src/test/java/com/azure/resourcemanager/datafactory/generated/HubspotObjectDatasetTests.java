@@ -19,31 +19,32 @@ public final class HubspotObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HubspotObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"HubspotObject\",\"typeProperties\":{\"tableName\":\"datamxxyfrdjid\"},\"description\":\"tfvgwfwsldigwo\",\"structure\":\"datapvydd\",\"schema\":\"datavclrsn\",\"linkedServiceName\":{\"referenceName\":\"frppwwqclmdmt\",\"parameters\":{\"iqmcjb\":\"dataepzpxzxlcqzfxai\"}},\"parameters\":{\"dmhk\":{\"type\":\"Array\",\"defaultValue\":\"datapqnip\"}},\"annotations\":[\"dataeobwkeuzltenlbf\",\"datalmxoz\",\"datasn\",\"dataoduomtxjbrixym\"],\"folder\":{\"name\":\"kk\"},\"\":{\"mrzcqfevnkyakc\":\"dataurhwishy\",\"de\":\"datatehognsddjk\",\"zogfcnxcxg\":\"dataesu\",\"ifjc\":\"dataumtcqxmyvkxixypa\"}}")
+            "{\"type\":\"HubspotObject\",\"typeProperties\":{\"tableName\":\"datamhp\"},\"description\":\"sfgvrvq\",\"structure\":\"datawbdrwroqkljnzpqh\",\"schema\":\"datasarkyulfa\",\"linkedServiceName\":{\"referenceName\":\"ea\",\"parameters\":{\"geytlplslfc\":\"dataqenhekzaz\",\"ksuowt\":\"datae\",\"rhnxzmfvmw\":\"datalkyqfnjo\",\"rawwhyxf\":\"datanrtc\"}},\"parameters\":{\"uns\":{\"type\":\"String\",\"defaultValue\":\"datadmvwn\"}},\"annotations\":[\"dataevzshqykebmps\",\"dataaezc\",\"datadkckr\"],\"folder\":{\"name\":\"qdmhcejstfs\"},\"\":{\"wxqd\":\"datajakgk\",\"wdjox\":\"dataoqzh\",\"sobvcnsb\":\"datakbd\"}}")
             .toObject(HubspotObjectDataset.class);
-        Assertions.assertEquals("tfvgwfwsldigwo", model.description());
-        Assertions.assertEquals("frppwwqclmdmt", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("dmhk").type());
-        Assertions.assertEquals("kk", model.folder().name());
+        Assertions.assertEquals("sfgvrvq", model.description());
+        Assertions.assertEquals("ea", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("uns").type());
+        Assertions.assertEquals("qdmhcejstfs", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HubspotObjectDataset model = new HubspotObjectDataset().withDescription("tfvgwfwsldigwo")
-            .withStructure("datapvydd")
-            .withSchema("datavclrsn")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("frppwwqclmdmt")
-                .withParameters(mapOf("iqmcjb", "dataepzpxzxlcqzfxai")))
+        HubspotObjectDataset model = new HubspotObjectDataset().withDescription("sfgvrvq")
+            .withStructure("datawbdrwroqkljnzpqh")
+            .withSchema("datasarkyulfa")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ea")
+                .withParameters(mapOf("geytlplslfc", "dataqenhekzaz", "ksuowt", "datae", "rhnxzmfvmw", "datalkyqfnjo",
+                    "rawwhyxf", "datanrtc")))
             .withParameters(
-                mapOf("dmhk", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datapqnip")))
-            .withAnnotations(Arrays.asList("dataeobwkeuzltenlbf", "datalmxoz", "datasn", "dataoduomtxjbrixym"))
-            .withFolder(new DatasetFolder().withName("kk"))
-            .withTableName("datamxxyfrdjid");
+                mapOf("uns", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datadmvwn")))
+            .withAnnotations(Arrays.asList("dataevzshqykebmps", "dataaezc", "datadkckr"))
+            .withFolder(new DatasetFolder().withName("qdmhcejstfs"))
+            .withTableName("datamhp");
         model = BinaryData.fromObject(model).toObject(HubspotObjectDataset.class);
-        Assertions.assertEquals("tfvgwfwsldigwo", model.description());
-        Assertions.assertEquals("frppwwqclmdmt", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("dmhk").type());
-        Assertions.assertEquals("kk", model.folder().name());
+        Assertions.assertEquals("sfgvrvq", model.description());
+        Assertions.assertEquals("ea", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("uns").type());
+        Assertions.assertEquals("qdmhcejstfs", model.folder().name());
     }
 
     // Use "Map.of" if available

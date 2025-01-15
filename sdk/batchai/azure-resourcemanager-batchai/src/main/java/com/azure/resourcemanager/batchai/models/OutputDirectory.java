@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Output directory for the job. */
 @Fluent
 public final class OutputDirectory {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutputDirectory.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OutputDirectory.class);
 
     /*
      * The ID of the output directory. The job can use AZ_BATCHAI_OUTPUT_<id>
@@ -117,14 +118,12 @@ public final class OutputDirectory {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model OutputDirectory"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model OutputDirectory"));
         }
         if (pathPrefix() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property pathPrefix in model OutputDirectory"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property pathPrefix in model OutputDirectory"));
         }
     }
 }

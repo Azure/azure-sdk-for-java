@@ -14,29 +14,29 @@ public final class DiagnosticDataTableResponseObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticDataTableResponseObject model = BinaryData.fromString(
-            "{\"tableName\":\"cib\",\"columns\":[{\"columnName\":\"wuxrkjpvdwxfzwi\",\"dataType\":\"wzjbh\",\"columnType\":\"sxjrk\"},{\"columnName\":\"btrnegvm\",\"dataType\":\"uqeqv\",\"columnType\":\"spastjbkkdmf\"}],\"rows\":[\"datastmjlxrri\"]}")
+            "{\"tableName\":\"xuqibsxtkcudf\",\"columns\":[{\"columnName\":\"rfsiowlkjxn\",\"dataType\":\"vwgf\",\"columnType\":\"mhqykizmdksa\"},{\"columnName\":\"fcluqvo\",\"dataType\":\"ycjimryvwgcwwpbm\",\"columnType\":\"w\"}],\"rows\":[\"datadsxwefoh\"]}")
             .toObject(DiagnosticDataTableResponseObject.class);
-        Assertions.assertEquals("cib", model.tableName());
-        Assertions.assertEquals("wuxrkjpvdwxfzwi", model.columns().get(0).columnName());
-        Assertions.assertEquals("wzjbh", model.columns().get(0).dataType());
-        Assertions.assertEquals("sxjrk", model.columns().get(0).columnType());
+        Assertions.assertEquals("xuqibsxtkcudf", model.tableName());
+        Assertions.assertEquals("rfsiowlkjxn", model.columns().get(0).columnName());
+        Assertions.assertEquals("vwgf", model.columns().get(0).dataType());
+        Assertions.assertEquals("mhqykizmdksa", model.columns().get(0).columnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticDataTableResponseObject model = new DiagnosticDataTableResponseObject().withTableName("cib")
+        DiagnosticDataTableResponseObject model = new DiagnosticDataTableResponseObject().withTableName("xuqibsxtkcudf")
             .withColumns(Arrays.asList(
-                new DiagnosticDataTableResponseColumn().withColumnName("wuxrkjpvdwxfzwi")
-                    .withDataType("wzjbh")
-                    .withColumnType("sxjrk"),
-                new DiagnosticDataTableResponseColumn().withColumnName("btrnegvm")
-                    .withDataType("uqeqv")
-                    .withColumnType("spastjbkkdmf")))
-            .withRows(Arrays.asList("datastmjlxrri"));
+                new DiagnosticDataTableResponseColumn().withColumnName("rfsiowlkjxn")
+                    .withDataType("vwgf")
+                    .withColumnType("mhqykizmdksa"),
+                new DiagnosticDataTableResponseColumn().withColumnName("fcluqvo")
+                    .withDataType("ycjimryvwgcwwpbm")
+                    .withColumnType("w")))
+            .withRows(Arrays.asList("datadsxwefoh"));
         model = BinaryData.fromObject(model).toObject(DiagnosticDataTableResponseObject.class);
-        Assertions.assertEquals("cib", model.tableName());
-        Assertions.assertEquals("wuxrkjpvdwxfzwi", model.columns().get(0).columnName());
-        Assertions.assertEquals("wzjbh", model.columns().get(0).dataType());
-        Assertions.assertEquals("sxjrk", model.columns().get(0).columnType());
+        Assertions.assertEquals("xuqibsxtkcudf", model.tableName());
+        Assertions.assertEquals("rfsiowlkjxn", model.columns().get(0).columnName());
+        Assertions.assertEquals("vwgf", model.columns().get(0).dataType());
+        Assertions.assertEquals("mhqykizmdksa", model.columns().get(0).columnType());
     }
 }

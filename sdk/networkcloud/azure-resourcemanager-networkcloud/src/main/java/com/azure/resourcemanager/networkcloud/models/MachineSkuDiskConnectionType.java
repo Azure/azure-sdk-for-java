@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The connection type of the rack SKU resource. */
+/**
+ * The connection type of the rack SKU resource.
+ */
 public final class MachineSkuDiskConnectionType extends ExpandableStringEnum<MachineSkuDiskConnectionType> {
-    /** Static value PCIE for MachineSkuDiskConnectionType. */
+    /**
+     * Static value PCIE for MachineSkuDiskConnectionType.
+     */
     public static final MachineSkuDiskConnectionType PCIE = fromString("PCIE");
 
-    /** Static value SATA for MachineSkuDiskConnectionType. */
+    /**
+     * Static value SATA for MachineSkuDiskConnectionType.
+     */
     public static final MachineSkuDiskConnectionType SATA = fromString("SATA");
 
-    /** Static value RAID for MachineSkuDiskConnectionType. */
+    /**
+     * Static value RAID for MachineSkuDiskConnectionType.
+     */
     public static final MachineSkuDiskConnectionType RAID = fromString("RAID");
 
-    /** Static value SAS for MachineSkuDiskConnectionType. */
+    /**
+     * Static value SAS for MachineSkuDiskConnectionType.
+     */
     public static final MachineSkuDiskConnectionType SAS = fromString("SAS");
 
     /**
      * Creates a new instance of MachineSkuDiskConnectionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class MachineSkuDiskConnectionType extends ExpandableStringEnum<Mac
 
     /**
      * Creates or finds a MachineSkuDiskConnectionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MachineSkuDiskConnectionType.
      */
-    @JsonCreator
     public static MachineSkuDiskConnectionType fromString(String name) {
         return fromString(name, MachineSkuDiskConnectionType.class);
     }
 
     /**
      * Gets known MachineSkuDiskConnectionType values.
-     *
+     * 
      * @return known MachineSkuDiskConnectionType values.
      */
     public static Collection<MachineSkuDiskConnectionType> values() {

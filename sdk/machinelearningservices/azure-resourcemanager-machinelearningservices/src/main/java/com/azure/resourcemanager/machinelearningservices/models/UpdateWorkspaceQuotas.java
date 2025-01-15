@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The properties for update Quota response. */
 @Fluent
 public final class UpdateWorkspaceQuotas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateWorkspaceQuotas.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UpdateWorkspaceQuotas.class);
 
     /*
      * Specifies the resource ID.

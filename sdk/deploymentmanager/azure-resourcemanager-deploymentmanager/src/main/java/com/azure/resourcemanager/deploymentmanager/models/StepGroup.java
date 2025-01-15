@@ -163,9 +163,8 @@ public final class StepGroup {
             preDeploymentSteps().forEach(e -> e.validate());
         }
         if (deploymentTargetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property deploymentTargetId in model StepGroup"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property deploymentTargetId in model StepGroup"));
         }
         if (postDeploymentSteps() != null) {
             postDeploymentSteps().forEach(e -> e.validate());

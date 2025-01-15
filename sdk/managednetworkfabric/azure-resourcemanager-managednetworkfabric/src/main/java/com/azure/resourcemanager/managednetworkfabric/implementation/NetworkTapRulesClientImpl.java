@@ -44,22 +44,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkTapRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkTapRulesClient.
+ */
 public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkTapRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkTapRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkTapRulesClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy.create(NetworkTapRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NetworkTapRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,180 +76,137 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface NetworkTapRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkTapRuleName") String networkTapRuleName,
-            @BodyParam("application/json") NetworkTapRuleInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkTapRuleInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkTapRuleInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkTapRuleInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkTapRuleName") String networkTapRuleName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkTapRuleName") String networkTapRuleName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkTapRulePatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkTapRuleName") String networkTapRuleName,
-            @BodyParam("application/json") NetworkTapRulePatch body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkTapRuleName") String networkTapRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkTapRulesListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkTapRuleName") String networkTapRuleName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkTapRulesListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkTapRules")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkTapRulesListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkTapRulesListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}/updateAdministrativeState")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}/updateAdministrativeState")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> updateAdministrativeState(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkTapRuleName") String networkTapRuleName,
-            @BodyParam("application/json") UpdateAdministrativeState body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UpdateAdministrativeState body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}/resync")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}/resync")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resync(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> resync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkTapRuleName") String networkTapRuleName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkTapRuleName") String networkTapRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}/validateConfiguration")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules/{networkTapRuleName}/validateConfiguration")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkTapRuleName") String networkTapRuleName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkTapRuleName") String networkTapRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkTapRulesListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkTapRulesListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkTapRule resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the NetworkTapRule resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRuleInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,26 +223,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapRuleName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkTapRuleName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -287,23 +240,19 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkTapRule resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the NetworkTapRule resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRuleInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -320,23 +269,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapRuleName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapRuleName, body, accept, context);
     }
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -346,24 +287,18 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreateAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body) {
+    private PollerFlux<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreateAsync(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRuleInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, networkTapRuleName, body);
-        return this
-            .client
-            .<NetworkTapRuleInner, NetworkTapRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkTapRuleInner.class,
-                NetworkTapRuleInner.class,
-                this.client.getContext());
+        return this.client.<NetworkTapRuleInner, NetworkTapRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkTapRuleInner.class, NetworkTapRuleInner.class, this.client.getContext());
     }
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -374,22 +309,20 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreateAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body, Context context) {
+    private PollerFlux<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreateAsync(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRuleInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, networkTapRuleName, body, context);
-        return this
-            .client
-            .<NetworkTapRuleInner, NetworkTapRuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetworkTapRuleInner.class, NetworkTapRuleInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, networkTapRuleName, body, context);
+        return this.client.<NetworkTapRuleInner, NetworkTapRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkTapRuleInner.class, NetworkTapRuleInner.class, context);
     }
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -399,16 +332,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreate(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body) {
+    public SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreate(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRuleInner body) {
         return this.beginCreateAsync(resourceGroupName, networkTapRuleName, body).getSyncPoller();
     }
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -419,16 +352,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreate(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body, Context context) {
+    public SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreate(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRuleInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, networkTapRuleName, body, context).getSyncPoller();
     }
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -438,18 +371,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the NetworkTapRule resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkTapRuleInner> createAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body) {
-        return beginCreateAsync(resourceGroupName, networkTapRuleName, body)
-            .last()
+    private Mono<NetworkTapRuleInner> createAsync(String resourceGroupName, String networkTapRuleName,
+        NetworkTapRuleInner body) {
+        return beginCreateAsync(resourceGroupName, networkTapRuleName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -460,18 +392,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the NetworkTapRule resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkTapRuleInner> createAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, networkTapRuleName, body, context)
-            .last()
+    private Mono<NetworkTapRuleInner> createAsync(String resourceGroupName, String networkTapRuleName,
+        NetworkTapRuleInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, networkTapRuleName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -487,9 +418,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -500,16 +431,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkTapRuleInner create(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body, Context context) {
+    public NetworkTapRuleInner create(String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body,
+        Context context) {
         return createAsync(resourceGroupName, networkTapRuleName, body, context).block();
     }
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -518,19 +449,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return network Tap Rule resource details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkTapRuleInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName) {
+    private Mono<Response<NetworkTapRuleInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -543,24 +470,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapRuleName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkTapRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -570,19 +489,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return network Tap Rule resource details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkTapRuleInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, Context context) {
+    private Mono<Response<NetworkTapRuleInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -594,22 +509,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapRuleName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapRuleName, accept, context);
     }
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -625,9 +533,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -637,16 +545,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return network Tap Rule resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkTapRuleInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkTapRuleName, Context context) {
+    public Response<NetworkTapRuleInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkTapRuleName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkTapRuleName, context).block();
     }
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -661,32 +569,28 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkTapRule resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the NetworkTapRule resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRulePatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -703,26 +607,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapRuleName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkTapRuleName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -730,23 +624,19 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkTapRule resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the NetworkTapRule resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRulePatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -763,23 +653,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapRuleName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapRuleName, body, accept, context);
     }
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -789,24 +671,18 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdateAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body) {
+    private PollerFlux<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdateAsync(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRulePatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, networkTapRuleName, body);
-        return this
-            .client
-            .<NetworkTapRuleInner, NetworkTapRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkTapRuleInner.class,
-                NetworkTapRuleInner.class,
-                this.client.getContext());
+        return this.client.<NetworkTapRuleInner, NetworkTapRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkTapRuleInner.class, NetworkTapRuleInner.class, this.client.getContext());
     }
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -817,22 +693,20 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdateAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body, Context context) {
+    private PollerFlux<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdateAsync(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRulePatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, networkTapRuleName, body, context);
-        return this
-            .client
-            .<NetworkTapRuleInner, NetworkTapRuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetworkTapRuleInner.class, NetworkTapRuleInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, networkTapRuleName, body, context);
+        return this.client.<NetworkTapRuleInner, NetworkTapRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkTapRuleInner.class, NetworkTapRuleInner.class, context);
     }
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -842,16 +716,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdate(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body) {
+    public SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdate(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRulePatch body) {
         return this.beginUpdateAsync(resourceGroupName, networkTapRuleName, body).getSyncPoller();
     }
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -862,16 +736,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdate(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body, Context context) {
+    public SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdate(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRulePatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, networkTapRuleName, body, context).getSyncPoller();
     }
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -881,18 +755,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the NetworkTapRule resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkTapRuleInner> updateAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body) {
-        return beginUpdateAsync(resourceGroupName, networkTapRuleName, body)
-            .last()
+    private Mono<NetworkTapRuleInner> updateAsync(String resourceGroupName, String networkTapRuleName,
+        NetworkTapRulePatch body) {
+        return beginUpdateAsync(resourceGroupName, networkTapRuleName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -903,18 +776,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the NetworkTapRule resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkTapRuleInner> updateAsync(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, networkTapRuleName, body, context)
-            .last()
+    private Mono<NetworkTapRuleInner> updateAsync(String resourceGroupName, String networkTapRuleName,
+        NetworkTapRulePatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, networkTapRuleName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -930,9 +802,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -943,16 +815,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkTapRuleInner update(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body, Context context) {
+    public NetworkTapRuleInner update(String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body,
+        Context context) {
         return updateAsync(resourceGroupName, networkTapRuleName, body, context).block();
     }
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -961,19 +833,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -985,25 +853,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapRuleName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkTapRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -1013,19 +872,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1037,22 +892,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapRuleName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapRuleName, accept, context);
     }
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1063,17 +911,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkTapRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkTapRuleName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -1083,20 +929,19 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkTapRuleName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkTapRuleName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkTapRuleName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1111,9 +956,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -1123,16 +968,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkTapRuleName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkTapRuleName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkTapRuleName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1142,16 +987,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkTapRuleName) {
-        return beginDeleteAsync(resourceGroupName, networkTapRuleName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkTapRuleName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -1162,16 +1006,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkTapRuleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkTapRuleName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkTapRuleName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1185,9 +1028,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -1202,9 +1045,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1214,16 +1057,12 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkTapRuleInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1231,33 +1070,18 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkTapRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkTapRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1266,19 +1090,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return list of NetworkTapRules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkTapRuleInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<NetworkTapRuleInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1287,29 +1107,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1318,16 +1126,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkTapRuleInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1337,16 +1144,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkTapRuleInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1360,9 +1166,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1377,9 +1183,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkTapRules along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1387,45 +1193,27 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkTapRuleInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkTapRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkTapRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1435,57 +1223,42 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkTapRuleInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkTapRules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkTapRuleInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1494,15 +1267,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkTapRuleInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkTapRules as paginated response with {@link PagedIterable}.
@@ -1514,9 +1287,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1530,32 +1303,28 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1573,25 +1342,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .updateAdministrativeState(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapRuleName,
-                            body,
-                            accept,
-                            context))
+                context -> service.updateAdministrativeState(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkTapRuleName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -1599,23 +1359,19 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1632,23 +1388,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateAdministrativeState(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapRuleName,
-                body,
-                accept,
-                context);
+        return service.updateAdministrativeState(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), networkTapRuleName, body, accept, context);
     }
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -1658,27 +1406,23 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeStateAsync(
-            String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAdministrativeStateWithResponseAsync(resourceGroupName, networkTapRuleName, body);
-        return this
-            .client
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(String resourceGroupName, String networkTapRuleName,
+            UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAdministrativeStateWithResponseAsync(resourceGroupName, networkTapRuleName, body);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -1689,28 +1433,24 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeStateAsync(
-            String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body, Context context) {
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeStateAsync(String resourceGroupName, String networkTapRuleName,
+            UpdateAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateAdministrativeStateWithResponseAsync(resourceGroupName, networkTapRuleName, body, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateAdministrativeStateWithResponseAsync(resourceGroupName, networkTapRuleName, body, context);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -1720,18 +1460,18 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String networkTapRuleName,
+            UpdateAdministrativeState body) {
         return this.beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapRuleName, body).getSyncPoller();
     }
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -1742,20 +1482,19 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body, Context context) {
-        return this
-            .beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapRuleName, body, context)
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String networkTapRuleName,
+            UpdateAdministrativeState body, Context context) {
+        return this.beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapRuleName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -1765,18 +1504,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapRuleName, body)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapRuleName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -1787,18 +1525,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapRuleName, body, context)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> updateAdministrativeStateAsync(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body, Context context) {
+        return beginUpdateAdministrativeStateAsync(resourceGroupName, networkTapRuleName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -1808,16 +1545,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body) {
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body) {
         return updateAdministrativeStateAsync(resourceGroupName, networkTapRuleName, body).block();
     }
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -1828,38 +1565,34 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body, Context context) {
+    public CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body, Context context) {
         return updateAdministrativeStateAsync(resourceGroupName, networkTapRuleName, body, context).block();
     }
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName) {
+    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1871,48 +1604,35 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resync(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapRuleName,
-                            accept,
-                            context))
+            .withContext(context -> service.resync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkTapRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1924,22 +1644,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resync(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapRuleName,
-                accept,
-                context);
+        return service.resync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkTapRuleName, accept, context);
     }
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1948,25 +1661,21 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginResyncAsync(String resourceGroupName, String networkTapRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resyncWithResponseAsync(resourceGroupName, networkTapRuleName);
-        return this
-            .client
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -1976,26 +1685,22 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginResyncAsync(String resourceGroupName, String networkTapRuleName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = resyncWithResponseAsync(resourceGroupName, networkTapRuleName, context);
-        return this
-            .client
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2004,17 +1709,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginResync(String resourceGroupName, String networkTapRuleName) {
         return this.beginResyncAsync(resourceGroupName, networkTapRuleName).getSyncPoller();
     }
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -2024,17 +1729,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginResync(String resourceGroupName, String networkTapRuleName, Context context) {
         return this.beginResyncAsync(resourceGroupName, networkTapRuleName, context).getSyncPoller();
     }
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2043,18 +1748,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(
-        String resourceGroupName, String networkTapRuleName) {
-        return beginResyncAsync(resourceGroupName, networkTapRuleName)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(String resourceGroupName,
+        String networkTapRuleName) {
+        return beginResyncAsync(resourceGroupName, networkTapRuleName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -2064,18 +1768,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(
-        String resourceGroupName, String networkTapRuleName, Context context) {
-        return beginResyncAsync(resourceGroupName, networkTapRuleName, context)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> resyncAsync(String resourceGroupName,
+        String networkTapRuleName, Context context) {
+        return beginResyncAsync(resourceGroupName, networkTapRuleName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2090,9 +1793,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -2102,38 +1805,34 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner resync(
-        String resourceGroupName, String networkTapRuleName, Context context) {
+    public CommonPostActionResponseForStateUpdateInner resync(String resourceGroupName, String networkTapRuleName,
+        Context context) {
         return resyncAsync(resourceGroupName, networkTapRuleName, context).block();
     }
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName) {
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2146,24 +1845,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .validateConfiguration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkTapRuleName,
-                            accept,
-                            context))
+                context -> service.validateConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkTapRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -2171,22 +1862,18 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
-        String resourceGroupName, String networkTapRuleName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
+        String networkTapRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2198,22 +1885,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateConfiguration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkTapRuleName,
-                accept,
-                context);
+        return service.validateConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), networkTapRuleName, accept, context);
     }
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2224,23 +1904,18 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginValidateConfigurationAsync(String resourceGroupName, String networkTapRuleName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateConfigurationWithResponseAsync(resourceGroupName, networkTapRuleName);
-        return this
-            .client
-            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ValidateConfigurationResponseInner.class,
-                ValidateConfigurationResponseInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateConfigurationWithResponseAsync(resourceGroupName, networkTapRuleName);
+        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
+            ValidateConfigurationResponseInner.class, this.client.getContext());
     }
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -2253,23 +1928,18 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginValidateConfigurationAsync(String resourceGroupName, String networkTapRuleName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateConfigurationWithResponseAsync(resourceGroupName, networkTapRuleName, context);
-        return this
-            .client
-            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ValidateConfigurationResponseInner.class,
-                ValidateConfigurationResponseInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateConfigurationWithResponseAsync(resourceGroupName, networkTapRuleName, context);
+        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
+            ValidateConfigurationResponseInner.class, context);
     }
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2285,9 +1955,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -2304,9 +1974,9 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2315,18 +1985,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
-        String resourceGroupName, String networkTapRuleName) {
-        return beginValidateConfigurationAsync(resourceGroupName, networkTapRuleName)
-            .last()
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+        String networkTapRuleName) {
+        return beginValidateConfigurationAsync(resourceGroupName, networkTapRuleName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -2336,18 +2005,17 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
-        String resourceGroupName, String networkTapRuleName, Context context) {
-        return beginValidateConfigurationAsync(resourceGroupName, networkTapRuleName, context)
-            .last()
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+        String networkTapRuleName, Context context) {
+        return beginValidateConfigurationAsync(resourceGroupName, networkTapRuleName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2356,16 +2024,16 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String networkTapRuleName) {
+    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName,
+        String networkTapRuleName) {
         return validateConfigurationAsync(resourceGroupName, networkTapRuleName).block();
     }
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -2375,16 +2043,15 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String networkTapRuleName, Context context) {
+    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkTapRuleName,
+        Context context) {
         return validateConfigurationAsync(resourceGroupName, networkTapRuleName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2396,32 +2063,22 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkTapRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkTapRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2429,37 +2086,26 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return list of NetworkTapRules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkTapRuleInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkTapRuleInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2471,32 +2117,22 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkTapRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkTapRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2504,29 +2140,19 @@ public final class NetworkTapRulesClientImpl implements NetworkTapRulesClient {
      * @return list of NetworkTapRules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkTapRuleInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkTapRuleInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.customerinsights.fluent.models.ConnectorMappingResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in ConnectorMappingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConnectorMappingsClient.
+ */
 public interface ConnectorMappingsClient {
     /**
      * Creates a connector mapping or updates an existing connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -28,17 +30,12 @@ public interface ConnectorMappingsClient {
      * @return the connector mapping resource format along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectorMappingResourceFormatInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        String mappingName,
-        ConnectorMappingResourceFormatInner parameters,
-        Context context);
+    Response<ConnectorMappingResourceFormatInner> createOrUpdateWithResponse(String resourceGroupName, String hubName,
+        String connectorName, String mappingName, ConnectorMappingResourceFormatInner parameters, Context context);
 
     /**
      * Creates a connector mapping or updates an existing connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -50,16 +47,12 @@ public interface ConnectorMappingsClient {
      * @return the connector mapping resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectorMappingResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        String mappingName,
-        ConnectorMappingResourceFormatInner parameters);
+    ConnectorMappingResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String connectorName,
+        String mappingName, ConnectorMappingResourceFormatInner parameters);
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -71,12 +64,12 @@ public interface ConnectorMappingsClient {
      * @return a connector mapping in the connector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectorMappingResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context);
+    Response<ConnectorMappingResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String connectorName, String mappingName, Context context);
 
     /**
      * Gets a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -87,12 +80,12 @@ public interface ConnectorMappingsClient {
      * @return a connector mapping in the connector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectorMappingResourceFormatInner get(
-        String resourceGroupName, String hubName, String connectorName, String mappingName);
+    ConnectorMappingResourceFormatInner get(String resourceGroupName, String hubName, String connectorName,
+        String mappingName);
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -104,12 +97,12 @@ public interface ConnectorMappingsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String connectorName,
+        String mappingName, Context context);
 
     /**
      * Deletes a connector mapping in the connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -123,7 +116,7 @@ public interface ConnectorMappingsClient {
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -133,12 +126,12 @@ public interface ConnectorMappingsClient {
      * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(
-        String resourceGroupName, String hubName, String connectorName);
+    PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(String resourceGroupName, String hubName,
+        String connectorName);
 
     /**
      * Gets all the connector mappings in the specified connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
@@ -149,6 +142,6 @@ public interface ConnectorMappingsClient {
      * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(
-        String resourceGroupName, String hubName, String connectorName, Context context);
+    PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(String resourceGroupName, String hubName,
+        String connectorName, Context context);
 }

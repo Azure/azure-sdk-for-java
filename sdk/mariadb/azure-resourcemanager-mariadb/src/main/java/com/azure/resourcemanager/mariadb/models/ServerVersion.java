@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The version of a server. */
+/**
+ * The version of a server.
+ */
 public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
-    /** Static value 10.2 for ServerVersion. */
+    /**
+     * Static value 10.2 for ServerVersion.
+     */
     public static final ServerVersion ONE_ZERO_TWO = fromString("10.2");
 
-    /** Static value 10.3 for ServerVersion. */
+    /**
+     * Static value 10.3 for ServerVersion.
+     */
     public static final ServerVersion ONE_ZERO_THREE = fromString("10.3");
 
     /**
      * Creates a new instance of ServerVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
 
     /**
      * Creates or finds a ServerVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerVersion.
      */
-    @JsonCreator
     public static ServerVersion fromString(String name) {
         return fromString(name, ServerVersion.class);
     }
 
     /**
      * Gets known ServerVersion values.
-     *
+     * 
      * @return known ServerVersion values.
      */
     public static Collection<ServerVersion> values() {

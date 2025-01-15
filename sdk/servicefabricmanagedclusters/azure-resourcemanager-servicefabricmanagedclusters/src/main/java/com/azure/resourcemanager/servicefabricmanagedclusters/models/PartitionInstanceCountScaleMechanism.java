@@ -118,7 +118,6 @@ public final class PartitionInstanceCountScaleMechanism extends ScalingMechanism
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

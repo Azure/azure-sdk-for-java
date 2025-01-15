@@ -37,8 +37,7 @@ import java.util.function.Supplier;
  *
  * <!-- src_embed com.azure.identity.credential.obocredential.construct -->
  * <pre>
- * TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder&#40;&#41;
- *     .clientId&#40;&quot;&lt;app-client-ID&gt;&quot;&#41;
+ * TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder&#40;&#41;.clientId&#40;&quot;&lt;app-client-ID&gt;&quot;&#41;
  *     .clientSecret&#40;&quot;&lt;app-Client-Secret&gt;&quot;&#41;
  *     .tenantId&#40;&quot;&lt;app-tenant-ID&gt;&quot;&#41;
  *     .userAssertion&#40;&quot;&lt;user-assertion&gt;&quot;&#41;
@@ -66,10 +65,9 @@ public class OnBehalfOfCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     OnBehalfOfCredential(String clientId, String tenantId, String clientSecret, String certificatePath,
-                                String certificatePassword, Supplier<String> clientAssertionSupplier,
-                                IdentityClientOptions identityClientOptions) {
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
+        String certificatePassword, Supplier<String> clientAssertionSupplier,
+        IdentityClientOptions identityClientOptions) {
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
             .certificatePath(certificatePath)
@@ -88,8 +86,8 @@ public class OnBehalfOfCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithOBO(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error)));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error)));
     }
 
     @Override
@@ -100,7 +98,8 @@ public class OnBehalfOfCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithOBO(request);

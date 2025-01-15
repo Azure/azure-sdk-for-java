@@ -117,29 +117,25 @@ public final class MsixPackageImpl implements MsixPackage, MsixPackage.Definitio
     }
 
     public MsixPackage create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMsixPackages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hostPoolName, msixPackageFullName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMsixPackages()
+            .createOrUpdateWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public MsixPackage create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMsixPackages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hostPoolName, msixPackageFullName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMsixPackages()
+            .createOrUpdateWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    MsixPackageImpl(
-        String name, com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
+    MsixPackageImpl(String name,
+        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = new MsixPackageInner();
         this.serviceManager = serviceManager;
         this.msixPackageFullName = name;
@@ -151,53 +147,43 @@ public final class MsixPackageImpl implements MsixPackage, MsixPackage.Definitio
     }
 
     public MsixPackage apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMsixPackages()
-                .updateWithResponse(
-                    resourceGroupName, hostPoolName, msixPackageFullName, updateMsixPackage, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMsixPackages()
+            .updateWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, updateMsixPackage, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MsixPackage apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMsixPackages()
-                .updateWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, updateMsixPackage, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMsixPackages()
+            .updateWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, updateMsixPackage, context)
+            .getValue();
         return this;
     }
 
-    MsixPackageImpl(
-        MsixPackageInner innerObject,
+    MsixPackageImpl(MsixPackageInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.hostPoolName = Utils.getValueFromIdByName(innerObject.id(), "hostPools");
-        this.msixPackageFullName = Utils.getValueFromIdByName(innerObject.id(), "msixPackages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.hostPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hostPools");
+        this.msixPackageFullName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "msixPackages");
     }
 
     public MsixPackage refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMsixPackages()
-                .getWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMsixPackages()
+            .getWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MsixPackage refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMsixPackages()
-                .getWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMsixPackages()
+            .getWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, context)
+            .getValue();
         return this;
     }
 

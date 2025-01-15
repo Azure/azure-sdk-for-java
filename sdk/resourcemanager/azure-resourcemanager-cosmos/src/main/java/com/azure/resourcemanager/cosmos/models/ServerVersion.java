@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Describes the ServerVersion of an a MongoDB account.
+ * Describes the version of the MongoDB account.
  */
 public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
     /**
@@ -40,6 +40,11 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
      * Static value 6.0 for ServerVersion.
      */
     public static final ServerVersion SIX_ZERO = fromString("6.0");
+
+    /**
+     * Static value 7.0 for ServerVersion.
+     */
+    public static final ServerVersion SEVEN_ZERO = fromString("7.0");
 
     /**
      * Creates a new instance of ServerVersion value.

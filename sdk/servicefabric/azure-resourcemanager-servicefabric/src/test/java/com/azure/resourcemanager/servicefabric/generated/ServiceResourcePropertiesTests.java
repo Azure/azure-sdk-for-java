@@ -48,16 +48,23 @@ public final class ServiceResourcePropertiesTests {
                 new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
                     .withServiceName("bw")))
             .withServiceLoadMetrics(Arrays.asList(
-                new ServiceLoadMetricDescription().withName("hemms").withWeight(ServiceLoadMetricWeight.LOW)
-                    .withPrimaryDefaultLoad(145685509).withSecondaryDefaultLoad(1224512622).withDefaultLoad(1242300027),
-                new ServiceLoadMetricDescription().withName("jinfw").withWeight(ServiceLoadMetricWeight.LOW)
-                    .withPrimaryDefaultLoad(1139569570).withSecondaryDefaultLoad(2134484633)
+                new ServiceLoadMetricDescription().withName("hemms")
+                    .withWeight(ServiceLoadMetricWeight.LOW)
+                    .withPrimaryDefaultLoad(145685509)
+                    .withSecondaryDefaultLoad(1224512622)
+                    .withDefaultLoad(1242300027),
+                new ServiceLoadMetricDescription().withName("jinfw")
+                    .withWeight(ServiceLoadMetricWeight.LOW)
+                    .withPrimaryDefaultLoad(1139569570)
+                    .withSecondaryDefaultLoad(2134484633)
                     .withDefaultLoad(1895840108)))
             .withServicePlacementPolicies(
                 Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-            .withDefaultMoveCost(MoveCost.LOW).withServiceTypeName("axoruzfgsquy")
+            .withDefaultMoveCost(MoveCost.LOW)
+            .withServiceTypeName("axoruzfgsquy")
             .withPartitionDescription(new PartitionSchemeDescription())
-            .withServicePackageActivationMode(ArmServicePackageActivationMode.SHARED_PROCESS).withServiceDnsName("l");
+            .withServicePackageActivationMode(ArmServicePackageActivationMode.SHARED_PROCESS)
+            .withServiceDnsName("l");
         model = BinaryData.fromObject(model).toObject(ServiceResourceProperties.class);
         Assertions.assertEquals("tramxjez", model.placementConstraints());
         Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY, model.correlationScheme().get(0).scheme());

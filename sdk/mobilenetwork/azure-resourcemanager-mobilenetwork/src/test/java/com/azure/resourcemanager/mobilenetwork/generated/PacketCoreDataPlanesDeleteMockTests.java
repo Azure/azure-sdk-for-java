@@ -27,7 +27,7 @@ public final class PacketCoreDataPlanesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.packetCoreDataPlanes().delete("v", "kxrerlniylylyfwx", "utgqztwh", com.azure.core.util.Context.NONE);
+        manager.packetCoreDataPlanes().delete("jpds", "zakuejk", "vbiztjofqcv", com.azure.core.util.Context.NONE);
 
     }
 }

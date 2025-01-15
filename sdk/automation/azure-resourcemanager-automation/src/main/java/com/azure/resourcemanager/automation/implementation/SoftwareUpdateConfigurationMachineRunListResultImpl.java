@@ -28,12 +28,9 @@ public final class SoftwareUpdateConfigurationMachineRunListResultImpl
     public List<SoftwareUpdateConfigurationMachineRun> value() {
         List<SoftwareUpdateConfigurationMachineRunInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new SoftwareUpdateConfigurationMachineRunImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new SoftwareUpdateConfigurationMachineRunImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

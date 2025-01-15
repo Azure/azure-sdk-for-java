@@ -108,20 +108,16 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
     }
 
     public ServiceFabric create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceFabrics()
-                .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceFabrics()
+            .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServiceFabric create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceFabrics()
-                .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceFabrics()
+            .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), context);
         return this;
     }
 
@@ -137,60 +133,51 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
     }
 
     public ServiceFabric apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceFabrics()
-                .updateWithResponse(resourceGroupName, labName, username, name, updateServiceFabric, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceFabrics()
+            .updateWithResponse(resourceGroupName, labName, username, name, updateServiceFabric, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceFabric apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceFabrics()
-                .updateWithResponse(resourceGroupName, labName, username, name, updateServiceFabric, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceFabrics()
+            .updateWithResponse(resourceGroupName, labName, username, name, updateServiceFabric, context)
+            .getValue();
         return this;
     }
 
-    ServiceFabricImpl(
-        ServiceFabricInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    ServiceFabricImpl(ServiceFabricInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.username = Utils.getValueFromIdByName(innerObject.id(), "users");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "servicefabrics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.username = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "users");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servicefabrics");
     }
 
     public ServiceFabric refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceFabrics()
-                .getWithResponse(resourceGroupName, labName, username, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceFabrics()
+            .getWithResponse(resourceGroupName, labName, username, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceFabric refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceFabrics()
-                .getWithResponse(resourceGroupName, labName, username, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceFabrics()
+            .getWithResponse(resourceGroupName, labName, username, name, localExpand, context)
+            .getValue();
         return this;
     }
 
     public Response<ApplicableSchedule> listApplicableSchedulesWithResponse(Context context) {
-        return serviceManager
-            .serviceFabrics()
+        return serviceManager.serviceFabrics()
             .listApplicableSchedulesWithResponse(resourceGroupName, labName, username, name, context);
     }
 

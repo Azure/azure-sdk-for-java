@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -35,7 +36,7 @@ public final class AtlasRelatedObjectId implements JsonSerializable<AtlasRelated
      * The unique attributes of the object.
      */
     @Generated
-    private Map<String, Object> uniqueAttributes;
+    private Map<String, BinaryData> uniqueAttributes;
 
     /*
      * The display text.
@@ -132,7 +133,7 @@ public final class AtlasRelatedObjectId implements JsonSerializable<AtlasRelated
      * @return the uniqueAttributes value.
      */
     @Generated
-    public Map<String, Object> getUniqueAttributes() {
+    public Map<String, BinaryData> getUniqueAttributes() {
         return this.uniqueAttributes;
     }
 
@@ -143,7 +144,7 @@ public final class AtlasRelatedObjectId implements JsonSerializable<AtlasRelated
      * @return the AtlasRelatedObjectId object itself.
      */
     @Generated
-    public AtlasRelatedObjectId setUniqueAttributes(Map<String, Object> uniqueAttributes) {
+    public AtlasRelatedObjectId setUniqueAttributes(Map<String, BinaryData> uniqueAttributes) {
         this.uniqueAttributes = uniqueAttributes;
         return this;
     }
@@ -296,7 +297,7 @@ public final class AtlasRelatedObjectId implements JsonSerializable<AtlasRelated
         jsonWriter.writeStringField("guid", this.guid);
         jsonWriter.writeStringField("typeName", this.typeName);
         jsonWriter.writeMapField("uniqueAttributes", this.uniqueAttributes,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("displayText", this.displayText);
         jsonWriter.writeStringField("entityStatus", this.entityStatus == null ? null : this.entityStatus.toString());
         jsonWriter.writeStringField("relationshipType", this.relationshipType);
@@ -328,7 +329,8 @@ public final class AtlasRelatedObjectId implements JsonSerializable<AtlasRelated
                 } else if ("typeName".equals(fieldName)) {
                     deserializedAtlasRelatedObjectId.typeName = reader.getString();
                 } else if ("uniqueAttributes".equals(fieldName)) {
-                    Map<String, Object> uniqueAttributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> uniqueAttributes = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAtlasRelatedObjectId.uniqueAttributes = uniqueAttributes;
                 } else if ("displayText".equals(fieldName)) {
                     deserializedAtlasRelatedObjectId.displayText = reader.getString();

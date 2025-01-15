@@ -6,33 +6,40 @@ package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The firewall rule properties to use when creating a new firewall rule. */
+/**
+ * The firewall rule properties to use when creating a new firewall rule.
+ */
 @Fluent
-public final class CreateOrUpdateFirewallRuleProperties {
+public final class CreateOrUpdateFirewallRuleProperties
+    implements JsonSerializable<CreateOrUpdateFirewallRuleProperties> {
     /*
      * The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
      * protocol.
      */
-    @JsonProperty(value = "startIpAddress", required = true)
     private String startIpAddress;
 
     /*
      * The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
      * protocol.
      */
-    @JsonProperty(value = "endIpAddress", required = true)
     private String endIpAddress;
 
-    /** Creates an instance of CreateOrUpdateFirewallRuleProperties class. */
+    /**
+     * Creates an instance of CreateOrUpdateFirewallRuleProperties class.
+     */
     public CreateOrUpdateFirewallRuleProperties() {
     }
 
     /**
      * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -42,7 +49,7 @@ public final class CreateOrUpdateFirewallRuleProperties {
     /**
      * Set the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
-     *
+     * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the CreateOrUpdateFirewallRuleProperties object itself.
      */
@@ -54,7 +61,7 @@ public final class CreateOrUpdateFirewallRuleProperties {
     /**
      * Get the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
      * and End should be in the same protocol.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -64,7 +71,7 @@ public final class CreateOrUpdateFirewallRuleProperties {
     /**
      * Set the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
      * and End should be in the same protocol.
-     *
+     * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the CreateOrUpdateFirewallRuleProperties object itself.
      */
@@ -75,23 +82,62 @@ public final class CreateOrUpdateFirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startIpAddress in model CreateOrUpdateFirewallRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startIpAddress in model CreateOrUpdateFirewallRuleProperties"));
         }
         if (endIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endIpAddress in model CreateOrUpdateFirewallRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endIpAddress in model CreateOrUpdateFirewallRuleProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CreateOrUpdateFirewallRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startIpAddress", this.startIpAddress);
+        jsonWriter.writeStringField("endIpAddress", this.endIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateOrUpdateFirewallRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateOrUpdateFirewallRuleProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateOrUpdateFirewallRuleProperties.
+     */
+    public static CreateOrUpdateFirewallRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateOrUpdateFirewallRuleProperties deserializedCreateOrUpdateFirewallRuleProperties
+                = new CreateOrUpdateFirewallRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startIpAddress".equals(fieldName)) {
+                    deserializedCreateOrUpdateFirewallRuleProperties.startIpAddress = reader.getString();
+                } else if ("endIpAddress".equals(fieldName)) {
+                    deserializedCreateOrUpdateFirewallRuleProperties.endIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateOrUpdateFirewallRuleProperties;
+        });
+    }
 }

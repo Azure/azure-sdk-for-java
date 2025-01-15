@@ -11,21 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeBackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeBackupProperties model
-            = BinaryData.fromString("{\"backupPolicyId\":\"rn\",\"policyEnforced\":true,\"backupVaultId\":\"q\"}")
-                .toObject(VolumeBackupProperties.class);
-        Assertions.assertEquals("rn", model.backupPolicyId());
-        Assertions.assertEquals(true, model.policyEnforced());
-        Assertions.assertEquals("q", model.backupVaultId());
+        VolumeBackupProperties model = BinaryData
+            .fromString(
+                "{\"backupPolicyId\":\"ldnkwwtppjfl\",\"policyEnforced\":false,\"backupVaultId\":\"aokonzmnsik\"}")
+            .toObject(VolumeBackupProperties.class);
+        Assertions.assertEquals("ldnkwwtppjfl", model.backupPolicyId());
+        Assertions.assertEquals(false, model.policyEnforced());
+        Assertions.assertEquals("aokonzmnsik", model.backupVaultId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeBackupProperties model
-            = new VolumeBackupProperties().withBackupPolicyId("rn").withPolicyEnforced(true).withBackupVaultId("q");
+        VolumeBackupProperties model = new VolumeBackupProperties().withBackupPolicyId("ldnkwwtppjfl")
+            .withPolicyEnforced(false)
+            .withBackupVaultId("aokonzmnsik");
         model = BinaryData.fromObject(model).toObject(VolumeBackupProperties.class);
-        Assertions.assertEquals("rn", model.backupPolicyId());
-        Assertions.assertEquals(true, model.policyEnforced());
-        Assertions.assertEquals("q", model.backupVaultId());
+        Assertions.assertEquals("ldnkwwtppjfl", model.backupPolicyId());
+        Assertions.assertEquals(false, model.policyEnforced());
+        Assertions.assertEquals("aokonzmnsik", model.backupVaultId());
     }
 }

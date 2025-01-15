@@ -27,21 +27,13 @@ public final class FunctionAuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Mono<String> masterKeyMono =
-            masterKey == null
-                ? functionApp
-                    .getMasterKeyAsync()
-                    .map(
-                        key -> {
-                            masterKey = key;
-                            return key;
-                        })
-                : Mono.just(masterKey);
-        return masterKeyMono
-            .flatMap(
-                key -> {
-                    context.getHttpRequest().setHeader(HEADER_NAME, key);
-                    return next.process();
-                });
+        Mono<String> masterKeyMono = masterKey == null ? functionApp.getMasterKeyAsync().map(key -> {
+            masterKey = key;
+            return key;
+        }) : Mono.just(masterKey);
+        return masterKeyMono.flatMap(key -> {
+            context.getHttpRequest().setHeader(HEADER_NAME, key);
+            return next.process();
+        });
     }
 }

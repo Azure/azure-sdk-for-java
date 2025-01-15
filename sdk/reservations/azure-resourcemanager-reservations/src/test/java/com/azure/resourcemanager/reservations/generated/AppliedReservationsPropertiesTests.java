@@ -13,25 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class AppliedReservationsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppliedReservationsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"reservationOrderIds\":{\"value\":[\"luwfzitonpeqfpjk\",\"lxofpdvhpfxxypin\",\"nmayhuybb\",\"podepoo\"],\"nextLink\":\"nuvamiheogna\"}}")
-                .toObject(AppliedReservationsProperties.class);
-        Assertions.assertEquals("luwfzitonpeqfpjk", model.reservationOrderIds().value().get(0));
-        Assertions.assertEquals("nuvamiheogna", model.reservationOrderIds().nextLink());
+        AppliedReservationsProperties model = BinaryData.fromString(
+            "{\"reservationOrderIds\":{\"value\":[\"dio\",\"jpslwejd\",\"vwryoqpso\",\"cctazakljlahbc\"],\"nextLink\":\"ffdfdosygexpa\"}}")
+            .toObject(AppliedReservationsProperties.class);
+        Assertions.assertEquals("dio", model.reservationOrderIds().value().get(0));
+        Assertions.assertEquals("ffdfdosygexpa", model.reservationOrderIds().nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppliedReservationsProperties model =
-            new AppliedReservationsProperties()
-                .withReservationOrderIds(
-                    new AppliedReservationList()
-                        .withValue(Arrays.asList("luwfzitonpeqfpjk", "lxofpdvhpfxxypin", "nmayhuybb", "podepoo"))
-                        .withNextLink("nuvamiheogna"));
+        AppliedReservationsProperties model = new AppliedReservationsProperties().withReservationOrderIds(
+            new AppliedReservationList().withValue(Arrays.asList("dio", "jpslwejd", "vwryoqpso", "cctazakljlahbc"))
+                .withNextLink("ffdfdosygexpa"));
         model = BinaryData.fromObject(model).toObject(AppliedReservationsProperties.class);
-        Assertions.assertEquals("luwfzitonpeqfpjk", model.reservationOrderIds().value().get(0));
-        Assertions.assertEquals("nuvamiheogna", model.reservationOrderIds().nextLink());
+        Assertions.assertEquals("dio", model.reservationOrderIds().value().get(0));
+        Assertions.assertEquals("ffdfdosygexpa", model.reservationOrderIds().nextLink());
     }
 }

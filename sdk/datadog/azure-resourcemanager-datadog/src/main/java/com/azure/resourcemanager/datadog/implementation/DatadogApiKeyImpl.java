@@ -12,8 +12,8 @@ public final class DatadogApiKeyImpl implements DatadogApiKey {
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    DatadogApiKeyImpl(
-        DatadogApiKeyInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
+    DatadogApiKeyImpl(DatadogApiKeyInner innerObject,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

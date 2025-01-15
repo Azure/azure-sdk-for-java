@@ -18,8 +18,7 @@ public final class DataLakeStoreAccountBasicImpl implements DataLakeStoreAccount
 
     private final com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager;
 
-    DataLakeStoreAccountBasicImpl(
-        DataLakeStoreAccountBasicInner innerObject,
+    DataLakeStoreAccountBasicImpl(DataLakeStoreAccountBasicInner innerObject,
         com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

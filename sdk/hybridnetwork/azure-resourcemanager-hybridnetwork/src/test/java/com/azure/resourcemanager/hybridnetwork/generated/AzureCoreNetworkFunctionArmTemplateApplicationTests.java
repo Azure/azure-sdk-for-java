@@ -37,18 +37,19 @@ public final class AzureCoreNetworkFunctionArmTemplateApplicationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureCoreNetworkFunctionArmTemplateApplication model = new AzureCoreNetworkFunctionArmTemplateApplication()
-            .withName("cdqzhlctddu")
-            .withDependsOnProfile(
-                new DependsOnProfile().withInstallDependsOn(Arrays.asList("yfp", "hrqbnjjrcg", "gydcw"))
-                    .withUninstallDependsOn(Arrays.asList("jumvqqolihrraio", "aubrjtloq"))
-                    .withUpdateDependsOn(Arrays.asList("oj", "ngiflrzpasccbi", "imzdlyj")))
-            .withArtifactProfile(new AzureCoreArmTemplateArtifactProfile()
-                .withArtifactStore(new ReferencedResource().withId("qpwcyyufmh")).withTemplateArtifactProfile(
-                    new ArmTemplateArtifactProfile().withTemplateName("xmysuxswqrntv").withTemplateVersion("ijpstte")))
-            .withDeployParametersMappingRuleProfile(new AzureCoreArmTemplateDeployMappingRuleProfile()
-                .withApplicationEnablement(ApplicationEnablement.UNKNOWN)
-                .withTemplateMappingRuleProfile(new ArmTemplateMappingRuleProfile().withTemplateParameters("uwm")));
+        AzureCoreNetworkFunctionArmTemplateApplication model
+            = new AzureCoreNetworkFunctionArmTemplateApplication().withName("cdqzhlctddu")
+                .withDependsOnProfile(
+                    new DependsOnProfile().withInstallDependsOn(Arrays.asList("yfp", "hrqbnjjrcg", "gydcw"))
+                        .withUninstallDependsOn(Arrays.asList("jumvqqolihrraio", "aubrjtloq"))
+                        .withUpdateDependsOn(Arrays.asList("oj", "ngiflrzpasccbi", "imzdlyj")))
+                .withArtifactProfile(new AzureCoreArmTemplateArtifactProfile()
+                    .withArtifactStore(new ReferencedResource().withId("qpwcyyufmh"))
+                    .withTemplateArtifactProfile(new ArmTemplateArtifactProfile().withTemplateName("xmysuxswqrntv")
+                        .withTemplateVersion("ijpstte")))
+                .withDeployParametersMappingRuleProfile(new AzureCoreArmTemplateDeployMappingRuleProfile()
+                    .withApplicationEnablement(ApplicationEnablement.UNKNOWN)
+                    .withTemplateMappingRuleProfile(new ArmTemplateMappingRuleProfile().withTemplateParameters("uwm")));
         model = BinaryData.fromObject(model).toObject(AzureCoreNetworkFunctionArmTemplateApplication.class);
         Assertions.assertEquals("cdqzhlctddu", model.name());
         Assertions.assertEquals("yfp", model.dependsOnProfile().installDependsOn().get(0));

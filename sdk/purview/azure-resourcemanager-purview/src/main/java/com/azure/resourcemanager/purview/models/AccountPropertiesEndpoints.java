@@ -5,21 +5,112 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The URIs that are the public endpoints of the account. */
+/**
+ * The URIs that are the public endpoints of the account.
+ */
 @Immutable
 public final class AccountPropertiesEndpoints extends AccountEndpoints {
-    /** Creates an instance of AccountPropertiesEndpoints class. */
+    /*
+     * Gets the scan endpoint.
+     */
+    private String scan;
+
+    /*
+     * Gets the guardian endpoint.
+     */
+    private String guardian;
+
+    /*
+     * Gets the catalog endpoint.
+     */
+    private String catalog;
+
+    /**
+     * Creates an instance of AccountPropertiesEndpoints class.
+     */
     public AccountPropertiesEndpoints() {
     }
 
     /**
+     * Get the scan property: Gets the scan endpoint.
+     * 
+     * @return the scan value.
+     */
+    @Override
+    public String scan() {
+        return this.scan;
+    }
+
+    /**
+     * Get the guardian property: Gets the guardian endpoint.
+     * 
+     * @return the guardian value.
+     */
+    @Override
+    public String guardian() {
+        return this.guardian;
+    }
+
+    /**
+     * Get the catalog property: Gets the catalog endpoint.
+     * 
+     * @return the catalog value.
+     */
+    @Override
+    public String catalog() {
+        return this.catalog;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountPropertiesEndpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountPropertiesEndpoints if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountPropertiesEndpoints.
+     */
+    public static AccountPropertiesEndpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountPropertiesEndpoints deserializedAccountPropertiesEndpoints = new AccountPropertiesEndpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("catalog".equals(fieldName)) {
+                    deserializedAccountPropertiesEndpoints.catalog = reader.getString();
+                } else if ("guardian".equals(fieldName)) {
+                    deserializedAccountPropertiesEndpoints.guardian = reader.getString();
+                } else if ("scan".equals(fieldName)) {
+                    deserializedAccountPropertiesEndpoints.scan = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountPropertiesEndpoints;
+        });
     }
 }

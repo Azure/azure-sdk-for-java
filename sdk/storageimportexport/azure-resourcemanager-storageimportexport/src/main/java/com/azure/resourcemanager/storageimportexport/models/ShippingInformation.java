@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains information about the Microsoft datacenter to which the drives should be shipped. */
+/**
+ * Contains information about the Microsoft datacenter to which the drives should be shipped.
+ */
 @Fluent
-public final class ShippingInformation {
+public final class ShippingInformation implements JsonSerializable<ShippingInformation> {
     /*
      * The name of the recipient who will receive the hard drives when they are returned.
      */
-    @JsonProperty(value = "recipientName")
     private String recipientName;
 
     /*
      * The first line of the street address to use when returning the drives.
      */
-    @JsonProperty(value = "streetAddress1")
     private String streetAddress1;
 
     /*
      * The second line of the street address to use when returning the drives.
      */
-    @JsonProperty(value = "streetAddress2")
     private String streetAddress2;
 
     /*
      * The city name to use when returning the drives.
      */
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * The state or province to use when returning the drives.
      */
-    @JsonProperty(value = "stateOrProvince")
     private String stateOrProvince;
 
     /*
      * The postal code to use when returning the drives.
      */
-    @JsonProperty(value = "postalCode")
     private String postalCode;
 
     /*
      * The country or region to use when returning the drives.
      */
-    @JsonProperty(value = "countryOrRegion")
     private String countryOrRegion;
 
     /*
      * Phone number of the recipient of the returned drives.
      */
-    @JsonProperty(value = "phone")
     private String phone;
 
     /*
      * Additional shipping information for customer, specific to datacenter to which customer should send their disks.
      */
-    @JsonProperty(value = "additionalInformation", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalInformation;
 
-    /** Creates an instance of ShippingInformation class. */
+    /**
+     * Creates an instance of ShippingInformation class.
+     */
     public ShippingInformation() {
     }
 
     /**
      * Get the recipientName property: The name of the recipient who will receive the hard drives when they are
      * returned.
-     *
+     * 
      * @return the recipientName value.
      */
     public String recipientName() {
@@ -81,7 +80,7 @@ public final class ShippingInformation {
     /**
      * Set the recipientName property: The name of the recipient who will receive the hard drives when they are
      * returned.
-     *
+     * 
      * @param recipientName the recipientName value to set.
      * @return the ShippingInformation object itself.
      */
@@ -92,7 +91,7 @@ public final class ShippingInformation {
 
     /**
      * Get the streetAddress1 property: The first line of the street address to use when returning the drives.
-     *
+     * 
      * @return the streetAddress1 value.
      */
     public String streetAddress1() {
@@ -101,7 +100,7 @@ public final class ShippingInformation {
 
     /**
      * Set the streetAddress1 property: The first line of the street address to use when returning the drives.
-     *
+     * 
      * @param streetAddress1 the streetAddress1 value to set.
      * @return the ShippingInformation object itself.
      */
@@ -112,7 +111,7 @@ public final class ShippingInformation {
 
     /**
      * Get the streetAddress2 property: The second line of the street address to use when returning the drives.
-     *
+     * 
      * @return the streetAddress2 value.
      */
     public String streetAddress2() {
@@ -121,7 +120,7 @@ public final class ShippingInformation {
 
     /**
      * Set the streetAddress2 property: The second line of the street address to use when returning the drives.
-     *
+     * 
      * @param streetAddress2 the streetAddress2 value to set.
      * @return the ShippingInformation object itself.
      */
@@ -132,7 +131,7 @@ public final class ShippingInformation {
 
     /**
      * Get the city property: The city name to use when returning the drives.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -141,7 +140,7 @@ public final class ShippingInformation {
 
     /**
      * Set the city property: The city name to use when returning the drives.
-     *
+     * 
      * @param city the city value to set.
      * @return the ShippingInformation object itself.
      */
@@ -152,7 +151,7 @@ public final class ShippingInformation {
 
     /**
      * Get the stateOrProvince property: The state or province to use when returning the drives.
-     *
+     * 
      * @return the stateOrProvince value.
      */
     public String stateOrProvince() {
@@ -161,7 +160,7 @@ public final class ShippingInformation {
 
     /**
      * Set the stateOrProvince property: The state or province to use when returning the drives.
-     *
+     * 
      * @param stateOrProvince the stateOrProvince value to set.
      * @return the ShippingInformation object itself.
      */
@@ -172,7 +171,7 @@ public final class ShippingInformation {
 
     /**
      * Get the postalCode property: The postal code to use when returning the drives.
-     *
+     * 
      * @return the postalCode value.
      */
     public String postalCode() {
@@ -181,7 +180,7 @@ public final class ShippingInformation {
 
     /**
      * Set the postalCode property: The postal code to use when returning the drives.
-     *
+     * 
      * @param postalCode the postalCode value to set.
      * @return the ShippingInformation object itself.
      */
@@ -192,7 +191,7 @@ public final class ShippingInformation {
 
     /**
      * Get the countryOrRegion property: The country or region to use when returning the drives.
-     *
+     * 
      * @return the countryOrRegion value.
      */
     public String countryOrRegion() {
@@ -201,7 +200,7 @@ public final class ShippingInformation {
 
     /**
      * Set the countryOrRegion property: The country or region to use when returning the drives.
-     *
+     * 
      * @param countryOrRegion the countryOrRegion value to set.
      * @return the ShippingInformation object itself.
      */
@@ -212,7 +211,7 @@ public final class ShippingInformation {
 
     /**
      * Get the phone property: Phone number of the recipient of the returned drives.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -221,7 +220,7 @@ public final class ShippingInformation {
 
     /**
      * Set the phone property: Phone number of the recipient of the returned drives.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the ShippingInformation object itself.
      */
@@ -233,7 +232,7 @@ public final class ShippingInformation {
     /**
      * Get the additionalInformation property: Additional shipping information for customer, specific to datacenter to
      * which customer should send their disks.
-     *
+     * 
      * @return the additionalInformation value.
      */
     public String additionalInformation() {
@@ -242,9 +241,68 @@ public final class ShippingInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recipientName", this.recipientName);
+        jsonWriter.writeStringField("streetAddress1", this.streetAddress1);
+        jsonWriter.writeStringField("streetAddress2", this.streetAddress2);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("stateOrProvince", this.stateOrProvince);
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeStringField("countryOrRegion", this.countryOrRegion);
+        jsonWriter.writeStringField("phone", this.phone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ShippingInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ShippingInformation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ShippingInformation.
+     */
+    public static ShippingInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ShippingInformation deserializedShippingInformation = new ShippingInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recipientName".equals(fieldName)) {
+                    deserializedShippingInformation.recipientName = reader.getString();
+                } else if ("streetAddress1".equals(fieldName)) {
+                    deserializedShippingInformation.streetAddress1 = reader.getString();
+                } else if ("streetAddress2".equals(fieldName)) {
+                    deserializedShippingInformation.streetAddress2 = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedShippingInformation.city = reader.getString();
+                } else if ("stateOrProvince".equals(fieldName)) {
+                    deserializedShippingInformation.stateOrProvince = reader.getString();
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedShippingInformation.postalCode = reader.getString();
+                } else if ("countryOrRegion".equals(fieldName)) {
+                    deserializedShippingInformation.countryOrRegion = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedShippingInformation.phone = reader.getString();
+                } else if ("additionalInformation".equals(fieldName)) {
+                    deserializedShippingInformation.additionalInformation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedShippingInformation;
+        });
     }
 }

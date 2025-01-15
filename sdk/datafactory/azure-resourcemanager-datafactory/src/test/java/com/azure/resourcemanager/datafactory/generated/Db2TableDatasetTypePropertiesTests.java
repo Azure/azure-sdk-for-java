@@ -11,15 +11,15 @@ public final class Db2TableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Db2TableDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"dataxf\",\"schema\":\"dataigcfddofxnf\",\"table\":\"datajyyrqaedw\"}")
+            .fromString("{\"tableName\":\"datamnrijefmrtw\",\"schema\":\"dataevdspthgffmwtbl\",\"table\":\"datakok\"}")
             .toObject(Db2TableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Db2TableDatasetTypeProperties model = new Db2TableDatasetTypeProperties().withTableName("dataxf")
-            .withSchema("dataigcfddofxnf")
-            .withTable("datajyyrqaedw");
+        Db2TableDatasetTypeProperties model = new Db2TableDatasetTypeProperties().withTableName("datamnrijefmrtw")
+            .withSchema("dataevdspthgffmwtbl")
+            .withTable("datakok");
         model = BinaryData.fromObject(model).toObject(Db2TableDatasetTypeProperties.class);
     }
 }

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResource
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesComputeProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesLogAnalyticsProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesNetworkProfile;
+import com.azure.resourcemanager.hdinsight.containers.models.IpTag;
 import com.azure.resourcemanager.hdinsight.containers.models.OutboundType;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,52 +23,68 @@ public final class ClusterPoolListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"deploymentId\":\"jdous\",\"managedResourceGroupName\":\"qvkoc\",\"aksManagedResourceGroupName\":\"jdkwtnhxbnjb\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"sqrglssainq\"},\"computeProfile\":{\"vmSize\":\"jwnzlljfmp\",\"count\":1098993569},\"aksClusterProfile\":{\"aksClusterResourceId\":\"mgxsab\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"qduujitcjczdz\",\"msiClientId\":\"vndhkrwpdapp\",\"msiObjectId\":\"sbdkvwr\"},\"aksVersion\":\"feusnhut\"},\"networkProfile\":{\"subnetId\":\"ltmrldh\",\"outboundType\":\"loadBalancer\",\"enablePrivateApiServer\":true,\"apiServerAuthorizedIpRanges\":[\"tqxhocdgeab\",\"gphuticndvka\"]},\"logAnalyticsProfile\":{\"enabled\":true,\"workspaceId\":\"i\"},\"status\":\"yhxhu\"},\"location\":\"k\",\"tags\":{\"iawxklry\":\"xolniwpwcukjfk\",\"cbacphejkotynqg\":\"lwckbasyypnddhs\"},\"id\":\"ulzndlikwyqk\",\"name\":\"fgibmadgakeq\",\"type\":\"rxybz\"}],\"nextLink\":\"e\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"deploymentId\":\"zqqedq\",\"managedResourceGroupName\":\"bciqfouflm\",\"aksManagedResourceGroupName\":\"kzsmodm\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"ougpbkwt\",\"publicIpTag\":{\"ipTagType\":\"tduqktapspwgcuer\",\"tag\":\"umkdosvqwhbmd\"}},\"computeProfile\":{\"vmSize\":\"bbjfddgmbmbexp\",\"count\":72940743,\"availabilityZones\":[\"qrolfpf\"]},\"aksClusterProfile\":{\"aksClusterResourceId\":\"lgbquxig\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"jgzjaoyfhrtx\",\"msiClientId\":\"lnerkujysvleju\",\"msiObjectId\":\"fqawrlyxw\"},\"aksVersion\":\"cpr\"},\"networkProfile\":{\"subnetId\":\"wbxgjvt\",\"outboundType\":\"loadBalancer\",\"enablePrivateApiServer\":false,\"apiServerAuthorizedIpRanges\":[\"dnrujqguhmuouqfp\"]},\"logAnalyticsProfile\":{\"enabled\":false,\"workspaceId\":\"bngui\"},\"status\":\"wu\"},\"location\":\"gazxuf\",\"tags\":{\"fidfvzw\":\"ckyfih\",\"nteiwaopv\":\"zuhtymwisdkfthwx\"},\"id\":\"mijcmmxdcufufs\",\"name\":\"pymzidnsezcxtbzs\",\"type\":\"fycc\"}],\"nextLink\":\"ewmdw\"}")
             .toObject(ClusterPoolListResult.class);
-        Assertions.assertEquals("k", model.value().get(0).location());
-        Assertions.assertEquals("xolniwpwcukjfk", model.value().get(0).tags().get("iawxklry"));
-        Assertions.assertEquals("qvkoc", model.value().get(0).properties().managedResourceGroupName());
-        Assertions.assertEquals("sqrglssainq",
+        Assertions.assertEquals("gazxuf", model.value().get(0).location());
+        Assertions.assertEquals("ckyfih", model.value().get(0).tags().get("fidfvzw"));
+        Assertions.assertEquals("bciqfouflm", model.value().get(0).properties().managedResourceGroupName());
+        Assertions.assertEquals("ougpbkwt",
             model.value().get(0).properties().clusterPoolProfile().clusterPoolVersion());
-        Assertions.assertEquals("jwnzlljfmp", model.value().get(0).properties().computeProfile().vmSize());
-        Assertions.assertEquals("ltmrldh", model.value().get(0).properties().networkProfile().subnetId());
+        Assertions.assertEquals("tduqktapspwgcuer",
+            model.value().get(0).properties().clusterPoolProfile().publicIpTag().ipTagType());
+        Assertions.assertEquals("umkdosvqwhbmd",
+            model.value().get(0).properties().clusterPoolProfile().publicIpTag().tag());
+        Assertions.assertEquals("bbjfddgmbmbexp", model.value().get(0).properties().computeProfile().vmSize());
+        Assertions.assertEquals("qrolfpf",
+            model.value().get(0).properties().computeProfile().availabilityZones().get(0));
+        Assertions.assertEquals("wbxgjvt", model.value().get(0).properties().networkProfile().subnetId());
         Assertions.assertEquals(OutboundType.LOAD_BALANCER,
             model.value().get(0).properties().networkProfile().outboundType());
-        Assertions.assertEquals(true, model.value().get(0).properties().networkProfile().enablePrivateApiServer());
-        Assertions.assertEquals("tqxhocdgeab",
+        Assertions.assertEquals(false, model.value().get(0).properties().networkProfile().enablePrivateApiServer());
+        Assertions.assertEquals("dnrujqguhmuouqfp",
             model.value().get(0).properties().networkProfile().apiServerAuthorizedIpRanges().get(0));
-        Assertions.assertEquals(true, model.value().get(0).properties().logAnalyticsProfile().enabled());
-        Assertions.assertEquals("i", model.value().get(0).properties().logAnalyticsProfile().workspaceId());
+        Assertions.assertEquals(false, model.value().get(0).properties().logAnalyticsProfile().enabled());
+        Assertions.assertEquals("bngui", model.value().get(0).properties().logAnalyticsProfile().workspaceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolListResult model = new ClusterPoolListResult().withValue(Arrays.asList(new ClusterPoolInner()
-            .withLocation("k").withTags(mapOf("iawxklry", "xolniwpwcukjfk", "cbacphejkotynqg", "lwckbasyypnddhs"))
-            .withProperties(new ClusterPoolResourceProperties().withManagedResourceGroupName("qvkoc")
-                .withClusterPoolProfile(
-                    new ClusterPoolResourcePropertiesClusterPoolProfile().withClusterPoolVersion("sqrglssainq"))
-                .withComputeProfile(new ClusterPoolResourcePropertiesComputeProfile().withVmSize("jwnzlljfmp"))
-                .withNetworkProfile(new ClusterPoolResourcePropertiesNetworkProfile().withSubnetId("ltmrldh")
-                    .withOutboundType(OutboundType.LOAD_BALANCER).withEnablePrivateApiServer(true)
-                    .withApiServerAuthorizedIpRanges(Arrays.asList("tqxhocdgeab", "gphuticndvka")))
-                .withLogAnalyticsProfile(
-                    new ClusterPoolResourcePropertiesLogAnalyticsProfile().withEnabled(true).withWorkspaceId("i")))));
+        ClusterPoolListResult model
+            = new ClusterPoolListResult().withValue(Arrays.asList(new ClusterPoolInner().withLocation("gazxuf")
+                .withTags(mapOf("fidfvzw", "ckyfih", "nteiwaopv", "zuhtymwisdkfthwx"))
+                .withProperties(new ClusterPoolResourceProperties().withManagedResourceGroupName("bciqfouflm")
+                    .withClusterPoolProfile(
+                        new ClusterPoolResourcePropertiesClusterPoolProfile().withClusterPoolVersion("ougpbkwt")
+                            .withPublicIpTag(new IpTag().withIpTagType("tduqktapspwgcuer").withTag("umkdosvqwhbmd")))
+                    .withComputeProfile(new ClusterPoolResourcePropertiesComputeProfile().withVmSize("bbjfddgmbmbexp")
+                        .withAvailabilityZones(Arrays.asList("qrolfpf")))
+                    .withNetworkProfile(new ClusterPoolResourcePropertiesNetworkProfile().withSubnetId("wbxgjvt")
+                        .withOutboundType(OutboundType.LOAD_BALANCER)
+                        .withEnablePrivateApiServer(false)
+                        .withApiServerAuthorizedIpRanges(Arrays.asList("dnrujqguhmuouqfp")))
+                    .withLogAnalyticsProfile(new ClusterPoolResourcePropertiesLogAnalyticsProfile().withEnabled(false)
+                        .withWorkspaceId("bngui")))));
         model = BinaryData.fromObject(model).toObject(ClusterPoolListResult.class);
-        Assertions.assertEquals("k", model.value().get(0).location());
-        Assertions.assertEquals("xolniwpwcukjfk", model.value().get(0).tags().get("iawxklry"));
-        Assertions.assertEquals("qvkoc", model.value().get(0).properties().managedResourceGroupName());
-        Assertions.assertEquals("sqrglssainq",
+        Assertions.assertEquals("gazxuf", model.value().get(0).location());
+        Assertions.assertEquals("ckyfih", model.value().get(0).tags().get("fidfvzw"));
+        Assertions.assertEquals("bciqfouflm", model.value().get(0).properties().managedResourceGroupName());
+        Assertions.assertEquals("ougpbkwt",
             model.value().get(0).properties().clusterPoolProfile().clusterPoolVersion());
-        Assertions.assertEquals("jwnzlljfmp", model.value().get(0).properties().computeProfile().vmSize());
-        Assertions.assertEquals("ltmrldh", model.value().get(0).properties().networkProfile().subnetId());
+        Assertions.assertEquals("tduqktapspwgcuer",
+            model.value().get(0).properties().clusterPoolProfile().publicIpTag().ipTagType());
+        Assertions.assertEquals("umkdosvqwhbmd",
+            model.value().get(0).properties().clusterPoolProfile().publicIpTag().tag());
+        Assertions.assertEquals("bbjfddgmbmbexp", model.value().get(0).properties().computeProfile().vmSize());
+        Assertions.assertEquals("qrolfpf",
+            model.value().get(0).properties().computeProfile().availabilityZones().get(0));
+        Assertions.assertEquals("wbxgjvt", model.value().get(0).properties().networkProfile().subnetId());
         Assertions.assertEquals(OutboundType.LOAD_BALANCER,
             model.value().get(0).properties().networkProfile().outboundType());
-        Assertions.assertEquals(true, model.value().get(0).properties().networkProfile().enablePrivateApiServer());
-        Assertions.assertEquals("tqxhocdgeab",
+        Assertions.assertEquals(false, model.value().get(0).properties().networkProfile().enablePrivateApiServer());
+        Assertions.assertEquals("dnrujqguhmuouqfp",
             model.value().get(0).properties().networkProfile().apiServerAuthorizedIpRanges().get(0));
-        Assertions.assertEquals(true, model.value().get(0).properties().logAnalyticsProfile().enabled());
-        Assertions.assertEquals("i", model.value().get(0).properties().logAnalyticsProfile().workspaceId());
+        Assertions.assertEquals(false, model.value().get(0).properties().logAnalyticsProfile().enabled());
+        Assertions.assertEquals("bngui", model.value().get(0).properties().logAnalyticsProfile().workspaceId());
     }
 
     // Use "Map.of" if available

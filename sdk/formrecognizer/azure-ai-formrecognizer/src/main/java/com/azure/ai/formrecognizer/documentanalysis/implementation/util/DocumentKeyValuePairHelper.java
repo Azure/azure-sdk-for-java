@@ -21,8 +21,7 @@ public final class DocumentKeyValuePairHelper {
      *
      * @param documentKeyValueElementAccessor The accessor.
      */
-    public static void setAccessor(
-        final DocumentKeyValuePairAccessor documentKeyValueElementAccessor) {
+    public static void setAccessor(final DocumentKeyValuePairAccessor documentKeyValueElementAccessor) {
         accessor = documentKeyValueElementAccessor;
     }
 
@@ -31,7 +30,9 @@ public final class DocumentKeyValuePairHelper {
      */
     public interface DocumentKeyValuePairAccessor {
         void setKey(DocumentKeyValuePair documentKeyValuePair, DocumentKeyValueElement key);
+
         void setValue(DocumentKeyValuePair documentKeyValuePair, DocumentKeyValueElement value);
+
         void setConfidence(DocumentKeyValuePair documentKeyValuePair, float confidence);
     }
 

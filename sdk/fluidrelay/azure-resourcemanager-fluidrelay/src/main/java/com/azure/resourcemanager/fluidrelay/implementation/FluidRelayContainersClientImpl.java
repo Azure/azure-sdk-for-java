@@ -31,23 +31,28 @@ import com.azure.resourcemanager.fluidrelay.fluent.models.FluidRelayContainerInn
 import com.azure.resourcemanager.fluidrelay.models.FluidRelayContainerList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FluidRelayContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FluidRelayContainersClient.
+ */
 public final class FluidRelayContainersClientImpl implements FluidRelayContainersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FluidRelayContainersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final FluidRelayManagementClientImpl client;
 
     /**
      * Initializes an instance of FluidRelayContainersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FluidRelayContainersClientImpl(FluidRelayManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(FluidRelayContainersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FluidRelayContainersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,68 +62,48 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      */
     @Host("{$host}")
     @ServiceInterface(name = "FluidRelayManagement")
-    private interface FluidRelayContainersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay"
-                + "/fluidRelayServers/{fluidRelayServerName}/fluidRelayContainers/{fluidRelayContainerName}")
-        @ExpectedResponses({200})
+    public interface FluidRelayContainersService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidRelayServers/{fluidRelayServerName}/fluidRelayContainers/{fluidRelayContainerName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FluidRelayContainerInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroup") String resourceGroup,
+        Mono<Response<FluidRelayContainerInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroup") String resourceGroup,
             @PathParam("fluidRelayServerName") String fluidRelayServerName,
             @PathParam("fluidRelayContainerName") String fluidRelayContainerName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay"
-                + "/fluidRelayServers/{fluidRelayServerName}/fluidRelayContainers/{fluidRelayContainerName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidRelayServers/{fluidRelayServerName}/fluidRelayContainers/{fluidRelayContainerName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroup") String resourceGroup,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroup") String resourceGroup,
             @PathParam("fluidRelayServerName") String fluidRelayServerName,
             @PathParam("fluidRelayContainerName") String fluidRelayContainerName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay"
-                + "/fluidRelayServers/{fluidRelayServerName}/fluidRelayContainers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidRelayServers/{fluidRelayServerName}/fluidRelayContainers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FluidRelayContainerList>> listByFluidRelayServers(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroup") String resourceGroup,
+        Mono<Response<FluidRelayContainerList>> listByFluidRelayServers(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroup") String resourceGroup,
             @PathParam("fluidRelayServerName") String fluidRelayServerName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FluidRelayContainerList>> listByFluidRelayServersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a Fluid Relay container.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -128,19 +113,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return a Fluid Relay container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FluidRelayContainerInner>> getWithResponseAsync(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName) {
+    private Mono<Response<FluidRelayContainerInner>> getWithResponseAsync(String resourceGroup,
+        String fluidRelayServerName, String fluidRelayContainerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -150,30 +131,20 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
                 .error(new IllegalArgumentException("Parameter fluidRelayServerName is required and cannot be null."));
         }
         if (fluidRelayContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter fluidRelayContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter fluidRelayContainerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroup,
-                            fluidRelayServerName,
-                            fluidRelayContainerName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+                    fluidRelayServerName, fluidRelayContainerName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Fluid Relay container.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -184,19 +155,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return a Fluid Relay container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FluidRelayContainerInner>> getWithResponseAsync(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName, Context context) {
+    private Mono<Response<FluidRelayContainerInner>> getWithResponseAsync(String resourceGroup,
+        String fluidRelayServerName, String fluidRelayContainerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -206,27 +173,18 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
                 .error(new IllegalArgumentException("Parameter fluidRelayServerName is required and cannot be null."));
         }
         if (fluidRelayContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter fluidRelayContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter fluidRelayContainerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroup,
-                fluidRelayServerName,
-                fluidRelayContainerName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+            fluidRelayServerName, fluidRelayContainerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a Fluid Relay container.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -236,32 +194,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return a Fluid Relay container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FluidRelayContainerInner> getAsync(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName) {
+    private Mono<FluidRelayContainerInner> getAsync(String resourceGroup, String fluidRelayServerName,
+        String fluidRelayContainerName) {
         return getWithResponseAsync(resourceGroup, fluidRelayServerName, fluidRelayContainerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a Fluid Relay container.
-     *
-     * @param resourceGroup The resource group containing the resource.
-     * @param fluidRelayServerName The Fluid Relay server resource name.
-     * @param fluidRelayContainerName The Fluid Relay container resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Fluid Relay container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FluidRelayContainerInner get(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName) {
-        return getAsync(resourceGroup, fluidRelayServerName, fluidRelayContainerName).block();
-    }
-
-    /**
-     * Get a Fluid Relay container.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -272,14 +213,31 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return a Fluid Relay container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FluidRelayContainerInner> getWithResponse(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName, Context context) {
+    public Response<FluidRelayContainerInner> getWithResponse(String resourceGroup, String fluidRelayServerName,
+        String fluidRelayContainerName, Context context) {
         return getWithResponseAsync(resourceGroup, fluidRelayServerName, fluidRelayContainerName, context).block();
     }
 
     /**
+     * Get a Fluid Relay container.
+     * 
+     * @param resourceGroup The resource group containing the resource.
+     * @param fluidRelayServerName The Fluid Relay server resource name.
+     * @param fluidRelayContainerName The Fluid Relay container resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Fluid Relay container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FluidRelayContainerInner get(String resourceGroup, String fluidRelayServerName,
+        String fluidRelayContainerName) {
+        return getWithResponse(resourceGroup, fluidRelayServerName, fluidRelayContainerName, Context.NONE).getValue();
+    }
+
+    /**
      * Delete a Fluid Relay container.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -289,19 +247,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroup, String fluidRelayServerName,
+        String fluidRelayContainerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -311,30 +265,20 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
                 .error(new IllegalArgumentException("Parameter fluidRelayServerName is required and cannot be null."));
         }
         if (fluidRelayContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter fluidRelayContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter fluidRelayContainerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroup,
-                            fluidRelayServerName,
-                            fluidRelayContainerName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+                    fluidRelayServerName, fluidRelayContainerName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a Fluid Relay container.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -345,19 +289,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroup, String fluidRelayServerName,
+        String fluidRelayContainerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -367,27 +307,18 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
                 .error(new IllegalArgumentException("Parameter fluidRelayServerName is required and cannot be null."));
         }
         if (fluidRelayContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter fluidRelayContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter fluidRelayContainerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroup,
-                fluidRelayServerName,
-                fluidRelayContainerName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+            fluidRelayServerName, fluidRelayContainerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a Fluid Relay container.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -404,22 +335,7 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
 
     /**
      * Delete a Fluid Relay container.
-     *
-     * @param resourceGroup The resource group containing the resource.
-     * @param fluidRelayServerName The Fluid Relay server resource name.
-     * @param fluidRelayContainerName The Fluid Relay container resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName) {
-        deleteAsync(resourceGroup, fluidRelayServerName, fluidRelayContainerName).block();
-    }
-
-    /**
-     * Delete a Fluid Relay container.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param fluidRelayContainerName The Fluid Relay container resource name.
@@ -430,14 +346,29 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroup, String fluidRelayServerName,
+        String fluidRelayContainerName, Context context) {
         return deleteWithResponseAsync(resourceGroup, fluidRelayServerName, fluidRelayContainerName, context).block();
     }
 
     /**
+     * Delete a Fluid Relay container.
+     * 
+     * @param resourceGroup The resource group containing the resource.
+     * @param fluidRelayServerName The Fluid Relay server resource name.
+     * @param fluidRelayContainerName The Fluid Relay container resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroup, String fluidRelayServerName, String fluidRelayContainerName) {
+        deleteWithResponse(resourceGroup, fluidRelayServerName, fluidRelayContainerName, Context.NONE);
+    }
+
+    /**
      * List all Fluid Relay containers which are children of a given Fluid Relay server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,19 +377,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return paged response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FluidRelayContainerInner>> listByFluidRelayServersSinglePageAsync(
-        String resourceGroup, String fluidRelayServerName) {
+    private Mono<PagedResponse<FluidRelayContainerInner>> listByFluidRelayServersSinglePageAsync(String resourceGroup,
+        String fluidRelayServerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -470,31 +397,16 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByFluidRelayServers(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroup,
-                            fluidRelayServerName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<FluidRelayContainerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByFluidRelayServers(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroup, fluidRelayServerName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<FluidRelayContainerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all Fluid Relay containers which are children of a given Fluid Relay server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param context The context to associate with this operation.
@@ -504,19 +416,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return paged response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FluidRelayContainerInner>> listByFluidRelayServersSinglePageAsync(
-        String resourceGroup, String fluidRelayServerName, Context context) {
+    private Mono<PagedResponse<FluidRelayContainerInner>> listByFluidRelayServersSinglePageAsync(String resourceGroup,
+        String fluidRelayServerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -528,28 +436,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByFluidRelayServers(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroup,
-                fluidRelayServerName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByFluidRelayServers(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+                fluidRelayServerName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all Fluid Relay containers which are children of a given Fluid Relay server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,16 +453,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return paged response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FluidRelayContainerInner> listByFluidRelayServersAsync(
-        String resourceGroup, String fluidRelayServerName) {
-        return new PagedFlux<>(
-            () -> listByFluidRelayServersSinglePageAsync(resourceGroup, fluidRelayServerName),
+    private PagedFlux<FluidRelayContainerInner> listByFluidRelayServersAsync(String resourceGroup,
+        String fluidRelayServerName) {
+        return new PagedFlux<>(() -> listByFluidRelayServersSinglePageAsync(resourceGroup, fluidRelayServerName),
             nextLink -> listByFluidRelayServersNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all Fluid Relay containers which are children of a given Fluid Relay server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param context The context to associate with this operation.
@@ -577,8 +471,8 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return paged response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FluidRelayContainerInner> listByFluidRelayServersAsync(
-        String resourceGroup, String fluidRelayServerName, Context context) {
+    private PagedFlux<FluidRelayContainerInner> listByFluidRelayServersAsync(String resourceGroup,
+        String fluidRelayServerName, Context context) {
         return new PagedFlux<>(
             () -> listByFluidRelayServersSinglePageAsync(resourceGroup, fluidRelayServerName, context),
             nextLink -> listByFluidRelayServersNextSinglePageAsync(nextLink, context));
@@ -586,7 +480,7 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
 
     /**
      * List all Fluid Relay containers which are children of a given Fluid Relay server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -595,14 +489,14 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return paged response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FluidRelayContainerInner> listByFluidRelayServers(
-        String resourceGroup, String fluidRelayServerName) {
+    public PagedIterable<FluidRelayContainerInner> listByFluidRelayServers(String resourceGroup,
+        String fluidRelayServerName) {
         return new PagedIterable<>(listByFluidRelayServersAsync(resourceGroup, fluidRelayServerName));
     }
 
     /**
      * List all Fluid Relay containers which are children of a given Fluid Relay server.
-     *
+     * 
      * @param resourceGroup The resource group containing the resource.
      * @param fluidRelayServerName The Fluid Relay server resource name.
      * @param context The context to associate with this operation.
@@ -612,15 +506,15 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return paged response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FluidRelayContainerInner> listByFluidRelayServers(
-        String resourceGroup, String fluidRelayServerName, Context context) {
+    public PagedIterable<FluidRelayContainerInner> listByFluidRelayServers(String resourceGroup,
+        String fluidRelayServerName, Context context) {
         return new PagedIterable<>(listByFluidRelayServersAsync(resourceGroup, fluidRelayServerName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -632,31 +526,22 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByFluidRelayServersNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FluidRelayContainerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FluidRelayContainerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -664,29 +549,19 @@ public final class FluidRelayContainersClientImpl implements FluidRelayContainer
      * @return paged response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FluidRelayContainerInner>> listByFluidRelayServersNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<FluidRelayContainerInner>> listByFluidRelayServersNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByFluidRelayServersNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByFluidRelayServersNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

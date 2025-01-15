@@ -13,27 +13,30 @@ public final class FlinkJobProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FlinkJobProfile model = BinaryData.fromString(
-            "{\"jobJarDirectory\":\"aofmxagkvtme\",\"jarName\":\"mqkrhahvljuahaqu\",\"entryClass\":\"dhmdua\",\"args\":\"exq\",\"savePointName\":\"fadmws\",\"upgradeMode\":\"UPDATE\"}")
+            "{\"jobJarDirectory\":\"ohfwds\",\"jarName\":\"n\",\"entryClass\":\"ljuti\",\"args\":\"wacf\",\"savePointName\":\"dkzzewkfvhqcrail\",\"upgradeMode\":\"STATELESS_UPDATE\"}")
             .toObject(FlinkJobProfile.class);
-        Assertions.assertEquals("aofmxagkvtme", model.jobJarDirectory());
-        Assertions.assertEquals("mqkrhahvljuahaqu", model.jarName());
-        Assertions.assertEquals("dhmdua", model.entryClass());
-        Assertions.assertEquals("exq", model.args());
-        Assertions.assertEquals("fadmws", model.savePointName());
-        Assertions.assertEquals(UpgradeMode.UPDATE, model.upgradeMode());
+        Assertions.assertEquals("ohfwds", model.jobJarDirectory());
+        Assertions.assertEquals("n", model.jarName());
+        Assertions.assertEquals("ljuti", model.entryClass());
+        Assertions.assertEquals("wacf", model.args());
+        Assertions.assertEquals("dkzzewkfvhqcrail", model.savePointName());
+        Assertions.assertEquals(UpgradeMode.STATELESS_UPDATE, model.upgradeMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FlinkJobProfile model = new FlinkJobProfile().withJobJarDirectory("aofmxagkvtme")
-            .withJarName("mqkrhahvljuahaqu").withEntryClass("dhmdua").withArgs("exq").withSavePointName("fadmws")
-            .withUpgradeMode(UpgradeMode.UPDATE);
+        FlinkJobProfile model = new FlinkJobProfile().withJobJarDirectory("ohfwds")
+            .withJarName("n")
+            .withEntryClass("ljuti")
+            .withArgs("wacf")
+            .withSavePointName("dkzzewkfvhqcrail")
+            .withUpgradeMode(UpgradeMode.STATELESS_UPDATE);
         model = BinaryData.fromObject(model).toObject(FlinkJobProfile.class);
-        Assertions.assertEquals("aofmxagkvtme", model.jobJarDirectory());
-        Assertions.assertEquals("mqkrhahvljuahaqu", model.jarName());
-        Assertions.assertEquals("dhmdua", model.entryClass());
-        Assertions.assertEquals("exq", model.args());
-        Assertions.assertEquals("fadmws", model.savePointName());
-        Assertions.assertEquals(UpgradeMode.UPDATE, model.upgradeMode());
+        Assertions.assertEquals("ohfwds", model.jobJarDirectory());
+        Assertions.assertEquals("n", model.jarName());
+        Assertions.assertEquals("ljuti", model.entryClass());
+        Assertions.assertEquals("wacf", model.args());
+        Assertions.assertEquals("dkzzewkfvhqcrail", model.savePointName());
+        Assertions.assertEquals(UpgradeMode.STATELESS_UPDATE, model.upgradeMode());
     }
 }

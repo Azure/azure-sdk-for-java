@@ -18,7 +18,7 @@ public final class CatalogsGetByResourceGroupSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().getByResourceGroupWithResponse("MyResourceGroup1", "MyCatalog1",
-            com.azure.core.util.Context.NONE);
+        manager.catalogs()
+            .getByResourceGroupWithResponse("MyResourceGroup1", "MyCatalog1", com.azure.core.util.Context.NONE);
     }
 }

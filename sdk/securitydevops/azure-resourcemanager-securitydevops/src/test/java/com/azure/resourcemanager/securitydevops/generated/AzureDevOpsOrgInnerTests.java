@@ -15,23 +15,18 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsOrgInnerTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsOrgInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"autoDiscovery\":\"Enabled\"},\"id\":\"wrlyxwjkcprb\",\"name\":\"wbxgjvt\",\"type\":\"vpys\"}")
-                .toObject(AzureDevOpsOrgInner.class);
+        AzureDevOpsOrgInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"autoDiscovery\":\"Enabled\"},\"id\":\"wrlyxwjkcprb\",\"name\":\"wbxgjvt\",\"type\":\"vpys\"}")
+            .toObject(AzureDevOpsOrgInner.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
         Assertions.assertEquals(AutoDiscovery.ENABLED, model.properties().autoDiscovery());
     }
 
     @Test
     public void testSerialize() {
-        AzureDevOpsOrgInner model =
-            new AzureDevOpsOrgInner()
-                .withProperties(
-                    new AzureDevOpsOrgProperties()
-                        .withProvisioningState(ProvisioningState.CANCELED)
-                        .withAutoDiscovery(AutoDiscovery.ENABLED));
+        AzureDevOpsOrgInner model = new AzureDevOpsOrgInner()
+            .withProperties(new AzureDevOpsOrgProperties().withProvisioningState(ProvisioningState.CANCELED)
+                .withAutoDiscovery(AutoDiscovery.ENABLED));
         model = BinaryData.fromObject(model).toObject(AzureDevOpsOrgInner.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
         Assertions.assertEquals(AutoDiscovery.ENABLED, model.properties().autoDiscovery());

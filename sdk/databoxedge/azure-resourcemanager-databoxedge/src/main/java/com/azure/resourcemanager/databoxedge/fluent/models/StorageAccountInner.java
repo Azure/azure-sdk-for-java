@@ -6,27 +6,48 @@ package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.DataPolicy;
 import com.azure.resourcemanager.databoxedge.models.StorageAccountStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents a Storage Account on the Data Box Edge/Gateway device. */
+/**
+ * Represents a Storage Account on the Data Box Edge/Gateway device.
+ */
 @Fluent
 public final class StorageAccountInner extends ArmBaseModel {
     /*
      * The Storage Account properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private StorageAccountProperties innerProperties = new StorageAccountProperties();
 
-    /** Creates an instance of StorageAccountInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StorageAccountInner class.
+     */
     public StorageAccountInner() {
     }
 
     /**
      * Get the innerProperties property: The Storage Account properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StorageAccountProperties innerProperties() {
@@ -34,8 +55,38 @@ public final class StorageAccountInner extends ArmBaseModel {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: Description for the storage Account.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -44,7 +95,7 @@ public final class StorageAccountInner extends ArmBaseModel {
 
     /**
      * Set the description property: Description for the storage Account.
-     *
+     * 
      * @param description the description value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -58,7 +109,7 @@ public final class StorageAccountInner extends ArmBaseModel {
 
     /**
      * Get the storageAccountStatus property: Current status of the storage account.
-     *
+     * 
      * @return the storageAccountStatus value.
      */
     public StorageAccountStatus storageAccountStatus() {
@@ -67,7 +118,7 @@ public final class StorageAccountInner extends ArmBaseModel {
 
     /**
      * Set the storageAccountStatus property: Current status of the storage account.
-     *
+     * 
      * @param storageAccountStatus the storageAccountStatus value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -81,7 +132,7 @@ public final class StorageAccountInner extends ArmBaseModel {
 
     /**
      * Get the dataPolicy property: Data policy of the storage Account.
-     *
+     * 
      * @return the dataPolicy value.
      */
     public DataPolicy dataPolicy() {
@@ -90,7 +141,7 @@ public final class StorageAccountInner extends ArmBaseModel {
 
     /**
      * Set the dataPolicy property: Data policy of the storage Account.
-     *
+     * 
      * @param dataPolicy the dataPolicy value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -104,7 +155,7 @@ public final class StorageAccountInner extends ArmBaseModel {
 
     /**
      * Get the storageAccountCredentialId property: Storage Account Credential Id.
-     *
+     * 
      * @return the storageAccountCredentialId value.
      */
     public String storageAccountCredentialId() {
@@ -113,7 +164,7 @@ public final class StorageAccountInner extends ArmBaseModel {
 
     /**
      * Set the storageAccountCredentialId property: Storage Account Credential Id.
-     *
+     * 
      * @param storageAccountCredentialId the storageAccountCredentialId value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -127,7 +178,7 @@ public final class StorageAccountInner extends ArmBaseModel {
 
     /**
      * Get the blobEndpoint property: BlobEndpoint of Storage Account.
-     *
+     * 
      * @return the blobEndpoint value.
      */
     public String blobEndpoint() {
@@ -137,7 +188,7 @@ public final class StorageAccountInner extends ArmBaseModel {
     /**
      * Get the containerCount property: The Container Count. Present only for Storage Accounts with DataPolicy set to
      * Cloud.
-     *
+     * 
      * @return the containerCount value.
      */
     public Integer containerCount() {
@@ -146,21 +197,62 @@ public final class StorageAccountInner extends ArmBaseModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model StorageAccountInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model StorageAccountInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountInner.
+     */
+    public static StorageAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountInner deserializedStorageAccountInner = new StorageAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageAccountInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountInner.innerProperties = StorageAccountProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountInner;
+        });
+    }
 }

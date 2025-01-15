@@ -263,7 +263,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
                 } else if ("CreatedTime".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedNamespaceProperties.createdTime
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("MessagingSKU".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedNamespaceProperties.messagingSku = MessagingSku.fromString(reader.getStringElement());
@@ -273,7 +273,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
                 } else if ("ModifiedTime".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedNamespaceProperties.modifiedTime
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("Name".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedNamespaceProperties.name = reader.getStringElement();

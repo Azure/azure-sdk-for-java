@@ -19,9 +19,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
-public class SpringAppDomainsImpl
-    extends ExternalChildResourcesNonCachedImpl<
-        SpringAppDomainImpl, SpringAppDomain, CustomDomainResourceInner, SpringAppImpl, SpringApp>
+public class SpringAppDomainsImpl extends
+    ExternalChildResourcesNonCachedImpl<SpringAppDomainImpl, SpringAppDomain, CustomDomainResourceInner, SpringAppImpl, SpringApp>
     implements SpringAppDomains {
     SpringAppDomainsImpl(SpringAppImpl parent) {
         super(parent, parent.taskGroup(), "SpringAppDomain");
@@ -79,8 +78,8 @@ public class SpringAppDomainsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return inner().deleteAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name);
+        return inner().deleteAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(),
+            name);
     }
 
     @Override
@@ -90,7 +89,8 @@ public class SpringAppDomainsImpl
 
     @Override
     public PagedFlux<SpringAppDomain> listAsync() {
-        return PagedConverter.mapPage(inner().listAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name()),
+        return PagedConverter.mapPage(
+            inner().listAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name()),
             this::wrapModel);
     }
 
@@ -105,8 +105,10 @@ public class SpringAppDomainsImpl
 
     @Override
     public Mono<CustomDomainValidateResult> validateAsync(String domain) {
-        return manager().serviceClient().getApps().validateDomainAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), new CustomDomainValidatePayload().withName(domain));
+        return manager().serviceClient()
+            .getApps()
+            .validateDomainAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(),
+                new CustomDomainValidatePayload().withName(domain));
     }
 
     SpringAppDomain prepareCreateOrUpdate(String name, CustomDomainProperties properties) {

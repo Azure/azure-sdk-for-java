@@ -6,6 +6,8 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.ExternalFqdnResponseInner;
+import com.azure.resourcemanager.machinelearning.models.FqdnEndpoint;
+import com.azure.resourcemanager.machinelearning.models.FqdnEndpointDetail;
 import com.azure.resourcemanager.machinelearning.models.FqdnEndpoints;
 import com.azure.resourcemanager.machinelearning.models.FqdnEndpointsProperties;
 import java.util.Arrays;
@@ -14,32 +16,45 @@ import org.junit.jupiter.api.Assertions;
 public final class ExternalFqdnResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalFqdnResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"category\":\"jflcxog\",\"endpoints\":[]}},{\"properties\":{\"category\":\"nzmnsikvm\",\"endpoints\":[]}}]}")
-                .toObject(ExternalFqdnResponseInner.class);
-        Assertions.assertEquals("jflcxog", model.value().get(0).properties().category());
+        ExternalFqdnResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"category\":\"knso\",\"endpoints\":[{\"domainName\":\"xbldtlwwrlkdmtn\",\"endpointDetails\":[{}]},{\"domainName\":\"otllxdyhgsyo\",\"endpointDetails\":[{},{},{},{}]}]}},{\"properties\":{\"category\":\"tdtbnnhadooc\",\"endpoints\":[{\"domainName\":\"ikhnvpamqgxqq\",\"endpointDetails\":[{},{}]},{\"domainName\":\"kywggxkallatmel\",\"endpointDetails\":[{},{}]},{\"domainName\":\"iccjzkzivgvvcna\",\"endpointDetails\":[{},{}]},{\"domainName\":\"rnxxmueed\",\"endpointDetails\":[{},{},{}]}]}}]}")
+            .toObject(ExternalFqdnResponseInner.class);
+        Assertions.assertEquals("knso", model.value().get(0).properties().category());
+        Assertions.assertEquals("xbldtlwwrlkdmtn", model.value().get(0).properties().endpoints().get(0).domainName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalFqdnResponseInner model =
-            new ExternalFqdnResponseInner()
+        ExternalFqdnResponseInner model
+            = new ExternalFqdnResponseInner()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new FqdnEndpoints()
-                                .withProperties(
-                                    new FqdnEndpointsProperties()
-                                        .withCategory("jflcxog")
-                                        .withEndpoints(Arrays.asList())),
-                            new FqdnEndpoints()
-                                .withProperties(
-                                    new FqdnEndpointsProperties()
-                                        .withCategory("nzmnsikvm")
-                                        .withEndpoints(Arrays.asList()))));
+                    Arrays.asList(new FqdnEndpoints().withProperties(new FqdnEndpointsProperties().withCategory("knso")
+                        .withEndpoints(Arrays.asList(
+                            new FqdnEndpoint().withDomainName("xbldtlwwrlkdmtn")
+                                .withEndpointDetails(Arrays.asList(new FqdnEndpointDetail())),
+                            new FqdnEndpoint().withDomainName("otllxdyhgsyo")
+                                .withEndpointDetails(Arrays.asList(new FqdnEndpointDetail(), new FqdnEndpointDetail(),
+                                    new FqdnEndpointDetail(), new FqdnEndpointDetail()))))),
+                        new FqdnEndpoints()
+                            .withProperties(
+                                new FqdnEndpointsProperties().withCategory("tdtbnnhadooc")
+                                    .withEndpoints(
+                                        Arrays
+                                            .asList(
+                                                new FqdnEndpoint().withDomainName("ikhnvpamqgxqq")
+                                                    .withEndpointDetails(Arrays.asList(new FqdnEndpointDetail(),
+                                                        new FqdnEndpointDetail())),
+                                                new FqdnEndpoint().withDomainName("kywggxkallatmel")
+                                                    .withEndpointDetails(Arrays.asList(new FqdnEndpointDetail(),
+                                                        new FqdnEndpointDetail())),
+                                                new FqdnEndpoint().withDomainName("iccjzkzivgvvcna")
+                                                    .withEndpointDetails(Arrays.asList(new FqdnEndpointDetail(),
+                                                        new FqdnEndpointDetail())),
+                                                new FqdnEndpoint().withDomainName("rnxxmueed")
+                                                    .withEndpointDetails(Arrays.asList(new FqdnEndpointDetail(),
+                                                        new FqdnEndpointDetail(), new FqdnEndpointDetail())))))));
         model = BinaryData.fromObject(model).toObject(ExternalFqdnResponseInner.class);
-        Assertions.assertEquals("jflcxog", model.value().get(0).properties().category());
+        Assertions.assertEquals("knso", model.value().get(0).properties().category());
+        Assertions.assertEquals("xbldtlwwrlkdmtn", model.value().get(0).properties().endpoints().get(0).domainName());
     }
 }

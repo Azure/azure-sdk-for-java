@@ -13,42 +13,47 @@ import org.junit.jupiter.api.Assertions;
 public final class SwaggerCustomDynamicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerCustomDynamicProperties model =
-            BinaryData
-                .fromString(
-                    "{\"operationId\":\"wfekaumrrqmb\",\"valuePath\":\"qkratbnxwbjsid\",\"parameters\":{\"hbguzo\":{\"operationId\":\"fpksok\",\"valuePath\":\"ogewij\",\"parameters\":{}},\"abzoghktdpyczhco\":{\"operationId\":\"yewnfnzhhhqos\",\"valuePath\":\"fjkutycyarnroo\",\"parameters\":{}}}}")
-                .toObject(SwaggerCustomDynamicProperties.class);
-        Assertions.assertEquals("wfekaumrrqmb", model.operationId());
-        Assertions.assertEquals("qkratbnxwbjsid", model.valuePath());
-        Assertions.assertEquals("fpksok", model.parameters().get("hbguzo").operationId());
-        Assertions.assertEquals("ogewij", model.parameters().get("hbguzo").valuePath());
+        SwaggerCustomDynamicProperties model = BinaryData.fromString(
+            "{\"operationId\":\"cpdtktfpjkxk\",\"valuePath\":\"wntnfoqwufor\",\"parameters\":{\"dai\":{\"operationId\":\"amipnsyedpyrp\",\"valuePath\":\"slcfwgrz\",\"parameters\":{\"djao\":{\"operationId\":\"odifghdgsyhncxoq\",\"valuePath\":\"jzdpl\",\"parameters\":{\"lvk\":{},\"rgosoxxoqyi\":{}}},\"imhoaqjalhlpzn\":{\"operationId\":\"ttxqxvmybq\",\"valuePath\":\"grlfnsdccmdpl\",\"parameters\":{\"iqibmiw\":{},\"hmzkxrqzgshqx\":{},\"punuvfs\":{},\"a\":{}}}}}}}")
+            .toObject(SwaggerCustomDynamicProperties.class);
+        Assertions.assertEquals("cpdtktfpjkxk", model.operationId());
+        Assertions.assertEquals("wntnfoqwufor", model.valuePath());
+        Assertions.assertEquals("amipnsyedpyrp", model.parameters().get("dai").operationId());
+        Assertions.assertEquals("slcfwgrz", model.parameters().get("dai").valuePath());
+        Assertions.assertEquals("odifghdgsyhncxoq",
+            model.parameters().get("dai").parameters().get("djao").operationId());
+        Assertions.assertEquals("jzdpl", model.parameters().get("dai").parameters().get("djao").valuePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerCustomDynamicProperties model =
-            new SwaggerCustomDynamicProperties()
-                .withOperationId("wfekaumrrqmb")
-                .withValuePath("qkratbnxwbjsid")
-                .withParameters(
-                    mapOf(
-                        "hbguzo",
-                        new SwaggerCustomDynamicProperties()
-                            .withOperationId("fpksok")
-                            .withValuePath("ogewij")
-                            .withParameters(mapOf()),
-                        "abzoghktdpyczhco",
-                        new SwaggerCustomDynamicProperties()
-                            .withOperationId("yewnfnzhhhqos")
-                            .withValuePath("fjkutycyarnroo")
-                            .withParameters(mapOf())));
+        SwaggerCustomDynamicProperties model
+            = new SwaggerCustomDynamicProperties().withOperationId("cpdtktfpjkxk")
+                .withValuePath("wntnfoqwufor")
+                .withParameters(mapOf("dai", new SwaggerCustomDynamicProperties().withOperationId("amipnsyedpyrp")
+                    .withValuePath("slcfwgrz")
+                    .withParameters(mapOf("djao",
+                        new SwaggerCustomDynamicProperties().withOperationId("odifghdgsyhncxoq")
+                            .withValuePath("jzdpl")
+                            .withParameters(mapOf("lvk", new SwaggerCustomDynamicProperties(), "rgosoxxoqyi",
+                                new SwaggerCustomDynamicProperties())),
+                        "imhoaqjalhlpzn",
+                        new SwaggerCustomDynamicProperties().withOperationId("ttxqxvmybq")
+                            .withValuePath("grlfnsdccmdpl")
+                            .withParameters(mapOf("iqibmiw", new SwaggerCustomDynamicProperties(), "hmzkxrqzgshqx",
+                                new SwaggerCustomDynamicProperties(), "punuvfs", new SwaggerCustomDynamicProperties(),
+                                "a", new SwaggerCustomDynamicProperties()))))));
         model = BinaryData.fromObject(model).toObject(SwaggerCustomDynamicProperties.class);
-        Assertions.assertEquals("wfekaumrrqmb", model.operationId());
-        Assertions.assertEquals("qkratbnxwbjsid", model.valuePath());
-        Assertions.assertEquals("fpksok", model.parameters().get("hbguzo").operationId());
-        Assertions.assertEquals("ogewij", model.parameters().get("hbguzo").valuePath());
+        Assertions.assertEquals("cpdtktfpjkxk", model.operationId());
+        Assertions.assertEquals("wntnfoqwufor", model.valuePath());
+        Assertions.assertEquals("amipnsyedpyrp", model.parameters().get("dai").operationId());
+        Assertions.assertEquals("slcfwgrz", model.parameters().get("dai").valuePath());
+        Assertions.assertEquals("odifghdgsyhncxoq",
+            model.parameters().get("dai").parameters().get("djao").operationId());
+        Assertions.assertEquals("jzdpl", model.parameters().get("dai").parameters().get("djao").valuePath());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.education.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for StudentLabs Get. */
+/**
+ * Samples for StudentLabs Get.
+ */
 public final class StudentLabsGetSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentLab.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentLab.json
      */
     /**
      * Sample code: StudentLab.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void studentLab(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.studentLabs().getWithResponse("{studentLabName}", Context.NONE);
+        manager.studentLabs().getWithResponse("{studentLabName}", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,22 +7,21 @@ package com.azure.resourcemanager.education.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.fluent.models.Amount;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AmountTests {
-    @Test
-    public void testDeserialize() {
-        Amount model =
-            BinaryData.fromString("{\"currency\":\"jsprozvcpute\",\"value\":20.724361}").toObject(Amount.class);
-        Assertions.assertEquals("jsprozvcpute", model.currency());
-        Assertions.assertEquals(20.724361F, model.value());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Amount model
+            = BinaryData.fromString("{\"currency\":\"wfndiodjpsl\",\"value\":47.227184}").toObject(Amount.class);
+        Assertions.assertEquals("wfndiodjpsl", model.currency());
+        Assertions.assertEquals(47.227184F, model.value());
     }
 
-    @Test
-    public void testSerialize() {
-        Amount model = new Amount().withCurrency("jsprozvcpute").withValue(20.724361F);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Amount model = new Amount().withCurrency("wfndiodjpsl").withValue(47.227184F);
         model = BinaryData.fromObject(model).toObject(Amount.class);
-        Assertions.assertEquals("jsprozvcpute", model.currency());
-        Assertions.assertEquals(20.724361F, model.value());
+        Assertions.assertEquals("wfndiodjpsl", model.currency());
+        Assertions.assertEquals(47.227184F, model.value());
     }
 }

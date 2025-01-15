@@ -28,6 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
+import com.azure.search.documents.indexes.implementation.models.SkillNames;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -71,8 +72,11 @@ public final class SkillsetsImpl {
             @PathParam("skillsetName") String skillsetName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SearchIndexerSkillset skillset, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
+            @QueryParam("disableCacheReprocessingChangeDetection") Boolean disableCacheReprocessingChangeDetection,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchIndexerSkillset skillset,
+            Context context);
 
         @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200, 201 })
@@ -81,8 +85,11 @@ public final class SkillsetsImpl {
             @PathParam("skillsetName") String skillsetName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SearchIndexerSkillset skillset, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
+            @QueryParam("disableCacheReprocessingChangeDetection") Boolean disableCacheReprocessingChangeDetection,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchIndexerSkillset skillset,
+            Context context);
 
         @Delete("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 204, 404 })
@@ -147,6 +154,24 @@ public final class SkillsetsImpl {
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") SearchIndexerSkillset skillset, Context context);
+
+        @Post("/skillsets('{skillsetName}')/search.resetskills")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> resetSkills(@HostParam("endpoint") String endpoint,
+            @PathParam("skillsetName") String skillsetName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SkillNames skillNames, Context context);
+
+        @Post("/skillsets('{skillsetName}')/search.resetskills")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> resetSkillsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("skillsetName") String skillsetName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SkillNames skillNames, Context context);
     }
 
     /**
@@ -158,6 +183,8 @@ public final class SkillsetsImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -166,16 +193,11 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateWithResponseAsync(String skillsetName,
-        SearchIndexerSkillset skillset, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        final String prefer = "return=representation";
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), skillsetName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, skillset, context));
+        SearchIndexerSkillset skillset, String ifMatch, String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions) {
+        return FluxUtil
+            .withContext(context -> createOrUpdateWithResponseAsync(skillsetName, skillset, ifMatch, ifNoneMatch,
+                skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions, context));
     }
 
     /**
@@ -187,6 +209,8 @@ public final class SkillsetsImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,8 +220,8 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateWithResponseAsync(String skillsetName,
-        SearchIndexerSkillset skillset, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
-        Context context) {
+        SearchIndexerSkillset skillset, String ifMatch, String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -206,7 +230,8 @@ public final class SkillsetsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createOrUpdate(this.client.getEndpoint(), skillsetName, xMsClientRequestId, ifMatch, ifNoneMatch,
-            prefer, this.client.getApiVersion(), accept, skillset, context);
+            prefer, this.client.getApiVersion(), skipIndexerResetRequirementForCache,
+            disableCacheReprocessingChangeDetection, accept, skillset, context);
     }
 
     /**
@@ -218,6 +243,8 @@ public final class SkillsetsImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -226,9 +253,11 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createOrUpdateAsync(String skillsetName, SearchIndexerSkillset skillset,
-        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(skillsetName, skillset, ifMatch, ifNoneMatch, requestOptions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String ifMatch, String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(skillsetName, skillset, ifMatch, ifNoneMatch,
+            skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -240,6 +269,8 @@ public final class SkillsetsImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,9 +280,11 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createOrUpdateAsync(String skillsetName, SearchIndexerSkillset skillset,
-        String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(skillsetName, skillset, ifMatch, ifNoneMatch, requestOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String ifMatch, String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions, Context context) {
+        return createOrUpdateWithResponseAsync(skillsetName, skillset, ifMatch, ifNoneMatch,
+            skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -263,6 +296,8 @@ public final class SkillsetsImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,8 +307,8 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerSkillset> createOrUpdateWithResponse(String skillsetName,
-        SearchIndexerSkillset skillset, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
-        Context context) {
+        SearchIndexerSkillset skillset, String ifMatch, String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -282,7 +317,8 @@ public final class SkillsetsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createOrUpdateSync(this.client.getEndpoint(), skillsetName, xMsClientRequestId, ifMatch,
-            ifNoneMatch, prefer, this.client.getApiVersion(), accept, skillset, context);
+            ifNoneMatch, prefer, this.client.getApiVersion(), skipIndexerResetRequirementForCache,
+            disableCacheReprocessingChangeDetection, accept, skillset, context);
     }
 
     /**
@@ -294,6 +330,8 @@ public final class SkillsetsImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -302,9 +340,11 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerSkillset createOrUpdate(String skillsetName, SearchIndexerSkillset skillset, String ifMatch,
-        String ifNoneMatch, RequestOptions requestOptions) {
-        return createOrUpdateWithResponse(skillsetName, skillset, ifMatch, ifNoneMatch, requestOptions, Context.NONE)
-            .getValue();
+        String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions) {
+        return createOrUpdateWithResponse(skillsetName, skillset, ifMatch, ifNoneMatch,
+            skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions, Context.NONE)
+                .getValue();
     }
 
     /**
@@ -324,14 +364,8 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String skillsetName, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), skillsetName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> deleteWithResponseAsync(skillsetName, ifMatch, ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -464,14 +498,7 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> getWithResponseAsync(String skillsetName,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), skillsetName, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(skillsetName, requestOptions, context));
     }
 
     /**
@@ -583,14 +610,7 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListSkillsetsResult>> listWithResponseAsync(String select, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), select, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> listWithResponseAsync(select, requestOptions, context));
     }
 
     /**
@@ -706,14 +726,7 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createWithResponseAsync(SearchIndexerSkillset skillset,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), xMsClientRequestId,
-            this.client.getApiVersion(), accept, skillset, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(skillset, requestOptions, context));
     }
 
     /**
@@ -810,5 +823,123 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerSkillset create(SearchIndexerSkillset skillset, RequestOptions requestOptions) {
         return createWithResponse(skillset, requestOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     * 
+     * @param skillsetName The name of the skillset to reset.
+     * @param skillNames The names of skills to reset.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resetSkillsWithResponseAsync(String skillsetName, SkillNames skillNames,
+        RequestOptions requestOptions) {
+        return FluxUtil
+            .withContext(context -> resetSkillsWithResponseAsync(skillsetName, skillNames, requestOptions, context));
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     * 
+     * @param skillsetName The name of the skillset to reset.
+     * @param skillNames The names of skills to reset.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resetSkillsWithResponseAsync(String skillsetName, SkillNames skillNames,
+        RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.resetSkills(this.client.getEndpoint(), skillsetName, xMsClientRequestId,
+            this.client.getApiVersion(), accept, skillNames, context);
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     * 
+     * @param skillsetName The name of the skillset to reset.
+     * @param skillNames The names of skills to reset.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resetSkillsAsync(String skillsetName, SkillNames skillNames, RequestOptions requestOptions) {
+        return resetSkillsWithResponseAsync(skillsetName, skillNames, requestOptions).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     * 
+     * @param skillsetName The name of the skillset to reset.
+     * @param skillNames The names of skills to reset.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resetSkillsAsync(String skillsetName, SkillNames skillNames, RequestOptions requestOptions,
+        Context context) {
+        return resetSkillsWithResponseAsync(skillsetName, skillNames, requestOptions, context)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     * 
+     * @param skillsetName The name of the skillset to reset.
+     * @param skillNames The names of skills to reset.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resetSkillsWithResponse(String skillsetName, SkillNames skillNames,
+        RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.resetSkillsSync(this.client.getEndpoint(), skillsetName, xMsClientRequestId,
+            this.client.getApiVersion(), accept, skillNames, context);
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     * 
+     * @param skillsetName The name of the skillset to reset.
+     * @param skillNames The names of skills to reset.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resetSkills(String skillsetName, SkillNames skillNames, RequestOptions requestOptions) {
+        resetSkillsWithResponse(skillsetName, skillNames, requestOptions, Context.NONE);
     }
 }

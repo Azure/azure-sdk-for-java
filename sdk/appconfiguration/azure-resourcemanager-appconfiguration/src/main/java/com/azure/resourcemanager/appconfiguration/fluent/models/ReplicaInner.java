@@ -7,37 +7,56 @@ package com.azure.resourcemanager.appconfiguration.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appconfiguration.models.ReplicaProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The replica resource. */
+/**
+ * The replica resource.
+ */
 @Fluent
 public final class ReplicaInner extends ProxyResource {
     /*
      * The location of the replica.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Resource system metadata.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * All replica properties.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicaProperties innerProperties;
 
-    /** Creates an instance of ReplicaInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ReplicaInner class.
+     */
     public ReplicaInner() {
     }
 
     /**
      * Get the location property: The location of the replica.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -46,7 +65,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Set the location property: The location of the replica.
-     *
+     * 
      * @param location the location value to set.
      * @return the ReplicaInner object itself.
      */
@@ -57,7 +76,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Get the systemData property: Resource system metadata.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -66,7 +85,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: All replica properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReplicaProperties innerProperties() {
@@ -74,8 +93,38 @@ public final class ReplicaInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the endpoint property: The URI of the replica where the replica API will be available.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -84,7 +133,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the replica.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ReplicaProvisioningState provisioningState() {
@@ -93,12 +142,59 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicaInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReplicaInner.
+     */
+    public static ReplicaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicaInner deserializedReplicaInner = new ReplicaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedReplicaInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedReplicaInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedReplicaInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedReplicaInner.location = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedReplicaInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedReplicaInner.innerProperties = ReplicaProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicaInner;
+        });
     }
 }

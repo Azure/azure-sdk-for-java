@@ -24,12 +24,14 @@ public class InformixLinkedService extends LinkedService {
     private String type = "Informix";
 
     /*
-     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
     private Object connectionString;
 
     /*
-     * Type of authentication used to connect to the Informix as ODBC data store. Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
+     * Type of authentication used to connect to the Informix as ODBC data store. Possible values are: Anonymous and
+     * Basic. Type: string (or Expression with resultType string).
      */
     private Object authenticationType;
 
@@ -49,7 +51,8 @@ public class InformixLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

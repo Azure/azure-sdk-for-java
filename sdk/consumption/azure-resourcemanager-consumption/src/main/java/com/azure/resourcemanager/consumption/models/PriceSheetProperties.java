@@ -5,75 +5,73 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-/** The properties of the price sheet. */
+/**
+ * The properties of the price sheet.
+ */
 @Immutable
-public final class PriceSheetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PriceSheetProperties.class);
-
+public final class PriceSheetProperties implements JsonSerializable<PriceSheetProperties> {
     /*
      * The id of the billing period resource that the usage belongs to.
      */
-    @JsonProperty(value = "billingPeriodId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingPeriodId;
 
     /*
      * The meter id (GUID)
      */
-    @JsonProperty(value = "meterId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID meterId;
 
     /*
-     * The details about the meter. By default this is not populated, unless
-     * it's specified in $expand.
+     * The details about the meter. By default this is not populated, unless it's specified in $expand.
      */
-    @JsonProperty(value = "meterDetails", access = JsonProperty.Access.WRITE_ONLY)
     private MeterDetails meterDetails;
 
     /*
      * Unit of measure
      */
-    @JsonProperty(value = "unitOfMeasure", access = JsonProperty.Access.WRITE_ONLY)
     private String unitOfMeasure;
 
     /*
      * Included quality for an offer
      */
-    @JsonProperty(value = "includedQuantity", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal includedQuantity;
 
     /*
      * Part Number
      */
-    @JsonProperty(value = "partNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String partNumber;
 
     /*
      * Unit Price
      */
-    @JsonProperty(value = "unitPrice", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal unitPrice;
 
     /*
      * Currency Code
      */
-    @JsonProperty(value = "currencyCode", access = JsonProperty.Access.WRITE_ONLY)
     private String currencyCode;
 
     /*
      * Offer Id
      */
-    @JsonProperty(value = "offerId", access = JsonProperty.Access.WRITE_ONLY)
     private String offerId;
 
     /**
+     * Creates an instance of PriceSheetProperties class.
+     */
+    public PriceSheetProperties() {
+    }
+
+    /**
      * Get the billingPeriodId property: The id of the billing period resource that the usage belongs to.
-     *
+     * 
      * @return the billingPeriodId value.
      */
     public String billingPeriodId() {
@@ -82,7 +80,7 @@ public final class PriceSheetProperties {
 
     /**
      * Get the meterId property: The meter id (GUID).
-     *
+     * 
      * @return the meterId value.
      */
     public UUID meterId() {
@@ -92,7 +90,7 @@ public final class PriceSheetProperties {
     /**
      * Get the meterDetails property: The details about the meter. By default this is not populated, unless it's
      * specified in $expand.
-     *
+     * 
      * @return the meterDetails value.
      */
     public MeterDetails meterDetails() {
@@ -101,7 +99,7 @@ public final class PriceSheetProperties {
 
     /**
      * Get the unitOfMeasure property: Unit of measure.
-     *
+     * 
      * @return the unitOfMeasure value.
      */
     public String unitOfMeasure() {
@@ -110,7 +108,7 @@ public final class PriceSheetProperties {
 
     /**
      * Get the includedQuantity property: Included quality for an offer.
-     *
+     * 
      * @return the includedQuantity value.
      */
     public BigDecimal includedQuantity() {
@@ -119,7 +117,7 @@ public final class PriceSheetProperties {
 
     /**
      * Get the partNumber property: Part Number.
-     *
+     * 
      * @return the partNumber value.
      */
     public String partNumber() {
@@ -128,7 +126,7 @@ public final class PriceSheetProperties {
 
     /**
      * Get the unitPrice property: Unit Price.
-     *
+     * 
      * @return the unitPrice value.
      */
     public BigDecimal unitPrice() {
@@ -137,7 +135,7 @@ public final class PriceSheetProperties {
 
     /**
      * Get the currencyCode property: Currency Code.
-     *
+     * 
      * @return the currencyCode value.
      */
     public String currencyCode() {
@@ -146,7 +144,7 @@ public final class PriceSheetProperties {
 
     /**
      * Get the offerId property: Offer Id.
-     *
+     * 
      * @return the offerId value.
      */
     public String offerId() {
@@ -155,12 +153,66 @@ public final class PriceSheetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (meterDetails() != null) {
             meterDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PriceSheetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PriceSheetProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PriceSheetProperties.
+     */
+    public static PriceSheetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PriceSheetProperties deserializedPriceSheetProperties = new PriceSheetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingPeriodId".equals(fieldName)) {
+                    deserializedPriceSheetProperties.billingPeriodId = reader.getString();
+                } else if ("meterId".equals(fieldName)) {
+                    deserializedPriceSheetProperties.meterId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("meterDetails".equals(fieldName)) {
+                    deserializedPriceSheetProperties.meterDetails = MeterDetails.fromJson(reader);
+                } else if ("unitOfMeasure".equals(fieldName)) {
+                    deserializedPriceSheetProperties.unitOfMeasure = reader.getString();
+                } else if ("includedQuantity".equals(fieldName)) {
+                    deserializedPriceSheetProperties.includedQuantity
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("partNumber".equals(fieldName)) {
+                    deserializedPriceSheetProperties.partNumber = reader.getString();
+                } else if ("unitPrice".equals(fieldName)) {
+                    deserializedPriceSheetProperties.unitPrice
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("currencyCode".equals(fieldName)) {
+                    deserializedPriceSheetProperties.currencyCode = reader.getString();
+                } else if ("offerId".equals(fieldName)) {
+                    deserializedPriceSheetProperties.offerId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPriceSheetProperties;
+        });
     }
 }

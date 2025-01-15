@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ConnectToTargetAzureDbForM
 public final class ConnectToTargetAzureDbForMySqlTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectToTargetAzureDbForMySqlTaskOutput model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"hsqfsubcgjbirxbp\",\"serverVersion\":\"srfbjfdtwss\",\"databases\":[\"tpvjzbexilzznfqq\",\"vwpm\",\"taruoujmkcj\"],\"targetServerBrandVersion\":\"qytjrybnwjewgd\",\"validationErrors\":[{\"message\":\"vnaenqpehindoyg\",\"actionableMessage\":\"fthnzdn\",\"filePath\":\"l\",\"lineNumber\":\"ayqigynduhav\",\"hResult\":1238517729,\"stackTrace\":\"thuma\"},{\"message\":\"lbg\",\"actionableMessage\":\"duiertgcc\",\"filePath\":\"vaolpsslqlf\",\"lineNumber\":\"dnbbglzps\",\"hResult\":1295617641,\"stackTrace\":\"mcwyhzdxssadb\"},{\"message\":\"nvdfznuda\",\"actionableMessage\":\"vxzbncb\",\"filePath\":\"lpstdbhhxsrzdz\",\"lineNumber\":\"erscdntne\",\"hResult\":1072156994,\"stackTrace\":\"jmygtdsslswtmwer\"}]}")
-                .toObject(ConnectToTargetAzureDbForMySqlTaskOutput.class);
+        ConnectToTargetAzureDbForMySqlTaskOutput model = BinaryData.fromString(
+            "{\"id\":\"txon\",\"serverVersion\":\"ts\",\"databases\":[\"cbpwxqpsrknft\",\"uvriuhprwm\",\"yvxqtayriwwroy\",\"bexrmcq\"],\"targetServerBrandVersion\":\"ycnojvknmefqsg\",\"validationErrors\":[{\"message\":\"apj\",\"actionableMessage\":\"hpvgqz\",\"filePath\":\"rvxdjzlmw\",\"lineNumber\":\"kvugfhzovawjvzun\",\"hResult\":1486439488,\"stackTrace\":\"nnprn\"}]}")
+            .toObject(ConnectToTargetAzureDbForMySqlTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test

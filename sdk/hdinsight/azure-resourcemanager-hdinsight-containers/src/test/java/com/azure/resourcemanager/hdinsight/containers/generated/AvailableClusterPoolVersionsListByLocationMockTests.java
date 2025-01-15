@@ -6,54 +6,36 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolVersion;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AvailableClusterPoolVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"clusterPoolVersion\":\"iftxfkf\",\"aksVersion\":\"gpr\",\"isPreview\":true},\"id\":\"llu\",\"name\":\"biqtgdq\",\"type\":\"hm\"}]}";
+            = "{\"value\":[{\"properties\":{\"clusterPoolVersion\":\"hxkumasjcaacfdmm\",\"aksVersion\":\"ugmehqepvufhbze\",\"isPreview\":true},\"id\":\"oqhnlb\",\"name\":\"nbldxeaclgschori\",\"type\":\"krsrrmoucs\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        HDInsightContainersManager manager = HDInsightContainersManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HDInsightContainersManager manager = HDInsightContainersManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ClusterPoolVersion> response
-            = manager.availableClusterPoolVersions().listByLocation("idltugsresmkss", com.azure.core.util.Context.NONE);
+            = manager.availableClusterPoolVersions().listByLocation("fppdbwnu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iftxfkf", response.iterator().next().properties().clusterPoolVersion());
-        Assertions.assertEquals("gpr", response.iterator().next().properties().aksVersion());
+        Assertions.assertEquals("hxkumasjcaacfdmm", response.iterator().next().properties().clusterPoolVersion());
+        Assertions.assertEquals("ugmehqepvufhbze", response.iterator().next().properties().aksVersion());
         Assertions.assertEquals(true, response.iterator().next().properties().isPreview());
     }
 }

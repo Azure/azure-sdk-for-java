@@ -41,6 +41,7 @@ public class LogsIngestionClientConcurrencyTest {
     private static final int LOGS_IN_BATCH = 9800; // approx
 
     private LogsIngestionClientBuilder clientBuilder;
+
     @BeforeEach
     void beforeEach() {
         clientBuilder = new LogsIngestionClientBuilder()
@@ -59,11 +60,11 @@ public class LogsIngestionClientConcurrencyTest {
         clientBuilder.httpClient(http);
         LogsUploadOptions uploadOptions = new LogsUploadOptions().setMaxConcurrency(concurrency);
 
-        SyncAsyncExtension.execute(
-            () -> clientBuilder.buildClient().upload(RULE_ID, STREAM, logs, uploadOptions),
+        SyncAsyncExtension.execute(() -> clientBuilder.buildClient().upload(RULE_ID, STREAM, logs, uploadOptions),
             () -> clientBuilder.buildAsyncClient().upload(RULE_ID, STREAM, logs, uploadOptions));
         assertEquals(batchCount, http.getCallsCount());
-        assertTrue(http.getMaxConcurrentCalls() <= concurrency + 1, String.format("http.getMaxConcurrentCalls() = %s", http.getMaxConcurrentCalls()));
+        assertTrue(http.getMaxConcurrentCalls() <= concurrency + 1,
+            String.format("http.getMaxConcurrentCalls() = %s", http.getMaxConcurrentCalls()));
     }
 
     @Test
@@ -76,12 +77,10 @@ public class LogsIngestionClientConcurrencyTest {
         clientBuilder.httpClient(http);
         LogsUploadOptions uploadOptions = new LogsUploadOptions().setMaxConcurrency(concurrency);
 
-        LogsIngestionClient client = clientBuilder
-            .httpClient(http)
-            .buildClient();
+        LogsIngestionClient client = clientBuilder.httpClient(http).buildClient();
 
-        LogsUploadException uploadLogsException = assertThrows(LogsUploadException.class,
-            () -> client.upload(RULE_ID, STREAM, logs, uploadOptions));
+        LogsUploadException uploadLogsException
+            = assertThrows(LogsUploadException.class, () -> client.upload(RULE_ID, STREAM, logs, uploadOptions));
 
         asserError(uploadLogsException);
         assertEquals(batchCount, http.getCallsCount());
@@ -96,10 +95,8 @@ public class LogsIngestionClientConcurrencyTest {
         TestHttpClient http = new TestHttpClient(true);
         LogsUploadOptions uploadOptions = new LogsUploadOptions().setMaxConcurrency(concurrency);
 
-        StepVerifier.create(clientBuilder
-            .httpClient(http)
-            .buildAsyncClient()
-            .upload(RULE_ID, STREAM, logs, uploadOptions))
+        StepVerifier
+            .create(clientBuilder.httpClient(http).buildAsyncClient().upload(RULE_ID, STREAM, logs, uploadOptions))
             .consumeErrorWith(ex -> {
                 assertTrue(ex instanceof LogsUploadException);
                 asserError((LogsUploadException) ex);
@@ -118,6 +115,7 @@ public class LogsIngestionClientConcurrencyTest {
         private final AtomicInteger maxConcurrency;
         private final AtomicBoolean failSecondRequest;
         private final AtomicInteger counter;
+
         public TestHttpClient(boolean failSecondRequest) {
             this.maxConcurrency = new AtomicInteger();
             this.failSecondRequest = new AtomicBoolean(failSecondRequest);
@@ -125,8 +123,7 @@ public class LogsIngestionClientConcurrencyTest {
         }
 
         public Mono<HttpResponse> send(HttpRequest request) {
-            return Mono.delay(Duration.ofMillis(1))
-                .map(l -> process(request));
+            return Mono.delay(Duration.ofMillis(1)).map(l -> process(request));
         }
 
         public HttpResponse sendSync(HttpRequest request, Context context) {
@@ -136,6 +133,7 @@ public class LogsIngestionClientConcurrencyTest {
         public int getCallsCount() {
             return counter.get();
         }
+
         private HttpResponse process(HttpRequest request) {
             int c = concurrentCalls.incrementAndGet();
             if (c > maxConcurrency.get()) {

@@ -46,7 +46,9 @@ public class ServiceBusProcessorRollingMessagePumpTest {
         when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
+        final RollingMessagePump pump = new RollingMessagePump(builder, m -> {
+        }, e -> {
+        }, 1, false);
 
         pump.dispose();
         assertThrows(IllegalStateException.class, () -> pump.begin());
@@ -60,7 +62,9 @@ public class ServiceBusProcessorRollingMessagePumpTest {
         when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
+        final RollingMessagePump pump = new RollingMessagePump(builder, m -> {
+        }, e -> {
+        }, 1, false);
 
         pump.begin();
         try {
@@ -81,12 +85,11 @@ public class ServiceBusProcessorRollingMessagePumpTest {
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
         doNothing().when(client).close();
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
+        final RollingMessagePump pump = new RollingMessagePump(builder, m -> {
+        }, e -> {
+        }, 1, false);
 
-        StepVerifier.create(pump.beginIntern())
-            .thenAwait()
-            .thenCancel()
-            .verify();
+        StepVerifier.create(pump.beginIntern()).thenAwait().thenCancel().verify();
 
         verify(client).close();
     }

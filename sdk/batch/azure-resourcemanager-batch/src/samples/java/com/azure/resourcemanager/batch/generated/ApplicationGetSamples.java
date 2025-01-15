@@ -10,7 +10,7 @@ package com.azure.resourcemanager.batch.generated;
 public final class ApplicationGetSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/ApplicationGet.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/ApplicationGet.json
      */
     /**
      * Sample code: ApplicationGet.
@@ -18,7 +18,7 @@ public final class ApplicationGetSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void applicationGet(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.applications().getWithResponse("default-azurebatch-japaneast", "sampleacct", "app1",
-            com.azure.core.util.Context.NONE);
+        manager.applications()
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", com.azure.core.util.Context.NONE);
     }
 }

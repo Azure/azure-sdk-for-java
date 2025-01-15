@@ -14,8 +14,8 @@ import com.azure.ai.vision.face.models.LivenessSessionItem;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
 import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +38,7 @@ public class DetectLiveness {
         // Create a FaceSessionClient
         FaceSessionClient faceSessionClient = new FaceSessionClientBuilder()
             .endpoint(ConfigurationHelper.getEndpoint())
-            .credential(new AzureKeyCredential(ConfigurationHelper.getAccountKey()))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // Create a liveness session

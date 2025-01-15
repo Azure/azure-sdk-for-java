@@ -9,14 +9,34 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.marketplaceordering.fluent.models.AgreementTermsInner;
+import com.azure.resourcemanager.marketplaceordering.fluent.models.OldAgreementTermsInner;
+import com.azure.resourcemanager.marketplaceordering.fluent.models.OldAgreementTermsListInner;
 import com.azure.resourcemanager.marketplaceordering.models.OfferType;
-import java.util.List;
 
-/** An instance of this class provides access to all the operations defined in MarketplaceAgreementsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MarketplaceAgreementsClient.
+ */
 public interface MarketplaceAgreementsClient {
     /**
      * Get marketplace terms.
-     *
+     * 
+     * @param offerType Offer Type, currently only virtualmachine type is supported.
+     * @param publisherId Publisher identifier string of image being deployed.
+     * @param offerId Offer identifier string of image being deployed.
+     * @param planId Plan identifier string of image being deployed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return marketplace terms along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AgreementTermsInner> getWithResponse(OfferType offerType, String publisherId, String offerId,
+        String planId, Context context);
+
+    /**
+     * Get marketplace terms.
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -30,42 +50,8 @@ public interface MarketplaceAgreementsClient {
     AgreementTermsInner get(OfferType offerType, String publisherId, String offerId, String planId);
 
     /**
-     * Get marketplace terms.
-     *
-     * @param offerType Offer Type, currently only virtualmachine type is supported.
-     * @param publisherId Publisher identifier string of image being deployed.
-     * @param offerId Offer identifier string of image being deployed.
-     * @param planId Plan identifier string of image being deployed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace terms along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgreementTermsInner> getWithResponse(
-        OfferType offerType, String publisherId, String offerId, String planId, Context context);
-
-    /**
      * Save marketplace terms.
-     *
-     * @param offerType Offer Type, currently only virtualmachine type is supported.
-     * @param publisherId Publisher identifier string of image being deployed.
-     * @param offerId Offer identifier string of image being deployed.
-     * @param planId Plan identifier string of image being deployed.
-     * @param parameters Parameters supplied to the Create Marketplace Terms operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return terms properties for provided Publisher/Offer/Plan tuple.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AgreementTermsInner create(
-        OfferType offerType, String publisherId, String offerId, String planId, AgreementTermsInner parameters);
-
-    /**
-     * Save marketplace terms.
-     *
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -78,17 +64,45 @@ public interface MarketplaceAgreementsClient {
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgreementTermsInner> createWithResponse(
-        OfferType offerType,
-        String publisherId,
-        String offerId,
-        String planId,
-        AgreementTermsInner parameters,
+    Response<AgreementTermsInner> createWithResponse(OfferType offerType, String publisherId, String offerId,
+        String planId, AgreementTermsInner parameters, Context context);
+
+    /**
+     * Save marketplace terms.
+     * 
+     * @param offerType Offer Type, currently only virtualmachine type is supported.
+     * @param publisherId Publisher identifier string of image being deployed.
+     * @param offerId Offer identifier string of image being deployed.
+     * @param planId Plan identifier string of image being deployed.
+     * @param parameters Parameters supplied to the Create Marketplace Terms operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return terms properties for provided Publisher/Offer/Plan tuple.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgreementTermsInner create(OfferType offerType, String publisherId, String offerId, String planId,
+        AgreementTermsInner parameters);
+
+    /**
+     * Sign marketplace terms.
+     * 
+     * @param publisherId Publisher identifier string of image being deployed.
+     * @param offerId Offer identifier string of image being deployed.
+     * @param planId Plan identifier string of image being deployed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OldAgreementTermsInner> signWithResponse(String publisherId, String offerId, String planId,
         Context context);
 
     /**
      * Sign marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -98,11 +112,11 @@ public interface MarketplaceAgreementsClient {
      * @return terms properties for provided Publisher/Offer/Plan tuple.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgreementTermsInner sign(String publisherId, String offerId, String planId);
+    OldAgreementTermsInner sign(String publisherId, String offerId, String planId);
 
     /**
-     * Sign marketplace terms.
-     *
+     * Cancel marketplace terms.
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -113,11 +127,12 @@ public interface MarketplaceAgreementsClient {
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgreementTermsInner> signWithResponse(String publisherId, String offerId, String planId, Context context);
+    Response<OldAgreementTermsInner> cancelWithResponse(String publisherId, String offerId, String planId,
+        Context context);
 
     /**
      * Cancel marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -127,41 +142,11 @@ public interface MarketplaceAgreementsClient {
      * @return terms properties for provided Publisher/Offer/Plan tuple.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgreementTermsInner cancel(String publisherId, String offerId, String planId);
-
-    /**
-     * Cancel marketplace terms.
-     *
-     * @param publisherId Publisher identifier string of image being deployed.
-     * @param offerId Offer identifier string of image being deployed.
-     * @param planId Plan identifier string of image being deployed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgreementTermsInner> cancelWithResponse(
-        String publisherId, String offerId, String planId, Context context);
+    OldAgreementTermsInner cancel(String publisherId, String offerId, String planId);
 
     /**
      * Get marketplace agreement.
-     *
-     * @param publisherId Publisher identifier string of image being deployed.
-     * @param offerId Offer identifier string of image being deployed.
-     * @param planId Plan identifier string of image being deployed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace agreement.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AgreementTermsInner getAgreement(String publisherId, String offerId, String planId);
-
-    /**
-     * Get marketplace agreement.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -172,28 +157,42 @@ public interface MarketplaceAgreementsClient {
      * @return marketplace agreement along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgreementTermsInner> getAgreementWithResponse(
-        String publisherId, String offerId, String planId, Context context);
+    Response<OldAgreementTermsInner> getAgreementWithResponse(String publisherId, String offerId, String planId,
+        Context context);
 
     /**
-     * List marketplace agreements in the subscription.
-     *
+     * Get marketplace agreement.
+     * 
+     * @param publisherId Publisher identifier string of image being deployed.
+     * @param offerId Offer identifier string of image being deployed.
+     * @param planId Plan identifier string of image being deployed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of AgreementTerms.
+     * @return marketplace agreement.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<AgreementTermsInner> list();
+    OldAgreementTermsInner getAgreement(String publisherId, String offerId, String planId);
 
     /**
      * List marketplace agreements in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of AgreementTerms along with {@link Response}.
+     * @return agreement Terms definition list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<AgreementTermsInner>> listWithResponse(Context context);
+    Response<OldAgreementTermsListInner> listWithResponse(Context context);
+
+    /**
+     * List marketplace agreements in the subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agreement Terms definition list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OldAgreementTermsListInner list();
 }

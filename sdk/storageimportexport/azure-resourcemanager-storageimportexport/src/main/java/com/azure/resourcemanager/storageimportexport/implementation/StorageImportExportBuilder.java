@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the StorageImportExportImpl type. */
-@ServiceClientBuilder(serviceClients = {StorageImportExportImpl.class})
+/**
+ * A builder for creating a new instance of the StorageImportExportImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { StorageImportExportImpl.class })
 public final class StorageImportExportBuilder {
     /*
      * The subscription ID for the Azure user.
@@ -24,7 +26,7 @@ public final class StorageImportExportBuilder {
 
     /**
      * Sets The subscription ID for the Azure user.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the StorageImportExportBuilder.
      */
@@ -40,7 +42,7 @@ public final class StorageImportExportBuilder {
 
     /**
      * Sets Specifies the preferred language for the response.
-     *
+     * 
      * @param acceptLanguage the acceptLanguage value.
      * @return the StorageImportExportBuilder.
      */
@@ -56,7 +58,7 @@ public final class StorageImportExportBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the StorageImportExportBuilder.
      */
@@ -72,7 +74,7 @@ public final class StorageImportExportBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the StorageImportExportBuilder.
      */
@@ -88,7 +90,7 @@ public final class StorageImportExportBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the StorageImportExportBuilder.
      */
@@ -104,7 +106,7 @@ public final class StorageImportExportBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the StorageImportExportBuilder.
      */
@@ -120,7 +122,7 @@ public final class StorageImportExportBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the StorageImportExportBuilder.
      */
@@ -131,31 +133,22 @@ public final class StorageImportExportBuilder {
 
     /**
      * Builds an instance of StorageImportExportImpl with the provided parameters.
-     *
+     * 
      * @return an instance of StorageImportExportImpl.
      */
     public StorageImportExportImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        StorageImportExportImpl client =
-            new StorageImportExportImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                acceptLanguage,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        StorageImportExportImpl client = new StorageImportExportImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, this.acceptLanguage, localEndpoint);
         return client;
     }
 }

@@ -11,123 +11,132 @@ import com.azure.resourcemanager.networkfunction.fluent.models.AzureTrafficColle
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of AzureTrafficCollector. */
+/**
+ * An immutable client-side representation of AzureTrafficCollector.
+ */
 public interface AzureTrafficCollector {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the collectorPolicies property: Collector Policies for Azure Traffic Collector.
-     *
+     * 
      * @return the collectorPolicies value.
      */
     List<ResourceReference> collectorPolicies();
 
     /**
      * Gets the virtualHub property: The virtualHub to which the Azure Traffic Collector belongs.
-     *
+     * 
      * @return the virtualHub value.
      */
     ResourceReference virtualHub();
 
     /**
      * Gets the provisioningState property: The provisioning state of the application rule collection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.networkfunction.fluent.models.AzureTrafficCollectorInner object.
-     *
+     * 
      * @return the inner object.
      */
     AzureTrafficCollectorInner innerModel();
 
-    /** The entirety of the AzureTrafficCollector definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the AzureTrafficCollector definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
-    /** The AzureTrafficCollector definition stages. */
+
+    /**
+     * The AzureTrafficCollector definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the AzureTrafficCollector definition. */
+        /**
+         * The first stage of the AzureTrafficCollector definition.
+         */
         interface Blank extends WithLocation {
         }
-        /** The stage of the AzureTrafficCollector definition allowing to specify location. */
+
+        /**
+         * The stage of the AzureTrafficCollector definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -135,22 +144,26 @@ public interface AzureTrafficCollector {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
-        /** The stage of the AzureTrafficCollector definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the AzureTrafficCollector definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the AzureTrafficCollector definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -158,87 +171,102 @@ public interface AzureTrafficCollector {
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithVirtualHub {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             AzureTrafficCollector create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             AzureTrafficCollector create(Context context);
         }
-        /** The stage of the AzureTrafficCollector definition allowing to specify tags. */
+
+        /**
+         * The stage of the AzureTrafficCollector definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the AzureTrafficCollector definition allowing to specify virtualHub. */
+
+        /**
+         * The stage of the AzureTrafficCollector definition allowing to specify virtualHub.
+         */
         interface WithVirtualHub {
             /**
              * Specifies the virtualHub property: The virtualHub to which the Azure Traffic Collector belongs..
-             *
+             * 
              * @param virtualHub The virtualHub to which the Azure Traffic Collector belongs.
              * @return the next definition stage.
              */
             WithCreate withVirtualHub(ResourceReference virtualHub);
         }
     }
+
     /**
      * Begins update for the AzureTrafficCollector resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     AzureTrafficCollector.Update update();
 
-    /** The template for AzureTrafficCollector update. */
+    /**
+     * The template for AzureTrafficCollector update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         AzureTrafficCollector apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         AzureTrafficCollector apply(Context context);
     }
-    /** The AzureTrafficCollector update stages. */
+
+    /**
+     * The AzureTrafficCollector update stages.
+     */
     interface UpdateStages {
-        /** The stage of the AzureTrafficCollector update allowing to specify tags. */
+        /**
+         * The stage of the AzureTrafficCollector update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     AzureTrafficCollector refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

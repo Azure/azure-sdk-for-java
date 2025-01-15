@@ -69,7 +69,7 @@ public final class CustomFormModel {
 
             @Override
             public void setCustomFormModelProperties(CustomFormModel formModel,
-                                                     CustomFormModelProperties customFormModelProperties) {
+                CustomFormModelProperties customFormModelProperties) {
                 formModel.setCustomFormModelProperties(customFormModelProperties);
             }
         });
@@ -97,8 +97,7 @@ public final class CustomFormModel {
         this.trainingCompletedOn = trainingCompletedOn;
         this.submodels = submodels == null ? null : Collections.unmodifiableList(submodels);
         this.modelError = modelError == null ? null : Collections.unmodifiableList(modelError);
-        this.trainingDocuments = trainingDocuments == null ? null
-            : Collections.unmodifiableList(trainingDocuments);
+        this.trainingDocuments = trainingDocuments == null ? null : Collections.unmodifiableList(trainingDocuments);
     }
 
     /**

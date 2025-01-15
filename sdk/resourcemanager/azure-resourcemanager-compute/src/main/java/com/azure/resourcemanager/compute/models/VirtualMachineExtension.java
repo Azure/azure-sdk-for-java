@@ -16,12 +16,19 @@ import reactor.core.publisher.Mono;
 public interface VirtualMachineExtension
     extends VirtualMachineExtensionBase, ExternalChildResource<VirtualMachineExtension, VirtualMachine> {
     /**
+     * Gets a representation of the deferred computation of this call returning the virtual machine extension
+     *     instance view
+     *
      * @return a representation of the deferred computation of this call returning the virtual machine extension
      *     instance view
      */
     Mono<VirtualMachineExtensionInstanceView> getInstanceViewAsync();
 
-    /** @return the instance view of the virtual machine extension */
+    /**
+     * Gets the instance view of the virtual machine extension.
+     *
+     * @return the instance view of the virtual machine extension
+     */
     VirtualMachineExtensionInstanceView getInstanceView();
 
     /** Grouping of virtual machine extension definition stages as a part of parent virtual machine definition. */
@@ -103,11 +110,8 @@ public interface VirtualMachineExtension
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                WithAutoUpgradeMinorVersion<ParentT>,
-                WithSettings<ParentT>,
-                WithTags<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithAutoUpgradeMinorVersion<ParentT>,
+            WithSettings<ParentT>, WithTags<ParentT> {
         }
 
         /**
@@ -204,12 +208,9 @@ public interface VirtualMachineExtension
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithImageOrPublisher<ParentT>,
-            DefinitionStages.WithPublisher<ParentT>,
-            DefinitionStages.WithType<ParentT>,
-            DefinitionStages.WithVersion<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+        extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithImageOrPublisher<ParentT>,
+        DefinitionStages.WithPublisher<ParentT>, DefinitionStages.WithType<ParentT>,
+        DefinitionStages.WithVersion<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of virtual machine extension definition stages as part of parent virtual machine update. */
@@ -291,11 +292,8 @@ public interface VirtualMachineExtension
          *
          * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-                WithAutoUpgradeMinorVersion<ParentT>,
-                WithSettings<ParentT>,
-                WithTags<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>, WithAutoUpgradeMinorVersion<ParentT>,
+            WithSettings<ParentT>, WithTags<ParentT> {
         }
 
         /**
@@ -392,12 +390,9 @@ public interface VirtualMachineExtension
      * @param <ParentT> the stage of the parent update to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithImageOrPublisher<ParentT>,
-            UpdateDefinitionStages.WithPublisher<ParentT>,
-            UpdateDefinitionStages.WithType<ParentT>,
-            UpdateDefinitionStages.WithVersion<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithImageOrPublisher<ParentT>,
+        UpdateDefinitionStages.WithPublisher<ParentT>, UpdateDefinitionStages.WithType<ParentT>,
+        UpdateDefinitionStages.WithVersion<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of virtual machine extension update stages. */
@@ -489,10 +484,7 @@ public interface VirtualMachineExtension
     }
 
     /** The entirety of virtual machine extension update as a part of parent virtual machine update. */
-    interface Update
-        extends Settable<VirtualMachine.Update>,
-            UpdateStages.WithAutoUpgradeMinorVersion,
-            UpdateStages.WithSettings,
-            UpdateStages.WithTags {
+    interface Update extends Settable<VirtualMachine.Update>, UpdateStages.WithAutoUpgradeMinorVersion,
+        UpdateStages.WithSettings, UpdateStages.WithTags {
     }
 }

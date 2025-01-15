@@ -83,14 +83,17 @@ public final class NetworkMappingImpl implements NetworkMapping, NetworkMapping.
     }
 
     public NetworkMapping create() {
-        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings().create(resourceName,
-            resourceGroupName, fabricName, networkName, networkMappingName, createInput, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationNetworkMappings()
+            .create(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, createInput,
+                Context.NONE);
         return this;
     }
 
     public NetworkMapping create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings().create(resourceName,
-            resourceGroupName, fabricName, networkName, networkMappingName, createInput, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationNetworkMappings()
+            .create(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, createInput, context);
         return this;
     }
 
@@ -108,14 +111,17 @@ public final class NetworkMappingImpl implements NetworkMapping, NetworkMapping.
     }
 
     public NetworkMapping apply() {
-        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings().update(resourceName,
-            resourceGroupName, fabricName, networkName, networkMappingName, updateInput, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationNetworkMappings()
+            .update(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, updateInput,
+                Context.NONE);
         return this;
     }
 
     public NetworkMapping apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings().update(resourceName,
-            resourceGroupName, fabricName, networkName, networkMappingName, updateInput, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationNetworkMappings()
+            .update(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, updateInput, context);
         return this;
     }
 
@@ -132,14 +138,16 @@ public final class NetworkMappingImpl implements NetworkMapping, NetworkMapping.
     }
 
     public NetworkMapping refresh() {
-        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings()
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationNetworkMappings()
             .getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, Context.NONE)
             .getValue();
         return this;
     }
 
     public NetworkMapping refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings()
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationNetworkMappings()
             .getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context)
             .getValue();
         return this;

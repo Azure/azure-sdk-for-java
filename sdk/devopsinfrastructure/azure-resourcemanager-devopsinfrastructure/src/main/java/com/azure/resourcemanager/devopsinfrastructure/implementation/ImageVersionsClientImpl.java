@@ -42,22 +42,22 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
     /**
      * The service client containing this operation class.
      */
-    private final DevOpsInfrastructureClientImpl client;
+    private final DevOpsInfrastructureManagementClientImpl client;
 
     /**
      * Initializes an instance of ImageVersionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ImageVersionsClientImpl(DevOpsInfrastructureClientImpl client) {
+    ImageVersionsClientImpl(DevOpsInfrastructureManagementClientImpl client) {
         this.service
             = RestProxy.create(ImageVersionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevOpsInfrastructureClientImageVersions to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for DevOpsInfrastructureManagementClientImageVersions to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "DevOpsInfrastructure")
@@ -69,7 +69,7 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
         Mono<Response<ImageVersionListResult>> listByImage(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("imageName") String imageName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -77,7 +77,7 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageVersionListResult>> listByImageNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

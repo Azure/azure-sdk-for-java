@@ -82,8 +82,8 @@ public class AppConfigurationReplicaClientTest {
 
     @AfterEach
     public void cleanup() throws Exception {
-        MockitoAnnotations.openMocks(this).close();
         session.finishMocking();
+        MockitoAnnotations.openMocks(this).close();
     }
 
     @Test

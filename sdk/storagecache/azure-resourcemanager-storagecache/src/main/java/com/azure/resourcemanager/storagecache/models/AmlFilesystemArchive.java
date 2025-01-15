@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the AML file system archive.
  */
 @Immutable
-public final class AmlFilesystemArchive {
+public final class AmlFilesystemArchive implements JsonSerializable<AmlFilesystemArchive> {
     /*
-     * Lustre file system path to archive relative to the file system root.  Specify '/' to archive all modified data.
+     * Lustre file system path to archive relative to the file system root. Specify '/' to archive all modified data.
      */
-    @JsonProperty(value = "filesystemPath", access = JsonProperty.Access.WRITE_ONLY)
     private String filesystemPath;
 
     /*
      * The status of the archive
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private AmlFilesystemArchiveStatus status;
 
     /**
@@ -58,5 +60,42 @@ public final class AmlFilesystemArchive {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemArchive from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemArchive if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemArchive.
+     */
+    public static AmlFilesystemArchive fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemArchive deserializedAmlFilesystemArchive = new AmlFilesystemArchive();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filesystemPath".equals(fieldName)) {
+                    deserializedAmlFilesystemArchive.filesystemPath = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAmlFilesystemArchive.status = AmlFilesystemArchiveStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemArchive;
+        });
     }
 }

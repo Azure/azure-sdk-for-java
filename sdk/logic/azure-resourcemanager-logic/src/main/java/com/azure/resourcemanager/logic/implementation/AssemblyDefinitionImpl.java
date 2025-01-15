@@ -75,32 +75,28 @@ public final class AssemblyDefinitionImpl
 
     private String assemblyArtifactName;
 
-    public AssemblyDefinitionImpl withExistingIntegrationAccount(
-        String resourceGroupName, String integrationAccountName) {
+    public AssemblyDefinitionImpl withExistingIntegrationAccount(String resourceGroupName,
+        String integrationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.integrationAccountName = integrationAccountName;
         return this;
     }
 
     public AssemblyDefinition create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAssemblies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, assemblyArtifactName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAssemblies()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AssemblyDefinition create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAssemblies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, assemblyArtifactName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAssemblies()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -115,66 +111,57 @@ public final class AssemblyDefinitionImpl
     }
 
     public AssemblyDefinition apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAssemblies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, assemblyArtifactName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAssemblies()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AssemblyDefinition apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAssemblies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, assemblyArtifactName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAssemblies()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    AssemblyDefinitionImpl(
-        AssemblyDefinitionInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    AssemblyDefinitionImpl(AssemblyDefinitionInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationAccountName = Utils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
-        this.assemblyArtifactName = Utils.getValueFromIdByName(innerObject.id(), "assemblies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationAccountName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
+        this.assemblyArtifactName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assemblies");
     }
 
     public AssemblyDefinition refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAssemblies()
-                .getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAssemblies()
+            .getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AssemblyDefinition refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountAssemblies()
-                .getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountAssemblies()
+            .getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, context)
+            .getValue();
         return this;
     }
 
     public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(Context context) {
-        return serviceManager
-            .integrationAccountAssemblies()
-            .listContentCallbackUrlWithResponse(
-                resourceGroupName, integrationAccountName, assemblyArtifactName, context);
+        return serviceManager.integrationAccountAssemblies()
+            .listContentCallbackUrlWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName,
+                context);
     }
 
     public WorkflowTriggerCallbackUrl listContentCallbackUrl() {
-        return serviceManager
-            .integrationAccountAssemblies()
+        return serviceManager.integrationAccountAssemblies()
             .listContentCallbackUrl(resourceGroupName, integrationAccountName, assemblyArtifactName);
     }
 

@@ -5,40 +5,31 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Mab container-specific backup policy.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "backupManagementType",
-    defaultImpl = MabProtectionPolicy.class,
-    visible = true)
-@JsonTypeName("MAB")
 @Fluent
 public final class MabProtectionPolicy extends ProtectionPolicy {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "backupManagementType", required = true)
     private String backupManagementType = "MAB";
 
     /*
      * Backup schedule of backup policy.
      */
-    @JsonProperty(value = "schedulePolicy")
     private SchedulePolicy schedulePolicy;
 
     /*
      * Retention policy details.
      */
-    @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
     /**
@@ -123,12 +114,61 @@ public final class MabProtectionPolicy extends ProtectionPolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (schedulePolicy() != null) {
             schedulePolicy().validate();
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("protectedItemsCount", protectedItemsCount());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("backupManagementType", this.backupManagementType);
+        jsonWriter.writeJsonField("schedulePolicy", this.schedulePolicy);
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MabProtectionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MabProtectionPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MabProtectionPolicy.
+     */
+    public static MabProtectionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MabProtectionPolicy deserializedMabProtectionPolicy = new MabProtectionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectedItemsCount".equals(fieldName)) {
+                    deserializedMabProtectionPolicy.withProtectedItemsCount(reader.getNullable(JsonReader::getInt));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMabProtectionPolicy.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedMabProtectionPolicy.backupManagementType = reader.getString();
+                } else if ("schedulePolicy".equals(fieldName)) {
+                    deserializedMabProtectionPolicy.schedulePolicy = SchedulePolicy.fromJson(reader);
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedMabProtectionPolicy.retentionPolicy = RetentionPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMabProtectionPolicy;
+        });
     }
 }

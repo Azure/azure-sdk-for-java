@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NotificationRegistrations. */
+/**
+ * Resource collection API of NotificationRegistrations.
+ */
 public interface NotificationRegistrations {
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param context The context to associate with this operation.
@@ -21,12 +23,12 @@ public interface NotificationRegistrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the notification registration details along with {@link Response}.
      */
-    Response<NotificationRegistration> getWithResponse(
-        String providerNamespace, String notificationRegistrationName, Context context);
+    Response<NotificationRegistration> getWithResponse(String providerNamespace, String notificationRegistrationName,
+        Context context);
 
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +40,7 @@ public interface NotificationRegistrations {
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param context The context to associate with this operation.
@@ -47,12 +49,12 @@ public interface NotificationRegistrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String providerNamespace, String notificationRegistrationName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String providerNamespace, String notificationRegistrationName,
+        Context context);
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,32 +65,32 @@ public interface NotificationRegistrations {
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the notification registrations for the given provider as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<NotificationRegistration> listByProviderRegistration(String providerNamespace);
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the notification registrations for the given provider as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<NotificationRegistration> listByProviderRegistration(String providerNamespace, Context context);
 
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,7 +101,7 @@ public interface NotificationRegistrations {
 
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,7 +113,7 @@ public interface NotificationRegistrations {
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,7 +123,7 @@ public interface NotificationRegistrations {
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,7 +135,7 @@ public interface NotificationRegistrations {
 
     /**
      * Begins definition for a new NotificationRegistration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NotificationRegistration definition.
      */

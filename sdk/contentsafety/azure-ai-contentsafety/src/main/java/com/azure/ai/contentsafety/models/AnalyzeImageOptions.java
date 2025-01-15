@@ -19,7 +19,7 @@ import java.util.List;
 public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageOptions> {
 
     /*
-     * The image needs to be analyzed.
+     * The image to be analyzed.
      */
     @Generated
     private final ContentSafetyImageData image;
@@ -49,7 +49,7 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
     }
 
     /**
-     * Get the image property: The image needs to be analyzed.
+     * Get the image property: The image to be analyzed.
      *
      * @return the image value.
      */

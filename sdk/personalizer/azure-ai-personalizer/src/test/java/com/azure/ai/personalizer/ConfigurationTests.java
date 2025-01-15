@@ -26,15 +26,15 @@ public class ConfigurationTests extends PersonalizerTestBase {
         double newDefaultReward = 1.0;
         String newRewardFunction = "average";
         float newExplorationPercentage = 0.2f;
-        PersonalizerServiceProperties properties = new PersonalizerServiceProperties()
-            .setRewardAggregation(newRewardFunction)
-            .setModelExportFrequency(modelExportFrequency)
-            .setDefaultReward((float) newDefaultReward)
-            .setRewardWaitTime(newExperimentalUnitDuration)
-            .setExplorationPercentage(newExplorationPercentage)
-            .setLogRetentionDays(Integer.MAX_VALUE);
-        PersonalizerAdministrationClient client = getAdministrationClientBuilder(httpClient, serviceVersion, true)
-            .buildClient();
+        PersonalizerServiceProperties properties
+            = new PersonalizerServiceProperties().setRewardAggregation(newRewardFunction)
+                .setModelExportFrequency(modelExportFrequency)
+                .setDefaultReward((float) newDefaultReward)
+                .setRewardWaitTime(newExperimentalUnitDuration)
+                .setExplorationPercentage(newExplorationPercentage)
+                .setLogRetentionDays(Integer.MAX_VALUE);
+        PersonalizerAdministrationClient client
+            = getAdministrationClientBuilder(httpClient, serviceVersion, true).buildClient();
         testUpdateProperties(client, properties);
         testGetProperties(client, properties);
         updateAndGetPolicy(client);
@@ -50,7 +50,8 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(properties.getRewardWaitTime(), result.getRewardWaitTime());
     }
 
-    private void testUpdateProperties(PersonalizerAdministrationClient client, PersonalizerServiceProperties properties) {
+    private void testUpdateProperties(PersonalizerAdministrationClient client,
+        PersonalizerServiceProperties properties) {
         PersonalizerServiceProperties result = client.updateProperties(properties);
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
         assertTrue(Math.abs(properties.getExplorationPercentage() - result.getExplorationPercentage()) < 1e-3);
@@ -60,9 +61,9 @@ public class ConfigurationTests extends PersonalizerTestBase {
     }
 
     private void updateAndGetPolicy(PersonalizerAdministrationClient client) {
-        PersonalizerPolicy newPolicy = new PersonalizerPolicy()
-            .setName("app1")
-            .setArguments("--cb_explore_adf --quadratic GT --quadratic MR --quadratic GR --quadratic ME --quadratic OT --quadratic OE --quadratic OR --quadratic MS --quadratic GX --ignore A --cb_type ips --epsilon 0.2");
+        PersonalizerPolicy newPolicy = new PersonalizerPolicy().setName("app1")
+            .setArguments(
+                "--cb_explore_adf --quadratic GT --quadratic MR --quadratic GR --quadratic ME --quadratic OT --quadratic OE --quadratic OR --quadratic MS --quadratic GX --ignore A --cb_type ips --epsilon 0.2");
         PersonalizerPolicy updatedPolicy = client.updatePolicy(newPolicy);
         assertNotNull(updatedPolicy);
         assertEquals(newPolicy.getArguments(), updatedPolicy.getArguments());
@@ -74,7 +75,6 @@ public class ConfigurationTests extends PersonalizerTestBase {
 
     private void resetPolicy(PersonalizerAdministrationClient client) {
         PersonalizerPolicy policy = client.resetPolicy();
-        assertEquals("--cb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::",
-            policy.getArguments());
+        assertEquals("--cb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::", policy.getArguments());
     }
 }

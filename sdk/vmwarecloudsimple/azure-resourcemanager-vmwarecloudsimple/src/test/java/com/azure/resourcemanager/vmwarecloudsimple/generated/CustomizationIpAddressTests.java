@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomizationIpAddressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomizationIpAddress model =
-            BinaryData
-                .fromString("{\"argument\":\"axhexiilivp\",\"ipAddress\":\"iirqtd\",\"type\":\"FIXED_IP\"}")
+        CustomizationIpAddress model
+            = BinaryData.fromString("{\"argument\":\"rds\",\"ipAddress\":\"ujbazpjuohminyfl\",\"type\":\"CUSTOM\"}")
                 .toObject(CustomizationIpAddress.class);
-        Assertions.assertEquals("axhexiilivp", model.argument());
-        Assertions.assertEquals("iirqtd", model.ipAddress());
-        Assertions.assertEquals(CustomizationIpAddressType.FIXED_IP, model.type());
+        Assertions.assertEquals("rds", model.argument());
+        Assertions.assertEquals("ujbazpjuohminyfl", model.ipAddress());
+        Assertions.assertEquals(CustomizationIpAddressType.CUSTOM, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomizationIpAddress model =
-            new CustomizationIpAddress()
-                .withArgument("axhexiilivp")
-                .withIpAddress("iirqtd")
-                .withType(CustomizationIpAddressType.FIXED_IP);
+        CustomizationIpAddress model = new CustomizationIpAddress().withArgument("rds")
+            .withIpAddress("ujbazpjuohminyfl")
+            .withType(CustomizationIpAddressType.CUSTOM);
         model = BinaryData.fromObject(model).toObject(CustomizationIpAddress.class);
-        Assertions.assertEquals("axhexiilivp", model.argument());
-        Assertions.assertEquals("iirqtd", model.ipAddress());
-        Assertions.assertEquals(CustomizationIpAddressType.FIXED_IP, model.type());
+        Assertions.assertEquals("rds", model.argument());
+        Assertions.assertEquals("ujbazpjuohminyfl", model.ipAddress());
+        Assertions.assertEquals(CustomizationIpAddressType.CUSTOM, model.type());
     }
 }

@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.CustomerInner;
-import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.Customer;
-import com.azure.resourcemanager.billing.models.Reseller;
+import com.azure.resourcemanager.billing.models.CustomerProperties;
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 
 public final class CustomerImpl implements Customer {
     private CustomerInner innerObject;
@@ -33,34 +33,21 @@ public final class CustomerImpl implements Customer {
         return this.innerModel().type();
     }
 
-    public String billingProfileId() {
-        return this.innerModel().billingProfileId();
-    }
-
-    public String billingProfileDisplayName() {
-        return this.innerModel().billingProfileDisplayName();
-    }
-
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public List<AzurePlan> enabledAzurePlans() {
-        List<AzurePlan> inner = this.innerModel().enabledAzurePlans();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
-            return Collections.unmodifiableList(inner);
+            return Collections.unmodifiableMap(inner);
         } else {
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
     }
 
-    public List<Reseller> resellers() {
-        List<Reseller> inner = this.innerModel().resellers();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public CustomerProperties properties() {
+        return this.innerModel().properties();
     }
 
     public CustomerInner innerModel() {

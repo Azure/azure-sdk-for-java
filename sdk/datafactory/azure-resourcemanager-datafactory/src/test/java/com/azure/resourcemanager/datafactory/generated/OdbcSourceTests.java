@@ -11,19 +11,19 @@ public final class OdbcSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OdbcSource model = BinaryData.fromString(
-            "{\"type\":\"OdbcSource\",\"query\":\"dataemzdnvnooklgren\",\"queryTimeout\":\"datasgertxicemgsncbb\",\"additionalColumns\":\"datakphaed\",\"sourceRetryCount\":\"datalbnu\",\"sourceRetryWait\":\"dataxswmccykbvia\",\"maxConcurrentConnections\":\"datapxlxbofdchb\",\"disableMetricsCollection\":\"datacfskzwese\",\"\":{\"ojw\":\"dataqj\",\"gvsljk\":\"dataixtrnakytzcm\",\"hzsx\":\"dataarqhpxw\",\"vbu\":\"datamgvygmtyw\"}}")
+            "{\"type\":\"OdbcSource\",\"query\":\"databnekhjzbfb\",\"queryTimeout\":\"dataeqkuozarr\",\"additionalColumns\":\"datapyzryjb\",\"sourceRetryCount\":\"databcvoyqnrjdrc\",\"sourceRetryWait\":\"datarvzewogh\",\"maxConcurrentConnections\":\"datazxkjqecj\",\"disableMetricsCollection\":\"dataromeawthycbigpi\",\"\":{\"lawakhe\":\"dataxhzjnparsulmu\",\"talo\":\"dataxxqgoavzycxpza\",\"r\":\"datamftmxwtwzs\",\"qhfvouyqzhoik\":\"datarf\"}}")
             .toObject(OdbcSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OdbcSource model = new OdbcSource().withSourceRetryCount("datalbnu")
-            .withSourceRetryWait("dataxswmccykbvia")
-            .withMaxConcurrentConnections("datapxlxbofdchb")
-            .withDisableMetricsCollection("datacfskzwese")
-            .withQueryTimeout("datasgertxicemgsncbb")
-            .withAdditionalColumns("datakphaed")
-            .withQuery("dataemzdnvnooklgren");
+        OdbcSource model = new OdbcSource().withSourceRetryCount("databcvoyqnrjdrc")
+            .withSourceRetryWait("datarvzewogh")
+            .withMaxConcurrentConnections("datazxkjqecj")
+            .withDisableMetricsCollection("dataromeawthycbigpi")
+            .withQueryTimeout("dataeqkuozarr")
+            .withAdditionalColumns("datapyzryjb")
+            .withQuery("databnekhjzbfb");
         model = BinaryData.fromObject(model).toObject(OdbcSource.class);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class FleetProvisioningState extends ExpandableStringEnum<FleetProv
      * @param name a name to look for.
      * @return the corresponding FleetProvisioningState.
      */
-    @JsonCreator
     public static FleetProvisioningState fromString(String name) {
         return fromString(name, FleetProvisioningState.class);
     }

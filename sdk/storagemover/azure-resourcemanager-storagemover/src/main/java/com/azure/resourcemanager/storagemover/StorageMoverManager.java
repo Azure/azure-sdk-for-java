@@ -11,26 +11,26 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storagemover.fluent.StorageMoverClient;
+import com.azure.resourcemanager.storagemover.fluent.StorageMoverManagementClient;
 import com.azure.resourcemanager.storagemover.implementation.AgentsImpl;
 import com.azure.resourcemanager.storagemover.implementation.EndpointsImpl;
 import com.azure.resourcemanager.storagemover.implementation.JobDefinitionsImpl;
 import com.azure.resourcemanager.storagemover.implementation.JobRunsImpl;
 import com.azure.resourcemanager.storagemover.implementation.OperationsImpl;
 import com.azure.resourcemanager.storagemover.implementation.ProjectsImpl;
-import com.azure.resourcemanager.storagemover.implementation.StorageMoverClientBuilder;
+import com.azure.resourcemanager.storagemover.implementation.StorageMoverManagementClientBuilder;
 import com.azure.resourcemanager.storagemover.implementation.StorageMoversImpl;
 import com.azure.resourcemanager.storagemover.models.Agents;
 import com.azure.resourcemanager.storagemover.models.Endpoints;
@@ -65,12 +65,12 @@ public final class StorageMoverManager {
 
     private JobRuns jobRuns;
 
-    private final StorageMoverClient clientObject;
+    private final StorageMoverManagementClient clientObject;
 
     private StorageMoverManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new StorageMoverClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new StorageMoverManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -78,11 +78,11 @@ public final class StorageMoverManager {
     }
 
     /**
-     * Creates an instance of StorageMover service API entry point.
+     * Creates an instance of Storage Mover service API entry point.
      * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the StorageMover service API instance.
+     * @return the Storage Mover service API instance.
      */
     public static StorageMoverManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -91,11 +91,11 @@ public final class StorageMoverManager {
     }
 
     /**
-     * Creates an instance of StorageMover service API entry point.
+     * Creates an instance of Storage Mover service API entry point.
      * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the StorageMover service API instance.
+     * @return the Storage Mover service API instance.
      */
     public static StorageMoverManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
@@ -214,11 +214,11 @@ public final class StorageMoverManager {
         }
 
         /**
-         * Creates an instance of StorageMover service API entry point.
+         * Creates an instance of Storage Mover service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the StorageMover service API instance.
+         * @return the Storage Mover service API instance.
          */
         public StorageMoverManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -229,7 +229,7 @@ public final class StorageMoverManager {
                 .append("-")
                 .append("com.azure.resourcemanager.storagemover")
                 .append("/")
-                .append("1.2.0");
+                .append("1.3.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -262,7 +262,7 @@ public final class StorageMoverManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -360,12 +360,12 @@ public final class StorageMoverManager {
     }
 
     /**
-     * Gets wrapped service client StorageMoverClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets wrapped service client StorageMoverManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client StorageMoverClient.
+     * @return Wrapped service client StorageMoverManagementClient.
      */
-    public StorageMoverClient serviceClient() {
+    public StorageMoverManagementClient serviceClient() {
         return this.clientObject;
     }
 }

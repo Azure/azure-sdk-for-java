@@ -5,27 +5,34 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.fluent.models.PatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The request for reservation patch. */
+/**
+ * The request for reservation patch.
+ */
 @Fluent
-public final class PatchModel {
+public final class PatchModel implements JsonSerializable<PatchModel> {
     /*
      * Properties for reservation patch
      */
-    @JsonProperty(value = "properties")
     private PatchProperties innerProperties;
 
-    /** Creates an instance of PatchModel class. */
+    /**
+     * Creates an instance of PatchModel class.
+     */
     public PatchModel() {
     }
 
     /**
      * Get the innerProperties property: Properties for reservation patch.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PatchProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class PatchModel {
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -43,7 +50,7 @@ public final class PatchModel {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the PatchModel object itself.
      */
@@ -59,7 +66,7 @@ public final class PatchModel {
      * Get the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
      * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
      * Single AppliedScopeType.
-     *
+     * 
      * @return the appliedScopes value.
      */
     public List<String> appliedScopes() {
@@ -70,7 +77,7 @@ public final class PatchModel {
      * Set the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
      * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
      * Single AppliedScopeType.
-     *
+     * 
      * @param appliedScopes the appliedScopes value to set.
      * @return the PatchModel object itself.
      */
@@ -85,7 +92,7 @@ public final class PatchModel {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -95,7 +102,7 @@ public final class PatchModel {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the PatchModel object itself.
      */
@@ -110,7 +117,7 @@ public final class PatchModel {
     /**
      * Get the instanceFlexibility property: Turning this on will apply the reservation discount to other VMs in the
      * same VM size group. Only specify for VirtualMachines reserved resource type.
-     *
+     * 
      * @return the instanceFlexibility value.
      */
     public InstanceFlexibility instanceFlexibility() {
@@ -120,7 +127,7 @@ public final class PatchModel {
     /**
      * Set the instanceFlexibility property: Turning this on will apply the reservation discount to other VMs in the
      * same VM size group. Only specify for VirtualMachines reserved resource type.
-     *
+     * 
      * @param instanceFlexibility the instanceFlexibility value to set.
      * @return the PatchModel object itself.
      */
@@ -134,7 +141,7 @@ public final class PatchModel {
 
     /**
      * Get the name property: Display name of the reservation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -143,7 +150,7 @@ public final class PatchModel {
 
     /**
      * Set the name property: Display name of the reservation.
-     *
+     * 
      * @param name the name value to set.
      * @return the PatchModel object itself.
      */
@@ -158,7 +165,7 @@ public final class PatchModel {
     /**
      * Get the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     public Boolean renew() {
@@ -168,7 +175,7 @@ public final class PatchModel {
     /**
      * Set the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @param renew the renew value to set.
      * @return the PatchModel object itself.
      */
@@ -182,7 +189,7 @@ public final class PatchModel {
 
     /**
      * Get the renewProperties property: The renewProperties property.
-     *
+     * 
      * @return the renewProperties value.
      */
     public PatchPropertiesRenewProperties renewProperties() {
@@ -191,7 +198,7 @@ public final class PatchModel {
 
     /**
      * Set the renewProperties property: The renewProperties property.
-     *
+     * 
      * @param renewProperties the renewProperties value to set.
      * @return the PatchModel object itself.
      */
@@ -205,7 +212,7 @@ public final class PatchModel {
 
     /**
      * Get the reviewDateTime property: This is the date-time when the Azure hybrid benefit needs to be reviewed.
-     *
+     * 
      * @return the reviewDateTime value.
      */
     public OffsetDateTime reviewDateTime() {
@@ -214,7 +221,7 @@ public final class PatchModel {
 
     /**
      * Set the reviewDateTime property: This is the date-time when the Azure hybrid benefit needs to be reviewed.
-     *
+     * 
      * @param reviewDateTime the reviewDateTime value to set.
      * @return the PatchModel object itself.
      */
@@ -228,12 +235,48 @@ public final class PatchModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatchModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatchModel if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the PatchModel.
+     */
+    public static PatchModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PatchModel deserializedPatchModel = new PatchModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedPatchModel.innerProperties = PatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPatchModel;
+        });
     }
 }

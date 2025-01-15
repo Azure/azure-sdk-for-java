@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Desktops. */
+/**
+ * Resource collection API of Desktops.
+ */
 public interface Desktops {
     /**
      * Get a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -22,12 +24,12 @@ public interface Desktops {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a desktop along with {@link Response}.
      */
-    Response<Desktop> getWithResponse(
-        String resourceGroupName, String applicationGroupName, String desktopName, Context context);
+    Response<Desktop> getWithResponse(String resourceGroupName, String applicationGroupName, String desktopName,
+        Context context);
 
     /**
      * Get a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -40,7 +42,7 @@ public interface Desktops {
 
     /**
      * Update a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -51,16 +53,12 @@ public interface Desktops {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schema for Desktop properties along with {@link Response}.
      */
-    Response<Desktop> updateWithResponse(
-        String resourceGroupName,
-        String applicationGroupName,
-        String desktopName,
-        DesktopPatch desktop,
-        Context context);
+    Response<Desktop> updateWithResponse(String resourceGroupName, String applicationGroupName, String desktopName,
+        DesktopPatch desktop, Context context);
 
     /**
      * Update a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -73,7 +71,7 @@ public interface Desktops {
 
     /**
      * List desktops.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +83,7 @@ public interface Desktops {
 
     /**
      * List desktops.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param pageSize Number of items per page.
@@ -97,11 +95,6 @@ public interface Desktops {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return desktopList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Desktop> list(
-        String resourceGroupName,
-        String applicationGroupName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<Desktop> list(String resourceGroupName, String applicationGroupName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 }

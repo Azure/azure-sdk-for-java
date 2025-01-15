@@ -94,12 +94,9 @@ public class SynchronousReceiveWorkTest {
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, numberToReceive, timeout, messageSink);
 
         // Act
-        StepVerifier.create(messageSink.asFlux())
-            .then(() -> {
-                assertTrue(work.emitNext(message1), "Could not emit the first message.");
-            })
-            .expectNext(message1)
-            .verifyComplete();
+        StepVerifier.create(messageSink.asFlux()).then(() -> {
+            assertTrue(work.emitNext(message1), "Could not emit the first message.");
+        }).expectNext(message1).verifyComplete();
 
         assertEquals(1, work.getRemainingEvents());
         assertTrue(work.isTerminal());
@@ -125,13 +122,9 @@ public class SynchronousReceiveWorkTest {
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, numberToReceive, timeout, messageSink);
 
         // Act
-        StepVerifier.create(messageSink.asFlux())
-            .then(() -> {
-                assertTrue(work.emitNext(message1), "Could not emit the first message.");
-            })
-            .expectNext(message1)
-            .expectComplete()
-            .verify(verifyTimeout);
+        StepVerifier.create(messageSink.asFlux()).then(() -> {
+            assertTrue(work.emitNext(message1), "Could not emit the first message.");
+        }).expectNext(message1).expectComplete().verify(verifyTimeout);
 
         assertEquals(1, work.getRemainingEvents());
         assertTrue(work.isTerminal());
@@ -183,11 +176,7 @@ public class SynchronousReceiveWorkTest {
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, numberToReceive, timeout, messageSink);
 
         // Act
-        StepVerifier.create(messageSink.asFlux())
-            .then(() -> work.start())
-            .thenAwait(timeout)
-            .expectComplete()
-            .verify();
+        StepVerifier.create(messageSink.asFlux()).then(() -> work.start()).thenAwait(timeout).expectComplete().verify();
 
         assertEquals(numberToReceive, work.getRemainingEvents());
         assertTrue(work.isTerminal());

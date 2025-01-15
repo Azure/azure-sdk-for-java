@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,12 +20,12 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.fluent.PolicyInsightsClient;
 import com.azure.resourcemanager.policyinsights.implementation.AttestationsImpl;
+import com.azure.resourcemanager.policyinsights.implementation.ComponentPolicyStatesImpl;
 import com.azure.resourcemanager.policyinsights.implementation.OperationsImpl;
 import com.azure.resourcemanager.policyinsights.implementation.PolicyEventsImpl;
 import com.azure.resourcemanager.policyinsights.implementation.PolicyInsightsClientBuilder;
@@ -34,6 +35,7 @@ import com.azure.resourcemanager.policyinsights.implementation.PolicyStatesImpl;
 import com.azure.resourcemanager.policyinsights.implementation.PolicyTrackedResourcesImpl;
 import com.azure.resourcemanager.policyinsights.implementation.RemediationsImpl;
 import com.azure.resourcemanager.policyinsights.models.Attestations;
+import com.azure.resourcemanager.policyinsights.models.ComponentPolicyStates;
 import com.azure.resourcemanager.policyinsights.models.Operations;
 import com.azure.resourcemanager.policyinsights.models.PolicyEvents;
 import com.azure.resourcemanager.policyinsights.models.PolicyMetadatas;
@@ -48,7 +50,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to PolicyInsightsManager. */
+/**
+ * Entry point to PolicyInsightsManager.
+ * Query component policy states at varying resource scopes for Resource Provider mode policies.
+ */
 public final class PolicyInsightsManager {
     private PolicyTrackedResources policyTrackedResources;
 
@@ -58,11 +63,13 @@ public final class PolicyInsightsManager {
 
     private PolicyStates policyStates;
 
-    private Operations operations;
-
     private PolicyMetadatas policyMetadatas;
 
     private PolicyRestrictions policyRestrictions;
+
+    private ComponentPolicyStates componentPolicyStates;
+
+    private Operations operations;
 
     private Attestations attestations;
 
@@ -71,18 +78,16 @@ public final class PolicyInsightsManager {
     private PolicyInsightsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new PolicyInsightsClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new PolicyInsightsClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of PolicyInsights service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the PolicyInsights service API instance.
@@ -95,7 +100,7 @@ public final class PolicyInsightsManager {
 
     /**
      * Creates an instance of PolicyInsights service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the PolicyInsights service API instance.
@@ -108,14 +113,16 @@ public final class PolicyInsightsManager {
 
     /**
      * Gets a Configurable instance that can be used to create PolicyInsightsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new PolicyInsightsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -187,8 +194,8 @@ public final class PolicyInsightsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -205,8 +212,8 @@ public final class PolicyInsightsManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -226,15 +233,13 @@ public final class PolicyInsightsManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.policyinsights")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -259,51 +264,41 @@ public final class PolicyInsightsManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new PolicyInsightsManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of PolicyTrackedResources.
-     *
+     * 
      * @return Resource collection API of PolicyTrackedResources.
      */
     public PolicyTrackedResources policyTrackedResources() {
         if (this.policyTrackedResources == null) {
-            this.policyTrackedResources =
-                new PolicyTrackedResourcesImpl(clientObject.getPolicyTrackedResources(), this);
+            this.policyTrackedResources
+                = new PolicyTrackedResourcesImpl(clientObject.getPolicyTrackedResources(), this);
         }
         return policyTrackedResources;
     }
 
     /**
      * Gets the resource collection API of Remediations. It manages Remediation.
-     *
+     * 
      * @return Resource collection API of Remediations.
      */
     public Remediations remediations() {
@@ -315,7 +310,7 @@ public final class PolicyInsightsManager {
 
     /**
      * Gets the resource collection API of PolicyEvents.
-     *
+     * 
      * @return Resource collection API of PolicyEvents.
      */
     public PolicyEvents policyEvents() {
@@ -327,7 +322,7 @@ public final class PolicyInsightsManager {
 
     /**
      * Gets the resource collection API of PolicyStates.
-     *
+     * 
      * @return Resource collection API of PolicyStates.
      */
     public PolicyStates policyStates() {
@@ -338,20 +333,8 @@ public final class PolicyInsightsManager {
     }
 
     /**
-     * Gets the resource collection API of Operations.
-     *
-     * @return Resource collection API of Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
-        }
-        return operations;
-    }
-
-    /**
      * Gets the resource collection API of PolicyMetadatas.
-     *
+     * 
      * @return Resource collection API of PolicyMetadatas.
      */
     public PolicyMetadatas policyMetadatas() {
@@ -363,7 +346,7 @@ public final class PolicyInsightsManager {
 
     /**
      * Gets the resource collection API of PolicyRestrictions.
-     *
+     * 
      * @return Resource collection API of PolicyRestrictions.
      */
     public PolicyRestrictions policyRestrictions() {
@@ -374,8 +357,32 @@ public final class PolicyInsightsManager {
     }
 
     /**
+     * Gets the resource collection API of ComponentPolicyStates.
+     * 
+     * @return Resource collection API of ComponentPolicyStates.
+     */
+    public ComponentPolicyStates componentPolicyStates() {
+        if (this.componentPolicyStates == null) {
+            this.componentPolicyStates = new ComponentPolicyStatesImpl(clientObject.getComponentPolicyStates(), this);
+        }
+        return componentPolicyStates;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
+    }
+
+    /**
      * Gets the resource collection API of Attestations. It manages Attestation.
-     *
+     * 
      * @return Resource collection API of Attestations.
      */
     public Attestations attestations() {
@@ -386,8 +393,10 @@ public final class PolicyInsightsManager {
     }
 
     /**
-     * @return Wrapped service client PolicyInsightsClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client PolicyInsightsClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client PolicyInsightsClient.
      */
     public PolicyInsightsClient serviceClient() {
         return this.clientObject;

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Disk configuration to apply to SQL Server. */
+/**
+ * Disk configuration to apply to SQL Server.
+ */
 public final class DiskConfigurationType extends ExpandableStringEnum<DiskConfigurationType> {
-    /** Static value NEW for DiskConfigurationType. */
+    /**
+     * Static value NEW for DiskConfigurationType.
+     */
     public static final DiskConfigurationType NEW = fromString("NEW");
 
-    /** Static value EXTEND for DiskConfigurationType. */
+    /**
+     * Static value EXTEND for DiskConfigurationType.
+     */
     public static final DiskConfigurationType EXTEND = fromString("EXTEND");
 
-    /** Static value ADD for DiskConfigurationType. */
+    /**
+     * Static value ADD for DiskConfigurationType.
+     */
     public static final DiskConfigurationType ADD = fromString("ADD");
 
     /**
      * Creates a new instance of DiskConfigurationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class DiskConfigurationType extends ExpandableStringEnum<DiskConfig
 
     /**
      * Creates or finds a DiskConfigurationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskConfigurationType.
      */
-    @JsonCreator
     public static DiskConfigurationType fromString(String name) {
         return fromString(name, DiskConfigurationType.class);
     }
 
     /**
      * Gets known DiskConfigurationType values.
-     *
+     * 
      * @return known DiskConfigurationType values.
      */
     public static Collection<DiskConfigurationType> values() {

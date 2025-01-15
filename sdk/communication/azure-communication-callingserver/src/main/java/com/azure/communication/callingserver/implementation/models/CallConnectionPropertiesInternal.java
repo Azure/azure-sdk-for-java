@@ -5,58 +5,56 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /** The CallConnectionPropertiesInternal model. */
 @Fluent
-public final class CallConnectionPropertiesInternal {
+public final class CallConnectionPropertiesInternal implements JsonSerializable<CallConnectionPropertiesInternal> {
     /*
      * The call connection id.
      */
-    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * The server call id.
      */
-    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
      * The source of the call.
      */
-    @JsonProperty(value = "source")
     private CallSourceInternal source;
 
     /*
      * The targets of the call.
      */
-    @JsonProperty(value = "targets")
     private List<CommunicationIdentifierModel> targets;
 
     /*
      * The state of the call connection.
      */
-    @JsonProperty(value = "callConnectionState")
     private CallConnectionStateModelInternal callConnectionState;
 
     /*
      * The subject.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * The callback URI.
      */
-    @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
     /*
      * SubscriptionId for media streaming
      */
-    @JsonProperty(value = "mediaSubscriptionId")
     private String mediaSubscriptionId;
 
     /**
@@ -154,8 +152,8 @@ public final class CallConnectionPropertiesInternal {
      * @param callConnectionState the callConnectionState value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setCallConnectionState(
-            CallConnectionStateModelInternal callConnectionState) {
+    public CallConnectionPropertiesInternal
+        setCallConnectionState(CallConnectionStateModelInternal callConnectionState) {
         this.callConnectionState = callConnectionState;
         return this;
     }
@@ -218,5 +216,60 @@ public final class CallConnectionPropertiesInternal {
     public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
         this.mediaSubscriptionId = mediaSubscriptionId;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("callConnectionId", callConnectionId)
+            .writeStringField("serverCallId", serverCallId)
+            .writeJsonField("source", source)
+            .writeArrayField("targets", targets, JsonWriter::writeJson)
+            .writeStringField("callConnectionState", Objects.toString(callConnectionState, null))
+            .writeStringField("subject", subject)
+            .writeStringField("callbackUri", callbackUri)
+            .writeStringField("mediaSubscriptionId", mediaSubscriptionId)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link CallConnectionPropertiesInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link CallConnectionPropertiesInternal}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static CallConnectionPropertiesInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CallConnectionPropertiesInternal properties = new CallConnectionPropertiesInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("callConnectionId".equals(fieldName)) {
+                    properties.callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    properties.serverCallId = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    properties.source = CallSourceInternal.fromJson(reader);
+                } else if ("targets".equals(fieldName)) {
+                    properties.targets = reader.readArray(CommunicationIdentifierModel::fromJson);
+                } else if ("callConnectionState".equals(fieldName)) {
+                    properties.callConnectionState = CallConnectionStateModelInternal.fromString(reader.getString());
+                } else if ("subject".equals(fieldName)) {
+                    properties.subject = reader.getString();
+                } else if ("callbackUri".equals(fieldName)) {
+                    properties.callbackUri = reader.getString();
+                } else if ("mediaSubscriptionId".equals(fieldName)) {
+                    properties.mediaSubscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return properties;
+        });
     }
 }

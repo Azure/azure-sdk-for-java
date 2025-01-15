@@ -13,12 +13,8 @@ import reactor.core.publisher.Mono;
 
 /** Entry point for Key Vault secrets API. */
 @Fluent
-public interface Secrets
-    extends SupportsCreating<Secret.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsGettingById<Secret>,
-        SupportsGettingByName<Secret>,
-        SupportsListing<Secret> {
+public interface Secrets extends SupportsCreating<Secret.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsGettingById<Secret>, SupportsGettingByName<Secret>, SupportsListing<Secret> {
     /**
      * Gets a Key Vault secret when the secret is enabled.
      *

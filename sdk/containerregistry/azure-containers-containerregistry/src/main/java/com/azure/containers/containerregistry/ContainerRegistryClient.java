@@ -71,8 +71,8 @@ public final class ContainerRegistryClient {
     ContainerRegistryClient(HttpPipeline httpPipeline, String endpoint, String version) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.registriesImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version)
-            .getContainerRegistries();
+        this.registriesImplClient
+            = new AzureContainerRegistryImpl(httpPipeline, endpoint, version).getContainerRegistries();
         this.apiVersion = version;
     }
 
@@ -124,8 +124,7 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRepositoryNames(Context context) {
-        return new PagedIterable<>(
-            (pageSize) -> listRepositoryNamesSinglePageSync(pageSize, context),
+        return new PagedIterable<>((pageSize) -> listRepositoryNamesSinglePageSync(pageSize, context),
             (token, pageSize) -> listRepositoryNamesNextSinglePageSync(token, context));
     }
 

@@ -12,10 +12,12 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +27,6 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,21 +45,24 @@ public abstract class IntegrationTestBase extends TestBase {
     // The number of partitions we create in test-resources.json.
     // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
     protected static final int NUMBER_OF_PARTITIONS = 5;
-    protected static final List<String> EXPECTED_PARTITION_IDS = IntStream.range(0, NUMBER_OF_PARTITIONS)
-        .mapToObj(String::valueOf)
-        .collect(Collectors.toList());
+    protected static final List<String> EXPECTED_PARTITION_IDS
+        = IntStream.range(0, NUMBER_OF_PARTITIONS).mapToObj(String::valueOf).collect(Collectors.toList());
     protected static final Duration TIMEOUT = Duration.ofMinutes(1);
 
     // Tests use timeouts of 20-60 seconds to verify something has happened
     // We need a short try timeout so that if transient issue happens we have a chance to retry it before overall test timeout.
     // This is a good idea to do in any production application as well - no point in waiting too long
-    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3));
+    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))
+        .setDelay(Duration.ofSeconds(1))
+        .setMaxDelay(Duration.ofSeconds(5))
+        .setMaxRetries(10);
 
     protected final ClientLogger logger;
 
     protected String testName;
 
-    private static final ClientOptions OPTIONS_WITH_TRACING = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
+    private static final ClientOptions OPTIONS_WITH_TRACING
+        = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
 
     private Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
@@ -95,11 +99,14 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     // These are overridden because we don't use the Interceptor Manager.
+    @AfterEach
     @Override
     public void teardownTest() {
         logger.info("----- {}: Performing test clean-up. -----", testName);
         afterTest();
-        scheduler.dispose();
+        if (scheduler != null) {
+            scheduler.dispose();
+        }
         logger.info("Disposing of subscriptions, consumers and clients.");
         dispose();
 
@@ -122,12 +129,12 @@ public abstract class IntegrationTestBase extends TestBase {
      * {@link com.azure.identity.ClientSecretCredential}.
      */
     protected EventHubClientBuilder createBuilder(boolean shareConnection) {
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
+        final EventHubClientBuilder builder = new EventHubClientBuilder().proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(OPTIONS_WITH_TRACING)
             .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler);
+            .scheduler(scheduler)
+            .configuration(new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build());
 
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
         final String eventHubName = TestUtils.getEventHubName();
@@ -142,7 +149,8 @@ public abstract class IntegrationTestBase extends TestBase {
                 return null;
 
             case LIVE:
-                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName),
+                    "FullyQualifiedDomainName is not set.");
                 Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "EventHubName is not set.");
 
                 final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
@@ -152,7 +160,8 @@ public abstract class IntegrationTestBase extends TestBase {
                 final String connectionString = TestUtils.getConnectionString(false);
 
                 Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(eventHubName), "EventHubName is not set.");
-                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName),
+                    "FullyQualifiedDomainName is not set.");
 
                 if (CoreUtils.isNullOrEmpty(connectionString)) {
                     final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -210,19 +219,19 @@ public abstract class IntegrationTestBase extends TestBase {
      *
      * @param closeables The closeables to dispose of. If a closeable is {@code null}, it is skipped.
      */
-    protected void dispose(Closeable... closeables) {
+    protected void dispose(AutoCloseable... closeables) {
         if (closeables == null) {
             return;
         }
 
-        for (final Closeable closeable : closeables) {
+        for (final AutoCloseable closeable : closeables) {
             if (closeable == null) {
                 continue;
             }
 
             try {
                 closeable.close();
-            } catch (IOException error) {
+            } catch (Exception error) {
                 logger.error("[{}]: {} didn't close properly.", testName, closeable.getClass().getSimpleName(), error);
             }
         }
@@ -232,11 +241,14 @@ public abstract class IntegrationTestBase extends TestBase {
      * Disposes of registered with {@code toClose} method resources.
      */
     protected void dispose() {
-        dispose(toClose.toArray(new Closeable[0]));
+        // best effort to close resources in a reverse order
+        Collections.reverse(toClose);
+        dispose(toClose.toArray(new AutoCloseable[0]));
         toClose.clear();
     }
 
     private void skipIfNotRecordMode() {
         Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK, "Is not in RECORD/LIVE mode.");
     }
+
 }

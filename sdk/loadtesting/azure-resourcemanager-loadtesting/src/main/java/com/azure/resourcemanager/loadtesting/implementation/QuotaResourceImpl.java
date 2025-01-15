@@ -14,8 +14,8 @@ public final class QuotaResourceImpl implements QuotaResource {
 
     private final com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager;
 
-    QuotaResourceImpl(
-        QuotaResourceInner innerObject, com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
+    QuotaResourceImpl(QuotaResourceInner innerObject,
+        com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

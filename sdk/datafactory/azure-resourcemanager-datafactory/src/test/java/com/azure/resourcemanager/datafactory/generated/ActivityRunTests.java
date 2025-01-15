@@ -13,17 +13,17 @@ public final class ActivityRunTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivityRun model = BinaryData.fromString(
-            "{\"pipelineName\":\"tj\",\"pipelineRunId\":\"ysdzhez\",\"activityName\":\"vaiqyuvvf\",\"activityType\":\"kphhq\",\"activityRunId\":\"kvylauyavl\",\"linkedServiceName\":\"mncsttijfybvp\",\"status\":\"krsgsgb\",\"activityRunStart\":\"2021-08-14T00:34:57Z\",\"activityRunEnd\":\"2021-08-27T04:01:57Z\",\"durationInMs\":1030277029,\"input\":\"datadgkynscliqhzvhxn\",\"output\":\"datamtk\",\"error\":\"dataotppnv\",\"\":{\"dhlfkqojpykvgt\":\"dataxhihfrbbcevqagtl\"}}")
+            "{\"pipelineName\":\"qhzvhxnkomt\",\"pipelineRunId\":\"bo\",\"activityName\":\"pnvdxz\",\"activityType\":\"ihfrbbcevqa\",\"activityRunId\":\"ltd\",\"linkedServiceName\":\"fkqojpy\",\"status\":\"gtrd\",\"activityRunStart\":\"2021-05-17T05:05:59Z\",\"activityRunEnd\":\"2021-08-15T02:13:51Z\",\"durationInMs\":2043504503,\"input\":\"datadymbrny\",\"output\":\"dataxmprafwg\",\"error\":\"datahocxvdfffwafqrou\",\"\":{\"kbunzoz\":\"datapavehhr\",\"cdyuibhmfdnbzyd\":\"datadhcxgkmoy\"}}")
             .toObject(ActivityRun.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActivityRun model = new ActivityRun().withAdditionalProperties(
-            mapOf("durationInMs", 1030277029, "linkedServiceName", "mncsttijfybvp", "activityRunStart",
-                "2021-08-14T00:34:57Z", "activityRunEnd", "2021-08-27T04:01:57Z", "activityName", "vaiqyuvvf", "error",
-                "dataotppnv", "pipelineName", "tj", "output", "datamtk", "activityRunId", "kvylauyavl", "input",
-                "datadgkynscliqhzvhxn", "pipelineRunId", "ysdzhez", "activityType", "kphhq", "status", "krsgsgb"));
+            mapOf("durationInMs", 2043504503, "linkedServiceName", "fkqojpy", "activityRunStart",
+                "2021-05-17T05:05:59Z", "activityRunEnd", "2021-08-15T02:13:51Z", "activityName", "pnvdxz", "error",
+                "datahocxvdfffwafqrou", "pipelineName", "qhzvhxnkomt", "output", "dataxmprafwg", "activityRunId", "ltd",
+                "input", "datadymbrny", "pipelineRunId", "bo", "activityType", "ihfrbbcevqa", "status", "gtrd"));
         model = BinaryData.fromObject(model).toObject(ActivityRun.class);
     }
 

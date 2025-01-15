@@ -8,6 +8,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Simple JsonSerializable class that doesn't contain any Jackson properties nor is in a package that allows Jackson
@@ -55,5 +56,24 @@ public final class Simple implements JsonSerializable<Simple> {
 
             return new Simple(id, name);
         });
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof Simple)) {
+            return false;
+        }
+
+        Simple other = (Simple) obj;
+        return Objects.equals(id, other.id) && Objects.equals(name, other.name);
     }
 }

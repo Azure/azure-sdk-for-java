@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Object of the emerging issue impact on services and regions. */
+/**
+ * Object of the emerging issue impact on services and regions.
+ */
 @Fluent
-public final class EmergingIssueImpact {
+public final class EmergingIssueImpact implements JsonSerializable<EmergingIssueImpact> {
     /*
      * The impacted service id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The impacted service name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The list of impacted regions for corresponding emerging issues.
      */
-    @JsonProperty(value = "regions")
     private List<ImpactedRegion> regions;
 
-    /** Creates an instance of EmergingIssueImpact class. */
+    /**
+     * Creates an instance of EmergingIssueImpact class.
+     */
     public EmergingIssueImpact() {
     }
 
     /**
      * Get the id property: The impacted service id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +49,7 @@ public final class EmergingIssueImpact {
 
     /**
      * Set the id property: The impacted service id.
-     *
+     * 
      * @param id the id value to set.
      * @return the EmergingIssueImpact object itself.
      */
@@ -55,7 +60,7 @@ public final class EmergingIssueImpact {
 
     /**
      * Get the name property: The impacted service name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +69,7 @@ public final class EmergingIssueImpact {
 
     /**
      * Set the name property: The impacted service name.
-     *
+     * 
      * @param name the name value to set.
      * @return the EmergingIssueImpact object itself.
      */
@@ -75,7 +80,7 @@ public final class EmergingIssueImpact {
 
     /**
      * Get the regions property: The list of impacted regions for corresponding emerging issues.
-     *
+     * 
      * @return the regions value.
      */
     public List<ImpactedRegion> regions() {
@@ -84,7 +89,7 @@ public final class EmergingIssueImpact {
 
     /**
      * Set the regions property: The list of impacted regions for corresponding emerging issues.
-     *
+     * 
      * @param regions the regions value to set.
      * @return the EmergingIssueImpact object itself.
      */
@@ -95,12 +100,55 @@ public final class EmergingIssueImpact {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (regions() != null) {
             regions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("regions", this.regions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmergingIssueImpact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmergingIssueImpact if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EmergingIssueImpact.
+     */
+    public static EmergingIssueImpact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmergingIssueImpact deserializedEmergingIssueImpact = new EmergingIssueImpact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEmergingIssueImpact.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEmergingIssueImpact.name = reader.getString();
+                } else if ("regions".equals(fieldName)) {
+                    List<ImpactedRegion> regions = reader.readArray(reader1 -> ImpactedRegion.fromJson(reader1));
+                    deserializedEmergingIssueImpact.regions = regions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmergingIssueImpact;
+        });
     }
 }

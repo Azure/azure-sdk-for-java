@@ -66,8 +66,8 @@ public interface VideoAnalyzersClient {
      * @return the details of the specified Video Analyzer account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VideoAnalyzerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<VideoAnalyzerInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Create or update an instance of a Video Analyzer account.
@@ -81,8 +81,8 @@ public interface VideoAnalyzersClient {
      * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters);
+    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, VideoAnalyzerInner parameters);
 
     /**
      * Create or update an instance of a Video Analyzer account.
@@ -97,8 +97,8 @@ public interface VideoAnalyzersClient {
      * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context);
+    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, VideoAnalyzerInner parameters, Context context);
 
     /**
      * Create or update an instance of a Video Analyzer account.
@@ -127,8 +127,8 @@ public interface VideoAnalyzersClient {
      * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VideoAnalyzerInner createOrUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context);
+    VideoAnalyzerInner createOrUpdate(String resourceGroupName, String accountName, VideoAnalyzerInner parameters,
+        Context context);
 
     /**
      * Delete the specified Video Analyzer account.
@@ -168,8 +168,8 @@ public interface VideoAnalyzersClient {
      * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters);
+    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(String resourceGroupName,
+        String accountName, VideoAnalyzerUpdate parameters);
 
     /**
      * Updates an existing instance of Video Analyzer account.
@@ -184,8 +184,8 @@ public interface VideoAnalyzersClient {
      * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context);
+    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(String resourceGroupName,
+        String accountName, VideoAnalyzerUpdate parameters, Context context);
 
     /**
      * Updates an existing instance of Video Analyzer account.
@@ -214,8 +214,8 @@ public interface VideoAnalyzersClient {
      * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VideoAnalyzerInner update(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context);
+    VideoAnalyzerInner update(String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters,
+        Context context);
 
     /**
      * List all Video Analyzer accounts in the specified subscription.

@@ -17,34 +17,62 @@ import java.util.Set;
 /** An immutable client-side representation of an Azure traffic manager profile endpoint. */
 public interface TrafficManagerEndpoint
     extends ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>, HasInnerModel<EndpointInner> {
-    /** @return the endpoint type */
+    /**
+     * Gets the endpoint type.
+     *
+     * @return the endpoint type
+     */
     EndpointType endpointType();
 
-    /** @return the monitor status of the endpoint */
+    /**
+     * Gets the monitor status of the endpoint.
+     *
+     * @return the monitor status of the endpoint
+     */
     EndpointMonitorStatus monitorStatus();
 
-    /** @return true if the endpoint is enabled, false otherwise */
+    /**
+     * Checks whether the endpoint is enabled.
+     *
+     * @return true if the endpoint is enabled, false otherwise
+     */
     boolean isEnabled();
 
     /**
+     * Gets the weight of the endpoint which is used when traffic manager profile is configured.
+     *
      * @return the weight of the endpoint which is used when traffic manager profile is configured with Weighted
      *     traffic-routing method
      */
     long routingWeight();
 
     /**
+     * Gets the priority of the endpoint which is used when traffic manager profile is configured.
+     *
      * @return the priority of the endpoint which is used when traffic manager profile is configured with Priority
      *     traffic-routing method
      */
     long routingPriority();
 
-    /** @return the geographic location codes indicating the locations to which traffic will be distributed. */
+    /**
+     * Gets the geographic location codes indicating the locations to which traffic will be distributed.
+     *
+     * @return the geographic location codes indicating the locations to which traffic will be distributed.
+     */
     Set<String> geographicLocationCodes();
 
-    /** @return the list of subnets, IP addresses, and/or address ranges mapped to this endpoint. */
+    /**
+     * gets the list of subnets, IP addresses, and/or address ranges mapped to this endpoint.
+     *
+     * @return the list of subnets, IP addresses, and/or address ranges mapped to this endpoint.
+     */
     Collection<EndpointPropertiesSubnetsItem> subnets();
 
-    /** @return custom headers associated with the endpoint as key-value pair. */
+    /**
+     * Gets custom headers associated with the endpoint as key-value pair.
+     *
+     * @return custom headers associated with the endpoint as key-value pair.
+     */
     Map<String, String> customHeaders();
 
     /**
@@ -52,16 +80,12 @@ public interface TrafficManagerEndpoint
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.AzureTargetEndpointBlank<ParentT>,
-            DefinitionStages.ExternalTargetEndpointBlank<ParentT>,
-            DefinitionStages.NestedProfileTargetEndpointBlank<ParentT>,
-            DefinitionStages.WithAzureResource<ParentT>,
-            DefinitionStages.WithFqdn<ParentT>,
-            DefinitionStages.WithSourceTrafficRegion<ParentT>,
-            DefinitionStages.WithSourceTrafficRegionThenThreshold<ParentT>,
-            DefinitionStages.WithEndpointThreshold<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.AzureTargetEndpointBlank<ParentT>,
+        DefinitionStages.ExternalTargetEndpointBlank<ParentT>,
+        DefinitionStages.NestedProfileTargetEndpointBlank<ParentT>, DefinitionStages.WithAzureResource<ParentT>,
+        DefinitionStages.WithFqdn<ParentT>, DefinitionStages.WithSourceTrafficRegion<ParentT>,
+        DefinitionStages.WithSourceTrafficRegionThenThreshold<ParentT>, DefinitionStages.WithEndpointThreshold<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /**
@@ -246,6 +270,7 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
+
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
@@ -254,6 +279,7 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withGeographicLocation(String geographicLocationCode);
+
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
@@ -344,14 +370,10 @@ public interface TrafficManagerEndpoint
          *
          * @param <ParentT> the return type of {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                DefinitionStages.WithRoutingWeight<ParentT>,
-                DefinitionStages.WithRoutingPriority<ParentT>,
-                DefinitionStages.WithGeographicLocation<ParentT>,
-                DefinitionStages.WithTrafficDisabled<ParentT>,
-                DefinitionStages.WithSubnet<ParentT>,
-                DefinitionStages.WithCustomHeader<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>,
+            DefinitionStages.WithRoutingWeight<ParentT>, DefinitionStages.WithRoutingPriority<ParentT>,
+            DefinitionStages.WithGeographicLocation<ParentT>, DefinitionStages.WithTrafficDisabled<ParentT>,
+            DefinitionStages.WithSubnet<ParentT>, DefinitionStages.WithCustomHeader<ParentT> {
         }
     }
 
@@ -360,16 +382,13 @@ public interface TrafficManagerEndpoint
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.AzureTargetEndpointBlank<ParentT>,
-            UpdateDefinitionStages.ExternalTargetEndpointBlank<ParentT>,
-            UpdateDefinitionStages.NestedProfileTargetEndpointBlank<ParentT>,
-            UpdateDefinitionStages.WithAzureResource<ParentT>,
-            UpdateDefinitionStages.WithFqdn<ParentT>,
-            UpdateDefinitionStages.WithSourceTrafficRegion<ParentT>,
-            UpdateDefinitionStages.WithSourceTrafficRegionThenThreshold<ParentT>,
-            UpdateDefinitionStages.WithEndpointThreshold<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.AzureTargetEndpointBlank<ParentT>,
+        UpdateDefinitionStages.ExternalTargetEndpointBlank<ParentT>,
+        UpdateDefinitionStages.NestedProfileTargetEndpointBlank<ParentT>,
+        UpdateDefinitionStages.WithAzureResource<ParentT>, UpdateDefinitionStages.WithFqdn<ParentT>,
+        UpdateDefinitionStages.WithSourceTrafficRegion<ParentT>,
+        UpdateDefinitionStages.WithSourceTrafficRegionThenThreshold<ParentT>,
+        UpdateDefinitionStages.WithEndpointThreshold<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /**
@@ -545,6 +564,7 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withGeographicLocation(GeographicLocation geographicLocation);
+
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
@@ -553,6 +573,7 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
+
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
@@ -561,6 +582,7 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withGeographicLocation(String geographicLocationCode);
+
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
@@ -652,14 +674,10 @@ public interface TrafficManagerEndpoint
          *
          * @param <ParentT> the return type of {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-                UpdateDefinitionStages.WithRoutingWeight<ParentT>,
-                UpdateDefinitionStages.WithRoutingPriority<ParentT>,
-                UpdateDefinitionStages.WithGeographicLocation<ParentT>,
-                UpdateDefinitionStages.WithTrafficDisabled<ParentT>,
-                UpdateDefinitionStages.WithSubnet<ParentT>,
-                UpdateDefinitionStages.WithCustomHeader<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>,
+            UpdateDefinitionStages.WithRoutingWeight<ParentT>, UpdateDefinitionStages.WithRoutingPriority<ParentT>,
+            UpdateDefinitionStages.WithGeographicLocation<ParentT>, UpdateDefinitionStages.WithTrafficDisabled<ParentT>,
+            UpdateDefinitionStages.WithSubnet<ParentT>, UpdateDefinitionStages.WithCustomHeader<ParentT> {
         }
     }
 
@@ -680,14 +698,9 @@ public interface TrafficManagerEndpoint
      * the set of configurations that can be updated for all endpoint irrespective of their type (Azure, external,
      * nested profile).
      */
-    interface Update
-        extends Settable<TrafficManagerProfile.Update>,
-            UpdateStages.WithRoutingWeight,
-            UpdateStages.WithRoutingPriority,
-            UpdateStages.WithGeographicLocation,
-            UpdateStages.WithTrafficDisabledOrEnabled,
-            UpdateStages.WithSubnet,
-            UpdateStages.WithCustomHeader {
+    interface Update extends Settable<TrafficManagerProfile.Update>, UpdateStages.WithRoutingWeight,
+        UpdateStages.WithRoutingPriority, UpdateStages.WithGeographicLocation,
+        UpdateStages.WithTrafficDisabledOrEnabled, UpdateStages.WithSubnet, UpdateStages.WithCustomHeader {
     }
 
     /** Grouping of traffic manager profile endpoint update stages. */
@@ -784,6 +797,7 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the update
              */
             Update withGeographicLocation(GeographicLocation geographicLocation);
+
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
@@ -792,6 +806,7 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the update
              */
             Update withGeographicLocations(List<GeographicLocation> geographicLocations);
+
             /**
              * Specifies the geographic location to be removed from the endpoint's geographic location entries.
              *
@@ -799,6 +814,7 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the update
              */
             Update withoutGeographicLocation(GeographicLocation geographicLocation);
+
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
@@ -816,6 +832,7 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the update
              */
             Update withGeographicLocations(Collection<String> geographicLocationCodes);
+
             /**
              * Specifies the geographic location to be removed from the endpoint's geographic location entries.
              *

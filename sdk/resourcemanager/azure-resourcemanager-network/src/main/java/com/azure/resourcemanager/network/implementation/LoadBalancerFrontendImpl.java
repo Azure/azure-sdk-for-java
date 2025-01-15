@@ -33,15 +33,12 @@ import java.util.TreeMap;
 
 /** Implementation for LoadBalancerPublicFrontend. */
 class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfigurationInner, LoadBalancerImpl, LoadBalancer>
-    implements LoadBalancerFrontend,
-        LoadBalancerPrivateFrontend,
-        LoadBalancerPrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithCreate>,
-        LoadBalancerPrivateFrontend.UpdateDefinition<LoadBalancer.Update>,
-        LoadBalancerPrivateFrontend.Update,
-        LoadBalancerPublicFrontend,
-        LoadBalancerPublicFrontend.Definition<LoadBalancer.DefinitionStages.WithCreateAndOutboundRule>,
-        LoadBalancerPublicFrontend.UpdateDefinition<LoadBalancer.Update>,
-        LoadBalancerPublicFrontend.Update {
+    implements LoadBalancerFrontend, LoadBalancerPrivateFrontend,
+    LoadBalancerPrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+    LoadBalancerPrivateFrontend.UpdateDefinition<LoadBalancer.Update>, LoadBalancerPrivateFrontend.Update,
+    LoadBalancerPublicFrontend,
+    LoadBalancerPublicFrontend.Definition<LoadBalancer.DefinitionStages.WithCreateAndOutboundRule>,
+    LoadBalancerPublicFrontend.UpdateDefinition<LoadBalancer.Update>, LoadBalancerPublicFrontend.Update {
 
     LoadBalancerFrontendImpl(FrontendIpConfigurationInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
@@ -169,10 +166,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
     public LoadBalancerFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
         SubnetInner subnetRef = new SubnetInner();
         subnetRef.withId(parentNetworkResourceId + "/subnets/" + subnetName);
-        this
-            .innerModel()
-            .withSubnet(subnetRef)
-            .withPublicIpAddress(null); // Ensure no conflicting public and private settings
+        this.innerModel().withSubnet(subnetRef).withPublicIpAddress(null); // Ensure no conflicting public and private settings
         return this;
     }
 
@@ -200,8 +194,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
     @Override
     public LoadBalancerFrontendImpl withExistingPublicIpAddress(String resourceId) {
         PublicIpAddressInner pipRef = new PublicIpAddressInner().withId(resourceId);
-        this
-            .innerModel()
+        this.innerModel()
             .withPublicIpAddress(pipRef)
 
             // Ensure no conflicting public and private settings
@@ -219,8 +212,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
 
     @Override
     public LoadBalancerFrontendImpl withPrivateIpAddressDynamic() {
-        this
-            .innerModel()
+        this.innerModel()
             .withPrivateIpAddress(null)
             .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
 
@@ -231,8 +223,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
 
     @Override
     public LoadBalancerFrontendImpl withPrivateIpAddressStatic(String ipAddress) {
-        this
-            .innerModel()
+        this.innerModel()
             .withPrivateIpAddress(ipAddress)
             .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)
 

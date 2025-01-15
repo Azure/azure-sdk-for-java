@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DetachDataDiskPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DetachDataDiskProperties model =
-            BinaryData
-                .fromString("{\"existingLabDiskId\":\"jhbzxliohrdddtf\"}")
-                .toObject(DetachDataDiskProperties.class);
+        DetachDataDiskProperties model = BinaryData.fromString("{\"existingLabDiskId\":\"jhbzxliohrdddtf\"}")
+            .toObject(DetachDataDiskProperties.class);
         Assertions.assertEquals("jhbzxliohrdddtf", model.existingLabDiskId());
     }
 

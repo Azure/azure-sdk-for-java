@@ -29,8 +29,8 @@ public class PartitionContext {
      */
     public PartitionContext(String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
         String partitionId) {
-        this.fullyQualifiedNamespace = Objects
-            .requireNonNull(fullyQualifiedNamespace, "fullyQualifiedNamespace cannot be null");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "fullyQualifiedNamespace cannot be null");
         this.eventHubName = Objects.requireNonNull(eventHubName, "eventHubName cannot be null.");
         this.consumerGroup = Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         this.partitionId = Objects.requireNonNull(partitionId, "partitionId cannot be null.");

@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for FirewallRules CreateOrUpdate. */
+/**
+ * Samples for FirewallRules CreateOrUpdate.
+ */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/FirewallRuleCreate.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/FirewallRuleCreate.json
      */
     /**
      * Sample code: FirewallRuleCreate.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void firewallRuleCreate(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .firewallRules()
+        manager.firewallRules()
             .define("rule1")
             .withExistingServer("TestGroup", "testserver")
             .withStartIpAddress("0.0.0.0")

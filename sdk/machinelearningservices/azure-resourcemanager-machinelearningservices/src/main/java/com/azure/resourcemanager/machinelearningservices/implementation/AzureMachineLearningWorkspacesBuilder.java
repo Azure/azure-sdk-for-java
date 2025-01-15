@@ -16,7 +16,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the AzureMachineLearningWorkspacesImpl type. */
-@ServiceClientBuilder(serviceClients = {AzureMachineLearningWorkspacesImpl.class})
+@ServiceClientBuilder(serviceClients = { AzureMachineLearningWorkspacesImpl.class })
 public final class AzureMachineLearningWorkspacesBuilder {
     /*
      * Azure subscription identifier.
@@ -130,17 +130,15 @@ public final class AzureMachineLearningWorkspacesBuilder {
             this.defaultPollInterval = Duration.ofSeconds(30);
         }
         if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+            this.pipeline
+                = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        AzureMachineLearningWorkspacesImpl client =
-            new AzureMachineLearningWorkspacesImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        AzureMachineLearningWorkspacesImpl client = new AzureMachineLearningWorkspacesImpl(pipeline, serializerAdapter,
+            defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

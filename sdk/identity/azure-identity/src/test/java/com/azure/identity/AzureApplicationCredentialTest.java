@@ -37,18 +37,21 @@ public class AzureApplicationCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("AZURE_CLIENT_ID", CLIENT_ID)
-            .put("AZURE_CLIENT_SECRET", secret)
-            .put("AZURE_TENANT_ID", TENANT_ID));
+        Configuration configuration
+            = TestUtils.createTestConfiguration(new TestConfigurationSource().put("AZURE_CLIENT_ID", CLIENT_ID)
+                .put("AZURE_CLIENT_SECRET", secret)
+                .put("AZURE_TENANT_ID", TENANT_ID));
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
-            when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(request1))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+            })) {
             // test
-            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().configuration(configuration).build();
+            AzureApplicationCredential credential
+                = new AzureApplicationCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -67,14 +70,19 @@ public class AzureApplicationCredentialTest {
         Configuration configuration = new ConfigurationBuilder(source, source, source).build();
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithManagedIdentityMsalClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithManagedIdentityMsalClient(request))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
 
-        }); MockedConstruction<IntelliJCredential> intelliCredentialMock = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
-            when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
-        })) {
+            });
+            MockedConstruction<IntelliJCredential> intelliCredentialMock
+                = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
+                    when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
+                })) {
             // test
-            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().configuration(configuration).build();
+            AzureApplicationCredential credential
+                = new AzureApplicationCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -91,15 +99,17 @@ public class AzureApplicationCredentialTest {
         EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
         Configuration configuration = new ConfigurationBuilder(source, source, source).build();
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithManagedIdentityMsalClient(request))
-                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithManagedIdentityMsalClient(request)).thenReturn(
+                    Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
+            })) {
             // test
-            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().configuration(configuration).build();
+            AzureApplicationCredential credential
+                = new AzureApplicationCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request))
-                .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                    .startsWith("EnvironmentCredential authentication unavailable. "))
+                .expectErrorMatches(t -> t instanceof CredentialUnavailableException
+                    && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. "))
                 .verify();
             Assertions.assertNotNull(identityClientMock);
         }
@@ -113,17 +123,17 @@ public class AzureApplicationCredentialTest {
         Configuration configuration = new ConfigurationBuilder(source, source, source).build();
 
         // mock
-        try (MockedConstruction<ManagedIdentityCredential> managedIdentityCredentialMock = mockConstruction(ManagedIdentityCredential.class, (managedIdentityCredential, context) -> {
-            when(managedIdentityCredential.getToken(request))
-                .thenReturn(Mono.error(
-                    new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
-        })) {
+        try (MockedConstruction<ManagedIdentityCredential> managedIdentityCredentialMock
+            = mockConstruction(ManagedIdentityCredential.class, (managedIdentityCredential, context) -> {
+                when(managedIdentityCredential.getToken(request)).thenReturn(Mono
+                    .error(new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
+            })) {
             // test
-            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().configuration(configuration)
-                .build();
+            AzureApplicationCredential credential
+                = new AzureApplicationCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request))
-                .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                    .startsWith("EnvironmentCredential authentication unavailable. "))
+                .expectErrorMatches(t -> t instanceof CredentialUnavailableException
+                    && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. "))
                 .verify();
             Assertions.assertNotNull(managedIdentityCredentialMock);
         }

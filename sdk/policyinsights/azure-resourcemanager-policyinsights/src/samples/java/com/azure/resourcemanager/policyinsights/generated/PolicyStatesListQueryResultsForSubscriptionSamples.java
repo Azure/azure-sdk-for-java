@@ -4,193 +4,139 @@
 
 package com.azure.resourcemanager.policyinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.policyinsights.models.PolicyStatesResource;
 import java.time.OffsetDateTime;
 
-/** Samples for PolicyStates ListQueryResultsForSubscription. */
+/**
+ * Samples for PolicyStates ListQueryResultsForSubscription.
+ */
 public final class PolicyStatesListQueryResultsForSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionScope.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * PolicyStates_QuerySubscriptionScope.json
      */
     /**
      * Sample code: Query latest at subscription scope.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
-    public static void queryLatestAtSubscriptionScope(
-        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager
-            .policyStates()
-            .listQueryResultsForSubscription(
-                PolicyStatesResource.LATEST,
-                "fffedd8f-ffff-fffd-fffd-fffed2f84852",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                Context.NONE);
+    public static void
+        queryLatestAtSubscriptionScope(com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        manager.policyStates()
+            .listQueryResultsForSubscription(PolicyStatesResource.LATEST, "fffedd8f-ffff-fffd-fffd-fffed2f84852", null,
+                null, null, null, null, null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionScopeNextLink.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * PolicyStates_QuerySubscriptionScopeNextLink.json
      */
     /**
      * Sample code: Query latest at subscription scope with next link.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
     public static void queryLatestAtSubscriptionScopeWithNextLink(
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager
-            .policyStates()
-            .listQueryResultsForSubscription(
-                PolicyStatesResource.LATEST,
-                "fffedd8f-ffff-fffd-fffd-fffed2f84852",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                "WpmWfBSvPhkAK6QD",
-                Context.NONE);
+        manager.policyStates()
+            .listQueryResultsForSubscription(PolicyStatesResource.LATEST, "fffedd8f-ffff-fffd-fffd-fffed2f84852", null,
+                null, null, null, null, null, null, "WpmWfBSvPhkAK6QD", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_TimeRangeSortSelectTop.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * PolicyStates_TimeRangeSortSelectTop.json
      */
     /**
      * Sample code: Time range; sort, select and limit.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
-    public static void timeRangeSortSelectAndLimit(
-        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager
-            .policyStates()
-            .listQueryResultsForSubscription(
-                PolicyStatesResource.LATEST,
-                "fffedd8f-ffff-fffd-fffd-fffed2f84852",
-                2,
+    public static void
+        timeRangeSortSelectAndLimit(com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        manager.policyStates()
+            .listQueryResultsForSubscription(PolicyStatesResource.LATEST, "fffedd8f-ffff-fffd-fffd-fffed2f84852", 2,
                 "Timestamp desc, PolicyAssignmentId asc, SubscriptionId asc, ResourceGroup asc, ResourceId",
-                "Timestamp, PolicyAssignmentId, PolicyDefinitionId, SubscriptionId, ResourceGroup, ResourceId,"
-                    + " policyDefinitionGroupNames",
-                OffsetDateTime.parse("2019-10-05T18:00:00Z"),
-                OffsetDateTime.parse("2019-10-06T18:00:00Z"),
-                null,
-                null,
-                null,
-                Context.NONE);
+                "Timestamp, PolicyAssignmentId, PolicyDefinitionId, SubscriptionId, ResourceGroup, ResourceId, policyDefinitionGroupNames",
+                OffsetDateTime.parse("2019-10-05T18:00:00Z"), OffsetDateTime.parse("2019-10-06T18:00:00Z"), null, null,
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndAggregateOnly.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * PolicyStates_FilterAndAggregateOnly.json
      */
     /**
      * Sample code: Filter and aggregate only.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
     public static void filterAndAggregateOnly(com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager
-            .policyStates()
-            .listQueryResultsForSubscription(
-                PolicyStatesResource.LATEST,
-                "fffedd8f-ffff-fffd-fffd-fffed2f84852",
-                null,
-                null,
-                null,
-                OffsetDateTime.parse("2019-10-05T18:00:00Z"),
-                null,
-                "PolicyDefinitionAction eq 'deny'",
-                "aggregate($count as NumDenyStates)",
-                null,
-                Context.NONE);
+        manager.policyStates()
+            .listQueryResultsForSubscription(PolicyStatesResource.LATEST, "fffedd8f-ffff-fffd-fffd-fffed2f84852", null,
+                null, null, OffsetDateTime.parse("2019-10-05T18:00:00Z"), null, "PolicyDefinitionAction eq 'deny'",
+                "aggregate($count as NumDenyStates)", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndGroupByWithoutAggregate.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * PolicyStates_FilterAndGroupByWithoutAggregate.json
      */
     /**
      * Sample code: Filter and group without aggregate.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
-    public static void filterAndGroupWithoutAggregate(
-        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager
-            .policyStates()
-            .listQueryResultsForSubscription(
-                PolicyStatesResource.LATEST,
-                "fffedd8f-ffff-fffd-fffd-fffed2f84852",
-                2,
-                null,
-                null,
-                OffsetDateTime.parse("2019-10-05T18:00:00Z"),
-                null,
+    public static void
+        filterAndGroupWithoutAggregate(com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        manager.policyStates()
+            .listQueryResultsForSubscription(PolicyStatesResource.LATEST, "fffedd8f-ffff-fffd-fffd-fffed2f84852", 2,
+                null, null, OffsetDateTime.parse("2019-10-05T18:00:00Z"), null,
                 "IsCompliant eq false and (PolicyDefinitionAction ne 'audit' and PolicyDefinitionAction ne 'append')",
-                "groupby((PolicyAssignmentId, PolicyDefinitionId, PolicyDefinitionAction, ResourceId))",
-                null,
-                Context.NONE);
+                "groupby((PolicyAssignmentId, PolicyDefinitionId, PolicyDefinitionAction, ResourceId))", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndMultipleGroups.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * PolicyStates_FilterAndMultipleGroups.json
      */
     /**
      * Sample code: Filter and multiple groups.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
     public static void filterAndMultipleGroups(com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager
-            .policyStates()
-            .listQueryResultsForSubscription(
-                PolicyStatesResource.LATEST,
-                "fffedd8f-ffff-fffd-fffd-fffed2f84852",
-                10,
-                "NumNonCompliantResources desc",
-                null,
-                null,
-                null,
-                "IsCompliant eq false",
-                "groupby((PolicyAssignmentId, PolicySetDefinitionId, PolicyDefinitionId, PolicyDefinitionReferenceId,"
-                    + " ResourceId))/groupby((PolicyAssignmentId, PolicySetDefinitionId, PolicyDefinitionId,"
-                    + " PolicyDefinitionReferenceId), aggregate($count as NumNonCompliantResources))",
-                null,
-                Context.NONE);
+        manager.policyStates()
+            .listQueryResultsForSubscription(PolicyStatesResource.LATEST, "fffedd8f-ffff-fffd-fffd-fffed2f84852", 10,
+                "NumNonCompliantResources desc", null, null, null, "IsCompliant eq false",
+                "groupby((PolicyAssignmentId, PolicySetDefinitionId, PolicyDefinitionId, PolicyDefinitionReferenceId, ResourceId))/groupby((PolicyAssignmentId, PolicySetDefinitionId, PolicyDefinitionId, PolicyDefinitionReferenceId), aggregate($count as NumNonCompliantResources))",
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndGroupByWithAggregate.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * PolicyStates_FilterAndGroupByWithAggregate.json
      */
     /**
      * Sample code: Filter and group with aggregate.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
-    public static void filterAndGroupWithAggregate(
-        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager
-            .policyStates()
-            .listQueryResultsForSubscription(
-                PolicyStatesResource.LATEST,
-                "fffedd8f-ffff-fffd-fffd-fffed2f84852",
-                2,
-                "NumAuditDenyNonComplianceRecords desc",
-                null,
-                OffsetDateTime.parse("2019-10-05T18:00:00Z"),
-                null,
+    public static void
+        filterAndGroupWithAggregate(com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        manager.policyStates()
+            .listQueryResultsForSubscription(PolicyStatesResource.LATEST, "fffedd8f-ffff-fffd-fffd-fffed2f84852", 2,
+                "NumAuditDenyNonComplianceRecords desc", null, OffsetDateTime.parse("2019-10-05T18:00:00Z"), null,
                 "IsCompliant eq false and (PolicyDefinitionAction eq 'audit' or PolicyDefinitionAction eq 'deny')",
-                "groupby((PolicyAssignmentId, PolicyDefinitionId, PolicyDefinitionAction, ResourceId), aggregate($count"
-                    + " as NumAuditDenyNonComplianceRecords))",
-                null,
-                Context.NONE);
+                "groupby((PolicyAssignmentId, PolicyDefinitionId, PolicyDefinitionAction, ResourceId), aggregate($count as NumAuditDenyNonComplianceRecords))",
+                null, com.azure.core.util.Context.NONE);
     }
 }

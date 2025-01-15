@@ -60,20 +60,16 @@ public final class WebPubSubHubImpl implements WebPubSubHub, WebPubSubHub.Defini
     }
 
     public WebPubSubHub create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubHubs()
-                .createOrUpdate(hubName, resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubHubs()
+            .createOrUpdate(hubName, resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WebPubSubHub create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubHubs()
-                .createOrUpdate(hubName, resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubHubs()
+            .createOrUpdate(hubName, resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -88,49 +84,41 @@ public final class WebPubSubHubImpl implements WebPubSubHub, WebPubSubHub.Defini
     }
 
     public WebPubSubHub apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubHubs()
-                .createOrUpdate(hubName, resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubHubs()
+            .createOrUpdate(hubName, resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WebPubSubHub apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubHubs()
-                .createOrUpdate(hubName, resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubHubs()
+            .createOrUpdate(hubName, resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
-    WebPubSubHubImpl(
-        WebPubSubHubInner innerObject, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
+    WebPubSubHubImpl(WebPubSubHubInner innerObject,
+        com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "webPubSub");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webPubSub");
     }
 
     public WebPubSubHub refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubHubs()
-                .getWithResponse(hubName, resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubHubs()
+            .getWithResponse(hubName, resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebPubSubHub refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubHubs()
-                .getWithResponse(hubName, resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubHubs()
+            .getWithResponse(hubName, resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

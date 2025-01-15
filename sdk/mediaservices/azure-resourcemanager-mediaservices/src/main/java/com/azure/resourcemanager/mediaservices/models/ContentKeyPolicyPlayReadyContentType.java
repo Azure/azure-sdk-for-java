@@ -5,28 +5,37 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The PlayReady content type. */
+/**
+ * The PlayReady content type.
+ */
 public final class ContentKeyPolicyPlayReadyContentType
     extends ExpandableStringEnum<ContentKeyPolicyPlayReadyContentType> {
-    /** Static value Unknown for ContentKeyPolicyPlayReadyContentType. */
+    /**
+     * Static value Unknown for ContentKeyPolicyPlayReadyContentType.
+     */
     public static final ContentKeyPolicyPlayReadyContentType UNKNOWN = fromString("Unknown");
 
-    /** Static value Unspecified for ContentKeyPolicyPlayReadyContentType. */
+    /**
+     * Static value Unspecified for ContentKeyPolicyPlayReadyContentType.
+     */
     public static final ContentKeyPolicyPlayReadyContentType UNSPECIFIED = fromString("Unspecified");
 
-    /** Static value UltraVioletDownload for ContentKeyPolicyPlayReadyContentType. */
+    /**
+     * Static value UltraVioletDownload for ContentKeyPolicyPlayReadyContentType.
+     */
     public static final ContentKeyPolicyPlayReadyContentType ULTRA_VIOLET_DOWNLOAD = fromString("UltraVioletDownload");
 
-    /** Static value UltraVioletStreaming for ContentKeyPolicyPlayReadyContentType. */
-    public static final ContentKeyPolicyPlayReadyContentType ULTRA_VIOLET_STREAMING =
-        fromString("UltraVioletStreaming");
+    /**
+     * Static value UltraVioletStreaming for ContentKeyPolicyPlayReadyContentType.
+     */
+    public static final ContentKeyPolicyPlayReadyContentType ULTRA_VIOLET_STREAMING
+        = fromString("UltraVioletStreaming");
 
     /**
      * Creates a new instance of ContentKeyPolicyPlayReadyContentType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,18 +44,17 @@ public final class ContentKeyPolicyPlayReadyContentType
 
     /**
      * Creates or finds a ContentKeyPolicyPlayReadyContentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentKeyPolicyPlayReadyContentType.
      */
-    @JsonCreator
     public static ContentKeyPolicyPlayReadyContentType fromString(String name) {
         return fromString(name, ContentKeyPolicyPlayReadyContentType.class);
     }
 
     /**
      * Gets known ContentKeyPolicyPlayReadyContentType values.
-     *
+     * 
      * @return known ContentKeyPolicyPlayReadyContentType values.
      */
     public static Collection<ContentKeyPolicyPlayReadyContentType> values() {

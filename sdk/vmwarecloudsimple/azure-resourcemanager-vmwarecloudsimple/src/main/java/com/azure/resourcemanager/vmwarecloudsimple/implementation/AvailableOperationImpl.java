@@ -15,8 +15,7 @@ public final class AvailableOperationImpl implements AvailableOperation {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    AvailableOperationImpl(
-        AvailableOperationInner innerObject,
+    AvailableOperationImpl(AvailableOperationInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

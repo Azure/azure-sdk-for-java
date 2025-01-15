@@ -19,11 +19,8 @@ public class SqlRestorableDroppedDatabaseImpl
     private final String resourceGroupName;
     private final SqlServerManager sqlServerManager;
 
-    protected SqlRestorableDroppedDatabaseImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        RestorableDroppedDatabaseInner innerObject,
-        SqlServerManager sqlServerManager) {
+    protected SqlRestorableDroppedDatabaseImpl(String resourceGroupName, String sqlServerName,
+        RestorableDroppedDatabaseInner innerObject, SqlServerManager sqlServerManager) {
         super(innerObject);
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
@@ -67,9 +64,7 @@ public class SqlRestorableDroppedDatabaseImpl
 
     @Override
     protected Mono<RestorableDroppedDatabaseInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getRestorableDroppedDatabases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.innerModel().id());
     }

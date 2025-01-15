@@ -12,8 +12,7 @@ public final class EntityNameAvailabilityCheckOutputImpl implements EntityNameAv
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    EntityNameAvailabilityCheckOutputImpl(
-        EntityNameAvailabilityCheckOutputInner innerObject,
+    EntityNameAvailabilityCheckOutputImpl(EntityNameAvailabilityCheckOutputInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

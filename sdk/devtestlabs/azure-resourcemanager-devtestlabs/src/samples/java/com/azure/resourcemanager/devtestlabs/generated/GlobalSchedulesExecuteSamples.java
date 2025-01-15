@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.devtestlabs.generated;
 
-/** Samples for GlobalSchedules Execute. */
+/**
+ * Samples for GlobalSchedules Execute.
+ */
 public final class GlobalSchedulesExecuteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_Execute.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * GlobalSchedules_Execute.json
      */
     /**
      * Sample code: GlobalSchedules_Execute.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void globalSchedulesExecute(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {

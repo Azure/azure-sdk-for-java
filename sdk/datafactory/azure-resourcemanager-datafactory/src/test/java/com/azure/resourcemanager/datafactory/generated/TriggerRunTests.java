@@ -15,33 +15,28 @@ public final class TriggerRunTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TriggerRun model = BinaryData.fromString(
-            "{\"triggerRunId\":\"hcz\",\"triggerName\":\"rxzbujr\",\"triggerType\":\"hqvwrevkhgnlnzon\",\"triggerRunTimestamp\":\"2021-07-02T07:36:09Z\",\"status\":\"Inprogress\",\"message\":\"yw\",\"properties\":{\"zehtdhgb\":\"jtszcof\",\"reljeamur\":\"k\",\"xlpm\":\"zmlovuanash\"},\"triggeredPipelines\":{\"sdbccxjmonfdgnwn\":\"bdkelvidizo\",\"keifzzhmkdasv\":\"ypuuwwltvuqjctze\",\"cu\":\"lyhb\"},\"runDimension\":{\"lvizb\":\"xgsrboldforobw\",\"dxe\":\"hfovvacqpbtu\",\"elawumu\":\"zab\"},\"dependencyStatus\":{\"ucwyhahno\":\"datazkwrrwoyc\",\"fuurutlwexx\":\"datadrkywuhps\",\"srzpgepqtybbww\":\"datalalniex\"},\"\":{\"xkjibnxmy\":\"dataakchzyvlixqnrk\",\"ijpstte\":\"datauxswqrntvl\",\"wcyyufmhruncu\":\"dataoqq\"}}")
+            "{\"triggerRunId\":\"zddrt\",\"triggerName\":\"doj\",\"triggerType\":\"xv\",\"triggerRunTimestamp\":\"2021-02-28T00:16:23Z\",\"status\":\"Succeeded\",\"message\":\"eesvecu\",\"properties\":{\"awddjibab\":\"xtxsuwprtujw\",\"tvtzeexavoxtfg\":\"vit\"},\"triggeredPipelines\":{\"pypqtgsfj\":\"dmdqb\"},\"runDimension\":{\"d\":\"slhhxudbxv\"},\"dependencyStatus\":{\"gzrcxfailcfxwmdb\":\"datasirudhzmmesckdlp\",\"lnacgcc\":\"dataxdfgsftufqobr\"},\"\":{\"lj\":\"datahxkizvytnrzv\"}}")
             .toObject(TriggerRun.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TriggerRun model = new TriggerRun().withAdditionalProperties(mapOf("triggerRunId", "hcz", "triggerName",
-            "rxzbujr", "runDimension",
-            JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize("{\"lvizb\":\"xgsrboldforobw\",\"dxe\":\"hfovvacqpbtu\",\"elawumu\":\"zab\"}",
-                    Object.class, SerializerEncoding.JSON),
-            "dependencyStatus",
-            JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"ucwyhahno\":\"datazkwrrwoyc\",\"fuurutlwexx\":\"datadrkywuhps\",\"srzpgepqtybbww\":\"datalalniex\"}",
-                    Object.class, SerializerEncoding.JSON),
-            "triggeredPipelines",
-            JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"sdbccxjmonfdgnwn\":\"bdkelvidizo\",\"keifzzhmkdasv\":\"ypuuwwltvuqjctze\",\"cu\":\"lyhb\"}",
-                    Object.class, SerializerEncoding.JSON),
-            "triggerType", "hqvwrevkhgnlnzon", "triggerRunTimestamp", "2021-07-02T07:36:09Z", "message", "yw",
-            "properties",
-            JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize("{\"zehtdhgb\":\"jtszcof\",\"reljeamur\":\"k\",\"xlpm\":\"zmlovuanash\"}", Object.class,
-                    SerializerEncoding.JSON),
-            "status", "Inprogress"));
+        TriggerRun model = new TriggerRun()
+            .withAdditionalProperties(mapOf("triggerRunId", "zddrt", "triggerName", "doj", "runDimension",
+                JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize("{\"d\":\"slhhxudbxv\"}", Object.class, SerializerEncoding.JSON),
+                "dependencyStatus",
+                JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize("{\"gzrcxfailcfxwmdb\":\"datasirudhzmmesckdlp\",\"lnacgcc\":\"dataxdfgsftufqobr\"}",
+                        Object.class, SerializerEncoding.JSON),
+                "triggeredPipelines",
+                JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize("{\"pypqtgsfj\":\"dmdqb\"}", Object.class, SerializerEncoding.JSON),
+                "triggerType", "xv", "triggerRunTimestamp", "2021-02-28T00:16:23Z", "message", "eesvecu", "properties",
+                JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize("{\"awddjibab\":\"xtxsuwprtujw\",\"tvtzeexavoxtfg\":\"vit\"}", Object.class,
+                        SerializerEncoding.JSON),
+                "status", "Succeeded"));
         model = BinaryData.fromObject(model).toObject(TriggerRun.class);
     }
 

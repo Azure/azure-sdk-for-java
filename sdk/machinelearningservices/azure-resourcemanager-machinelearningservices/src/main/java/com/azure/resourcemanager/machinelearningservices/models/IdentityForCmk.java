@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Identity that will be used to access key vault for encryption at rest. */
 @Fluent
 public final class IdentityForCmk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityForCmk.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(IdentityForCmk.class);
 
     /*
      * The ArmId of the user assigned identity that will be used to access the

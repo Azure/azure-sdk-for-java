@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkRuleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"subnetId\":\"uf\"},\"name\":\"pymzidnsezcxtbzs\",\"type\":\"yc\",\"id\":\"newmdwzjeiachbo\"}")
-                .toObject(VirtualNetworkRuleInner.class);
-        Assertions.assertEquals("newmdwzjeiachbo", model.id());
+        VirtualNetworkRuleInner model = BinaryData.fromString(
+            "{\"properties\":{\"subnetId\":\"mgxsab\"},\"name\":\"qduujitcjczdz\",\"type\":\"ndhkrw\",\"id\":\"appd\"}")
+            .toObject(VirtualNetworkRuleInner.class);
+        Assertions.assertEquals("appd", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkRuleInner model = new VirtualNetworkRuleInner().withId("newmdwzjeiachbo");
+        VirtualNetworkRuleInner model = new VirtualNetworkRuleInner().withId("appd");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkRuleInner.class);
-        Assertions.assertEquals("newmdwzjeiachbo", model.id());
+        Assertions.assertEquals("appd", model.id());
     }
 }

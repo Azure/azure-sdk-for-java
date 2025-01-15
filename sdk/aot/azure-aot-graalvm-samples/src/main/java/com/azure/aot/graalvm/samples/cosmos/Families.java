@@ -3,11 +3,10 @@
 
 package com.azure.aot.graalvm.samples.cosmos;
 
-
 /**
  * Helper class to get family details.
  */
-public class Families {
+public final class Families {
 
     /**
      * Returns the family details of Andersen family.
@@ -24,7 +23,7 @@ public class Families {
         Parent parent2 = new Parent();
         parent2.setFirstName("Mary Kay");
 
-        andersenFamily.setParents(new Parent[]{parent1, parent2});
+        andersenFamily.setParents(new Parent[] { parent1, parent2 });
 
         Child child1 = new Child();
         child1.setFirstName("Henriette Thaulow");
@@ -34,7 +33,7 @@ public class Families {
         Pet pet1 = new Pet();
         pet1.setGivenName("Fluffy");
 
-        child1.setPets(new Pet[]{pet1});
+        child1.setPets(new Pet[] { pet1 });
 
         andersenFamily.setDistrict("WA5");
         Address address = new Address();
@@ -44,7 +43,7 @@ public class Families {
 
         andersenFamily.setAddress(address);
         andersenFamily.setRegistered(true);
-        andersenFamily.setChildren(new Child[]{child1});
+        andersenFamily.setChildren(new Child[] { child1 });
 
         return andersenFamily;
     }
@@ -66,7 +65,7 @@ public class Families {
         parent2.setFamilyName("Miller");
         parent2.setFirstName("Ben");
 
-        wakefieldFamily.setParents(new Parent[]{parent1, parent2});
+        wakefieldFamily.setParents(new Parent[] { parent1, parent2 });
 
         Child child1 = new Child();
         child1.setFirstName("Jesse");
@@ -79,7 +78,7 @@ public class Families {
         Pet pet2 = new Pet();
         pet2.setGivenName("Shadow");
 
-        child1.setPets(new Pet[]{pet1, pet2});
+        child1.setPets(new Pet[] { pet1, pet2 });
 
         Child child2 = new Child();
         child2.setFirstName("Lisa");
@@ -87,7 +86,7 @@ public class Families {
         child2.setGrade(1);
         child2.setGender("female");
 
-        wakefieldFamily.setChildren(new Child[]{child1, child2});
+        wakefieldFamily.setChildren(new Child[] { child1, child2 });
 
         Address address = new Address();
         address.setCity("NY");
@@ -97,7 +96,7 @@ public class Families {
         wakefieldFamily.setAddress(address);
         wakefieldFamily.setDistrict("NY23");
         wakefieldFamily.setRegistered(true);
-        wakefieldFamily.setChildren(new Child[]{child1, child2});
+        wakefieldFamily.setChildren(new Child[] { child1, child2 });
         return wakefieldFamily;
     }
 
@@ -116,7 +115,7 @@ public class Families {
         Parent parent2 = new Parent();
         parent2.setFirstName("Lili");
 
-        johnsonFamily.setParents(new Parent[]{parent1, parent2});
+        johnsonFamily.setParents(new Parent[] { parent1, parent2 });
 
         return johnsonFamily;
     }
@@ -135,8 +134,11 @@ public class Families {
 
         Parent parent2 = new Parent();
         parent2.setFirstName("Cynthia");
-        smithFamily.setParents(new Parent[]{parent1, parent2});
+        smithFamily.setParents(new Parent[] { parent1, parent2 });
 
         return smithFamily;
+    }
+
+    private Families() {
     }
 }

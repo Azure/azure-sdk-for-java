@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.timeseriesinsights.generated;
 
-/** Samples for Environments GetByResourceGroup. */
+/**
+ * Samples for Environments GetByResourceGroup.
+ */
 public final class EnvironmentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/EnvironmentsGet.json
+     * x-ms-original-file:
+     * specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/
+     * EnvironmentsGet.json
      */
     /**
      * Sample code: EnvironmentsGet.
-     *
+     * 
      * @param manager Entry point to TimeSeriesInsightsManager.
      */
     public static void environmentsGet(com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {

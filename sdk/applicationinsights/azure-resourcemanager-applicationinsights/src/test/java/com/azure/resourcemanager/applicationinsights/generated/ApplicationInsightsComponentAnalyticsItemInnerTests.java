@@ -14,35 +14,32 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentAnalyticsItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentAnalyticsItemInner model =
-            BinaryData
-                .fromString(
-                    "{\"Id\":\"okacspk\",\"Name\":\"hzdobpxjmflbvvnc\",\"Content\":\"kcciwwzjuqkhr\",\"Version\":\"jiwkuofoskghsau\",\"Scope\":\"user\",\"Type\":\"none\",\"TimeCreated\":\"xieduugidyjrr\",\"TimeModified\":\"y\",\"Properties\":{\"functionAlias\":\"v\"}}")
-                .toObject(ApplicationInsightsComponentAnalyticsItemInner.class);
-        Assertions.assertEquals("okacspk", model.id());
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.name());
-        Assertions.assertEquals("kcciwwzjuqkhr", model.content());
+        ApplicationInsightsComponentAnalyticsItemInner model = BinaryData.fromString(
+            "{\"Id\":\"oklyaxuconuq\",\"Name\":\"fkbey\",\"Content\":\"wrmjmwvvjektc\",\"Version\":\"enhwlrs\",\"Scope\":\"user\",\"Type\":\"query\",\"TimeCreated\":\"v\",\"TimeModified\":\"dqgbiqylihkaetc\",\"Properties\":{\"functionAlias\":\"fcivfsnkym\"}}")
+            .toObject(ApplicationInsightsComponentAnalyticsItemInner.class);
+        Assertions.assertEquals("oklyaxuconuq", model.id());
+        Assertions.assertEquals("fkbey", model.name());
+        Assertions.assertEquals("wrmjmwvvjektc", model.content());
         Assertions.assertEquals(ItemScope.USER, model.scope());
-        Assertions.assertEquals(ItemType.NONE, model.type());
-        Assertions.assertEquals("v", model.properties().functionAlias());
+        Assertions.assertEquals(ItemType.QUERY, model.type());
+        Assertions.assertEquals("fcivfsnkym", model.properties().functionAlias());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentAnalyticsItemInner model =
-            new ApplicationInsightsComponentAnalyticsItemInner()
-                .withId("okacspk")
-                .withName("hzdobpxjmflbvvnc")
-                .withContent("kcciwwzjuqkhr")
-                .withScope(ItemScope.USER)
-                .withType(ItemType.NONE)
-                .withProperties(new ApplicationInsightsComponentAnalyticsItemProperties().withFunctionAlias("v"));
+        ApplicationInsightsComponentAnalyticsItemInner model = new ApplicationInsightsComponentAnalyticsItemInner()
+            .withId("oklyaxuconuq")
+            .withName("fkbey")
+            .withContent("wrmjmwvvjektc")
+            .withScope(ItemScope.USER)
+            .withType(ItemType.QUERY)
+            .withProperties(new ApplicationInsightsComponentAnalyticsItemProperties().withFunctionAlias("fcivfsnkym"));
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsComponentAnalyticsItemInner.class);
-        Assertions.assertEquals("okacspk", model.id());
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.name());
-        Assertions.assertEquals("kcciwwzjuqkhr", model.content());
+        Assertions.assertEquals("oklyaxuconuq", model.id());
+        Assertions.assertEquals("fkbey", model.name());
+        Assertions.assertEquals("wrmjmwvvjektc", model.content());
         Assertions.assertEquals(ItemScope.USER, model.scope());
-        Assertions.assertEquals(ItemType.NONE, model.type());
-        Assertions.assertEquals("v", model.properties().functionAlias());
+        Assertions.assertEquals(ItemType.QUERY, model.type());
+        Assertions.assertEquals("fcivfsnkym", model.properties().functionAlias());
     }
 }

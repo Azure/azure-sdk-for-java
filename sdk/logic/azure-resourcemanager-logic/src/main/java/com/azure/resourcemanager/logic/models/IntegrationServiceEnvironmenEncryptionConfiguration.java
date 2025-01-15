@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The encryption configuration for the integration service environment. */
+/**
+ * The encryption configuration for the integration service environment.
+ */
 @Fluent
-public final class IntegrationServiceEnvironmenEncryptionConfiguration {
+public final class IntegrationServiceEnvironmenEncryptionConfiguration
+    implements JsonSerializable<IntegrationServiceEnvironmenEncryptionConfiguration> {
     /*
      * The encryption key reference.
      */
-    @JsonProperty(value = "encryptionKeyReference")
     private IntegrationServiceEnvironmenEncryptionKeyReference encryptionKeyReference;
 
-    /** Creates an instance of IntegrationServiceEnvironmenEncryptionConfiguration class. */
+    /**
+     * Creates an instance of IntegrationServiceEnvironmenEncryptionConfiguration class.
+     */
     public IntegrationServiceEnvironmenEncryptionConfiguration() {
     }
 
     /**
      * Get the encryptionKeyReference property: The encryption key reference.
-     *
+     * 
      * @return the encryptionKeyReference value.
      */
     public IntegrationServiceEnvironmenEncryptionKeyReference encryptionKeyReference() {
@@ -31,24 +39,63 @@ public final class IntegrationServiceEnvironmenEncryptionConfiguration {
 
     /**
      * Set the encryptionKeyReference property: The encryption key reference.
-     *
+     * 
      * @param encryptionKeyReference the encryptionKeyReference value to set.
      * @return the IntegrationServiceEnvironmenEncryptionConfiguration object itself.
      */
-    public IntegrationServiceEnvironmenEncryptionConfiguration withEncryptionKeyReference(
-        IntegrationServiceEnvironmenEncryptionKeyReference encryptionKeyReference) {
+    public IntegrationServiceEnvironmenEncryptionConfiguration
+        withEncryptionKeyReference(IntegrationServiceEnvironmenEncryptionKeyReference encryptionKeyReference) {
         this.encryptionKeyReference = encryptionKeyReference;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (encryptionKeyReference() != null) {
             encryptionKeyReference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("encryptionKeyReference", this.encryptionKeyReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationServiceEnvironmenEncryptionConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationServiceEnvironmenEncryptionConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationServiceEnvironmenEncryptionConfiguration.
+     */
+    public static IntegrationServiceEnvironmenEncryptionConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationServiceEnvironmenEncryptionConfiguration deserializedIntegrationServiceEnvironmenEncryptionConfiguration
+                = new IntegrationServiceEnvironmenEncryptionConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryptionKeyReference".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmenEncryptionConfiguration.encryptionKeyReference
+                        = IntegrationServiceEnvironmenEncryptionKeyReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationServiceEnvironmenEncryptionConfiguration;
+        });
     }
 }

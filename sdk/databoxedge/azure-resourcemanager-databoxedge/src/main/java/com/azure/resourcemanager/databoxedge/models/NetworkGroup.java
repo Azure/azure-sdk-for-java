@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The network group. */
+/**
+ * The network group.
+ */
 public final class NetworkGroup extends ExpandableStringEnum<NetworkGroup> {
-    /** Static value None for NetworkGroup. */
+    /**
+     * Static value None for NetworkGroup.
+     */
     public static final NetworkGroup NONE = fromString("None");
 
-    /** Static value NonRDMA for NetworkGroup. */
+    /**
+     * Static value NonRDMA for NetworkGroup.
+     */
     public static final NetworkGroup NON_RDMA = fromString("NonRDMA");
 
-    /** Static value RDMA for NetworkGroup. */
+    /**
+     * Static value RDMA for NetworkGroup.
+     */
     public static final NetworkGroup RDMA = fromString("RDMA");
 
     /**
      * Creates a new instance of NetworkGroup value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class NetworkGroup extends ExpandableStringEnum<NetworkGroup> {
 
     /**
      * Creates or finds a NetworkGroup from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkGroup.
      */
-    @JsonCreator
     public static NetworkGroup fromString(String name) {
         return fromString(name, NetworkGroup.class);
     }
 
     /**
      * Gets known NetworkGroup values.
-     *
+     * 
      * @return known NetworkGroup values.
      */
     public static Collection<NetworkGroup> values() {

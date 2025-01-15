@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @Timeout(value = 10, unit = TimeUnit.MINUTES)
 public class EmailClientTests extends EmailTestBase {
 
@@ -30,8 +31,7 @@ public class EmailClientTests extends EmailTestBase {
     public void sendEmailToSingleRecipient(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
-        EmailMessage message = new EmailMessage()
-            .setSenderAddress(SENDER_ADDRESS)
+        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
             .setSubject("test subject")
             .setBodyHtml("<h1>test message</h1>");
@@ -47,8 +47,7 @@ public class EmailClientTests extends EmailTestBase {
     public void sendEmailToMultipleRecipients(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
-        EmailMessage message = new EmailMessage()
-            .setSenderAddress(SENDER_ADDRESS)
+        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setSubject("test subject")
             .setBodyPlainText("test message")
             .setToRecipients(RECIPIENT_ADDRESS, SECOND_RECIPIENT_ADDRESS)
@@ -66,17 +65,32 @@ public class EmailClientTests extends EmailTestBase {
     public void sendEmailWithAttachment(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
-        EmailAttachment attachment = new EmailAttachment(
-            "attachment.txt",
-            "text/plain",
-            BinaryData.fromString("test")
-        );
+        EmailAttachment attachment = new EmailAttachment("attachment.txt", "text/plain", BinaryData.fromString("test"));
 
-        EmailMessage message = new EmailMessage()
-            .setSenderAddress(SENDER_ADDRESS)
+        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
             .setSubject("test subject")
             .setBodyHtml("<h1>test message</h1>")
+            .setAttachments(attachment);
+
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
+
+        assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTestParameters")
+    public void sendEmailWithInlineAttachment(HttpClient httpClient) {
+        emailClient = getEmailClient(httpClient);
+
+        EmailAttachment attachment = new EmailAttachment("inlineimage.jpg", "image/jpeg", BinaryData.fromString("test"))
+            .setContentId("inline_image");
+
+        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
+            .setToRecipients(RECIPIENT_ADDRESS)
+            .setSubject("test subject")
+            .setBodyHtml("<h1>test message<img src=\"cid:inline_image\"></h1>")
             .setAttachments(attachment);
 
         SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);

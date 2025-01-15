@@ -16,11 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl
-    implements RegistryDockerTaskStep,
-        RegistryDockerTaskStep.Definition,
-        RegistryDockerTaskStep.Update,
-        HasInnerModel<DockerTaskStep> {
+class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl implements RegistryDockerTaskStep,
+    RegistryDockerTaskStep.Definition, RegistryDockerTaskStep.Update, HasInnerModel<DockerTaskStep> {
 
     private DockerTaskStep inner;
     private DockerBuildStepUpdateParameters dockerTaskStepUpdateParameters;

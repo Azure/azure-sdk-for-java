@@ -11,20 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class OpenAuthenticationPolicyClaimTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OpenAuthenticationPolicyClaim model =
-            BinaryData
-                .fromString("{\"name\":\"ovmclwhijcoejct\",\"value\":\"aqsqsycbkbfk\"}")
-                .toObject(OpenAuthenticationPolicyClaim.class);
-        Assertions.assertEquals("ovmclwhijcoejct", model.name());
-        Assertions.assertEquals("aqsqsycbkbfk", model.value());
+        OpenAuthenticationPolicyClaim model = BinaryData.fromString("{\"name\":\"txon\",\"value\":\"ts\"}")
+            .toObject(OpenAuthenticationPolicyClaim.class);
+        Assertions.assertEquals("txon", model.name());
+        Assertions.assertEquals("ts", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OpenAuthenticationPolicyClaim model =
-            new OpenAuthenticationPolicyClaim().withName("ovmclwhijcoejct").withValue("aqsqsycbkbfk");
+        OpenAuthenticationPolicyClaim model = new OpenAuthenticationPolicyClaim().withName("txon").withValue("ts");
         model = BinaryData.fromObject(model).toObject(OpenAuthenticationPolicyClaim.class);
-        Assertions.assertEquals("ovmclwhijcoejct", model.name());
-        Assertions.assertEquals("aqsqsycbkbfk", model.value());
+        Assertions.assertEquals("txon", model.name());
+        Assertions.assertEquals("ts", model.value());
     }
 }

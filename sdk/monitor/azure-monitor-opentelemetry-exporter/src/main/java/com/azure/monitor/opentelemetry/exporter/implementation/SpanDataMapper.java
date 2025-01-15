@@ -768,9 +768,7 @@ public final class SpanDataMapper {
                     if (stacktrace != null && !shouldSuppress.test(span, event)) {
                         String exceptionLogged = span.getAttributes().get(AiSemanticAttributes.LOGGED_EXCEPTION);
                         if (!stacktrace.equals(exceptionLogged)) {
-                            consumer.accept(createExceptionTelemetryItem(
-                                event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE), span, operationName,
-                                sampleRate));
+                            consumer.accept(createExceptionTelemetryItem(event, span, operationName, sampleRate));
                         }
                     }
                 }
@@ -801,7 +799,7 @@ public final class SpanDataMapper {
         }
     }
 
-    private TelemetryItem createExceptionTelemetryItem(String errorStack, SpanData span, @Nullable String operationName,
+    private TelemetryItem createExceptionTelemetryItem(EventData event, SpanData span, @Nullable String operationName,
         @Nullable Double sampleRate) {
 
         ExceptionTelemetryBuilder telemetryBuilder = ExceptionTelemetryBuilder.create();
@@ -815,13 +813,15 @@ public final class SpanDataMapper {
         } else {
             setOperationName(telemetryBuilder, span.getAttributes());
         }
-        setTime(telemetryBuilder, span.getEndEpochNanos());
+        setTime(telemetryBuilder, event.getEpochNanos());
         setSampleRate(telemetryBuilder, sampleRate);
 
+        // TODO (trask) should this map the span attributes or the event attributes?
         MAPPINGS.map(span.getAttributes(), telemetryBuilder);
 
         // set exception-specific properties
-        setExceptions(errorStack, span.getAttributes(), telemetryBuilder);
+        String errorStack = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
+        setExceptions(errorStack, event.getAttributes(), telemetryBuilder);
 
         return telemetryBuilder.build();
     }

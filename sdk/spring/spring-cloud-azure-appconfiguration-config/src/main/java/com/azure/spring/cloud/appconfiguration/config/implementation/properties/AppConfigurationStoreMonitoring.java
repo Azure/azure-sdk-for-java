@@ -15,14 +15,30 @@ import jakarta.annotation.PostConstruct;
  */
 public final class AppConfigurationStoreMonitoring {
 
+    /**
+     * If true, the application will check for updates to the configuration store.
+     * When set to true at least one trigger must be set.
+     */
     private boolean enabled = false;
 
+    /**
+     * The minimum time between checks. The minimum valid time is 1s. The default refresh interval is 30s.
+     */
     private Duration refreshInterval = Duration.ofSeconds(30);
 
+    /**
+     * The minimum time between checks of feature flags. The minimum valid time is 1s. The default refresh interval is 30s.
+     */
     private Duration featureFlagRefreshInterval = Duration.ofSeconds(30);
 
+    /**
+     * List of triggers that will cause a refresh of the configuration store.
+     */
     private List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
 
+    /**
+     * Validation tokens for push notificaiton requests.
+     */
     private PushNotification pushNotification = new PushNotification();
 
     /**
@@ -118,8 +134,14 @@ public final class AppConfigurationStoreMonitoring {
      */
     public static class PushNotification {
 
+        /**
+         * Validation token for push notification requests.
+         */
         private AccessToken primaryToken = new AccessToken();
 
+        /**
+         * Secondary validation token for push notification requests.
+         */
         private AccessToken secondaryToken = new AccessToken();
 
         /**
@@ -156,8 +178,14 @@ public final class AppConfigurationStoreMonitoring {
      */
     public static class AccessToken {
 
+        /**
+         * Name of the token.
+         */
         private String name;
 
+        /**
+         * Secret for the token.
+         */
         private String secret;
 
         /**

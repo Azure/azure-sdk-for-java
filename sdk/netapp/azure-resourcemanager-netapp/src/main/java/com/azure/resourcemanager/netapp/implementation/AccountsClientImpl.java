@@ -35,6 +35,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
+import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
+import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
 import com.azure.resourcemanager.netapp.models.NetAppAccountList;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
 import java.nio.ByteBuffer;
@@ -135,6 +137,36 @@ public final class AccountsClientImpl implements AccountsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/transitiontocmk")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> transitionToCmk(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") EncryptionTransitionRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/getKeyVaultStatus")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getChangeKeyVaultInformation(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/changeKeyVault")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> changeKeyVault(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ChangeKeyVault body,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1490,6 +1522,837 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renewCredentials(String resourceGroupName, String accountName, Context context) {
         renewCredentialsAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption transition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> transitionToCmkWithResponseAsync(String resourceGroupName,
+        String accountName, EncryptionTransitionRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.transitionToCmk(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption transition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> transitionToCmkWithResponseAsync(String resourceGroupName,
+        String accountName, EncryptionTransitionRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.transitionToCmk(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), body, accept, context);
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption transition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginTransitionToCmkAsync(String resourceGroupName, String accountName,
+        EncryptionTransitionRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = transitionToCmkWithResponseAsync(resourceGroupName, accountName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginTransitionToCmkAsync(String resourceGroupName, String accountName) {
+        final EncryptionTransitionRequest body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = transitionToCmkWithResponseAsync(resourceGroupName, accountName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption transition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginTransitionToCmkAsync(String resourceGroupName, String accountName,
+        EncryptionTransitionRequest body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = transitionToCmkWithResponseAsync(resourceGroupName, accountName, body, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName) {
+        final EncryptionTransitionRequest body = null;
+        return this.beginTransitionToCmkAsync(resourceGroupName, accountName, body).getSyncPoller();
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption transition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName,
+        EncryptionTransitionRequest body, Context context) {
+        return this.beginTransitionToCmkAsync(resourceGroupName, accountName, body, context).getSyncPoller();
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption transition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> transitionToCmkAsync(String resourceGroupName, String accountName,
+        EncryptionTransitionRequest body) {
+        return beginTransitionToCmkAsync(resourceGroupName, accountName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> transitionToCmkAsync(String resourceGroupName, String accountName) {
+        final EncryptionTransitionRequest body = null;
+        return beginTransitionToCmkAsync(resourceGroupName, accountName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption transition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> transitionToCmkAsync(String resourceGroupName, String accountName,
+        EncryptionTransitionRequest body, Context context) {
+        return beginTransitionToCmkAsync(resourceGroupName, accountName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void transitionToCmk(String resourceGroupName, String accountName) {
+        final EncryptionTransitionRequest body = null;
+        transitionToCmkAsync(resourceGroupName, accountName, body).block();
+    }
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption transition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void transitionToCmk(String resourceGroupName, String accountName, EncryptionTransitionRequest body,
+        Context context) {
+        transitionToCmkAsync(resourceGroupName, accountName, body, context).block();
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getChangeKeyVaultInformationWithResponseAsync(String resourceGroupName,
+        String accountName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getChangeKeyVaultInformation(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getChangeKeyVaultInformationWithResponseAsync(String resourceGroupName,
+        String accountName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getChangeKeyVaultInformation(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginGetChangeKeyVaultInformationAsync(String resourceGroupName,
+        String accountName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getChangeKeyVaultInformationWithResponseAsync(resourceGroupName, accountName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginGetChangeKeyVaultInformationAsync(String resourceGroupName,
+        String accountName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getChangeKeyVaultInformationWithResponseAsync(resourceGroupName, accountName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginGetChangeKeyVaultInformation(String resourceGroupName,
+        String accountName) {
+        return this.beginGetChangeKeyVaultInformationAsync(resourceGroupName, accountName).getSyncPoller();
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginGetChangeKeyVaultInformation(String resourceGroupName,
+        String accountName, Context context) {
+        return this.beginGetChangeKeyVaultInformationAsync(resourceGroupName, accountName, context).getSyncPoller();
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> getChangeKeyVaultInformationAsync(String resourceGroupName, String accountName) {
+        return beginGetChangeKeyVaultInformationAsync(resourceGroupName, accountName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> getChangeKeyVaultInformationAsync(String resourceGroupName, String accountName,
+        Context context) {
+        return beginGetChangeKeyVaultInformationAsync(resourceGroupName, accountName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getChangeKeyVaultInformation(String resourceGroupName, String accountName) {
+        getChangeKeyVaultInformationAsync(resourceGroupName, accountName).block();
+    }
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context) {
+        getChangeKeyVaultInformationAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> changeKeyVaultWithResponseAsync(String resourceGroupName,
+        String accountName, ChangeKeyVault body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.changeKeyVault(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> changeKeyVaultWithResponseAsync(String resourceGroupName,
+        String accountName, ChangeKeyVault body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.changeKeyVault(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), body, accept, context);
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginChangeKeyVaultAsync(String resourceGroupName, String accountName,
+        ChangeKeyVault body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = changeKeyVaultWithResponseAsync(resourceGroupName, accountName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginChangeKeyVaultAsync(String resourceGroupName, String accountName) {
+        final ChangeKeyVault body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = changeKeyVaultWithResponseAsync(resourceGroupName, accountName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginChangeKeyVaultAsync(String resourceGroupName, String accountName,
+        ChangeKeyVault body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = changeKeyVaultWithResponseAsync(resourceGroupName, accountName, body, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName) {
+        final ChangeKeyVault body = null;
+        return this.beginChangeKeyVaultAsync(resourceGroupName, accountName, body).getSyncPoller();
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName,
+        ChangeKeyVault body, Context context) {
+        return this.beginChangeKeyVaultAsync(resourceGroupName, accountName, body, context).getSyncPoller();
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> changeKeyVaultAsync(String resourceGroupName, String accountName, ChangeKeyVault body) {
+        return beginChangeKeyVaultAsync(resourceGroupName, accountName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> changeKeyVaultAsync(String resourceGroupName, String accountName) {
+        final ChangeKeyVault body = null;
+        return beginChangeKeyVaultAsync(resourceGroupName, accountName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> changeKeyVaultAsync(String resourceGroupName, String accountName, ChangeKeyVault body,
+        Context context) {
+        return beginChangeKeyVaultAsync(resourceGroupName, accountName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void changeKeyVault(String resourceGroupName, String accountName) {
+        final ChangeKeyVault body = null;
+        changeKeyVaultAsync(resourceGroupName, accountName, body).block();
+    }
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void changeKeyVault(String resourceGroupName, String accountName, ChangeKeyVault body, Context context) {
+        changeKeyVaultAsync(resourceGroupName, accountName, body, context).block();
     }
 
     /**

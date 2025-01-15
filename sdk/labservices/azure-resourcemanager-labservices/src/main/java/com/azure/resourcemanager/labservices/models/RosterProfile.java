@@ -5,45 +5,52 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The lab user list management profile. */
+/**
+ * The lab user list management profile.
+ */
 @Fluent
-public final class RosterProfile {
+public final class RosterProfile implements JsonSerializable<RosterProfile> {
     /*
      * The AAD group ID which this lab roster is populated from. Having this set enables AAD sync mode.
      */
-    @JsonProperty(value = "activeDirectoryGroupId")
     private String activeDirectoryGroupId;
 
     /*
      * The unique context identifier for the lab in the lms.
      */
-    @JsonProperty(value = "ltiContextId")
     private String ltiContextId;
 
     /*
      * The base URI identifying the lms instance.
      */
-    @JsonProperty(value = "lmsInstance")
     private String lmsInstance;
 
     /*
      * The unique id of the azure lab services tool in the lms.
      */
-    @JsonProperty(value = "ltiClientId")
     private String ltiClientId;
 
     /*
      * The uri of the names and roles service endpoint on the lms for the class attached to this lab.
      */
-    @JsonProperty(value = "ltiRosterEndpoint")
     private String ltiRosterEndpoint;
+
+    /**
+     * Creates an instance of RosterProfile class.
+     */
+    public RosterProfile() {
+    }
 
     /**
      * Get the activeDirectoryGroupId property: The AAD group ID which this lab roster is populated from. Having this
      * set enables AAD sync mode.
-     *
+     * 
      * @return the activeDirectoryGroupId value.
      */
     public String activeDirectoryGroupId() {
@@ -53,7 +60,7 @@ public final class RosterProfile {
     /**
      * Set the activeDirectoryGroupId property: The AAD group ID which this lab roster is populated from. Having this
      * set enables AAD sync mode.
-     *
+     * 
      * @param activeDirectoryGroupId the activeDirectoryGroupId value to set.
      * @return the RosterProfile object itself.
      */
@@ -64,7 +71,7 @@ public final class RosterProfile {
 
     /**
      * Get the ltiContextId property: The unique context identifier for the lab in the lms.
-     *
+     * 
      * @return the ltiContextId value.
      */
     public String ltiContextId() {
@@ -73,7 +80,7 @@ public final class RosterProfile {
 
     /**
      * Set the ltiContextId property: The unique context identifier for the lab in the lms.
-     *
+     * 
      * @param ltiContextId the ltiContextId value to set.
      * @return the RosterProfile object itself.
      */
@@ -84,7 +91,7 @@ public final class RosterProfile {
 
     /**
      * Get the lmsInstance property: The base URI identifying the lms instance.
-     *
+     * 
      * @return the lmsInstance value.
      */
     public String lmsInstance() {
@@ -93,7 +100,7 @@ public final class RosterProfile {
 
     /**
      * Set the lmsInstance property: The base URI identifying the lms instance.
-     *
+     * 
      * @param lmsInstance the lmsInstance value to set.
      * @return the RosterProfile object itself.
      */
@@ -104,7 +111,7 @@ public final class RosterProfile {
 
     /**
      * Get the ltiClientId property: The unique id of the azure lab services tool in the lms.
-     *
+     * 
      * @return the ltiClientId value.
      */
     public String ltiClientId() {
@@ -113,7 +120,7 @@ public final class RosterProfile {
 
     /**
      * Set the ltiClientId property: The unique id of the azure lab services tool in the lms.
-     *
+     * 
      * @param ltiClientId the ltiClientId value to set.
      * @return the RosterProfile object itself.
      */
@@ -125,7 +132,7 @@ public final class RosterProfile {
     /**
      * Get the ltiRosterEndpoint property: The uri of the names and roles service endpoint on the lms for the class
      * attached to this lab.
-     *
+     * 
      * @return the ltiRosterEndpoint value.
      */
     public String ltiRosterEndpoint() {
@@ -135,7 +142,7 @@ public final class RosterProfile {
     /**
      * Set the ltiRosterEndpoint property: The uri of the names and roles service endpoint on the lms for the class
      * attached to this lab.
-     *
+     * 
      * @param ltiRosterEndpoint the ltiRosterEndpoint value to set.
      * @return the RosterProfile object itself.
      */
@@ -146,9 +153,57 @@ public final class RosterProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("activeDirectoryGroupId", this.activeDirectoryGroupId);
+        jsonWriter.writeStringField("ltiContextId", this.ltiContextId);
+        jsonWriter.writeStringField("lmsInstance", this.lmsInstance);
+        jsonWriter.writeStringField("ltiClientId", this.ltiClientId);
+        jsonWriter.writeStringField("ltiRosterEndpoint", this.ltiRosterEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RosterProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RosterProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RosterProfile.
+     */
+    public static RosterProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RosterProfile deserializedRosterProfile = new RosterProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("activeDirectoryGroupId".equals(fieldName)) {
+                    deserializedRosterProfile.activeDirectoryGroupId = reader.getString();
+                } else if ("ltiContextId".equals(fieldName)) {
+                    deserializedRosterProfile.ltiContextId = reader.getString();
+                } else if ("lmsInstance".equals(fieldName)) {
+                    deserializedRosterProfile.lmsInstance = reader.getString();
+                } else if ("ltiClientId".equals(fieldName)) {
+                    deserializedRosterProfile.ltiClientId = reader.getString();
+                } else if ("ltiRosterEndpoint".equals(fieldName)) {
+                    deserializedRosterProfile.ltiRosterEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRosterProfile;
+        });
     }
 }

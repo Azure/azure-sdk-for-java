@@ -3,48 +3,66 @@
 
 package com.azure.ai.personalizer.testmodels;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
-public class Environment {
-    @JsonGetter
+import java.io.IOException;
+
+import static com.azure.ai.personalizer.TestUtils.deserializationHelper;
+
+public class Environment implements JsonSerializable<Environment> {
+    String dayOfMonth;
+    String monthOfYear;
+    String weather;
+
     public String getDayOfMonth() {
         return dayOfMonth;
     }
 
-    @JsonSetter
     public Environment setDayOfMonth(String dayOfMonth) {
         this.dayOfMonth = dayOfMonth;
         return this;
     }
 
-    @JsonGetter
     public String getMonthOfYear() {
         return monthOfYear;
     }
 
-    @JsonSetter
     public Environment setMonthOfYear(String monthOfYear) {
         this.monthOfYear = monthOfYear;
         return this;
     }
 
-    @JsonGetter
     public String getWeather() {
         return weather;
     }
 
-    @JsonSetter
     public Environment setWeather(String weather) {
         this.weather = weather;
         return this;
     }
 
-    @JsonProperty
-    String dayOfMonth;
-    @JsonProperty
-    String monthOfYear;
-    @JsonProperty
-    String weather;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("dayOfMonth", dayOfMonth)
+            .writeStringField("monthOfYear", monthOfYear)
+            .writeStringField("weather", weather)
+            .writeEndObject();
+    }
+
+    public static Environment fromJson(JsonReader jsonReader) throws IOException {
+        return deserializationHelper(jsonReader, Environment::new, (reader, fieldName, environment) -> {
+            if ("dayOfMonth".equals(fieldName)) {
+                environment.dayOfMonth = reader.getString();
+            } else if ("monthOfYear".equals(fieldName)) {
+                environment.monthOfYear = reader.getString();
+            } else if ("weather".equals(fieldName)) {
+                environment.weather = reader.getString();
+            } else {
+                reader.skipChildren();
+            }
+        });
+    }
 }

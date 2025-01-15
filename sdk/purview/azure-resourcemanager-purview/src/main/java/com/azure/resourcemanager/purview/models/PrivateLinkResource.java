@@ -6,39 +6,41 @@ package com.azure.resourcemanager.purview.models;
 
 import com.azure.resourcemanager.purview.fluent.models.PrivateLinkResourceInner;
 
-/** An immutable client-side representation of PrivateLinkResource. */
+/**
+ * An immutable client-side representation of PrivateLinkResource.
+ */
 public interface PrivateLinkResource {
     /**
      * Gets the id property: The private link resource identifier.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The private link resource name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the properties property: The private link resource properties.
-     *
+     * 
      * @return the properties value.
      */
     PrivateLinkResourceProperties properties();
 
     /**
      * Gets the type property: The private link resource type.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the inner com.azure.resourcemanager.purview.fluent.models.PrivateLinkResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateLinkResourceInner innerModel();

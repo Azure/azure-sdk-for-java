@@ -16,46 +16,90 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Server Sync Member. */
 @Fluent
-public interface SqlSyncMember
-    extends ExternalChildResource<SqlSyncMember, SqlSyncGroup>,
-        HasInnerModel<SyncMemberInner>,
-        HasResourceGroup,
-        Refreshable<SqlSyncMember>,
-        Updatable<SqlSyncMember.Update> {
-    /** @return name of the SQL Server to which this Sync Member belongs */
+public interface SqlSyncMember extends ExternalChildResource<SqlSyncMember, SqlSyncGroup>,
+    HasInnerModel<SyncMemberInner>, HasResourceGroup, Refreshable<SqlSyncMember>, Updatable<SqlSyncMember.Update> {
+    /**
+     * Gets name of the SQL Server to which this Sync Member belongs.
+     *
+     * @return name of the SQL Server to which this Sync Member belongs
+     */
     String sqlServerName();
 
-    /** @return name of the SQL Database to which this Sync Member belongs */
+    /**
+     * Gets name of the SQL Database to which this Sync Member belongs.
+     *
+     * @return name of the SQL Database to which this Sync Member belongs
+     */
     String sqlDatabaseName();
 
-    /** @return name of the SQL Sync Group to which this Sync Member belongs */
+    /**
+     * Gets name of the SQL Sync Group to which this Sync Member belongs.
+     *
+     * @return name of the SQL Sync Group to which this Sync Member belongs
+     */
     String sqlSyncGroupName();
 
-    /** @return the parent SQL Sync Group ID */
+    /**
+     * Gets the parent SQL Sync Group ID.
+     *
+     * @return the parent SQL Sync Group ID
+     */
     String parentId();
 
-    /** @return the Database type of the sync member */
+    /**
+     * Gets the Database type of the sync member.
+     *
+     * @return the Database type of the sync member
+     */
     SyncMemberDbType databaseType();
 
-    /** @return the ARM resource id of the sync agent in the sync member */
+    /**
+     * Gets the ARM resource ID of the sync agent in the sync member.
+     *
+     * @return the ARM resource ID of the sync agent in the sync member
+     */
     String syncAgentId();
 
-    /** @return the SQL Database id of the sync member */
+    /**
+     * Gets the SQL Database ID of the sync member.
+     *
+     * @return the SQL Database ID of the sync member
+     */
     String sqlServerDatabaseId();
 
-    /** @return the SQL Server name of the member database in the sync member */
+    /**
+     * Gets the SQL Server name of the member database in the sync member.
+     *
+     * @return the SQL Server name of the member database in the sync member
+     */
     String memberServerName();
 
-    /** @return Database name of the member database in the sync member */
+    /**
+     * Gets Database name of the member database in the sync member.
+     *
+     * @return Database name of the member database in the sync member
+     */
     String memberDatabaseName();
 
-    /** @return the user name of the member database in the sync member */
+    /**
+     * Gets the user name of the member database in the sync member.
+     *
+     * @return the user name of the member database in the sync member
+     */
     String username();
 
-    /** @return the sync direction of the sync member */
+    /**
+     * Gets the sync direction of the sync member.
+     *
+     * @return the sync direction of the sync member
+     */
     SyncDirection syncDirection();
 
-    /** @return the sync state of the sync member */
+    /**
+     * Gets the sync state of the sync member.
+     *
+     * @return the sync state of the sync member
+     */
     SyncMemberState syncState();
 
     /** Deletes the Sync Member resource. */
@@ -97,12 +141,9 @@ public interface SqlSyncMember
      **************************************************************/
 
     /** The template for a SQL Sync Group update operation, containing all the settings that can be modified. */
-    interface Update
-        extends SqlSyncMember.UpdateStages.WithMemberUserName,
-            SqlSyncMember.UpdateStages.WithMemberPassword,
-            SqlSyncMember.UpdateStages.WithMemberDatabaseType,
-            SqlSyncMember.UpdateStages.WithSyncDirection,
-            Appliable<SqlSyncMember> {
+    interface Update extends SqlSyncMember.UpdateStages.WithMemberUserName,
+        SqlSyncMember.UpdateStages.WithMemberPassword, SqlSyncMember.UpdateStages.WithMemberDatabaseType,
+        SqlSyncMember.UpdateStages.WithSyncDirection, Appliable<SqlSyncMember> {
     }
 
     /** Grouping of all the SQL Sync Group update stages. */

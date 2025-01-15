@@ -4,33 +4,48 @@
 
 package com.azure.resourcemanager.datalakestore.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The commitment tier to use for next month. */
+/**
+ * The commitment tier to use for next month.
+ */
 public enum TierType {
-    /** Enum value Consumption. */
+    /**
+     * Enum value Consumption.
+     */
     CONSUMPTION("Consumption"),
 
-    /** Enum value Commitment_1TB. */
+    /**
+     * Enum value Commitment_1TB.
+     */
     COMMITMENT_1TB("Commitment_1TB"),
 
-    /** Enum value Commitment_10TB. */
+    /**
+     * Enum value Commitment_10TB.
+     */
     COMMITMENT_10TB("Commitment_10TB"),
 
-    /** Enum value Commitment_100TB. */
+    /**
+     * Enum value Commitment_100TB.
+     */
     COMMITMENT_100TB("Commitment_100TB"),
 
-    /** Enum value Commitment_500TB. */
+    /**
+     * Enum value Commitment_500TB.
+     */
     COMMITMENT_500TB("Commitment_500TB"),
 
-    /** Enum value Commitment_1PB. */
+    /**
+     * Enum value Commitment_1PB.
+     */
     COMMITMENT_1PB("Commitment_1PB"),
 
-    /** Enum value Commitment_5PB. */
+    /**
+     * Enum value Commitment_5PB.
+     */
     COMMITMENT_5PB("Commitment_5PB");
 
-    /** The actual serialized value for a TierType instance. */
+    /**
+     * The actual serialized value for a TierType instance.
+     */
     private final String value;
 
     TierType(String value) {
@@ -39,11 +54,10 @@ public enum TierType {
 
     /**
      * Parses a serialized value to a TierType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed TierType object, or null if unable to parse.
      */
-    @JsonCreator
     public static TierType fromString(String value) {
         if (value == null) {
             return null;
@@ -57,8 +71,9 @@ public enum TierType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

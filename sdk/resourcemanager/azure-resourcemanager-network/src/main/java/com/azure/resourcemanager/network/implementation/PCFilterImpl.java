@@ -59,8 +59,8 @@ class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
     }
 
     @Override
-    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIpAddressesRange(
-        String startIpAddress, String endIpAddress) {
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withLocalIpAddressesRange(String startIpAddress,
+        String endIpAddress) {
         this.innerModel().withLocalIpAddress(startIpAddress + RANGE_DELIMITER + endIpAddress);
         return this;
     }
@@ -82,8 +82,8 @@ class PCFilterImpl extends IndexableWrapperImpl<PacketCaptureFilter>
     }
 
     @Override
-    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIpAddressesRange(
-        String startIpAddress, String endIpAddress) {
+    public Definition<PacketCapture.DefinitionStages.WithCreate> withRemoteIpAddressesRange(String startIpAddress,
+        String endIpAddress) {
         this.innerModel().withRemoteIpAddress(startIpAddress + RANGE_DELIMITER + endIpAddress);
         return this;
     }

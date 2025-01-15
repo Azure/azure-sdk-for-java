@@ -91,15 +91,13 @@ public final class MetricSingleSeriesDetectionCondition {
         return this.changeThresholdCondition;
     }
 
-
     /**
      * Sets the logical operator to apply across conditions.
      *
      * @param conditionOperator The logical operator.
      * @return The MetricSingleSeriesDetectionCondition object itself.
      */
-    public MetricSingleSeriesDetectionCondition setConditionOperator(
-        DetectionConditionOperator conditionOperator) {
+    public MetricSingleSeriesDetectionCondition setConditionOperator(DetectionConditionOperator conditionOperator) {
         this.conditionOperator = conditionOperator;
         return this;
     }
@@ -117,8 +115,8 @@ public final class MetricSingleSeriesDetectionCondition {
      * @param smartDetectionCondition The smart detection condition.
      * @return The MetricSingleSeriesDetectionCondition object itself.
      */
-    public MetricSingleSeriesDetectionCondition setSmartDetectionCondition(
-        SmartDetectionCondition smartDetectionCondition) {
+    public MetricSingleSeriesDetectionCondition
+        setSmartDetectionCondition(SmartDetectionCondition smartDetectionCondition) {
         this.smartDetectionCondition = smartDetectionCondition;
         return this;
     }
@@ -134,8 +132,8 @@ public final class MetricSingleSeriesDetectionCondition {
      * @param hardThresholdCondition The hard threshold condition.
      * @return The MetricSingleSeriesDetectionCondition object itself.
      */
-    public MetricSingleSeriesDetectionCondition setHardThresholdCondition(
-        HardThresholdCondition hardThresholdCondition) {
+    public MetricSingleSeriesDetectionCondition
+        setHardThresholdCondition(HardThresholdCondition hardThresholdCondition) {
         this.hardThresholdCondition = hardThresholdCondition;
         return this;
     }
@@ -152,8 +150,8 @@ public final class MetricSingleSeriesDetectionCondition {
      * @param changeThresholdCondition The change threshold condition.
      * @return The MetricSingleSeriesDetectionCondition object itself.
      */
-    public MetricSingleSeriesDetectionCondition setChangeThresholdCondition(ChangeThresholdCondition
-                                                                    changeThresholdCondition) {
+    public MetricSingleSeriesDetectionCondition
+        setChangeThresholdCondition(ChangeThresholdCondition changeThresholdCondition) {
         this.changeThresholdCondition = changeThresholdCondition;
         return this;
     }

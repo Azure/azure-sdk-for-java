@@ -19,10 +19,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * Implementation for {@link EventHubNamespaceAuthorizationRules}.
  */
-public final class EventHubNamespaceAuthorizationRulesImpl
-    extends AuthorizationRulesBaseImpl<NamespacesClient,
-        EventHubNamespaceAuthorizationRule,
-        EventHubNamespaceAuthorizationRuleImpl>
+public final class EventHubNamespaceAuthorizationRulesImpl extends
+    AuthorizationRulesBaseImpl<NamespacesClient, EventHubNamespaceAuthorizationRule, EventHubNamespaceAuthorizationRuleImpl>
     implements EventHubNamespaceAuthorizationRules {
 
     public EventHubNamespaceAuthorizationRulesImpl(EventHubsManager manager) {
@@ -38,9 +36,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     public Mono<EventHubNamespaceAuthorizationRule> getByIdAsync(String id) {
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
-        return getByNameAsync(resourceId.resourceGroupName(),
-                resourceId.parent().name(),
-                resourceId.name());
+        return getByNameAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }
 
     @Override
@@ -49,27 +45,22 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     }
 
     @Override
-    public Mono<EventHubNamespaceAuthorizationRule> getByNameAsync(
-        String resourceGroupName, String namespaceName, String name) {
-        return this.innerModel().getAuthorizationRuleAsync(resourceGroupName,
-            namespaceName,
-            name)
-            .map(this::wrapModel);
+    public Mono<EventHubNamespaceAuthorizationRule> getByNameAsync(String resourceGroupName, String namespaceName,
+        String name) {
+        return this.innerModel().getAuthorizationRuleAsync(resourceGroupName, namespaceName, name).map(this::wrapModel);
     }
 
     @Override
-    public PagedIterable<EventHubNamespaceAuthorizationRule> listByNamespace(
-        final String resourceGroupName, final String namespaceName) {
-        return PagedConverter.mapPage(innerModel()
-            .listAuthorizationRules(resourceGroupName, namespaceName),
+    public PagedIterable<EventHubNamespaceAuthorizationRule> listByNamespace(final String resourceGroupName,
+        final String namespaceName) {
+        return PagedConverter.mapPage(innerModel().listAuthorizationRules(resourceGroupName, namespaceName),
             this::wrapModel);
     }
 
     @Override
-    public PagedFlux<EventHubNamespaceAuthorizationRule> listByNamespaceAsync(
-        String resourceGroupName, String namespaceName) {
-        return PagedConverter.mapPage(this.innerModel()
-            .listAuthorizationRulesAsync(resourceGroupName, namespaceName),
+    public PagedFlux<EventHubNamespaceAuthorizationRule> listByNamespaceAsync(String resourceGroupName,
+        String namespaceName) {
+        return PagedConverter.mapPage(this.innerModel().listAuthorizationRulesAsync(resourceGroupName, namespaceName),
             this::wrapModel);
     }
 
@@ -78,16 +69,12 @@ public final class EventHubNamespaceAuthorizationRulesImpl
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
 
-        return deleteByNameAsync(resourceId.resourceGroupName(),
-                resourceId.parent().name(),
-                resourceId.name());
+        return deleteByNameAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }
 
     @Override
     public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.innerModel().deleteAuthorizationRuleAsync(resourceGroupName,
-                namespaceName,
-                name);
+        return this.innerModel().deleteAuthorizationRuleAsync(resourceGroupName, namespaceName, name);
     }
 
     @Override

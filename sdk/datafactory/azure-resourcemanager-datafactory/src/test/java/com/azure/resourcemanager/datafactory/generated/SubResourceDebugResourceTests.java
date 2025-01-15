@@ -12,14 +12,14 @@ public final class SubResourceDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubResourceDebugResource model
-            = BinaryData.fromString("{\"name\":\"wvz\"}").toObject(SubResourceDebugResource.class);
-        Assertions.assertEquals("wvz", model.name());
+            = BinaryData.fromString("{\"name\":\"svflyhbxcudch\"}").toObject(SubResourceDebugResource.class);
+        Assertions.assertEquals("svflyhbxcudch", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubResourceDebugResource model = new SubResourceDebugResource().withName("wvz");
+        SubResourceDebugResource model = new SubResourceDebugResource().withName("svflyhbxcudch");
         model = BinaryData.fromObject(model).toObject(SubResourceDebugResource.class);
-        Assertions.assertEquals("wvz", model.name());
+        Assertions.assertEquals("svflyhbxcudch", model.name());
     }
 }

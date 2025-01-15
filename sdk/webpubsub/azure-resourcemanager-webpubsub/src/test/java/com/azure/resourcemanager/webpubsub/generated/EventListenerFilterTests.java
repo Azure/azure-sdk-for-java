@@ -10,8 +10,8 @@ import com.azure.resourcemanager.webpubsub.models.EventListenerFilter;
 public final class EventListenerFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventListenerFilter model =
-            BinaryData.fromString("{\"type\":\"EventListenerFilter\"}").toObject(EventListenerFilter.class);
+        EventListenerFilter model
+            = BinaryData.fromString("{\"type\":\"EventListenerFilter\"}").toObject(EventListenerFilter.class);
     }
 
     @org.junit.jupiter.api.Test

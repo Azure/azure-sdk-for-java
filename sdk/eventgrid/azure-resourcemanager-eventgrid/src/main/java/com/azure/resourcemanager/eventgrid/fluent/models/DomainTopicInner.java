@@ -7,8 +7,11 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.DomainTopicProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Domain Topic.
@@ -18,14 +21,27 @@ public final class DomainTopicInner extends ProxyResource {
     /*
      * Properties of the Domain Topic.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private DomainTopicProperties innerProperties;
 
     /*
      * The system metadata relating to Domain Topic resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of DomainTopicInner class.
@@ -52,6 +68,36 @@ public final class DomainTopicInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the domain topic.
      * 
      * @return the provisioningState value.
@@ -69,5 +115,49 @@ public final class DomainTopicInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainTopicInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainTopicInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DomainTopicInner.
+     */
+    public static DomainTopicInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainTopicInner deserializedDomainTopicInner = new DomainTopicInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDomainTopicInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDomainTopicInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDomainTopicInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDomainTopicInner.innerProperties = DomainTopicProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDomainTopicInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainTopicInner;
+        });
     }
 }

@@ -6,23 +6,25 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An environment variable to be set on a task process.
  */
 @Fluent
-public final class EnvironmentSetting {
+public final class EnvironmentSetting implements JsonSerializable<EnvironmentSetting> {
     /*
      * The name of the environment variable.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The value of the environment variable.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -78,10 +80,50 @@ public final class EnvironmentSetting {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model EnvironmentSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model EnvironmentSetting"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentSetting.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentSetting if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnvironmentSetting.
+     */
+    public static EnvironmentSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentSetting deserializedEnvironmentSetting = new EnvironmentSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedEnvironmentSetting.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedEnvironmentSetting.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentSetting;
+        });
+    }
 }

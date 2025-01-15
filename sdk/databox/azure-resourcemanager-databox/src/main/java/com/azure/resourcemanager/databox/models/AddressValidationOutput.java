@@ -6,18 +6,20 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.resourcemanager.databox.fluent.models.AddressValidationOutputInner;
 
-/** An immutable client-side representation of AddressValidationOutput. */
+/**
+ * An immutable client-side representation of AddressValidationOutput.
+ */
 public interface AddressValidationOutput {
     /**
      * Gets the properties property: The address validation properties.
-     *
+     * 
      * @return the properties value.
      */
     AddressValidationProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.databox.fluent.models.AddressValidationOutputInner object.
-     *
+     * 
      * @return the inner object.
      */
     AddressValidationOutputInner innerModel();

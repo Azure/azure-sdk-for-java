@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"objectId\":\"xzxtheo\",\"description\":\"si\",\"friendlyName\":\"evcciqihnhun\",\"applicationGroupReferences\":[\"jzrnf\",\"gxg\",\"spemvtzfk\",\"fublj\"],\"cloudPcResource\":true,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"qjhqjbas\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"jqul\",\"actionsRequired\":\"sntnbybkzgcw\"},\"provisioningState\":\"Deleting\"},\"id\":\"lxxwrljdouskc\",\"name\":\"vkocrcjdkwtn\",\"type\":\"xbnjbiksq\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"sainqpjwnzl\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ppeebvmgxsab\",\"actionsRequired\":\"qduujitcjczdz\"},\"provisioningState\":\"Creating\"},\"id\":\"dhkrwpdappdsbdk\",\"name\":\"wrwjfeu\",\"type\":\"nhutjeltmrldhugj\"}]}")
-                .toObject(WorkspaceProperties.class);
-        Assertions.assertEquals("si", model.description());
-        Assertions.assertEquals("evcciqihnhun", model.friendlyName());
-        Assertions.assertEquals("jzrnf", model.applicationGroupReferences().get(0));
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        WorkspaceProperties model = BinaryData.fromString(
+            "{\"objectId\":\"si\",\"description\":\"evcciqihnhun\",\"friendlyName\":\"wjzrnfygxgisp\",\"applicationGroupReferences\":[\"tzfkufubl\"],\"cloudPcResource\":false,\"publicNetworkAccess\":\"Enabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"e\",\"jhqjbasvmsmjqul\",\"gsntnbybkzgcwr\",\"clxxwrljdo\"],\"privateEndpoint\":{\"id\":\"cqvkocrcjdkwtn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"jbiksqrglssai\",\"actionsRequired\":\"p\"},\"provisioningState\":\"Succeeded\"},\"id\":\"lljfmppeeb\",\"name\":\"mgxsab\",\"type\":\"yqduujit\"},{\"properties\":{\"groupIds\":[\"dzevndhkrw\",\"d\"],\"privateEndpoint\":{\"id\":\"dsbdkvwrwjf\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"hutje\",\"actionsRequired\":\"mrldhu\"},\"provisioningState\":\"Succeeded\"},\"id\":\"datqxhocdgeabl\",\"name\":\"phut\",\"type\":\"cndvkaozwyiftyhx\"},{\"properties\":{\"groupIds\":[\"k\",\"tyxolniwpwc\",\"kjfkg\",\"awxklr\"],\"privateEndpoint\":{\"id\":\"wckbasyypnd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"cbacphejkotynqg\",\"actionsRequired\":\"l\"},\"provisioningState\":\"Failed\"},\"id\":\"i\",\"name\":\"wyqkgfgibm\",\"type\":\"dgak\"}]}")
+            .toObject(WorkspaceProperties.class);
+        Assertions.assertEquals("evcciqihnhun", model.description());
+        Assertions.assertEquals("wjzrnfygxgisp", model.friendlyName());
+        Assertions.assertEquals("tzfkufubl", model.applicationGroupReferences().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceProperties model =
-            new WorkspaceProperties()
-                .withDescription("si")
-                .withFriendlyName("evcciqihnhun")
-                .withApplicationGroupReferences(Arrays.asList("jzrnf", "gxg", "spemvtzfk", "fublj"))
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        WorkspaceProperties model = new WorkspaceProperties().withDescription("evcciqihnhun")
+            .withFriendlyName("wjzrnfygxgisp")
+            .withApplicationGroupReferences(Arrays.asList("tzfkufubl"))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(WorkspaceProperties.class);
-        Assertions.assertEquals("si", model.description());
-        Assertions.assertEquals("evcciqihnhun", model.friendlyName());
-        Assertions.assertEquals("jzrnf", model.applicationGroupReferences().get(0));
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("evcciqihnhun", model.description());
+        Assertions.assertEquals("wjzrnfygxgisp", model.friendlyName());
+        Assertions.assertEquals("tzfkufubl", model.applicationGroupReferences().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 }

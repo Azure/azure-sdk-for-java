@@ -123,6 +123,9 @@ public final class DataTable implements JsonSerializable<DataTable> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

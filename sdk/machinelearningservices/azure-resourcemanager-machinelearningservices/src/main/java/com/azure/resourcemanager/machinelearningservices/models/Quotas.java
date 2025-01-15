@@ -33,8 +33,8 @@ public interface Quotas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of update workspace quota.
      */
-    Response<UpdateWorkspaceQuotasResult> updateWithResponse(
-        String location, QuotaUpdateParameters parameters, Context context);
+    Response<UpdateWorkspaceQuotasResult> updateWithResponse(String location, QuotaUpdateParameters parameters,
+        Context context);
 
     /**
      * Gets the currently assigned Workspace Quotas based on VMFamily.

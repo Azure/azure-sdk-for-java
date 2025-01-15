@@ -97,7 +97,8 @@ public final class AttestationTokenValidationOptions {
      *                 the default validations.
      * @return this AttestationTokenValidationOptions object.
      */
-    public AttestationTokenValidationOptions setValidationCallback(BiConsumer<AttestationToken, AttestationSigner> callback) {
+    public AttestationTokenValidationOptions
+        setValidationCallback(BiConsumer<AttestationToken, AttestationSigner> callback) {
         this.validationCallback = callback;
         return this;
     }
@@ -137,6 +138,7 @@ public final class AttestationTokenValidationOptions {
         this.validateNotBefore = validateNotBefore;
         return this;
     }
+
     /**
      * Returns whether expiration time should be validated.
      * @return the current state of the ExpiresOn validation.

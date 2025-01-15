@@ -9,8 +9,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable client-side representation of an Azure Spring Service Certificate. */
 public interface SpringServiceCertificate
-    extends ExternalChildResource<SpringServiceCertificate, SpringService>,
-        HasInnerModel<CertificateResourceInner> {
-    /** @return the properties of the service binding */
+    extends ExternalChildResource<SpringServiceCertificate, SpringService>, HasInnerModel<CertificateResourceInner> {
+    /**
+     * Gets the properties of the service binding.
+     *
+     * @return the properties of the service binding
+     */
     CertificateProperties properties();
 }

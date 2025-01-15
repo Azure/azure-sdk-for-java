@@ -28,7 +28,7 @@ public final class ApiCollectionsOffboardAzureApiManagementApiWithResponseMockTe
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.apiCollections()
-            .offboardAzureApiManagementApiWithResponse("f", "ii", "wibdtpljo", com.azure.core.util.Context.NONE);
+            .offboardAzureApiManagementApiWithResponse("kczynuhhoqeqsh", "vl", "q", com.azure.core.util.Context.NONE);
 
     }
 }

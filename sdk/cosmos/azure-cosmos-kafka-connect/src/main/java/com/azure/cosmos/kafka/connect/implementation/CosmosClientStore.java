@@ -7,6 +7,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -26,7 +28,17 @@ public class CosmosClientStore {
         ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_GERMANY, "https://login.microsoftonline.de/");
     }
 
-    public static CosmosAsyncClient getCosmosClient(CosmosAccountConfig accountConfig, String sourceName) {
+    public static CosmosAsyncClient getCosmosClient(
+        CosmosAccountConfig accountConfig,
+        String sourceName) {
+
+        return getCosmosClient(accountConfig, sourceName, null);
+    }
+
+    public static CosmosAsyncClient getCosmosClient(
+        CosmosAccountConfig accountConfig,
+        String sourceName,
+        CosmosClientMetadataCachesSnapshot snapshot) {
         if (accountConfig == null) {
             return null;
         }
@@ -58,6 +70,12 @@ public class CosmosClientStore {
             cosmosClientBuilder.credential(tokenCredential);
         } else {
             throw new IllegalArgumentException("Authorization type " + accountConfig.getCosmosAuthConfig().getClass() + "is not supported");
+        }
+
+        if (snapshot != null) {
+            ImplementationBridgeHelpers.CosmosClientBuilderHelper
+                .getCosmosClientBuilderAccessor()
+                .setCosmosClientMetadataCachesSnapshot(cosmosClientBuilder, snapshot);
         }
 
         return cosmosClientBuilder.buildAsyncClient();

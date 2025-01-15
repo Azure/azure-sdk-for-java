@@ -19,20 +19,20 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ServiceOperation> list() {
         PagedIterable<ServiceOperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ServiceOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ServiceOperation> list(Context context) {
         PagedIterable<ServiceOperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ServiceOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceOperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

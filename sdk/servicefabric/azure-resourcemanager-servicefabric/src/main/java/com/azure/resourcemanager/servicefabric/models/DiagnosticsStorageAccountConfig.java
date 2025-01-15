@@ -6,48 +6,46 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The storage account information for storing Service Fabric diagnostic logs.
  */
 @Fluent
-public final class DiagnosticsStorageAccountConfig {
+public final class DiagnosticsStorageAccountConfig implements JsonSerializable<DiagnosticsStorageAccountConfig> {
     /*
      * The Azure storage account name.
      */
-    @JsonProperty(value = "storageAccountName", required = true)
     private String storageAccountName;
 
     /*
      * The protected diagnostics storage key name.
      */
-    @JsonProperty(value = "protectedAccountKeyName", required = true)
     private String protectedAccountKeyName;
 
     /*
      * The secondary protected diagnostics storage key name. If one of the storage account keys is rotated the cluster
      * will fallback to using the other.
      */
-    @JsonProperty(value = "protectedAccountKeyName2")
     private String protectedAccountKeyName2;
 
     /*
      * The blob endpoint of the azure storage account.
      */
-    @JsonProperty(value = "blobEndpoint", required = true)
     private String blobEndpoint;
 
     /*
      * The queue endpoint of the azure storage account.
      */
-    @JsonProperty(value = "queueEndpoint", required = true)
     private String queueEndpoint;
 
     /*
      * The table endpoint of the azure storage account.
      */
-    @JsonProperty(value = "tableEndpoint", required = true)
     private String tableEndpoint;
 
     /**
@@ -185,26 +183,84 @@ public final class DiagnosticsStorageAccountConfig {
      */
     public void validate() {
         if (storageAccountName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageAccountName in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountName in model DiagnosticsStorageAccountConfig"));
         }
         if (protectedAccountKeyName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protectedAccountKeyName in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protectedAccountKeyName in model DiagnosticsStorageAccountConfig"));
         }
         if (blobEndpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property blobEndpoint in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property blobEndpoint in model DiagnosticsStorageAccountConfig"));
         }
         if (queueEndpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property queueEndpoint in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property queueEndpoint in model DiagnosticsStorageAccountConfig"));
         }
         if (tableEndpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property tableEndpoint in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tableEndpoint in model DiagnosticsStorageAccountConfig"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiagnosticsStorageAccountConfig.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountName", this.storageAccountName);
+        jsonWriter.writeStringField("protectedAccountKeyName", this.protectedAccountKeyName);
+        jsonWriter.writeStringField("blobEndpoint", this.blobEndpoint);
+        jsonWriter.writeStringField("queueEndpoint", this.queueEndpoint);
+        jsonWriter.writeStringField("tableEndpoint", this.tableEndpoint);
+        jsonWriter.writeStringField("protectedAccountKeyName2", this.protectedAccountKeyName2);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticsStorageAccountConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticsStorageAccountConfig if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiagnosticsStorageAccountConfig.
+     */
+    public static DiagnosticsStorageAccountConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticsStorageAccountConfig deserializedDiagnosticsStorageAccountConfig
+                = new DiagnosticsStorageAccountConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountName".equals(fieldName)) {
+                    deserializedDiagnosticsStorageAccountConfig.storageAccountName = reader.getString();
+                } else if ("protectedAccountKeyName".equals(fieldName)) {
+                    deserializedDiagnosticsStorageAccountConfig.protectedAccountKeyName = reader.getString();
+                } else if ("blobEndpoint".equals(fieldName)) {
+                    deserializedDiagnosticsStorageAccountConfig.blobEndpoint = reader.getString();
+                } else if ("queueEndpoint".equals(fieldName)) {
+                    deserializedDiagnosticsStorageAccountConfig.queueEndpoint = reader.getString();
+                } else if ("tableEndpoint".equals(fieldName)) {
+                    deserializedDiagnosticsStorageAccountConfig.tableEndpoint = reader.getString();
+                } else if ("protectedAccountKeyName2".equals(fieldName)) {
+                    deserializedDiagnosticsStorageAccountConfig.protectedAccountKeyName2 = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticsStorageAccountConfig;
+        });
+    }
 }

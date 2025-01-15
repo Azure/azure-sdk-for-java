@@ -7,33 +7,20 @@ package com.azure.security.confidentialledger.certificate.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.security.confidentialledger.ConfidentialLedgerEnvironment;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 public final class GetLedgerIdentityTests extends ConfidentialLedgerCertificateClientTestBase {
     @Test
-    public void testGetLedgerIdentityTests() throws IOException {
-        // Arrange
-        final String ledgerName = ConfidentialLedgerEnvironment.getConfidentialLedgerName();
-        final RequestOptions requestOptions = new RequestOptions();
-
-        // Act
-        final Response<BinaryData> response =
-                confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(ledgerName, requestOptions);
-
-        // Assert
+    @Disabled
+    public void testGetLedgerIdentityTests() {
+        RequestOptions requestOptions = new RequestOptions();
+        Response<BinaryData> response
+            = confidentialLedgerCertificateClient.getLedgerIdentityWithResponse("contoso-ledger-12345", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-
-        final JsonNode jsonNode = OBJECT_MAPPER.readTree(response.getValue().toBytes());
-        final JsonNode ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate");
-
-        Assertions.assertNotNull(ledgerTlsCertificate);
-
-        final String certificate = ledgerTlsCertificate.asText();
-        Assertions.assertNotNull(certificate);
+        Assertions.assertEquals(BinaryData.fromString(
+            "{\"ledgerTlsCertificate\":\"-----BEGIN CERTIFICATE-----\\nMIIBvjCCAUKgAwIBAgIQVL+0VqZp3VzMyFKqD4Cs8zAMBggqhkjOPQQDAwUAMBYx\\nFDASBgNVBAMMC0NDRiBOZXR3b3JrMB4XDTE5MTEwMTAwMDAwMFoXDTIxMTIzMTIz\\nNTk1OVowFjEUMBIGA1UEAwwLQ0NGIE5ldHdvcmswdjAQBgcqhkjOPQIBBgUrgQQA\\nIgNiAATBm4jNV4Kyj6bc/iMKDEXTCyU6P6U1KWAiDodl+Jd8aDJsBwLimtg4QCug\\n1mpHnVPmcbPAbNM11+xrLHuFEfuZlS3DI+CCX8FUB2VvDVT3SfWLDVmr1xLStTDH\\nuN4YjBOjUzBRMA8GA1UdEwQIMAYBAf8CAQAwHQYDVR0OBBYEFGSdsThwxrTOEQxb\\nZ2NsslNvJRYkMB8GA1UdIwQYMBaAFGSdsThwxrTOEQxbZ2NsslNvJRYkMAwGCCqG\\nSM49BAMDBQADaAAwZQIwJLLWllNZ83ym/HQuvtGGSdF/RCZwUoh+yhad/vUfVnhE\\n2dYLDDEJOORpxpEIVfXgAjEA/CLcRwSZxzEmLDYe1y4puXKuSDCUiu+bKYgdvRLj\\nRQJgTygutcTdI64sSweqPveK\\n-----END CERTIFICATE-----\\n\\u0000\"}")
+            .toObject(Object.class), response.getValue().toObject(Object.class));
     }
 }

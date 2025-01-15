@@ -36,9 +36,9 @@ public final class CapacityReservationGroupInner extends Resource {
     private List<String> zones;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -46,9 +46,9 @@ public final class CapacityReservationGroupInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of CapacityReservationGroupInner class.
@@ -90,13 +90,13 @@ public final class CapacityReservationGroupInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -110,13 +110,13 @@ public final class CapacityReservationGroupInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -171,7 +171,7 @@ public final class CapacityReservationGroupInner extends Resource {
      * Get the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
      * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
      * 
      * @return the sharingProfile value.
@@ -184,7 +184,7 @@ public final class CapacityReservationGroupInner extends Resource {
      * Set the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
      * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
      * 
      * @param sharingProfile the sharingProfile value to set.

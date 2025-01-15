@@ -21,12 +21,12 @@ import java.util.TreeMap;
 class ApplicationGatewayRedirectConfigurationImpl
     extends ChildResourceImpl<ApplicationGatewayRedirectConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
     implements ApplicationGatewayRedirectConfiguration,
-        ApplicationGatewayRedirectConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayRedirectConfiguration.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayRedirectConfiguration.Update {
+    ApplicationGatewayRedirectConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+    ApplicationGatewayRedirectConfiguration.UpdateDefinition<ApplicationGateway.Update>,
+    ApplicationGatewayRedirectConfiguration.Update {
 
-    ApplicationGatewayRedirectConfigurationImpl(
-        ApplicationGatewayRedirectConfigurationInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayRedirectConfigurationImpl(ApplicationGatewayRedirectConfigurationInner inner,
+        ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 

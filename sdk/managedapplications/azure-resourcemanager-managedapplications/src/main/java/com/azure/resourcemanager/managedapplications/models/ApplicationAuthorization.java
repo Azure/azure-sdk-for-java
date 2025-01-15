@@ -6,16 +6,21 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The managed application provider authorization. */
+/**
+ * The managed application provider authorization.
+ */
 @Fluent
-public final class ApplicationAuthorization {
+public final class ApplicationAuthorization implements JsonSerializable<ApplicationAuthorization> {
     /*
      * The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
      * managed application resources.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
@@ -23,17 +28,18 @@ public final class ApplicationAuthorization {
      * on the managed application's container resource group. This role definition cannot have permission to delete the
      * resource group.
      */
-    @JsonProperty(value = "roleDefinitionId", required = true)
     private String roleDefinitionId;
 
-    /** Creates an instance of ApplicationAuthorization class. */
+    /**
+     * Creates an instance of ApplicationAuthorization class.
+     */
     public ApplicationAuthorization() {
     }
 
     /**
      * Get the principalId property: The provider's principal identifier. This is the identity that the provider will
      * use to call ARM to manage the managed application resources.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -43,7 +49,7 @@ public final class ApplicationAuthorization {
     /**
      * Set the principalId property: The provider's principal identifier. This is the identity that the provider will
      * use to call ARM to manage the managed application resources.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the ApplicationAuthorization object itself.
      */
@@ -56,7 +62,7 @@ public final class ApplicationAuthorization {
      * Get the roleDefinitionId property: The provider's role definition identifier. This role will define all the
      * permissions that the provider must have on the managed application's container resource group. This role
      * definition cannot have permission to delete the resource group.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -67,7 +73,7 @@ public final class ApplicationAuthorization {
      * Set the roleDefinitionId property: The provider's role definition identifier. This role will define all the
      * permissions that the provider must have on the managed application's container resource group. This role
      * definition cannot have permission to delete the resource group.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the ApplicationAuthorization object itself.
      */
@@ -78,23 +84,61 @@ public final class ApplicationAuthorization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model ApplicationAuthorization"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model ApplicationAuthorization"));
         }
         if (roleDefinitionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property roleDefinitionId in model ApplicationAuthorization"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleDefinitionId in model ApplicationAuthorization"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationAuthorization.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationAuthorization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationAuthorization if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationAuthorization.
+     */
+    public static ApplicationAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationAuthorization deserializedApplicationAuthorization = new ApplicationAuthorization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedApplicationAuthorization.principalId = reader.getString();
+                } else if ("roleDefinitionId".equals(fieldName)) {
+                    deserializedApplicationAuthorization.roleDefinitionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationAuthorization;
+        });
+    }
 }

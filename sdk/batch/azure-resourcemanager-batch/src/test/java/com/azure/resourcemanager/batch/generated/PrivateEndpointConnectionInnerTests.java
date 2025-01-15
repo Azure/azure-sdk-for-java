@@ -8,14 +8,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class PrivateEndpointConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{\"id\":\"fdatsc\"},\"groupIds\":[\"pjhulsuuvmkj\",\"zkrwfn\",\"iodjp\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"jdpvwryo\",\"actionsRequired\":\"soacctazakl\"}},\"etag\":\"ahbc\",\"id\":\"yffdfdos\",\"name\":\"gexpaojakhmsbz\",\"type\":\"hcrzevd\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{\"id\":\"fdatsc\"},\"groupIds\":[\"pjhulsuuvmkj\",\"zkrwfn\",\"iodjp\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"jdpvwryo\",\"actionsRequired\":\"soacctazakl\"}},\"etag\":\"ahbc\",\"tags\":{\"jakhmsbzjh\":\"fdfdosygexpa\",\"hqtrgqjbpf\":\"rzevdphlxaol\",\"tfell\":\"fsinzgvfcjrwzoxx\",\"lxofpdvhpfxxypin\":\"wfzitonpeqfpjk\"},\"id\":\"nmayhuybb\",\"name\":\"podepoo\",\"type\":\"inuvamiheogn\"}")
             .toObject(PrivateEndpointConnectionInner.class);
+        Assertions.assertEquals("fdfdosygexpa", model.tags().get("jakhmsbzjh"));
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
             model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("jdpvwryo", model.privateLinkServiceConnectionState().description());
@@ -24,11 +27,27 @@ public final class PrivateEndpointConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionInner model = new PrivateEndpointConnectionInner()
-            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateLinkServiceConnectionStatus.APPROVED).withDescription("jdpvwryo"));
+            .withTags(mapOf("jakhmsbzjh", "fdfdosygexpa", "hqtrgqjbpf", "rzevdphlxaol", "tfell", "fsinzgvfcjrwzoxx",
+                "lxofpdvhpfxxypin", "wfzitonpeqfpjk"))
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                    .withDescription("jdpvwryo"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
+        Assertions.assertEquals("fdfdosygexpa", model.tags().get("jakhmsbzjh"));
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
             model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("jdpvwryo", model.privateLinkServiceConnectionState().description());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

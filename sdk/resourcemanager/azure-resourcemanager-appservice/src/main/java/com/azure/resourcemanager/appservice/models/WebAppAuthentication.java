@@ -18,10 +18,8 @@ public interface WebAppAuthentication extends HasInnerModel<SiteAuthSettingsInne
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithDefaultAuthenticationProvider<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>,
+        DefinitionStages.WithDefaultAuthenticationProvider<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of web app authentication definition stages applicable as part of a web app creation. */
@@ -146,11 +144,8 @@ public interface WebAppAuthentication extends HasInnerModel<SiteAuthSettingsInne
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                WithAuthenticationProvider<ParentT>,
-                WithTokenStore<ParentT>,
-                WithExternalRedirectUrls<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithAuthenticationProvider<ParentT>,
+            WithTokenStore<ParentT>, WithExternalRedirectUrls<ParentT> {
         }
     }
 
@@ -159,13 +154,10 @@ public interface WebAppAuthentication extends HasInnerModel<SiteAuthSettingsInne
      *
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithDefaultAuthenticationProvider<ParentT>,
-            UpdateDefinitionStages.WithAuthenticationProvider<ParentT>,
-            UpdateDefinitionStages.WithTokenStore<ParentT>,
-            UpdateDefinitionStages.WithExternalRedirectUrls<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>, UpdateDefinitionStages.WithDefaultAuthenticationProvider<ParentT>,
+        UpdateDefinitionStages.WithAuthenticationProvider<ParentT>, UpdateDefinitionStages.WithTokenStore<ParentT>,
+        UpdateDefinitionStages.WithExternalRedirectUrls<ParentT> {
     }
 
     /** Grouping of web app authentication definition stages applicable as part of a web app update. */
@@ -290,11 +282,8 @@ public interface WebAppAuthentication extends HasInnerModel<SiteAuthSettingsInne
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-                WithAuthenticationProvider<ParentT>,
-                WithTokenStore<ParentT>,
-                WithExternalRedirectUrls<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>, WithAuthenticationProvider<ParentT>,
+            WithTokenStore<ParentT>, WithExternalRedirectUrls<ParentT> {
         }
     }
 }

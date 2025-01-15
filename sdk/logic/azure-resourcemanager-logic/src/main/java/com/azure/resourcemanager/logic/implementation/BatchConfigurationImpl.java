@@ -73,32 +73,28 @@ public final class BatchConfigurationImpl
 
     private String batchConfigurationName;
 
-    public BatchConfigurationImpl withExistingIntegrationAccount(
-        String resourceGroupName, String integrationAccountName) {
+    public BatchConfigurationImpl withExistingIntegrationAccount(String resourceGroupName,
+        String integrationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.integrationAccountName = integrationAccountName;
         return this;
     }
 
     public BatchConfiguration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountBatchConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, batchConfigurationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountBatchConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public BatchConfiguration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountBatchConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, batchConfigurationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountBatchConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -113,53 +109,47 @@ public final class BatchConfigurationImpl
     }
 
     public BatchConfiguration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountBatchConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, batchConfigurationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountBatchConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public BatchConfiguration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountBatchConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, batchConfigurationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountBatchConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    BatchConfigurationImpl(
-        BatchConfigurationInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    BatchConfigurationImpl(BatchConfigurationInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationAccountName = Utils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
-        this.batchConfigurationName = Utils.getValueFromIdByName(innerObject.id(), "batchConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationAccountName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
+        this.batchConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "batchConfigurations");
     }
 
     public BatchConfiguration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountBatchConfigurations()
-                .getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountBatchConfigurations()
+            .getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BatchConfiguration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountBatchConfigurations()
-                .getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountBatchConfigurations()
+            .getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, context)
+            .getValue();
         return this;
     }
 

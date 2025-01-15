@@ -78,17 +78,18 @@ public final class RedisManager extends Manager<RedisManagementClient> {
     }
 
     private RedisManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new RedisManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new RedisManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
     }
 
-    /** @return the Redis Cache management API entry point */
+    /**
+     * Gets the API entry point of the Redis Cache management.
+     *
+     * @return the Redis Cache management API entry point
+     */
     public RedisCaches redisCaches() {
         if (redisCaches == null) {
             redisCaches = new RedisCachesImpl(this);

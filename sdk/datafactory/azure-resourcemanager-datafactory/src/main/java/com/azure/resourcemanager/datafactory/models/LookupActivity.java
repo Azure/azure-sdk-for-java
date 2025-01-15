@@ -6,31 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.LookupActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Lookup activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = LookupActivity.class, visible = true)
-@JsonTypeName("Lookup")
 @Fluent
 public final class LookupActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "Lookup";
 
     /*
      * Lookup activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private LookupActivityTypeProperties innerTypeProperties = new LookupActivityTypeProperties();
 
     /**
@@ -208,7 +205,6 @@ public final class LookupActivity extends ExecutionActivity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -216,7 +212,103 @@ public final class LookupActivity extends ExecutionActivity {
         } else {
             innerTypeProperties().validate();
         }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model LookupActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
+        }
+        if (linkedServiceName() != null) {
+            linkedServiceName().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LookupActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeJsonField("policy", policy());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LookupActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LookupActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LookupActivity.
+     */
+    public static LookupActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LookupActivity deserializedLookupActivity = new LookupActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLookupActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedLookupActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedLookupActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedLookupActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedLookupActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedLookupActivity.withUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedLookupActivity.withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedLookupActivity.withPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedLookupActivity.innerTypeProperties = LookupActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedLookupActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedLookupActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedLookupActivity;
+        });
+    }
 }

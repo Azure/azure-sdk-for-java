@@ -17,18 +17,15 @@ import java.util.Objects;
 /**
  * Implementation for {@link EventHubAuthorizationRule}.
  */
-class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAuthorizationRule,
-        EventHubAuthorizationRuleImpl>
-        implements
-        EventHubAuthorizationRule,
-        EventHubAuthorizationRule.Definition,
-        EventHubAuthorizationRule.Update {
+class EventHubAuthorizationRuleImpl
+    extends AuthorizationRuleBaseImpl<EventHubAuthorizationRule, EventHubAuthorizationRuleImpl>
+    implements EventHubAuthorizationRule, EventHubAuthorizationRule.Definition, EventHubAuthorizationRule.Update {
 
     private Ancestors.TwoAncestor ancestor;
 
     EventHubAuthorizationRuleImpl(String name, AuthorizationRuleInner inner, EventHubsManager manager) {
         super(name, inner, manager);
-        this.ancestor =  new Ancestors().new TwoAncestor(inner.id());
+        this.ancestor = new Ancestors().new TwoAncestor(inner.id());
     }
 
     EventHubAuthorizationRuleImpl(String name, EventHubsManager manager) {
@@ -57,8 +54,8 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
     }
 
     @Override
-    public EventHubAuthorizationRuleImpl withExistingEventHub(
-        String resourceGroupName, String namespaceName, String eventHubName) {
+    public EventHubAuthorizationRuleImpl withExistingEventHub(String resourceGroupName, String namespaceName,
+        String eventHubName) {
         this.ancestor = new Ancestors().new TwoAncestor(resourceGroupName, eventHubName, namespaceName);
         return this;
     }
@@ -71,43 +68,37 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
 
     @Override
     protected Mono<AuthorizationRuleInner> getInnerAsync() {
-        return this.manager.serviceClient().getEventHubs()
-                .getAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor2Name(),
-                        this.ancestor().ancestor1Name(),
-                        this.name());
+        return this.manager.serviceClient()
+            .getEventHubs()
+            .getAuthorizationRuleAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor2Name(),
+                this.ancestor().ancestor1Name(), this.name());
     }
 
     @Override
     public Mono<EventHubAuthorizationRule> createResourceAsync() {
-        return this.manager.serviceClient().getEventHubs()
-                .createOrUpdateAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor2Name(),
-                        this.ancestor().ancestor1Name(),
-                        this.name(),
-                        new AuthorizationRuleInner().withRights(this.innerModel().rights()))
-                .map(innerToFluentMap(this));
+        return this.manager.serviceClient()
+            .getEventHubs()
+            .createOrUpdateAuthorizationRuleAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor2Name(),
+                this.ancestor().ancestor1Name(), this.name(),
+                new AuthorizationRuleInner().withRights(this.innerModel().rights()))
+            .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<AccessKeysInner> getKeysInnerAsync() {
-        return this.manager.serviceClient().getEventHubs()
-                .listKeysAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor2Name(),
-                        this.ancestor().ancestor1Name(),
-                        this.name());
+        return this.manager.serviceClient()
+            .getEventHubs()
+            .listKeysAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor2Name(),
+                this.ancestor().ancestor1Name(), this.name());
     }
 
     @Override
     protected Mono<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType) {
-        final RegenerateAccessKeyParameters regenKeyInner = new RegenerateAccessKeyParameters()
-                .withKeyType(keyType);
-        return this.manager.serviceClient().getEventHubs()
-                .regenerateKeysAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor2Name(),
-                        this.ancestor().ancestor1Name(),
-                        this.name(),
-                        regenKeyInner);
+        final RegenerateAccessKeyParameters regenKeyInner = new RegenerateAccessKeyParameters().withKeyType(keyType);
+        return this.manager.serviceClient()
+            .getEventHubs()
+            .regenerateKeysAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor2Name(),
+                this.ancestor().ancestor1Name(), this.name(), regenKeyInner);
     }
 
     private Ancestors.TwoAncestor ancestor() {

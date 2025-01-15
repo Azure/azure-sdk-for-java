@@ -28,10 +28,7 @@ public final class RateCardsImpl implements RateCards {
     public Response<ResourceRateCardInfo> getWithResponse(String filter, Context context) {
         Response<ResourceRateCardInfoInner> inner = this.serviceClient().getWithResponse(filter, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ResourceRateCardInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;

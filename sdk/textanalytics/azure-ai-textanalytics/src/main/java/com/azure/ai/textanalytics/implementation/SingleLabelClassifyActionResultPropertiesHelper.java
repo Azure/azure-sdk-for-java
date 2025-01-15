@@ -12,7 +12,8 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 public final class SingleLabelClassifyActionResultPropertiesHelper {
     private static SingleLabelClassifyActionResultAccessor accessor;
 
-    private SingleLabelClassifyActionResultPropertiesHelper() { }
+    private SingleLabelClassifyActionResultPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link SingleLabelClassifyActionResult}
@@ -28,8 +29,8 @@ public final class SingleLabelClassifyActionResultPropertiesHelper {
      *
      * @param singleLabelClassifyActionResultAccessor The accessor.
      */
-    public static void setAccessor(
-        final SingleLabelClassifyActionResultAccessor singleLabelClassifyActionResultAccessor) {
+    public static void
+        setAccessor(final SingleLabelClassifyActionResultAccessor singleLabelClassifyActionResultAccessor) {
         accessor = singleLabelClassifyActionResultAccessor;
     }
 

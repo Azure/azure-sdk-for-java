@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.ApiRevisionContract
 public final class ApiRevisionContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiRevisionContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"apiId\":\"wrlyxwjkcprb\",\"apiRevision\":\"b\",\"createdDateTime\":\"2021-03-13T04:04:08Z\",\"updatedDateTime\":\"2021-05-28T17:15:13Z\",\"description\":\"vpys\",\"privateUrl\":\"dnrujqguhmuouqfp\",\"isOnline\":false,\"isCurrent\":false}")
-                .toObject(ApiRevisionContractInner.class);
+        ApiRevisionContractInner model = BinaryData.fromString(
+            "{\"apiId\":\"wrlyxwjkcprb\",\"apiRevision\":\"b\",\"createdDateTime\":\"2021-03-13T04:04:08Z\",\"updatedDateTime\":\"2021-05-28T17:15:13Z\",\"description\":\"vpys\",\"privateUrl\":\"dnrujqguhmuouqfp\",\"isOnline\":false,\"isCurrent\":false}")
+            .toObject(ApiRevisionContractInner.class);
     }
 
     @org.junit.jupiter.api.Test

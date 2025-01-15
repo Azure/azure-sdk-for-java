@@ -15,11 +15,10 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
 
-class AppConfigurationRefreshUtil {
+public class AppConfigurationRefreshUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPullRefresh.class);
 
@@ -29,10 +28,9 @@ class AppConfigurationRefreshUtil {
      *
      * @return If a refresh event is called.
      */
-    static RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory,
-        Duration refreshInterval, Long defaultMinBackoff, ReplicaLookUp replicaLookUp) {
+    RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
+        Long defaultMinBackoff, ReplicaLookUp replicaLookUp) {
         RefreshEventData eventData = new RefreshEventData();
-        BaseAppConfigurationPolicy.setWatchRequests(true);
 
         try {
             if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null

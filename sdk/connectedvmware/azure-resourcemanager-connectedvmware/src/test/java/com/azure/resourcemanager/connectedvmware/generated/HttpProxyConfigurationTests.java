@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class HttpProxyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpProxyConfiguration model =
-            BinaryData.fromString("{\"httpsProxy\":\"ah\"}").toObject(HttpProxyConfiguration.class);
+        HttpProxyConfiguration model
+            = BinaryData.fromString("{\"httpsProxy\":\"ah\"}").toObject(HttpProxyConfiguration.class);
         Assertions.assertEquals("ah", model.httpsProxy());
     }
 

@@ -6,7 +6,9 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.TrafficControllerInner;
+import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyConfigurations;
 import com.azure.resourcemanager.servicenetworking.models.TrafficControllerProperties;
+import com.azure.resourcemanager.servicenetworking.models.WafSecurityPolicy;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -15,20 +17,27 @@ public final class TrafficControllerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficControllerInner model = BinaryData.fromString(
-            "{\"properties\":{\"configurationEndpoints\":[\"fdatsc\",\"dvpjhulsuuvmk\",\"ozkrwfndiodjpslw\"],\"frontends\":[{\"id\":\"pvwryoqpsoacc\"},{\"id\":\"azakl\"},{\"id\":\"lahbcryff\"},{\"id\":\"fdosyg\"}],\"associations\":[{\"id\":\"aojakhmsbzjhcrz\"},{\"id\":\"vdphlxaolthqtr\"},{\"id\":\"qjbpfzfsin\"},{\"id\":\"gvfcj\"}],\"provisioningState\":\"Accepted\"},\"location\":\"xxjtfe\",\"tags\":{\"lxofpdvhpfxxypin\":\"wfzitonpeqfpjk\",\"podepoo\":\"nmayhuybb\",\"rxzxtheo\":\"inuvamiheogn\"},\"id\":\"usivye\",\"name\":\"cciqihnhungbwjz\",\"type\":\"nfygxgispemvtz\"}")
+            "{\"properties\":{\"configurationEndpoints\":[\"hmsbzjhcrzevdp\",\"lxaolthqtrgqjbp\"],\"frontends\":[{\"id\":\"s\"},{\"id\":\"n\"},{\"id\":\"gvfcj\"},{\"id\":\"wzo\"}],\"associations\":[{\"id\":\"tfell\"}],\"securityPolicies\":[{\"id\":\"zitonpeqfpjkjl\"},{\"id\":\"ofpdvh\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"xypininmayhuybbk\"}},\"provisioningState\":\"Canceled\"},\"location\":\"po\",\"tags\":{\"xzxtheo\":\"nuvamiheogna\",\"cciqihnhungbwjz\":\"usivye\",\"kufubljo\":\"nfygxgispemvtz\"},\"id\":\"xqeofjaeqjhqjba\",\"name\":\"v\",\"type\":\"smjqulngsntnbyb\"}")
             .toObject(TrafficControllerInner.class);
-        Assertions.assertEquals("xxjtfe", model.location());
-        Assertions.assertEquals("wfzitonpeqfpjk", model.tags().get("lxofpdvhpfxxypin"));
+        Assertions.assertEquals("po", model.location());
+        Assertions.assertEquals("nuvamiheogna", model.tags().get("xzxtheo"));
+        Assertions.assertEquals("xypininmayhuybbk",
+            model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficControllerInner model = new TrafficControllerInner().withLocation("xxjtfe")
-            .withTags(mapOf("lxofpdvhpfxxypin", "wfzitonpeqfpjk", "podepoo", "nmayhuybb", "rxzxtheo", "inuvamiheogn"))
-            .withProperties(new TrafficControllerProperties());
+        TrafficControllerInner model
+            = new TrafficControllerInner().withLocation("po")
+                .withTags(mapOf("xzxtheo", "nuvamiheogna", "cciqihnhungbwjz", "usivye", "kufubljo", "nfygxgispemvtz"))
+                .withProperties(new TrafficControllerProperties()
+                    .withSecurityPolicyConfigurations(new SecurityPolicyConfigurations()
+                        .withWafSecurityPolicy(new WafSecurityPolicy().withId("xypininmayhuybbk"))));
         model = BinaryData.fromObject(model).toObject(TrafficControllerInner.class);
-        Assertions.assertEquals("xxjtfe", model.location());
-        Assertions.assertEquals("wfzitonpeqfpjk", model.tags().get("lxofpdvhpfxxypin"));
+        Assertions.assertEquals("po", model.location());
+        Assertions.assertEquals("nuvamiheogna", model.tags().get("xzxtheo"));
+        Assertions.assertEquals("xypininmayhuybbk",
+            model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
     }
 
     // Use "Map.of" if available

@@ -62,48 +62,49 @@ public class ManageContainerRegistry {
 
             Date t1 = new Date();
 
-            Registry azureRegistry = azureResourceManager.containerRegistries().define(acrName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withBasicSku()
-                    .withRegistryNameAsAdminUser()
-                    .create();
+            Registry azureRegistry = azureResourceManager.containerRegistries()
+                .define(acrName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .withRegistryNameAsAdminUser()
+                .create();
 
             Date t2 = new Date();
-            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureRegistry.id());
+            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000)
+                + " seconds) " + azureRegistry.id());
             Utils.print(azureRegistry);
-
 
             //=============================================================
             // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
 
             RegistryCredentials acrCredentials = azureRegistry.getCredentials();
-            DockerClient dockerClient = DockerUtils.createDockerClient(azureResourceManager, rgName, region,
-                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
+            DockerClient dockerClient
+                = DockerUtils.createDockerClient(azureResourceManager, rgName, region, azureRegistry.loginServerUrl(),
+                    acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             //=============================================================
             // Pull a temp image from public Docker repo and create a temporary container from that image
             // These steps can be replaced and instead build a custom image using a Dockerfile and the app's JAR
 
             dockerClient.pullImageCmd(dockerImageName)
-                    .withTag(dockerImageTag)
-                    .withAuthConfig(new AuthConfig()) // anonymous
-                    .exec(new PullImageResultCallback())
-                    .awaitSuccess();
+                .withTag(dockerImageTag)
+                .withAuthConfig(new AuthConfig()) // anonymous
+                .exec(new PullImageResultCallback())
+                .awaitSuccess();
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
                 System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
-            CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
+            CreateContainerResponse dockerContainerInstance
+                = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
                     .withName(dockerContainerName)
                     .withCmd("/hello")
                     .exec();
             System.out.println("List Docker containers:");
-            List<Container> dockerContainers = dockerClient.listContainersCmd()
-                    .withShowAll(true)
-                    .exec();
+            List<Container> dockerContainers = dockerClient.listContainersCmd().withShowAll(true).exec();
             for (Container container : dockerContainers) {
                 System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
@@ -114,18 +115,16 @@ public class ManageContainerRegistry {
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
             dockerClient.commitCmd(dockerContainerInstance.getId())
                 .withRepository(privateRepoUrl)
-                .withTag("latest").exec();
+                .withTag("latest")
+                .exec();
 
             // We can now remove the temporary container instance
-            dockerClient.removeContainerCmd(dockerContainerInstance.getId())
-                    .withForce(true)
-                    .exec();
+            dockerClient.removeContainerCmd(dockerContainerInstance.getId()).withForce(true).exec();
 
             //=============================================================
             // Push the new Docker image to the Azure Container Registry
 
-            dockerClient.pushImageCmd(privateRepoUrl)
-                    .exec(new PushImageResultCallback()).awaitSuccess();
+            dockerClient.pushImageCmd(privateRepoUrl).exec(new PushImageResultCallback()).awaitSuccess();
 
             // Remove the temp image from the local Docker host
             try {
@@ -138,22 +137,22 @@ public class ManageContainerRegistry {
             // Verify that the image we saved in the Azure Container registry can be pulled and instantiated locally
 
             dockerClient.pullImageCmd(privateRepoUrl)
-                    .withAuthConfig(dockerClient.authConfig())
-                    .exec(new PullImageResultCallback()).awaitSuccess();
-            System.out.println("List local Docker images after pulling sample image from the Azure Container Registry:");
-            images = dockerClient.listImagesCmd()
-                    .withShowAll(true)
-                    .exec();
+                .withAuthConfig(dockerClient.authConfig())
+                .exec(new PullImageResultCallback())
+                .awaitSuccess();
+            System.out
+                .println("List local Docker images after pulling sample image from the Azure Container Registry:");
+            images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
                 System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
             dockerClient.createContainerCmd(privateRepoUrl)
                 .withName(dockerContainerName + "-private")
-                .withCmd("/hello").exec();
-            System.out.println("List Docker containers after instantiating container from the Azure Container Registry sample image:");
-            dockerContainers = dockerClient.listContainersCmd()
-                    .withShowAll(true)
-                    .exec();
+                .withCmd("/hello")
+                .exec();
+            System.out.println(
+                "List Docker containers after instantiating container from the Azure Container Registry sample image:");
+            dockerContainers = dockerClient.listContainersCmd().withShowAll(true).exec();
             for (Container container : dockerContainers) {
                 System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
@@ -187,8 +186,7 @@ public class ManageContainerRegistry {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

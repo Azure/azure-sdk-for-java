@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.ApiOperationPropertiesServiceSpecification;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Additional details about an operation.
  */
 @Fluent
-public final class ApiOperationProperties {
+public final class ApiOperationProperties implements JsonSerializable<ApiOperationProperties> {
     /*
      * Specification of the all the metrics provided for a resource type.
      */
-    @JsonProperty(value = "serviceSpecification")
     private ApiOperationPropertiesServiceSpecification serviceSpecification;
 
     /**
@@ -55,5 +58,42 @@ public final class ApiOperationProperties {
         if (serviceSpecification() != null) {
             serviceSpecification().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serviceSpecification", this.serviceSpecification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiOperationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiOperationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiOperationProperties.
+     */
+    public static ApiOperationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiOperationProperties deserializedApiOperationProperties = new ApiOperationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceSpecification".equals(fieldName)) {
+                    deserializedApiOperationProperties.serviceSpecification
+                        = ApiOperationPropertiesServiceSpecification.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiOperationProperties;
+        });
     }
 }

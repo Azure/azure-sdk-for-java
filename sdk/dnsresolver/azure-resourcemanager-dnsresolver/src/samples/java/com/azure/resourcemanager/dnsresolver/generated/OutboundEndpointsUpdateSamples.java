@@ -4,31 +4,34 @@
 
 package com.azure.resourcemanager.dnsresolver.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dnsresolver.models.OutboundEndpoint;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for OutboundEndpoints Update. */
+/**
+ * Samples for OutboundEndpoints Update.
+ */
 public final class OutboundEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Patch.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Patch.
+     * json
      */
     /**
      * Sample code: Update outbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void updateOutboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        OutboundEndpoint resource =
-            manager
-                .outboundEndpoints()
-                .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "value1")).apply();
+    public static void
+        updateOutboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        OutboundEndpoint resource = manager.outboundEndpoints()
+            .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

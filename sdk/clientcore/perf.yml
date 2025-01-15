@@ -1,8 +1,8 @@
 parameters:
 - name: LanguageVersion
-  displayName: LanguageVersion (8, 11, 17)
+  displayName: LanguageVersion (8, 11, 17, 21)
   type: string
-  default: '17'
+  default: '21'
 - name: PackageVersions
   displayName: PackageVersions (regex of package versions to run)
   type: string
@@ -10,7 +10,7 @@ parameters:
 - name: Tests
   displayName: Tests (regex of tests to run)
   type: string
-  default: '^(jsonsend)|(jsonreceive)|(xmlsend)|(xmlreceive)|(binarydatasend)|(binarydatareceive)$'
+  default: '^(httpget)|(httppatch)$'
 - name: Arguments
   displayName: Arguments (regex of arguments to run)
   type: string
@@ -32,7 +32,7 @@ extends:
   parameters:
     TimeoutInMinutes: 720
     LanguageVersion: ${{ parameters.LanguageVersion }}
-    ServiceDirectory: core
+    ServiceDirectory: clientcore
     PackageVersions: ${{ parameters.PackageVersions }}
     Tests: ${{ parameters.Tests }}
     Arguments: ${{ parameters.Arguments }}

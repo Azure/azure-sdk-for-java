@@ -7,5 +7,5 @@ module com.azure.quantum.jobs {
 
     requires transitive com.azure.core;
 
-    opens com.azure.quantum.jobs.models to com.fasterxml.jackson.databind;
+    opens com.azure.quantum.jobs.models to com.azure.core;
 }

@@ -7,180 +7,252 @@ package com.azure.resourcemanager.billing.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for BillingManagementClient class. */
+/**
+ * The interface for BillingManagementClient class.
+ */
 public interface BillingManagementClient {
     /**
-     * Gets The ID that uniquely identifies an Azure subscription.
-     *
+     * Gets The ID that uniquely identifies a billing subscription.
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the AgreementsClient object to access its operations.
+     * 
+     * @return the AgreementsClient object.
+     */
+    AgreementsClient getAgreements();
+
+    /**
+     * Gets the AssociatedTenantsClient object to access its operations.
+     * 
+     * @return the AssociatedTenantsClient object.
+     */
+    AssociatedTenantsClient getAssociatedTenants();
+
+    /**
+     * Gets the AvailableBalancesClient object to access its operations.
+     * 
+     * @return the AvailableBalancesClient object.
+     */
+    AvailableBalancesClient getAvailableBalances();
+
+    /**
      * Gets the BillingAccountsClient object to access its operations.
-     *
+     * 
      * @return the BillingAccountsClient object.
      */
     BillingAccountsClient getBillingAccounts();
 
     /**
      * Gets the AddressClient object to access its operations.
-     *
+     * 
      * @return the AddressClient object.
      */
     AddressClient getAddress();
 
     /**
-     * Gets the AvailableBalancesClient object to access its operations.
-     *
-     * @return the AvailableBalancesClient object.
-     */
-    AvailableBalancesClient getAvailableBalances();
-
-    /**
-     * Gets the InstructionsClient object to access its operations.
-     *
-     * @return the InstructionsClient object.
-     */
-    InstructionsClient getInstructions();
-
-    /**
-     * Gets the BillingProfilesClient object to access its operations.
-     *
-     * @return the BillingProfilesClient object.
-     */
-    BillingProfilesClient getBillingProfiles();
-
-    /**
-     * Gets the CustomersClient object to access its operations.
-     *
-     * @return the CustomersClient object.
-     */
-    CustomersClient getCustomers();
-
-    /**
-     * Gets the InvoiceSectionsClient object to access its operations.
-     *
-     * @return the InvoiceSectionsClient object.
-     */
-    InvoiceSectionsClient getInvoiceSections();
-
-    /**
      * Gets the BillingPermissionsClient object to access its operations.
-     *
+     * 
      * @return the BillingPermissionsClient object.
      */
     BillingPermissionsClient getBillingPermissions();
 
     /**
-     * Gets the BillingSubscriptionsClient object to access its operations.
-     *
-     * @return the BillingSubscriptionsClient object.
+     * Gets the BillingProfilesClient object to access its operations.
+     * 
+     * @return the BillingProfilesClient object.
      */
-    BillingSubscriptionsClient getBillingSubscriptions();
-
-    /**
-     * Gets the ProductsClient object to access its operations.
-     *
-     * @return the ProductsClient object.
-     */
-    ProductsClient getProducts();
-
-    /**
-     * Gets the InvoicesClient object to access its operations.
-     *
-     * @return the InvoicesClient object.
-     */
-    InvoicesClient getInvoices();
-
-    /**
-     * Gets the TransactionsClient object to access its operations.
-     *
-     * @return the TransactionsClient object.
-     */
-    TransactionsClient getTransactions();
-
-    /**
-     * Gets the PoliciesClient object to access its operations.
-     *
-     * @return the PoliciesClient object.
-     */
-    PoliciesClient getPolicies();
+    BillingProfilesClient getBillingProfiles();
 
     /**
      * Gets the BillingPropertiesClient object to access its operations.
-     *
+     * 
      * @return the BillingPropertiesClient object.
      */
     BillingPropertiesClient getBillingProperties();
 
     /**
-     * Gets the BillingRoleDefinitionsClient object to access its operations.
-     *
-     * @return the BillingRoleDefinitionsClient object.
+     * Gets the BillingRequestsClient object to access its operations.
+     * 
+     * @return the BillingRequestsClient object.
      */
-    BillingRoleDefinitionsClient getBillingRoleDefinitions();
+    BillingRequestsClient getBillingRequests();
 
     /**
      * Gets the BillingRoleAssignmentsClient object to access its operations.
-     *
+     * 
      * @return the BillingRoleAssignmentsClient object.
      */
     BillingRoleAssignmentsClient getBillingRoleAssignments();
 
     /**
-     * Gets the AgreementsClient object to access its operations.
-     *
-     * @return the AgreementsClient object.
+     * Gets the BillingRoleDefinitionsClient object to access its operations.
+     * 
+     * @return the BillingRoleDefinitionsClient object.
      */
-    AgreementsClient getAgreements();
+    BillingRoleDefinitionsClient getBillingRoleDefinitions();
 
     /**
-     * Gets the ReservationsClient object to access its operations.
-     *
-     * @return the ReservationsClient object.
+     * Gets the SavingsPlanOrdersClient object to access its operations.
+     * 
+     * @return the SavingsPlanOrdersClient object.
      */
-    ReservationsClient getReservations();
+    SavingsPlanOrdersClient getSavingsPlanOrders();
+
+    /**
+     * Gets the SavingsPlansClient object to access its operations.
+     * 
+     * @return the SavingsPlansClient object.
+     */
+    SavingsPlansClient getSavingsPlans();
+
+    /**
+     * Gets the BillingSubscriptionsClient object to access its operations.
+     * 
+     * @return the BillingSubscriptionsClient object.
+     */
+    BillingSubscriptionsClient getBillingSubscriptions();
+
+    /**
+     * Gets the BillingSubscriptionsAliasesClient object to access its operations.
+     * 
+     * @return the BillingSubscriptionsAliasesClient object.
+     */
+    BillingSubscriptionsAliasesClient getBillingSubscriptionsAliases();
+
+    /**
+     * Gets the CustomersClient object to access its operations.
+     * 
+     * @return the CustomersClient object.
+     */
+    CustomersClient getCustomers();
+
+    /**
+     * Gets the DepartmentsClient object to access its operations.
+     * 
+     * @return the DepartmentsClient object.
+     */
+    DepartmentsClient getDepartments();
 
     /**
      * Gets the EnrollmentAccountsClient object to access its operations.
-     *
+     * 
      * @return the EnrollmentAccountsClient object.
      */
     EnrollmentAccountsClient getEnrollmentAccounts();
 
     /**
-     * Gets the BillingPeriodsClient object to access its operations.
-     *
-     * @return the BillingPeriodsClient object.
+     * Gets the InvoicesClient object to access its operations.
+     * 
+     * @return the InvoicesClient object.
      */
-    BillingPeriodsClient getBillingPeriods();
+    InvoicesClient getInvoices();
+
+    /**
+     * Gets the InvoiceSectionsClient object to access its operations.
+     * 
+     * @return the InvoiceSectionsClient object.
+     */
+    InvoiceSectionsClient getInvoiceSections();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the PaymentMethodsClient object to access its operations.
+     * 
+     * @return the PaymentMethodsClient object.
+     */
+    PaymentMethodsClient getPaymentMethods();
+
+    /**
+     * Gets the PoliciesClient object to access its operations.
+     * 
+     * @return the PoliciesClient object.
+     */
+    PoliciesClient getPolicies();
+
+    /**
+     * Gets the ProductsClient object to access its operations.
+     * 
+     * @return the ProductsClient object.
+     */
+    ProductsClient getProducts();
+
+    /**
+     * Gets the ReservationsClient object to access its operations.
+     * 
+     * @return the ReservationsClient object.
+     */
+    ReservationsClient getReservations();
+
+    /**
+     * Gets the ReservationOrdersClient object to access its operations.
+     * 
+     * @return the ReservationOrdersClient object.
+     */
+    ReservationOrdersClient getReservationOrders();
+
+    /**
+     * Gets the TransactionsClient object to access its operations.
+     * 
+     * @return the TransactionsClient object.
+     */
+    TransactionsClient getTransactions();
+
+    /**
+     * Gets the TransfersClient object to access its operations.
+     * 
+     * @return the TransfersClient object.
+     */
+    TransfersClient getTransfers();
+
+    /**
+     * Gets the PartnerTransfersClient object to access its operations.
+     * 
+     * @return the PartnerTransfersClient object.
+     */
+    PartnerTransfersClient getPartnerTransfers();
+
+    /**
+     * Gets the RecipientTransfersClient object to access its operations.
+     * 
+     * @return the RecipientTransfersClient object.
+     */
+    RecipientTransfersClient getRecipientTransfers();
 }

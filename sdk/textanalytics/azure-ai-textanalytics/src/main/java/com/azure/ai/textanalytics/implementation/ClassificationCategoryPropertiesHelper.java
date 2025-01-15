@@ -11,13 +11,15 @@ import com.azure.ai.textanalytics.models.ClassificationCategory;
 public final class ClassificationCategoryPropertiesHelper {
     private static ClassificationCategoryAccessor accessor;
 
-    private ClassificationCategoryPropertiesHelper() { }
+    private ClassificationCategoryPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ClassificationCategory} instance.
      */
     public interface ClassificationCategoryAccessor {
         void setCategory(ClassificationCategory classification, String category);
+
         void setConfidenceScore(ClassificationCategory classification, double confidenceScore);
     }
 

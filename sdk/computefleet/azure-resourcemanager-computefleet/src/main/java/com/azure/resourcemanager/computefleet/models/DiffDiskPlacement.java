@@ -20,17 +20,17 @@ import java.util.Collection;
  */
 public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacement> {
     /**
-     * Static value CacheDisk for DiffDiskPlacement.
+     * CacheDisk option.
      */
     public static final DiffDiskPlacement CACHE_DISK = fromString("CacheDisk");
 
     /**
-     * Static value ResourceDisk for DiffDiskPlacement.
+     * Resource Disk option.
      */
     public static final DiffDiskPlacement RESOURCE_DISK = fromString("ResourceDisk");
 
     /**
-     * Static value NvmeDisk for DiffDiskPlacement.
+     * NvmeDisk option.
      */
     public static final DiffDiskPlacement NVME_DISK = fromString("NvmeDisk");
 

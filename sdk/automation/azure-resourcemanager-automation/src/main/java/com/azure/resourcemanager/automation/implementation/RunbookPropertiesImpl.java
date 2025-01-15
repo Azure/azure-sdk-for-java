@@ -23,8 +23,8 @@ public final class RunbookPropertiesImpl implements RunbookProperties {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    RunbookPropertiesImpl(
-        RunbookPropertiesInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    RunbookPropertiesImpl(RunbookPropertiesInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

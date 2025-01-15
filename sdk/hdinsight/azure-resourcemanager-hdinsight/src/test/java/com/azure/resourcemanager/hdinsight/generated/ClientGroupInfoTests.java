@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientGroupInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientGroupInfo model =
-            BinaryData
-                .fromString("{\"groupName\":\"anuzbpzkafkuw\",\"groupId\":\"rnwb\"}")
-                .toObject(ClientGroupInfo.class);
+        ClientGroupInfo model = BinaryData.fromString("{\"groupName\":\"anuzbpzkafkuw\",\"groupId\":\"rnwb\"}")
+            .toObject(ClientGroupInfo.class);
         Assertions.assertEquals("anuzbpzkafkuw", model.groupName());
         Assertions.assertEquals("rnwb", model.groupId());
     }

@@ -5,31 +5,36 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ImageObjectDetectionBase model. */
+/**
+ * The ImageObjectDetectionBase model.
+ */
 @Fluent
 public class ImageObjectDetectionBase extends ImageVertical {
     /*
      * Settings used for training the model.
      */
-    @JsonProperty(value = "modelSettings")
     private ImageModelSettingsObjectDetection modelSettings;
 
     /*
      * Search space for sampling different combinations of models and their hyperparameters.
      */
-    @JsonProperty(value = "searchSpace")
     private List<ImageModelDistributionSettingsObjectDetection> searchSpace;
 
-    /** Creates an instance of ImageObjectDetectionBase class. */
+    /**
+     * Creates an instance of ImageObjectDetectionBase class.
+     */
     public ImageObjectDetectionBase() {
     }
 
     /**
      * Get the modelSettings property: Settings used for training the model.
-     *
+     * 
      * @return the modelSettings value.
      */
     public ImageModelSettingsObjectDetection modelSettings() {
@@ -38,7 +43,7 @@ public class ImageObjectDetectionBase extends ImageVertical {
 
     /**
      * Set the modelSettings property: Settings used for training the model.
-     *
+     * 
      * @param modelSettings the modelSettings value to set.
      * @return the ImageObjectDetectionBase object itself.
      */
@@ -50,7 +55,7 @@ public class ImageObjectDetectionBase extends ImageVertical {
     /**
      * Get the searchSpace property: Search space for sampling different combinations of models and their
      * hyperparameters.
-     *
+     * 
      * @return the searchSpace value.
      */
     public List<ImageModelDistributionSettingsObjectDetection> searchSpace() {
@@ -60,7 +65,7 @@ public class ImageObjectDetectionBase extends ImageVertical {
     /**
      * Set the searchSpace property: Search space for sampling different combinations of models and their
      * hyperparameters.
-     *
+     * 
      * @param searchSpace the searchSpace value to set.
      * @return the ImageObjectDetectionBase object itself.
      */
@@ -69,28 +74,36 @@ public class ImageObjectDetectionBase extends ImageVertical {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageObjectDetectionBase withLimitSettings(ImageLimitSettings limitSettings) {
         super.withLimitSettings(limitSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageObjectDetectionBase withSweepSettings(ImageSweepSettings sweepSettings) {
         super.withSweepSettings(sweepSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageObjectDetectionBase withValidationData(MLTableJobInput validationData) {
         super.withValidationData(validationData);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageObjectDetectionBase withValidationDataSize(Double validationDataSize) {
         super.withValidationDataSize(validationDataSize);
@@ -99,7 +112,7 @@ public class ImageObjectDetectionBase extends ImageVertical {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -111,5 +124,61 @@ public class ImageObjectDetectionBase extends ImageVertical {
         if (searchSpace() != null) {
             searchSpace().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("limitSettings", limitSettings());
+        jsonWriter.writeJsonField("sweepSettings", sweepSettings());
+        jsonWriter.writeJsonField("validationData", validationData());
+        jsonWriter.writeNumberField("validationDataSize", validationDataSize());
+        jsonWriter.writeJsonField("modelSettings", this.modelSettings);
+        jsonWriter.writeArrayField("searchSpace", this.searchSpace, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageObjectDetectionBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageObjectDetectionBase if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageObjectDetectionBase.
+     */
+    public static ImageObjectDetectionBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageObjectDetectionBase deserializedImageObjectDetectionBase = new ImageObjectDetectionBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limitSettings".equals(fieldName)) {
+                    deserializedImageObjectDetectionBase.withLimitSettings(ImageLimitSettings.fromJson(reader));
+                } else if ("sweepSettings".equals(fieldName)) {
+                    deserializedImageObjectDetectionBase.withSweepSettings(ImageSweepSettings.fromJson(reader));
+                } else if ("validationData".equals(fieldName)) {
+                    deserializedImageObjectDetectionBase.withValidationData(MLTableJobInput.fromJson(reader));
+                } else if ("validationDataSize".equals(fieldName)) {
+                    deserializedImageObjectDetectionBase
+                        .withValidationDataSize(reader.getNullable(JsonReader::getDouble));
+                } else if ("modelSettings".equals(fieldName)) {
+                    deserializedImageObjectDetectionBase.modelSettings
+                        = ImageModelSettingsObjectDetection.fromJson(reader);
+                } else if ("searchSpace".equals(fieldName)) {
+                    List<ImageModelDistributionSettingsObjectDetection> searchSpace
+                        = reader.readArray(reader1 -> ImageModelDistributionSettingsObjectDetection.fromJson(reader1));
+                    deserializedImageObjectDetectionBase.searchSpace = searchSpace;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageObjectDetectionBase;
+        });
     }
 }

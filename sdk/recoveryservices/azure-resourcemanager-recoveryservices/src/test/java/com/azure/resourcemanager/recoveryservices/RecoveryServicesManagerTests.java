@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -26,12 +26,13 @@ import com.azure.resourcemanager.recoveryservices.models.SkuName;
 import com.azure.resourcemanager.recoveryservices.models.Vault;
 import com.azure.resourcemanager.recoveryservices.models.VaultProperties;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class RecoveryServicesManagerTests extends TestBase {
+public class RecoveryServicesManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
@@ -44,16 +45,15 @@ public class RecoveryServicesManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        recoveryServicesManager = RecoveryServicesManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        recoveryServicesManager = RecoveryServicesManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -61,10 +61,7 @@ public class RecoveryServicesManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -89,15 +86,11 @@ public class RecoveryServicesManagerTests extends TestBase {
                 .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
                 .withProperties(new VaultProperties()
                     .withSecuritySettings(new SecuritySettings()
-                        .withImmutabilitySettings(
-                            new ImmutabilitySettings()
-                                .withState(ImmutabilityState.UNLOCKED)))
+                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
                     .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                     .withRestoreSettings(new RestoreSettings()
-                        .withCrossSubscriptionRestoreSettings(
-                            new CrossSubscriptionRestoreSettings()
-                                .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED)))
-                )
+                        .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
+                            .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
                 .create();
             // @embedmeEnd
             vault.refresh();

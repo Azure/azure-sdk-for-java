@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Account access keys. */
+/**
+ * The Account access keys.
+ */
 @Fluent
-public final class AccessKeysInner {
+public final class AccessKeysInner implements JsonSerializable<AccessKeysInner> {
     /*
      * Gets or sets the primary connection string.
      */
-    @JsonProperty(value = "atlasKafkaPrimaryEndpoint")
     private String atlasKafkaPrimaryEndpoint;
 
     /*
      * Gets or sets the secondary connection string.
      */
-    @JsonProperty(value = "atlasKafkaSecondaryEndpoint")
     private String atlasKafkaSecondaryEndpoint;
 
-    /** Creates an instance of AccessKeysInner class. */
+    /**
+     * Creates an instance of AccessKeysInner class.
+     */
     public AccessKeysInner() {
     }
 
     /**
      * Get the atlasKafkaPrimaryEndpoint property: Gets or sets the primary connection string.
-     *
+     * 
      * @return the atlasKafkaPrimaryEndpoint value.
      */
     public String atlasKafkaPrimaryEndpoint() {
@@ -37,7 +43,7 @@ public final class AccessKeysInner {
 
     /**
      * Set the atlasKafkaPrimaryEndpoint property: Gets or sets the primary connection string.
-     *
+     * 
      * @param atlasKafkaPrimaryEndpoint the atlasKafkaPrimaryEndpoint value to set.
      * @return the AccessKeysInner object itself.
      */
@@ -48,7 +54,7 @@ public final class AccessKeysInner {
 
     /**
      * Get the atlasKafkaSecondaryEndpoint property: Gets or sets the secondary connection string.
-     *
+     * 
      * @return the atlasKafkaSecondaryEndpoint value.
      */
     public String atlasKafkaSecondaryEndpoint() {
@@ -57,7 +63,7 @@ public final class AccessKeysInner {
 
     /**
      * Set the atlasKafkaSecondaryEndpoint property: Gets or sets the secondary connection string.
-     *
+     * 
      * @param atlasKafkaSecondaryEndpoint the atlasKafkaSecondaryEndpoint value to set.
      * @return the AccessKeysInner object itself.
      */
@@ -68,9 +74,48 @@ public final class AccessKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("atlasKafkaPrimaryEndpoint", this.atlasKafkaPrimaryEndpoint);
+        jsonWriter.writeStringField("atlasKafkaSecondaryEndpoint", this.atlasKafkaSecondaryEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessKeysInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessKeysInner.
+     */
+    public static AccessKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessKeysInner deserializedAccessKeysInner = new AccessKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("atlasKafkaPrimaryEndpoint".equals(fieldName)) {
+                    deserializedAccessKeysInner.atlasKafkaPrimaryEndpoint = reader.getString();
+                } else if ("atlasKafkaSecondaryEndpoint".equals(fieldName)) {
+                    deserializedAccessKeysInner.atlasKafkaSecondaryEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessKeysInner;
+        });
     }
 }

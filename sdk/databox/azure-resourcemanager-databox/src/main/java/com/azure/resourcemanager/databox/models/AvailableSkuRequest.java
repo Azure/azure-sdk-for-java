@@ -6,45 +6,49 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The filters for showing the available skus. */
+/**
+ * The filters for showing the available skus.
+ */
 @Fluent
-public final class AvailableSkuRequest {
+public final class AvailableSkuRequest implements JsonSerializable<AvailableSkuRequest> {
     /*
      * Type of the transfer.
      */
-    @JsonProperty(value = "transferType", required = true)
     private TransferType transferType;
 
     /*
      * ISO country code. Country for hardware shipment. For codes check:
      * https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
      */
-    @JsonProperty(value = "country", required = true)
     private String country;
 
     /*
      * Location for data transfer. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * Sku Names to filter for available skus
      */
-    @JsonProperty(value = "skuNames")
     private List<SkuName> skuNames;
 
-    /** Creates an instance of AvailableSkuRequest class. */
+    /**
+     * Creates an instance of AvailableSkuRequest class.
+     */
     public AvailableSkuRequest() {
     }
 
     /**
      * Get the transferType property: Type of the transfer.
-     *
+     * 
      * @return the transferType value.
      */
     public TransferType transferType() {
@@ -53,7 +57,7 @@ public final class AvailableSkuRequest {
 
     /**
      * Set the transferType property: Type of the transfer.
-     *
+     * 
      * @param transferType the transferType value to set.
      * @return the AvailableSkuRequest object itself.
      */
@@ -65,7 +69,7 @@ public final class AvailableSkuRequest {
     /**
      * Get the country property: ISO country code. Country for hardware shipment. For codes check:
      * https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -75,7 +79,7 @@ public final class AvailableSkuRequest {
     /**
      * Set the country property: ISO country code. Country for hardware shipment. For codes check:
      * https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements.
-     *
+     * 
      * @param country the country value to set.
      * @return the AvailableSkuRequest object itself.
      */
@@ -87,7 +91,7 @@ public final class AvailableSkuRequest {
     /**
      * Get the location property: Location for data transfer. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -97,7 +101,7 @@ public final class AvailableSkuRequest {
     /**
      * Set the location property: Location for data transfer. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
-     *
+     * 
      * @param location the location value to set.
      * @return the AvailableSkuRequest object itself.
      */
@@ -108,7 +112,7 @@ public final class AvailableSkuRequest {
 
     /**
      * Get the skuNames property: Sku Names to filter for available skus.
-     *
+     * 
      * @return the skuNames value.
      */
     public List<SkuName> skuNames() {
@@ -117,7 +121,7 @@ public final class AvailableSkuRequest {
 
     /**
      * Set the skuNames property: Sku Names to filter for available skus.
-     *
+     * 
      * @param skuNames the skuNames value to set.
      * @return the AvailableSkuRequest object itself.
      */
@@ -128,27 +132,72 @@ public final class AvailableSkuRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (transferType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property transferType in model AvailableSkuRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property transferType in model AvailableSkuRequest"));
         }
         if (country() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property country in model AvailableSkuRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property country in model AvailableSkuRequest"));
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model AvailableSkuRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model AvailableSkuRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AvailableSkuRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transferType", this.transferType == null ? null : this.transferType.toString());
+        jsonWriter.writeStringField("country", this.country);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeArrayField("skuNames", this.skuNames,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableSkuRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableSkuRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AvailableSkuRequest.
+     */
+    public static AvailableSkuRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableSkuRequest deserializedAvailableSkuRequest = new AvailableSkuRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transferType".equals(fieldName)) {
+                    deserializedAvailableSkuRequest.transferType = TransferType.fromString(reader.getString());
+                } else if ("country".equals(fieldName)) {
+                    deserializedAvailableSkuRequest.country = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAvailableSkuRequest.location = reader.getString();
+                } else if ("skuNames".equals(fieldName)) {
+                    List<SkuName> skuNames = reader.readArray(reader1 -> SkuName.fromString(reader1.getString()));
+                    deserializedAvailableSkuRequest.skuNames = skuNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableSkuRequest;
+        });
+    }
 }

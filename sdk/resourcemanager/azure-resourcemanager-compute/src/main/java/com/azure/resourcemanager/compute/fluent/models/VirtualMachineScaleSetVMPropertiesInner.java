@@ -126,7 +126,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
     private VirtualMachineScaleSetVMProtectionPolicy protectionPolicy;
 
     /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. <br><br>Minimum
+     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum
      * api-version: 2021-03-01
      */
     private String userData;
@@ -447,7 +447,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     * secrets in here. Minimum api-version: 2021-03-01.
      * 
      * @return the userData value.
      */
@@ -457,7 +457,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     * secrets in here. Minimum api-version: 2021-03-01.
      * 
      * @param userData the userData value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.

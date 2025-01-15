@@ -31,8 +31,7 @@ public class DownloadBlobNonSharedClientTest extends AbstractDownloadTest<BlobPe
     // Perform the API call to be tested here
     @Override
     public void run() {
-        BlobClient blobClient = new BlobClientBuilder()
-            .containerName(CONTAINER_NAME)
+        BlobClient blobClient = new BlobClientBuilder().containerName(CONTAINER_NAME)
             .connectionString(connectionString)
             .blobName(blobName)
             .buildClient();
@@ -42,22 +41,20 @@ public class DownloadBlobNonSharedClientTest extends AbstractDownloadTest<BlobPe
 
     @Override
     public Mono<Void> runAsync() {
-        BlobAsyncClient blobAsyncClient = new BlobClientBuilder()
-            .containerName(CONTAINER_NAME)
+        BlobAsyncClient blobAsyncClient = new BlobClientBuilder().containerName(CONTAINER_NAME)
             .connectionString(connectionString)
             .blobName(blobName)
             .buildAsyncClient();
 
-        return blobAsyncClient.download()
-            .map(b -> {
-                int readCount = 0;
-                int remaining = b.remaining();
-                while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, bufferSize);
-                    b.get(buffer, 0, expectedReadCount);
-                    readCount += expectedReadCount;
-                }
-                return 1;
-            }).then();
+        return blobAsyncClient.download().map(b -> {
+            int readCount = 0;
+            int remaining = b.remaining();
+            while (readCount < remaining) {
+                int expectedReadCount = Math.min(remaining - readCount, bufferSize);
+                b.get(buffer, 0, expectedReadCount);
+                readCount += expectedReadCount;
+            }
+            return 1;
+        }).then();
     }
 }

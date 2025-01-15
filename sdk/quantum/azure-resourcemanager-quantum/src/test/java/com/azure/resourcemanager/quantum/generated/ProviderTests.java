@@ -25,8 +25,12 @@ public final class ProviderTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Provider model = new Provider().withProviderId("mofcq").withProviderSku("my").withInstanceUri("kdtmlxhekuk")
-            .withApplicationName("txukcdmp").withProvisioningState(Status.FAILED).withResourceUsageId("y");
+        Provider model = new Provider().withProviderId("mofcq")
+            .withProviderSku("my")
+            .withInstanceUri("kdtmlxhekuk")
+            .withApplicationName("txukcdmp")
+            .withProvisioningState(Status.FAILED)
+            .withResourceUsageId("y");
         model = BinaryData.fromObject(model).toObject(Provider.class);
         Assertions.assertEquals("mofcq", model.providerId());
         Assertions.assertEquals("my", model.providerSku());

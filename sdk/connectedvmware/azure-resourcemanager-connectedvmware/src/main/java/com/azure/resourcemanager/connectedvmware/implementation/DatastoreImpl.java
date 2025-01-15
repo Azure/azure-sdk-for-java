@@ -136,20 +136,16 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .create(resourceGroupName, datastoreName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .create(resourceGroupName, datastoreName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Datastore create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .create(resourceGroupName, datastoreName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .create(resourceGroupName, datastoreName, this.innerModel(), context);
         return this;
     }
 
@@ -165,50 +161,42 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .updateWithResponse(resourceGroupName, datastoreName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .updateWithResponse(resourceGroupName, datastoreName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Datastore apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .updateWithResponse(resourceGroupName, datastoreName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .updateWithResponse(resourceGroupName, datastoreName, updateBody, context)
+            .getValue();
         return this;
     }
 
-    DatastoreImpl(
-        DatastoreInner innerObject, com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
+    DatastoreImpl(DatastoreInner innerObject,
+        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.datastoreName = Utils.getValueFromIdByName(innerObject.id(), "datastores");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.datastoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "datastores");
     }
 
     public Datastore refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .getByResourceGroupWithResponse(resourceGroupName, datastoreName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .getByResourceGroupWithResponse(resourceGroupName, datastoreName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Datastore refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .getByResourceGroupWithResponse(resourceGroupName, datastoreName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .getByResourceGroupWithResponse(resourceGroupName, datastoreName, context)
+            .getValue();
         return this;
     }
 

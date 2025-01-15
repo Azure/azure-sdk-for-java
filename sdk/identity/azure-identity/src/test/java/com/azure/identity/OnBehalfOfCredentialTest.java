@@ -41,15 +41,20 @@ public class OnBehalfOfCredentialTest {
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
-            when(identityClient.authenticateWithOBO(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
-            when(identityClient.authenticateWithOBO(request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithOBO(request1))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+                when(identityClient.authenticateWithOBO(request2))
+                    .thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
+            })) {
             // test
-            OnBehalfOfCredential credential =
-                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret)
-                    .additionallyAllowedTenants("*").build();
+            OnBehalfOfCredential credential = new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+                .clientId(CLIENT_ID)
+                .clientSecret(secret)
+                .additionallyAllowedTenants("*")
+                .build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -62,15 +67,21 @@ public class OnBehalfOfCredentialTest {
         }
 
         // mock
-        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
-            when(identitySyncClient.authenticateWithOBO(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
-            when(identitySyncClient.authenticateWithOBO(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
-        })) {
+        try (MockedConstruction<IdentitySyncClient> identityClientMock
+            = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+                when(identitySyncClient.authenticateWithConfidentialClientCache(any()))
+                    .thenThrow(new IllegalStateException("Test"));
+                when(identitySyncClient.authenticateWithOBO(request1))
+                    .thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+                when(identitySyncClient.authenticateWithOBO(request2))
+                    .thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
+            })) {
             // test
-            OnBehalfOfCredential credential =
-                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret)
-                    .additionallyAllowedTenants("*").build();
+            OnBehalfOfCredential credential = new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+                .clientId(CLIENT_ID)
+                .clientSecret(secret)
+                .additionallyAllowedTenants("*")
+                .build();
 
             AccessToken accessToken = credential.getTokenSync(request1);
             Assertions.assertEquals(token1, accessToken.getToken());
@@ -92,55 +103,72 @@ public class OnBehalfOfCredentialTest {
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
-            when(identityClient.authenticateWithOBO(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithOBO(request))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+            })) {
             // test
             try {
-                new OnBehalfOfCredentialBuilder().clientId(CLIENT_ID).clientSecret(secret)
-                    .additionallyAllowedTenants("*").build();
+                new OnBehalfOfCredentialBuilder().clientId(CLIENT_ID)
+                    .clientSecret(secret)
+                    .additionallyAllowedTenants("*")
+                    .build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assertions.assertTrue(e.getMessage().contains("tenantId"));
             }
             try {
-                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientSecret(secret)
-                    .additionallyAllowedTenants("*").build();
+                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+                    .clientSecret(secret)
+                    .additionallyAllowedTenants("*")
+                    .build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assertions.assertTrue(e.getMessage().contains("clientId"));
             }
             try {
-                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
-                    .additionallyAllowedTenants("*").build();
+                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+                    .clientId(CLIENT_ID)
+                    .additionallyAllowedTenants("*")
+                    .build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assertions.assertTrue(e.getMessage().contains("client secret"));
             }
 
             try {
-                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
-                    .clientSecret("testSecret").clientAssertion(() -> "testAssertion")
-                    .additionallyAllowedTenants("*").build();
+                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+                    .clientId(CLIENT_ID)
+                    .clientSecret("testSecret")
+                    .clientAssertion(() -> "testAssertion")
+                    .additionallyAllowedTenants("*")
+                    .build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assertions.assertTrue(e.getMessage().contains("Exactly one of client secret"));
             }
 
             try {
-                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
-                    .pemCertificate("testPath").clientAssertion(() -> "testAssertion")
-                    .additionallyAllowedTenants("*").build();
+                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+                    .clientId(CLIENT_ID)
+                    .pemCertificate("testPath")
+                    .clientAssertion(() -> "testAssertion")
+                    .additionallyAllowedTenants("*")
+                    .build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assertions.assertTrue(e.getMessage().contains("Exactly one of client secret"));
             }
 
             try {
-                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
-                    .clientSecret("testSecret").pemCertificate("testPath")
-                    .additionallyAllowedTenants("*").build();
+                new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+                    .clientId(CLIENT_ID)
+                    .clientSecret("testSecret")
+                    .pemCertificate("testPath")
+                    .additionallyAllowedTenants("*")
+                    .build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assertions.assertTrue(e.getMessage().contains("Exactly one of client secret"));
@@ -154,14 +182,17 @@ public class OnBehalfOfCredentialTest {
         // setup
         String badSecret = "badsecret";
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        OnBehalfOfCredential credential =
-            new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
-                .additionallyAllowedTenants("RANDOM").build();
+        OnBehalfOfCredential credential = new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+            .clientId(CLIENT_ID)
+            .clientSecret(badSecret)
+            .additionallyAllowedTenants("RANDOM")
+            .build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException
+                && (e.getMessage().startsWith("The current credential is not configured to")))
             .verify();
     }
 
@@ -169,13 +200,14 @@ public class OnBehalfOfCredentialTest {
     public void testInvalidMultiTenantAuth() throws Exception {
         // setup
         String badSecret = "badsecret";
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        OnBehalfOfCredential credential =
-            new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret).build();
+        OnBehalfOfCredential credential
+            = new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret).build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException
+                && (e.getMessage().startsWith("The current credential is not configured to")))
             .verify();
     }
 
@@ -184,12 +216,15 @@ public class OnBehalfOfCredentialTest {
         // setup
         String badSecret = "badsecret";
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        OnBehalfOfCredential credential =
-            new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
-                .userAssertion("assertion").additionallyAllowedTenants("*").build();
+        OnBehalfOfCredential credential = new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+            .clientId(CLIENT_ID)
+            .clientSecret(badSecret)
+            .userAssertion("assertion")
+            .additionallyAllowedTenants("*")
+            .build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e instanceof MsalClientException)
             .verify();

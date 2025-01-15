@@ -18,13 +18,15 @@ import com.azure.resourcemanager.managednetworkfabric.models.RebootProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateDeviceAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
 
-/** An instance of this class provides access to all the operations defined in NetworkDevicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkDevicesClient.
+ */
 public interface NetworkDevicesClient {
     /**
      * Create Network Device.
-     *
-     * <p>Create a Network Device resource.
-     *
+     * 
+     * Create a Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -34,14 +36,14 @@ public interface NetworkDevicesClient {
      * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(
-        String resourceGroupName, String networkDeviceName, NetworkDeviceInner body);
+    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(String resourceGroupName,
+        String networkDeviceName, NetworkDeviceInner body);
 
     /**
      * Create Network Device.
-     *
-     * <p>Create a Network Device resource.
-     *
+     * 
+     * Create a Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -52,14 +54,14 @@ public interface NetworkDevicesClient {
      * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(
-        String resourceGroupName, String networkDeviceName, NetworkDeviceInner body, Context context);
+    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(String resourceGroupName,
+        String networkDeviceName, NetworkDeviceInner body, Context context);
 
     /**
      * Create Network Device.
-     *
-     * <p>Create a Network Device resource.
-     *
+     * 
+     * Create a Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -73,9 +75,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Create Network Device.
-     *
-     * <p>Create a Network Device resource.
-     *
+     * 
+     * Create a Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -86,14 +88,14 @@ public interface NetworkDevicesClient {
      * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkDeviceInner create(
-        String resourceGroupName, String networkDeviceName, NetworkDeviceInner body, Context context);
+    NetworkDeviceInner create(String resourceGroupName, String networkDeviceName, NetworkDeviceInner body,
+        Context context);
 
     /**
      * Gets a Network Device.
-     *
-     * <p>Gets the Network Device resource details.
-     *
+     * 
+     * Gets the Network Device resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -103,14 +105,14 @@ public interface NetworkDevicesClient {
      * @return the Network Device resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkDeviceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkDeviceName, Context context);
+    Response<NetworkDeviceInner> getByResourceGroupWithResponse(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Gets a Network Device.
-     *
-     * <p>Gets the Network Device resource details.
-     *
+     * 
+     * Gets the Network Device resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,9 +125,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Updates a Network Device.
-     *
-     * <p>Update certain properties of the Network Device resource.
-     *
+     * 
+     * Update certain properties of the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Network Device properties to update.
@@ -135,14 +137,14 @@ public interface NetworkDevicesClient {
      * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(
-        String resourceGroupName, String networkDeviceName, NetworkDevicePatchParameters body);
+    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(String resourceGroupName,
+        String networkDeviceName, NetworkDevicePatchParameters body);
 
     /**
      * Updates a Network Device.
-     *
-     * <p>Update certain properties of the Network Device resource.
-     *
+     * 
+     * Update certain properties of the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Network Device properties to update.
@@ -153,14 +155,14 @@ public interface NetworkDevicesClient {
      * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(
-        String resourceGroupName, String networkDeviceName, NetworkDevicePatchParameters body, Context context);
+    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(String resourceGroupName,
+        String networkDeviceName, NetworkDevicePatchParameters body, Context context);
 
     /**
      * Updates a Network Device.
-     *
-     * <p>Update certain properties of the Network Device resource.
-     *
+     * 
+     * Update certain properties of the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Network Device properties to update.
@@ -174,9 +176,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Updates a Network Device.
-     *
-     * <p>Update certain properties of the Network Device resource.
-     *
+     * 
+     * Update certain properties of the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Network Device properties to update.
@@ -187,14 +189,14 @@ public interface NetworkDevicesClient {
      * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkDeviceInner update(
-        String resourceGroupName, String networkDeviceName, NetworkDevicePatchParameters body, Context context);
+    NetworkDeviceInner update(String resourceGroupName, String networkDeviceName, NetworkDevicePatchParameters body,
+        Context context);
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,9 +209,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -223,9 +225,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,9 +239,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -252,9 +254,9 @@ public interface NetworkDevicesClient {
 
     /**
      * List NetworkDevices by resource group.
-     *
-     * <p>List all the Network Device resources in a given resource group.
-     *
+     * 
+     * List all the Network Device resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -266,9 +268,9 @@ public interface NetworkDevicesClient {
 
     /**
      * List NetworkDevices by resource group.
-     *
-     * <p>List all the Network Device resources in a given resource group.
-     *
+     * 
+     * List all the Network Device resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,9 +283,9 @@ public interface NetworkDevicesClient {
 
     /**
      * List NetworkDevices by subscription.
-     *
-     * <p>List all the Network Device resources in a given subscription.
-     *
+     * 
+     * List all the Network Device resources in a given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkDevices as paginated response with {@link PagedIterable}.
@@ -293,9 +295,9 @@ public interface NetworkDevicesClient {
 
     /**
      * List NetworkDevices by subscription.
-     *
-     * <p>List all the Network Device resources in a given subscription.
-     *
+     * 
+     * List all the Network Device resources in a given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -307,9 +309,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -324,9 +326,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -342,9 +344,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -354,14 +356,14 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner reboot(
-        String resourceGroupName, String networkDeviceName, RebootProperties body);
+    CommonPostActionResponseForStateUpdateInner reboot(String resourceGroupName, String networkDeviceName,
+        RebootProperties body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -372,14 +374,14 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner reboot(
-        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context);
+    CommonPostActionResponseForStateUpdateInner reboot(String resourceGroupName, String networkDeviceName,
+        RebootProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,9 +395,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -410,9 +412,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,14 +423,14 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkDeviceName);
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName,
+        String networkDeviceName);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -438,14 +440,14 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkDeviceName, Context context);
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -456,14 +458,14 @@ public interface NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkDeviceName,
+            UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -475,14 +477,14 @@ public interface NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkDeviceName,
+            UpdateDeviceAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -492,14 +494,14 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkDeviceName, UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -510,14 +512,14 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
+     * 
+     * Upgrades the version of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -532,9 +534,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
+     * 
+     * Upgrades the version of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -550,9 +552,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
+     * 
+     * Upgrades the version of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -562,14 +564,14 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkDeviceName, UpdateVersion body);
+    CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkDeviceName,
+        UpdateVersion body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
+     * 
+     * Upgrades the version of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -580,6 +582,6 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context);
+    CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkDeviceName,
+        UpdateVersion body, Context context);
 }

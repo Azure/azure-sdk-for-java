@@ -6,49 +6,52 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SkuLocationInfo model. */
+/**
+ * The SkuLocationInfo model.
+ */
 @Fluent
-public final class SkuLocationInfo {
+public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> {
     /*
      * The location property.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The zones property.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * The zoneDetails property.
      */
-    @JsonProperty(value = "zoneDetails")
     private List<SkuZoneDetail> zoneDetails;
 
     /*
      * The extendedLocations property.
      */
-    @JsonProperty(value = "extendedLocations")
     private List<String> extendedLocations;
 
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private ExtendedLocationType type;
 
-    /** Creates an instance of SkuLocationInfo class. */
+    /**
+     * Creates an instance of SkuLocationInfo class.
+     */
     public SkuLocationInfo() {
     }
 
     /**
      * Get the location property: The location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -57,7 +60,7 @@ public final class SkuLocationInfo {
 
     /**
      * Set the location property: The location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the SkuLocationInfo object itself.
      */
@@ -68,7 +71,7 @@ public final class SkuLocationInfo {
 
     /**
      * Get the zones property: The zones property.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -77,7 +80,7 @@ public final class SkuLocationInfo {
 
     /**
      * Set the zones property: The zones property.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the SkuLocationInfo object itself.
      */
@@ -88,7 +91,7 @@ public final class SkuLocationInfo {
 
     /**
      * Get the zoneDetails property: The zoneDetails property.
-     *
+     * 
      * @return the zoneDetails value.
      */
     public List<SkuZoneDetail> zoneDetails() {
@@ -97,7 +100,7 @@ public final class SkuLocationInfo {
 
     /**
      * Set the zoneDetails property: The zoneDetails property.
-     *
+     * 
      * @param zoneDetails the zoneDetails value to set.
      * @return the SkuLocationInfo object itself.
      */
@@ -108,7 +111,7 @@ public final class SkuLocationInfo {
 
     /**
      * Get the extendedLocations property: The extendedLocations property.
-     *
+     * 
      * @return the extendedLocations value.
      */
     public List<String> extendedLocations() {
@@ -117,7 +120,7 @@ public final class SkuLocationInfo {
 
     /**
      * Set the extendedLocations property: The extendedLocations property.
-     *
+     * 
      * @param extendedLocations the extendedLocations value to set.
      * @return the SkuLocationInfo object itself.
      */
@@ -128,7 +131,7 @@ public final class SkuLocationInfo {
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public ExtendedLocationType type() {
@@ -137,7 +140,7 @@ public final class SkuLocationInfo {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the SkuLocationInfo object itself.
      */
@@ -148,14 +151,13 @@ public final class SkuLocationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model SkuLocationInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model SkuLocationInfo"));
         }
         if (zoneDetails() != null) {
             zoneDetails().forEach(e -> e.validate());
@@ -163,4 +165,57 @@ public final class SkuLocationInfo {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SkuLocationInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("zoneDetails", this.zoneDetails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extendedLocations", this.extendedLocations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuLocationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuLocationInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuLocationInfo.
+     */
+    public static SkuLocationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuLocationInfo deserializedSkuLocationInfo = new SkuLocationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedSkuLocationInfo.location = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuLocationInfo.zones = zones;
+                } else if ("zoneDetails".equals(fieldName)) {
+                    List<SkuZoneDetail> zoneDetails = reader.readArray(reader1 -> SkuZoneDetail.fromJson(reader1));
+                    deserializedSkuLocationInfo.zoneDetails = zoneDetails;
+                } else if ("extendedLocations".equals(fieldName)) {
+                    List<String> extendedLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuLocationInfo.extendedLocations = extendedLocations;
+                } else if ("type".equals(fieldName)) {
+                    deserializedSkuLocationInfo.type = ExtendedLocationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuLocationInfo;
+        });
+    }
 }

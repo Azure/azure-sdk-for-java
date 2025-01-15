@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The drive's current state. */
+/**
+ * The drive's current state.
+ */
 public final class DriveState extends ExpandableStringEnum<DriveState> {
-    /** Static value Specified for DriveState. */
+    /**
+     * Static value Specified for DriveState.
+     */
     public static final DriveState SPECIFIED = fromString("Specified");
 
-    /** Static value Received for DriveState. */
+    /**
+     * Static value Received for DriveState.
+     */
     public static final DriveState RECEIVED = fromString("Received");
 
-    /** Static value NeverReceived for DriveState. */
+    /**
+     * Static value NeverReceived for DriveState.
+     */
     public static final DriveState NEVER_RECEIVED = fromString("NeverReceived");
 
-    /** Static value Transferring for DriveState. */
+    /**
+     * Static value Transferring for DriveState.
+     */
     public static final DriveState TRANSFERRING = fromString("Transferring");
 
-    /** Static value Completed for DriveState. */
+    /**
+     * Static value Completed for DriveState.
+     */
     public static final DriveState COMPLETED = fromString("Completed");
 
-    /** Static value CompletedMoreInfo for DriveState. */
+    /**
+     * Static value CompletedMoreInfo for DriveState.
+     */
     public static final DriveState COMPLETED_MORE_INFO = fromString("CompletedMoreInfo");
 
-    /** Static value ShippedBack for DriveState. */
+    /**
+     * Static value ShippedBack for DriveState.
+     */
     public static final DriveState SHIPPED_BACK = fromString("ShippedBack");
 
     /**
      * Creates a new instance of DriveState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class DriveState extends ExpandableStringEnum<DriveState> {
 
     /**
      * Creates or finds a DriveState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DriveState.
      */
-    @JsonCreator
     public static DriveState fromString(String name) {
         return fromString(name, DriveState.class);
     }
 
     /**
      * Gets known DriveState values.
-     *
+     * 
      * @return known DriveState values.
      */
     public static Collection<DriveState> values() {
