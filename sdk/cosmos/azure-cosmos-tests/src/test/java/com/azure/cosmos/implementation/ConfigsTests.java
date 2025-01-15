@@ -78,10 +78,13 @@ public class ConfigsTests {
         Configs config = new Configs();
         assertThat(config.isHttpConnectionWithoutTLSAllowed()).isFalse();
 
-        System.setProperty("COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED", "true");
-        assertThat(config.isHttpConnectionWithoutTLSAllowed()).isTrue();
-
         System.clearProperty("COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED");
+        System.setProperty("COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED", "true");
+        try {
+            assertThat(config.isHttpConnectionWithoutTLSAllowed()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED");
+        }
     }
 
     @Test(groups = { "emulator" })
@@ -89,10 +92,13 @@ public class ConfigsTests {
         Configs config = new Configs();
         assertThat(config.isEmulatorServerCertValidationDisabled()).isFalse();
 
-        System.setProperty("COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED", "true");
-        assertThat(config.isEmulatorServerCertValidationDisabled()).isTrue();
-
         System.clearProperty("COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED");
+        System.setProperty("COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED", "true");
+        try {
+            assertThat(config.isEmulatorServerCertValidationDisabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED");
+        }
     }
 
     @Test(groups = { "emulator" })
@@ -100,50 +106,65 @@ public class ConfigsTests {
         Configs config = new Configs();
         assertThat(config.getEmulatorHost()).isEmpty();
 
-        System.setProperty("COSMOS.EMULATOR_HOST", "randomHost");
-        assertThat(config.getEmulatorHost()).isEqualTo("randomHost");
-
         System.clearProperty("COSMOS.EMULATOR_HOST");
+        System.setProperty("COSMOS.EMULATOR_HOST", "randomHost");
+        try {
+            assertThat(config.getEmulatorHost()).isEqualTo("randomHost");
+        } finally {
+            System.clearProperty("COSMOS.EMULATOR_HOST");
+        }
     }
 
     @Test(groups = { "emulator" })
     public void http2Enabled() {
         assertThat(Configs.isHttp2Enabled()).isFalse();
 
-        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-        assertThat(Configs.isHttp2Enabled()).isTrue();
-
         System.clearProperty("COSMOS.HTTP2_ENABLED");
+        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+        try {
+            assertThat(Configs.isHttp2Enabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.HTTP2_ENABLED");
+        }
     }
 
     @Test(groups = { "unit" })
     public void http2MaxConnectionPoolSize() {
         assertThat(Configs.getHttp2MaxConnectionPoolSize()).isEqualTo(1000);
 
-        System.setProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE", "10");
-        assertThat(Configs.getHttp2MaxConnectionPoolSize()).isEqualTo(10);
-
         System.clearProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE");
+        System.setProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE", "10");
+        try {
+            assertThat(Configs.getHttp2MaxConnectionPoolSize()).isEqualTo(10);
+        } finally {
+            System.clearProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE");
+        }
     }
 
     @Test(groups = { "unit" })
     public void http2MinConnectionPoolSize() {
         assertThat(Configs.getHttp2MinConnectionPoolSize()).isEqualTo(1);
 
-        System.setProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE", "10");
-        assertThat(Configs.getHttp2MinConnectionPoolSize()).isEqualTo(10);
-
         System.clearProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE");
+        System.setProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE", "10");
+        try {
+            assertThat(Configs.getHttp2MinConnectionPoolSize()).isEqualTo(10);
+        } finally {
+            System.clearProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE");
+        }
     }
 
     @Test(groups = { "unit" })
     public void http2MaxConcurrentStreams() {
         assertThat(Configs.getHttp2MaxConcurrentStreams()).isEqualTo(30);
 
-        System.setProperty("COSMOS.HTTP2_MAX_CONCURRENT_STREAMS", "10");
-        assertThat(Configs.getHttp2MaxConcurrentStreams()).isEqualTo(10);
-
         System.clearProperty("COSMOS.HTTP2_MAX_CONCURRENT_STREAMS");
+        System.setProperty("COSMOS.HTTP2_MAX_CONCURRENT_STREAMS", "10");
+        try {
+            assertThat(Configs.getHttp2MaxConcurrentStreams()).isEqualTo(10);
+        } finally {
+            System.clearProperty("COSMOS.HTTP2_MAX_CONCURRENT_STREAMS");
+        }
     }
 
     @Test(groups = { "unit" })
@@ -151,10 +172,13 @@ public class ConfigsTests {
         Configs config = new Configs();
         assertThat(config.getThinclientEnabled()).isFalse();
 
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        assertThat(config.getThinclientEnabled()).isTrue();
-
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+        try {
+            assertThat(config.getThinclientEnabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
     }
 
     @Test(groups = { "unit" })
@@ -162,9 +186,12 @@ public class ConfigsTests {
         Configs config = new Configs();
         assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create(""));
 
-        System.setProperty("COSMOS.THINCLIENT_ENDPOINT", "testThinClientEndpoint");
-        assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("testThinClientEndpoint"));
-
         System.clearProperty("COSMOS.THINCLIENT_ENDPOINT");
+        System.setProperty("COSMOS.THINCLIENT_ENDPOINT", "testThinClientEndpoint");
+        try {
+            assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("testThinClientEndpoint"));
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENDPOINT");
+        }
     }
 }
