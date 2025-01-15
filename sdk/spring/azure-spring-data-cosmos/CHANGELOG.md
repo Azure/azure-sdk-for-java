@@ -9,6 +9,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixing bug when the PartitionKey is on a parent entity that was introduced when bulk support was added - See [PR 43801](https://github.com/Azure/azure-sdk-for-java/pull/43801).
 
 #### Other Changes
 
