@@ -60,9 +60,14 @@ public class TelemetryHelper {
     private final AtomicLong failedRuns = new AtomicLong();
 
     static {
+        enableMetrics();
+        OTEL = init();
+    }
+
+    @SuppressWarnings("deprecation")
+    private static void enableMetrics() {
         // enables micrometer metrics from Reactor schedulers allowing to monitor thread pool usage and starvation
         Schedulers.enableMetrics();
-        OTEL = init();
     }
 
     /**
