@@ -65,7 +65,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
         = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER);
 
     private ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
-    private ConnectionCacheWrapper connectionCacheWrapper;
     private AutoCloseable autoCloseable;
 
     @Mock
@@ -99,7 +98,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
         connectionCache = new ReactorConnectionCache<>(() -> connection, NAMESPACE, ENTITY_PATH,
             new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(TIMEOUT)), new HashMap<>());
-        connectionCacheWrapper = new ConnectionCacheWrapper(connectionCache);
     }
 
     @AfterEach
@@ -148,10 +146,9 @@ class ServiceBusSessionReceiverAsyncClientTest {
             any(MessagingEntityType.class), eq(CLIENT_IDENTIFIER), eq(sessionId)))
                 .thenReturn(Mono.just(amqpReceiveLink));
 
-        ServiceBusSessionReceiverAsyncClient client
-            = new ServiceBusSessionReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-                receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer, () -> {
-                }, CLIENT_IDENTIFIER, false);
+        ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions, connectionCache, instrumentation, messageSerializer, () -> {
+            }, CLIENT_IDENTIFIER, false);
 
         // Act & Assert
         StepVerifier.create(client.acceptSession(sessionId).flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
@@ -248,10 +245,9 @@ class ServiceBusSessionReceiverAsyncClientTest {
         when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(Mono.fromCallable(onRenewal));
         when(managementNode.renewSessionLock(sessionId2, linkName2)).thenReturn(Mono.fromCallable(onRenewal));
 
-        ServiceBusSessionReceiverAsyncClient client
-            = new ServiceBusSessionReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-                receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer, () -> {
-                }, CLIENT_IDENTIFIER, false);
+        ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, receiverOptions, connectionCache, instrumentation, messageSerializer, () -> {
+            }, CLIENT_IDENTIFIER, false);
 
         // Act & Assert
         StepVerifier.create(client.acceptNextSession().flatMapMany(ServiceBusReceiverAsyncClient::receiveMessages))
@@ -319,7 +315,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
         final ServiceBusSessionReceiverAsyncClient client
             = new ServiceBusSessionReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-                receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer, () -> {
+                receiverOptions, connectionCache, instrumentation, messageSerializer, () -> {
                 }, CLIENT_IDENTIFIER, false);
 
         try {

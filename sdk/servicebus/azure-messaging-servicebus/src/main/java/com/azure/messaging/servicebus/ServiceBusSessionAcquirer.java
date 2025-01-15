@@ -7,11 +7,14 @@ import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink.SessionProperties;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
@@ -57,7 +60,7 @@ final class ServiceBusSessionAcquirer {
     private final Duration tryTimeout;
     private final boolean timeoutRetryDisabled;
     private final ServiceBusReceiveMode receiveMode;
-    private final ConnectionCacheWrapper connectionCacheWrapper;
+    private final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
     private final Mono<ServiceBusManagementNode> sessionManagement;
 
     /**
@@ -70,12 +73,11 @@ final class ServiceBusSessionAcquirer {
      * @param receiveMode the mode of receiving messages from the acquired session.
      * @param tryTimeout the try timeout, currently callsites uses {@link AmqpRetryOptions#getTryTimeout()}}.
      * @param timeoutRetryDisabled if session acquire retry should be disabled when broker timeout on no session.
-     * @param connectionCacheWrapper the connection cache.
+     * @param connectionCache the connection cache.
      */
     ServiceBusSessionAcquirer(ClientLogger logger, String identifier, String entityPath, MessagingEntityType entityType,
         ServiceBusReceiveMode receiveMode, Duration tryTimeout, boolean timeoutRetryDisabled,
-        ConnectionCacheWrapper connectionCacheWrapper) {
-        assert connectionCacheWrapper.isV2();
+        ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache) {
         this.logger = logger;
         this.identifier = identifier;
         this.entityPath = entityPath;
@@ -83,13 +85,14 @@ final class ServiceBusSessionAcquirer {
         this.tryTimeout = tryTimeout;
         this.timeoutRetryDisabled = timeoutRetryDisabled;
         this.receiveMode = receiveMode;
-        this.connectionCacheWrapper = connectionCacheWrapper;
-        this.sessionManagement = connectionCacheWrapper.getConnection()
+        this.connectionCache = connectionCache;
+        this.sessionManagement = this.connectionCache.get()
+            .cast(ServiceBusAmqpConnection.class)
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType));
     }
 
     boolean isConnectionClosed() {
-        return connectionCacheWrapper.isChannelClosed();
+        return connectionCache.isCurrentConnectionClosed();
     }
 
     /**
@@ -159,7 +162,8 @@ final class ServiceBusSessionAcquirer {
      */
     private Mono<Session> acquireSession(String sessionId) {
         return Mono.defer(() -> {
-            final Mono<ServiceBusReceiveLink> createLink = connectionCacheWrapper.getConnection()
+            final Mono<ServiceBusReceiveLink> createLink = connectionCache.get()
+                .cast(ServiceBusAmqpConnection.class)
                 .flatMap(connection -> connection.createReceiveLink(linkName(sessionId), entityPath, receiveMode, null,
                     entityType, identifier, sessionId));
             return createLink.flatMap(link -> {
