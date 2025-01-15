@@ -30,19 +30,26 @@ public class LastEnqueuedEventProperties {
      *     the information has not been retrieved, yet.
      * @param retrievalTime The date and time that the information was retrieved. {@code null} if the information
      *     has not been retrieved, yet.
+     */
+    public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
+        Instant retrievalTime) {
+        this(lastSequenceNumber, String.valueOf(lastOffset), lastEnqueuedTime, retrievalTime, null);
+    }
+
+    /**
+     * Creates an instance with the last enqueued event information set.
+     *
+     * @param lastSequenceNumber Sequence number of the last event to be enqueued in a partition. {@code null} if
+     *     the information has not been retrieved, yet.
+     * @param lastOffsetString Offset of the last observed event enqueued in a partition. {@code null} if the
+     *     information has not been retrieved, yet.
+     * @param lastEnqueuedTime The date and time of the last observed event enqueued in a partition. {@code null} if
+     *     the information has not been retrieved, yet.
+     * @param retrievalTime The date and time that the information was retrieved. {@code null} if the information
+     *     has not been retrieved, yet.
      * @param lastEnqueuedReplicationSegment The replication segment for the last event. {@code null} or -1 if
      *     geo-disaster recovery is not enabled.
      */
-    public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
-        Instant retrievalTime, Integer lastEnqueuedReplicationSegment) {
-        this.lastSequenceNumber = lastSequenceNumber;
-        this.lastOffset = lastOffset;
-        this.lastOffsetString = lastOffset != null ? String.valueOf(lastOffset) : null;
-        this.lastEnqueuedTime = lastEnqueuedTime;
-        this.retrievalTime = retrievalTime;
-        this.lastEnqueuedReplicationSegment = lastEnqueuedReplicationSegment;
-    }
-
     public LastEnqueuedEventProperties(Long lastSequenceNumber, String lastOffsetString, Instant lastEnqueuedTime,
         Instant retrievalTime, Integer lastEnqueuedReplicationSegment) {
         this.lastSequenceNumber = lastSequenceNumber;
