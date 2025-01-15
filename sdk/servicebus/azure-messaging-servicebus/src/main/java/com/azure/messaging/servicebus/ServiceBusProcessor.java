@@ -186,7 +186,7 @@ final class ServiceBusProcessor {
          *      in parallel for each session.
          * @param processMessage The consumer to invoke for each message.
          * @param processError The consumer to report the errors.
-        
+
          */
         RollingMessagePump(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
@@ -331,7 +331,7 @@ final class ServiceBusProcessor {
     /**
      * The {@link ServiceBusProcessor} kind.
      */
-    enum Kind {
+    private enum Kind {
         NON_SESSION, SESSION
     }
 }
