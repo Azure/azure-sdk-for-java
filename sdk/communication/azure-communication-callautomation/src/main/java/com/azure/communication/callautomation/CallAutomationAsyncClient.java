@@ -34,7 +34,6 @@ import com.azure.communication.callautomation.implementation.models.Transcriptio
 import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.AudioFormat;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
@@ -325,9 +324,7 @@ public final class CallAutomationAsyncClient {
                 MediaStreamingTransportTypeInternal.fromString(mediaStreamingOptions.getTransportType().toString()))
             .setStartMediaStreaming(mediaStreamingOptions.isStartMediaStreamingEnabled())
             .setEnableBidirectional(mediaStreamingOptions.isEnableBidirectional())
-            .setAudioFormat(mediaStreamingOptions.getAudioFormat() != null
-                ? AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat().toString())
-                : AudioFormatInternal.fromString(AudioFormat.PCM_24K_MONO.toString()));
+            .setAudioFormat(AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat() != null ? mediaStreamingOptions.getAudioFormat().toString() : null ));
     }
 
     private TranscriptionOptionsInternal getTranscriptionOptionsInternal(TranscriptionOptions transcriptionOptions) {
