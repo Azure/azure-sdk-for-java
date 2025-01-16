@@ -158,9 +158,6 @@
 # ServiceLabel: %Batch
 # ServiceOwners:                                     @mksuni @bgklein @mscurrell @cRui861 @paterasMSFT @gingi @dpwatrous
 
-# ServiceLabel: %BatchAI
-# ServiceOwners:                                     @matthchr
-
 # ServiceLabel: %Billing
 # ServiceOwners:                                     @cabbpt
 

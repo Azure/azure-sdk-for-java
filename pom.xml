@@ -34,7 +34,6 @@
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
     <module>sdk/batch</module>
-    <module>sdk/batchai</module>
     <module>sdk/billing</module>
     <module>sdk/billingbenefits</module>
     <module>sdk/boms</module>
@@ -131,7 +130,6 @@
     <module>sdk/logic</module>
     <module>sdk/logz</module>
     <module>sdk/machinelearning</module>
-    <module>sdk/machinelearningservices</module>
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
     <module>sdk/managednetworkfabric</module>
@@ -213,7 +211,6 @@
     <module>sdk/storage</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
-    <module>sdk/storageimportexport</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>
@@ -228,7 +225,6 @@
     <module>sdk/tools</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
-    <module>sdk/videoanalyzer</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>
