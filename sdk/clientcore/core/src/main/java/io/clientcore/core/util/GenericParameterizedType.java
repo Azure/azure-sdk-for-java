@@ -62,10 +62,7 @@ public final class GenericParameterizedType implements ParameterizedType {
     public String toString() {
         if (cachedToString == null) {
             cachedToString = raw.getTypeName() + "<"
-                + Arrays.stream(args)
-                    .map(type -> ((GenericParameterizedType) type).getTypeName())
-                    .collect(Collectors.joining(", "))
-                + ">";
+                + Arrays.stream(args).map(Type::getTypeName).collect(Collectors.joining(", ")) + ">";
         }
         return cachedToString;
     }

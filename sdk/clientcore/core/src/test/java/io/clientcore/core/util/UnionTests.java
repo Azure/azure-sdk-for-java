@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -366,8 +367,8 @@ public class UnionTests {
     }
 
     @Test
-    void setAndGetValueWithMixedParameterizedTypes() {
-        Union union = Union.ofTypes(LIST_OF_STRING_TYPE, SET_OF_STRING_TYPE);
+    void setAndGetValueWithMixedParameterizedTypesAndClass() {
+        Union union = Union.ofTypes(LIST_OF_STRING_TYPE, SET_OF_STRING_TYPE, String.class);
 
         union.setValue(LIST_OF_STRING_VALUE);
         assertEquals(LIST_OF_STRING_TYPE, union.getCurrentType());
@@ -376,5 +377,25 @@ public class UnionTests {
         union.setValue(SET_OF_STRING_VALUE);
         assertEquals(SET_OF_STRING_TYPE, union.getCurrentType());
         assertEquals(SET_OF_STRING_VALUE, union.getValue(SET_OF_STRING_TYPE));
+
+        union.setValue(STRING_VALUE);
+        assertEquals(String.class, union.getCurrentType());
+        assertEquals(STRING_VALUE, union.getValue(String.class));
+    }
+
+    @Test
+    void createUnionWithMap() {
+        Union union = Union.ofTypes(String.class, Integer.class, Map.class);
+        String key = "key";
+        String value = "value";
+        Map<String, String> map = Map.of(key, value);
+        union.setValue(map);
+
+        assertEquals(Map.class, union.getCurrentType());
+        assertEquals(map, union.getValue(Map.class));
+
+        union.tryConsume(map1 -> assertEquals(value, map1.get(key)), Map.class);
+
+        assertFalse(union.tryConsume(ignore -> fail("Should not consume List<Float>"), LIST_OF_FLOAT_TYPE));
     }
 }
