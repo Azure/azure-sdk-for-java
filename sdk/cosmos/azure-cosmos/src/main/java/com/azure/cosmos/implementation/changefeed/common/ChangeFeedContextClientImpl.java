@@ -151,7 +151,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         }
         return collectionLink
             .queryChangeFeed(changeFeedRequestOptions, klass)
-            .byPage()
+            .byPage().take(1, true)
             .publishOn(this.scheduler);
     }
 
