@@ -25,7 +25,6 @@ public class PathRemoveAccessControlRecursiveOptions {
     /**
      * Constructs a new options object.
      * @param accessControlList The POSIX access control list for the file or directory.
-     * @throws NullPointerException If {@code accessControlList} is null.
      */
     public PathRemoveAccessControlRecursiveOptions(List<PathRemoveAccessControlEntry> accessControlList) {
         StorageImplUtils.assertNotNull("accessControllList", accessControlList);
@@ -72,7 +71,7 @@ public class PathRemoveAccessControlRecursiveOptions {
      * <p>
      * If maximum is reached before all subpaths are processed then continuation token can be used to resume operation.
      * Empty value indicates that maximum number of batches in unbound and operation continues till end. Operation may
-     * also halt if an error is hit and {@code continueOnFailure} is false.
+     *      * also halt if an error is hit and {@code continueOnFailure} is false.
      *
      * @return The maximum number of batches.
      */
@@ -85,7 +84,7 @@ public class PathRemoveAccessControlRecursiveOptions {
      * <p>
      * If maximum is reached before all subpaths are processed then continuation token can be used to resume operation.
      * Empty value indicates that maximum number of batches in unbound and operation continues till end. Operation may
-     * also halt if an error is hit and {@code continueOnFailure} is false.
+     *      * also halt if an error is hit and {@code continueOnFailure} is false.
      *
      * @param maxBatches The maximum number of batches.
      * @return The updated object.

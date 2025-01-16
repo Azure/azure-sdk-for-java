@@ -40,6 +40,7 @@ public class CustomerProvidedKey {
      * @throws RuntimeException If "SHA-256" cannot be found.
      */
     public CustomerProvidedKey(String key) {
+
         this.key = key;
 
         MessageDigest sha256;
@@ -56,6 +57,7 @@ public class CustomerProvidedKey {
      * Creates a new wrapper for a client provided key.
      *
      * @param key The encryption key bytes.
+     *
      * @throws RuntimeException If "SHA-256" cannot be found.
      */
     public CustomerProvidedKey(byte[] key) {

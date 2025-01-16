@@ -1,14 +1,13 @@
 # Release History
 
-## 1.21.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.20.3 (2025-01-16)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.19.2` to version `5.20.0-beta.1`.
+
 
 ## 1.20.2 (2024-12-04)
 
@@ -18,6 +17,7 @@
 
 - Upgraded `azure-storage-blob` from `12.28.1` to version `12.29.0`.
 - Upgraded `azure-messaging-eventhubs` from `5.19.1` to version `5.20.0-beta.1`.
+
 
 ## 1.20.1 (2024-10-27)
 

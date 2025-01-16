@@ -17,8 +17,6 @@ public class BlockBlobListBlocksOptions {
     private String ifTagsMatch;
 
     /**
-     * Creates a new instance of {@link BlockBlobListBlocksOptions}.
-     *
      * @param type Specifies which type of blocks to return.
      */
     public BlockBlobListBlocksOptions(BlockListType type) {

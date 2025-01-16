@@ -27,6 +27,7 @@ public class QueueStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.queue.implementation"));
+        addMissingHashMapImport(customization.getPackage("com.azure.storage.queue.implementation.models"));
     }
 
     /**
@@ -130,5 +131,10 @@ public class QueueStorageCustomization extends Customization {
 
         // Replace the last statement with the try-catch block.
         method.setBody(new BlockStmt(new NodeList<>(tryCatchMap)));
+    }
+
+    // Temporary fix to a bug in Autorest.
+    private static void addMissingHashMapImport(PackageCustomization implementationModels) {
+        implementationModels.getClass("QueuesGetPropertiesHeaders").addImports("java.util.HashMap");
     }
 }
