@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2025-01-15)
+## 1.2.0 (2025-01-16)
 
 ### Features Added
 - Support cache for token credential object. [#39393](https://github.com/Azure/azure-sdk-for-java/issues/39393).
