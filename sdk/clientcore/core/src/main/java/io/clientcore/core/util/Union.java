@@ -85,9 +85,14 @@ public final class Union {
 
         ArrayList<Type> typeCopy = new ArrayList<>(types.length);
         for (int i = 0; i < types.length; i++) {
-            if (types[i] == null) {
+            final Type currentType = types[i];
+            if (currentType == null) {
                 throw LOGGER.logThrowableAsError(
                     new IllegalArgumentException("types cannot contain null values: null value in index " + i));
+            } else if (!(currentType instanceof Class<?> || currentType instanceof ParameterizedType)) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(String.format(
+                    "types must be of type Class or ParameterizedType: type name is %s in index %d.",
+                    currentType.getTypeName(), i)));
             }
 
             typeCopy.add(types[i]);
