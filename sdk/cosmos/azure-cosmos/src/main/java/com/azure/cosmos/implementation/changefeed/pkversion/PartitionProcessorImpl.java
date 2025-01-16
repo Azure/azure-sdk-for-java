@@ -121,9 +121,14 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 return this.documentClient.createDocumentChangeFeedQuery(
                     this.settings.getCollectionSelfLink(),
                     this.options,
-                    JsonNode.class).limitRequest(1);
-            })
+                    JsonNode.class).take(1, true).log("limitRequest");
+            }, 1, 1)
             .flatMap(documentFeedResponse -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 final String continuationToken = documentFeedResponse.getContinuationToken();
@@ -227,6 +232,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         case TRANSIENT_ERROR: {
                             // Retry on transient (429) errors
                             if (clientException.getRetryAfterDuration().toMillis() > 0) {
+                                logger.warn("Retrying Transient Error.");
                                 Instant stopTimer = Instant.now().plus(clientException.getRetryAfterDuration().toMillis(), MILLIS);
                                 return Mono.just(clientException.getRetryAfterDuration().toMillis()) // set some seed value to be able to run
                                            // the repeat loop

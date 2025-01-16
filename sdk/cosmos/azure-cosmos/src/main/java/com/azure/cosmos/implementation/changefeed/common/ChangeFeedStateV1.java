@@ -10,12 +10,17 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ChangeFeedStateV1 extends ChangeFeedState {
+    private static final Logger logger = LoggerFactory.getLogger(ChangeFeedStateV1.class);
     private final String containerRid;
     private final FeedRangeInternal feedRange;
     private final ChangeFeedMode mode;
@@ -38,6 +43,20 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         this.mode = mode;
     }
 
+    public ChangeFeedStateV1(ChangeFeedStateV1 toBeCloned) {
+        this.containerRid = toBeCloned.containerRid;
+        this.feedRange = toBeCloned.feedRange;
+        this.startFromSettings = toBeCloned.startFromSettings;
+        if (toBeCloned.continuation != null) {
+            List<CompositeContinuationToken> compositeContinuationTokens = new ArrayList<>();
+           compositeContinuationTokens.addAll(toBeCloned.continuation.getCompositeContinuationTokens());
+            this.continuation = FeedRangeContinuation.create(toBeCloned.continuation.getContainerRid(), toBeCloned.continuation.getFeedRange(), compositeContinuationTokens);
+        } else {
+            this.continuation = null;
+        }
+        this.mode = toBeCloned.mode;
+    }
+
     @Override
     public FeedRangeContinuation getContinuation() {
         return this.continuation;
@@ -47,6 +66,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     public ChangeFeedState setContinuation(FeedRangeContinuation continuation) {
         checkNotNull(continuation, "Argument 'continuation' must not be null.");
         continuation.validateContainer(this.containerRid);
+        logger.warn("Setting continuation: {}", this.continuation);
         this.continuation = continuation;
 
         return this;

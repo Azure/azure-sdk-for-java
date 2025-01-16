@@ -7,12 +7,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ChangeFeedOperationState;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
@@ -41,11 +37,14 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static java.lang.Thread.sleep;
 
 /**
  * Implementation for ChangeFeedDocumentClient.
@@ -58,6 +57,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     private Scheduler scheduler;
    private static final ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor cosmosAsyncDatabaseAccessor =
         ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
+    private AtomicInteger count = new AtomicInteger(0);
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -200,8 +200,16 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     @Override
     public <T> Mono<CosmosItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
                                                        CosmosItemRequestOptions options) {
-        return cosmosContainer.replaceItem(document, itemId, partitionKey, options)
-            .publishOn(this.scheduler);
+        if (count.compareAndSet(1, 2)) {
+            Map<String, String> map = new HashMap<>();
+            map.put("x-ms-retry-after-ms", "1000");
+            throw new com.azure.cosmos.CosmosException(429, new com.azure.cosmos.implementation.CosmosError(), map);
+
+        } else {
+            count.incrementAndGet();
+            return cosmosContainer.replaceItem(document, itemId, partitionKey, options)
+                    .publishOn(this.scheduler);
+        }
     }
 
     @Override

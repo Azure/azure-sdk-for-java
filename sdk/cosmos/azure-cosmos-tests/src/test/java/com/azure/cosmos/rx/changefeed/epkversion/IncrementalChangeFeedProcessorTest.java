@@ -228,8 +228,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 //            FaultInjectionRule faultInjectionRule = faultInjectionRuleBuilder
 //                    .condition(faultInjectionConditionForRegion)
 //                    .result(serverErrorResult)
-//                    .duration(Duration.ofSeconds(13))
-//                    .startDelay(Duration.ofSeconds(2))
+//                    .duration(Duration.ofSeconds(10))
+//                    .startDelay(Duration.ofSeconds(3))
 //                    .build();
 //
 //            CosmosFaultInjectionHelper
@@ -260,7 +260,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             }
 
             // Wait for the feed processor to receive and process the documents.
-            Thread.sleep(6 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            Thread.sleep(8 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 

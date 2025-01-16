@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosRequestOptions;
@@ -18,6 +19,8 @@ import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.util.Beta;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,9 +53,11 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private Set<String> keywordIdentifiers;
     private boolean completeAfterAllCurrentChangesRetrieved;
     private Long endLSN;
+    private static final Logger logger = LoggerFactory.getLogger(CosmosChangeFeedRequestOptionsImpl.class);
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
-        this.continuationState = toBeCloned.continuationState;
+//        this.continuationState = toBeCloned.continuationState;
+        this.continuationState = new ChangeFeedStateV1((ChangeFeedStateV1) toBeCloned.continuationState);
         this.feedRangeInternal = toBeCloned.feedRangeInternal;
         this.properties = toBeCloned.properties;
         this.maxItemCount = toBeCloned.maxItemCount;
@@ -72,6 +77,8 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
         this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
         this.endLSN = toBeCloned.endLSN;
+
+        logger.warn("Cloning options with continuation state {}", continuationState.getContinuation());
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -93,7 +100,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.maxPrefetchPageCount = DEFAULT_MAX_PREFETCH_PAGE_COUNT;
         this.feedRangeInternal = feedRange;
         this.startFromInternal = startFromInternal;
-        this.continuationState = continuationState;
+        this.continuationState = continuationState; // this should be a clone
 
         if (mode != ChangeFeedMode.INCREMENTAL && mode != ChangeFeedMode.FULL_FIDELITY) {
             throw new IllegalArgumentException(
@@ -110,6 +117,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.properties = new HashMap<>();
         this.isSplitHandlingDisabled = false;
         this.completeAfterAllCurrentChangesRetrieved = DEFAULT_COMPLETE_AFTER_ALL_CURRENT_CHANGES_RETRIEVED;
+        logger.warn("Creating options with continuation state {}", continuationState.getContinuation());
     }
 
     public ChangeFeedState getContinuation() {

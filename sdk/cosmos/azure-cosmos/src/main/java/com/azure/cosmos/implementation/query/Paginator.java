@@ -101,6 +101,8 @@ public class Paginator {
         Long endLsn,
         OperationContextAndListenerTuple operationContext) {
 
+        logger.warn("Change feed fetcher execution with prefetch count: {}", preFetchCount);
+
         return getPaginatedQueryResultAsObservable(
             () -> new ChangeFeedFetcher<>(
                 client,
