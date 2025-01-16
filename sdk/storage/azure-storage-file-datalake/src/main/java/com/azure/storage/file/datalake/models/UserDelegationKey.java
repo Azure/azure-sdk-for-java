@@ -46,13 +46,8 @@ public final class UserDelegationKey {
     private String value;
 
     /**
-     * Creates a new instance of {@link UserDelegationKey}.
-     */
-    public UserDelegationKey() {
-    }
-
-    /**
-     * Get the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     * Get the signedObjectId property: The Azure Active Directory object ID in
+     * GUID format.
      *
      * @return the signedObjectId value.
      */
@@ -61,7 +56,8 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Set the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     * Set the signedObjectId property: The Azure Active Directory object ID in
+     * GUID format.
      *
      * @param signedObjectId the signedObjectId value to set.
      * @return the UserDelegationKey object itself.
@@ -72,7 +68,8 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Get the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
+     * Get the signedTenantId property: The Azure Active Directory tenant ID in
+     * GUID format.
      *
      * @return the signedTenantId value.
      */
@@ -81,7 +78,8 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Set the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
+     * Set the signedTenantId property: The Azure Active Directory tenant ID in
+     * GUID format.
      *
      * @param signedTenantId the signedTenantId value to set.
      * @return the UserDelegationKey object itself.
@@ -132,7 +130,8 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Get the signedService property: Abbreviation of the Azure Storage service that accepts the key.
+     * Get the signedService property: Abbreviation of the Azure Storage
+     * service that accepts the key.
      *
      * @return the signedService value.
      */
@@ -141,7 +140,8 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Set the signedService property: Abbreviation of the Azure Storage service that accepts the key.
+     * Set the signedService property: Abbreviation of the Azure Storage
+     * service that accepts the key.
      *
      * @param signedService the signedService value to set.
      * @return the UserDelegationKey object itself.
@@ -152,7 +152,8 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Get the signedVersion property: The service version that created the key.
+     * Get the signedVersion property: The service version that created the
+     * key.
      *
      * @return the signedVersion value.
      */
@@ -161,7 +162,8 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Set the signedVersion property: The service version that created the key.
+     * Set the signedVersion property: The service version that created the
+     * key.
      *
      * @param signedVersion the signedVersion value to set.
      * @return the UserDelegationKey object itself.

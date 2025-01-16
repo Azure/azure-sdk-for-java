@@ -17,17 +17,11 @@ public final class DownloadRetryOptions {
     private static final ClientLogger LOGGER = new ClientLogger(DownloadRetryOptions.class);
 
     /*
-     * We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
-     * issued and returned. This is in contrast to the retry policy options, which includes the initial try in its
-     * count, thus the difference in verbiage.
+    We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
+    issued and returned. This is in contrast to the retry policy options, which includes the initial try in its count,
+    thus the difference in verbiage.
      */
     private int maxRetryRequests = 5;
-
-    /**
-     * Creates a new instance of {@link DownloadRetryOptions}.
-     */
-    public DownloadRetryOptions() {
-    }
 
     /**
      * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
