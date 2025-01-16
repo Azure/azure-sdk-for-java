@@ -15,14 +15,6 @@ public class ShareDirectorySetPropertiesOptions {
     private ShareFilePermission filePermissions;
 
     /**
-     * Creates a new instance of {@link ShareDirectorySetPropertiesOptions}.
-     */
-    public ShareDirectorySetPropertiesOptions() {
-    }
-
-    /**
-     * Gets the optional SMB properties to set on the destination file or directory.
-     *
      * @return Optional SMB properties to set on the destination file or directory. The only properties that are
      * considered are file attributes, file creation time, file last write time, and file permission key. The rest are
      * ignored.
@@ -32,8 +24,6 @@ public class ShareDirectorySetPropertiesOptions {
     }
 
     /**
-     * Sets the optional SMB properties to set on the destination file or directory.
-     *
      * @param smbProperties Optional SMB properties to set on the destination file or directory. The only properties
      * that are  considered are file attributes, file creation time, file last write time, and file permission key. The
      * rest are ignored.

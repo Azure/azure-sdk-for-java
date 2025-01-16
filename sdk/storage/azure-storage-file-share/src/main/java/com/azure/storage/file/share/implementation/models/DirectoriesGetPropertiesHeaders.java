@@ -10,7 +10,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -146,7 +146,7 @@ public final class DirectoriesGetPropertiesHeaders {
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         }
-        Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             String headerName = header.getName();
