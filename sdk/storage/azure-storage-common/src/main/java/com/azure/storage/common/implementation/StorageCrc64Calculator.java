@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -2075,7 +2076,6 @@ public class StorageCrc64Calculator {
         0xf245e5669c1bf051L,
         0xed72be1478d757d0L,
         0xe79f88c5db6ccaafL,
-
         0x0000000000000000L,
         0xb0bc2e589204f500L,
         0x55a17ae27c9e796bL,
@@ -2408,7 +2408,7 @@ public class StorageCrc64Calculator {
      * @param uCrc the initial CRC value.
      * @return the computed CRC64 checksum.
      */
-    public static long compute(byte[] src, long uCrc) {
+    public static String compute(byte[] src, long uCrc) {
         int pData = 0;
         long uSize = src.length;
         long uBytes, uStop;
@@ -2481,7 +2481,9 @@ public class StorageCrc64Calculator {
             uCrc = (uCrc >>> 8) ^ M_U1[(int) ((uCrc ^ src[pData]) & 0xFF)];
         }
 
-        return uCrc ^ ~0L; // Final bit flip
+        // Convert the final CRC value to an unsigned long using BigInteger
+        BigInteger unsignedCrc = new BigInteger(Long.toUnsignedString(~uCrc));
+        return unsignedCrc.toString();
     }
 
     // Helper method to update CRC using lookup tables
@@ -2511,17 +2513,16 @@ public class StorageCrc64Calculator {
         long uFinalCrcAB = uFinalCrcA ^ ~0L; // Invert bits for unsigned logic
 
         // Ensure unsigned behavior when comparing uInitialCrcA and uInitialCrcAB
-        if ((uInitialCrcA & 0xFFFFFFFFFFFFFFFFL) != (uInitialCrcAB & 0xFFFFFFFFFFFFFFFFL)) {
+        if ((uInitialCrcA) != (uInitialCrcAB)) {
             // Apply mulX_N with proper unsigned masking
-            uFinalCrcAB ^= multiplyCrcByPowerOfX((uInitialCrcA ^ uInitialCrcAB) & 0xFFFFFFFFFFFFFFFFL, uSizeA)
-                & 0xFFFFFFFFFFFFFFFFL;
+            uFinalCrcAB ^= multiplyCrcByPowerOfX((uInitialCrcA ^ uInitialCrcAB), uSizeA);
         }
 
-        uFinalCrcAB ^= (uInitialCrcB ^ ~0L) & 0xFFFFFFFFFFFFFFFFL; // Ensure unsigned XOR logic
-        uFinalCrcAB = multiplyCrcByPowerOfX(uFinalCrcAB & 0xFFFFFFFFFFFFFFFFL, uSizeB) & 0xFFFFFFFFFFFFFFFFL;
-        uFinalCrcAB ^= uFinalCrcB & 0xFFFFFFFFFFFFFFFFL;
+        uFinalCrcAB ^= (uInitialCrcB ^ ~0L); // Ensure unsigned XOR logic
+        uFinalCrcAB = multiplyCrcByPowerOfX(uFinalCrcAB, uSizeB);
+        uFinalCrcAB ^= uFinalCrcB;
 
-        return uFinalCrcAB & 0xFFFFFFFFFFFFFFFFL; // Ensure the result is treated as unsigned
+        return uFinalCrcAB; // Ensure the result is treated as unsigned
     }
 
     /**
@@ -2532,13 +2533,13 @@ public class StorageCrc64Calculator {
      * @param uSize The power of x by which the CRC value is to be multiplied.
      * @return The resulting CRC64 value after multiplication.
      */
-    public static long multiplyCrcByPowerOfX(long a, long uSize) {
+    private static long multiplyCrcByPowerOfX(long a, long uSize) {
         long i = 0;
         long r = a;
 
         while (uSize != 0) {
             if ((uSize & 1) == 1) {
-                r = mulPolyUnrolled(r, M_UX2N[(int) i]) & 0xFFFFFFFFFFFFFFFFL; // Ensure result is treated as unsigned
+                r = mulPolyUnrolled(r, M_UX2N[(int) i]); // Ensure result is treated as unsigned
             }
             uSize >>>= 1; // Unsigned right shift
             i += 1;
@@ -2555,9 +2556,9 @@ public class StorageCrc64Calculator {
      * @param b The second CRC value to be multiplied.
      * @return The resulting CRC64 value after multiplication.
      */
-    public static long mulPolyUnrolled(long a, long b) {
+    private static long mulPolyUnrolled(long a, long b) {
         final long p = POLY;
-        final long p2 = (p >>> 1) ^ (p * (p & 1)); // Use unsigned shift
+        final long p2 = (p >>> 1) ^ (p); // Use unsigned shift
         final long bw = Long.SIZE;
 
         final long[] vt = { 0, p2, p, p ^ p2 };

@@ -29,9 +29,9 @@ public class StorageCrc64CalculatorTests {
         "'Hello World!', 0, 208604604655264165",
         "'123456789!@#$%^&*()', 0, 2153758901452455624",
         "'This is a test where the data is longer than 64 characters so that we can test that code path.', 0, 2736107658526394369", })
-    void testCompute(String data, long initial, long expected) {
+    void testCompute(String data, long initial, String expected) {
         byte[] bytes = data.getBytes();
-        long actual = StorageCrc64Calculator.compute(bytes, initial);
+        String actual = StorageCrc64Calculator.compute(bytes, initial);
         assertEquals(expected, actual);
     }
 
@@ -42,14 +42,11 @@ public class StorageCrc64CalculatorTests {
         "2153758901452455624, 13366433516720813220",
         "12345, 5139183895903464380" })
     void testComputeWithBinaryData(long initial, String expectedStr) {
-        //byte[] hexBytes = hexStringToByteArray(hexData);
-        long expected = unsignedLongFromString(expectedStr);
-        long actual = StorageCrc64Calculator.compute(HEX_BYTES, initial);
-        assertEquals(expected, actual);
+        String actual = StorageCrc64Calculator.compute(HEX_BYTES, initial);
+        assertEquals(expectedStr, actual);
     }
 
     private static byte[] hexStringToByteArray() {
-        //int length = StorageCrc64CalculatorTests.hexData.length();
         int length = HEX_DATA.length();
         byte[] data = new byte[length / 2];
         for (int i = 0; i < length; i += 2) {
@@ -66,11 +63,11 @@ public class StorageCrc64CalculatorTests {
         byte[] data = new byte[numSegments * blockSize];
         new Random().nextBytes(data);
 
-        long wholeCrc = StorageCrc64Calculator.compute(data, 0);
+        long wholeCrc = Long.parseUnsignedLong(StorageCrc64Calculator.compute(data, 0));
         Queue<Long> blockCrcs = new LinkedList<>();
         IntStream.range(0, numSegments)
-            .forEach(i -> blockCrcs
-                .add(StorageCrc64Calculator.compute(Arrays.copyOfRange(data, i * blockSize, (i + 1) * blockSize), 0)));
+            .forEach(i -> blockCrcs.add(Long.parseUnsignedLong(
+                StorageCrc64Calculator.compute(Arrays.copyOfRange(data, i * blockSize, (i + 1) * blockSize), 0))));
 
         long composedCrc = blockCrcs.poll();
         int i = 1;
@@ -97,11 +94,12 @@ public class StorageCrc64CalculatorTests {
         byte[] data = new byte[blockLengths.stream().mapToInt(Integer::intValue).sum()];
         random.nextBytes(data);
 
-        long wholeCrc = StorageCrc64Calculator.compute(data, 0);
+        long wholeCrc = Long.parseUnsignedLong(StorageCrc64Calculator.compute(data, 0));
         Queue<Long> blockCrcs = new LinkedList<>();
         int offset = 0;
         for (int length : blockLengths) {
-            blockCrcs.add(StorageCrc64Calculator.compute(Arrays.copyOfRange(data, offset, offset + length), 0));
+            blockCrcs.add(Long.parseUnsignedLong(
+                StorageCrc64Calculator.compute(Arrays.copyOfRange(data, offset, offset + length), 0)));
             offset += length;
         }
 
