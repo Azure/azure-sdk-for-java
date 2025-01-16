@@ -459,9 +459,6 @@
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/        @sjkwak
 
-# PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs-extensions/ @sjkwak
-
 # ServiceLabel: %Health Deidentification
 # PRLabel: %Health Deidentification
 /sdk/healthdataaiservices/                           @GrahamMThomas @alexathomases @billwert
