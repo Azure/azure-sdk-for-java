@@ -14,21 +14,28 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.39'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.QueueStorage/preview/2018-03-28/queue.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.queue
+enable-xml: true
 generate-client-as-impl: true
+generate-client-interfaces: false
+service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
+context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication
 custom-types-subpackage: models
 customization-class: src/main/java/QueueStorageCustomization.java
+generic-response-type: true
 use-input-stream-for-binary: true
+no-custom-headers: true
 disable-client-builder: true
+stream-style-serialization: true
 ```
 
 ### Rename MessageItems
