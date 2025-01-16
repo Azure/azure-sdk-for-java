@@ -3,7 +3,10 @@
 
 package io.clientcore.core.implementation.util;
 
-enum UriTokenizerState {
+/**
+ * Represents the state of the {@link UriTokenizer}.
+ */
+public enum UriTokenizerState {
     SCHEME,
 
     SCHEME_OR_HOST,

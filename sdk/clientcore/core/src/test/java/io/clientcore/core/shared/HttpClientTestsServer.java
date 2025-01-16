@@ -5,7 +5,7 @@ package io.clientcore.core.shared;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
+import io.clientcore.core.util.DateTimeRfc1123;
 import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.eclipse.jetty.server.Response;

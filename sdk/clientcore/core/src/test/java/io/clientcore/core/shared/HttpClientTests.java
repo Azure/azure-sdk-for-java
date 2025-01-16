@@ -29,7 +29,7 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
-import io.clientcore.core.implementation.util.UriBuilder;
+import io.clientcore.core.util.UriBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;

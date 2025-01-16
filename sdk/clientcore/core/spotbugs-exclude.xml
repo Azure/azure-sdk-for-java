@@ -27,7 +27,7 @@
       <Class name="io.clientcore.core.implementation.http.rest.ResponseExceptionConstructorCache" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
       <Class name="io.clientcore.core.implementation.http.serializer.CompositeSerializer" />
-      <Class name="io.clientcore.core.implementation.util.DateTimeRfc1123" />
+      <Class name="io.clientcore.core.util.DateTimeRfc1123" />
       <Class name="io.clientcore.core.implementation.util.InternalContext" />
       <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
       <Class name="io.clientcore.core.implementation.util.Providers" />
@@ -267,7 +267,7 @@
   <Match>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
     <Or>
-      <Class name="io.clientcore.core.implementation.util.Base64Uri" />
+      <Class name="io.clientcore.core.util.Base64Uri" />
       <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
       <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.json.implementation.DefaultJsonReader" />
