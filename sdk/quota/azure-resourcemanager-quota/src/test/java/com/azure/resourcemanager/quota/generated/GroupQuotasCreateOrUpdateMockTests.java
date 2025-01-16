@@ -12,11 +12,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
 import com.azure.resourcemanager.quota.fluent.models.GroupQuotasEntityInner;
-import com.azure.resourcemanager.quota.models.AdditionalAttributes;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
-import com.azure.resourcemanager.quota.models.GroupQuotasEntityBase;
-import com.azure.resourcemanager.quota.models.GroupingId;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
+import com.azure.resourcemanager.quota.models.GroupQuotasEntityProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -25,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class GroupQuotasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        String responseStr = "{\"id\":\"riplrbpbewtg\",\"name\":\"fgb\",\"type\":\"c\"}";
+        String responseStr = "{\"id\":\"fudwpznt\",\"name\":\"hdzhlrqj\",\"type\":\"hckfrlhrx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +30,12 @@ public final class GroupQuotasCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ProxyResource response = manager.groupQuotas()
-            .createOrUpdate("fbkp", "cg",
-                new GroupQuotasEntityInner().withProperties(new GroupQuotasEntityBase().withDisplayName("ndnhj")
-                    .withAdditionalAttributes(new AdditionalAttributes().withGroupId(
-                        new GroupingId().withGroupingIdType(GroupingIdType.SERVICE_TREE_ID).withValue("vylwzbtdhxuj"))
-                        .withEnvironment(EnvironmentType.NON_PRODUCTION))),
-                com.azure.core.util.Context.NONE);
+        ProxyResource response
+            = manager.groupQuotas()
+                .createOrUpdate("bgyepsbj", "azqugxywpmueefj",
+                    new GroupQuotasEntityInner()
+                        .withProperties(new GroupQuotasEntityProperties().withDisplayName("qkqujidsu")),
+                    com.azure.core.util.Context.NONE);
 
     }
 }

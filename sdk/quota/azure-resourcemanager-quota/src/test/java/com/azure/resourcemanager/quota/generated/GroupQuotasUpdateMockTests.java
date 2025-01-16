@@ -10,13 +10,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
-import com.azure.resourcemanager.quota.models.AdditionalAttributesPatch;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntity;
-import com.azure.resourcemanager.quota.models.GroupQuotasEntityBasePatch;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntityPatch;
-import com.azure.resourcemanager.quota.models.GroupingId;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
+import com.azure.resourcemanager.quota.models.GroupQuotasEntityPatchProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -27,7 +23,7 @@ public final class GroupQuotasUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"cqibycnojv\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"ServiceTreeId\",\"value\":\"qsgzvahapj\"},\"environment\":\"NonProduction\"},\"provisioningState\":\"Succeeded\"},\"id\":\"qzcjrvxdj\",\"name\":\"lmwlxkvugfhzo\",\"type\":\"awjvzunluthnnp\"}";
+            = "{\"properties\":{\"displayName\":\"krh\",\"provisioningState\":\"Succeeded\"},\"id\":\"juahaquhcdhmdual\",\"name\":\"exq\",\"type\":\"vfadmws\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,18 +33,11 @@ public final class GroupQuotasUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GroupQuotasEntity response = manager.groupQuotas()
-            .update("wxzvlvqhjkb", "gibtnm",
-                new GroupQuotasEntityPatch().withProperties(new GroupQuotasEntityBasePatch().withDisplayName("bwwaloa")
-                    .withAdditionalAttributes(new AdditionalAttributesPatch().withGroupId(
-                        new GroupingId().withGroupingIdType(GroupingIdType.SERVICE_TREE_ID).withValue("tzjuzgwyzmhtxo"))
-                        .withEnvironment(EnvironmentType.PRODUCTION))),
+            .update("bkyvp", "ca",
+                new GroupQuotasEntityPatch()
+                    .withProperties(new GroupQuotasEntityPatchProperties().withDisplayName("bpzkafkuwbc")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cqibycnojv", response.properties().displayName());
-        Assertions.assertEquals(GroupingIdType.SERVICE_TREE_ID,
-            response.properties().additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("qsgzvahapj", response.properties().additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.NON_PRODUCTION,
-            response.properties().additionalAttributes().environment());
+        Assertions.assertEquals("krh", response.properties().displayName());
     }
 }
