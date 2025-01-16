@@ -110,6 +110,36 @@ public class LocationCache {
         return this.locationInfo.writeEndpoints;
     }
 
+    /**
+     * Gets list of thin client read endpoints ordered by
+     *
+     * 1. Preferred location
+     * 2. Endpoint availability
+     * @return
+     */
+    public UnmodifiableList<URI> getThinClientReadEndpoints() {
+        if (this.locationUnavailabilityInfoByEndpoint.size() > 0
+            && unavailableLocationsExpirationTimePassed()) {
+            this.updateLocationCache();
+        }
+
+        return this.locationInfo.thinClientReadEndpoints;
+    }
+
+    /**
+     * Gets list of thin client write endpoints ordered by
+     * 1. Preferred location
+     * 2. Endpoint availability
+     * @return
+     */
+    public UnmodifiableList<URI> getThinClientWriteEndpoints() {
+        if (this.locationUnavailabilityInfoByEndpoint.size() > 0
+            && unavailableLocationsExpirationTimePassed()) {
+            this.updateLocationCache();
+        }
+
+        return this.locationInfo.thinClientwriteEndpoints;
+    }
 
     /***
      * Get the list of available read endpoints.
