@@ -57,7 +57,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -71,7 +71,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -85,7 +85,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -94,7 +94,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Initializes an instance of KeyVaultBackupClient client.
-     *
+     * 
      * @param apiVersion Api Version.
      */
     public KeyVaultBackupClientImpl(String apiVersion) {
@@ -104,7 +104,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Initializes an instance of KeyVaultBackupClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param apiVersion Api Version.
      */
@@ -114,7 +114,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Initializes an instance of KeyVaultBackupClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param apiVersion Api Version.
@@ -215,7 +215,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
      * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
@@ -235,7 +235,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
      * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
@@ -255,7 +255,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
      * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
@@ -274,7 +274,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
      * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
@@ -294,7 +294,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
      * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
@@ -315,7 +315,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
      * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
@@ -332,7 +332,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of full backup operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The id returned as part of the backup request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,7 +349,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of full backup operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The id returned as part of the backup request.
      * @param context The context to associate with this operation.
@@ -367,7 +367,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of full backup operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The id returned as part of the backup request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,7 +382,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of full backup operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The id returned as part of the backup request.
      * @param context The context to associate with this operation.
@@ -399,7 +399,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of full backup operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The id returned as part of the backup request.
      * @param context The context to associate with this operation.
@@ -417,7 +417,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of full backup operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The id returned as part of the backup request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,7 +432,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
      * was stored.
@@ -451,7 +451,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
      * was stored.
@@ -470,7 +470,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
      * was stored.
@@ -488,7 +488,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
      * was stored.
@@ -507,7 +507,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
      * was stored.
@@ -527,7 +527,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
      * was stored.
@@ -543,7 +543,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of restore operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The Job Id returned part of the restore operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -560,7 +560,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of restore operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The Job Id returned part of the restore operation.
      * @param context The context to associate with this operation.
@@ -578,7 +578,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of restore operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The Job Id returned part of the restore operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -593,7 +593,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of restore operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The Job Id returned part of the restore operation.
      * @param context The context to associate with this operation.
@@ -610,7 +610,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of restore operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The Job Id returned part of the restore operation.
      * @param context The context to associate with this operation.
@@ -627,7 +627,7 @@ public final class KeyVaultBackupClientImpl {
 
     /**
      * Returns the status of restore operation.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The Job Id returned part of the restore operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -643,7 +643,7 @@ public final class KeyVaultBackupClientImpl {
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
@@ -665,7 +665,7 @@ public final class KeyVaultBackupClientImpl {
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
@@ -688,7 +688,7 @@ public final class KeyVaultBackupClientImpl {
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
@@ -708,7 +708,7 @@ public final class KeyVaultBackupClientImpl {
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
@@ -729,7 +729,7 @@ public final class KeyVaultBackupClientImpl {
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
@@ -752,7 +752,7 @@ public final class KeyVaultBackupClientImpl {
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup

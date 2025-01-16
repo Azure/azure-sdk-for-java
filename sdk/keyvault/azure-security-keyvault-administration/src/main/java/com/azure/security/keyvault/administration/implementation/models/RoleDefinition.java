@@ -197,10 +197,7 @@ public class RoleDefinition implements JsonSerializable<RoleDefinition> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        if (roleName != null
-            || description != null
-            || roleType != null
-            || permissions != null
+        if (roleName != null || description != null || roleType != null || permissions != null
             || assignableScopes != null) {
             jsonWriter.writeStartObject("properties");
             jsonWriter.writeStringField("roleName", this.roleName);
