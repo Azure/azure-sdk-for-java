@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 """
 This script updates external dependencies in the `external_dependencies.txt` file based on the provided JSON input.
-It also runs another script `update_versions.py` to update versions.
+It also runs another script `update_versions.py` to update upgraded dependencies across all SDKs.
 
 Usage:
     python dependabot_update_external_dependencies.py --json '<json_string>'

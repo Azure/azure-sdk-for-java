@@ -1,3 +1,8 @@
+# This workflow is triggered when a pull request is opened by Dependabot
+# This workflow will use metadata from Dependabot update to update external_dependencies.txt and update the dependency across all the SDKs
+# This workflow will auto-approve and merge the pull request if the update is a patch version or minor version update with a compatibility score of 80 or higher.
+
+# NOTE: The auto-approved and merge step is currently disabled.
 name: Dependabot Update External Dependencies
 on: pull_request
 
@@ -10,7 +15,7 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'dependabot[bot]' 
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
     - name: Fetch Dependabot metadata
       id: dependabot-metadata
@@ -32,7 +37,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-        
+
     - name: Adjust External Dependencies
       run: python eng/versioning/dependabot_update_external_dependencies.py --json '${{steps.dependabot-metadata.outputs.updated-dependencies-json}}'
 
@@ -50,12 +55,12 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Auto-Approve and Merge Pull Request
-      if: ${{ steps.dependabot-metadata.outputs.update-type  == 'version-update:semver-patch' || (steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor' && steps.dependabot-metadata.outputs.compatibility-score >= 80)}}
-      run: |
-        gh pr review --approve "${{ github.event.pull_request.html_url }}"
-        gh pr merge "${{ github.event.pull_request.html_url }}" --auto --squash 
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#    - name: Auto-Approve and Merge Pull Request
+#      if: ${{ steps.dependabot-metadata.outputs.update-type  == 'version-update:semver-patch' || (steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor' && steps.dependabot-metadata.outputs.compatibility-score >= 80)}}
+#      run: |
+#        gh pr review --approve "${{ github.event.pull_request.html_url }}"
+#        gh pr merge "${{ github.event.pull_request.html_url }}" --auto --squash
+#      env:
+#        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
