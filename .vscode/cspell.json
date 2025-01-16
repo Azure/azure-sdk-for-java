@@ -66,7 +66,6 @@
     "**/src/**/samples/**/*.ipynb",
     "**/sdk/**/swagger/**",
     "**/src/**/resources/**",
-    "sdk/aot/azure-aot-graalvm-samples/**",
     "sdk/agrifood/azure-verticals-agrifood-farming/**",
     "sdk/anomalydetector/azure-ai-anomalydetector/**",
     "sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/**",
