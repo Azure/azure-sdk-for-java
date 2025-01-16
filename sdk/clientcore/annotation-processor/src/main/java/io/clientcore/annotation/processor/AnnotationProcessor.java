@@ -46,6 +46,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 
 /**
  * Annotation processor that generates client code based on annotated interfaces.
@@ -176,6 +179,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         // Add return type as an import
         setReturnTypeFormMethod(method, requestMethod, templateInput);
         boolean isEncoded = false;
+
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
             // Cache annotations for each parameter
