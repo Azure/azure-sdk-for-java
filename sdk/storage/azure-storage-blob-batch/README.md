@@ -196,16 +196,16 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-batch/src/main/java
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[rest_docs]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[product_docs]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-batch/src/samples
-[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free/
-[storage_account]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[azure_portal]: https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
-[storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[azure_portal]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
+[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
 [blob_service_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-blob#create-a-storage-account
-[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [blob_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-batch/src/samples/README.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
