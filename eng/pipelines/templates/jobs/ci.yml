@@ -143,8 +143,8 @@ jobs:
 
       # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
       # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
-      # PR pipeline since the packageInfo files will be generated above.
-      - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), ne(parameters.ServiceDirectory, 'auto')) }}:
+      # PR pipeline, whose ServiceDirectory is 'auto' since the packageInfo files will be generated above.
+      - ${{if ne(parameters.ServiceDirectory, 'auto')}}:
         - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
           parameters:
             ServiceDirectory: ${{parameters.ServiceDirectory}}
