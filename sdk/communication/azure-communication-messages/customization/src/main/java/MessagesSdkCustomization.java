@@ -40,15 +40,17 @@ public class MessagesSdkCustomization extends Customization {
         //Handle Interactive message content models
         updateModelClassModifierToAbstract(modelsPackage, "MessageContent");
         updateModelClassModifierToAbstract(modelsPackage, "ActionBindings");
+        updateJavaDocForMethodFromJson(modelsPackage, "ActionBindings");
+        updateJavaDocForMethodFromJson(modelsPackage, "MessageContent");
         customizeInteractiveMessage(modelsPackage);
 
         PackageCustomization channelsModelsPackage = libraryCustomization.getPackage(
             "com.azure.communication.messages.models.channels");
         updateWhatsAppMessageTemplateItemWithBinaryDataContent(channelsModelsPackage);
 
-        AddDeprecateAnnotationToMediaNotificationContent(modelsPackage);
+        addDeprecateAnnotationToMediaNotificationContent(modelsPackage);
 
-        AddDeprecateAnnotationForImageV0CommunicationKind(modelsPackage);
+        addDeprecateAnnotationForImageV0CommunicationKind(modelsPackage);
     }
 
     private void updateModelClassModifierToAbstract(PackageCustomization modelsPackage, String className) {
@@ -255,7 +257,7 @@ public class MessagesSdkCustomization extends Customization {
         });
     }
 
-    private void AddDeprecateAnnotationToMediaNotificationContent(PackageCustomization modelsPackage) {
+    private void addDeprecateAnnotationToMediaNotificationContent(PackageCustomization modelsPackage) {
         modelsPackage.getClass("MediaNotificationContent").customizeAst(ast -> {
             ast.getClassByName("MediaNotificationContent").ifPresent(clazz -> {
                 clazz.addAnnotation(Deprecated.class);
@@ -271,7 +273,7 @@ public class MessagesSdkCustomization extends Customization {
         });
     }
 
-    private  void AddDeprecateAnnotationForImageV0CommunicationKind(PackageCustomization modelsPackage) {
+    private  void addDeprecateAnnotationForImageV0CommunicationKind(PackageCustomization modelsPackage) {
         modelsPackage.getClass("CommunicationMessageKind").customizeAst(ast -> {
             ast.getClassByName("CommunicationMessageKind")
                 .flatMap(clazz -> clazz.getFieldByName("IMAGE_V0"))
@@ -287,6 +289,20 @@ public class MessagesSdkCustomization extends Customization {
                         f.setJavadocComment(content);
                     });
                 });
+        });
+    }
+
+    private void updateJavaDocForMethodFromJson(PackageCustomization modelPackage, String className) {
+        String originalDocText = String.format("@throws IOException If an error occurs while reading the %s.", className);
+        modelPackage.getClass(className).customizeAst(ast -> {
+            ast.getClassByName(className).ifPresent( clazz -> {
+                String fromJsonDoc = clazz.getMethodsByName("fromJson")
+                    .get(0).getJavadoc().get().toText()
+                    .replace(originalDocText,
+                        "@throws IllegalStateException If the deserialized JSON object was missing any required properties.\n" +
+                            originalDocText);
+                clazz.getMethodsByName("fromJson").get(0).setJavadocComment(fromJsonDoc);
+            });
         });
     }
 }

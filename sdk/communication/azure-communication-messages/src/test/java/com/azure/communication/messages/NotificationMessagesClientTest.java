@@ -217,7 +217,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
         List<ActionGroupItem> group2 = new ArrayList<>();
         group2.add(new ActionGroupItem("usps_ground_advantage", "USPS Ground Advantage", "Delivered in 2-5 days"));
-        group2.add(new ActionGroupItem("media_mail", "Media Mail", "Delivered in 5-8 days"));
+        group2.add(new ActionGroupItem("usps_mail", "USPS Mail", "Delivered in 5-8 days"));
 
         List<ActionGroup> options = new ArrayList<>();
         options.add(new ActionGroup("Express Delivery", group1));
@@ -246,7 +246,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         LinkContent urlAction = new LinkContent("Rocket is the best!", "https://wallpapercave.com/wp/wp2163723.jpg");
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("The best Guardian of Galaxy"), new WhatsAppUrlActionBindings(urlAction));
-        interactiveMessage.setFooter(new TextMessageContent("Intergalactic New Ltd"));
+        interactiveMessage.setFooter(new TextMessageContent("Intergalactic News Ltd"));
 
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
