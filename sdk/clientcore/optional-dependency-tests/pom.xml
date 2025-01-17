@@ -15,7 +15,7 @@
   <groupId>io.clientcore</groupId>
   <artifactId>optional-dependency-tests</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:optional-dependency-tests;current} -->
 
   <name>Java Core library tests for optional dependencies and features.</name>
   <description>Tests that validate optional dependencies and features of the Core library.</description>

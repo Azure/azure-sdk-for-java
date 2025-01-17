@@ -67,6 +67,8 @@ jobs:
 
     variables:
       ArtifactName: 'packages'
+      # The ServiceDirectory is an identifier. The pullrequest's ServiceDirectory of
+      # 'auto' shouldn't cause any problems
       Codeql.Enabled: true
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
@@ -86,8 +88,17 @@ jobs:
             Paths:
               - '**/*.xml'
               - '**/*.md'
+              - '**/ci*.yml' # necessary for save-package-properties.yml
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
+
+      # This is the case for the PullReqest pipeline which has a ServiceDirectory of 'auto'.
+      # For the PullRequest pipeline, the packageInfo files generated from the diff end up
+      # being the source of truth for the artifacts list.
+      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+        - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+          parameters:
+            ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -130,9 +141,13 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
-        parameters:
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
+      # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
+      # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
+      # PR pipeline, whose ServiceDirectory is 'auto' since the packageInfo files will be generated above.
+      - ${{if ne(parameters.ServiceDirectory, 'auto')}}:
+        - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
+          parameters:
+            ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: PowerShell@2
         displayName: Setup Dev versioning
@@ -234,8 +249,6 @@ jobs:
           Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
 
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:

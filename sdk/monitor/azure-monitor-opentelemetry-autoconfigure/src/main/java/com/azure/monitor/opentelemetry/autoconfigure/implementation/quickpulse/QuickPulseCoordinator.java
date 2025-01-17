@@ -85,6 +85,7 @@ final class QuickPulseCoordinator implements Runnable {
                 // in an error state (ping once a minute) if the first ping after the failing post also fails.
                 long errorDelayInNs = TimeUnit.SECONDS.toNanos(40);
                 pingSender.resetLastValidRequestTimeNs(dataSender.getLastValidPostRequestTimeNs() - errorDelayInNs);
+                logger.verbose("Switching to fallback mode.");
                 return waitOnErrorInMillis;
 
             case QP_IS_OFF:
@@ -95,6 +96,7 @@ final class QuickPulseCoordinator implements Runnable {
                 // sender to go into backoff state immediately instead of waiting 60s to go into backoff state like
                 // the spec describes. See: https://github.com/aep-health-and-standards/Telemetry-Collection-Spec/blob/main/ApplicationInsights/livemetrics.md#timings
                 pingSender.resetLastValidRequestTimeNs(dataSender.getLastValidPostRequestTimeNs());
+                logger.verbose("Switching to ping mode.");
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;
@@ -118,10 +120,12 @@ final class QuickPulseCoordinator implements Runnable {
         collector.setQuickPulseStatus(qpStatus);
         switch (qpStatus) {
             case ERROR:
+                logger.verbose("In fallback mode");
                 return waitOnErrorInMillis;
 
             case QP_IS_ON:
                 pingMode = false;
+                logger.verbose("Switching to post mode");
                 // Below two lines are necessary because there are cases where the last valid request is a ping
                 // before a failing post. This can happen in cases where authentication fails - pings would return
                 // http 200 but posts http 401.

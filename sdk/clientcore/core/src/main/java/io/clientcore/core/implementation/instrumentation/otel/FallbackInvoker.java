@@ -4,7 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 /**
  * A wrapper around a {@link ReflectiveInvoker} that provides a fallback value if the invocation fails,
@@ -39,6 +39,7 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @return the result of the invocation or the fallback value
      */
     public Object invoke() {
@@ -52,6 +53,7 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @param argOrTarget the argument or target
      * @return the result of the invocation or the fallback value
      */
@@ -66,6 +68,7 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @param argOrTarget the argument or target
      * @param arg1 the first argument
      * @return the result of the invocation or the fallback value
@@ -81,6 +84,7 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @param argOrTarget the argument or target
      * @param arg1 the first argument
      * @param arg2 the second argument
@@ -97,6 +101,7 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @param argOrTarget the argument or target
      * @param arg1 the first argument
      * @param arg2 the second argument
