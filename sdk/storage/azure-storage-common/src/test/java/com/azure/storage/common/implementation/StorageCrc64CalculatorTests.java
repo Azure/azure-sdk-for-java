@@ -4,7 +4,9 @@
 package com.azure.storage.common.implementation;
 
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
@@ -15,91 +17,79 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.math.BigInteger;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StorageCrc64CalculatorTests {
-    private static final int KB = 1024;
-    private static final String HEX_DATA = "C8E11B40D793D1526018"; // '\\xC8\\xE1\\x1B\\x40\\xD7\\x93\\xD1\\x52\\x60\\x18'
-    private static final byte[] HEX_BYTES = hexStringToByteArray();
 
     @ParameterizedTest
-    @CsvSource({
-        "'', 0, 0",
-        "'Hello World!', 0, 208604604655264165",
-        "'123456789!@#$%^&*()', 0, 2153758901452455624",
-        "'This is a test where the data is longer than 64 characters so that we can test that code path.', 0, 2736107658526394369", })
-    void testCompute(String data, long initial, String expected) {
+    @MethodSource("testComputeSupplier")
+    public void testCompute(String data, long initial, long expected) {
         byte[] bytes = data.getBytes();
-        String actual = StorageCrc64Calculator.compute(bytes, initial);
+        long actual = StorageCrc64Calculator.compute(bytes, initial);
         assertEquals(expected, actual);
     }
 
-    @ParameterizedTest
-    @CsvSource({
-        "0, 3386042136331673945",
-        "208604604655264165, 4570059697646401418",
-        "2153758901452455624, 13366433516720813220",
-        "12345, 5139183895903464380" })
-    void testComputeWithBinaryData(long initial, String expectedStr) {
-        String actual = StorageCrc64Calculator.compute(HEX_BYTES, initial);
-        assertEquals(expectedStr, actual);
+    private static Stream<Arguments> testComputeSupplier() {
+        return Stream.of(Arguments.of("", 0, 0), Arguments.of("Hello World!", 0, "208604604655264165"),
+            Arguments.of("123456789!@#$%^&*()", 0, "2153758901452455624"),
+            Arguments.of(
+                "This is a test where the data is longer than 64 characters so that we can test that code path.", 0,
+                "2736107658526394369"));
     }
 
-    private static byte[] hexStringToByteArray() {
-        int length = HEX_DATA.length();
+    @ParameterizedTest
+    @MethodSource("testComputeWithBinaryDataSupplier")
+    void testComputeWithBinaryData(long initial, String hexData, String expectedStr) {
+        byte[] hexBytes = hexStringToByteArray(hexData);
+        long expected = unsignedLongFromString(expectedStr);
+        long actual = StorageCrc64Calculator.compute(hexBytes, initial);
+        assertEquals(expected, actual);
+    }
+
+    private static Stream<Arguments> testComputeWithBinaryDataSupplier() {
+        return Stream.of(Arguments.of(0L, "C8E11B40D793D1526018", "3386042136331673945"), // '\\xC8\\xE1\\x1B\\x40\\xD7\\x93\\xD1\\x52\\x60\\x18'
+            Arguments.of(208604604655264165L, "C8E11B40D793D1526018", "4570059697646401418"),
+            Arguments.of(2153758901452455624L, "C8E11B40D793D1526018", "13366433516720813220"),
+            Arguments.of(12345L, "C8E11B40D793D1526018", "5139183895903464380"),
+            Arguments.of(0L, "AABBCCDDEEFF", "13410969003359324163"),
+            Arguments.of(208604604655264165L, "AABBCCDDEEFF", "7077292804802198544"),
+            Arguments.of(2153758901452455624L, "AABBCCDDEEFF", "7845171950889742163"),
+            Arguments.of(12345L, "AABBCCDDEEFF", "1250888331951523569"));
+    }
+
+    private static byte[] hexStringToByteArray(String hexData) {
+        int length = hexData.length();
         byte[] data = new byte[length / 2];
         for (int i = 0; i < length; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(StorageCrc64CalculatorTests.HEX_DATA.charAt(i), 16) << 4)
-                + Character.digit(StorageCrc64CalculatorTests.HEX_DATA.charAt(i + 1), 16));
+            data[i / 2]
+                = (byte) ((Character.digit(hexData.charAt(i), 16) << 4) + Character.digit(hexData.charAt(i + 1), 16));
         }
         return data;
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 2, 3, 10 })
-    void testCompose(int numSegments) {
-        int blockSize = KB;
-        byte[] data = new byte[numSegments * blockSize];
-        new Random().nextBytes(data);
-
-        long wholeCrc = Long.parseUnsignedLong(StorageCrc64Calculator.compute(data, 0));
-        Queue<Long> blockCrcs = new LinkedList<>();
-        IntStream.range(0, numSegments)
-            .forEach(i -> blockCrcs.add(Long.parseUnsignedLong(
-                StorageCrc64Calculator.compute(Arrays.copyOfRange(data, i * blockSize, (i + 1) * blockSize), 0))));
-
-        long composedCrc = blockCrcs.poll();
-        int i = 1;
-        while (!blockCrcs.isEmpty()) {
-            long nextBlockCrc = blockCrcs.poll();
-            composedCrc
-                = StorageCrc64Calculator.concat(0, 0, composedCrc, ((long) blockSize * i), 0, nextBlockCrc, blockSize);
-            i++;
-        }
-
-        assertEquals(wholeCrc, composedCrc);
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = { 2, 3, 10 })
-    void testComposeDifferingBlockSizes(int numSegments) {
-        int minBlockSize = KB, maxBlockSize = 4 * KB;
+    @MethodSource("testComposeSupplier")
+    void testCompose(int numSegments, int minBlockSize, int maxBlockSize) {
         Random random = new Random();
 
         List<Integer> blockLengths = new ArrayList<>();
-        IntStream.range(0, numSegments)
-            .forEach(i -> blockLengths.add(random.nextInt(maxBlockSize - minBlockSize) + minBlockSize));
+        IntStream.range(0, numSegments).forEach(i -> {
+            int blockSize = maxBlockSize > minBlockSize
+                ? random.nextInt(maxBlockSize - minBlockSize) + minBlockSize
+                : minBlockSize;
+            blockLengths.add(blockSize);
+        });
 
         byte[] data = new byte[blockLengths.stream().mapToInt(Integer::intValue).sum()];
         random.nextBytes(data);
 
-        long wholeCrc = Long.parseUnsignedLong(StorageCrc64Calculator.compute(data, 0));
+        long wholeCrc = StorageCrc64Calculator.compute(data, 0);
         Queue<Long> blockCrcs = new LinkedList<>();
         int offset = 0;
         for (int length : blockLengths) {
-            blockCrcs.add(Long.parseUnsignedLong(
-                StorageCrc64Calculator.compute(Arrays.copyOfRange(data, offset, offset + length), 0)));
+            blockCrcs.add(StorageCrc64Calculator.compute(Arrays.copyOfRange(data, offset, offset + length), 0));
             offset += length;
         }
 
@@ -113,6 +103,18 @@ public class StorageCrc64CalculatorTests {
         }
 
         assertEquals(wholeCrc, composedCrc);
+    }
+
+    private static Stream<Arguments> testComposeSupplier() {
+        return Stream.of(Arguments.of(2, Constants.KB, Constants.KB), Arguments.of(3, Constants.KB, Constants.KB),
+            Arguments.of(10, Constants.KB, Constants.KB), Arguments.of(2, Constants.KB, 4 * Constants.KB),
+            Arguments.of(3, Constants.KB, 4 * Constants.KB), Arguments.of(10, Constants.KB, 4 * Constants.KB),
+            Arguments.of(2, Constants.KB, Constants.MB), // 1 MB
+            Arguments.of(3, Constants.KB, Constants.MB), // 1 MB
+            Arguments.of(2, Constants.KB, 512 * Constants.MB), // 512 MB
+            Arguments.of(3, Constants.KB, 512 * Constants.MB), // 512 MB
+            Arguments.of(2, Constants.KB, Constants.GB) // 1 GB
+        );
     }
 
     @ParameterizedTest

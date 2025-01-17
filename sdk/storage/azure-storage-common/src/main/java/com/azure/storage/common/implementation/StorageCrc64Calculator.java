@@ -2408,7 +2408,7 @@ public class StorageCrc64Calculator {
      * @param uCrc the initial CRC value.
      * @return the computed CRC64 checksum.
      */
-    public static String compute(byte[] src, long uCrc) {
+    public static long compute(byte[] src, long uCrc) {
         int pData = 0;
         long uSize = src.length;
         long uBytes, uStop;
@@ -2483,7 +2483,8 @@ public class StorageCrc64Calculator {
 
         // Convert the final CRC value to an unsigned long using BigInteger
         BigInteger unsignedCrc = new BigInteger(Long.toUnsignedString(~uCrc));
-        return unsignedCrc.toString();
+        //return unsignedCrc.toString();
+        return ~uCrc; // Flip all bits of uCrc and return as long
     }
 
     // Helper method to update CRC using lookup tables
