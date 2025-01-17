@@ -4,8 +4,37 @@
 
 package com.azure.communication.messages;
 
-import com.azure.communication.messages.models.*;
-import com.azure.communication.messages.models.channels.*;
+import com.azure.communication.messages.models.ActionGroup;
+import com.azure.communication.messages.models.ActionGroupContent;
+import com.azure.communication.messages.models.ActionGroupItem;
+import com.azure.communication.messages.models.AudioNotificationContent;
+import com.azure.communication.messages.models.ButtonContent;
+import com.azure.communication.messages.models.ButtonSetContent;
+import com.azure.communication.messages.models.DocumentMessageContent;
+import com.azure.communication.messages.models.DocumentNotificationContent;
+import com.azure.communication.messages.models.ImageMessageContent;
+import com.azure.communication.messages.models.ImageNotificationContent;
+import com.azure.communication.messages.models.InteractiveMessage;
+import com.azure.communication.messages.models.InteractiveNotificationContent;
+import com.azure.communication.messages.models.MessageTemplate;
+import com.azure.communication.messages.models.MessageTemplateBindings;
+import com.azure.communication.messages.models.MessageTemplateItem;
+import com.azure.communication.messages.models.MessageTemplateText;
+import com.azure.communication.messages.models.MessageTemplateValue;
+import com.azure.communication.messages.models.LinkContent;
+import com.azure.communication.messages.models.StickerNotificationContent;
+import com.azure.communication.messages.models.TextMessageContent;
+import com.azure.communication.messages.models.TextNotificationContent;
+import com.azure.communication.messages.models.TemplateNotificationContent;
+import com.azure.communication.messages.models.VideoMessageContent;
+import com.azure.communication.messages.models.VideoNotificationContent;
+import com.azure.communication.messages.models.SendMessageResult;
+import com.azure.communication.messages.models.channels.WhatsAppButtonActionBindings;
+import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
+import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsComponent;
+import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateItem;
+import com.azure.communication.messages.models.channels.WhatsAppListActionBindings;
+import com.azure.communication.messages.models.channels.WhatsAppUrlActionBindings;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
@@ -259,8 +288,8 @@ public final class ReadmeSamples {
             .connectionString("<CONNECTION_STRING>")
             .buildClient();
         List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        buttonActions.add(new ButtonContent("no",  "No"));
+        buttonActions.add(new ButtonContent("yes",  "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
@@ -283,8 +312,8 @@ public final class ReadmeSamples {
             .connectionString("<CONNECTION_STRING>")
             .buildClient();
         List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        buttonActions.add(new ButtonContent("no",  "No"));
+        buttonActions.add(new ButtonContent("yes",  "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
@@ -308,8 +337,8 @@ public final class ReadmeSamples {
             .connectionString("<CONNECTION_STRING>")
             .buildClient();
         List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        buttonActions.add(new ButtonContent("no",  "No"));
+        buttonActions.add(new ButtonContent("yes",  "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
@@ -334,8 +363,8 @@ public final class ReadmeSamples {
             .connectionString("<CONNECTION_STRING>")
             .buildClient();
         List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        buttonActions.add(new ButtonContent("no",  "No"));
+        buttonActions.add(new ButtonContent("yes",  "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you like it?"), new WhatsAppButtonActionBindings(buttonSet));

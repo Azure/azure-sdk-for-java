@@ -430,8 +430,8 @@ public class NotificationMessageSample {
     public static void sendInteractiveMessageWithButtonAction() {
         NotificationMessagesClient client = createClientWithConnectionString();
         List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        buttonActions.add(new ButtonContent("no",  "No"));
+        buttonActions.add(new ButtonContent("yes",  "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
@@ -448,8 +448,8 @@ public class NotificationMessageSample {
     public static void sendInteractiveMessageWithButtonActionWithImageHeader() {
         NotificationMessagesClient client = createClientWithConnectionString();
         List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        buttonActions.add(new ButtonContent("no",  "No"));
+        buttonActions.add(new ButtonContent("yes",  "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
@@ -467,8 +467,8 @@ public class NotificationMessageSample {
     public static void sendInteractiveMessageWithButtonActionWithDocumentHeader() {
         NotificationMessagesClient client = createClientWithConnectionString();
         List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        buttonActions.add(new ButtonContent("no",  "No"));
+        buttonActions.add(new ButtonContent("yes",  "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
@@ -486,8 +486,8 @@ public class NotificationMessageSample {
     public static void sendInteractiveMessageWithButtonActionWithVideoHeader() {
         NotificationMessagesClient client = createClientWithConnectionString();
         List<ButtonContent> buttonActions =  new ArrayList<>();
-        buttonActions.add( new ButtonContent("no",  "No"));
-        buttonActions.add( new ButtonContent("yes",  "Yes"));
+        buttonActions.add(new ButtonContent("no",  "No"));
+        buttonActions.add(new ButtonContent("yes",  "Yes"));
         ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
         InteractiveMessage interactiveMessage = new InteractiveMessage(
             new TextMessageContent("Do you like it?"), new WhatsAppButtonActionBindings(buttonSet));
