@@ -15,11 +15,6 @@ public enum PhoneNumbersServiceVersion implements ServiceVersion {
     V2021_03_07("2021-03-07"),
 
     /**
-     * Number Lookup update to public preview {@code 2024-03-01-preview}
-     */
-    V2024_03_01_PREVIEW("2024-03-01-preview"),
-
-    /**
      * Number Lookup GA {@code 2025-02-11}
      */
     V2025_02_11("2025-02-11");

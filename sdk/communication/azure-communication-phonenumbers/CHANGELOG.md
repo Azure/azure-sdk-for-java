@@ -2,9 +2,10 @@
 
 ## 1.2.0 (2025-02-11)
 
-### Features Added
+### Other Changes
 
-- GA release of Number Insight.
+- Release of Number Insight GA.
+- API version `2025-02-11` is the default.
 
 ## 1.1.19 (2024-12-04)
 
