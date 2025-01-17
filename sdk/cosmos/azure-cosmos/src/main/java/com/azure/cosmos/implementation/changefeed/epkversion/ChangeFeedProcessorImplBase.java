@@ -407,6 +407,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.sleepTime,
                 pkRangeIdVersionLeaseStoreManager,
                 leaseStoreManager,
+                this.changeFeedProcessorOptions,
                 this.changeFeedMode);
         } else {
             bootstrapper = new BootstrapperImpl(
@@ -416,6 +417,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.sleepTime,
                 leaseStoreManager,
                 pkRangeIdVersionLeaseStoreManager,
+                this.changeFeedProcessorOptions,
                 this.changeFeedMode);
         }
 

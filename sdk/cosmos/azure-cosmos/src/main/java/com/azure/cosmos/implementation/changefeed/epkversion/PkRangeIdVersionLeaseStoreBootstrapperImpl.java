@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -50,7 +51,9 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
         Duration sleepTime,
         LeaseStoreManager pkRangeIdVersionLeaseStoreManager,
         LeaseStoreManager epkRangeVersionLeaseStoreManager,
+        ChangeFeedProcessorOptions changeFeedProcessorOptions,
         ChangeFeedMode changeFeedModeToStart) {
+
         checkNotNull(synchronizer, "Argument 'synchronizer' can not be null");
         checkNotNull(leaseStore, "Argument 'leaseStore' can not be null");
         checkArgument(lockTime != null && this.isPositive(lockTime), "lockTime should be non-null and positive");

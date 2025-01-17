@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -27,11 +28,20 @@ class BootstrapperImpl implements Bootstrapper {
     private final Duration sleepTime;
     private final LeaseStoreManager pkRangeBasedLeaseStoreManager;
     private final LeaseStoreManager epkRangeVersionLeaseStoreManager;
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
 
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
 
-    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, LeaseStoreManager pkRangeBasedLeaseStoreManager, LeaseStoreManager epkRangeVersionLeaseStoreManager, Duration lockTime, Duration sleepTime) {
+    public BootstrapperImpl(
+        PartitionSynchronizer synchronizer,
+        LeaseStore leaseStore,
+        LeaseStoreManager pkRangeBasedLeaseStoreManager,
+        LeaseStoreManager epkRangeVersionLeaseStoreManager,
+        ChangeFeedProcessorOptions changeFeedProcessorOptions,
+        Duration lockTime,
+        Duration sleepTime) {
+
         if (synchronizer == null) {
             throw new IllegalArgumentException("synchronizer cannot be null!");
         }
@@ -56,12 +66,17 @@ class BootstrapperImpl implements Bootstrapper {
             throw new IllegalArgumentException("epkRangeBasedLeaseStoreManager cannot be null!");
         }
 
+        if (changeFeedProcessorOptions == null) {
+            throw new IllegalArgumentException("changeFeedProcessorOptions cannot be null!");
+        }
+
         this.synchronizer = synchronizer;
         this.leaseStore = leaseStore;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
         this.pkRangeBasedLeaseStoreManager = pkRangeBasedLeaseStoreManager;
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
 
         this.isInitialized = false;
     }
@@ -71,7 +86,7 @@ class BootstrapperImpl implements Bootstrapper {
         this.isInitialized = false;
 
         return Mono.just(this)
-            .flatMap( value -> this.leaseStore.isInitialized())
+            .flatMap(value -> this.leaseStore.isInitialized())
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
 
@@ -79,14 +94,17 @@ class BootstrapperImpl implements Bootstrapper {
 
                     return this.epkRangeVersionLeaseStoreManager
                         .getTopLeases(1)
-                        // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
                         .next()
                         .flatMap(lease -> {
 
                             if (lease.getVersion() == LeaseVersion.EPK_RANGE_BASED_LEASE) {
-                                // todo: modify error message - lease interoperability works but only for LatestVersion but from Pk-Range to Epk-Range and not vice-versa
-                                // error out if Pk-Range based handleChanges is started with same lease prefix as pre-existing Epk-Range based lease (no lease reuse even from LatestVersion)
-                                return Mono.error(new IllegalStateException("Use handleLatestVersion or handleAllVersionsAndDeletes instead."));
+
+                                String errorMessage = String.format("ChangeFeedProcessor#handleChanges cannot be invoked when one of " +
+                                    "ChangeFeedProcessor#handleLatestVersionChanges or" +
+                                    "ChangeFeedProcessor#handleAllVersionsAndDeletes were also started for" +
+                                    "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
+
+                                return Mono.error(new IllegalStateException(errorMessage));
                             }
 
                             return Mono.empty();

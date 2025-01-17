@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -106,6 +107,8 @@ public class BootstrapperImplTests {
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         LeaseStoreManager pkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
 
+        ChangeFeedProcessorOptions changeFeedProcessorOptionsMock = Mockito.mock(ChangeFeedProcessorOptions.class);
+
         Mockito.when(epkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.just(lease));
         Bootstrapper bootstrapper = new BootstrapperImpl(
             partitionSynchronizerMock,
@@ -114,6 +117,7 @@ public class BootstrapperImplTests {
             expireTIme,
             epkRangeVersionLeaseStoreManagerMock,
             pkRangeVersionLeaseStoreManagerMock,
+            changeFeedProcessorOptionsMock,
             ChangeFeedMode.FULL_FIDELITY);
 
         if (expectIllegalStateException) {

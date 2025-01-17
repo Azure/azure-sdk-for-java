@@ -443,7 +443,14 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                 .hostName(this.hostName)
                 .build();
 
-        Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, leaseStoreManager, epkVersionLeaseStoreManager, this.lockTime, this.sleepTime);
+        Bootstrapper bootstrapper = new BootstrapperImpl(
+            synchronizer,
+            leaseStoreManager,
+            leaseStoreManager,
+            epkVersionLeaseStoreManager,
+            this.changeFeedProcessorOptions,
+            this.lockTime,
+            this.sleepTime);
 
         FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager = this.getFeedRangeThroughputControlConfigManager();
 

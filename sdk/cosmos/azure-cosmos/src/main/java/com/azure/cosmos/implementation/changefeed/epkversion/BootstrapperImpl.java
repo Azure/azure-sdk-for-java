@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -28,6 +29,7 @@ class BootstrapperImpl implements Bootstrapper {
     private final LeaseStore leaseStore;
     private final LeaseStoreManager epkRangeVersionLeaseStoreManager;
     private final LeaseStoreManager pkRangeVersionLeaseStoreManager;
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final ChangeFeedMode changeFeedModeToStart;
     private final Duration lockTime;
     private final Duration sleepTime;
@@ -42,10 +44,16 @@ class BootstrapperImpl implements Bootstrapper {
         Duration sleepTime,
         LeaseStoreManager epkRangeVersionLeaseStoreManager,
         LeaseStoreManager pkRangeVersionLeaseStoreManager,
+        ChangeFeedProcessorOptions changeFeedProcessorOptions,
         ChangeFeedMode changeFeedModeToStart) {
 
         checkNotNull(synchronizer, "Argument 'synchronizer' can not be null");
         checkNotNull(leaseStore, "Argument 'leaseStore' can not be null");
+        checkNotNull(epkRangeVersionLeaseStoreManager, "Argument 'epkRangeVersionLeaseStoreManager' can not be null");
+        checkNotNull(pkRangeVersionLeaseStoreManager, "Argument 'pkRangeVersionLeaseStoreManager' can not be null");
+        checkNotNull(changeFeedProcessorOptions, "Argument 'changeFeedProcessorOptions' can not be null");
+        checkNotNull(changeFeedModeToStart, "Argument 'changeFeedModeToStart' can not be null");
+
         checkArgument(lockTime != null && this.isPositive(lockTime), "lockTime should be non-null and positive");
         checkArgument(sleepTime != null && this.isPositive(sleepTime), "sleepTime should be non-null and positive");
 
@@ -53,6 +61,7 @@ class BootstrapperImpl implements Bootstrapper {
         this.leaseStore = leaseStore;
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
         this.pkRangeVersionLeaseStoreManager = pkRangeVersionLeaseStoreManager;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
         this.changeFeedModeToStart = changeFeedModeToStart;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
@@ -114,9 +123,12 @@ class BootstrapperImpl implements Bootstrapper {
             .flatMap(lease -> {
 
                     if (lease != null) {
-                        // todo: modify error message
-                        // error out if there is a pre-existing pk-range based lease left behind LatestVersion process
-                        return Mono.error(new IllegalStateException("Use handleLatestVersionChanges or handleChanges"));
+
+                        String errorMessage = String.format("ChangeFeedProcessor#handleAllVersionsAndDeletes cannot be invoked when" +
+                            "ChangeFeedProcessor#handleChanges was also started for" +
+                            "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
+
+                        return Mono.error(new IllegalStateException(errorMessage));
                     } else {
                         return Mono.empty();
                     }
@@ -133,7 +145,12 @@ class BootstrapperImpl implements Bootstrapper {
                             ChangeFeedState changeFeedState = ChangeFeedState.fromString(lease.getContinuationToken());
 
                             if (changeFeedState.getMode() != this.changeFeedModeToStart) {
-                                return Mono.error(new IllegalStateException("Change feed mode in the pre-existing lease is : " + changeFeedState.getMode() + " while the expected change feed mode is : " + this.changeFeedModeToStart));
+
+                                String errorMessage = String.format("ChangeFeedProcessor#handleAllVersionsAndDeletes cannot be invoked when" +
+                                    "ChangeFeedProcessor#handleLatestVersionChanges were also started for" +
+                                    "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
+
+                                return Mono.error(new IllegalStateException(errorMessage));
                             }
                         }
                     }
