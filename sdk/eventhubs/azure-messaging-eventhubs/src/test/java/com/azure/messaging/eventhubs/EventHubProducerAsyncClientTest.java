@@ -24,7 +24,6 @@ import com.azure.core.test.utils.metrics.TestHistogram;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.SpanKind;
@@ -131,12 +130,11 @@ class EventHubProducerAsyncClientTest {
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
-    private static final String ENTITY_PATH = HOSTNAME
-        + Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
     private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION
         = new EventHubsProducerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+
     @Mock
     private AmqpSendLink sendLink;
     @Mock
@@ -169,10 +167,11 @@ class EventHubProducerAsyncClientTest {
     private ConnectionCacheWrapper connectionProcessor;
     private ConnectionOptions connectionOptions;
     private final Scheduler testScheduler = Schedulers.newBoundedElastic(10, 10, "test");
+    private AutoCloseable closeable;
 
     @BeforeEach
-    void setup(TestInfo testInfo) {
-        MockitoAnnotations.initMocks(this);
+    public void setup() {
+        closeable = MockitoAnnotations.openMocks(this);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
@@ -194,7 +193,11 @@ class EventHubProducerAsyncClientTest {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    public void teardown(TestInfo testInfo) throws Exception {
+        if (closeable != null) {
+            closeable.close();
+        }
+
         testScheduler.dispose();
         Mockito.framework().clearInlineMock(this);
         Mockito.reset(sendLink);
@@ -391,9 +394,13 @@ class EventHubProducerAsyncClientTest {
         verify(tracer1, times(1)).injectContext(any(), any());
 
         verifyNoInteractions(onClientClosed);
-        assertEquals(2, testData.blockFirst().getProperties().size());
-        assertEquals("diag-id", testData.blockFirst().getProperties().get(DIAGNOSTIC_ID_KEY));
-        assertEquals("diag-id", testData.blockFirst().getProperties().get(TRACEPARENT_KEY));
+
+        final EventData value = testData.blockFirst();
+
+        assertNotNull(value);
+        assertEquals(2, value.getProperties().size());
+        assertEquals("diag-id", value.getProperties().get(DIAGNOSTIC_ID_KEY));
+        assertEquals("diag-id", value.getProperties().get(TRACEPARENT_KEY));
     }
 
     /**
@@ -442,7 +449,10 @@ class EventHubProducerAsyncClientTest {
         verify(tracer1, never()).injectContext(any(), any());
 
         verifyNoInteractions(onClientClosed);
-        assertEquals(1, testData.blockFirst().getProperties().size());
+
+        final EventData value = testData.blockFirst();
+        assertNotNull(value);
+        assertEquals(1, value.getProperties().size());
     }
 
     /**
@@ -460,9 +470,10 @@ class EventHubProducerAsyncClientTest {
                 messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         final String partitionId = "0";
-        EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{ partitionId });
-        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, partitionId,
-            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, 2, 3);
+        EventHubProperties ehProperties
+            = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { partitionId });
+        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, partitionId, 1L, 2L,
+            OffsetDateTime.now().toString(), Instant.now(), false, 2, 3);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
         when(connection.getManagementNode()).thenReturn(Mono.just(managementNode));
         when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
@@ -515,9 +526,10 @@ class EventHubProducerAsyncClientTest {
             connectionProcessor, lowDelayOptions, messageSerializer, Schedulers.parallel(), false, onClientClosed,
             CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
-        final EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
-        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
-            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, 1, 2);
+        final EventHubProperties ehProperties
+            = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { "0" });
+        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0", 1L, 2L,
+            OffsetDateTime.now().toString(), Instant.now(), false, 1, 2);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
 
         AtomicInteger tryCount = new AtomicInteger();
@@ -1071,9 +1083,10 @@ class EventHubProducerAsyncClientTest {
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
-        EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{ partitionId });
-        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, partitionId,
-            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, 2, 10);
+        EventHubProperties ehProperties
+            = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { partitionId });
+        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, partitionId, 1L, 2L,
+            OffsetDateTime.now().toString(), Instant.now(), false, 2, 10);
 
         when(connection.getManagementNode()).thenReturn(Mono.just(managementNode));
         when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
@@ -1413,7 +1426,7 @@ class EventHubProducerAsyncClientTest {
         endpointStates.emitError(nonTransientError, Sinks.EmitFailureHandler.FAIL_FAST);
 
         StepVerifier.create(producer.send(testData2)).expectErrorSatisfies(error -> {
-            Assertions.assertTrue(error instanceof AmqpException);
+            Assertions.assertInstanceOf(AmqpException.class, error);
 
             final AmqpException actual = (AmqpException) error;
             Assertions.assertEquals(nonTransientError.isTransient(), actual.isTransient());
