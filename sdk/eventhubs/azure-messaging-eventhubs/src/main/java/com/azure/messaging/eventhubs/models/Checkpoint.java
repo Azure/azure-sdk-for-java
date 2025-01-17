@@ -120,7 +120,21 @@ public class Checkpoint {
      */
     @Deprecated
     public Long getOffset() {
-        return offset;
+
+        if (offset != null) {
+            return offset;
+        } if (this.offsetString == null) {
+            return null;
+        }
+
+        Long parsed;
+        try {
+            parsed = Long.valueOf(offsetString);
+        } catch (NumberFormatException ex) {
+            parsed = null;
+        }
+
+        return parsed;
     }
 
     /**
@@ -133,8 +147,6 @@ public class Checkpoint {
     @Deprecated
     public Checkpoint setOffset(Long offset) {
         this.offset = offset;
-        this.offsetString = offset != null ? String.valueOf(offset) : null;
-
         return this;
     }
 
@@ -155,22 +167,7 @@ public class Checkpoint {
      * @return The updated {@link Checkpoint} instance.
      */
     public Checkpoint setOffsetString(String offsetString) {
-        if (offsetString == null) {
-            this.offset = null;
-            this.offsetString = null;
-        } else {
-            this.offsetString = offsetString;
-
-            Long parsed;
-            try {
-                parsed = Long.valueOf(offsetString);
-            } catch (NumberFormatException ex) {
-                parsed = null;
-            }
-
-            this.offset = parsed;
-        }
-
+        this.offsetString = offsetString;
         return this;
     }
 
