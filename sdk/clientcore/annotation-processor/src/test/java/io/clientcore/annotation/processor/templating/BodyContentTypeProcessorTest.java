@@ -119,8 +119,8 @@ public class BodyContentTypeProcessorTest {
         MethodSpec methodSpec = methodBuilder.build();
 
         // Expected output
-        String expectedOutput
-            = "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromBytes(((ByteBuffer) request).array()));";
+        String expectedOutput =
+            "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromBytes(((ByteBuffer) request).array()));";
 
         // Actual output
         String actualOutput = methodSpec.toString();
@@ -128,6 +128,7 @@ public class BodyContentTypeProcessorTest {
         assertTrue(actualOutput.contains(expectedOutput));
         // Verify headers in a separate test request content type header is set to application/octet-stream
     }
+
 
     private static Stream<Arguments> knownContentTypesProvider() {
         return Stream.of(Arguments.of("byte[]", "io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM"),
