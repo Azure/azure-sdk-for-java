@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.implementation;
 
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -2415,8 +2414,7 @@ public class StorageCrc64Calculator {
 
         uCrc = ~uCrc; // Flip all bits of uCrc
 
-        uStop = uSize - (uSize & 31); // Modulo of powers of 2 (2^i) can be performed with a bitwise operator
-
+        uStop = uSize - (uSize % 32);
         if (uStop >= 2 * 32) {
             long uCrc0 = 0L;
             long uCrc1 = 0L;
@@ -2446,32 +2444,107 @@ public class StorageCrc64Calculator {
                 uCrc3 = M_U32[7 * 256 + ((int) (b3 & 0xFF))];
                 b3 >>>= 8;
 
-                // Repeat for remaining bytes
-                for (int i = 6; i >= 0; i--) {
-                    uCrc0 ^= M_U32[i * 256 + ((int) (b0 & 0xFF))];
-                    b0 >>>= 8;
-                    uCrc1 ^= M_U32[i * 256 + ((int) (b1 & 0xFF))];
-                    b1 >>>= 8;
-                    uCrc2 ^= M_U32[i * 256 + ((int) (b2 & 0xFF))];
-                    b2 >>>= 8;
-                    uCrc3 ^= M_U32[i * 256 + ((int) (b3 & 0xFF))];
-                    b3 >>>= 8;
-                }
+                uCrc0 ^= M_U32[6 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[6 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[6 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[6 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[5 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[5 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[5 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[5 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[4 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[4 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[4 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[4 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[3 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[3 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[3 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[3 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[2 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[2 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[2 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[2 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[((int) (b0 & 0xFF))];
+                uCrc1 ^= M_U32[((int) (b1 & 0xFF))];
+                uCrc2 ^= M_U32[((int) (b2 & 0xFF))];
+                uCrc3 ^= M_U32[((int) (b3 & 0xFF))];
             }
 
             // Combine CRC values
             uCrc = 0;
             uCrc ^= ByteBuffer.wrap(src, pData, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc0;
-            uCrc = updateCrcWithTables(uCrc);
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
 
             uCrc ^= ByteBuffer.wrap(src, pData + 8, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc1;
-            uCrc = updateCrcWithTables(uCrc);
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
 
             uCrc ^= ByteBuffer.wrap(src, pData + 16, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc2;
-            uCrc = updateCrcWithTables(uCrc);
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
 
             uCrc ^= ByteBuffer.wrap(src, pData + 24, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc3;
-            uCrc = updateCrcWithTables(uCrc);
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
 
             pData += 32;
         }
@@ -2482,14 +2555,6 @@ public class StorageCrc64Calculator {
         }
 
         return ~uCrc; // Flip all bits of uCrc and return as long
-    }
-
-    // Helper method to update CRC using lookup tables
-    private static long updateCrcWithTables(long uCrc) {
-        for (int i = 0; i < 8; i++) {
-            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
-        }
-        return uCrc;
     }
 
     /**
