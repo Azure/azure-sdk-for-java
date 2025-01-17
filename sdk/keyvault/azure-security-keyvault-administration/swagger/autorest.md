@@ -115,7 +115,7 @@ directive:
 ``` yaml $(tag) == 'settings'
 directive:
   - from: swagger-document
-    where: $.definitions
+    where: $.definitions.UpdateSettingRequest
     transform: >
-      delete $.UpdateSettingRequest.required;
+      delete $.required;
 ```
