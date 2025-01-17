@@ -71,7 +71,7 @@ public final class DeletionRecoveryLevel extends ExpandableStringEnum<DeletionRe
 
     /**
      * Creates a new instance of DeletionRecoveryLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -80,7 +80,7 @@ public final class DeletionRecoveryLevel extends ExpandableStringEnum<DeletionRe
 
     /**
      * Creates or finds a DeletionRecoveryLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeletionRecoveryLevel.
      */
@@ -90,7 +90,7 @@ public final class DeletionRecoveryLevel extends ExpandableStringEnum<DeletionRe
 
     /**
      * Gets known DeletionRecoveryLevel values.
-     *
+     * 
      * @return known DeletionRecoveryLevel values.
      */
     public static Collection<DeletionRecoveryLevel> values() {

@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The key vault server error. */
+/**
+ * The key vault server error.
+ */
 @Immutable
 public final class Error implements JsonSerializable<Error> {
     /*
@@ -29,13 +31,15 @@ public final class Error implements JsonSerializable<Error> {
      */
     private Error innerError;
 
-    /** Creates an instance of Error class. */
+    /**
+     * Creates an instance of Error class.
+     */
     public Error() {
     }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -44,7 +48,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -53,13 +57,16 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Get the innerError property: The key vault server error.
-     *
+     * 
      * @return the innerError value.
      */
     public Error getInnerError() {
         return this.innerError;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,10 +75,10 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Reads an instance of Error from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IOException If an error occurs while reading the Error.
      */
     public static Error fromJson(JsonReader jsonReader) throws IOException {

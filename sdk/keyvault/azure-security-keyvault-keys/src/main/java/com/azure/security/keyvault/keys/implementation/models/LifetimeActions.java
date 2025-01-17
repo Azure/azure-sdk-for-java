@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Action and its trigger that will be performed by Key Vault over the lifetime of a key. */
+/**
+ * Action and its trigger that will be performed by Key Vault over the lifetime of a key.
+ */
 @Fluent
 public final class LifetimeActions implements JsonSerializable<LifetimeActions> {
     /*
@@ -24,13 +26,15 @@ public final class LifetimeActions implements JsonSerializable<LifetimeActions> 
      */
     private LifetimeActionsType action;
 
-    /** Creates an instance of LifetimeActions class. */
+    /**
+     * Creates an instance of LifetimeActions class.
+     */
     public LifetimeActions() {
     }
 
     /**
      * Get the trigger property: The condition that will execute the action.
-     *
+     * 
      * @return the trigger value.
      */
     public LifetimeActionsTrigger getTrigger() {
@@ -39,7 +43,7 @@ public final class LifetimeActions implements JsonSerializable<LifetimeActions> 
 
     /**
      * Set the trigger property: The condition that will execute the action.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the LifetimeActions object itself.
      */
@@ -50,7 +54,7 @@ public final class LifetimeActions implements JsonSerializable<LifetimeActions> 
 
     /**
      * Get the action property: The action that will be executed.
-     *
+     * 
      * @return the action value.
      */
     public LifetimeActionsType getAction() {
@@ -59,7 +63,7 @@ public final class LifetimeActions implements JsonSerializable<LifetimeActions> 
 
     /**
      * Set the action property: The action that will be executed.
-     *
+     * 
      * @param action the action value to set.
      * @return the LifetimeActions object itself.
      */
@@ -68,6 +72,9 @@ public final class LifetimeActions implements JsonSerializable<LifetimeActions> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,10 +85,10 @@ public final class LifetimeActions implements JsonSerializable<LifetimeActions> 
 
     /**
      * Reads an instance of LifetimeActions from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of LifetimeActions if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LifetimeActions.
      */
     public static LifetimeActions fromJson(JsonReader jsonReader) throws IOException {

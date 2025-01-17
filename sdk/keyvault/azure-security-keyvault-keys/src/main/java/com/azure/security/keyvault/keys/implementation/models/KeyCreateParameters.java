@@ -15,9 +15,10 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-/** The key create parameters. */
+/**
+ * The key create parameters.
+ */
 @Fluent
 public final class KeyCreateParameters implements JsonSerializable<KeyCreateParameters> {
     /*
@@ -60,14 +61,16 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
      */
     private KeyReleasePolicy releasePolicy;
 
-    /** Creates an instance of KeyCreateParameters class. */
+    /**
+     * Creates an instance of KeyCreateParameters class.
+     */
     public KeyCreateParameters() {
     }
 
     /**
      * Get the kty property: JsonWebKey Key Type (kty), as defined in
      * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-     *
+     * 
      * @return the kty value.
      */
     public KeyType getKty() {
@@ -77,7 +80,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
     /**
      * Set the kty property: JsonWebKey Key Type (kty), as defined in
      * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-     *
+     * 
      * @param kty the kty value to set.
      * @return the KeyCreateParameters object itself.
      */
@@ -88,7 +91,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Get the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA.
-     *
+     * 
      * @return the keySize value.
      */
     public Integer getKeySize() {
@@ -97,7 +100,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Set the keySize property: The key size in bits. For example: 2048, 3072, or 4096 for RSA.
-     *
+     * 
      * @param keySize the keySize value to set.
      * @return the KeyCreateParameters object itself.
      */
@@ -108,7 +111,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Get the publicExponent property: The public exponent for a RSA key.
-     *
+     * 
      * @return the publicExponent value.
      */
     public Integer getPublicExponent() {
@@ -117,7 +120,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Set the publicExponent property: The public exponent for a RSA key.
-     *
+     * 
      * @param publicExponent the publicExponent value to set.
      * @return the KeyCreateParameters object itself.
      */
@@ -128,7 +131,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Get the keyOps property: The key_ops property.
-     *
+     * 
      * @return the keyOps value.
      */
     public List<KeyOperation> getKeyOps() {
@@ -137,7 +140,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Set the keyOps property: The key_ops property.
-     *
+     * 
      * @param keyOps the keyOps value to set.
      * @return the KeyCreateParameters object itself.
      */
@@ -148,7 +151,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Get the keyAttributes property: The attributes of a key managed by the key vault service.
-     *
+     * 
      * @return the keyAttributes value.
      */
     public KeyAttributes getKeyAttributes() {
@@ -157,7 +160,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Set the keyAttributes property: The attributes of a key managed by the key vault service.
-     *
+     * 
      * @param keyAttributes the keyAttributes value to set.
      * @return the KeyCreateParameters object itself.
      */
@@ -168,7 +171,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -177,7 +180,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the KeyCreateParameters object itself.
      */
@@ -188,7 +191,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Get the crv property: Elliptic curve name.
-     *
+     * 
      * @return the crv value.
      */
     public KeyCurveName getCrv() {
@@ -197,7 +200,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Set the crv property: Elliptic curve name.
-     *
+     * 
      * @param crv the crv value to set.
      * @return the KeyCreateParameters object itself.
      */
@@ -208,7 +211,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Get the releasePolicy property: The policy rules under which the key can be exported.
-     *
+     * 
      * @return the releasePolicy value.
      */
     public KeyReleasePolicy getReleasePolicy() {
@@ -217,7 +220,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
 
     /**
      * Set the releasePolicy property: The policy rules under which the key can be exported.
-     *
+     * 
      * @param releasePolicy the releasePolicy value to set.
      * @return the KeyCreateParameters object itself.
      */
@@ -226,27 +229,30 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kty", Objects.toString(this.kty, null));
+        jsonWriter.writeStringField("kty", this.kty == null ? null : this.kty.toString());
         jsonWriter.writeNumberField("key_size", this.keySize);
         jsonWriter.writeNumberField("public_exponent", this.publicExponent);
         jsonWriter.writeArrayField("key_ops", this.keyOps,
-            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("attributes", this.keyAttributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("crv", Objects.toString(this.crv, null));
+        jsonWriter.writeStringField("crv", this.crv == null ? null : this.crv.toString());
         jsonWriter.writeJsonField("release_policy", this.releasePolicy);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of KeyCreateParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyCreateParameters if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyCreateParameters.
      */

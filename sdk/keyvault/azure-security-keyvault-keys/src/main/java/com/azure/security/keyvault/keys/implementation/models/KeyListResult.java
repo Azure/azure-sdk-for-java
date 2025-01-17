@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The key list result. */
+/**
+ * The key list result.
+ */
 @Immutable
 public final class KeyListResult implements JsonSerializable<KeyListResult> {
     /*
@@ -25,14 +27,16 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
      */
     private String nextLink;
 
-    /** Creates an instance of KeyListResult class. */
+    /**
+     * Creates an instance of KeyListResult class.
+     */
     public KeyListResult() {
     }
 
     /**
      * Get the value property: A response message containing a list of keys in the key vault along with a link to the
      * next page of keys.
-     *
+     * 
      * @return the value value.
      */
     public List<KeyItem> getValue() {
@@ -41,13 +45,16 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
 
     /**
      * Get the nextLink property: The URL to get the next set of keys.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -56,10 +63,10 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
 
     /**
      * Reads an instance of KeyListResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyListResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyListResult.
      */
     public static KeyListResult fromJson(JsonReader jsonReader) throws IOException {

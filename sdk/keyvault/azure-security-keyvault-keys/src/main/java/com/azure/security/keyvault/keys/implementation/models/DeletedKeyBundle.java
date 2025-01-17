@@ -14,7 +14,9 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 
-/** A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info. */
+/**
+ * A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info.
+ */
 @Fluent
 public final class DeletedKeyBundle extends KeyBundle {
     /*
@@ -32,13 +34,21 @@ public final class DeletedKeyBundle extends KeyBundle {
      */
     private Long deletedDate;
 
-    /** Creates an instance of DeletedKeyBundle class. */
+    /*
+     * True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be
+     * true.
+     */
+    private Boolean managed;
+
+    /**
+     * Creates an instance of DeletedKeyBundle class.
+     */
     public DeletedKeyBundle() {
     }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted key.
-     *
+     * 
      * @return the recoveryId value.
      */
     public String getRecoveryId() {
@@ -47,7 +57,7 @@ public final class DeletedKeyBundle extends KeyBundle {
 
     /**
      * Set the recoveryId property: The url of the recovery object, used to identify and recover the deleted key.
-     *
+     * 
      * @param recoveryId the recoveryId value to set.
      * @return the DeletedKeyBundle object itself.
      */
@@ -58,7 +68,7 @@ public final class DeletedKeyBundle extends KeyBundle {
 
     /**
      * Get the scheduledPurgeDate property: The time when the key is scheduled to be purged, in UTC.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime getScheduledPurgeDate() {
@@ -70,7 +80,7 @@ public final class DeletedKeyBundle extends KeyBundle {
 
     /**
      * Get the deletedDate property: The time when the key was deleted, in UTC.
-     *
+     * 
      * @return the deletedDate value.
      */
     public OffsetDateTime getDeletedDate() {
@@ -80,34 +90,56 @@ public final class DeletedKeyBundle extends KeyBundle {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.deletedDate), ZoneOffset.UTC);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the managed property: True if the key's lifetime is managed by key vault. If this is a key backing a
+     * certificate, then managed will be true.
+     * 
+     * @return the managed value.
+     */
+    @Override
+    public Boolean isManaged() {
+        return this.managed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedKeyBundle setKey(JsonWebKey key) {
         super.setKey(key);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedKeyBundle setAttributes(KeyAttributes attributes) {
         super.setAttributes(attributes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedKeyBundle setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedKeyBundle setReleasePolicy(KeyReleasePolicy releasePolicy) {
         super.setReleasePolicy(releasePolicy);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -121,10 +153,10 @@ public final class DeletedKeyBundle extends KeyBundle {
 
     /**
      * Reads an instance of DeletedKeyBundle from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedKeyBundle if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeletedKeyBundle.
      */
     public static DeletedKeyBundle fromJson(JsonReader jsonReader) throws IOException {
@@ -142,7 +174,7 @@ public final class DeletedKeyBundle extends KeyBundle {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDeletedKeyBundle.setTags(tags);
                 } else if ("managed".equals(fieldName)) {
-                    deserializedDeletedKeyBundle.setManaged(reader.getNullable(JsonReader::getBoolean));
+                    deserializedDeletedKeyBundle.managed = reader.getNullable(JsonReader::getBoolean);
                 } else if ("release_policy".equals(fieldName)) {
                     deserializedDeletedKeyBundle.setReleasePolicy(KeyReleasePolicy.fromJson(reader));
                 } else if ("recoveryId".equals(fieldName)) {

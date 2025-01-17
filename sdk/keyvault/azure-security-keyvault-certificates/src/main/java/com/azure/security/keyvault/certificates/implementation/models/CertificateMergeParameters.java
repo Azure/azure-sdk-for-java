@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The certificate merge parameters. */
+/**
+ * The certificate merge parameters.
+ */
 @Fluent
 public final class CertificateMergeParameters implements JsonSerializable<CertificateMergeParameters> {
     /*
@@ -31,13 +33,15 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
      */
     private Map<String, String> tags;
 
-    /** Creates an instance of CertificateMergeParameters class. */
+    /**
+     * Creates an instance of CertificateMergeParameters class.
+     */
     public CertificateMergeParameters() {
     }
 
     /**
      * Get the x509Certificates property: The certificate or the certificate chain to merge.
-     *
+     * 
      * @return the x509Certificates value.
      */
     public List<byte[]> getX509Certificates() {
@@ -46,7 +50,7 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
 
     /**
      * Set the x509Certificates property: The certificate or the certificate chain to merge.
-     *
+     * 
      * @param x509Certificates the x509Certificates value to set.
      * @return the CertificateMergeParameters object itself.
      */
@@ -57,7 +61,7 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
 
     /**
      * Get the certificateAttributes property: The attributes of the certificate (optional).
-     *
+     * 
      * @return the certificateAttributes value.
      */
     public CertificateAttributes getCertificateAttributes() {
@@ -66,7 +70,7 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
 
     /**
      * Set the certificateAttributes property: The attributes of the certificate (optional).
-     *
+     * 
      * @param certificateAttributes the certificateAttributes value to set.
      * @return the CertificateMergeParameters object itself.
      */
@@ -77,7 +81,7 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -86,7 +90,7 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the CertificateMergeParameters object itself.
      */
@@ -95,6 +99,9 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,10 +113,10 @@ public final class CertificateMergeParameters implements JsonSerializable<Certif
 
     /**
      * Reads an instance of CertificateMergeParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateMergeParameters if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CertificateMergeParameters.
      */

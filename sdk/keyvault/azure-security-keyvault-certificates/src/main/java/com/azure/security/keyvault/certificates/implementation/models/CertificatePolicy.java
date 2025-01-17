@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** Management policy for a certificate. */
+/**
+ * Management policy for a certificate.
+ */
 @Fluent
 public final class CertificatePolicy implements JsonSerializable<CertificatePolicy> {
     /*
@@ -50,13 +52,15 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      */
     private CertificateAttributes attributes;
 
-    /** Creates an instance of CertificatePolicy class. */
+    /**
+     * Creates an instance of CertificatePolicy class.
+     */
     public CertificatePolicy() {
     }
 
     /**
      * Get the id property: The certificate id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -65,7 +69,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Get the keyProperties property: Properties of the key backing a certificate.
-     *
+     * 
      * @return the keyProperties value.
      */
     public KeyProperties getKeyProperties() {
@@ -74,7 +78,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Set the keyProperties property: Properties of the key backing a certificate.
-     *
+     * 
      * @param keyProperties the keyProperties value to set.
      * @return the CertificatePolicy object itself.
      */
@@ -85,7 +89,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Get the secretProperties property: Properties of the secret backing a certificate.
-     *
+     * 
      * @return the secretProperties value.
      */
     public SecretProperties getSecretProperties() {
@@ -94,7 +98,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Set the secretProperties property: Properties of the secret backing a certificate.
-     *
+     * 
      * @param secretProperties the secretProperties value to set.
      * @return the CertificatePolicy object itself.
      */
@@ -105,7 +109,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Get the x509CertificateProperties property: Properties of the X509 component of a certificate.
-     *
+     * 
      * @return the x509CertificateProperties value.
      */
     public X509CertificateProperties getX509CertificateProperties() {
@@ -114,7 +118,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Set the x509CertificateProperties property: Properties of the X509 component of a certificate.
-     *
+     * 
      * @param x509CertificateProperties the x509CertificateProperties value to set.
      * @return the CertificatePolicy object itself.
      */
@@ -125,7 +129,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Get the lifetimeActions property: Actions that will be performed by Key Vault over the lifetime of a certificate.
-     *
+     * 
      * @return the lifetimeActions value.
      */
     public List<LifetimeAction> getLifetimeActions() {
@@ -134,7 +138,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Set the lifetimeActions property: Actions that will be performed by Key Vault over the lifetime of a certificate.
-     *
+     * 
      * @param lifetimeActions the lifetimeActions value to set.
      * @return the CertificatePolicy object itself.
      */
@@ -145,7 +149,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Get the issuerParameters property: Parameters for the issuer of the X509 component of a certificate.
-     *
+     * 
      * @return the issuerParameters value.
      */
     public IssuerParameters getIssuerParameters() {
@@ -154,7 +158,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Set the issuerParameters property: Parameters for the issuer of the X509 component of a certificate.
-     *
+     * 
      * @param issuerParameters the issuerParameters value to set.
      * @return the CertificatePolicy object itself.
      */
@@ -165,7 +169,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Get the attributes property: The certificate attributes.
-     *
+     * 
      * @return the attributes value.
      */
     public CertificateAttributes getAttributes() {
@@ -174,7 +178,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Set the attributes property: The certificate attributes.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the CertificatePolicy object itself.
      */
@@ -183,6 +187,9 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -198,10 +205,10 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Reads an instance of CertificatePolicy from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificatePolicy if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificatePolicy.
      */
     public static CertificatePolicy fromJson(JsonReader jsonReader) throws IOException {
