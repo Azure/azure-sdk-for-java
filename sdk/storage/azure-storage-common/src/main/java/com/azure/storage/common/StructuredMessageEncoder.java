@@ -6,6 +6,7 @@ package com.azure.storage.common;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteOrder;
@@ -299,23 +300,20 @@ public class StructuredMessageEncoder {
     }
 
     private int encodeContent(int size, ByteArrayOutputStream output) throws IOException {
-        checksumOffset = checksumOffset - contentOffset;
+        int tempChecksumOffset = checksumOffset - contentOffset;
 
         int readSize = Math.min(size, this.currentRegionLength - this.currentRegionOffset);
 
-        if (checksumOffset != 0) {
-            readSize = Math.min(readSize, checksumOffset);
+        if (tempChecksumOffset != 0) {
+            readSize = Math.min(readSize, tempChecksumOffset);
         }
 
         byte[] content = new byte[readSize];
         this.innerBuffer.get(content, 0, readSize);
-        if (readSize != content.length) {
-            throw new IOException("Failed to read content from inner buffer.");
-        }
         output.write(content);
 
         if (flags == Flags.STORAGE_CRC64) {
-            if (checksumOffset == 0) {
+            if (tempChecksumOffset == 0) {
                 this.segmentCRC64s.put(this.currentSegmentNumber,
                     StorageCrc64Calculator.compute(content, this.segmentCRC64s.get(this.currentSegmentNumber)));
                 this.messageCRC64 = StorageCrc64Calculator.compute(content, this.messageCRC64);
@@ -340,6 +338,11 @@ public class StructuredMessageEncoder {
         if (flags == Flags.STORAGE_CRC64) {
             segmentCRC64s.putIfAbsent(currentSegmentNumber, 0L);
         }
+    }
+
+    //temporary for testing:
+    public BigInteger getUnsignedCRC64() {
+        return new BigInteger(Long.toUnsignedString(messageCRC64));
     }
 
     // Untested

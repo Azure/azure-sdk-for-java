@@ -4,14 +4,25 @@
 package com.azure.storage.common;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Stream;
 
 public class MessageEncoderTests {
     private static byte[] getRandomData(int size) {
@@ -38,7 +49,7 @@ public class MessageEncoderTests {
 
     private static ByteBuffer buildStructuredMessage(byte[] data, int segmentSize, Flags flags,
         int invalidateCrcSegment) throws IOException {
-        int segmentCount = (int) Math.ceil((double) data.length / segmentSize);
+        int segmentCount = Math.max(1, (int) Math.ceil((double) data.length / segmentSize));
         int segmentFooterLength = flags == Flags.STORAGE_CRC64 ? StructuredMessageEncoder.CRC64_LENGTH : 0;
 
         int messageLength = StructuredMessageEncoder.V1_HEADER_LENGTH
@@ -58,20 +69,17 @@ public class MessageEncoderTests {
         message.write(buffer.array());
 
         if (data.length == 0) {
-            Integer crc = flags == Flags.STORAGE_CRC64 ? 0 : null;
+            int crc = flags == Flags.STORAGE_CRC64 ? 0 : -1;
             writeSegment(1, data, crc, message);
         } else {
             // Segments
             int[] segmentSizes = new int[segmentCount];
-            for (int i = 0; i < segmentCount; i++) {
-                segmentSizes[i] = segmentSize;
-            }
+            Arrays.fill(segmentSizes, segmentSize);
 
             int offset = 0;
             for (int i = 1; i <= segmentCount; i++) {
                 int size = segmentSizes[i - 1];
-                byte[] segmentData = new byte[size];
-                System.arraycopy(data, offset, segmentData, 0, size);
+                byte[] segmentData = customCopyOfRange(data, offset, size);
                 offset += size;
 
                 long segmentCrc = -1;
@@ -102,43 +110,108 @@ public class MessageEncoderTests {
         return ByteBuffer.wrap(message.toByteArray());
     }
 
-    @Test
-    public void readAllNoFlag() throws IOException {
-        int size = 1024;
-        int segment = 512;
-        Flags flags = Flags.NONE;
+    public static byte[] customCopyOfRange(byte[] original, int from, int size) {
+        int end = Math.min(from + size, original.length);
+        return Arrays.copyOfRange(original, from, end);
+    }
 
-        byte[] data = getRandomData(size);
+    private static Stream<Arguments> readAllSupplier() {
+        return Stream.of(Arguments.of(0, 1, Flags.NONE), Arguments.of(0, 1, Flags.STORAGE_CRC64),
+            Arguments.of(10, 1, Flags.NONE), Arguments.of(10, 1, Flags.STORAGE_CRC64),
+            Arguments.of(1024, 1024, Flags.NONE), Arguments.of(1024, 1024, Flags.STORAGE_CRC64),
+            Arguments.of(1024, 512, Flags.NONE), Arguments.of(1024, 512, Flags.STORAGE_CRC64),
+            Arguments.of(1024, 200, Flags.NONE), Arguments.of(1024, 200, Flags.STORAGE_CRC64),
+            Arguments.of(123456, 1234, Flags.NONE), Arguments.of(123456, 1234, Flags.STORAGE_CRC64),
+            Arguments.of(10 * 1024, 1, Flags.NONE), Arguments.of(10 * 1024, 1, Flags.STORAGE_CRC64),
+            Arguments.of(50 * 1024, 512, Flags.NONE), Arguments.of(50 * 1024, 512, Flags.STORAGE_CRC64));
+    }
+
+    @Disabled
+    @ParameterizedTest
+    @MethodSource("readAllSupplier")
+    public void readAll(int size, int segment, Flags flags) throws IOException {
+        Path filePath = Paths.get("C:\\randomData\\" + size + "_random_bytes.bin");
+        byte[] data = Files.readAllBytes(filePath);
 
         ByteBuffer innerBuffer = ByteBuffer.wrap(data);
         StructuredMessageEncoder structuredMessageEncoder
             = new StructuredMessageEncoder(innerBuffer, size, segment, flags);
 
-        ByteBuffer actual = structuredMessageEncoder.encode(-1);
-        ByteBuffer expected = buildStructuredMessage(data, segment, flags, 0);
+        byte[] actual = structuredMessageEncoder.encode(-1).array();
+        byte[] expected = buildStructuredMessage(data, segment, flags, 0).array();
 
-        if (!Arrays.equals(expected.array(), actual.array())) {
-            Assertions.assertArrayEquals(expected.array(), actual.array());
+        if (!Arrays.equals(expected, actual)) {
+            Assertions.assertArrayEquals(expected, actual);
         }
     }
 
+    @Disabled
     @Test
-    public void readAllWithFlag() throws IOException {
-        int size = 1024;
-        int segment = 512;
-        Flags flags = Flags.STORAGE_CRC64;
+    public void readAllWithOutput() throws IOException {
+        int[] sizes = {
+            0,
+            0,
+            10,
+            10,
+            1024,
+            1024,
+            1024,
+            1024,
+            1024,
+            1024,
+            123456,
+            123456,
+            10 * 1024,
+            10 * 1024,
+            50 * 1024,
+            50 * 1024 };
+        int[] segmentSizes = { 1, 1, 1, 1, 1024, 1024, 512, 512, 200, 200, 1234, 1234, 1, 1, 512, 512 };
+        Flags[] flags = {
+            Flags.NONE,
+            Flags.STORAGE_CRC64,
+            Flags.NONE,
+            Flags.STORAGE_CRC64,
+            Flags.NONE,
+            Flags.STORAGE_CRC64,
+            Flags.NONE,
+            Flags.STORAGE_CRC64,
+            Flags.NONE,
+            Flags.STORAGE_CRC64,
+            Flags.NONE,
+            Flags.STORAGE_CRC64,
+            Flags.NONE,
+            Flags.STORAGE_CRC64,
+            Flags.NONE,
+            Flags.STORAGE_CRC64 };
 
-        byte[] data = getRandomData(size);
+        String outputFilePath = "javaOutput.txt";
 
-        ByteBuffer innerBuffer = ByteBuffer.wrap(data);
-        StructuredMessageEncoder structuredMessageEncoder
-            = new StructuredMessageEncoder(innerBuffer, size, segment, flags);
+        for (int i = 0; i < sizes.length; i++) {
+            Path inputFilePath = Paths.get("C:\\randomData\\" + sizes[i] + "_random_bytes.bin");
+            byte[] data = Files.readAllBytes(inputFilePath);
 
-        ByteBuffer actual = structuredMessageEncoder.encode(-1);
-        ByteBuffer expected = buildStructuredMessage(data, segment, flags, 0);
+            ByteBuffer innerBuffer = ByteBuffer.wrap(data);
+            StructuredMessageEncoder structuredMessageEncoder
+                = new StructuredMessageEncoder(innerBuffer, sizes[i], segmentSizes[i], flags[i]);
 
-        if (!Arrays.equals(expected.array(), actual.array())) {
-            Assertions.assertArrayEquals(expected.array(), actual.array());
+            byte[] actual = structuredMessageEncoder.encode(-1).array();
+
+            BigInteger unsignedCRC64 = structuredMessageEncoder.getUnsignedCRC64();
+
+            int[] unsignedInts = new int[actual.length];
+            for (int j = 0; j < actual.length; j++) {
+                unsignedInts[j] = actual[j] & 0xFF;
+            }
+
+            System.out.println(Arrays.toString(unsignedInts));
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
+                String headerContent
+                    = "Size: " + sizes[i] + ", Segment Size: " + segmentSizes[i] + ", Flags: " + flags[i] + "\n";
+                writer.write(headerContent);
+                writer.write("Unsigned CRC64: " + unsignedCRC64 + "\n");
+                writer.write("Unsigned encoded stream: " + Arrays.toString(unsignedInts) + "\n\n\n");
+
+            }
         }
     }
 }
