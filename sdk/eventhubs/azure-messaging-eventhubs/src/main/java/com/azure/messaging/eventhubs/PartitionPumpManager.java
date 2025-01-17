@@ -37,7 +37,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.DEFAULT_REPLICATION_SEGMENT;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
@@ -343,6 +342,7 @@ class PartitionPumpManager {
         return this.partitionPumps;
     }
 
+    @SuppressWarnings("deprecation")
     EventPosition getInitialEventPosition(String partitionId, Checkpoint checkpoint) {
         // A checkpoint indicates the last known successfully processed event.
         // So, the event position to start a new partition processing should be exclusive of the
@@ -361,16 +361,32 @@ class PartitionPumpManager {
             return EventPosition.latest();
         }
 
-        if (checkpoint.getSequenceNumber() != null) {
-            final int replicationSegment = checkpoint.getReplicationSegment() != null
-                ? checkpoint.getReplicationSegment()
-                : DEFAULT_REPLICATION_SEGMENT;
-
-            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), replicationSegment);
+        // 1. Prefer sequence number and replication segment.
+        if (checkpoint.getSequenceNumber() != null && checkpoint.getReplicationSegment() != null) {
+            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), checkpoint.getReplicationSegment());
         }
 
-        if (checkpoint.getOffset() != null) {
-            return EventPosition.fromOffset(checkpoint.getOffset());
+        // 2. If replication segment is null, use offsetString.
+        if (checkpoint.getOffsetString() != null) {
+            return EventPosition.fromOffsetString(checkpoint.getOffsetString());
+        } else if (checkpoint.getOffset() != null) {
+            final Long offset = checkpoint.getOffset();
+            LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, partitionId)
+                .addKeyValue("offset", offset)
+                .log("Using 'offset' long as starting position.");
+
+            return EventPosition.fromOffset(offset);
+        } else if (checkpoint.getSequenceNumber() != null) {
+            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
+        }
+
+        // 3. Couldn't find any fields set, check the initial position map.
+        if (options.getInitialEventPositionProvider() != null) {
+            final EventPosition initialPosition = options.getInitialEventPositionProvider().apply(partitionId);
+
+            if (initialPosition != null) {
+                return initialPosition;
+            }
         }
 
         return EventPosition.latest();
