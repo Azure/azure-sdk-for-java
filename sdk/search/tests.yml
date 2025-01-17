@@ -4,7 +4,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: search
-    SupportedClouds: 'Public,UsGov,China'
     TimeoutInMinutes: 60
     EnvVars:
       AZURE_SEARCH_TEST_MODE: Live
