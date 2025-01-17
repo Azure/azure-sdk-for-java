@@ -384,7 +384,7 @@ public class UnionTests {
     }
 
     @Test
-    void createUnionWithMap() {
+    void unionWithMap() {
         Union union = Union.ofTypes(String.class, Integer.class, Map.class);
         String key = "key";
         String value = "value";
@@ -395,6 +395,23 @@ public class UnionTests {
         assertEquals(map, union.getValue(Map.class));
 
         union.tryConsume(map1 -> assertEquals(value, map1.get(key)), Map.class);
+
+        assertFalse(union.tryConsume(ignore -> fail("Should not consume List<Float>"), LIST_OF_FLOAT_TYPE));
+    }
+
+    @Test
+    void unionWithBooleanShortBytes() {
+        Union union = Union.ofTypes(Boolean.class, Short.class, Byte.class);
+        union.setValue(true);
+        assertEquals(Boolean.class, union.getCurrentType());
+        assertEquals(true, union.getValue(boolean.class));
+
+        union.setValue((short) 1);
+        assertEquals(Short.class, union.getCurrentType());
+        assertEquals((short) 1, union.getValue(Short.class));
+        union.setValue((byte) 1);
+        assertEquals(Byte.class, union.getCurrentType());
+        assertEquals((byte) 1, union.getValue(Byte.class));
 
         assertFalse(union.tryConsume(ignore -> fail("Should not consume List<Float>"), LIST_OF_FLOAT_TYPE));
     }

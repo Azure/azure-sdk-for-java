@@ -36,7 +36,9 @@
       <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
+      <Class name="io.clientcore.core.util.GenericParameterizedType" />
       <Class name="io.clientcore.core.util.SharedExecutorService" />
+      <Class name="io.clientcore.core.util.Union" />
       <Class name="io.clientcore.core.util.binarydata.FileBinaryData" />
       <Class name="io.clientcore.core.util.binarydata.InputStreamBinaryData" />
       <Class name="io.clientcore.core.util.binarydata.ListByteBufferBinaryData" />
