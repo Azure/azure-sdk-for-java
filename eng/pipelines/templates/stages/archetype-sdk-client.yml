@@ -88,6 +88,7 @@ extends:
               TestPipeline: ${{ parameters.TestPipeline }}
               SDKType: ${{ parameters.SDKType }}
               Artifacts: ${{ parameters.Artifacts }}
+              ExcludePaths: ${{parameters.ExcludePaths}}
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
               IgnoreVerifyTypeSpecCodeGenerationError: ${{ parameters.IgnoreVerifyTypeSpecCodeGenerationError }}
               ReleaseArtifacts:
