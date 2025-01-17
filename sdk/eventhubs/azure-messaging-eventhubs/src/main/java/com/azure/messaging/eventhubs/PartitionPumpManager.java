@@ -371,7 +371,8 @@ class PartitionPumpManager {
             return EventPosition.fromOffsetString(checkpoint.getOffsetString());
         } else if (checkpoint.getOffset() != null) {
             final Long offset = checkpoint.getOffset();
-            LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, partitionId)
+            LOGGER.atInfo()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
                 .addKeyValue("offset", offset)
                 .log("Using 'offset' long as starting position.");
 

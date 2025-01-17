@@ -277,11 +277,11 @@ public final class EventPosition {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "offsetString[%s], offset[%s], "
+        return String.format(Locale.US,
+            "offsetString[%s], offset[%s], "
                 + "sequenceNumber[%s], replicationSegment[%s], enqueuedTime[%s], isInclusive[%s]",
             offsetString, offset, sequenceNumber, replicationSegment,
-            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null",
-            isInclusive);
+            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null", isInclusive);
     }
 
     @Override

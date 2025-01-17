@@ -143,7 +143,8 @@ public class PartitionPumpManagerTest {
 
         final Supplier<Checkpoint> createCheckpoint = () -> {
             return new Checkpoint().setPartitionId(PARTITION_ID)
-                .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAME).setEventHubName(EVENTHUB_NAME)
+                .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAME)
+                .setEventHubName(EVENTHUB_NAME)
                 .setConsumerGroup(CONSUMER_GROUP)
                 .setReplicationSegment(replicationSegment)
                 .setSequenceNumber(sequenceNumber)
@@ -164,26 +165,27 @@ public class PartitionPumpManagerTest {
         final EventPosition expectedPosition3 = EventPosition.fromOffset(offset);
 
         // Case 4: If replication segment, offset (string), and offset (long) is null, then use sequence number.
-        final Checkpoint checkpoint4 = createCheckpoint.get().setReplicationSegment(null).setOffsetString(null)
-            .setOffset(null);
+        final Checkpoint checkpoint4
+            = createCheckpoint.get().setReplicationSegment(null).setOffsetString(null).setOffset(null);
         final EventPosition expectedPosition4 = EventPosition.fromSequenceNumber(sequenceNumber);
 
         // Case 5: If replication segment, offset (string), offset (long), and sequence number is null, use initial map position.
-        final Checkpoint checkpoint5 = createCheckpoint.get().setReplicationSegment(null).setOffsetString(null)
-            .setOffset(null).setSequenceNumber(null);
+        final Checkpoint checkpoint5 = createCheckpoint.get()
+            .setReplicationSegment(null)
+            .setOffsetString(null)
+            .setOffset(null)
+            .setSequenceNumber(null);
 
         // Case 6: Fallback to latest
         final Checkpoint checkpoint6 = new Checkpoint();
         final EventPosition expectedPosition6 = EventPosition.latest();
 
-        return Stream.of(
-            Arguments.of(checkpoint1, initialMapPosition, expectedPosition1),
+        return Stream.of(Arguments.of(checkpoint1, initialMapPosition, expectedPosition1),
             Arguments.of(checkpoint2, initialMapPosition, expectedPosition2),
             Arguments.of(checkpoint3, initialMapPosition, expectedPosition3),
             Arguments.of(checkpoint4, initialMapPosition, expectedPosition4),
             Arguments.of(checkpoint5, initialMapPosition, initialMapPosition),
-            Arguments.of(checkpoint6, null, expectedPosition6)
-        );
+            Arguments.of(checkpoint6, null, expectedPosition6));
     }
 
     /**
@@ -191,8 +193,8 @@ public class PartitionPumpManagerTest {
      */
     @MethodSource
     @ParameterizedTest
-    public void startPartitionPumpAtCorrectPosition(Checkpoint existingCheckpoint,
-        EventPosition initialPosition, EventPosition expectedPosition) {
+    public void startPartitionPumpAtCorrectPosition(Checkpoint existingCheckpoint, EventPosition initialPosition,
+        EventPosition expectedPosition) {
 
         // Arrange
         if (initialPosition != null) {
@@ -226,7 +228,8 @@ public class PartitionPumpManagerTest {
             // Assert
 
             // Verify that the correct position was used.
-            verify(consumerAsyncClient).receiveFromPartition(eq(PARTITION_ID), eventPositionCaptor.capture(), receiveOptionsCaptor.capture());
+            verify(consumerAsyncClient).receiveFromPartition(eq(PARTITION_ID), eventPositionCaptor.capture(),
+                receiveOptionsCaptor.capture());
 
             final EventPosition actualPosition = eventPositionCaptor.getValue();
             final ReceiveOptions receiveOptions = receiveOptionsCaptor.getValue();

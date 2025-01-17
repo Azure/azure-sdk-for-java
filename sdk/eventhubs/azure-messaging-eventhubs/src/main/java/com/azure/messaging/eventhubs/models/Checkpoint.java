@@ -123,7 +123,8 @@ public class Checkpoint {
 
         if (offset != null) {
             return offset;
-        } if (this.offsetString == null) {
+        }
+        if (this.offsetString == null) {
             return null;
         }
 
