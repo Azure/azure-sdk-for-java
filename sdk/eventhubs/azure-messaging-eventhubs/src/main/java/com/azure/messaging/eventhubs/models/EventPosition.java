@@ -277,8 +277,10 @@ public final class EventPosition {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]",
-            offsetString, sequenceNumber, enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null",
+        return String.format(Locale.US, "offsetString[%s], offset[%s], "
+                + "sequenceNumber[%s], replicationSegment[%s], enqueuedTime[%s], isInclusive[%s]",
+            offsetString, offset, sequenceNumber, replicationSegment,
+            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null",
             isInclusive);
     }
 
@@ -291,13 +293,15 @@ public final class EventPosition {
         final EventPosition other = (EventPosition) obj;
 
         return Objects.equals(isInclusive, other.isInclusive)
+            && Objects.equals(offset, other.offset)
             && Objects.equals(offsetString, other.offsetString)
             && Objects.equals(sequenceNumber, other.sequenceNumber)
-            && Objects.equals(enqueuedDateTime, other.enqueuedDateTime);
+            && Objects.equals(enqueuedDateTime, other.enqueuedDateTime)
+            && Objects.equals(replicationSegment, other.replicationSegment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(isInclusive, offsetString, sequenceNumber, enqueuedDateTime);
+        return Objects.hash(isInclusive, offset, offsetString, sequenceNumber, enqueuedDateTime, replicationSegment);
     }
 }
