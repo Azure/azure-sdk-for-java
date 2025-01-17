@@ -2481,9 +2481,6 @@ public class StorageCrc64Calculator {
             uCrc = (uCrc >>> 8) ^ M_U1[(int) ((uCrc ^ src[pData]) & 0xFF)];
         }
 
-        // Convert the final CRC value to an unsigned long using BigInteger
-        BigInteger unsignedCrc = new BigInteger(Long.toUnsignedString(~uCrc));
-        //return unsignedCrc.toString();
         return ~uCrc; // Flip all bits of uCrc and return as long
     }
 
