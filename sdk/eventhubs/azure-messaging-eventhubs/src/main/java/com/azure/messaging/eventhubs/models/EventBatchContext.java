@@ -105,7 +105,7 @@ public class EventBatchContext {
                 .setPartitionId(partitionContext.getPartitionId())
                 .setSequenceNumber(lastEvent.getSequenceNumber())
                 .setOffsetString(lastEvent.getOffsetString())
-            .setReplicationSegment(lastEvent.getReplicationSegment());
+                .setReplicationSegment(lastEvent.getReplicationSegment());
 
         return this.checkpointStore.updateCheckpoint(checkpoint);
     }
