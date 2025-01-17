@@ -146,7 +146,7 @@ public final class SecretClientImpl {
         Mono<Response<SecretBundle>> setSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SecretSetParameters parameters, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, Context context);
+            Context context);
 
         @Put("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
@@ -154,7 +154,7 @@ public final class SecretClientImpl {
         Response<SecretBundle> setSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SecretSetParameters parameters, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, Context context);
+            Context context);
 
         @Delete("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
@@ -177,7 +177,7 @@ public final class SecretClientImpl {
             @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SecretUpdateParameters parameters, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, Context context);
+            Context context);
 
         @Patch("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -186,7 +186,7 @@ public final class SecretClientImpl {
             @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SecretUpdateParameters parameters, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, Context context);
+            Context context);
 
         @Get("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -368,7 +368,7 @@ public final class SecretClientImpl {
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -378,9 +378,9 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> setSecretWithResponseAsync(String vaultBaseUrl, String secretName, String value,
-        Map<String, String> tags, String contentType, SecretAttributes secretAttributes) {
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes) {
         return FluxUtil.withContext(context -> setSecretWithResponseAsync(vaultBaseUrl, secretName, value, tags,
-            contentType, secretAttributes, context));
+            secretContentType, secretAttributes, context));
     }
 
     /**
@@ -394,7 +394,7 @@ public final class SecretClientImpl {
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -405,15 +405,14 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> setSecretWithResponseAsync(String vaultBaseUrl, String secretName, String value,
-        Map<String, String> tags, String contentType, SecretAttributes secretAttributes, Context context) {
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes, Context context) {
         final String accept = "application/json";
         SecretSetParameters parameters = new SecretSetParameters();
         parameters.setValue(value);
         parameters.setTags(tags);
-        parameters.setContentType(contentType);
+        parameters.setSecretContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
-        return service.setSecret(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType,
-            context);
+        return service.setSecret(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -427,7 +426,7 @@ public final class SecretClientImpl {
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -436,8 +435,8 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value,
-        Map<String, String> tags, String contentType, SecretAttributes secretAttributes) {
-        return setSecretWithResponseAsync(vaultBaseUrl, secretName, value, tags, contentType, secretAttributes)
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes) {
+        return setSecretWithResponseAsync(vaultBaseUrl, secretName, value, tags, secretContentType, secretAttributes)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -452,7 +451,7 @@ public final class SecretClientImpl {
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -462,9 +461,9 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value,
-        Map<String, String> tags, String contentType, SecretAttributes secretAttributes, Context context) {
-        return setSecretWithResponseAsync(vaultBaseUrl, secretName, value, tags, contentType, secretAttributes, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes, Context context) {
+        return setSecretWithResponseAsync(vaultBaseUrl, secretName, value, tags, secretContentType, secretAttributes,
+            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -478,7 +477,7 @@ public final class SecretClientImpl {
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -488,15 +487,14 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretBundle> setSecretWithResponse(String vaultBaseUrl, String secretName, String value,
-        Map<String, String> tags, String contentType, SecretAttributes secretAttributes, Context context) {
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes, Context context) {
         final String accept = "application/json";
         SecretSetParameters parameters = new SecretSetParameters();
         parameters.setValue(value);
         parameters.setTags(tags);
-        parameters.setContentType(contentType);
+        parameters.setSecretContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
-        return service.setSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType,
-            context);
+        return service.setSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -510,7 +508,7 @@ public final class SecretClientImpl {
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -519,9 +517,9 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretBundle setSecret(String vaultBaseUrl, String secretName, String value, Map<String, String> tags,
-        String contentType, SecretAttributes secretAttributes) {
-        return setSecretWithResponse(vaultBaseUrl, secretName, value, tags, contentType, secretAttributes, Context.NONE)
-            .getValue();
+        String secretContentType, SecretAttributes secretAttributes) {
+        return setSecretWithResponse(vaultBaseUrl, secretName, value, tags, secretContentType, secretAttributes,
+            Context.NONE).getValue();
     }
 
     /**
@@ -656,7 +654,7 @@ public final class SecretClientImpl {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -667,9 +665,9 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> updateSecretWithResponseAsync(String vaultBaseUrl, String secretName,
-        String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags) {
+        String secretVersion, String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags) {
         return FluxUtil.withContext(context -> updateSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion,
-            contentType, secretAttributes, tags, context));
+            secretContentType, secretAttributes, tags, context));
     }
 
     /**
@@ -682,7 +680,7 @@ public final class SecretClientImpl {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param context The context to associate with this operation.
@@ -694,15 +692,15 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> updateSecretWithResponseAsync(String vaultBaseUrl, String secretName,
-        String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags,
+        String secretVersion, String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags,
         Context context) {
         final String accept = "application/json";
         SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.setContentType(contentType);
+        parameters.setSecretContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
         parameters.setTags(tags);
         return service.updateSecret(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), parameters, accept,
-            contentType, context);
+            context);
     }
 
     /**
@@ -715,7 +713,7 @@ public final class SecretClientImpl {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -725,9 +723,9 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion,
-        String contentType, SecretAttributes secretAttributes, Map<String, String> tags) {
-        return updateSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion, contentType, secretAttributes,
-            tags).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags) {
+        return updateSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion, secretContentType,
+            secretAttributes, tags).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -740,7 +738,7 @@ public final class SecretClientImpl {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param context The context to associate with this operation.
@@ -751,9 +749,9 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion,
-        String contentType, SecretAttributes secretAttributes, Map<String, String> tags, Context context) {
-        return updateSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion, contentType, secretAttributes,
-            tags, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags, Context context) {
+        return updateSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion, secretContentType,
+            secretAttributes, tags, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -766,7 +764,7 @@ public final class SecretClientImpl {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param context The context to associate with this operation.
@@ -777,14 +775,14 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretBundle> updateSecretWithResponse(String vaultBaseUrl, String secretName, String secretVersion,
-        String contentType, SecretAttributes secretAttributes, Map<String, String> tags, Context context) {
+        String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags, Context context) {
         final String accept = "application/json";
         SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.setContentType(contentType);
+        parameters.setSecretContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
         parameters.setTags(tags);
         return service.updateSecretSync(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), parameters,
-            accept, contentType, context);
+            accept, context);
     }
 
     /**
@@ -797,7 +795,7 @@ public final class SecretClientImpl {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -806,10 +804,10 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretBundle updateSecret(String vaultBaseUrl, String secretName, String secretVersion, String contentType,
-        SecretAttributes secretAttributes, Map<String, String> tags) {
-        return updateSecretWithResponse(vaultBaseUrl, secretName, secretVersion, contentType, secretAttributes, tags,
-            Context.NONE).getValue();
+    public SecretBundle updateSecret(String vaultBaseUrl, String secretName, String secretVersion,
+        String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags) {
+        return updateSecretWithResponse(vaultBaseUrl, secretName, secretVersion, secretContentType, secretAttributes,
+            tags, Context.NONE).getValue();
     }
 
     /**
