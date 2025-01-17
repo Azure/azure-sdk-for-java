@@ -116,9 +116,6 @@
 # ServiceLabel: %ARO
 # ServiceOwners:                                     @mjudeikis @jim-minter @julienstroheker @amanohar
 
-# PRLabel: %graalvm
-/sdk/aot/                                            @srnagar @jonathangiles
-
 # ServiceLabel: %graalvm
 # AzureSdkOwners:                                    @srnagar
 
@@ -157,9 +154,6 @@
 
 # ServiceLabel: %Batch
 # ServiceOwners:                                     @mksuni @bgklein @mscurrell @cRui861 @paterasMSFT @gingi @dpwatrous
-
-# ServiceLabel: %BatchAI
-# ServiceOwners:                                     @matthchr
 
 # ServiceLabel: %Billing
 # ServiceOwners:                                     @cabbpt
@@ -274,7 +268,7 @@
 /sdk/communication/azure-communication-chat/           @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Communication - Email
-/sdk/communication/azure-communication-email/          @yogeshmo
+/sdk/communication/azure-communication-email/          @kagbakpem @Azure/azure-sdk-write-communication
 
 # PRLabel: %Communication - Identity
 /sdk/communication/azure-communication-identity/       @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
@@ -458,9 +452,6 @@
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/        @sjkwak
-
-# PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs-extensions/ @sjkwak
 
 # ServiceLabel: %Health Deidentification
 # PRLabel: %Health Deidentification
