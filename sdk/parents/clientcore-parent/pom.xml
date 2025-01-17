@@ -205,7 +205,7 @@
     <skipCompile>false</skipCompile>
     <skipTestCompile>false</skipTestCompile>
 
-    <compiler.proc>none</compiler.proc>
+    <compiler.proc>full</compiler.proc>
 
     <!-- JavaDoc properties -->
 
@@ -229,6 +229,9 @@
 
     <!-- Skips Spotless running code style formatting verification. -->
     <spotless.check.skip>false</spotless.check.skip>
+
+    <!-- Flag to enable annotation processor for SDKs requiring REST code generation. -->
+    <annotation.processor.enabled>full</annotation.processor.enabled>
   </properties>
 
   <dependencies>
@@ -239,6 +242,11 @@
       <classifier>runtime</classifier>
       <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.clientcore.tools</groupId>
+      <artifactId>annotation-processor</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore.tools:annotation-processor;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -656,7 +664,7 @@
               </excludes>
               <includes combine.children="append">
                 <include>io.clientcore:*</include>
-
+                <include>io.clientcore.tools:annotation-processor:[1.0.0-beta.1]</include> <!-- {x-version-update;io.clientcore.tools:annotation-processor;external_dependency} -->
                </includes>
             </bannedDependencies>
 
@@ -731,9 +739,17 @@
             </compilerArgs>
 
             <!-- Default is annotation processing being off. -->
+<<<<<<< HEAD
              <proc>${compiler.proc}</proc>
+=======
+            <proc>${annotation.processor.enabled}</proc>
+>>>>>>> f27de8033c4 (update pom for rest proxy tests')
 
             <createMissingPackageInfoClass>false</createMissingPackageInfoClass>
+            <annotationProcessors>
+              <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
+            </annotationProcessors>
+            <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
           </configuration>
         </plugin>
 

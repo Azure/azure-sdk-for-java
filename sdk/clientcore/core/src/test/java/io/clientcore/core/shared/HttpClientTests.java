@@ -2119,6 +2119,7 @@ public abstract class HttpClientTests {
         return createService(serviceClass, httpClient);
     }
 
+    @SuppressWarnings("unchecked")
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
 

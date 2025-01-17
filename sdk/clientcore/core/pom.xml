@@ -39,7 +39,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.50</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
-    <generatedSources>${project.build.directory}/generated-sources/java</generatedSources>
 
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
@@ -121,12 +120,6 @@
       <groupId>org.conscrypt</groupId>
       <artifactId>conscrypt-openjdk-uber</artifactId>
       <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.clientcore.tools</groupId>
-      <artifactId>annotation-processor</artifactId>
-      <version>1.0.0-beta.1</version><!-- {x-version-update;io.clientcore.tools:annotation-processor;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -211,41 +204,6 @@
             </additionalCodesnippet>
           </additionalCodesnippets>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <compilerArgument>-proc:none</compilerArgument>
-          <generatedSourcesDirectory>${generatedSources}</generatedSourcesDirectory>
-          <annotationProcessors>
-            <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
-          </annotationProcessors>
-        </configuration>
-        <extensions>true</extensions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-            <!-- Need to ensure the generated source folder is added to the project classpath -->
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${generatedSources}</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

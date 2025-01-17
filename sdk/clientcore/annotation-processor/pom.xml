@@ -10,6 +10,7 @@
   <packaging>jar</packaging>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
 
+  <packaging>jar</packaging>
   <name>Client Core Compile-Time Annotation Processor</name>
   <description>The client-core annotation processor for introducing compile-time code generation for libraries based on client core</description>
   <url>https://github.com/azure/azure-sdk-for-java</url>
