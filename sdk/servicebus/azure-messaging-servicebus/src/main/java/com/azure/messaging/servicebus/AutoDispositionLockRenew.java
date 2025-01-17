@@ -23,14 +23,13 @@ import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SEQUENCE_NUMBER_KEY;
 
 /**
- * @deprecated The AutoDisposition (Complete|Abandon) and AutoLock renewal features in the Low-Level Receiver Client
- * {@link ServiceBusReceiverAsyncClient} was an oversight. These two features are slated to remove from the Low-Level
- * Receiver client; this aligns with the current expectation of the Low-Level client in other languages (e.g., NET).
- * See https://github.com/Azure/azure-sdk-for-java/issues/26084. In the V1 stack, these (to be deprecated) features
- * are implemented by {@link FluxAutoComplete} and {@link FluxAutoLockRenew} as FluxOperator. In V2, the exact behavior
- * is implemented in this type.
- * See the Notes in AutoDispositionLockRenew#Subscriber for detailed explanation why auto-XX features are flawed and
- * slated for deprecation and removal.
+ * @deprecated The AutoDisposition (Complete|Abandon) feature in the Low-Level Receiver Client {@link ServiceBusReceiverAsyncClient}
+ * was an oversight. this auto-disposition feature is slated to remove from the Low-Level Receiver client; this aligns with
+ * the current expectation of the Low-Level client in other languages
+ * (e.g., NET). See https://github.com/Azure/azure-sdk-for-java/issues/26084.
+ * See the Notes in AutoDispositionLockRenew#Subscriber for detailed explanation why auto-disposition features are flawed
+ * and slated for deprecation and removal. When deprecating auto-disposition, the disposition logic should be removed from
+ * this type, and type should be renamed to AutoLockRenew.
  */
 @Deprecated
 final class AutoDispositionLockRenew extends FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage> {
