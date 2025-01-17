@@ -1,6 +1,6 @@
 # Release History
 
-## 4.28.0 (2025-01-20)
+## 4.28.0 (2025-01-21)
 
 ### Features Added
 - Added `internetMessageId` property to `AcsEmailDeliveryReportReceivedEventData`.
