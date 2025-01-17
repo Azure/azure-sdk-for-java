@@ -138,12 +138,11 @@ public class EventHubReactorSessionTest {
         final String offsetExpression = "amqp.annotation.x-opt-offset > '" + positionString + "'";
 
         final String offsetWithReplicationSegment = "10:0030";
-        final String offsetWithReplicationExpression = "amqp.annotation.x-opt-offset > '"
-            + offsetWithReplicationSegment + "'";
+        final String offsetWithReplicationExpression
+            = "amqp.annotation.x-opt-offset > '" + offsetWithReplicationSegment + "'";
 
         final int replicationSegment = 19;
         final Instant enqueuedTime = Instant.ofEpochMilli(1705519331970L);
-
 
         return Stream.of(
             Arguments.of(EventPosition.fromOffsetString(offsetWithReplicationSegment), offsetWithReplicationExpression),
