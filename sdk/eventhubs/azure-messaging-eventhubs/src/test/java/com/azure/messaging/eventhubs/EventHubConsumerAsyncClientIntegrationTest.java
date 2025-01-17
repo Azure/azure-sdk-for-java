@@ -22,6 +22,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -109,6 +110,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             Assertions.assertEquals(0, countDownLatch.getCount());
         } catch (InterruptedException e) {
             Assertions.fail("Countdown latch was interrupted:" + e);
+        } finally {
+            Arrays.stream(consumers).forEach(c -> c.close());
         }
     }
 
@@ -166,8 +169,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
 
         // Act & Assert
         try (EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient()) {
-            final AtomicReference<LastEnqueuedEventProperties> lastViewed = new AtomicReference<>(
-                new LastEnqueuedEventProperties(null, null, null, null, null));
+            final AtomicReference<LastEnqueuedEventProperties> lastViewed
+                = new AtomicReference<>(new LastEnqueuedEventProperties(null, (String) null, null, null, null));
 
             StepVerifier.create(consumer.receiveFromPartition(partitionId, EventPosition.latest(), options).take(10))
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), true))
@@ -180,9 +183,11 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 .verify(TIMEOUT);
         } finally {
             isActive.set(false);
+            producerEvents.dispose();
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static void verifyLastRetrieved(AtomicReference<LastEnqueuedEventProperties> atomicReference,
         LastEnqueuedEventProperties current, boolean isFirst) {
         Assertions.assertNotNull(current);
@@ -200,14 +205,19 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             "This is not the first event, should have a retrieval " + "time.");
 
         final int compared = previous.getRetrievalTime().compareTo(current.getRetrievalTime());
-        final int comparedSequenceNumber = previous.getOffset().compareTo(current.getOffset());
         Assertions.assertTrue(compared <= 0,
             String.format("Expected retrieval time previous '%s' to be before or " + "equal to current '%s'",
                 previous.getRetrievalTime(), current.getRetrievalTime()));
 
-        Assertions.assertTrue(comparedSequenceNumber <= 0,
-            String.format("Expected offset previous '%s' to be before " + "or equal to current '%s'",
-                previous.getRetrievalTime(), current.getRetrievalTime()));
+        final Long previousOffset = previous.getOffset();
+        final Long currentOffset = current.getOffset();
+        if (previousOffset != null) {
+            final int comparedOffset = previousOffset.compareTo(currentOffset);
+
+            Assertions.assertTrue(comparedOffset <= 0,
+                String.format("Expected offset previous '%s' to be before " + "or equal to current '%s'",
+                    previousOffset, currentOffset));
+        }
     }
 
     /**
@@ -338,8 +348,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         final EventHubConsumerAsyncClient consumer = toClose(builder.prefetchCount(1).buildAsyncConsumerClient());
 
-        final AtomicReference<LastEnqueuedEventProperties> lastViewed = new AtomicReference<>(
-            new LastEnqueuedEventProperties(null, null, null, null, null));
+        final AtomicReference<LastEnqueuedEventProperties> lastViewed
+            = new AtomicReference<>(new LastEnqueuedEventProperties(null, null, null, null, null));
 
         // Act & Assert
         try {
