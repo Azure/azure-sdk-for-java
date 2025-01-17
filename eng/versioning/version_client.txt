@@ -144,7 +144,6 @@ com.azure:azure-maps-geolocation;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-maps-render;2.0.0-beta.2;2.0.0-beta.3
 com.azure:azure-maps-route;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-maps-search;2.0.0-beta.2;2.0.0-beta.3
-com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-messaging-eventgrid;4.27.0;4.28.0-beta.1
 com.azure:azure-messaging-eventgrid-namespaces;1.1.1;1.2.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
@@ -330,7 +329,6 @@ com.azure.resourcemanager:azure-resourcemanager-avs;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-consumption;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-batchai;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.3;1.0.0-beta.4
@@ -343,7 +341,6 @@ com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.2.0;1.3.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-logic;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-maintenance;1.0.0;1.1.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-machinelearningservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-mariadb;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-servicefabric;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-peering;1.0.0;1.1.0-beta.1
@@ -351,7 +348,6 @@ com.azure.resourcemanager:azure-resourcemanager-policyinsights;1.0.0;1.1.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-support;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-subscription;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-powerbidedicated;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-storageimportexport;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-applicationinsights;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-deploymentmanager;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-notificationhubs;1.0.0;1.1.0-beta.1
@@ -366,7 +362,6 @@ com.azure.resourcemanager:azure-resourcemanager-iotcentral;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-labservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-vmwarecloudsimple;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-managedapplications;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-videoanalyzer;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-imagebuilder;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-maps;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0;1.1.0-beta.1
