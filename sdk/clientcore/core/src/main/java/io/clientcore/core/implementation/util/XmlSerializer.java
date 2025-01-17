@@ -7,7 +7,7 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.serialization.xml.XmlReader;
 import io.clientcore.core.serialization.xml.XmlSerializable;
 import io.clientcore.core.serialization.xml.XmlWriter;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import io.clientcore.core.util.serializer.SerializationFormat;
 

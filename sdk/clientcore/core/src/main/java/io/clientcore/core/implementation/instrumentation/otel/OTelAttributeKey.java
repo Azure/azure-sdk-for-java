@@ -4,7 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;

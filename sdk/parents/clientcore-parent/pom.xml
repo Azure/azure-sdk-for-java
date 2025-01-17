@@ -759,7 +759,7 @@
           </dependencies>
           <configuration>
             <skip>${checkstyle.skip}</skip>
-            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/clientcore-checkstyle.xml</configLocation>
             <suppressionsLocation>${checkstyle.suppressionsLocation}</suppressionsLocation>
             <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
             <excludes>${checkstyle.excludes}</excludes>
@@ -962,7 +962,7 @@
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
             <analysisConfigurationFiles>
               <configurationFile>
-                <resource>revapi/revapi.json</resource>
+                <resource>revapi/clientcore-revapi.json</resource>
               </configurationFile>
             </analysisConfigurationFiles>
             <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
@@ -981,7 +981,7 @@
             <pipelineConfiguration>
               <filters>
                 <include>
-                  <item>azure-sdk-tree-provider</item>
+                  <item>class-and-package-tree-filter-provider</item>
                 </include>
               </filters>
             </pipelineConfiguration>
@@ -1001,6 +1001,11 @@
               <groupId>org.revapi</groupId>
               <artifactId>revapi-reporter-json</artifactId>
               <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>com.fasterxml.jackson.core</groupId>
+              <artifactId>jackson-databind</artifactId>
+              <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>

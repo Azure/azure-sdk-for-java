@@ -21,48 +21,94 @@ import java.util.List;
 public interface SqlServer
     extends GroupableResource<SqlServerManager, ServerInner>, Refreshable<SqlServer>, Updatable<SqlServer.Update> {
 
-    /** @return fully qualified name of the SQL Server */
+    /**
+     * Gets the fully qualified name of the SQL Server.
+     *
+     * @return fully qualified name of the SQL Server
+     */
     String fullyQualifiedDomainName();
 
-    /** @return the administrator login user name for the SQL Server */
+    /**
+     * Gets the administrator login user name for the SQL Server.
+     *
+     * @return the administrator login user name for the SQL Server
+     */
     String administratorLogin();
 
-    /** @return the SQL Server version */
+    /**
+     * Gets the SQL Server version.
+     *
+     * @return the SQL Server version
+     */
     String version();
 
-    /** @return the SQL Server "kind" */
+    /**
+     * Gets the kind of the SQL Server.
+     *
+     * @return the SQL Server "kind"
+     */
     String kind();
 
-    /** @return the state of the server. */
+    /**
+     * Gets the state of the server.
+     *
+     * @return the state of the server.
+     */
     String state();
 
-    /** @return true if Managed Service Identity is enabled for the SQL server */
+    /**
+     * Checks whether Managed Service Identity is enabled for the SQL server.
+     *
+     * @return true if Managed Service Identity is enabled for the SQL server
+     */
     boolean isManagedServiceIdentityEnabled();
 
     /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
+     *     SQL server.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
      *     SQL server.
      */
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
+     *     assigned to the SQL server.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
      *     assigned to the SQL server.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return the type of Managed Service Identity used for the SQL server. */
+    /**
+     * Gets the type of Managed Service Identity used for the SQL server.
+     *
+     * @return the type of Managed Service Identity used for the SQL server.
+     */
     IdentityType managedServiceIdentityType();
 
     // Actions
 
-    /** @return returns the list of usage metrics for an Azure SQL Server */
+    /**
+     * Gets the list of usage metrics for an Azure SQL Server.
+     *
+     * @return returns the list of usage metrics for an Azure SQL Server
+     */
     List<ServerMetric> listUsageMetrics();
 
-    /** @return the list of all restorable dropped databases */
+    /**
+     * Gets the list of all restorable dropped databases.
+     *
+     * @return the list of all restorable dropped databases
+     */
     List<SqlRestorableDroppedDatabase> listRestorableDroppedDatabases();
 
-    /** @return the list of all restorable dropped databases */
+    /**
+     * Gets the list of all restorable dropped databases.
+     *
+     * @return the list of all restorable dropped databases
+     */
     PagedFlux<SqlRestorableDroppedDatabase> listRestorableDroppedDatabasesAsync();
 
     /**
@@ -76,7 +122,7 @@ public interface SqlServer
     SqlFirewallRule enableAccessFromAzureServices();
 
     /**
-     * Whether the SQL Server can be accessed from public network.
+     * Checks whether the SQL Server can be accessed from public network.
      *
      * @return whether the SQL Server can be accessed from public network.
      */
@@ -120,31 +166,67 @@ public interface SqlServer
 
     // Collections
 
-    /** @return the entry point to manage SQL Firewall rules for this server */
+    /**
+     * Gets the entry point to manage SQL Firewall rules for this server.
+     *
+     * @return the entry point to manage SQL Firewall rules for this server
+     */
     SqlFirewallRuleOperations.SqlFirewallRuleActionsDefinition firewallRules();
 
-    /** @return the entry point to manage SQL Virtual Network Rule for this server */
+    /**
+     * Gets the entry point to manage SQL Virtual Network Rule for this server.
+     *
+     * @return the entry point to manage SQL Virtual Network Rule for this server
+     */
     SqlVirtualNetworkRuleOperations.SqlVirtualNetworkRuleActionsDefinition virtualNetworkRules();
 
-    /** @return the entry point to manage the SQL Elastic Pools for this server */
+    /**
+     * Gets the entry point to manage the SQL Elastic Pools for this server.
+     *
+     * @return the entry point to manage the SQL Elastic Pools for this server
+     */
     SqlElasticPoolOperations.SqlElasticPoolActionsDefinition elasticPools();
 
-    /** @return entry point to manage Databases for this SQL server */
+    /**
+     * Gets entry point to manage Databases for this SQL server.
+     *
+     * @return entry point to manage Databases for this SQL server
+     */
     SqlDatabaseOperations.SqlDatabaseActionsDefinition databases();
 
-    /** @return the entry point to manage SQL Server DNS aliases for this server */
+    /**
+     * Gets the entry point to manage SQL Server DNS aliases for this server.
+     *
+     * @return the entry point to manage SQL Server DNS aliases for this server
+     */
     SqlServerDnsAliasOperations.SqlServerDnsAliasActionsDefinition dnsAliases();
 
-    /** @return the entry point to manage SQL Failover Group for this server */
+    /**
+     * Gets the entry point to manage SQL Failover Group for this server.
+     *
+     * @return the entry point to manage SQL Failover Group for this server
+     */
     SqlFailoverGroupOperations.SqlFailoverGroupActionsDefinition failoverGroups();
 
-    /** @return the entry point to manage SQL Server Keys for this server */
+    /**
+     * Gets the entry point to manage SQL Server Keys for this server.
+     *
+     * @return the entry point to manage SQL Server Keys for this server
+     */
     SqlServerKeyOperations.SqlServerKeyActionsDefinition serverKeys();
 
-    /** @return the entry point to manage SQL Encryption Protector for this server */
+    /**
+     * Gets the entry point to manage SQL Encryption Protector for this server.
+     *
+     * @return the entry point to manage SQL Encryption Protector for this server
+     */
     SqlEncryptionProtectorOperations.SqlEncryptionProtectorActionsDefinition encryptionProtectors();
 
-    /** @return the entry point to manage SQL Server Security Alert Policy for this server */
+    /**
+     * Gets the entry point to manage SQL Server Security Alert Policy for this server.
+     *
+     * @return the entry point to manage SQL Server Security Alert Policy for this server
+     */
     SqlServerSecurityAlertPolicyOperations.SqlServerSecurityAlertPolicyActionsDefinition serverSecurityAlertPolicies();
 
     /**************************************************************

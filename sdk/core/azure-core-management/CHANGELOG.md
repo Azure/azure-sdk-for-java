@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `AzureProfile(AzureCloud azureCloud)` constructor overload.
+
 ### Breaking Changes
 
 ### Bugs Fixed
