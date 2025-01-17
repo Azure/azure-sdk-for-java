@@ -26,8 +26,8 @@ public class UnionTests {
     private static final String STRING_VALUE = "Hello, world!";
     private static final int INT_VALUE = 42;
     private static final long LONG_VALUE = 42L;
-    private static final double DOUBLE_VALUE = Math.PI;
-    private static final float FLOAT_VALUE = 3.14f;
+    private static final double DOUBLE_VALUE = 3.11d;
+    private static final float FLOAT_VALUE = 3.11f;
 
     private static final String[] STRING_ARRAY_VALUE = { "Hello", "world", "!" };
     private static final int[] INT_ARRAY_VALUE = { 1, 2, 3 };

@@ -281,18 +281,23 @@ public final class Union {
     public String toString() {
         return value == null
             ? "Union{types=" + types + ", value=null" + "}"
-            : "Union{types=" + types + ", type=" + currentType.getTypeName() + ", value=" + value + "}";
+            : "Union{types=" + types + ", type=" + (currentType == null ? null : currentType.getTypeName()) + ", value="
+                + value + "}";
     }
 
     private boolean isInstanceOfType(Object value, Type type) {
+        if (value == null) {
+            return false;
+        }
+
         if (type instanceof ParameterizedType) {
             ParameterizedType pType = (ParameterizedType) type;
             if (pType.getRawType()instanceof Class<?> rawType && rawType.isInstance(value)) {
                 Type[] actualTypeArguments = pType.getActualTypeArguments();
                 if (value instanceof Collection<?> collection) {
                     return collection.stream()
-                        .allMatch(element -> Arrays.stream(actualTypeArguments)
-                            .anyMatch(arg -> isInstanceOfType(element, arg)));
+                        .allMatch(element -> element != null
+                            && Arrays.stream(actualTypeArguments).anyMatch(arg -> isInstanceOfType(element, arg)));
                 }
             }
         } else if (type instanceof Class<?> clazz) {
