@@ -3,6 +3,8 @@
 
 package io.clientcore.core.util;
 
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
