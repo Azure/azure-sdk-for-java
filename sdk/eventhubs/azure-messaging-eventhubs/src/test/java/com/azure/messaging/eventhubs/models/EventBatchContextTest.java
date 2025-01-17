@@ -8,6 +8,8 @@ import com.azure.messaging.eventhubs.EventData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -18,9 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,6 +41,8 @@ class EventBatchContextTest {
     private EventData eventData1;
     @Mock
     private EventData eventData2;
+    @Captor
+    ArgumentCaptor<Checkpoint> checkpointArgumentCaptor;
 
     @BeforeEach
     public void beforeEach() {
@@ -92,12 +97,14 @@ class EventBatchContextTest {
         events.add(eventData2);
 
         final Long sequenceNumber = 10L;
-        final String offsetString = "15";
-        final Long offset = Long.parseLong(offsetString);
+        final String offsetString = "15:1000";
+        final Long offset = 1000L;
+        final int replicationSegment = 6;
 
         when(eventData2.getSequenceNumber()).thenReturn(sequenceNumber);
         when(eventData2.getOffset()).thenReturn(offset);
         when(eventData2.getOffsetString()).thenReturn(offsetString);
+        when(eventData2.getReplicationSegment()).thenReturn(replicationSegment);
 
         final EventBatchContext context
             = new EventBatchContext(partitionContext, events, checkpointStore, lastEnqueuedEventProperties);
@@ -106,9 +113,19 @@ class EventBatchContextTest {
         StepVerifier.create(context.updateCheckpointAsync()).verifyComplete();
 
         // Assert
-        verify(checkpointStore)
-            .updateCheckpoint(argThat(arg -> partitionContext.getEventHubName().equals(arg.getEventHubName())
-                && sequenceNumber.equals(arg.getSequenceNumber())
-                && offsetString.equals(arg.getOffsetString())));
+        verify(checkpointStore, times(1)).updateCheckpoint(checkpointArgumentCaptor.capture());
+
+        final Checkpoint actual = checkpointArgumentCaptor.getValue();
+
+        assertEquals(partitionContext.getEventHubName(), actual.getEventHubName());
+        assertEquals(partitionContext.getFullyQualifiedNamespace(), actual.getFullyQualifiedNamespace());
+        assertEquals(partitionContext.getConsumerGroup(), actual.getConsumerGroup());
+
+        assertEquals(sequenceNumber, actual.getSequenceNumber());
+        assertEquals(replicationSegment, actual.getReplicationSegment());
+        assertEquals(offsetString, actual.getOffsetString());
+
+        // No longer writing deprecated offset long.
+        assertNull(actual.getOffset());
     }
 }

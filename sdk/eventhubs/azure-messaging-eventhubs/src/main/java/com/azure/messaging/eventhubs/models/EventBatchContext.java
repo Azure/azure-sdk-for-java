@@ -97,13 +97,16 @@ public class EventBatchContext {
         }
 
         // update checkpoint of the last event in the batch
-        Checkpoint checkpoint
+        final EventData lastEvent = events.get(events.size() - 1);
+        final Checkpoint checkpoint
             = new Checkpoint().setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
                 .setEventHubName(partitionContext.getEventHubName())
                 .setConsumerGroup(partitionContext.getConsumerGroup())
                 .setPartitionId(partitionContext.getPartitionId())
-                .setSequenceNumber(events.get(events.size() - 1).getSequenceNumber())
-                .setOffset(events.get(events.size() - 1).getOffset());
+                .setSequenceNumber(lastEvent.getSequenceNumber())
+                .setOffsetString(lastEvent.getOffsetString())
+            .setReplicationSegment(lastEvent.getReplicationSegment());
+
         return this.checkpointStore.updateCheckpoint(checkpoint);
     }
 
