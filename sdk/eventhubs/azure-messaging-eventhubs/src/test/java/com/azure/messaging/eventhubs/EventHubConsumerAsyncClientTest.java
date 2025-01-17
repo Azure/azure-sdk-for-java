@@ -7,22 +7,17 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.RetryUtil;
-import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestHistogram;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -31,7 +26,6 @@ import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
@@ -42,7 +36,6 @@ import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -103,7 +96,6 @@ import static org.mockito.Mockito.when;
  * Unit tests to verify functionality of {@link EventHubConsumerAsyncClient}.
  */
 class EventHubConsumerAsyncClientTest {
-    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     static final String PARTITION_ID_HEADER = "partition-id-sent";
 
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
@@ -152,11 +144,6 @@ class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(amqpReceiveLink.getLinkName()).thenReturn(PARTITION_ID);
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
-
-        final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
-            AmqpTransportType.AMQP_WEB_SOCKETS, RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(),
-            CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER, "test-product", "test-client-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor.flux());
         endpointProcessor.next(AmqpEndpointState.ACTIVE);
@@ -860,9 +847,9 @@ class EventHubConsumerAsyncClientTest {
             = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer,
                 CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
-        EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{ "0" });
-        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
-            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, 10, null);
+        EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { "0" });
+        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0", 1L, 2L,
+            OffsetDateTime.now().toString(), Instant.now(), false, 10, null);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
         when(connection.getManagementNode()).thenReturn(Mono.just(managementNode));
         when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
@@ -919,9 +906,10 @@ class EventHubConsumerAsyncClientTest {
             = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer,
                 CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
-        final EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
-        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
-            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, 2, 5);
+        final EventHubProperties ehProperties
+            = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { "0" });
+        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0", 1L, 2L,
+            OffsetDateTime.now().toString(), Instant.now(), false, 2, 5);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
 
         AtomicInteger tryCount = new AtomicInteger();
