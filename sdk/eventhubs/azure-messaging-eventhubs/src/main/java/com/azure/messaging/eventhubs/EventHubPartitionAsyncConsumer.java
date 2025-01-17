@@ -55,7 +55,8 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
 
         if (trackLastEnqueuedEventProperties) {
-            lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null, null));
+            this.lastEnqueuedEventProperties
+                .set(new LastEnqueuedEventProperties(null, null, null, null, null));
         }
 
         currentEventPosition.set(() -> {

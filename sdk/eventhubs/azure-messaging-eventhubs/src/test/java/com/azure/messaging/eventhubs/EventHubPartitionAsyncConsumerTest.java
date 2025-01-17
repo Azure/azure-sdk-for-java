@@ -180,8 +180,8 @@ class EventHubPartitionAsyncConsumerTest {
         final AmqpAnnotatedMessage annotatedMessage3
             = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
-        final EventData event1
-            = new EventData(annotatedMessage1, getSystemProperties(annotatedMessage1, firstOffset, 14L, null), Context.NONE);
+        final EventData event1 = new EventData(annotatedMessage1,
+            getSystemProperties(annotatedMessage1, firstOffset, 14L, null), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
             getSystemProperties(annotatedMessage2, secondOffset, 21L, 10L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
