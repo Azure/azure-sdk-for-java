@@ -17,6 +17,7 @@ import com.github.javaparser.javadoc.description.JavadocDescription;
 import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,10 @@ public class MessagesSdkCustomization extends Customization {
         addDeprecateAnnotationToMediaNotificationContent(modelsPackage);
 
         addDeprecateAnnotationForImageV0CommunicationKind(modelsPackage);
+
+        customizeActionGroup(modelsPackage);
+        customizeActionGroupContent(modelsPackage);
+        customizeButtonSetContent(modelsPackage);
     }
 
     private void updateModelClassModifierToAbstract(PackageCustomization modelsPackage, String className) {
@@ -302,6 +307,60 @@ public class MessagesSdkCustomization extends Customization {
                         "@throws IllegalStateException If the deserialized JSON object was missing any required properties.\n" +
                             originalDocText);
                 clazz.getMethodsByName("fromJson").get(0).setJavadocComment(fromJsonDoc);
+            });
+        });
+    }
+
+    private void customizeActionGroup(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("ActionGroup").customizeAst(ast -> {
+            ast.getClassByName("ActionGroup")
+                .flatMap(clazz -> clazz.getConstructorByParameterTypes(String.class, List.class))
+                .ifPresent(c -> {
+                    String body = c.getBody().toString().replace("this.items = items;",
+                        "this.items = new ArrayList<>(items);");
+                    c.setBody(StaticJavaParser.parseBlock(body));
+            });
+
+            ast.getClassByName("ActionGroup").ifPresent(clazz -> {
+                String getItemsBody = clazz.getMethodsByName("getItems").get(0).getBody().get().toString()
+                    .replace("return this.items;", "return new ArrayList<>(this.items);");
+                clazz.getMethodsByName("getItems").get(0).setBody(StaticJavaParser.parseBlock(getItemsBody));
+            });
+        });
+    }
+
+    private void customizeActionGroupContent(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("ActionGroupContent").customizeAst(ast -> {
+            ast.getClassByName("ActionGroupContent")
+                .flatMap(clazz -> clazz.getConstructorByParameterTypes(String.class, List.class))
+                .ifPresent(c -> {
+                    String body = c.getBody().toString().replace("this.groups = groups;",
+                        "this.groups = new ArrayList<>(groups);");
+                    c.setBody(StaticJavaParser.parseBlock(body));
+                });
+
+            ast.getClassByName("ActionGroupContent").ifPresent(clazz -> {
+                String getItemsBody = clazz.getMethodsByName("getGroups").get(0).getBody().get().toString()
+                    .replace("return this.groups;", "return new ArrayList<>(this.groups);");
+                clazz.getMethodsByName("getGroups").get(0).setBody(StaticJavaParser.parseBlock(getItemsBody));
+            });
+        });
+    }
+
+    private void customizeButtonSetContent(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("ButtonSetContent").customizeAst(ast -> {
+            ast.getClassByName("ButtonSetContent")
+                .flatMap(clazz -> clazz.getConstructorByParameterTypes(List.class))
+                .ifPresent(c -> {
+                    String body = c.getBody().toString().replace("this.buttons = buttons;",
+                        "this.buttons = new ArrayList<>(buttons);");
+                    c.setBody(StaticJavaParser.parseBlock(body));
+                });
+
+            ast.getClassByName("ButtonSetContent").ifPresent(clazz -> {
+                String getItemsBody = clazz.getMethodsByName("getButtons").get(0).getBody().get().toString()
+                    .replace("return this.buttons;", "return new ArrayList<>(this.buttons);");
+                clazz.getMethodsByName("getButtons").get(0).setBody(StaticJavaParser.parseBlock(getItemsBody));
             });
         });
     }

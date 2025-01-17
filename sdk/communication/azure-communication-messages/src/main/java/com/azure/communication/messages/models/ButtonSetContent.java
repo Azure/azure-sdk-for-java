@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public final class ButtonSetContent extends MessageContent {
      */
     @Generated
     public ButtonSetContent(List<ButtonContent> buttons) {
-        this.buttons = buttons;
+        this.buttons = new ArrayList<>(buttons);
     }
 
     /**
@@ -57,7 +58,7 @@ public final class ButtonSetContent extends MessageContent {
      */
     @Generated
     public List<ButtonContent> getButtons() {
-        return this.buttons;
+        return new ArrayList<>(this.buttons);
     }
 
     /**

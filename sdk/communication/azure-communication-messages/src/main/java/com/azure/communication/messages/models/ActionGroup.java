@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public final class ActionGroup implements JsonSerializable<ActionGroup> {
     @Generated
     public ActionGroup(String title, List<ActionGroupItem> items) {
         this.title = title;
-        this.items = items;
+        this.items = new ArrayList<>(items);
     }
 
     /**
@@ -59,7 +60,7 @@ public final class ActionGroup implements JsonSerializable<ActionGroup> {
      */
     @Generated
     public List<ActionGroupItem> getItems() {
-        return this.items;
+        return new ArrayList<>(this.items);
     }
 
     /**

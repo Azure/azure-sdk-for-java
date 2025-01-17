@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public final class ActionGroupContent extends MessageContent {
     @Generated
     public ActionGroupContent(String title, List<ActionGroup> groups) {
         this.title = title;
-        this.groups = groups;
+        this.groups = new ArrayList<>(groups);
     }
 
     /**
@@ -75,7 +76,7 @@ public final class ActionGroupContent extends MessageContent {
      */
     @Generated
     public List<ActionGroup> getGroups() {
-        return this.groups;
+        return new ArrayList<>(this.groups);
     }
 
     /**
