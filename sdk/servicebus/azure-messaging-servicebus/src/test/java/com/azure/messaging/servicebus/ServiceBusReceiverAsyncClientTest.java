@@ -23,7 +23,6 @@ import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
@@ -55,7 +54,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
@@ -314,7 +312,7 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies that session receiver does not start 'FluxAutoLockRenew' for each message because a session is already
+     * Verifies that session receiver does not start lock renew for each message because a session is already
      * locked.
      */
     @Test
@@ -325,38 +323,31 @@ class ServiceBusReceiverAsyncClientTest {
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
         final Duration maxLockRenewDuration = Duration.ofMinutes(1);
+
         final ServiceBusSingleSessionManager sessionManager = mock(ServiceBusSingleSessionManager.class);
-        ServiceBusReceiverAsyncClient mySessionReceiver
+        ServiceBusReceiverAsyncClient sessionReceiver
             = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
                 createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration, false,
                     SESSION_ID),
                 connectionCache, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, sessionManager);
 
-        // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
-        try (MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew
-            = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
-                invocationOnMock -> new FluxAutoLockRenew(Flux.empty(),
-                    createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1, Duration.ofSeconds(30), true),
-                    new LockContainer<>(Duration.ofSeconds(30)), i -> Mono.empty(), NOOP_TRACER))) {
+        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
 
-            ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
-            when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
-            when(receivedMessage.getLockToken()).thenReturn(lockToken);
+        final List<ServiceBusReceivedMessage> sessionMessages = new ArrayList<>();
+        sessionMessages.add(receivedMessage);
+        when(sessionManager.receiveMessages()).thenReturn(Flux.fromIterable(sessionMessages));
+        when(managementNode.renewMessageLock(any(), any())).thenReturn(Mono.empty());
 
-            final List<ServiceBusReceivedMessage> sessionMessages = new ArrayList<>();
-            sessionMessages.add(receivedMessage);
-            when(sessionManager.receiveMessages()).thenReturn(Flux.fromIterable(sessionMessages));
+        // Act & Assert
+        StepVerifier.create(sessionReceiver.receiveMessages().take(numberOfEvents))
+            .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+            .expectNextCount(numberOfEvents)
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
-            // Act & Assert
-            StepVerifier.create(mySessionReceiver.receiveMessages().take(numberOfEvents))
-                .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
-                .expectNextCount(numberOfEvents)
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT);
-
-            // Message onNext should not trigger `FluxAutoLockRenew` for each message because this is session entity.
-            Assertions.assertEquals(0, mockedAutoLockRenew.constructed().size());
-        }
+        verify(managementNode, times(0)).renewMessageLock(any(), any());
     }
 
     public static Stream<DispositionStatus> settleWithNullTransactionId() {

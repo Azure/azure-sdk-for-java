@@ -5,317 +5,258 @@ package com.azure.messaging.servicebus;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link FluxAutoComplete} for abandoning messages.
+ * Tests auto disposition feature of {@link AutoDispositionLockRenew} operator.
  */
 class FluxAutoCompleteTest {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
-
     private final Semaphore completionLock = new Semaphore(1);
+    private AutoCloseable mocksCloseable;
 
-    private final ArrayList<ServiceBusMessageContext> onCompleteInvocations = new ArrayList<>();
-    private final ArrayList<ServiceBusMessageContext> onAbandonInvocations = new ArrayList<>();
-
-    @AfterEach
-    public void afterEach() {
-        Mockito.framework().clearInlineMock(this);
+    @BeforeEach
+    void setup() {
+        mocksCloseable = MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void constructor() {
-        // Arrange
-        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.create();
-
-        // Act & Assert
-        assertThrows(NullPointerException.class,
-            () -> new FluxAutoComplete(null, completionLock, this::onComplete, this::onAbandon));
-        assertThrows(NullPointerException.class,
-            () -> new FluxAutoComplete(testPublisher.flux(), completionLock, null, this::onAbandon));
-        assertThrows(NullPointerException.class,
-            () -> new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, null));
+    @AfterEach
+    public void afterEach() throws Exception {
+        mocksCloseable.close();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test
     void completesOnSuccess() {
         // Arrange
-        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
-        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
+        final TestPublisher<ServiceBusReceivedMessage> publisher = TestPublisher.createCold();
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
-        final FluxAutoComplete autoComplete
-            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
+        final ArgumentCaptor<ServiceBusReceivedMessage> messagesCaptor
+            = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+        when(client.complete(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        final AutoDispositionLockRenew autoComplete = autoCompleteOperator(publisher.flux(), client);
 
         // Act
-
         StepVerifier.create(autoComplete)
-            .then(() -> testPublisher.emit(context, context2))
-            .expectNext(context, context2)
+            .then(() -> publisher.emit(message1, message2))
+            .expectNext(message1, message2)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
         // Assert
-        verifyLists(onCompleteInvocations, context, context2);
-        verifyLists(onAbandonInvocations);
+        verify(client, times(2)).complete(messagesCaptor.capture());
+        final List<ServiceBusReceivedMessage> messages = messagesCaptor.getAllValues();
+        Assertions.assertNotNull(messages);
+        assertEquals(2, messages.size());
+        assertEquals(message1, messages.get(0));
+        assertEquals(message2, messages.get(1));
     }
 
     @Test
     void abandonsOnFailure() {
         // Arrange
-        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
-        final TestCoreSubscriber downstream = new TestCoreSubscriber(2);
-
-        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
+        final TestPublisher<ServiceBusReceivedMessage> publisher = TestPublisher.createCold();
+        final TestCoreSubscriber subscriber = new TestCoreSubscriber(2); // fail on the 2nd message.
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
-        final FluxAutoComplete autoComplete
-            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
+        final ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor1
+            = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
+        final ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor2
+            = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+        when(client.complete(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        when(client.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        final AutoDispositionLockRenew autoComplete = autoCompleteOperator(publisher.flux(), client);
 
         // Act
-        autoComplete.subscribe(downstream);
-        testPublisher.emit(context, context2);
+        autoComplete.subscribe(subscriber);
+        publisher.emit(message1, message2);
 
         // Assert
-        verifyLists(downstream.onNextInvocations, context, context2);
-        assertTrue(downstream.onCompleteInvocation.get(), "Should have been completed.");
+        verifyLists(subscriber.onNextInvocations, message1, message2);
+        assertTrue(subscriber.onCompleteInvocation.get(), "Should have been completed.");
 
-        verifyLists(onCompleteInvocations, context);
-        verifyLists(onAbandonInvocations, context2);
+        verify(client, times(1)).complete(messageCaptor1.capture());
+        final ServiceBusReceivedMessage m1 = messageCaptor1.getValue();
+        Assertions.assertNotNull(m1);
+        assertEquals(message1, m1);
+
+        verify(client, times(1)).abandon(messageCaptor2.capture());
+        final ServiceBusReceivedMessage m2 = messageCaptor2.getValue();
+        Assertions.assertNotNull(m2);
+        assertEquals(message2, m2);
     }
 
     @Test
-    void passesErrorDownstream() {
+    void propagatesUpstreamError() {
         // Arrange
-        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
-        final TestCoreSubscriber downstream = new TestCoreSubscriber(2);
-
-        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
+        final TestPublisher<ServiceBusReceivedMessage> publisher = TestPublisher.createCold();
+        final TestCoreSubscriber subscriber = new TestCoreSubscriber(2); // throws on the 2nd message.
+        final Throwable error = new IllegalArgumentException("error");
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
-        final FluxAutoComplete autoComplete
-            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
-
-        final Throwable testError = new IllegalArgumentException("Dummy exception");
+        final ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor1
+            = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
+        final ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor2
+            = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+        when(client.complete(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        when(client.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        final AutoDispositionLockRenew autoComplete = autoCompleteOperator(publisher.flux(), client);
 
         // Act
-        autoComplete.subscribe(downstream);
-        testPublisher.next(context, context2);
-        testPublisher.error(testError);
+        autoComplete.subscribe(subscriber);
+        publisher.next(message1, message2);
+        publisher.error(error);
 
         // Assert
-        verifyLists(downstream.onNextInvocations, context, context2);
+        verifyLists(subscriber.onNextInvocations, message1, message2);
+        assertFalse(subscriber.onCompleteInvocation.get(), "'onComplete' should not have been invoked.");
+        assertEquals(error, subscriber.onErrorInvocations.get(0));
 
-        assertFalse(downstream.onCompleteInvocation.get(), "'onComplete' should not have been invoked.");
-        assertEquals(1, downstream.onErrorInvocations.size());
-        assertEquals(testError, downstream.onErrorInvocations.get(0));
+        verify(client, times(1)).complete(messageCaptor1.capture());
+        final ServiceBusReceivedMessage m1 = messageCaptor1.getValue();
+        Assertions.assertNotNull(m1);
+        assertEquals(message1, m1);
 
-        verifyLists(onCompleteInvocations, context);
+        verify(client, times(1)).abandon(messageCaptor2.capture());
+        final ServiceBusReceivedMessage m2 = messageCaptor2.getValue();
+        Assertions.assertNotNull(m2);
+        assertEquals(message2, m2);
     }
 
     @Test
     void doesNotContinueOnCancellation() {
         // Arrange
-        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
-        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
+        final TestPublisher<ServiceBusReceivedMessage> publisher = TestPublisher.createCold();
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
         final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context3 = new ServiceBusMessageContext(message3);
         final ServiceBusReceivedMessage message4 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context4 = new ServiceBusMessageContext(message4);
-        final FluxAutoComplete autoComplete
-            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
+        final ArgumentCaptor<ServiceBusReceivedMessage> messagesCaptor
+            = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+        when(client.complete(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        final AutoDispositionLockRenew autoComplete = autoCompleteOperator(publisher.flux(), client);
 
         // Act
         StepVerifier.create(autoComplete)
-            .then(() -> testPublisher.next(context, context2, context3, context4))
-            .thenConsumeWhile(m -> m != context2)
+            .then(() -> publisher.next(message1, message2, message3, message4))
+            .thenConsumeWhile(m -> m != message2)
             .thenCancel()
             .verify(DEFAULT_TIMEOUT);
 
         // Assert
-        verifyLists(onCompleteInvocations, context, context2);
-        verifyLists(onAbandonInvocations);
-
-        testPublisher.assertWasCancelled();
+        verify(client, times(2)).complete(messagesCaptor.capture());
+        final List<ServiceBusReceivedMessage> messages = messagesCaptor.getAllValues();
+        Assertions.assertNotNull(messages);
+        assertEquals(2, messages.size());
+        assertEquals(message1, messages.get(0));
+        assertEquals(message2, messages.get(1));
+        publisher.assertWasCancelled();
     }
 
-    /**
-     * Verifies that if onComplete errors, we log but continue consuming.
-     */
-    @SuppressWarnings("unchecked")
     @Test
-    void onCompleteErrors() {
+    void propagatesDispositionError() {
         // Arrange
-        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
-        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
+        final TestPublisher<ServiceBusReceivedMessage> publisher = TestPublisher.createCold();
+        final Throwable error = new RuntimeException("lock expired.");
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+        when(client.complete(message1)).thenReturn(Mono.empty());
+        when(client.complete(message2)).thenReturn(Mono.error(error));
+        final AutoDispositionLockRenew autoComplete = autoCompleteOperator(publisher.flux(), client);
 
-        final Throwable testError = new IllegalArgumentException("Dummy error");
-        final Function<ServiceBusMessageContext, Mono<Void>> onCompleteErrorFunction
-            = new Function<ServiceBusMessageContext, Mono<Void>>() {
-                private final AtomicInteger iteration = new AtomicInteger();
-
-                @Override
-                public Mono<Void> apply(ServiceBusMessageContext messageContext) {
-                    if (iteration.getAndIncrement() == 1) {
-                        return Mono.error(testError);
-                    } else {
-                        return Mono.empty();
-                    }
-                }
-            };
-
-        final FluxAutoComplete autoComplete
-            = new FluxAutoComplete(testPublisher.flux(), completionLock, onCompleteErrorFunction, this::onAbandon);
-
-        // Act
+        // Act and Assert
         StepVerifier.create(autoComplete)
-            .then(() -> testPublisher.next(context, context2))
-            .expectNext(context, context2)
-            .expectErrorSatisfies(e -> Assertions.assertEquals(testError, e))
+            .then(() -> publisher.emit(message1, message2))
+            .expectNext(message1, message2)
+            // assert disposition error propagated
+            .expectErrorSatisfies(e -> Assertions.assertEquals(error, e))
             .verify(DEFAULT_TIMEOUT);
-
-        // Assert
-        verifyLists(onAbandonInvocations);
+        verify(client, times(2)).complete(any(ServiceBusReceivedMessage.class));
+        // assert the MessageFlux will be 'cancelled' on error.
+        publisher.assertCancelled();
     }
 
-    /**
-     * Verifies that if a message has been settled, we will not try to complete it.
-     */
     @Test
     void doesNotCompleteOnSettledMessage() {
         // Arrange
-        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
-        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(message.isSettled()).thenReturn(true);
-
-        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
+        final TestPublisher<ServiceBusReceivedMessage> publisher = TestPublisher.createCold();
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
-
-        final FluxAutoComplete autoComplete
-            = new FluxAutoComplete(testPublisher.flux(), completionLock, this::onComplete, this::onAbandon);
+        when(message2.isSettled()).thenReturn(true); // already settled message.
+        final ArgumentCaptor<ServiceBusReceivedMessage> messagesCaptor
+            = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+        when(client.complete(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        final AutoDispositionLockRenew autoComplete = autoCompleteOperator(publisher.flux(), client);
 
         // Act
         StepVerifier.create(autoComplete)
-            .then(() -> testPublisher.next(context, context2))
-            .expectNext(context, context2)
-            .then(() -> testPublisher.complete())
+            .then(() -> publisher.emit(message1, message2))
+            .expectNext(message1, message2)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
         // Assert
-        verifyLists(onCompleteInvocations, context2);
-        verifyLists(onAbandonInvocations);
+        verify(client, times(1)).complete(messagesCaptor.capture());
+        final ServiceBusReceivedMessage m = messagesCaptor.getValue();
+        Assertions.assertNotNull(m);
+        assertEquals(message1, m);
     }
 
-    @SuppressWarnings("unchecked")
-    @Test
-    void onErrorCancelsUpstream() {
-        // Arrange
-        final TestPublisher<ServiceBusMessageContext> testPublisher = TestPublisher.createCold();
-        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(message.isSettled()).thenReturn(false);
-        final ServiceBusMessageContext context = new ServiceBusMessageContext(message);
-
-        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        when(message2.isSettled()).thenReturn(false);
-        final ServiceBusMessageContext context2 = new ServiceBusMessageContext(message2);
-
-        final CloneNotSupportedException testError = new CloneNotSupportedException("TEST error");
-
-        final Function<ServiceBusMessageContext, Mono<Void>> errorOnComplete
-            = new Function<ServiceBusMessageContext, Mono<Void>>() {
-                private final AtomicBoolean isFirst = new AtomicBoolean(true);
-
-                @Override
-                public Mono<Void> apply(ServiceBusMessageContext messageContext) {
-                    onCompleteInvocations.add(messageContext);
-                    return isFirst.getAndSet(false) ? Mono.error(testError) : Mono.empty();
-                }
-            };
-
-        final FluxAutoComplete autoComplete
-            = new FluxAutoComplete(testPublisher.flux(), completionLock, errorOnComplete, this::onAbandon);
-
-        // Act
-        StepVerifier.create(autoComplete)
-            .then(() -> testPublisher.next(context, context2))
-            .expectNext(context)
-            .consumeErrorWith(error -> {
-                final Throwable cause = error.getCause();
-                assertNotNull(cause);
-                assertEquals(testError, cause);
-            })
-            .verify(DEFAULT_TIMEOUT);
-
-        // Assert
-        verifyLists(onCompleteInvocations, context);
-        verifyLists(onAbandonInvocations);
-
-        testPublisher.assertCancelled();
+    private AutoDispositionLockRenew autoCompleteOperator(Flux<ServiceBusReceivedMessage> messageFlux,
+        ServiceBusReceiverAsyncClient client) {
+        return new AutoDispositionLockRenew(messageFlux, client, true, false, completionLock);
     }
 
-    private void verifyLists(ArrayList<ServiceBusMessageContext> actual, ServiceBusMessageContext... messageContexts) {
-
-        assertEquals(messageContexts.length, actual.size());
-
-        for (int i = 0; i < messageContexts.length; i++) {
-            ServiceBusMessageContext expected = messageContexts[i];
+    private void verifyLists(ArrayList<ServiceBusReceivedMessage> actual, ServiceBusReceivedMessage... messages) {
+        assertEquals(messages.length, actual.size());
+        for (int i = 0; i < messages.length; i++) {
+            ServiceBusReceivedMessage expected = messages[i];
             assertTrue(actual.contains(expected), "invocation " + i + " was not expected. Actual: " + actual);
         }
-    }
-
-    private Mono<Void> onComplete(ServiceBusMessageContext messageContext) {
-        onCompleteInvocations.add(messageContext);
-        return Mono.empty();
-    }
-
-    private Mono<Void> onAbandon(ServiceBusMessageContext messageContext) {
-        onAbandonInvocations.add(messageContext);
-        return Mono.empty();
     }
 
     /**
      * Mockito fails with org.mockito.exceptions.misusing.NotAMockException if you try to mock CoreSubscriberT
      * periodically.
      */
-    private static class TestCoreSubscriber implements CoreSubscriber<ServiceBusMessageContext> {
-        private final ArrayList<ServiceBusMessageContext> onNextInvocations = new ArrayList<>();
-        private final ArrayList<Throwable> onErrorInvocations = new ArrayList<>();
-
+    static class TestCoreSubscriber implements CoreSubscriber<ServiceBusReceivedMessage> {
         private final AtomicReference<Subscription> upstream = new AtomicReference<>();
-        private final AtomicBoolean onCompleteInvocation = new AtomicBoolean();
+        final ArrayList<ServiceBusReceivedMessage> onNextInvocations = new ArrayList<>();
+        final AtomicBoolean onCompleteInvocation = new AtomicBoolean();
+        final ArrayList<Throwable> onErrorInvocations = new ArrayList<>();
 
         // Index for the onNext method to throw an error.
         private final int errorIndex;
@@ -330,14 +271,12 @@ class FluxAutoCompleteTest {
             if (!upstream.compareAndSet(null, s)) {
                 throw new IllegalStateException("Did not expect to be subscribed to, twice.");
             }
-
             s.request(10);
         }
 
         @Override
-        public void onNext(ServiceBusMessageContext messageContext) {
-            onNextInvocations.add(messageContext);
-
+        public void onNext(ServiceBusReceivedMessage message) {
+            onNextInvocations.add(message);
             current = current + 1;
             if (current == errorIndex) {
                 throw new IllegalArgumentException("Dummy message.");
