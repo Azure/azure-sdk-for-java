@@ -11,7 +11,6 @@
   <modules>
       <module>microsoft-azure-eventhubs</module>
       <module>microsoft-azure-eventhubs-eph</module>
-      <module>microsoft-azure-eventhubs-extensions</module>
       <module>azure-messaging-eventhubs</module>
       <module>azure-messaging-eventhubs-checkpointstore-blob</module>
       <module>azure-messaging-eventhubs-checkpointstore-jedis</module>
