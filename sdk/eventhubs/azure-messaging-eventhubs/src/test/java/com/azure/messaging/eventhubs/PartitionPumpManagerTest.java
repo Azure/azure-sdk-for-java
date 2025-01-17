@@ -23,6 +23,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -84,6 +86,10 @@ public class PartitionPumpManagerTest {
     private EventHubConsumerAsyncClient consumerAsyncClient;
     @Mock
     private PartitionProcessor partitionProcessor;
+    @Captor
+    private ArgumentCaptor<EventPosition> eventPositionCaptor;
+    @Captor
+    private ArgumentCaptor<ReceiveOptions> receiveOptionsCaptor;
 
     private final Map<String, EventPosition> initialPartitionPositions = new HashMap<>();
     private final TestPublisher<PartitionEvent> receivePublisher = TestPublisher.createCold();
@@ -126,20 +132,58 @@ public class PartitionPumpManagerTest {
         Mockito.framework().clearInlineMock(this);
     }
 
+    @SuppressWarnings("deprecation")
     public static Stream<Arguments> startPartitionPumpAtCorrectPosition() {
-        final EventPosition mapPosition = EventPosition.fromSequenceNumber(165L);
-        final long sequenceNumber = 15L;
-        final long offset = 10L;
+
+        final EventPosition initialMapPosition = EventPosition.fromSequenceNumber(165L);
+        final int replicationSegment = 12;
+        final long sequenceNumber = 250L;
+        final long offset = 12343L;
+        final String offsetString = "12:3333";
+
+        final Supplier<Checkpoint> createCheckpoint = () -> {
+            return new Checkpoint().setPartitionId(PARTITION_ID)
+                .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAME).setEventHubName(EVENTHUB_NAME)
+                .setConsumerGroup(CONSUMER_GROUP)
+                .setReplicationSegment(replicationSegment)
+                .setSequenceNumber(sequenceNumber)
+                .setOffsetString(offsetString)
+                .setOffset(offset);
+        };
+
+        // Case 1: Sequence number and replication segment is preferred.
+        final Checkpoint checkpoint1 = createCheckpoint.get();
+        final EventPosition expectedPosition1 = EventPosition.fromSequenceNumber(sequenceNumber, replicationSegment);
+
+        // Case 2: If replication segment is null, then use offset string.
+        final Checkpoint checkpoint2 = createCheckpoint.get().setReplicationSegment(null);
+        final EventPosition expectedPosition2 = EventPosition.fromOffsetString(offsetString);
+
+        // Case 3: If replication segment and offset (string) is null, then use offset (long).
+        final Checkpoint checkpoint3 = createCheckpoint.get().setReplicationSegment(null).setOffsetString(null);
+        final EventPosition expectedPosition3 = EventPosition.fromOffset(offset);
+
+        // Case 4: If replication segment, offset (string), and offset (long) is null, then use sequence number.
+        final Checkpoint checkpoint4 = createCheckpoint.get().setReplicationSegment(null).setOffsetString(null)
+            .setOffset(null);
+        final EventPosition expectedPosition4 = EventPosition.fromSequenceNumber(sequenceNumber);
+
+        // Case 5: If replication segment, offset (string), offset (long), and sequence number is null, use initial map position.
+        final Checkpoint checkpoint5 = createCheckpoint.get().setReplicationSegment(null).setOffsetString(null)
+            .setOffset(null).setSequenceNumber(null);
+
+        // Case 6: Fallback to latest
+        final Checkpoint checkpoint6 = new Checkpoint();
+        final EventPosition expectedPosition6 = EventPosition.latest();
 
         return Stream.of(
-            // Offset is used if available.
-            Arguments.of(offset, sequenceNumber, mapPosition, EventPosition.fromOffset(offset)),
-            // Sequence number is the fallback.
-            Arguments.of(null, sequenceNumber, mapPosition, EventPosition.fromSequenceNumber(sequenceNumber)),
-            // if both are null, then use the initial Map position is used.
-            Arguments.of(null, null, mapPosition, mapPosition),
-            // Fallback to start listening from the latest part of the stream.
-            Arguments.of(null, null, null, EventPosition.latest()));
+            Arguments.of(checkpoint1, initialMapPosition, expectedPosition1),
+            Arguments.of(checkpoint2, initialMapPosition, expectedPosition2),
+            Arguments.of(checkpoint3, initialMapPosition, expectedPosition3),
+            Arguments.of(checkpoint4, initialMapPosition, expectedPosition4),
+            Arguments.of(checkpoint5, initialMapPosition, initialMapPosition),
+            Arguments.of(checkpoint6, null, expectedPosition6)
+        );
     }
 
     /**
@@ -147,15 +191,14 @@ public class PartitionPumpManagerTest {
      */
     @MethodSource
     @ParameterizedTest
-    public void startPartitionPumpAtCorrectPosition(Long offset, Long sequenceNumber, EventPosition initialPosition,
-        EventPosition expectedPosition) {
+    public void startPartitionPumpAtCorrectPosition(Checkpoint existingCheckpoint,
+        EventPosition initialPosition, EventPosition expectedPosition) {
 
         // Arrange
         if (initialPosition != null) {
             initialPartitionPositions.put(PARTITION_ID, initialPosition);
         }
 
-        checkpoint.setOffset(offset).setSequenceNumber(sequenceNumber);
         partitionOwnership.setLastModifiedTime(OffsetDateTime.now().toEpochSecond());
 
         final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
@@ -178,19 +221,21 @@ public class PartitionPumpManagerTest {
 
         try {
             // Act
-            manager.startPartitionPump(partitionOwnership, checkpoint);
+            manager.startPartitionPump(partitionOwnership, existingCheckpoint);
 
             // Assert
-            verify(consumerAsyncClient).receiveFromPartition(eq(PARTITION_ID), argThat(x -> expectedPosition.equals(x)),
-                argThat(x -> x.getTrackLastEnqueuedEventProperties() == trackLastEnqueuedEventProperties));
-
-            final PartitionPump actualPump = manager.getPartitionPumps().get(PARTITION_ID);
-            assertNotNull(actualPump);
 
             // Verify that the correct position was used.
-            verify(consumerAsyncClient).receiveFromPartition(eq(PARTITION_ID),
-                argThat(position -> expectedPosition.equals(position)), argThat(option -> option != null
-                    && option.getTrackLastEnqueuedEventProperties() == trackLastEnqueuedEventProperties));
+            verify(consumerAsyncClient).receiveFromPartition(eq(PARTITION_ID), eventPositionCaptor.capture(), receiveOptionsCaptor.capture());
+
+            final EventPosition actualPosition = eventPositionCaptor.getValue();
+            final ReceiveOptions receiveOptions = receiveOptionsCaptor.getValue();
+
+            assertEquals(expectedPosition, actualPosition);
+            assertNotNull(receiveOptions);
+            assertEquals(trackLastEnqueuedEventProperties, receiveOptions.getTrackLastEnqueuedEventProperties());
+
+            assertNotNull(manager.getPartitionPumps().get(PARTITION_ID));
 
             // Verify that initializeContext() was called.
             verify(partitionProcessor).initialize(argThat(x -> {
@@ -383,20 +428,23 @@ public class PartitionPumpManagerTest {
         final Instant retrievalTime = Instant.now();
 
         final Instant lastEnqueuedTime = retrievalTime.minusSeconds(60);
-        final LastEnqueuedEventProperties lastEnqueuedProperties1 =
-            new LastEnqueuedEventProperties(10L, 15L, retrievalTime, lastEnqueuedTime.plusSeconds(1), 5);
+        final LastEnqueuedEventProperties lastEnqueuedProperties1
+            = new LastEnqueuedEventProperties(10L, "15L", retrievalTime, lastEnqueuedTime.plusSeconds(1), 5);
         final EventData eventData1 = new EventData("1");
-        final PartitionEvent partitionEvent1 = new PartitionEvent(PARTITION_CONTEXT, eventData1, lastEnqueuedProperties1);
+        final PartitionEvent partitionEvent1
+            = new PartitionEvent(PARTITION_CONTEXT, eventData1, lastEnqueuedProperties1);
 
-        final LastEnqueuedEventProperties lastEnqueuedProperties2 =
-            new LastEnqueuedEventProperties(20L, 25L, retrievalTime, lastEnqueuedTime.plusSeconds(2), 1);
+        final LastEnqueuedEventProperties lastEnqueuedProperties2
+            = new LastEnqueuedEventProperties(20L, "25L", retrievalTime, lastEnqueuedTime.plusSeconds(2), 1);
         final EventData eventData2 = new EventData("2");
-        final PartitionEvent partitionEvent2 = new PartitionEvent(PARTITION_CONTEXT, eventData2, lastEnqueuedProperties2);
+        final PartitionEvent partitionEvent2
+            = new PartitionEvent(PARTITION_CONTEXT, eventData2, lastEnqueuedProperties2);
 
-        final LastEnqueuedEventProperties lastEnqueuedProperties3 =
-            new LastEnqueuedEventProperties(30L, 35L, retrievalTime, lastEnqueuedTime.plusSeconds(3), null);
+        final LastEnqueuedEventProperties lastEnqueuedProperties3
+            = new LastEnqueuedEventProperties(30L, "35L", retrievalTime, lastEnqueuedTime.plusSeconds(3), null);
         final EventData eventData3 = new EventData("3");
-        final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, lastEnqueuedProperties3);
+        final PartitionEvent partitionEvent3
+            = new PartitionEvent(PARTITION_CONTEXT, eventData3, lastEnqueuedProperties3);
 
         final AtomicInteger eventCounter = new AtomicInteger();
 
@@ -1026,8 +1074,8 @@ public class PartitionPumpManagerTest {
 
     private PartitionEvent createEvent(Instant retrievalTime, int index) {
         Instant lastEnqueuedTime = retrievalTime.minusSeconds(60);
-        LastEnqueuedEventProperties lastEnqueuedProperties =
-            new LastEnqueuedEventProperties((long) index, (long) index, retrievalTime, lastEnqueuedTime.plusSeconds(index), 2);
+        LastEnqueuedEventProperties lastEnqueuedProperties = new LastEnqueuedEventProperties((long) index,
+            String.valueOf(index), retrievalTime, lastEnqueuedTime.plusSeconds(index), 2);
         return new PartitionEvent(PARTITION_CONTEXT, new EventData(String.valueOf(index)), lastEnqueuedProperties);
     }
 }
