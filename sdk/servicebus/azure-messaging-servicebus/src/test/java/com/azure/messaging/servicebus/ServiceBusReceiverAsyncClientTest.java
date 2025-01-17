@@ -51,7 +51,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -199,10 +198,8 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that the correct Service Bus properties are set.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void properties(boolean isV2) {
-        // arrangeForV2();
+    @Test
+    void properties() {
         Assertions.assertEquals(ENTITY_PATH, receiver.getEntityPath());
         Assertions.assertEquals(NAMESPACE, receiver.getFullyQualifiedNamespace());
         Assertions.assertEquals(CLIENT_IDENTIFIER, receiver.getIdentifier());
@@ -212,11 +209,9 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that when user calls peek more than one time, It returns different object.
      */
     @SuppressWarnings("unchecked")
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void peekTwoMessages(boolean isV2) {
+    @Test
+    void peekTwoMessages() {
         // Arrange
-        // arrangeForV2();
         final long sequence1 = 10;
         final long sequence2 = 12;
         final ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
@@ -249,11 +244,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that when no messages are returned, that it does not error.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void peekEmptyEntity(boolean isV2) {
+    @Test
+    void peekEmptyEntity() {
         // Arrange
-        // arrangeForV2();
         when(managementNode.peek(0, null, null)).thenReturn(Mono.empty());
 
         // Act & Assert
@@ -263,11 +256,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that this peek one messages from a sequence Number.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void peekWithSequenceOneMessage(boolean isV2) {
+    @Test
+    void peekWithSequenceOneMessage() {
         // Arrange
-        // arrangeForV2();
         final int fromSequenceNumber = 10;
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
 
@@ -287,7 +278,6 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesNumberOfEvents() {
         // Arrange
-        // arrangeForV2();
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
@@ -318,7 +308,6 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesMessageLockRenewSessionOnly() {
         // Arrange
-        // arrangeForV2();
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
@@ -407,20 +396,16 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that we error if we try to complete a null message.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void completeNullMessage(boolean isV2) {
-        // arrangeForV2();
+    @Test
+    void completeNullMessage() {
         StepVerifier.create(receiver.complete(null)).expectError(NullPointerException.class).verify(DEFAULT_TIMEOUT);
     }
 
     /**
      * Verifies that we error if we complete in RECEIVE_AND_DELETE mode.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void completeInReceiveAndDeleteMode(boolean isV2) {
-        // arrangeForV2();
+    @Test
+    void completeInReceiveAndDeleteMode() {
         final ReceiverOptions options
             = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
@@ -440,10 +425,8 @@ class ServiceBusReceiverAsyncClientTest {
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void throwsExceptionAboutSettlingPeekedMessagesWithNullLockToken(boolean isV2) {
-        // arrangeForV2();
+    @Test
+    void throwsExceptionAboutSettlingPeekedMessagesWithNullLockToken() {
         final ReceiverOptions options = createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionCache, CLEANUP_INTERVAL, instrumentation, messageSerializer,
@@ -463,11 +446,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that this peek batch of messages.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void peekMessages(boolean isV2) {
+    @Test
+    void peekMessages() {
         // Arrange
-        // arrangeForV2();
         final int numberOfEvents = 2;
 
         when(managementNode.peek(0, null, null, numberOfEvents))
@@ -483,11 +464,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that this peek batch of messages.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void peekMessagesEmptyEntity(boolean isV2) {
+    @Test
+    void peekMessagesEmptyEntity() {
         // Arrange
-        // arrangeForV2();
         final int numberOfEvents = 2;
 
         when(managementNode.peek(0, null, null, numberOfEvents)).thenReturn(Flux.fromIterable(Collections.emptyList()));
@@ -499,11 +478,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that this peek batch of messages from a sequence Number.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void peekBatchWithSequenceNumberMessages(boolean isV2) {
+    @Test
+    void peekBatchWithSequenceNumberMessages() {
         // Arrange
-        // arrangeForV2();
         final int numberOfEvents = 2;
         final int fromSequenceNumber = 10;
 
@@ -520,9 +497,8 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that we can deadletter a message with an error and description.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void deadLetterWithDescription(boolean isV2) {
+    @Test
+    void deadLetterWithDescription() {
         final String lockToken1 = UUID.randomUUID().toString();
         final String description = "some-dead-letter-description";
         final String reason = "dead-letter-reason";
@@ -537,7 +513,6 @@ class ServiceBusReceiverAsyncClientTest {
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
 
-        // arrangeForV2();
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
@@ -562,11 +537,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that error source is populated when any error happened while renewing lock.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void errorSourceOnRenewMessageLock(boolean isV2) {
+    @Test
+    void errorSourceOnRenewMessageLock() {
         // Arrange
-        // arrangeForV2();
         final Duration maxDuration = Duration.ofSeconds(8);
         final String lockToken = "some-token";
 
@@ -622,14 +595,12 @@ class ServiceBusReceiverAsyncClientTest {
     @ParameterizedTest
     @MethodSource
     void errorSourceNoneOnSettlement(DispositionStatus dispositionStatus, DeliveryStateType expectedDeliveryState,
-        ServiceBusErrorSource errorSource, boolean isV2) {
+        ServiceBusErrorSource errorSource) {
 
         final UUID lockTokenUuid = UUID.randomUUID();
         final String lockToken1 = lockTokenUuid.toString();
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
-
-        // arrangeForV2();
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
 
@@ -671,11 +642,9 @@ class ServiceBusReceiverAsyncClientTest {
      * Ensure that we throw right error source when there is any issue during autocomplete. Error source should be
      * {@link ServiceBusErrorSource#COMPLETE}
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void errorSourceAutoCompleteMessage(boolean isV2) {
+    @Test
+    void errorSourceAutoCompleteMessage() {
         // Arrange
-        // arrangeForV2();
         final int numberOfEvents = 2;
         final int messagesToReceive = 1;
         final List<Message> messages = getMessages();
@@ -726,7 +695,6 @@ class ServiceBusReceiverAsyncClientTest {
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
 
-        // arrangeForV2();
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
@@ -842,11 +810,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that this receive deferred one messages from a sequence Number.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void receiveDeferredWithSequenceOneMessage(boolean isV2) {
+    @Test
+    void receiveDeferredWithSequenceOneMessage() {
         // Arrange
-        // arrangeForV2();
         final int fromSequenceNumber = 10;
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
 
@@ -862,11 +828,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that this receive deferred messages from a sequence Number.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void receiveDeferredBatchFromSequenceNumber(boolean isV2) {
+    @Test
+    void receiveDeferredBatchFromSequenceNumber() {
         // Arrange
-        // arrangeForV2();
         final long fromSequenceNumber1 = 10;
         final long fromSequenceNumber2 = 11;
 
@@ -884,10 +848,8 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that the onClientClose is called.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void callsClientClose(boolean isV2) {
-        // arrangeForV2();
+    @Test
+    void callsClientClose() {
         // Act
         receiver.close();
 
@@ -898,10 +860,8 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that the onClientClose is only called once.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void callsClientCloseOnce(boolean isV2) {
-        // arrangeForV2();
+    @Test
+    void callsClientCloseOnce() {
         // Act
         receiver.close();
         receiver.close();
@@ -913,10 +873,8 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that managementNodeLocks was closed.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void callsManagementNodeLocksCloseWhenClientIsClosed(boolean isV2) {
-        // arrangeForV2();
+    @Test
+    void callsManagementNodeLocksCloseWhenClientIsClosed() {
         // Given
         Assertions.assertFalse(receiver.isManagementNodeLocksClosed());
 
@@ -930,10 +888,8 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that renewalContainer was closed.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void callsRenewalContainerCloseWhenClientIsClosed(boolean isV2) {
-        // arrangeForV2();
+    @Test
+    void callsRenewalContainerCloseWhenClientIsClosed() {
         // Given
         Assertions.assertFalse(receiver.isRenewalContainerClosed());
 
@@ -989,7 +945,6 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void canPerformMultipleReceive() {
-        // arrangeForV2();
         // Arrange
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages();
@@ -1025,11 +980,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Cannot get session state for non-session receiver.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void cannotPerformGetSessionState(boolean isV2) {
+    @Test
+    void cannotPerformGetSessionState() {
         // Arrange
-        // arrangeForV2();
 
         // Act & Assert
         StepVerifier.create(receiver.getSessionState())
@@ -1040,11 +993,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Cannot get session state for non-session receiver.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void cannotPerformSetSessionState(boolean isV2) {
+    @Test
+    void cannotPerformSetSessionState() {
         // Arrange
-        // arrangeForV2();
         final byte[] sessionState = new byte[] { 10, 11, 8 };
 
         // Act & Assert
@@ -1056,11 +1007,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Cannot get session state for non-session receiver.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void cannotPerformRenewSessionLock(boolean isV2) {
+    @Test
+    void cannotPerformRenewSessionLock() {
         // Arrange
-        // arrangeForV2();
 
         // Act & Assert
         StepVerifier.create(receiver.renewSessionLock())
@@ -1151,11 +1100,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that we can auto-renew a message lock.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void autoRenewMessageLock(boolean isV2) {
+    @Test
+    void autoRenewMessageLock() {
         // Arrange
-        // arrangeForV2();
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
 
@@ -1184,11 +1131,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that it errors when we try a null lock token.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void autoRenewMessageLockErrorNull(boolean isV2) {
+    @Test
+    void autoRenewMessageLockErrorNull() {
         // Arrange
-        // arrangeForV2();
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
 
@@ -1207,11 +1152,9 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that it errors when we try an empty string lock token.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void autoRenewMessageLockErrorEmptyString(boolean isV2) {
+    @Test
+    void autoRenewMessageLockErrorEmptyString() {
         // Arrange
-        // arrangeForV2();
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
         final String lockToken = "";
@@ -1268,7 +1211,6 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void autoCompleteMessage() {
         // Arrange
-        // arrangeForV2();
         final int numberOfEvents = 3;
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
@@ -1305,7 +1247,6 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void autoCompleteMessageSessionReceiver() {
         // Arrange
-        // arrangeForV2();
         final int numberOfEvents = 3;
         final List<Message> messages = getMessages();
         final String lockToken = "token1";
@@ -1632,29 +1573,13 @@ class ServiceBusReceiverAsyncClientTest {
 
     private static Stream<Arguments> errorSourceNoneOnSettlement() {
         return Stream.of(
-            Arguments.of(DispositionStatus.COMPLETED, DeliveryStateType.Accepted, ServiceBusErrorSource.COMPLETE, true),
-            Arguments.of(DispositionStatus.COMPLETED, DeliveryStateType.Accepted, ServiceBusErrorSource.COMPLETE,
-                false),
-            Arguments.of(DispositionStatus.ABANDONED, DeliveryStateType.Modified, ServiceBusErrorSource.ABANDON, true),
-            Arguments.of(DispositionStatus.ABANDONED, DeliveryStateType.Modified, ServiceBusErrorSource.ABANDON,
-                false));
+            Arguments.of(DispositionStatus.COMPLETED, DeliveryStateType.Accepted, ServiceBusErrorSource.COMPLETE),
+            Arguments.of(DispositionStatus.ABANDONED, DeliveryStateType.Modified, ServiceBusErrorSource.ABANDON));
     }
 
     private void assertCommonMetricAttributes(Map<String, Object> attributes, String subscriptionName) {
         assertEquals(NAMESPACE, attributes.get("hostName"));
         assertEquals(ENTITY_PATH, attributes.get("entityName"));
         assertEquals(subscriptionName, attributes.get("subscriptionName"));
-    }
-
-    // Once on V2 completely, block of code in this function should be moved to JUnit setup() method.
-    private void arrangeForV2() {
-        when(amqpReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.boundedElastic()));
-        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
-        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
-            = new ReactorConnectionCache<>(() -> connection, NAMESPACE, ENTITY_PATH,
-                new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))), new HashMap<>());
-        receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false), connectionCache,
-            CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
     }
 }
