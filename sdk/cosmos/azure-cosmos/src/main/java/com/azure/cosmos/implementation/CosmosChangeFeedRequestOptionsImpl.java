@@ -57,7 +57,11 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
 //        this.continuationState = toBeCloned.continuationState;
-        this.continuationState = new ChangeFeedStateV1((ChangeFeedStateV1) toBeCloned.continuationState);
+        if (toBeCloned.continuationState != null) {
+            this.continuationState = new ChangeFeedStateV1((ChangeFeedStateV1) toBeCloned.continuationState);
+        } else {
+            this.continuationState = null;
+        }
         this.feedRangeInternal = toBeCloned.feedRangeInternal;
         this.properties = toBeCloned.properties;
         this.maxItemCount = toBeCloned.maxItemCount;
@@ -77,8 +81,6 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
         this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
         this.endLSN = toBeCloned.endLSN;
-
-        logger.warn("Cloning options with continuation state {}", continuationState.getContinuation());
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -100,7 +102,12 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.maxPrefetchPageCount = DEFAULT_MAX_PREFETCH_PAGE_COUNT;
         this.feedRangeInternal = feedRange;
         this.startFromInternal = startFromInternal;
-        this.continuationState = continuationState; // this should be a clone
+        if (continuationState != null) {
+            this.continuationState = new ChangeFeedStateV1((ChangeFeedStateV1) continuationState);
+        } else {
+            this.continuationState = null;
+        }
+
 
         if (mode != ChangeFeedMode.INCREMENTAL && mode != ChangeFeedMode.FULL_FIDELITY) {
             throw new IllegalArgumentException(
@@ -117,7 +124,6 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.properties = new HashMap<>();
         this.isSplitHandlingDisabled = false;
         this.completeAfterAllCurrentChangesRetrieved = DEFAULT_COMPLETE_AFTER_ALL_CURRENT_CHANGES_RETRIEVED;
-        logger.warn("Creating options with continuation state {}", continuationState.getContinuation());
     }
 
     public ChangeFeedState getContinuation() {

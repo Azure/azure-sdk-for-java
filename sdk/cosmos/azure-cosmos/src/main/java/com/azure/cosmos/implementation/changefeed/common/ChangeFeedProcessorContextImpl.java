@@ -6,13 +6,16 @@ package com.azure.cosmos.implementation.changefeed.common;
 import com.azure.cosmos.ChangeFeedProcessorContext;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
+import com.azure.cosmos.models.FeedResponse;
 
 public final class ChangeFeedProcessorContextImpl<T> implements ChangeFeedProcessorContext {
 
     private final ChangeFeedObserverContext<T> changeFeedObserverContext;
+    private final FeedResponse<T> feedResponse;
 
     public ChangeFeedProcessorContextImpl(ChangeFeedObserverContext<T> changeFeedObserverContext) {
         this.changeFeedObserverContext = changeFeedObserverContext;
+        this.feedResponse = changeFeedObserverContext.getFeedResponse();
     }
 
     @Override
