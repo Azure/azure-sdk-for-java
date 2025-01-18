@@ -32,11 +32,6 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
      */
     private List<SyncMigrationDatabaseErrorEvent> events;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError class.
      */
@@ -95,16 +90,6 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -146,7 +131,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.id = reader.getString();
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.resultType = reader.getString();
                 } else if ("errorMessage".equals(fieldName)) {

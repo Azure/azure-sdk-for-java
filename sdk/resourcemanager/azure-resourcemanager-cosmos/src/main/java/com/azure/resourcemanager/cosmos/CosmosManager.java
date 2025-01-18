@@ -84,7 +84,11 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
                 .buildClient());
     }
 
-    /** @return the cosmos db database account resource management API entry point */
+    /**
+     * Gets the cosmos db database account resource management API entry point.
+     *
+     * @return the cosmos db database account resource management API entry point
+     */
     public CosmosDBAccounts databaseAccounts() {
         if (databaseAccounts == null) {
             databaseAccounts = new CosmosDBAccountsImpl(this);

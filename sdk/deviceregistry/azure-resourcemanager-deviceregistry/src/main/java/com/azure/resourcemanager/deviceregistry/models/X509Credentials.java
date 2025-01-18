@@ -18,9 +18,9 @@ import java.io.IOException;
 @Fluent
 public final class X509Credentials implements JsonSerializable<X509Credentials> {
     /*
-     * A reference to secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx).
+     * The name of the secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx).
      */
-    private String certificateReference;
+    private String certificateSecretName;
 
     /**
      * Creates an instance of X509Credentials class.
@@ -29,24 +29,24 @@ public final class X509Credentials implements JsonSerializable<X509Credentials> 
     }
 
     /**
-     * Get the certificateReference property: A reference to secret containing the certificate and private key (e.g.
+     * Get the certificateSecretName property: The name of the secret containing the certificate and private key (e.g.
      * stored as .der/.pem or .der/.pfx).
      * 
-     * @return the certificateReference value.
+     * @return the certificateSecretName value.
      */
-    public String certificateReference() {
-        return this.certificateReference;
+    public String certificateSecretName() {
+        return this.certificateSecretName;
     }
 
     /**
-     * Set the certificateReference property: A reference to secret containing the certificate and private key (e.g.
+     * Set the certificateSecretName property: The name of the secret containing the certificate and private key (e.g.
      * stored as .der/.pem or .der/.pfx).
      * 
-     * @param certificateReference the certificateReference value to set.
+     * @param certificateSecretName the certificateSecretName value to set.
      * @return the X509Credentials object itself.
      */
-    public X509Credentials withCertificateReference(String certificateReference) {
-        this.certificateReference = certificateReference;
+    public X509Credentials withCertificateSecretName(String certificateSecretName) {
+        this.certificateSecretName = certificateSecretName;
         return this;
     }
 
@@ -56,10 +56,10 @@ public final class X509Credentials implements JsonSerializable<X509Credentials> 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (certificateReference() == null) {
+        if (certificateSecretName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property certificateReference in model X509Credentials"));
+                    "Missing required property certificateSecretName in model X509Credentials"));
         }
     }
 
@@ -71,7 +71,7 @@ public final class X509Credentials implements JsonSerializable<X509Credentials> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("certificateReference", this.certificateReference);
+        jsonWriter.writeStringField("certificateSecretName", this.certificateSecretName);
         return jsonWriter.writeEndObject();
     }
 
@@ -91,8 +91,8 @@ public final class X509Credentials implements JsonSerializable<X509Credentials> 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("certificateReference".equals(fieldName)) {
-                    deserializedX509Credentials.certificateReference = reader.getString();
+                if ("certificateSecretName".equals(fieldName)) {
+                    deserializedX509Credentials.certificateSecretName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

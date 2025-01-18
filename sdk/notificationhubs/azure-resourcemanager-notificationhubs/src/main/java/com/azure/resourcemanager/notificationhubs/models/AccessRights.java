@@ -4,53 +4,58 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Defines values for AccessRights.
  */
-public final class AccessRights extends ExpandableStringEnum<AccessRights> {
+public enum AccessRights {
     /**
-     * Static value Manage for AccessRights.
+     * Enum value Manage.
      */
-    public static final AccessRights MANAGE = fromString("Manage");
+    MANAGE("Manage"),
 
     /**
-     * Static value Send for AccessRights.
+     * Enum value Send.
      */
-    public static final AccessRights SEND = fromString("Send");
+    SEND("Send"),
 
     /**
-     * Static value Listen for AccessRights.
+     * Enum value Listen.
      */
-    public static final AccessRights LISTEN = fromString("Listen");
+    LISTEN("Listen");
 
     /**
-     * Creates a new instance of AccessRights value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a AccessRights instance.
      */
-    @Deprecated
-    public AccessRights() {
+    private final String value;
+
+    AccessRights(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a AccessRights from its string representation.
+     * Parses a serialized value to a AccessRights instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding AccessRights.
+     * @param value the serialized value to parse.
+     * @return the parsed AccessRights object, or null if unable to parse.
      */
-    public static AccessRights fromString(String name) {
-        return fromString(name, AccessRights.class);
+    public static AccessRights fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        AccessRights[] items = AccessRights.values();
+        for (AccessRights item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known AccessRights values.
-     * 
-     * @return known AccessRights values.
+     * {@inheritDoc}
      */
-    public static Collection<AccessRights> values() {
-        return values(AccessRights.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

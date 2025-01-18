@@ -14,10 +14,8 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ImportSourceProperties;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
-import com.azure.resourcemanager.mysqlflexibleserver.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
@@ -25,7 +23,6 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
  * The properties of a server.
@@ -114,19 +111,9 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     private Network network;
 
     /*
-     * PrivateEndpointConnections related properties of a server.
-     */
-    private List<PrivateEndpointConnection> privateEndpointConnections;
-
-    /*
      * Maintenance window of a server.
      */
     private MaintenanceWindow maintenanceWindow;
-
-    /*
-     * Source properties for import from storage.
-     */
-    private ImportSourceProperties importSourceProperties;
 
     /**
      * Creates an instance of ServerProperties class.
@@ -428,15 +415,6 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
-     * Get the privateEndpointConnections property: PrivateEndpointConnections related properties of a server.
-     * 
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnection> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
      * Get the maintenanceWindow property: Maintenance window of a server.
      * 
      * @return the maintenanceWindow value.
@@ -453,26 +431,6 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      */
     public ServerProperties withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {
         this.maintenanceWindow = maintenanceWindow;
-        return this;
-    }
-
-    /**
-     * Get the importSourceProperties property: Source properties for import from storage.
-     * 
-     * @return the importSourceProperties value.
-     */
-    public ImportSourceProperties importSourceProperties() {
-        return this.importSourceProperties;
-    }
-
-    /**
-     * Set the importSourceProperties property: Source properties for import from storage.
-     * 
-     * @param importSourceProperties the importSourceProperties value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withImportSourceProperties(ImportSourceProperties importSourceProperties) {
-        this.importSourceProperties = importSourceProperties;
         return this;
     }
 
@@ -497,14 +455,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         if (network() != null) {
             network().validate();
         }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
         if (maintenanceWindow() != null) {
             maintenanceWindow().validate();
-        }
-        if (importSourceProperties() != null) {
-            importSourceProperties().validate();
         }
     }
 
@@ -532,7 +484,6 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         jsonWriter.writeJsonField("highAvailability", this.highAvailability);
         jsonWriter.writeJsonField("network", this.network);
         jsonWriter.writeJsonField("maintenanceWindow", this.maintenanceWindow);
-        jsonWriter.writeJsonField("importSourceProperties", this.importSourceProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -584,14 +535,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                     deserializedServerProperties.highAvailability = HighAvailability.fromJson(reader);
                 } else if ("network".equals(fieldName)) {
                     deserializedServerProperties.network = Network.fromJson(reader);
-                } else if ("privateEndpointConnections".equals(fieldName)) {
-                    List<PrivateEndpointConnection> privateEndpointConnections
-                        = reader.readArray(reader1 -> PrivateEndpointConnection.fromJson(reader1));
-                    deserializedServerProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("maintenanceWindow".equals(fieldName)) {
                     deserializedServerProperties.maintenanceWindow = MaintenanceWindow.fromJson(reader);
-                } else if ("importSourceProperties".equals(fieldName)) {
-                    deserializedServerProperties.importSourceProperties = ImportSourceProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

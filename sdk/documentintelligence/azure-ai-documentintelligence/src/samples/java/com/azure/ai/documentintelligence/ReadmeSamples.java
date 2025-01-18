@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.DocumentContentFormat;
@@ -79,7 +79,7 @@ public final class ReadmeSamples {
         Path filePath = layoutDocument.toPath();
         BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutResultPoller =
             documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
                 new AnalyzeDocumentOptions(layoutDocumentData));
 
@@ -126,7 +126,7 @@ public final class ReadmeSamples {
         File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
 
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeReceiptPoller =
             documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
                 new AnalyzeDocumentOptions(Files.readAllBytes(sourceFile.toPath())));
 
@@ -208,7 +208,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.documentintelligence.readme.analyzeCustomModel
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
             new AnalyzeDocumentOptions(documentUrl).setPages(Collections.singletonList("1")).setLocale("en-US")
                 .setStringIndexType(StringIndexType.TEXT_ELEMENTS).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES))
                 .setOutputContentFormat(DocumentContentFormat.TEXT));

@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
@@ -40,7 +40,7 @@ public class AnalyzeReceiptsFromUrlAsync {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence"
                 + "/azure-ai-documentintelligence/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
 
-        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeReceiptPoller =
             client.beginAnalyzeDocument("prebuilt-receipt",
                 new AnalyzeDocumentOptions(receiptUrl));
 
@@ -101,10 +101,10 @@ public class AnalyzeReceiptsFromUrlAsync {
                 if (receiptItemsField != null) {
                     System.out.printf("Receipt Items: %n");
                     if (DocumentFieldType.ARRAY == receiptItemsField.getType()) {
-                        List<DocumentField> receiptItems = receiptItemsField.getValueArray();
+                        List<DocumentField> receiptItems = receiptItemsField.getValueList();
                         receiptItems.stream()
                             .filter(receiptItem -> DocumentFieldType.OBJECT == receiptItem.getType())
-                            .map(documentField -> documentField.getValueObject())
+                            .map(documentField -> documentField.getValueMap())
                             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                                 if ("Name".equals(key)) {
                                     if (DocumentFieldType.STRING == documentField.getType()) {

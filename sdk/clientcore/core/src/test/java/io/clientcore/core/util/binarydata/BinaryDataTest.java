@@ -3,7 +3,6 @@
 
 package io.clientcore.core.util.binarydata;
 
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.util.IterableOfByteBuffersInputStream;
 import io.clientcore.core.models.MockFile;
 import io.clientcore.core.models.MockPath;
@@ -12,6 +11,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Test class for {@link BinaryData}.
  */
 public class BinaryDataTest {
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
     private static final byte[] RANDOM_DATA;
 
     static {
@@ -525,7 +525,7 @@ public class BinaryDataTest {
         BinaryDataAsProperty binaryDataAsProperty = new BinaryDataAsProperty()
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String expectedJson = "{\"property\":{\"test\":\"test\"}}";
-        String actualJson = new String(new DefaultJsonSerializer().serializeToBytes(binaryDataAsProperty));
+        String actualJson = new String(new JsonSerializer().serializeToBytes(binaryDataAsProperty));
 
         assertEquals(expectedJson, actualJson);
     }
@@ -536,7 +536,7 @@ public class BinaryDataTest {
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String json = "{\"property\":{\"test\":\"test\"}}";
         BinaryDataAsProperty actual
-            = new DefaultJsonSerializer().deserializeFromBytes(json.getBytes(), BinaryDataAsProperty.class);
+            = new JsonSerializer().deserializeFromBytes(json.getBytes(), BinaryDataAsProperty.class);
 
         assertEquals(expected.getProperty().toString(), actual.getProperty().toString());
     }

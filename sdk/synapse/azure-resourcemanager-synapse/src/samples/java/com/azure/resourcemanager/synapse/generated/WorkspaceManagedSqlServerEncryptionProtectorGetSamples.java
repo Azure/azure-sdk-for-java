@@ -11,7 +11,7 @@ import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
  */
 public final class WorkspaceManagedSqlServerEncryptionProtectorGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetWorkspaceManagedSqlServerEncryptionProtector.json
      */
     /**

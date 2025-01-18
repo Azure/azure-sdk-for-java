@@ -42,7 +42,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.implementation.Postgre
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateEndpointConnectionOperationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateLinkResourcesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.QuotaUsagesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ReplicasImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerCapabilitiesImpl;
@@ -67,7 +66,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Operations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnectionOperations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateLinkResources;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsages;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replicas;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ResourceProviders;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerCapabilities;
@@ -126,8 +124,6 @@ public final class PostgreSqlManager {
     private PrivateEndpointConnectionOperations privateEndpointConnectionOperations;
 
     private PrivateLinkResources privateLinkResources;
-
-    private QuotaUsages quotaUsages;
 
     private Replicas replicas;
 
@@ -303,7 +299,7 @@ public final class PostgreSqlManager {
                 .append("-")
                 .append("com.azure.resourcemanager.postgresqlflexibleserver")
                 .append("/")
-                .append("1.1.0-beta.4");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -581,18 +577,6 @@ public final class PostgreSqlManager {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
         }
         return privateLinkResources;
-    }
-
-    /**
-     * Gets the resource collection API of QuotaUsages.
-     * 
-     * @return Resource collection API of QuotaUsages.
-     */
-    public QuotaUsages quotaUsages() {
-        if (this.quotaUsages == null) {
-            this.quotaUsages = new QuotaUsagesImpl(clientObject.getQuotaUsages(), this);
-        }
-        return quotaUsages;
     }
 
     /**

@@ -17,8 +17,7 @@ import java.util.Map;
 public final class InboundEndpointsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
-     * InboundEndpoint_Put.json
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Put.json
      */
     /**
      * Sample code: Upsert inbound endpoint for DNS resolver.

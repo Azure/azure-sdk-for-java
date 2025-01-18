@@ -27,7 +27,7 @@ public final class InputsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.inputs().deleteWithResponse("ixqtn", "ttezlw", "ffiakp", com.azure.core.util.Context.NONE);
+        manager.inputs().deleteWithResponse("nvxbvt", "udutnco", "mr", com.azure.core.util.Context.NONE);
 
     }
 }

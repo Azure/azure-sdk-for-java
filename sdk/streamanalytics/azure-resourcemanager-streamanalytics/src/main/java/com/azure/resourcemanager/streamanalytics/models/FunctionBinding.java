@@ -80,13 +80,9 @@ public class FunctionBinding implements JsonSerializable<FunctionBinding> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("Microsoft.MachineLearning/WebService".equals(discriminatorValue)) {
-                    return AzureMachineLearningStudioFunctionBinding.fromJson(readerToUse.reset());
+                    return AzureMachineLearningWebServiceFunctionBinding.fromJson(readerToUse.reset());
                 } else if ("Microsoft.StreamAnalytics/JavascriptUdf".equals(discriminatorValue)) {
                     return JavaScriptFunctionBinding.fromJson(readerToUse.reset());
-                } else if ("Microsoft.StreamAnalytics/CLRUdf".equals(discriminatorValue)) {
-                    return CSharpFunctionBinding.fromJson(readerToUse.reset());
-                } else if ("Microsoft.MachineLearningServices".equals(discriminatorValue)) {
-                    return AzureMachineLearningServiceFunctionBinding.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

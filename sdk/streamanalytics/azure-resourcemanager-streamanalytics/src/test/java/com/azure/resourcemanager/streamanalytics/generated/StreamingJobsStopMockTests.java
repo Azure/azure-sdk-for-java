@@ -27,7 +27,7 @@ public final class StreamingJobsStopMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.streamingJobs().stop("dyg", "ookk", com.azure.core.util.Context.NONE);
+        manager.streamingJobs().stop("nsj", "r", com.azure.core.util.Context.NONE);
 
     }
 }

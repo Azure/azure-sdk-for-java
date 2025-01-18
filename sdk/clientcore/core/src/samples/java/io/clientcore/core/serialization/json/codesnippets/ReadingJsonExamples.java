@@ -44,7 +44,7 @@ public class ReadingJsonExamples {
             + "\"threads\"16\",\"manufacturer\":\"Processor Corp\",\"clockSpeedInHertz\":4000000000,"
             + "\"releaseDate\":\"2023-01-01\"},\"Memory\":{\"memoryInBytes\":10000000000,"
             + "\"clockSpeedInHertz\":4800000000,\"manufacturer\":\"Memory Corp\",\"errorCorrecting\":true},"
-            + "\"AcceleratedNetwork\":true,\"CloudProvider\":\"Azure\",\"Available\":true}")
+            + "\"AcceleratedNetwork\":true,\"CloudProvider\":\"SomeCloud\",\"Available\":true}")
             .getBytes(StandardCharsets.UTF_8));
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
@@ -59,7 +59,7 @@ public class ReadingJsonExamples {
             + "\"manufacturer\":\"Processor Corp\",\"clockSpeedInHertz\":4000000000,\"releaseDate\":\"2023-01-01\"},"
             + "\"Memory\":{\"memoryInBytes\":10000000000,\"clockSpeedInHertz\":4800000000,"
             + "\"manufacturer\":\"Memory Corp\",\"errorCorrecting\":true},\"AcceleratedNetwork\":true,"
-            + "\"CloudProvider\":\"Azure\",\"Available\":true}");
+            + "\"CloudProvider\":\"SomeCloud\",\"Available\":true}");
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             return VmStatistics.fromJson(jsonReader);

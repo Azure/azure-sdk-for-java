@@ -17,11 +17,6 @@ public final class ConditionType extends ExpandableStringEnum<ConditionType> {
     public static final ConditionType PROPERTY = fromString("Property");
 
     /**
-     * Static value PropertyArray for ConditionType.
-     */
-    public static final ConditionType PROPERTY_ARRAY = fromString("PropertyArray");
-
-    /**
      * Static value PropertyChanged for ConditionType.
      */
     public static final ConditionType PROPERTY_CHANGED = fromString("PropertyChanged");
@@ -30,11 +25,6 @@ public final class ConditionType extends ExpandableStringEnum<ConditionType> {
      * Static value PropertyArrayChanged for ConditionType.
      */
     public static final ConditionType PROPERTY_ARRAY_CHANGED = fromString("PropertyArrayChanged");
-
-    /**
-     * Static value Boolean for ConditionType.
-     */
-    public static final ConditionType BOOLEAN = fromString("Boolean");
 
     /**
      * Creates a new instance of ConditionType value.

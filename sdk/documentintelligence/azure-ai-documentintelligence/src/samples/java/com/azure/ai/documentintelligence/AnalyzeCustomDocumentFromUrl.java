@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentContentFormat;
 import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
@@ -37,7 +37,7 @@ public class AnalyzeCustomDocumentFromUrl {
 
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
             new AnalyzeDocumentOptions(documentUrl).setPages(Arrays.asList("1"))
                 .setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)).setLocale("en-US")
                 .setStringIndexType(StringIndexType.TEXT_ELEMENTS).setOutputContentFormat(DocumentContentFormat.TEXT));

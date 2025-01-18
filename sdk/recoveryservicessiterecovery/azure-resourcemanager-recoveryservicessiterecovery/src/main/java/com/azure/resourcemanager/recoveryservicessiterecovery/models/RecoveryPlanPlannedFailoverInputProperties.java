@@ -6,24 +6,27 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Recovery plan planned failover input properties.
  */
 @Fluent
-public final class RecoveryPlanPlannedFailoverInputProperties {
+public final class RecoveryPlanPlannedFailoverInputProperties
+    implements JsonSerializable<RecoveryPlanPlannedFailoverInputProperties> {
     /*
      * The failover direction.
      */
-    @JsonProperty(value = "failoverDirection", required = true)
     private PossibleOperationsDirections failoverDirection;
 
     /*
      * The provider specific properties.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails;
 
     /**
@@ -81,8 +84,9 @@ public final class RecoveryPlanPlannedFailoverInputProperties {
      */
     public void validate() {
         if (failoverDirection() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property failoverDirection in model RecoveryPlanPlannedFailoverInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property failoverDirection in model RecoveryPlanPlannedFailoverInputProperties"));
         }
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().forEach(e -> e.validate());
@@ -90,4 +94,51 @@ public final class RecoveryPlanPlannedFailoverInputProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPlanPlannedFailoverInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("failoverDirection",
+            this.failoverDirection == null ? null : this.failoverDirection.toString());
+        jsonWriter.writeArrayField("providerSpecificDetails", this.providerSpecificDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanPlannedFailoverInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanPlannedFailoverInputProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPlanPlannedFailoverInputProperties.
+     */
+    public static RecoveryPlanPlannedFailoverInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanPlannedFailoverInputProperties deserializedRecoveryPlanPlannedFailoverInputProperties
+                = new RecoveryPlanPlannedFailoverInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("failoverDirection".equals(fieldName)) {
+                    deserializedRecoveryPlanPlannedFailoverInputProperties.failoverDirection
+                        = PossibleOperationsDirections.fromString(reader.getString());
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails
+                        = reader.readArray(reader1 -> RecoveryPlanProviderSpecificFailoverInput.fromJson(reader1));
+                    deserializedRecoveryPlanPlannedFailoverInputProperties.providerSpecificDetails
+                        = providerSpecificDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanPlannedFailoverInputProperties;
+        });
+    }
 }

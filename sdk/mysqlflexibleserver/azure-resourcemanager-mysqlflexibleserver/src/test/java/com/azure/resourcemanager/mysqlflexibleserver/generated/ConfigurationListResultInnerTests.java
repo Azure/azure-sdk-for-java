@@ -15,31 +15,22 @@ public final class ConfigurationListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"rlyxwjkcprbnw\",\"currentValue\":\"gjvtbv\",\"description\":\"sszdnru\",\"documentationLink\":\"guhmuouqfpr\",\"defaultValue\":\"wbnguitnwui\",\"dataType\":\"a\",\"allowedValues\":\"ufizuckyf\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"dzuhtymwi\",\"name\":\"dkfthwxmnt\",\"type\":\"i\"},{\"properties\":{\"value\":\"pvkmijcmmxdcuf\",\"currentValue\":\"srp\",\"description\":\"zidnsezcxtbzsgfy\",\"documentationLink\":\"sne\",\"defaultValue\":\"dwzjeiach\",\"dataType\":\"osfln\",\"allowedValues\":\"sfqpteehz\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"inpvswjdkirsoodq\",\"name\":\"hc\",\"type\":\"mnoh\"},{\"properties\":{\"value\":\"kwh\",\"currentValue\":\"oifiyipjxsqwpgr\",\"description\":\"znorcj\",\"documentationLink\":\"snb\",\"defaultValue\":\"qabnmoc\",\"dataType\":\"ysh\",\"allowedValues\":\"zafb\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"jmkljavbqidtqajz\",\"name\":\"ulpkudjkrl\",\"type\":\"hbzhfepg\"}],\"nextLink\":\"qex\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"zloc\",\"description\":\"c\",\"defaultValue\":\"ierhhbcsglummaj\",\"dataType\":\"aodxo\",\"allowedValues\":\"bdxkqpxokaj\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"txgcpodgmaajr\",\"name\":\"vdjwzrlovm\",\"type\":\"lwhijcoejctbzaq\"}],\"nextLink\":\"sycbkbfk\"}")
             .toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("rlyxwjkcprbnw", model.value().get(0).value());
-        Assertions.assertEquals("gjvtbv", model.value().get(0).currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.value().get(0).source());
-        Assertions.assertEquals("qex", model.nextLink());
+        Assertions.assertEquals("zloc", model.value().get(0).value());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
+        Assertions.assertEquals("sycbkbfk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationListResultInner model = new ConfigurationListResultInner().withValue(Arrays.asList(
-            new ConfigurationInner().withValue("rlyxwjkcprbnw")
-                .withCurrentValue("gjvtbv")
-                .withSource(ConfigurationSource.USER_OVERRIDE),
-            new ConfigurationInner().withValue("pvkmijcmmxdcuf")
-                .withCurrentValue("srp")
-                .withSource(ConfigurationSource.USER_OVERRIDE),
-            new ConfigurationInner().withValue("kwh")
-                .withCurrentValue("oifiyipjxsqwpgr")
-                .withSource(ConfigurationSource.SYSTEM_DEFAULT)))
-            .withNextLink("qex");
+        ConfigurationListResultInner model = new ConfigurationListResultInner()
+            .withValue(Arrays
+                .asList(new ConfigurationInner().withValue("zloc").withSource(ConfigurationSource.SYSTEM_DEFAULT)))
+            .withNextLink("sycbkbfk");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("rlyxwjkcprbnw", model.value().get(0).value());
-        Assertions.assertEquals("gjvtbv", model.value().get(0).currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.value().get(0).source());
-        Assertions.assertEquals("qex", model.nextLink());
+        Assertions.assertEquals("zloc", model.value().get(0).value());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
+        Assertions.assertEquals("sycbkbfk", model.nextLink());
     }
 }

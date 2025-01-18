@@ -10,21 +10,15 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
-import com.azure.resourcemanager.synapse.models.BigDataPoolResourceInfo;
-import com.azure.resourcemanager.synapse.models.ConfigurationType;
-import com.azure.resourcemanager.synapse.models.NodeSize;
-import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public final class BigDataPoolsDeleteMockTests {
     @Test
     public void testDelete() throws Exception {
-        String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"autoScale\":{\"minNodeCount\":1798907732,\"enabled\":true,\"maxNodeCount\":1590703182},\"creationDate\":\"2021-05-21T09:36:31Z\",\"autoPause\":{\"delayInMinutes\":57018790,\"enabled\":true},\"isComputeIsolationEnabled\":true,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":276745194,\"dynamicExecutorAllocation\":{\"enabled\":false,\"minExecutors\":407535743,\"maxExecutors\":1195854621},\"sparkEventsFolder\":\"huy\",\"nodeCount\":263838368,\"libraryRequirements\":{\"time\":\"2021-04-28T19:41:23Z\",\"content\":\"lnrj\",\"filename\":\"zdbuzici\"},\"customLibraries\":[{\"name\":\"qvgpnewuh\",\"path\":\"wjnoxuo\",\"containerName\":\"fnres\",\"uploadedTimestamp\":\"2021-06-28T19:51:59Z\",\"type\":\"gckncjmg\",\"provisioningStatus\":\"nvbt\",\"creatorId\":\"xfmj\"},{\"name\":\"jnhj\",\"path\":\"qllbsupubdxc\",\"containerName\":\"lhzwh\",\"uploadedTimestamp\":\"2021-03-30T00:05:16Z\",\"type\":\"bosjjfd\",\"provisioningStatus\":\"hrjqfyaytvslyek\",\"creatorId\":\"niuarlcjiwgsxfai\"},{\"name\":\"wd\",\"path\":\"jjgnfgr\",\"containerName\":\"barc\",\"uploadedTimestamp\":\"2021-05-24T07:18:13Z\",\"type\":\"fzqsymjwenjcytes\",\"provisioningStatus\":\"u\",\"creatorId\":\"tfodq\"},{\"name\":\"auzmzivrtrfzhhe\",\"path\":\"hjud\",\"containerName\":\"yy\",\"uploadedTimestamp\":\"2021-07-24T23:50:14Z\",\"type\":\"ahswtvdkxb\",\"provisioningStatus\":\"sgfenffdxb\",\"creatorId\":\"fqjchivdrij\"}],\"sparkConfigProperties\":{\"time\":\"2021-10-08T10:49:37Z\",\"content\":\"muvardlmzjot\",\"filename\":\"rmuhcuhtuzlx\",\"configurationType\":\"File\"},\"sparkVersion\":\"pgarpfctw\",\"defaultSparkLogFolder\":\"pczdojqyvze\",\"nodeSize\":\"Small\",\"nodeSizeFamily\":\"HardwareAcceleratedFPGA\",\"lastSucceededTimestamp\":\"2021-06-13T05:52:12Z\"},\"location\":\"jqyowaadc\",\"tags\":{\"undtsew\":\"za\"},\"id\":\"aupwhlzyckrem\",\"name\":\"jlm\",\"type\":\"vdorsirx\"}";
+        String responseStr = "\"datawispkxk\"";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,38 +27,8 @@ public final class BigDataPoolsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        BigDataPoolResourceInfo response
-            = manager.bigDataPools().delete("zkgtzqn", "qsttewuvcysjeuf", "x", com.azure.core.util.Context.NONE);
+        Object response
+            = manager.bigDataPools().delete("hvyeldotj", "dkwisw", "kukjtasb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jqyowaadc", response.location());
-        Assertions.assertEquals("za", response.tags().get("undtsew"));
-        Assertions.assertEquals("Succeeded", response.provisioningState());
-        Assertions.assertEquals(1798907732, response.autoScale().minNodeCount());
-        Assertions.assertEquals(true, response.autoScale().enabled());
-        Assertions.assertEquals(1590703182, response.autoScale().maxNodeCount());
-        Assertions.assertEquals(57018790, response.autoPause().delayInMinutes());
-        Assertions.assertEquals(true, response.autoPause().enabled());
-        Assertions.assertEquals(true, response.isComputeIsolationEnabled());
-        Assertions.assertEquals(false, response.isAutotuneEnabled());
-        Assertions.assertEquals(true, response.sessionLevelPackagesEnabled());
-        Assertions.assertEquals(276745194, response.cacheSize());
-        Assertions.assertEquals(false, response.dynamicExecutorAllocation().enabled());
-        Assertions.assertEquals(407535743, response.dynamicExecutorAllocation().minExecutors());
-        Assertions.assertEquals(1195854621, response.dynamicExecutorAllocation().maxExecutors());
-        Assertions.assertEquals("huy", response.sparkEventsFolder());
-        Assertions.assertEquals(263838368, response.nodeCount());
-        Assertions.assertEquals("lnrj", response.libraryRequirements().content());
-        Assertions.assertEquals("zdbuzici", response.libraryRequirements().filename());
-        Assertions.assertEquals("qvgpnewuh", response.customLibraries().get(0).name());
-        Assertions.assertEquals("wjnoxuo", response.customLibraries().get(0).path());
-        Assertions.assertEquals("fnres", response.customLibraries().get(0).containerName());
-        Assertions.assertEquals("gckncjmg", response.customLibraries().get(0).type());
-        Assertions.assertEquals("muvardlmzjot", response.sparkConfigProperties().content());
-        Assertions.assertEquals("rmuhcuhtuzlx", response.sparkConfigProperties().filename());
-        Assertions.assertEquals(ConfigurationType.FILE, response.sparkConfigProperties().configurationType());
-        Assertions.assertEquals("pgarpfctw", response.sparkVersion());
-        Assertions.assertEquals("pczdojqyvze", response.defaultSparkLogFolder());
-        Assertions.assertEquals(NodeSize.SMALL, response.nodeSize());
-        Assertions.assertEquals(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA, response.nodeSizeFamily());
     }
 }

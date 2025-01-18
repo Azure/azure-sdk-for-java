@@ -6,11 +6,9 @@ package com.azure.resourcemanager.chaos.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.chaos.ChaosManager;
 import com.azure.resourcemanager.chaos.models.ChaosExperimentBranch;
 import com.azure.resourcemanager.chaos.models.ChaosExperimentStep;
@@ -20,7 +18,6 @@ import com.azure.resourcemanager.chaos.models.Experiment;
 import com.azure.resourcemanager.chaos.models.ResourceIdentity;
 import com.azure.resourcemanager.chaos.models.ResourceIdentityType;
 import com.azure.resourcemanager.chaos.models.UserAssignedIdentity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -28,32 +25,16 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ExperimentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ev\":{\"principalId\":\"6900a581-a089-4451-b294-0dccce9a7181\",\"clientId\":\"c0aab7de-0ad5-4a09-ad58-31e9defd8dd4\"},\"b\":{\"principalId\":\"25a877c7-39ff-46be-8058-0c1f8c6955e9\",\"clientId\":\"2986140d-b1b7-4329-a3f5-cb5f12d81712\"}},\"principalId\":\"rilbywdx\",\"tenantId\":\"icc\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"steps\":[{\"name\":\"scjfnyns\",\"branches\":[{\"name\":\"ujiz\",\"actions\":[]},{\"name\":\"voqyt\",\"actions\":[]}]},{\"name\":\"byowbblgyavutp\",\"branches\":[{\"name\":\"joxoism\",\"actions\":[]},{\"name\":\"ksbpimlqoljx\",\"actions\":[]}]},{\"name\":\"cgxxlxs\",\"branches\":[{\"name\":\"gcvizqzdwlvwlyou\",\"actions\":[]},{\"name\":\"fgfb\",\"actions\":[]}]},{\"name\":\"jub\",\"branches\":[{\"name\":\"hgkfmin\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"owzfttsttkt\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"gqqqxh\":\"dataqactxtgzukxitmmq\",\"rxcpjuisavo\":\"datan\",\"ajlkatnw\":\"dataqdzfvazivjlfrqtt\"}}]},\"location\":\"yiopi\",\"tags\":{\"ovibrxkp\":\"qfkuvscxkdmli\",\"bteoybf\":\"loazuruocbgoo\"},\"id\":\"jxakv\",\"name\":\"jgslordilmyww\",\"type\":\"kgkxn\"}";
+            = "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ev\":{\"principalId\":\"196a22c5-3ca0-4d98-9a32-4f14564ee6c2\",\"clientId\":\"7268a1de-b3af-4a98-8e4e-fbc5b33a81be\"},\"b\":{\"principalId\":\"f5872c29-9455-487c-b047-3307bb4b4df6\",\"clientId\":\"7cb69611-9b91-41ea-aa48-d2bdcfd9d2a0\"}},\"principalId\":\"rilbywdx\",\"tenantId\":\"icc\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"steps\":[{\"name\":\"scjfnyns\",\"branches\":[{\"name\":\"ujiz\",\"actions\":[]},{\"name\":\"voqyt\",\"actions\":[]}]},{\"name\":\"byowbblgyavutp\",\"branches\":[{\"name\":\"joxoism\",\"actions\":[]},{\"name\":\"ksbpimlqoljx\",\"actions\":[]}]},{\"name\":\"cgxxlxs\",\"branches\":[{\"name\":\"gcvizqzdwlvwlyou\",\"actions\":[]},{\"name\":\"fgfb\",\"actions\":[]}]},{\"name\":\"jub\",\"branches\":[{\"name\":\"hgkfmin\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"owzfttsttkt\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"gqqqxh\":\"dataqactxtgzukxitmmq\",\"rxcpjuisavo\":\"datan\",\"ajlkatnw\":\"dataqdzfvazivjlfrqtt\"}}]},\"location\":\"yiopi\",\"tags\":{\"ovibrxkp\":\"qfkuvscxkdmli\",\"bteoybf\":\"loazuruocbgoo\"},\"id\":\"jxakv\",\"name\":\"jgslordilmyww\",\"type\":\"kgkxn\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ChaosManager manager = ChaosManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

@@ -46,9 +46,9 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iP firewall rule.
+     * @return any object.
      */
-    IpFirewallRuleInfo delete(String resourceGroupName, String workspaceName, String ruleName);
+    Object delete(String resourceGroupName, String workspaceName, String ruleName);
 
     /**
      * Deletes a firewall rule.
@@ -60,9 +60,9 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iP firewall rule.
+     * @return any object.
      */
-    IpFirewallRuleInfo delete(String resourceGroupName, String workspaceName, String ruleName, Context context);
+    Object delete(String resourceGroupName, String workspaceName, String ruleName, Context context);
 
     /**
      * Get a firewall rule.
@@ -151,9 +151,9 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iP firewall rule.
+     * @return any object.
      */
-    IpFirewallRuleInfo deleteById(String id);
+    Object deleteById(String id);
 
     /**
      * Deletes a firewall rule.
@@ -163,9 +163,9 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iP firewall rule.
+     * @return any object.
      */
-    IpFirewallRuleInfo deleteByIdWithResponse(String id, Context context);
+    Object deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new IpFirewallRuleInfo resource.

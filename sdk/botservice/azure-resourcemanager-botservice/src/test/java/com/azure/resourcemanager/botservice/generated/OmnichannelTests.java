@@ -12,17 +12,17 @@ public final class OmnichannelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Omnichannel model = BinaryData.fromString(
-            "{\"channelName\":\"Omnichannel\",\"etag\":\"qeqxo\",\"provisioningState\":\"dahzxctobg\",\"location\":\"dmoizpostmg\"}")
+            "{\"channelName\":\"Omnichannel\",\"etag\":\"rmfqjhhkxbpvj\",\"provisioningState\":\"jhxxjyn\",\"location\":\"divkrt\"}")
             .toObject(Omnichannel.class);
-        Assertions.assertEquals("qeqxo", model.etag());
-        Assertions.assertEquals("dmoizpostmg", model.location());
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.etag());
+        Assertions.assertEquals("divkrt", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Omnichannel model = new Omnichannel().withEtag("qeqxo").withLocation("dmoizpostmg");
+        Omnichannel model = new Omnichannel().withEtag("rmfqjhhkxbpvj").withLocation("divkrt");
         model = BinaryData.fromObject(model).toObject(Omnichannel.class);
-        Assertions.assertEquals("qeqxo", model.etag());
-        Assertions.assertEquals("dmoizpostmg", model.location());
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.etag());
+        Assertions.assertEquals("divkrt", model.location());
     }
 }

@@ -10,16 +10,15 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NamespacesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * Namespaces/Delete.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/
+     * NHNameSpaceDelete.json
      */
     /**
-     * Sample code: Namespaces_Delete.
+     * Sample code: NameSpaceDelete.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void namespacesDelete(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces()
-            .deleteByResourceGroupWithResponse("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE);
+    public static void nameSpaceDelete(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        manager.namespaces().delete("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE);
     }
 }

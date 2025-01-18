@@ -12,18 +12,19 @@ public final class ThreatIntelligenceParsedPatternTypeValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceParsedPatternTypeValue model
-            = BinaryData.fromString("{\"valueType\":\"vfqnvhnqoewdo\",\"value\":\"yetesy\"}")
+            = BinaryData.fromString("{\"valueType\":\"qhoftrmaequiah\",\"value\":\"cslfaoqzpiyylha\"}")
                 .toObject(ThreatIntelligenceParsedPatternTypeValue.class);
-        Assertions.assertEquals("vfqnvhnqoewdo", model.valueType());
-        Assertions.assertEquals("yetesy", model.value());
+        Assertions.assertEquals("qhoftrmaequiah", model.valueType());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThreatIntelligenceParsedPatternTypeValue model
-            = new ThreatIntelligenceParsedPatternTypeValue().withValueType("vfqnvhnqoewdo").withValue("yetesy");
+            = new ThreatIntelligenceParsedPatternTypeValue().withValueType("qhoftrmaequiah")
+                .withValue("cslfaoqzpiyylha");
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceParsedPatternTypeValue.class);
-        Assertions.assertEquals("vfqnvhnqoewdo", model.valueType());
-        Assertions.assertEquals("yetesy", model.value());
+        Assertions.assertEquals("qhoftrmaequiah", model.valueType());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.value());
     }
 }

@@ -5,32 +5,42 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.AlertSyncSettingProperties;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Represents an alert sync setting.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = AlertSyncSettings.class, visible = true)
-@JsonTypeName("AlertSyncSettings")
 @Fluent
 public final class AlertSyncSettings extends SettingInner {
     /*
      * the kind of the settings string
      */
-    @JsonTypeId
-    @JsonProperty(value = "kind", required = true)
     private SettingKind kind = SettingKind.ALERT_SYNC_SETTINGS;
 
     /*
      * Alert sync setting data
      */
-    @JsonProperty(value = "properties")
     private AlertSyncSettingProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of AlertSyncSettings class.
@@ -55,6 +65,36 @@ public final class AlertSyncSettings extends SettingInner {
      */
     private AlertSyncSettingProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -87,9 +127,54 @@ public final class AlertSyncSettings extends SettingInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertSyncSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertSyncSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertSyncSettings.
+     */
+    public static AlertSyncSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertSyncSettings deserializedAlertSyncSettings = new AlertSyncSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAlertSyncSettings.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAlertSyncSettings.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAlertSyncSettings.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAlertSyncSettings.kind = SettingKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAlertSyncSettings.innerProperties = AlertSyncSettingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertSyncSettings;
+        });
     }
 }

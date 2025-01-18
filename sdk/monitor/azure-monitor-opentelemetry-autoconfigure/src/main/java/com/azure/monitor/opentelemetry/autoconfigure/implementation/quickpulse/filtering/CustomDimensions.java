@@ -41,4 +41,16 @@ public class CustomDimensions {
         }
     }
 
+    public double getCustomDimValueForProjection(String key) {
+        if (customDimensions.containsKey(key)) {
+            String value = customDimensions.get(key);
+            try {
+                return Double.parseDouble(value);
+            } catch (NumberFormatException e) {
+
+            }
+        }
+        return Double.NaN;
+    }
+
 }

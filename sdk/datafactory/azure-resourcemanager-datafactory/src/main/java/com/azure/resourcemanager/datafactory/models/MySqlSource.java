@@ -124,7 +124,6 @@ public final class MySqlSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

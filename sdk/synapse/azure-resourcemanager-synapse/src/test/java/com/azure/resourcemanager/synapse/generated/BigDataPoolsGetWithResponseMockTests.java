@@ -11,7 +11,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.BigDataPoolResourceInfo;
-import com.azure.resourcemanager.synapse.models.ConfigurationType;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +23,7 @@ public final class BigDataPoolsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"zihacen\",\"autoScale\":{\"minNodeCount\":1923513203,\"enabled\":true,\"maxNodeCount\":1229590421},\"creationDate\":\"2021-01-19T05:50:44Z\",\"autoPause\":{\"delayInMinutes\":1597398872,\"enabled\":true},\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":true,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":667043908,\"dynamicExecutorAllocation\":{\"enabled\":true,\"minExecutors\":649568800,\"maxExecutors\":1816529038},\"sparkEventsFolder\":\"wyrkbrehzlrynjpc\",\"nodeCount\":1259275397,\"libraryRequirements\":{\"time\":\"2021-04-02T00:33:46Z\",\"content\":\"lr\",\"filename\":\"ubowuywevtj\"},\"customLibraries\":[{\"name\":\"kmwlaok\",\"path\":\"ni\",\"containerName\":\"xgucbmtredscnn\",\"uploadedTimestamp\":\"2021-01-25T21:50:17Z\",\"type\":\"yyuvtzrxzhclec\",\"provisioningStatus\":\"tzqzcloy\",\"creatorId\":\"u\"},{\"name\":\"idhz\",\"path\":\"re\",\"containerName\":\"zsdtm\",\"uploadedTimestamp\":\"2021-07-01T19:30:51Z\",\"type\":\"r\",\"provisioningStatus\":\"lb\",\"creatorId\":\"ychakvy\"},{\"name\":\"bqvum\",\"path\":\"qj\",\"containerName\":\"uepm\",\"uploadedTimestamp\":\"2021-10-22T05:03:01Z\",\"type\":\"zlpqmpftxefvulb\",\"provisioningStatus\":\"rtux\",\"creatorId\":\"rhfcaeooifqdyw\"},{\"name\":\"lobha\",\"path\":\"momfecorkfroc\",\"containerName\":\"mx\",\"uploadedTimestamp\":\"2021-10-24T15:46:41Z\",\"type\":\"zezbjes\",\"provisioningStatus\":\"slurbqfygpny\",\"creatorId\":\"dzuqscag\"}],\"sparkConfigProperties\":{\"time\":\"2021-07-23T05:39:23Z\",\"content\":\"prsytqz\",\"filename\":\"lhmgwfniv\",\"configurationType\":\"File\"},\"sparkVersion\":\"duiolh\",\"defaultSparkLogFolder\":\"qvpbfjpoqzucfzl\",\"nodeSize\":\"Medium\",\"nodeSizeFamily\":\"MemoryOptimized\",\"lastSucceededTimestamp\":\"2021-10-02T11:22:22Z\"},\"location\":\"rbormvhvzie\",\"tags\":{\"gmnwsvhbn\":\"rnqujywzcqy\",\"jtobdrrp\":\"qiwy\"},\"id\":\"rehkunsbfjhh\",\"name\":\"w\",\"type\":\"pkvegeatt\"}";
+            = "{\"properties\":{\"provisioningState\":\"zhomewjjstliu\",\"autoScale\":{\"minNodeCount\":1890150004,\"enabled\":true,\"maxNodeCount\":409167617},\"creationDate\":\"2021-07-27T23:47:28Z\",\"autoPause\":{\"delayInMinutes\":1747041970,\"enabled\":true},\"isComputeIsolationEnabled\":true,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":1931817911,\"dynamicExecutorAllocation\":{\"enabled\":false},\"sparkEventsFolder\":\"kxrx\",\"nodeCount\":879177175,\"libraryRequirements\":{\"time\":\"2021-11-22T19:16:48Z\",\"content\":\"g\",\"filename\":\"qljnqkhychoco\"},\"customLibraries\":[{\"name\":\"hurql\",\"path\":\"ffaweyur\",\"containerName\":\"hy\",\"uploadedTimestamp\":\"2021-09-22T18:28:29Z\",\"type\":\"av\",\"provisioningStatus\":\"qdbrxmrgc\",\"creatorId\":\"apx\"}],\"sparkConfigProperties\":{\"time\":\"2021-01-07T08:52:04Z\",\"content\":\"j\",\"filename\":\"ajb\"},\"sparkVersion\":\"cgduusio\",\"defaultSparkLogFolder\":\"blevpmcluj\",\"nodeSize\":\"XXLarge\",\"nodeSizeFamily\":\"HardwareAcceleratedFPGA\",\"lastSucceededTimestamp\":\"2021-03-12T19:23:15Z\"},\"location\":\"gsjgkzzlta\",\"tags\":{\"qsczpgvdwnapfdqw\":\"zffovwmbjl\"},\"id\":\"wf\",\"name\":\"ptnuwjtkschgc\",\"type\":\"qyhleseyq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,38 +33,35 @@ public final class BigDataPoolsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BigDataPoolResourceInfo response = manager.bigDataPools()
-            .getWithResponse("fleev", "oqayrehjuqwv", "pxrl", com.azure.core.util.Context.NONE)
+            .getWithResponse("ahhxhqfaqnvzoqg", "ipemchgavscz", "ejdtxptl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rbormvhvzie", response.location());
-        Assertions.assertEquals("rnqujywzcqy", response.tags().get("gmnwsvhbn"));
-        Assertions.assertEquals("zihacen", response.provisioningState());
-        Assertions.assertEquals(1923513203, response.autoScale().minNodeCount());
+        Assertions.assertEquals("gsjgkzzlta", response.location());
+        Assertions.assertEquals("zffovwmbjl", response.tags().get("qsczpgvdwnapfdqw"));
+        Assertions.assertEquals("zhomewjjstliu", response.provisioningState());
+        Assertions.assertEquals(1890150004, response.autoScale().minNodeCount());
         Assertions.assertEquals(true, response.autoScale().enabled());
-        Assertions.assertEquals(1229590421, response.autoScale().maxNodeCount());
-        Assertions.assertEquals(1597398872, response.autoPause().delayInMinutes());
+        Assertions.assertEquals(409167617, response.autoScale().maxNodeCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T23:47:28Z"), response.creationDate());
+        Assertions.assertEquals(1747041970, response.autoPause().delayInMinutes());
         Assertions.assertEquals(true, response.autoPause().enabled());
-        Assertions.assertEquals(false, response.isComputeIsolationEnabled());
-        Assertions.assertEquals(true, response.isAutotuneEnabled());
+        Assertions.assertEquals(true, response.isComputeIsolationEnabled());
         Assertions.assertEquals(true, response.sessionLevelPackagesEnabled());
-        Assertions.assertEquals(667043908, response.cacheSize());
-        Assertions.assertEquals(true, response.dynamicExecutorAllocation().enabled());
-        Assertions.assertEquals(649568800, response.dynamicExecutorAllocation().minExecutors());
-        Assertions.assertEquals(1816529038, response.dynamicExecutorAllocation().maxExecutors());
-        Assertions.assertEquals("wyrkbrehzlrynjpc", response.sparkEventsFolder());
-        Assertions.assertEquals(1259275397, response.nodeCount());
-        Assertions.assertEquals("lr", response.libraryRequirements().content());
-        Assertions.assertEquals("ubowuywevtj", response.libraryRequirements().filename());
-        Assertions.assertEquals("kmwlaok", response.customLibraries().get(0).name());
-        Assertions.assertEquals("ni", response.customLibraries().get(0).path());
-        Assertions.assertEquals("xgucbmtredscnn", response.customLibraries().get(0).containerName());
-        Assertions.assertEquals("yyuvtzrxzhclec", response.customLibraries().get(0).type());
-        Assertions.assertEquals("prsytqz", response.sparkConfigProperties().content());
-        Assertions.assertEquals("lhmgwfniv", response.sparkConfigProperties().filename());
-        Assertions.assertEquals(ConfigurationType.FILE, response.sparkConfigProperties().configurationType());
-        Assertions.assertEquals("duiolh", response.sparkVersion());
-        Assertions.assertEquals("qvpbfjpoqzucfzl", response.defaultSparkLogFolder());
-        Assertions.assertEquals(NodeSize.MEDIUM, response.nodeSize());
-        Assertions.assertEquals(NodeSizeFamily.MEMORY_OPTIMIZED, response.nodeSizeFamily());
+        Assertions.assertEquals(1931817911, response.cacheSize());
+        Assertions.assertEquals(false, response.dynamicExecutorAllocation().enabled());
+        Assertions.assertEquals("kxrx", response.sparkEventsFolder());
+        Assertions.assertEquals(879177175, response.nodeCount());
+        Assertions.assertEquals("g", response.libraryRequirements().content());
+        Assertions.assertEquals("qljnqkhychoco", response.libraryRequirements().filename());
+        Assertions.assertEquals("hurql", response.customLibraries().get(0).name());
+        Assertions.assertEquals("ffaweyur", response.customLibraries().get(0).path());
+        Assertions.assertEquals("hy", response.customLibraries().get(0).containerName());
+        Assertions.assertEquals("av", response.customLibraries().get(0).type());
+        Assertions.assertEquals("j", response.sparkConfigProperties().content());
+        Assertions.assertEquals("ajb", response.sparkConfigProperties().filename());
+        Assertions.assertEquals("cgduusio", response.sparkVersion());
+        Assertions.assertEquals("blevpmcluj", response.defaultSparkLogFolder());
+        Assertions.assertEquals(NodeSize.XXLARGE, response.nodeSize());
+        Assertions.assertEquals(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA, response.nodeSizeFamily());
     }
 }

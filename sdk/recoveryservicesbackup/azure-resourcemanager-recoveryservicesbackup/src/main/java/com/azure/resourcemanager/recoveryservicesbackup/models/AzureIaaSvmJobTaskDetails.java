@@ -5,62 +5,60 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Azure IaaS VM workload-specific job task details.
  */
 @Fluent
-public final class AzureIaaSvmJobTaskDetails {
+public final class AzureIaaSvmJobTaskDetails implements JsonSerializable<AzureIaaSvmJobTaskDetails> {
     /*
      * The task display name.
      */
-    @JsonProperty(value = "taskId")
     private String taskId;
 
     /*
      * The start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The instanceId.
      */
-    @JsonProperty(value = "instanceId")
     private String instanceId;
 
     /*
      * Time elapsed for task.
      */
-    @JsonProperty(value = "duration")
     private Duration duration;
 
     /*
      * The status.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Progress of the task.
      */
-    @JsonProperty(value = "progressPercentage")
     private Double progressPercentage;
 
     /*
      * Details about execution of the task.
      * eg: number of bytes transferred etc
      */
-    @JsonProperty(value = "taskExecutionDetails")
     private String taskExecutionDetails;
 
     /**
@@ -237,5 +235,68 @@ public final class AzureIaaSvmJobTaskDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("taskId", this.taskId);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("instanceId", this.instanceId);
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeNumberField("progressPercentage", this.progressPercentage);
+        jsonWriter.writeStringField("taskExecutionDetails", this.taskExecutionDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureIaaSvmJobTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureIaaSvmJobTaskDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureIaaSvmJobTaskDetails.
+     */
+    public static AzureIaaSvmJobTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureIaaSvmJobTaskDetails deserializedAzureIaaSvmJobTaskDetails = new AzureIaaSvmJobTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("taskId".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobTaskDetails.taskId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobTaskDetails.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobTaskDetails.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("instanceId".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobTaskDetails.instanceId = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobTaskDetails.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobTaskDetails.status = reader.getString();
+                } else if ("progressPercentage".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobTaskDetails.progressPercentage
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("taskExecutionDetails".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobTaskDetails.taskExecutionDetails = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureIaaSvmJobTaskDetails;
+        });
     }
 }

@@ -40,7 +40,7 @@ public final class AnalyzeBatchResult implements JsonSerializable<AnalyzeBatchRe
      * Operation detail for each document in the batch.
      */
     @Generated
-    private List<AnalyzeBatchOperationDetail> details;
+    private List<AnalyzeBatchResultDetails> details;
 
     /**
      * Creates an instance of AnalyzeBatchResult class.
@@ -92,7 +92,7 @@ public final class AnalyzeBatchResult implements JsonSerializable<AnalyzeBatchRe
      * @return the details value.
      */
     @Generated
-    public List<AnalyzeBatchOperationDetail> getDetails() {
+    public List<AnalyzeBatchResultDetails> getDetails() {
         return this.details;
     }
 
@@ -125,7 +125,7 @@ public final class AnalyzeBatchResult implements JsonSerializable<AnalyzeBatchRe
             int succeededCount = 0;
             int failedCount = 0;
             int skippedCount = 0;
-            List<AnalyzeBatchOperationDetail> details = null;
+            List<AnalyzeBatchResultDetails> details = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -136,7 +136,7 @@ public final class AnalyzeBatchResult implements JsonSerializable<AnalyzeBatchRe
                 } else if ("skippedCount".equals(fieldName)) {
                     skippedCount = reader.getInt();
                 } else if ("details".equals(fieldName)) {
-                    details = reader.readArray(reader1 -> AnalyzeBatchOperationDetail.fromJson(reader1));
+                    details = reader.readArray(reader1 -> AnalyzeBatchResultDetails.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

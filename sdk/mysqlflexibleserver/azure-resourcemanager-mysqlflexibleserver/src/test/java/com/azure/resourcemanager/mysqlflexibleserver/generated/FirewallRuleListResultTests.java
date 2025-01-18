@@ -14,21 +14,24 @@ public final class FirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"startIpAddress\":\"a\",\"endIpAddress\":\"a\"},\"id\":\"rzayv\",\"name\":\"t\",\"type\":\"gvdfgiotkftutq\"}],\"nextLink\":\"ngxlefgugnxkrxdq\"}")
+            "{\"value\":[{\"properties\":{\"startIpAddress\":\"sainqpjwnzl\",\"endIpAddress\":\"jfm\"},\"id\":\"eebvmgxsab\",\"name\":\"yqduujit\",\"type\":\"jczdzevndh\"},{\"properties\":{\"startIpAddress\":\"rwpdappdsbdkvwrw\",\"endIpAddress\":\"feusnhut\"},\"id\":\"ltmrldh\",\"name\":\"gjzzdatqxhocdg\",\"type\":\"ablgphuticndvk\"},{\"properties\":{\"startIpAddress\":\"ozwyiftyhxhuro\",\"endIpAddress\":\"ftyxolniw\"},\"id\":\"cukjf\",\"name\":\"giawx\",\"type\":\"lryplwckbasyy\"},{\"properties\":{\"startIpAddress\":\"nddhsgcbacph\",\"endIpAddress\":\"jkot\"},\"id\":\"qgoulznd\",\"name\":\"i\",\"type\":\"wyqkgfgibm\"}],\"nextLink\":\"gakeqsr\"}")
             .toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("a", model.value().get(0).startIpAddress());
-        Assertions.assertEquals("a", model.value().get(0).endIpAddress());
-        Assertions.assertEquals("ngxlefgugnxkrxdq", model.nextLink());
+        Assertions.assertEquals("sainqpjwnzl", model.value().get(0).startIpAddress());
+        Assertions.assertEquals("jfm", model.value().get(0).endIpAddress());
+        Assertions.assertEquals("gakeqsr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FirewallRuleListResult model = new FirewallRuleListResult()
-            .withValue(Arrays.asList(new FirewallRuleInner().withStartIpAddress("a").withEndIpAddress("a")))
-            .withNextLink("ngxlefgugnxkrxdq");
+            .withValue(Arrays.asList(new FirewallRuleInner().withStartIpAddress("sainqpjwnzl").withEndIpAddress("jfm"),
+                new FirewallRuleInner().withStartIpAddress("rwpdappdsbdkvwrw").withEndIpAddress("feusnhut"),
+                new FirewallRuleInner().withStartIpAddress("ozwyiftyhxhuro").withEndIpAddress("ftyxolniw"),
+                new FirewallRuleInner().withStartIpAddress("nddhsgcbacph").withEndIpAddress("jkot")))
+            .withNextLink("gakeqsr");
         model = BinaryData.fromObject(model).toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("a", model.value().get(0).startIpAddress());
-        Assertions.assertEquals("a", model.value().get(0).endIpAddress());
-        Assertions.assertEquals("ngxlefgugnxkrxdq", model.nextLink());
+        Assertions.assertEquals("sainqpjwnzl", model.value().get(0).startIpAddress());
+        Assertions.assertEquals("jfm", model.value().get(0).endIpAddress());
+        Assertions.assertEquals("gakeqsr", model.nextLink());
     }
 }

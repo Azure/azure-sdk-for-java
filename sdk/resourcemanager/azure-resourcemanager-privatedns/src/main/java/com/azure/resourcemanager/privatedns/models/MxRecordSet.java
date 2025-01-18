@@ -9,6 +9,10 @@ import java.util.List;
 /** An immutable client-side representation of an MX (mail exchange) record set in an Azure Private DNS Zone. */
 @Fluent
 public interface MxRecordSet extends PrivateDnsRecordSet {
-    /** @return the MX records in this record set */
+    /**
+     * Gets the MX records in this record set.
+     *
+     * @return the MX records in this record set
+     */
     List<MxRecord> records();
 }

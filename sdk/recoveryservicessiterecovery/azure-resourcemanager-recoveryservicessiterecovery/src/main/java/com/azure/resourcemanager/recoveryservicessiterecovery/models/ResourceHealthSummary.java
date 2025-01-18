@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,24 +17,20 @@ import java.util.Map;
  * Base class to define the health summary of the resources contained under an Arm resource.
  */
 @Fluent
-public final class ResourceHealthSummary {
+public final class ResourceHealthSummary implements JsonSerializable<ResourceHealthSummary> {
     /*
      * The count of total resources under the container.
      */
-    @JsonProperty(value = "resourceCount")
     private Integer resourceCount;
 
     /*
      * The list of summary of health errors across the resources under the container.
      */
-    @JsonProperty(value = "issues")
     private List<HealthErrorSummary> issues;
 
     /*
      * The categorized resource counts.
      */
-    @JsonProperty(value = "categorizedResourceCounts")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Integer> categorizedResourceCounts;
 
     /**
@@ -109,5 +108,50 @@ public final class ResourceHealthSummary {
         if (issues() != null) {
             issues().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("resourceCount", this.resourceCount);
+        jsonWriter.writeArrayField("issues", this.issues, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("categorizedResourceCounts", this.categorizedResourceCounts,
+            (writer, element) -> writer.writeInt(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceHealthSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceHealthSummary if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceHealthSummary.
+     */
+    public static ResourceHealthSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceHealthSummary deserializedResourceHealthSummary = new ResourceHealthSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceCount".equals(fieldName)) {
+                    deserializedResourceHealthSummary.resourceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("issues".equals(fieldName)) {
+                    List<HealthErrorSummary> issues = reader.readArray(reader1 -> HealthErrorSummary.fromJson(reader1));
+                    deserializedResourceHealthSummary.issues = issues;
+                } else if ("categorizedResourceCounts".equals(fieldName)) {
+                    Map<String, Integer> categorizedResourceCounts = reader.readMap(reader1 -> reader1.getInt());
+                    deserializedResourceHealthSummary.categorizedResourceCounts = categorizedResourceCounts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceHealthSummary;
+        });
     }
 }

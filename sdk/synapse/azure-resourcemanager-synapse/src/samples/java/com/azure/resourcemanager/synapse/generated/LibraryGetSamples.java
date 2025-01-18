@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class LibraryGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/Library_Get.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/Library_Get.json
      */
     /**
      * Sample code: Get Library by name.

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.support.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The type of resource.
  */
@@ -36,7 +33,6 @@ public enum Type {
      * @param value the serialized value to parse.
      * @return the parsed Type object, or null if unable to parse.
      */
-    @JsonCreator
     public static Type fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum Type {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

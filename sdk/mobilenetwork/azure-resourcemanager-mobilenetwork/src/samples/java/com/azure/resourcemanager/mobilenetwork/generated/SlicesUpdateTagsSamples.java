@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public final class SlicesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SliceUpdateTags.json
+     * x-ms-original-file:
+     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SliceUpdateTags.
+     * json
      */
     /**
      * Sample code: Update network slice tags.

@@ -132,7 +132,6 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

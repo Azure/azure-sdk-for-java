@@ -19,8 +19,9 @@ public final class TagRulesDeleteSamples {
      */
     public static void tagRulesDeleteMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +35,8 @@ public final class TagRulesDeleteSamples {
      */
     public static void tagRulesDeleteMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.securityinsights.SecurityInsightsManager;
-import com.azure.resourcemanager.securityinsights.fluent.models.TeamInformationInner;
 import com.azure.resourcemanager.securityinsights.models.Incident;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassification;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassificationReason;
@@ -31,7 +30,7 @@ public final class IncidentsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"additionalData\":{\"alertsCount\":827555367,\"bookmarksCount\":490611687,\"commentsCount\":361910825,\"alertProductNames\":[\"fqvjmghpakbqyhls\",\"rnfbmeqagkn\",\"jm\"],\"providerIncidentUrl\":\"nyevztnjawrhule\",\"tactics\":[\"Reconnaissance\",\"PreAttack\"],\"techniques\":[\"pxirx\",\"kitzm\"]},\"classification\":\"TruePositive\",\"classificationComment\":\"ax\",\"classificationReason\":\"SuspiciousButExpected\",\"createdTimeUtc\":\"2021-04-30T15:05:29Z\",\"description\":\"lxsgcemegdz\",\"firstActivityTimeUtc\":\"2021-07-20T08:23:45Z\",\"incidentUrl\":\"jubvfjyzuf\",\"incidentNumber\":1960264598,\"labels\":[{\"labelName\":\"ivl\",\"labelType\":\"User\"},{\"labelName\":\"g\",\"labelType\":\"User\"},{\"labelName\":\"cxauhvcgzxhklsqx\",\"labelType\":\"AutoAssigned\"},{\"labelName\":\"yygktsrjyxxoxwf\",\"labelType\":\"User\"}],\"providerName\":\"ecnxfxp\",\"providerIncidentId\":\"owbebsnbwut\",\"lastActivityTimeUtc\":\"2021-12-04T17:18:17Z\",\"lastModifiedTimeUtc\":\"2021-05-07T05:16:04Z\",\"owner\":{\"email\":\"mustih\",\"assignedTo\":\"rafjajvkyxmm\",\"objectId\":\"f8b5cd9d-042d-4139-a254-4496b685f62a\",\"userPrincipalName\":\"vogt\",\"ownerType\":\"Group\"},\"relatedAnalyticRuleIds\":[\"nnmkvae\",\"wq\",\"wxhhlbmyphfx\"],\"severity\":\"Low\",\"status\":\"Active\",\"teamInformation\":{\"teamId\":\"ewokyqsfkxf\",\"primaryChannelUrl\":\"wbihqbtodjfyxbvk\",\"teamCreationTimeUtc\":\"2021-05-15T12:32:42Z\",\"name\":\"mvddqwcrugyozzz\",\"description\":\"njdvv\"},\"title\":\"rho\"},\"etag\":\"kkvxu\",\"id\":\"qzbvbpsuvqhxt\",\"name\":\"zfgdk\",\"type\":\"bkurklpiig\"}";
+            = "{\"properties\":{\"additionalData\":{\"alertsCount\":1602665053,\"bookmarksCount\":954240404,\"commentsCount\":962345519,\"alertProductNames\":[\"pgsn\",\"agnchjhgemuowaky\",\"a\"],\"tactics\":[\"PrivilegeEscalation\",\"InitialAccess\"]},\"classification\":\"TruePositive\",\"classificationComment\":\"qt\",\"classificationReason\":\"IncorrectAlertLogic\",\"createdTimeUtc\":\"2021-08-03T01:14:01Z\",\"description\":\"ssoljom\",\"firstActivityTimeUtc\":\"2021-10-11T02:19:13Z\",\"incidentUrl\":\"ycnlbvgjcodk\",\"incidentNumber\":353901873,\"labels\":[{\"labelName\":\"ytssikiz\",\"labelType\":\"AutoAssigned\"},{\"labelName\":\"fqb\",\"labelType\":\"AutoAssigned\"},{\"labelName\":\"nrgmqsorhce\",\"labelType\":\"User\"}],\"lastActivityTimeUtc\":\"2020-12-27T06:15:57Z\",\"lastModifiedTimeUtc\":\"2021-07-13T13:05:34Z\",\"owner\":{\"email\":\"cpwzv\",\"assignedTo\":\"oksqdt\",\"objectId\":\"cd02e2a2-fe01-4773-901e-98dad9b5d876\",\"userPrincipalName\":\"wxlboncqbazqicq\",\"ownerType\":\"User\"},\"relatedAnalyticRuleIds\":[\"v\"],\"severity\":\"Medium\",\"status\":\"New\",\"title\":\"janepubdpkx\"},\"etag\":\"vgxiaodetvo\",\"id\":\"xdxuwsaifmc\",\"name\":\"nosbz\",\"type\":\"ehgcvkbcknjo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,47 +40,42 @@ public final class IncidentsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Incident response = manager.incidents()
-            .define("dlxwmvc")
-            .withExistingWorkspace("jbssfcri", "xzix")
-            .withEtag("um")
+            .define("kzxuiz")
+            .withExistingWorkspace("ezax", "f")
+            .withEtag("bckyoikxk")
             .withClassification(IncidentClassification.TRUE_POSITIVE)
-            .withClassificationComment("vosgjzscu")
-            .withClassificationReason(IncidentClassificationReason.INACCURATE_DATA)
-            .withDescription("dfwgqjhewcffrx")
-            .withFirstActivityTimeUtc(OffsetDateTime.parse("2021-08-08T17:39:26Z"))
-            .withLabels(Arrays.asList(new IncidentLabel().withLabelName("enerr"),
-                new IncidentLabel().withLabelName("zaivnpsjnpc")))
-            .withProviderName("jy")
-            .withProviderIncidentId("onb")
-            .withLastActivityTimeUtc(OffsetDateTime.parse("2021-04-08T11:29:54Z"))
-            .withOwner(new IncidentOwnerInfo().withEmail("lvvmnbkxja")
-                .withAssignedTo("bbdddwokqx")
-                .withObjectId(UUID.fromString("be6e7fb2-7f16-4fa2-8da3-e517c14f8e76"))
-                .withUserPrincipalName("xqkdyqjvzvcgrds")
-                .withOwnerType(OwnerType.UNKNOWN))
-            .withSeverity(IncidentSeverity.LOW)
-            .withStatus(IncidentStatus.ACTIVE)
-            .withTeamInformation(new TeamInformationInner())
-            .withTitle("qmwmwwp")
+            .withClassificationComment("kb")
+            .withClassificationReason(IncidentClassificationReason.SUSPICIOUS_BUT_EXPECTED)
+            .withDescription("bnldpvcbh")
+            .withFirstActivityTimeUtc(OffsetDateTime.parse("2021-10-02T02:32:06Z"))
+            .withLabels(Arrays.asList(new IncidentLabel().withLabelName("brruyuuatv"),
+                new IncidentLabel().withLabelName("jwcolbm")))
+            .withLastActivityTimeUtc(OffsetDateTime.parse("2021-01-27T11:36:33Z"))
+            .withOwner(new IncidentOwnerInfo().withEmail("ahprzrvxhmtfhocn")
+                .withAssignedTo("cmj")
+                .withObjectId(UUID.fromString("37c7565c-a8ce-4181-8c0b-483f7314abc3"))
+                .withUserPrincipalName("xnoqrxtdisn")
+                .withOwnerType(OwnerType.USER))
+            .withSeverity(IncidentSeverity.INFORMATIONAL)
+            .withStatus(IncidentStatus.NEW)
+            .withTitle("tjfdoesxxhmw")
             .create();
 
-        Assertions.assertEquals("kkvxu", response.etag());
+        Assertions.assertEquals("vgxiaodetvo", response.etag());
         Assertions.assertEquals(IncidentClassification.TRUE_POSITIVE, response.classification());
-        Assertions.assertEquals("ax", response.classificationComment());
-        Assertions.assertEquals(IncidentClassificationReason.SUSPICIOUS_BUT_EXPECTED, response.classificationReason());
-        Assertions.assertEquals("lxsgcemegdz", response.description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T08:23:45Z"), response.firstActivityTimeUtc());
-        Assertions.assertEquals("ivl", response.labels().get(0).labelName());
-        Assertions.assertEquals("ecnxfxp", response.providerName());
-        Assertions.assertEquals("owbebsnbwut", response.providerIncidentId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-04T17:18:17Z"), response.lastActivityTimeUtc());
-        Assertions.assertEquals("mustih", response.owner().email());
-        Assertions.assertEquals("rafjajvkyxmm", response.owner().assignedTo());
-        Assertions.assertEquals(UUID.fromString("f8b5cd9d-042d-4139-a254-4496b685f62a"), response.owner().objectId());
-        Assertions.assertEquals("vogt", response.owner().userPrincipalName());
-        Assertions.assertEquals(OwnerType.GROUP, response.owner().ownerType());
-        Assertions.assertEquals(IncidentSeverity.LOW, response.severity());
-        Assertions.assertEquals(IncidentStatus.ACTIVE, response.status());
-        Assertions.assertEquals("rho", response.title());
+        Assertions.assertEquals("qt", response.classificationComment());
+        Assertions.assertEquals(IncidentClassificationReason.INCORRECT_ALERT_LOGIC, response.classificationReason());
+        Assertions.assertEquals("ssoljom", response.description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T02:19:13Z"), response.firstActivityTimeUtc());
+        Assertions.assertEquals("ytssikiz", response.labels().get(0).labelName());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T06:15:57Z"), response.lastActivityTimeUtc());
+        Assertions.assertEquals("cpwzv", response.owner().email());
+        Assertions.assertEquals("oksqdt", response.owner().assignedTo());
+        Assertions.assertEquals(UUID.fromString("cd02e2a2-fe01-4773-901e-98dad9b5d876"), response.owner().objectId());
+        Assertions.assertEquals("wxlboncqbazqicq", response.owner().userPrincipalName());
+        Assertions.assertEquals(OwnerType.USER, response.owner().ownerType());
+        Assertions.assertEquals(IncidentSeverity.MEDIUM, response.severity());
+        Assertions.assertEquals(IncidentStatus.NEW, response.status());
+        Assertions.assertEquals("janepubdpkx", response.title());
     }
 }

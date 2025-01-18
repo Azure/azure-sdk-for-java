@@ -19,7 +19,7 @@ public final class Sku implements JsonSerializable<Sku> {
     /*
      * Name of this SKU.
      */
-    private String name = "Standard";
+    private final String name = "Standard";
 
     /*
      * The tier of this SKU.
@@ -39,17 +39,6 @@ public final class Sku implements JsonSerializable<Sku> {
      */
     public String name() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: Name of this SKU.
-     * 
-     * @param name the name value to set.
-     * @return the Sku object itself.
-     */
-    public Sku withName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

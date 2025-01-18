@@ -21,14 +21,14 @@ import java.io.IOException;
 @Fluent
 public final class CustomDomainInner extends ProxyResource {
     /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    private SystemData systemData;
+
+    /*
      * Properties of a custom domain.
      */
     private CustomDomainProperties innerProperties = new CustomDomainProperties();
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -52,21 +52,21 @@ public final class CustomDomainInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the innerProperties property: Properties of a custom domain.
      * 
      * @return the innerProperties value.
      */
     private CustomDomainProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

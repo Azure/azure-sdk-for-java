@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,122 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-12-24)
+
+- Azure Resource Manager DataBox client library for Java. This package contains Microsoft Azure SDK for DataBox Management SDK.  Package tag package-2022-12. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DataboxJobSecrets` was modified
+
+* `error()` was removed
+* `dcAccessSecurityCode()` was removed
+
+#### `models.DataBoxHeavyJobDetails` was modified
+
+* `actions()` was removed
+* `datacenterAddress()` was removed
+* `reverseShipmentLabelSasKey()` was removed
+* `deviceErasureDetails()` was removed
+* `jobStages()` was removed
+* `deliveryPackage()` was removed
+* `returnPackage()` was removed
+* `lastMitigationActionOnJob()` was removed
+* `chainOfCustodySasKey()` was removed
+* `dataCenterCode()` was removed
+* `copyLogDetails()` was removed
+
+#### `models.DataBoxDiskJobSecrets` was modified
+
+* `dcAccessSecurityCode()` was removed
+* `error()` was removed
+
+#### `models.PreferencesValidationResponseProperties` was modified
+
+* `error()` was removed
+
+#### `models.DataBoxJobDetails` was modified
+
+* `lastMitigationActionOnJob()` was removed
+* `copyLogDetails()` was removed
+* `dataCenterCode()` was removed
+* `actions()` was removed
+* `deliveryPackage()` was removed
+* `chainOfCustodySasKey()` was removed
+* `datacenterAddress()` was removed
+* `jobStages()` was removed
+* `reverseShipmentLabelSasKey()` was removed
+* `returnPackage()` was removed
+* `deviceErasureDetails()` was removed
+
+#### `models.DataBoxDiskJobDetails` was modified
+
+* `actions()` was removed
+* `chainOfCustodySasKey()` was removed
+* `copyLogDetails()` was removed
+* `reverseShipmentLabelSasKey()` was removed
+* `jobStages()` was removed
+* `deviceErasureDetails()` was removed
+* `dataCenterCode()` was removed
+* `deliveryPackage()` was removed
+* `datacenterAddress()` was removed
+* `returnPackage()` was removed
+* `lastMitigationActionOnJob()` was removed
+
+#### `models.DataTransferDetailsValidationResponseProperties` was modified
+
+* `error()` was removed
+
+#### `models.CustomerDiskJobSecrets` was modified
+
+* `dcAccessSecurityCode()` was removed
+* `error()` was removed
+
+#### `models.DatacenterAddressLocationResponse` was modified
+
+* `dataCenterAzureLocation()` was removed
+* `supportedCarriersForReturnShipment()` was removed
+
+#### `models.CreateOrderLimitForSubscriptionValidationResponseProperties` was modified
+
+* `error()` was removed
+
+#### `models.SkuAvailabilityValidationResponseProperties` was modified
+
+* `error()` was removed
+
+#### `models.AddressValidationProperties` was modified
+
+* `error()` was removed
+
+#### `models.DataBoxCustomerDiskJobDetails` was modified
+
+* `returnPackage()` was removed
+* `deliveryPackage()` was removed
+* `actions()` was removed
+* `reverseShipmentLabelSasKey()` was removed
+* `deviceErasureDetails()` was removed
+* `dataCenterCode()` was removed
+* `chainOfCustodySasKey()` was removed
+* `datacenterAddress()` was removed
+* `jobStages()` was removed
+* `copyLogDetails()` was removed
+* `lastMitigationActionOnJob()` was removed
+
+#### `models.DatacenterAddressInstructionResponse` was modified
+
+* `supportedCarriersForReturnShipment()` was removed
+* `dataCenterAzureLocation()` was removed
+
+#### `models.SubscriptionIsAllowedToCreateJobValidationResponseProperties` was modified
+
+* `error()` was removed
+
+#### `models.DataBoxHeavyJobSecrets` was modified
+
+* `error()` was removed
+* `dcAccessSecurityCode()` was removed
 
 ## 1.0.0-beta.4 (2024-10-31)
 
