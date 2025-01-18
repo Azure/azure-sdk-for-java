@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.otel;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 /**
  * This class is used to initialize OpenTelemetry.
@@ -186,4 +186,5 @@ public final class OTelInitializer {
     public static boolean isInitialized() {
         return INSTANCE.initialized;
     }
+
 }

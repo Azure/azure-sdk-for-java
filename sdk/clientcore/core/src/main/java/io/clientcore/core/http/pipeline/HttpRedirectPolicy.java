@@ -8,17 +8,27 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRedirectOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.util.LoggingKeys;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.InstrumentationContext;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_METHOD_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_RESEND_COUNT_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_HEADER_LOCATION_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_MAX_ATTEMPT_COUNT_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_WAS_LAST_ATTEMPT_KEY;
+import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_REDIRECT_EVENT_NAME;
 
 /**
  * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as a
@@ -29,8 +39,6 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private final int maxAttempts;
     private final Predicate<HttpRequestRedirectCondition> shouldRedirectCondition;
     private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
-    private static final String REDIRECT_URIS_KEY = "redirectUris";
-    private static final String ORIGINATING_REQUEST_URI_KEY = "originatingRequestUri";
 
     private static final EnumSet<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS
         = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
@@ -74,46 +82,66 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUris for each individual request.
-        return attemptRedirect(next, 1, new LinkedHashSet<>());
+        InstrumentationContext instrumentationContext = httpRequest.getRequestOptions() == null
+            ? null
+            : httpRequest.getRequestOptions().getInstrumentationContext();
+
+        ClientLogger logger = getLogger(httpRequest);
+        return attemptRedirect(logger, next, 0, new LinkedHashSet<>(), instrumentationContext);
     }
 
     /**
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URI.
      */
-    private Response<?> attemptRedirect(final HttpPipelineNextPolicy next, final int redirectAttempt,
-        LinkedHashSet<String> attemptedRedirectUris) {
+    private Response<?> attemptRedirect(ClientLogger logger, final HttpPipelineNextPolicy next,
+        final int redirectAttempt, LinkedHashSet<String> attemptedRedirectUris,
+        InstrumentationContext instrumentationContext) {
+
         // Make sure the context is not modified during redirect, except for the URI
         Response<?> response = next.clone().process();
 
         HttpRequestRedirectCondition requestRedirectCondition
             = new HttpRequestRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
+
         if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
-            || (shouldRedirectCondition == null && defaultShouldAttemptRedirect(requestRedirectCondition))) {
+            || (shouldRedirectCondition == null
+                && defaultShouldAttemptRedirect(logger, requestRedirectCondition, instrumentationContext))) {
             createRedirectRequest(response);
-            return attemptRedirect(next, redirectAttempt + 1, attemptedRedirectUris);
+            return attemptRedirect(logger, next, redirectAttempt + 1, attemptedRedirectUris, instrumentationContext);
         }
 
         return response;
     }
 
-    private boolean defaultShouldAttemptRedirect(HttpRequestRedirectCondition requestRedirectCondition) {
+    private boolean defaultShouldAttemptRedirect(ClientLogger logger,
+        HttpRequestRedirectCondition requestRedirectCondition, InstrumentationContext context) {
         Response<?> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUris = requestRedirectCondition.getRedirectedUris();
         String redirectUri = response.getHeaders().getValue(this.locationHeader);
 
-        if (isValidRedirectStatusCode(response.getStatusCode())
-            && isValidRedirectCount(tryCount)
-            && isAllowedRedirectMethod(response.getRequest().getHttpMethod())
-            && redirectUri != null
-            && !alreadyAttemptedRedirectUri(redirectUri, attemptedRedirectUris)) {
+        if (isValidRedirectStatusCode(response.getStatusCode()) && redirectUri != null) {
+            HttpMethod method = response.getRequest().getHttpMethod();
+            if (tryCount >= this.maxAttempts - 1) {
+                logRedirect(logger, true, redirectUri, tryCount, method, "Redirect attempts have been exhausted.",
+                    context);
+                return false;
+            }
 
-            LOGGER.atVerbose()
-                .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                .addKeyValue(REDIRECT_URIS_KEY, attemptedRedirectUris::toString)
-                .addKeyValue(ORIGINATING_REQUEST_URI_KEY, response.getRequest().getUri())
-                .log("Redirecting.");
+            if (!allowedRedirectHttpMethods.contains(response.getRequest().getHttpMethod())) {
+                logRedirect(logger, true, redirectUri, tryCount, method,
+                    "Request redirection is not enabled for this HTTP method.", context);
+                return false;
+            }
+
+            if (attemptedRedirectUris.contains(redirectUri)) {
+                logRedirect(logger, true, redirectUri, tryCount, method,
+                    "Request was redirected more than once to the same URI.", context);
+                return false;
+            }
+
+            logRedirect(logger, false, redirectUri, tryCount, method, null, context);
 
             attemptedRedirectUris.add(redirectUri);
 
@@ -121,63 +149,6 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         }
 
         return false;
-    }
-
-    /**
-     * Check if the attempt count of the redirect is less than the {@code maxAttempts}
-     *
-     * @param tryCount the try count for the HTTP request associated to the HTTP response.
-     *
-     * @return {@code true} if the {@code tryCount} is greater than the {@code maxAttempts}, {@code false} otherwise.
-     */
-    private boolean isValidRedirectCount(int tryCount) {
-        if (tryCount >= this.maxAttempts) {
-            LOGGER.atError().addKeyValue("maxAttempts", this.maxAttempts).log("Redirect attempts have been exhausted.");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Check if the redirect uri provided in the response headers is already attempted.
-     *
-     * @param redirectUri the redirect uri provided in the response header.
-     * @param attemptedRedirectUris the set containing a list of attempted redirect locations.
-     *
-     * @return {@code true} if the redirectUri provided in the response header is already being attempted for redirect,
-     * {@code false} otherwise.
-     */
-    private boolean alreadyAttemptedRedirectUri(String redirectUri, Set<String> attemptedRedirectUris) {
-        if (attemptedRedirectUris.contains(redirectUri)) {
-            LOGGER.atError()
-                .addKeyValue(LoggingKeys.REDIRECT_URI_KEY, redirectUri)
-                .log("Request was redirected more than once to the same URI.");
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if the request http method is a valid redirect method.
-     *
-     * @param httpMethod the http method of the request.
-     *
-     * @return {@code true} if the request {@code httpMethod} is a valid http redirect method, {@code false} otherwise.
-     */
-    private boolean isAllowedRedirectMethod(HttpMethod httpMethod) {
-        if (allowedRedirectHttpMethods.contains(httpMethod)) {
-            return true;
-        } else {
-            LOGGER.atError()
-                .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
-                .log("Request redirection is not enabled for this HTTP method.");
-
-            return false;
-        }
     }
 
     /**
@@ -205,6 +176,41 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
+    }
 
+    private void logRedirect(ClientLogger logger, boolean lastAttempt, String redirectUri, int tryCount,
+        HttpMethod method, String message, InstrumentationContext context) {
+        ClientLogger.LoggingEvent log = lastAttempt ? logger.atWarning() : logger.atVerbose();
+        if (log.isEnabled()) {
+            log.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+                .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, maxAttempts)
+                .addKeyValue(HTTP_REQUEST_METHOD_KEY, method)
+                .addKeyValue(HTTP_RESPONSE_HEADER_LOCATION_KEY, redactUri(redirectUri))
+                .addKeyValue(RETRY_WAS_LAST_ATTEMPT_KEY, lastAttempt)
+                .setEventName(HTTP_REDIRECT_EVENT_NAME)
+                .setInstrumentationContext(context)
+                .log(message);
+        }
+    }
+
+    private String redactUri(String location) {
+        URI uri;
+        try {
+            uri = URI.create(location);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        // TODO: make it configurable? Or don't log URL?
+        return getRedactedUri(uri, Collections.emptySet());
+    }
+
+    private ClientLogger getLogger(HttpRequest httpRequest) {
+        ClientLogger logger = null;
+
+        if (httpRequest.getRequestOptions() != null && httpRequest.getRequestOptions().getLogger() != null) {
+            logger = httpRequest.getRequestOptions().getLogger();
+        }
+
+        return logger == null ? LOGGER : logger;
     }
 }

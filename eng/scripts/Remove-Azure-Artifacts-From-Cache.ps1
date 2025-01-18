@@ -11,7 +11,7 @@ param(
 $StartTime = $(get-date)
 
 # Any new subdirectories to clean would be added here.
-$rootFolders = ("/com/azure", "/com/microsoft/azure")
+$rootFolders = ("/com/azure", "/com/microsoft/azure", "/io/clientcore")
 
 foreach ($rootFolder in $rootFolders) {
   # Determine the starting search path by joining the Maven cache folder with the specific Azure SDKs subpath.

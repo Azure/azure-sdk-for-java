@@ -4,7 +4,7 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.http.pipeline.HttpRequestRedirectCondition;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
