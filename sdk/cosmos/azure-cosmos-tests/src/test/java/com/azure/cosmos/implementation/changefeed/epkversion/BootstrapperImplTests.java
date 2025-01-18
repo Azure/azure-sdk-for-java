@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.changefeed.pkversion.ServiceItemLease;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
@@ -22,11 +23,12 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
 
 public class BootstrapperImplTests {
 
-    private static final String baseContinuationStringForFullRange = "{\"V\":1," +
+    private static final String BASE_CONTINUATION_STRING_FOR_EPK_FULL_RANGE = "{\"V\":1," +
         "\"Rid\":\"%s\"," +
         "\"Continuation\":[" +
         "{\"token\":\"%s\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}" +
@@ -35,9 +37,12 @@ public class BootstrapperImplTests {
 
     @DataProvider(name = "leaseProvider")
     public Object[][] leaseProvider() {
+
+        String BASE_CONTINUATION_STRING_FOR_PK_FULL_RANGE = "\"100\"";
+
         return new Object[][] {
             {
-                createLeaseWithContinuation(
+                createEpkRangeBasedLeaseWithContinuation(
                     true,
                     ChangeFeedMode.FULL_FIDELITY,
                     ChangeFeedStartFromInternal.createFromNow(),
@@ -46,10 +51,11 @@ public class BootstrapperImplTests {
                     "0",
                     "-FF",
                     "0"),
+                null,
                 false
             },
             {
-                createLeaseWithContinuation(
+                createEpkRangeBasedLeaseWithContinuation(
                     true,
                     ChangeFeedMode.INCREMENTAL,
                     ChangeFeedStartFromInternal.createFromNow(),
@@ -58,10 +64,11 @@ public class BootstrapperImplTests {
                     "0",
                     "-FF",
                     "0"),
+                null,
                 true
             },
             {
-                createLeaseWithContinuation(
+                createEpkRangeBasedLeaseWithContinuation(
                     false,
                     ChangeFeedMode.INCREMENTAL,
                     ChangeFeedStartFromInternal.createFromNow(),
@@ -70,10 +77,11 @@ public class BootstrapperImplTests {
                     "0",
                     "-FF",
                     "0"),
+                null,
                 false
             },
             {
-                createLeaseWithContinuation(
+                createEpkRangeBasedLeaseWithContinuation(
                     false,
                     ChangeFeedMode.FULL_FIDELITY,
                     ChangeFeedStartFromInternal.createFromNow(),
@@ -82,13 +90,51 @@ public class BootstrapperImplTests {
                     "0",
                     "-FF",
                     "0"),
+                null,
+                false
+            },
+            {
+                createEpkRangeBasedLeaseWithContinuation(
+                    true,
+                    ChangeFeedMode.FULL_FIDELITY,
+                    ChangeFeedStartFromInternal.createFromNow(),
+                    "XyJKUI7=",
+                    "NO67Hq=",
+                    "0",
+                    "-FF",
+                    "0"),
+                createPkRangeBasedLeaseWithContinuation(
+                    true,
+                    "XyJKUI7=",
+                    "NO67Hq=",
+                    "-FF",
+                    BASE_CONTINUATION_STRING_FOR_PK_FULL_RANGE),
+                true
+            },
+            {
+                null,
+                createPkRangeBasedLeaseWithContinuation(
+                    true,
+                    "XyJKUI7=",
+                    "NO67Hq=",
+                    "-FF",
+                    BASE_CONTINUATION_STRING_FOR_PK_FULL_RANGE),
+                true
+            },
+            {
+                null,
+                null,
                 false
             }
         };
     }
 
     @Test(groups = {"unit"}, dataProvider = "leaseProvider")
-    public void tryInitializeStoreFromEpkVersionLeaseStoreWithExistingLeases(ServiceItemLeaseV1 lease, boolean expectIllegalStateException) {
+    public void tryInitializeStoreFromEpkVersionLeaseStoreWithExistingLeases(
+        ServiceItemLeaseV1 epkRangeBasedLease,
+        ServiceItemLease pkRangeBasedLease,
+        boolean expectIllegalStateException) {
+
         Duration lockTime = Duration.ofSeconds(5);
         Duration expireTIme = Duration.ofSeconds(5);
 
@@ -109,7 +155,18 @@ public class BootstrapperImplTests {
 
         ChangeFeedProcessorOptions changeFeedProcessorOptionsMock = Mockito.mock(ChangeFeedProcessorOptions.class);
 
-        Mockito.when(epkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.just(lease));
+        if (epkRangeBasedLease == null) {
+            Mockito.when(epkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.empty());
+        } else {
+            Mockito.when(epkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.just(epkRangeBasedLease));
+        }
+
+        if (pkRangeBasedLease == null) {
+            Mockito.when(pkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.empty());
+        } else {
+            Mockito.when(pkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.just(pkRangeBasedLease));
+        }
+
         Bootstrapper bootstrapper = new BootstrapperImpl(
             partitionSynchronizerMock,
             leaseStoreMock,
@@ -126,12 +183,17 @@ public class BootstrapperImplTests {
             bootstrapper.initialize().block();
         }
 
-        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
+        Mockito.verify(pkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
+
+        if (pkRangeBasedLease == null) {
+            Mockito.verify(epkRangeVersionLeaseStoreManagerMock, atLeast(1)).getTopLeases(Mockito.eq(1));
+        }
+
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases();
         Mockito.verify(leaseStoreMock, times(2)).isInitialized();
     }
 
-    private static ServiceItemLeaseV1 createLeaseWithContinuation(
+    private static ServiceItemLeaseV1 createEpkRangeBasedLeaseWithContinuation(
         boolean withContinuation,
         ChangeFeedMode changeFeedMode,
         ChangeFeedStartFromInternal startFromSettings,
@@ -149,7 +211,7 @@ public class BootstrapperImplTests {
         if (withContinuation) {
             FeedRangePartitionKeyRangeImpl feedRangePartitionKeyRangeImpl = new FeedRangePartitionKeyRangeImpl(pkRangeId);
             String continuationAsJsonString = String.format(
-                baseContinuationStringForFullRange,
+                BASE_CONTINUATION_STRING_FOR_EPK_FULL_RANGE,
                 collectionRid,
                 continuationToken,
                 pkRangeId);
@@ -164,6 +226,26 @@ public class BootstrapperImplTests {
                 feedRangeContinuation);
 
             lease.setContinuationToken(changeFeedState.toString());
+        }
+
+        return lease;
+    }
+
+    private static ServiceItemLease createPkRangeBasedLeaseWithContinuation(
+        boolean withContinuation,
+        String databaseRid,
+        String collectionRid,
+        String leaseToken,
+        String continuationToken) {
+
+        ServiceItemLease lease = new ServiceItemLease();
+
+        lease.setId(String.format("%s_%s..%s", databaseRid, collectionRid, leaseToken));
+
+        lease = lease.withLeaseToken(leaseToken);
+
+        if (withContinuation) {
+            lease = lease.withContinuationToken(continuationToken);
         }
 
         return lease;

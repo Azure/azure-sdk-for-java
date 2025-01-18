@@ -117,24 +117,23 @@ class BootstrapperImpl implements Bootstrapper {
     private Mono<Void> validateLeaseCFModeInteroperabilityForEpkRangeBasedLease() {
 
         // fetches only 1 epk-based lease for a given lease prefix
-        return this.pkRangeVersionLeaseStoreManager
-            .getTopLeases(1)
-            .next()
+        return this.pkRangeVersionLeaseStoreManager.getTopLeases(1).next()
             .flatMap(lease -> {
 
-                    if (lease != null) {
+                    if (lease.getVersion() == LeaseVersion.PARTITION_KEY_BASED_LEASE) {
 
                         String errorMessage = String.format("ChangeFeedProcessor#handleAllVersionsAndDeletes cannot be invoked when" +
                             "ChangeFeedProcessor#handleChanges was also started for" +
                             "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
 
                         return Mono.error(new IllegalStateException(errorMessage));
-                    } else {
-                        return Mono.empty();
                     }
+
+                    return Mono.empty();
                 }
             )
-            .then(this.epkRangeVersionLeaseStoreManager.getTopLeases(1).next())
+            .switchIfEmpty(this.epkRangeVersionLeaseStoreManager.getTopLeases(1).next())
+            .flatMap(ignore -> this.epkRangeVersionLeaseStoreManager.getTopLeases(1).next())
             // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
             .flatMap(lease -> {
 

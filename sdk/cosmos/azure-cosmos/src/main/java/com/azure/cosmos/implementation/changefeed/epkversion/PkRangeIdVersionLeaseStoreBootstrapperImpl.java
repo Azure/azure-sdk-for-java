@@ -39,6 +39,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
     private final Duration lockTime;
     private final Duration sleepTime;
     private final ChangeFeedMode changeFeedModeToStart;
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
 
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
@@ -66,6 +67,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
         this.leaseStore = leaseStore;
         this.pkRangeIdVersionLeaseStoreManager = pkRangeIdVersionLeaseStoreManager;
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
         this.changeFeedModeToStart = changeFeedModeToStart;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
@@ -169,7 +171,11 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                             ChangeFeedState changeFeedState = ChangeFeedState.fromString(lease.getContinuationToken());
 
                             if (changeFeedState.getMode() != this.changeFeedModeToStart) {
-                                return Mono.error(new IllegalStateException("Change feed mode in the pre-existing lease is : " + changeFeedState.getMode() + " while the expected change feed mode is : " + this.changeFeedModeToStart));
+                                String errorMessage = String.format("ChangeFeedProcessor#handleLatestVersionChanges cannot be invoked when" +
+                                    "ChangeFeedProcessor#handleAllVersionsAndDeletes was also started for" +
+                                    "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
+
+                                return Mono.error(new IllegalStateException(errorMessage));
                             }
                         }
                     }
