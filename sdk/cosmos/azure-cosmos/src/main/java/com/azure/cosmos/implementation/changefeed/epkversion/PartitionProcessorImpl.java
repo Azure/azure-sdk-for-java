@@ -123,14 +123,9 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 return this.documentClient.createDocumentChangeFeedQuery(
                         this.settings.getCollectionSelfLink(),
                         this.options,
-                        itemType);
+                        itemType).take(1, true);
             }, 1, 1)
             .flatMap(documentFeedResponse -> {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 final String continuationToken = documentFeedResponse.getContinuationToken();

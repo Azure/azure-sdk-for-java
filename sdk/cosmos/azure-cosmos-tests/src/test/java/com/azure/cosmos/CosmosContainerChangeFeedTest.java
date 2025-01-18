@@ -51,6 +51,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -305,6 +306,58 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
         // applying updates
         updateAction.run();
+
+        Thread.sleep(3000);
+
+        for (int i = 0; i < 20; i++) {
+            String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
+            logger.info(String.format("Validation after updates - PK value: '%s'", pkValue));
+
+            final int expectedEventCountAfterUpdates = i < 5 ?
+                i < 1 ? 0 : 2  // on the first logical partitions all updated documents were deleted
+                : 0; // no updates
+
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuations.get(pkValue));
+
+            drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeedPrefetching() throws Exception {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
+        );
+        insertDocuments(20, 7);
+
+
+        final Map<String, String> continuations = new HashMap<>();
+
+
+
+        for (int i = 0; i < 20; i++) {
+            String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
+            logger.info(String.format("Initial validation - PK value: '%s'", pkValue));
+
+            final int initiallyDeletedDocuments = i < 2 ? 3 : 0;
+            final int expectedInitialEventCount = 7 - initiallyDeletedDocuments;
+
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(
+                    FeedRange.forLogicalPartition(
+                        new PartitionKey(pkValue)
+                    ));
+            AtomicInteger count = new AtomicInteger(0);
+            createdContainer.asyncContainer.queryChangeFeed(options, ObjectNode.class).handle((r) -> {
+                count.incrementAndGet();
+            }).byPage().publishOn(Schedulers.boundedElastic());
+
+
+
+
+        }
+
 
         Thread.sleep(3000);
 

@@ -151,7 +151,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         }
         return collectionLink
             .queryChangeFeed(changeFeedRequestOptions, klass)
-            .byPage().take(1, true)
+            .byPage()
             .publishOn(this.scheduler);
     }
 
@@ -200,16 +200,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     @Override
     public <T> Mono<CosmosItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
                                                        CosmosItemRequestOptions options) {
-        if (count.compareAndSet(1, 2)) {
-            Map<String, String> map = new HashMap<>();
-            map.put("x-ms-retry-after-ms", "1000");
-            throw new com.azure.cosmos.CosmosException(429, new com.azure.cosmos.implementation.CosmosError(), map);
-
-        } else {
-            count.incrementAndGet();
-            return cosmosContainer.replaceItem(document, itemId, partitionKey, options)
+        return cosmosContainer.replaceItem(document, itemId, partitionKey, options)
                     .publishOn(this.scheduler);
-        }
     }
 
     @Override
