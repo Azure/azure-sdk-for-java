@@ -240,7 +240,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final String identifier;
     private final ServiceBusSenderInstrumentation instrumentation;
     private final ServiceBusTracer tracer;
-    private final boolean isV2;
 
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
@@ -262,7 +261,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.viaEntityName = viaEntityName;
         this.onClientClose = onClientClose;
         this.identifier = identifier;
-        this.isV2 = true;
     }
 
     /**
@@ -469,8 +467,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
                 final int batchSize = maxSize > 0 ? maxSize : maximumLinkSize;
 
-                return Mono.just(
-                    new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
+                return Mono
+                    .just(new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracer, messageSerializer));
             })).onErrorMap(RequestResponseChannelClosedException.class, e -> {
                 // When the current connection is being disposed, the connectionProcessor can produce a new connection
                 // if downstream request. In this context, treat RequestResponseChannelClosedException from
@@ -904,7 +902,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 final CreateMessageBatchOptions batchOptions
                     = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
                 return messages.collect(
-                    new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer, messageSerializer));
+                    new AmqpMessageCollector(batchOptions, 1, link::getErrorContext, tracer, messageSerializer));
             }).flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)))
             .onErrorMap(this::mapError);
     }
@@ -941,11 +939,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         private final ErrorContextProvider contextProvider;
         private final ServiceBusTracer tracer;
         private final MessageSerializer serializer;
-        private final boolean isV2;
 
         private volatile ServiceBusMessageBatch currentBatch;
 
-        AmqpMessageCollector(boolean isV2, CreateMessageBatchOptions options, Integer maxNumberOfBatches,
+        AmqpMessageCollector(CreateMessageBatchOptions options, Integer maxNumberOfBatches,
             ErrorContextProvider contextProvider, ServiceBusTracer tracer, MessageSerializer serializer) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize
@@ -953,8 +950,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             this.contextProvider = contextProvider;
             this.tracer = tracer;
             this.serializer = serializer;
-            this.isV2 = isV2;
-            currentBatch = new ServiceBusMessageBatch(isV2, maxMessageSize, contextProvider, tracer, serializer);
+            currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracer, serializer);
         }
 
         @Override
@@ -978,7 +974,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         contextProvider.getErrorContext());
                 }
 
-                currentBatch = new ServiceBusMessageBatch(isV2, maxMessageSize, contextProvider, tracer, serializer);
+                currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracer, serializer);
                 currentBatch.tryAddMessage(event);
                 list.add(batch);
             };

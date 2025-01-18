@@ -9,8 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -79,11 +77,10 @@ public class ServiceBusSenderClientTest {
     /**
      * Verifies that the default batch is the same size as the message link.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void createBatchDefault(boolean isV2) {
+    @Test
+    void createBatchDefault() {
         // Arrange
-        ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, MAX_MESSAGE_LENGTH_BYTES, null, null, null);
+        ServiceBusMessageBatch batch = new ServiceBusMessageBatch(MAX_MESSAGE_LENGTH_BYTES, null, null, null);
         when(asyncSender.createMessageBatch()).thenReturn(Mono.just(batch));
 
         //Act
@@ -116,14 +113,13 @@ public class ServiceBusSenderClientTest {
     /**
      * Verifies that the producer can create a batch with a given {@link CreateMessageBatchOptions#getMaximumSizeInBytes()}.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void createsMessageBatchWithSize(boolean isV2) {
+    @Test
+    void createsMessageBatchWithSize() {
         // Arrange
         int batchSize = 1024;
 
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, batchSize, null, null, null);
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(batchSize, null, null, null);
         when(asyncSender.createMessageBatch(options)).thenReturn(Mono.just(batch));
 
         // Act
