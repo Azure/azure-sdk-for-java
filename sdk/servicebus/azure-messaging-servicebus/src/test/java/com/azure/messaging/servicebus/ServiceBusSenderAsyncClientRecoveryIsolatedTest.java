@@ -822,7 +822,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             }
 
             final MockSendSessions mockSendSessions
-                = MockSendSessions.create(connectionId, sessionsCnt, linksPerSession);
+                = MockSendSessions.create(connectionId, queueName, sessionsCnt, linksPerSession);
 
             final ConnectionOptions connectionOptions = mock(ConnectionOptions.class);
             final Connection connection = mock(Connection.class);
@@ -885,10 +885,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             when(tokenManager.authorize()).thenReturn(Mono.just(Duration.ofHours(1).toMillis()));
             when(tokenManagerProvider.getTokenManager(any(), anyString())).thenReturn(tokenManager);
 
-            // New tests only for ReactorConnectionCache introduced in v2.
-            final boolean isV2 = true;
             return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, reactorProvider,
-                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, isV2, false);
+                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, true, true);
         }
 
         AmqpSendLink getAmqpSendLink(int sessionIdx, int linkIdx) {
@@ -971,12 +969,12 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             this.sessionIdx = 0;
         }
 
-        static MockSendSessions create(String connectionId, int sessionsCnt, int[] linksPerSession) {
+        static MockSendSessions create(String connectionId, String queueName, int sessionsCnt, int[] linksPerSession) {
             final List<MockSendSession> mockSendSessions = new ArrayList<>(sessionsCnt);
             for (int i = 0; i < sessionsCnt; i++) {
-                mockSendSessions.add(MockSendSession.create(connectionId, linksPerSession[i]));
+                mockSendSessions.add(MockSendSession.create(connectionId, queueName, linksPerSession[i]));
             }
-            final MockSendSession terminalMockSendSession = MockSendSession.create(connectionId, 0);
+            final MockSendSession terminalMockSendSession = MockSendSession.create(connectionId, queueName, 0);
 
             return new MockSendSessions(Collections.unmodifiableList(mockSendSessions), terminalMockSendSession);
         }
@@ -1136,7 +1134,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             this.sendLinkIdx = 0;
         }
 
-        static MockSendSession create(String connectionId, int sendLinkCnt) {
+        static MockSendSession create(String connectionId, String queueName, int sendLinkCnt) {
             final List<MockSendLink> mockSendLinks = new ArrayList<>(sendLinkCnt);
             for (int i = 0; i < sendLinkCnt; i++) {
                 mockSendLinks.add(MockSendLink.create());
@@ -1146,6 +1144,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final Record sessionAttachments = mock(Record.class);
             final Session session = mock(Session.class);
             final SessionHandler sessionHandler = mock(SessionHandler.class);
+            when(sessionHandler.getSessionName()).thenReturn(queueName);
             final Sinks.Many<EndpointState> sessionStateSink
                 = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
             return new MockSendSession(connectionId, session, sessionAttachments, sessionHandler, sessionStateSink,
