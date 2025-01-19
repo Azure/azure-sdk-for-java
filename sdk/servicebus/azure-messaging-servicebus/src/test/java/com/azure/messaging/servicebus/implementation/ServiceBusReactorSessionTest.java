@@ -212,7 +212,7 @@ public class ServiceBusReactorSessionTest {
 
         serviceBusReactorSession
             = new ServiceBusReactorSession(connection, sessionWrapper, handlerProvider, linkProvider, cbsNodeSupplier,
-                tokenManagerProvider, messageSerializer, retryOptions, new ServiceBusCreateSessionOptions(false), true);
+                tokenManagerProvider, messageSerializer, retryOptions, new ServiceBusCreateSessionOptions(false));
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
     }
 
@@ -319,7 +319,7 @@ public class ServiceBusReactorSessionTest {
 
         final ServiceBusReactorSession serviceBusReactorSession
             = new ServiceBusReactorSession(connection, sessionWrapper, handlerProvider, linkProvider, cbsNodeSupplier,
-                tokenManagerProvider, messageSerializer, retryOptions, new ServiceBusCreateSessionOptions(true), true);
+                tokenManagerProvider, messageSerializer, retryOptions, new ServiceBusCreateSessionOptions(true));
 
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, transactionLinkName, transactionLinkName))
             .thenReturn(sendEntityLinkHandler);
