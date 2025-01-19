@@ -3,7 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionFailoverInfoHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationToLocationSpecificHealthContextHolder;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -168,7 +169,8 @@ public class ClientSideRequestStatistics {
 
             this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
             storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
-            storeResponseStatistics.locationToLocationSpecificHealthContext = request.requestContext.getLocationToLocationSpecificHealthContext();
+            storeResponseStatistics.locationToLocationSpecificHealthContextHolder = request.requestContext.getLocationToLocationSpecificHealthContextHolder();
+            storeResponseStatistics.perPartitionFailoverInfoHolder = request.requestContext.getPerPartitionFailoverContextHolder();
 
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
@@ -244,7 +246,8 @@ public class ClientSideRequestStatistics {
 
                 if (rxDocumentServiceRequest.requestContext != null) {
                     gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
-                    gatewayStatistics.locationToLocationSpecificHealthContext = rxDocumentServiceRequest.requestContext.getLocationToLocationSpecificHealthContext();
+                    gatewayStatistics.locationToLocationSpecificHealthContext = rxDocumentServiceRequest.requestContext.getLocationToLocationSpecificHealthContextHolder();
+                    gatewayStatistics.perPartitionFailoverInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionFailoverContextHolder();
                 }
             }
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
@@ -685,8 +688,11 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private Set<String> sessionTokenEvaluationResults;
 
-        @JsonSerialize
-        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
+        @JsonSerialize(using = LocationToLocationSpecificHealthContextHolder.LocationSpecificHealthContextHolderSerializer.class)
+        private LocationToLocationSpecificHealthContextHolder locationToLocationSpecificHealthContextHolder;
+
+        @JsonSerialize(using = PerPartitionFailoverInfoHolder.PerPartitionFailoverInfoHolderSerializer.class)
+        private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
         public String getExcludedRegions() {
             return this.excludedRegions;
@@ -724,8 +730,12 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
-        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
-            return locationToLocationSpecificHealthContext;
+        public LocationToLocationSpecificHealthContextHolder getLocationToLocationSpecificHealthContextHolder() {
+            return locationToLocationSpecificHealthContextHolder;
+        }
+
+        public PerPartitionFailoverInfoHolder getPerPartitionFailoverInfoHolder() {
+            return perPartitionFailoverInfoHolder;
         }
 
         @JsonIgnore
@@ -890,7 +900,8 @@ public class ClientSideRequestStatistics {
         private String faultInjectionRuleId;
         private List<String> faultInjectionEvaluationResults;
         private Set<String> sessionTokenEvaluationResults;
-        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
+        private LocationToLocationSpecificHealthContextHolder locationToLocationSpecificHealthContext;
+        private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
         public String getSessionToken() {
             return sessionToken;
@@ -948,8 +959,12 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
-        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
+        public LocationToLocationSpecificHealthContextHolder getLocationToLocationSpecificHealthContext() {
             return locationToLocationSpecificHealthContext;
+        }
+
+        public PerPartitionFailoverInfoHolder getPerPartitionFailoverInfoHolder() {
+            return perPartitionFailoverInfoHolder;
         }
 
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
@@ -985,7 +1000,9 @@ public class ClientSideRequestStatistics {
                 }
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
-                this.writeNonNullObjectField(jsonGenerator, "locationToLocationSpecificHealthContext", gatewayStatistics.getLocationToLocationSpecificHealthContext());
+                this.writeNonNullPOJO(jsonGenerator, gatewayStatistics.getLocationToLocationSpecificHealthContext());
+                this.writeNonNullPOJO(jsonGenerator, gatewayStatistics.getPerPartitionFailoverInfoHolder());
+
                 jsonGenerator.writeEndObject();
             }
 
@@ -1019,6 +1036,15 @@ public class ClientSideRequestStatistics {
                 }
 
                 jsonGenerator.writePOJOField(fieldName, object);
+            }
+
+            private void writeNonNullPOJO(JsonGenerator jsonGenerator, Object object) throws IOException {
+
+                if (object == null) {
+                    return;
+                }
+
+                jsonGenerator.writePOJO(object);
             }
         }
     }

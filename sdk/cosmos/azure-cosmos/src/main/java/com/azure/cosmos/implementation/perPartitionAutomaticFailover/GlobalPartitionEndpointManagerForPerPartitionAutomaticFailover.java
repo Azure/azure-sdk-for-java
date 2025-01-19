@@ -13,9 +13,14 @@ import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
@@ -69,7 +74,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToLocation.get(partitionKeyRangeWrapper);
 
         if (partitionLevelFailoverInfo != null) {
-            request.requestContext.routeToLocation(partitionLevelFailoverInfo.current);
+            request.requestContext.routeToLocation(partitionLevelFailoverInfo.getCurrent());
+            request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(partitionLevelFailoverInfo);
             return true;
         }
 
@@ -118,13 +124,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         PartitionLevelFailoverInfo partitionLevelFailoverInfo
-            = this.partitionKeyRangeToLocation.computeIfAbsent(partitionKeyRangeWrapper, partitionKeyRangeWrapper1 -> new PartitionLevelFailoverInfo(failedLocation));
+            = this.partitionKeyRangeToLocation.computeIfAbsent(partitionKeyRangeWrapper, partitionKeyRangeWrapper1 -> new PartitionLevelFailoverInfo(failedLocation, this.globalEndpointManager));
 
         // Rely on account-level read endpoints for new write region discovery
         List<URI> accountLevelReadEndpoints = this.globalEndpointManager.getAvailableReadEndpoints();
 
-        if (partitionLevelFailoverInfo != null
-            && partitionLevelFailoverInfo.tryMoveToNextLocation(accountLevelReadEndpoints, failedLocation)) {
+        if (partitionLevelFailoverInfo.tryMoveToNextLocation(accountLevelReadEndpoints, failedLocation)) {
+
+            request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(partitionLevelFailoverInfo);
             return true;
         }
 
@@ -163,40 +170,5 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         return false;
-    }
-
-    static class PartitionLevelFailoverInfo {
-        // failedLocations -> as the name suggests, write regions which would have responded with 403/3
-        private final Set<URI> failedLocations = ConcurrentHashMap.newKeySet();
-        // current -> available / failed over write region
-        private URI current;
-
-        PartitionLevelFailoverInfo(URI current) {
-            this.current = current;
-        }
-
-        synchronized boolean tryMoveToNextLocation(List<URI> readLocations, URI failedLocation) {
-
-            if (failedLocation != this.current) {
-                return true;
-            }
-
-            for (URI location : readLocations) {
-
-                if (location.equals(this.current)) {
-                    continue;
-                }
-
-                if (this.failedLocations.contains(location)) {
-                    continue;
-                }
-
-                this.failedLocations.add(failedLocation);
-                this.current = location;
-                return true;
-            }
-
-            return false;
-        }
     }
 }
