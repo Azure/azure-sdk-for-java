@@ -7,14 +7,14 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.util.Context;
 import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import io.opentelemetry.api.common.Attributes;
@@ -42,6 +42,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,15 +55,14 @@ import java.util.stream.IntStream;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.core.amqp.ProxyOptions.PROXY_AUTHENTICATION_TYPE;
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.ERROR_TYPE;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
@@ -70,8 +70,10 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getOperationType;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Contains helper methods for working with AMQP messages
@@ -82,16 +84,16 @@ public final class TestUtils {
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME
         = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
-    private static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
-    static final Long OFFSET = 1534L;
+    static final String OFFSET = "1534L";
     static final String PARTITION_KEY = "a-partition-key";
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
+    static final Integer REPLICATION_SEGMENT = 33;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     // An application property key used to identify that the request belongs to a test set.
@@ -163,13 +165,42 @@ public final class TestUtils {
      * Creates a mock message with the contents provided.
      */
     static Message getMessage(byte[] contents, String messageTrackingValue) {
-        return getMessage(contents, messageTrackingValue, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
+        return getMessage(contents, messageTrackingValue, Collections.emptyMap());
+    }
+
+    /**
+     * Creates a message with the given contents, default system properties, and adds a {@code messageTrackingValue} in
+     * the application properties. Useful for helping filter messages.
+     */
+    static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
+        final Message message
+            = getMessage(contents, messageTrackingValue, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
+
+        Map<Symbol, Object> value = message.getMessageAnnotations().getValue();
+        value.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
+
+        // Add replication segment and see if it persists.
+        value.put(Symbol.getSymbol(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue()), REPLICATION_SEGMENT);
+
+        Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
+
+        if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
+            applicationProperties.put(MESSAGE_ID, messageTrackingValue);
+        }
+
+        if (additionalProperties != null) {
+            applicationProperties.putAll(additionalProperties);
+        }
+
+        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        return message;
     }
 
     /**
      * Creates a message with the required system properties set.
      */
-    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, Long offsetNumber,
+    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, String offsetNumber,
         Date enqueuedTime) {
 
         final Map<Symbol, Object> systemProperties = new HashMap<>();
@@ -210,6 +241,20 @@ public final class TestUtils {
         eventData.getProperties().put(MESSAGE_ID, messageTrackingValue);
         eventData.getProperties().put(MESSAGE_POSITION_ID, position);
         return eventData;
+    }
+
+    public static EventData getEvent(AmqpAnnotatedMessage amqpAnnotatedMessage, String offset, long sequenceNumber,
+        Instant enqueuedTime) {
+
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
+
+        SystemProperties systemProperties
+            = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null, 1);
+
+        return new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
     }
 
     /**
@@ -371,19 +416,6 @@ public final class TestUtils {
         } else {
             assertEquals(StatusCode.UNSET, span.getStatus().getStatusCode());
         }
-    }
-
-    public static EventData createEventData(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset, long sequenceNumber,
-        Instant enqueuedTime) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
-        amqpAnnotatedMessage.getMessageAnnotations()
-            .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
-        amqpAnnotatedMessage.getMessageAnnotations()
-            .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
-
-        SystemProperties systemProperties
-            = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null);
-        return new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
     }
 
     private TestUtils() {

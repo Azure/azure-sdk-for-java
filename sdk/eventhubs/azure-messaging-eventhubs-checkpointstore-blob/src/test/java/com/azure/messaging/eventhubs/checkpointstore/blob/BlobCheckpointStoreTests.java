@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.JRE;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -44,15 +45,18 @@ import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointS
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.OFFSET;
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.OWNERSHIP_PATH;
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.OWNER_ID;
+import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.REPLICATION_SEGMENT;
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.SEQUENCE_NUMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -70,11 +74,14 @@ public class BlobCheckpointStoreTests {
     @Mock
     private BlobAsyncClient blobAsyncClient;
 
+    @Captor
+    private ArgumentCaptor<Map<String, String>> metadataArgumentCaptor;
+
     private AutoCloseable autoCloseable;
 
     @BeforeEach
     public void beforeEach() {
-        this.autoCloseable = MockitoAnnotations.openMocks(this);
+        autoCloseable = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
@@ -164,11 +171,11 @@ public class BlobCheckpointStoreTests {
         final String checkpointPrefix = prefix + CHECKPOINT_PATH;
 
         final BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        final BlobItem blobItem = getCheckpointBlobItem("230", "1", checkpointPrefix + "0"); // valid blob
+        final BlobItem blobItem = getCheckpointBlobItem("230", "1", checkpointPrefix + "0", "35"); // valid blob
         final BlobItem blobItem2 = new BlobItem().setName(checkpointPrefix + "1"); // valid blob but not a valid checkpoint.
-        final BlobItem blobItem3 = getCheckpointBlobItem("233", "3", prefix + "1"); // invalid name
-        final PagedFlux<BlobItem> response
-            = new PagedFlux<>(() -> Mono.just(new PagedResponseBase<HttpHeaders, BlobItem>(null, 200, null,
+        final BlobItem blobItem3 = getCheckpointBlobItem("233", "3", prefix + "1", null); // invalid name
+        final PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.just(
+            new PagedResponseBase<HttpHeaders, BlobItem>(null, 200, null,
                 Arrays.asList(blobItem, blobItem2, blobItem3), null, null)));
 
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenAnswer(invocation -> {
@@ -192,6 +199,7 @@ public class BlobCheckpointStoreTests {
                 assertEquals(consumerGroup, checkpoint.getConsumerGroup());
                 assertEquals(1L, checkpoint.getSequenceNumber());
                 assertEquals(230L, checkpoint.getOffset());
+                assertEquals(35, checkpoint.getReplicationSegment());
             })
             .verifyComplete();
     }
@@ -227,25 +235,41 @@ public class BlobCheckpointStoreTests {
             .setEventHubName(eventHubName)
             .setConsumerGroup(consumerGroup)
             .setPartitionId(partitionId)
+            .setReplicationSegment(16)
             .setSequenceNumber(2L)
             .setOffset(100L);
 
-        final BlobItem blobItem = getCheckpointBlobItem("230", "1", blobName);
-        final PagedFlux<BlobItem> response
-            = new PagedFlux<>(() -> Mono.just(new PagedResponseBase<HttpHeaders, BlobItem>(null, 200, null,
+        final BlobItem blobItem = getCheckpointBlobItem("230", "1", blobName, "25");
+        final PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.just(
+            new PagedResponseBase<HttpHeaders, BlobItem>(null, 200, null,
                 Collections.singletonList(blobItem), null, null)));
 
         when(blobContainerAsyncClient.getBlobAsyncClient(blobName)).thenReturn(blobAsyncClient);
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
-
-        when(blobAsyncClient.setMetadata(ArgumentMatchers.<Map<String, String>>any())).thenReturn(Mono.empty());
+        when(blobAsyncClient.setMetadata(ArgumentMatchers.any())).thenReturn(Mono.empty());
 
         final BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
 
         // Act & Assert
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
+        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint))
+            .verifyComplete();
+
+        verify(blobAsyncClient).setMetadata(metadataArgumentCaptor.capture());
+
+        final Map<String, String> actual = metadataArgumentCaptor.getValue();
+
+        assertEquals(3, actual.size());
+
+        assertTrue(actual.containsKey(REPLICATION_SEGMENT));
+        assertEquals(String.valueOf(checkpoint.getReplicationSegment()), actual.get(REPLICATION_SEGMENT));
+
+        assertTrue(actual.containsKey(OFFSET));
+        assertEquals(String.valueOf(checkpoint.getOffset()), actual.get(OFFSET));
+
+        assertTrue(actual.containsKey(SEQUENCE_NUMBER));
+        assertEquals(String.valueOf(checkpoint.getSequenceNumber()), actual.get(SEQUENCE_NUMBER));
     }
 
     /**
@@ -271,7 +295,8 @@ public class BlobCheckpointStoreTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset(100L)
+            .setReplicationSegment(15);
         final String legacyPrefix = getLegacyPrefix(checkpoint.getFullyQualifiedNamespace(),
             checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         final String blobName = legacyPrefix + CHECKPOINT_PATH + checkpoint.getPartitionId();
@@ -279,7 +304,7 @@ public class BlobCheckpointStoreTests {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaderName.ETAG, "etag2");
 
-        BlobItem blobItem = getCheckpointBlobItem("230", "1", blobName);
+        BlobItem blobItem = getCheckpointBlobItem("230", "1", blobName, "20");
 
         PagedFlux<BlobItem> response
             = new PagedFlux<BlobItem>(() -> Mono.just(new PagedResponseBase<HttpHeaders, BlobItem>(null, 200, null,
@@ -291,12 +316,31 @@ public class BlobCheckpointStoreTests {
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blobAsyncClient.exists()).thenReturn(Mono.just(false));
 
-        when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L), isNull(),
-            anyMap(), isNull(), isNull(), isNull()))
-                .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
+        when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.any(), eq(0L),
+            isNull(), anyMap(), isNull(), isNull(), isNull()))
+            .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
 
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
+
+        // Act & Assert
+        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint))
+            .verifyComplete();
+
+        verify(blockBlobAsyncClient).uploadWithResponse(any(), eq(0L), isNull(),
+            metadataArgumentCaptor.capture(), isNull(), isNull(), isNull());
+
+        final Map<String, String> actual = metadataArgumentCaptor.getValue();
+
+        assertEquals(3, actual.size());
+
+        assertTrue(actual.containsKey(REPLICATION_SEGMENT));
+        assertEquals(String.valueOf(checkpoint.getReplicationSegment()), actual.get(REPLICATION_SEGMENT));
+
+        assertTrue(actual.containsKey(OFFSET));
+        assertEquals(String.valueOf(checkpoint.getOffset()), actual.get(OFFSET));
+
+        assertTrue(actual.containsKey(SEQUENCE_NUMBER));
+        assertEquals(String.valueOf(checkpoint.getSequenceNumber()), actual.get(SEQUENCE_NUMBER));
     }
 
     /**
@@ -443,11 +487,20 @@ public class BlobCheckpointStoreTests {
         return new BlobItem().setName(blobName).setMetadata(metadata).setProperties(properties);
     }
 
-    private static BlobItem getCheckpointBlobItem(String offset, String sequenceNumber, String blobName) {
-        Map<String, String> metadata = new HashMap<>();
+    private static BlobItem getCheckpointBlobItem(String offset, String sequenceNumber, String blobName,
+        String replicationSegment) {
+
+        final Map<String, String> metadata = new HashMap<>();
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
         metadata.put(OFFSET, offset);
-        return new BlobItem().setName(blobName).setMetadata(metadata);
+
+        if (replicationSegment != null) {
+            metadata.put(REPLICATION_SEGMENT, replicationSegment);
+        }
+
+        return new BlobItem()
+            .setName(blobName)
+            .setMetadata(metadata);
     }
 
     private static String getLegacyPrefix(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {

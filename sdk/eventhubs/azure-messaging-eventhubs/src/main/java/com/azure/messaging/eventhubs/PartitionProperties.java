@@ -16,13 +16,16 @@ public final class PartitionProperties {
     private final String id;
     private final long beginningSequenceNumber;
     private final long lastEnqueuedSequenceNumber;
+    private final Integer beginningReplicationSegment;
+    private final Integer lastEnqueuedReplicationSegment;
     private final String lastEnqueuedOffset;
     private final Instant lastEnqueuedTime;
     private final boolean isEmpty;
 
     PartitionProperties(final String eventHubName, final String id, final long beginningSequenceNumber,
         final long lastEnqueuedSequenceNumber, final String lastEnqueuedOffset, final Instant lastEnqueuedTime,
-        final boolean isEmpty) {
+        final boolean isEmpty, final Integer beginningReplicationSegment,
+        final Integer lastEnqueuedReplicationSegment) {
         this.eventHubName = eventHubName;
         this.id = id;
         this.beginningSequenceNumber = beginningSequenceNumber;
@@ -30,6 +33,8 @@ public final class PartitionProperties {
         this.lastEnqueuedOffset = lastEnqueuedOffset;
         this.lastEnqueuedTime = lastEnqueuedTime;
         this.isEmpty = isEmpty;
+        this.beginningReplicationSegment = beginningReplicationSegment;
+        this.lastEnqueuedReplicationSegment = lastEnqueuedReplicationSegment;
     }
 
     /**
@@ -51,12 +56,30 @@ public final class PartitionProperties {
     }
 
     /**
+     * Gets the first replication segment.
+     *
+     * @return The first replication segment or null if geo-disaster recovery is not enabled.
+     */
+    public Integer getBeginningReplicationSegment() {
+        return beginningReplicationSegment;
+    }
+
+    /**
      * Gets the starting sequence number of the partition's message stream.
      *
      * @return The starting sequence number of the partition's message stream.
      */
     public long getBeginningSequenceNumber() {
         return this.beginningSequenceNumber;
+    }
+
+    /**
+     * Get the last replication segment for the partition.
+     *
+     * @return The last replication segment or null if geo-disaster recovery is not enabled.
+     */
+    public Integer getLastEnqueuedReplicationSegment() {
+        return this.lastEnqueuedReplicationSegment;
     }
 
     /**
@@ -93,7 +116,7 @@ public final class PartitionProperties {
     }
 
     /**
-     * Indicates whether or not the partition is currently empty.
+     * Indicates whether the partition is currently empty.
      *
      * @return {@code true} if there are no events, and {@code false} otherwise.
      */

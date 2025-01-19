@@ -70,11 +70,11 @@ import static com.azure.messaging.eventhubs.TestUtils.assertAllAttributes;
 import static com.azure.messaging.eventhubs.TestUtils.assertSpanStatus;
 import static com.azure.messaging.eventhubs.TestUtils.attributesToMap;
 import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_EVENT_HUB_PROPERTIES;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_PARTITION_PROPERTIES;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
 import static io.opentelemetry.api.trace.SpanKind.CLIENT;
 import static io.opentelemetry.api.trace.SpanKind.CONSUMER;
 import static io.opentelemetry.api.trace.SpanKind.INTERNAL;
@@ -568,7 +568,7 @@ public class EventHubsConsumerInstrumentationTests {
         annotatedMessage.getApplicationProperties().put("traceparent", traceparent);
         annotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
-        return TestUtils.createEventData(annotatedMessage, 25L, 14L, enqueuedTime);
+        return TestUtils.getEvent(annotatedMessage, "25L", 14L, enqueuedTime);
     }
 
     private SpanData assertReceiveSpan(int expectedBatchSize, String partitionId, String expectedErrorType,

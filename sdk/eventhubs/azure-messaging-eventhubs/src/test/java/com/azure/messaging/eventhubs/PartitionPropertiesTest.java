@@ -22,10 +22,12 @@ public class PartitionPropertiesTest {
         final String lastEnqueuedOffset = "Last-Enqueued";
         final Instant lastEnqueuedTime = Instant.ofEpochSecond(1560639208);
         final boolean isEmpty = true;
+        final Integer beginningReplicationSegment = 10;
+        final Integer lastEnqueuedReplicationSegment = 100;
 
         // Act
         final PartitionProperties properties = new PartitionProperties(eventHub, id, beginningSequence, endSequence,
-            lastEnqueuedOffset, lastEnqueuedTime, isEmpty);
+            lastEnqueuedOffset, lastEnqueuedTime, isEmpty, beginningReplicationSegment, lastEnqueuedReplicationSegment);
 
         // Assert
         Assertions.assertEquals(eventHub, properties.getEventHubName());
@@ -35,5 +37,8 @@ public class PartitionPropertiesTest {
         Assertions.assertEquals(lastEnqueuedOffset, properties.getLastEnqueuedOffset());
         Assertions.assertEquals(lastEnqueuedTime, properties.getLastEnqueuedTime());
         Assertions.assertEquals(isEmpty, properties.isEmpty());
+
+        Assertions.assertEquals(beginningReplicationSegment, properties.getBeginningReplicationSegment());
+        Assertions.assertEquals(lastEnqueuedReplicationSegment, properties.getLastEnqueuedReplicationSegment());
     }
 }

@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -120,8 +121,10 @@ public class PartitionBasedLoadBalancerTest {
         final Date enqueuedTime = Date.from(Instant.now());
         final byte[] contents = "Hello, world".getBytes(StandardCharsets.UTF_8);
         eventDataList = new ArrayList<>();
-        IntStream.range(0, 25).forEach(index -> {
-            final EventData eventData = getEventData(contents, (long) index, (long) index, enqueuedTime);
+
+        LongStream.range(0, 25).forEach(index -> {
+            final Message message = getMessage(contents, "message-id", index, String.valueOf(index), enqueuedTime);
+            final EventData eventData = MESSAGE_SERIALIZER.deserialize(message, EventData.class);
             eventDataList.add(eventData);
         });
 
@@ -846,13 +849,5 @@ public class PartitionBasedLoadBalancerTest {
         return new PartitionBasedLoadBalancer(checkpointStore, eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME,
             CONSUMER_GROUP_NAME, owner, TimeUnit.SECONDS.toSeconds(5), partitionPumpManager, ec -> {
             }, loadBalancingStrategy);
-    }
-
-    /**
-     * Creates an EventData with the received properties set.
-     */
-    private EventData getEventData(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
-        final Message message = getMessage(contents, "messageId", sequenceNumber, offsetNumber, enqueuedTime);
-        return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }
 }

@@ -21,9 +21,11 @@ import java.util.Map;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,8 +37,10 @@ public class SystemPropertiesTest {
     private final byte[] data = "hello-world".getBytes(StandardCharsets.UTF_8);
     private final String partitionKey = "my-partition-key";
     private final Instant enqueuedTime = Instant.ofEpochSecond(1625810878);
-    private final long offset = 102L;
+    private final Long offset = 102L;
+    private final String offsetString = String.valueOf(offset);
     private final long sequenceNumber = 12345L;
+    private final Integer replicationSegment = 110;
 
     private AmqpAnnotatedMessage message;
 
@@ -78,6 +82,7 @@ public class SystemPropertiesTest {
         messageAnnotations.put(OFFSET_ANNOTATION_NAME.getValue(), offset);
         messageAnnotations.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
         messageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        messageAnnotations.put(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment);
         messageAnnotations.put("foo", "bar");
         messageAnnotations.put("baz", 1L);
     }
@@ -85,6 +90,7 @@ public class SystemPropertiesTest {
     /**
      * Asserts that there are no items when the message is new.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void emptyMessage() {
         // Act
@@ -95,6 +101,7 @@ public class SystemPropertiesTest {
         assertNull(systemProperties.getEnqueuedTime());
         assertNull(systemProperties.getSequenceNumber());
         assertNull(systemProperties.getOffset());
+        assertNull(systemProperties.getOffsetString());
 
         assertTrue(systemProperties.isEmpty());
     }
@@ -105,8 +112,8 @@ public class SystemPropertiesTest {
     @Test
     public void cannotModifyProperties() {
         // Act
-        final SystemProperties properties
-            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey);
+        final SystemProperties properties = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber,
+            partitionKey, replicationSegment);
         final HashMap<String, Object> testMap = new HashMap<>();
         testMap.put("one", 1L);
         testMap.put("two", 2);
@@ -114,8 +121,9 @@ public class SystemPropertiesTest {
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());
         assertEquals(sequenceNumber, properties.getSequenceNumber());
-        assertEquals(offset, properties.getOffset());
+        assertEquals(offsetString, properties.getOffsetString());
         assertEquals(partitionKey, properties.getPartitionKey());
+        assertEquals(replicationSegment, properties.getReplicationSegment());
 
         assertThrows(UnsupportedOperationException.class, () -> properties.put("foo", "bar"));
         assertThrows(UnsupportedOperationException.class, () -> properties.putAll(testMap));
@@ -130,6 +138,12 @@ public class SystemPropertiesTest {
             () -> properties.replaceAll((key, value) -> "replaced " + value));
         assertThrows(UnsupportedOperationException.class,
             () -> properties.replace(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber, "baz"));
+        assertThrows(UnsupportedOperationException.class,
+            () -> properties.replace(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment, 13L));
+
+        // Shouldn't allow us to remove keys.
+        assertThrows(UnsupportedOperationException.class,
+            () -> properties.replace(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment, null));
 
         assertThrows(UnsupportedOperationException.class,
             () -> properties.computeIfAbsent("test", (key) -> "new value"));
@@ -148,12 +162,12 @@ public class SystemPropertiesTest {
     public void queryProperties() {
         // Act
         final SystemProperties properties
-            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey);
+            = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber, partitionKey, null);
 
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());
         assertEquals(sequenceNumber, properties.getSequenceNumber());
-        assertEquals(offset, properties.getOffset());
+        assertEquals(offsetString, properties.getOffsetString());
         assertEquals(partitionKey, properties.getPartitionKey());
 
         assertEquals(message.getProperties().getMessageId().toString(),
@@ -162,7 +176,7 @@ public class SystemPropertiesTest {
         assertEquals(message.getProperties().getTo().toString(), properties.get(AmqpMessageConstant.TO.getValue()));
 
         final Object actualUserId = properties.get(AmqpMessageConstant.USER_ID.getValue());
-        assertTrue(actualUserId instanceof byte[]);
+        assertInstanceOf(byte[].class, actualUserId);
         assertArrayEquals(message.getProperties().getUserId(), (byte[]) actualUserId);
         assertEquals(message.getProperties().getAbsoluteExpiryTime(),
             properties.get(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));

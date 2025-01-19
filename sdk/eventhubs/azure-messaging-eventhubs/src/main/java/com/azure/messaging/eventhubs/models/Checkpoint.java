@@ -22,7 +22,9 @@ public class Checkpoint {
     private String consumerGroup;
     private String partitionId;
     private Long offset;
+    private String offsetString;
     private Long sequenceNumber;
+    private Integer replicationSegment;
 
     /**
      * Creates a new instance.
@@ -114,9 +116,26 @@ public class Checkpoint {
      * Gets the offset of the last successfully processed event to store as checkpoint.
      *
      * @return The offset of the last successfully processed event to store as checkpoint.
+     * @deprecated This method is obsolete and should no longer be used. Please use {@link #getOffsetString()}
      */
+    @Deprecated
     public Long getOffset() {
-        return offset;
+
+        if (offset != null) {
+            return offset;
+        }
+        if (this.offsetString == null) {
+            return null;
+        }
+
+        Long parsed;
+        try {
+            parsed = Long.valueOf(offsetString);
+        } catch (NumberFormatException ex) {
+            parsed = null;
+        }
+
+        return parsed;
     }
 
     /**
@@ -124,9 +143,52 @@ public class Checkpoint {
      *
      * @param offset The offset of the last successfully processed event to store as checkpoint.
      * @return The updated {@link Checkpoint} instance.
+     * @deprecated This method is obsolete and should no longer be used. Please use {@link #setOffsetString(String)}.
      */
+    @Deprecated
     public Checkpoint setOffset(Long offset) {
         this.offset = offset;
+        return this;
+    }
+
+    /**
+     * Gets the offset of the last successfully processed event to store as checkpoint.
+     *
+     * @return Offset of the last successfully processed event to store as checkpoint.
+     *
+     */
+    public String getOffsetString() {
+        return offsetString;
+    }
+
+    /**
+     * Sets the offset of the last successfully processed event to store as checkpoint.
+     *
+     * @param offsetString The offset of the last successfully processed event to store as checkpoint.
+     * @return The updated {@link Checkpoint} instance.
+     */
+    public Checkpoint setOffsetString(String offsetString) {
+        this.offsetString = offsetString;
+        return this;
+    }
+
+    /**
+     * Gets the replication segment for the checkpoint.
+     *
+     * @return The replication segment for the checkpoint, null or -1, if geo replication is not enabled.
+     */
+    public Integer getReplicationSegment() {
+        return replicationSegment;
+    }
+
+    /**
+     * Sets the replication segment.
+     *
+     * @param replicationSegment The replication segment.
+     * @return The updated {@link Checkpoint} instance.
+     */
+    public Checkpoint setReplicationSegment(Integer replicationSegment) {
+        this.replicationSegment = replicationSegment;
         return this;
     }
 

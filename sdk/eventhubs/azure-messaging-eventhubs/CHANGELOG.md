@@ -4,7 +4,12 @@
 
 ### Features Added
 
-Setting the v2 stack as the default. ([43725](https://github.com/Azure/azure-sdk-for-java/pull/43725))
+- Setting the v2 stack as the default. ([43725](https://github.com/Azure/azure-sdk-for-java/pull/43725)).
+- Added support geo-replication feature.
+- Added `Checkpoint.getReplicationSegment()`.
+- Added `getBeginningReplicationSegment()` and `getLastEnqueuedReplicationSegment()` to `PartitionProperties`.
+- Added `LastEnqueuedEventProperties.getReplicationSegment()`.
+- Added overloads to `EventPosition.fromSequenceNumber` that takes replication segment.
 
 ### Breaking Changes
 
