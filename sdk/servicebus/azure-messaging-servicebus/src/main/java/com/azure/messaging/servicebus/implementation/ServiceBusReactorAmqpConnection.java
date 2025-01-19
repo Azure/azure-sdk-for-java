@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.implementation.AmqpChannelProcessor;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ChannelCacheWrapper;
@@ -17,7 +16,6 @@ import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorSession;
-import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseChannelCache;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
@@ -57,8 +55,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
     private final boolean distributedTransactionsSupport;
-    private final boolean isV2;
-    private final boolean useSessionChannelCache;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -72,17 +68,13 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param messageSerializer Serializes and deserializes proton-j messages.
      * @param distributedTransactionsSupport indicate if distributed transaction across different entities is required
      *        for this connection.
-     * @param isV2 (temporary) flag to use either v1 or v2 receiver.
-     * @param useSessionChannelCache indicates if ReactorSessionCache and RequestResponseChannelCache should be used
-     *  when in v2 mode.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
         ServiceBusAmqpLinkProvider linkProvider, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, boolean distributedTransactionsSupport, boolean isV2,
-        boolean useSessionChannelCache) {
+        MessageSerializer messageSerializer, boolean distributedTransactionsSupport) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, isV2, useSessionChannelCache);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, true);
 
         this.connectionId = connectionId;
         this.handlerProvider = handlerProvider;
@@ -93,8 +85,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
         this.distributedTransactionsSupport = distributedTransactionsSupport;
-        this.isV2 = isV2;
-        this.useSessionChannelCache = useSessionChannelCache;
     }
 
     @Override
@@ -137,19 +127,10 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     .addKeyValue("address", address)
                     .log("Creating management node.");
 
-                final ChannelCacheWrapper channelCache;
-                if (useSessionChannelCache) {
-                    // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
-                    final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-                    final RequestResponseChannelCache cache
-                        = new RequestResponseChannelCache(this, address, sessionName, linkName, retryPolicy);
-                    channelCache = new ChannelCacheWrapper(cache);
-                } else {
-                    // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
-                    final AmqpChannelProcessor<RequestResponseChannel> cache
-                        = createRequestResponseChannel(sessionName, linkName, address);
-                    channelCache = new ChannelCacheWrapper(cache);
-                }
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+                final RequestResponseChannelCache cache
+                    = new RequestResponseChannelCache(this, address, sessionName, linkName, retryPolicy);
+                final ChannelCacheWrapper channelCache = new ChannelCacheWrapper(cache);
                 return new ManagementChannel(channelCache, fullyQualifiedNamespace, entityPath, tokenManager,
                     messageSerializer, retryOptions.getTryTimeout());
             }));
@@ -246,6 +227,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     protected ReactorSession createSession(ProtonSessionWrapper session) {
         return new ServiceBusReactorSession(this, session, handlerProvider, linkProvider, getClaimsBasedSecurityNode(),
             tokenManagerProvider, messageSerializer, retryOptions,
-            new ServiceBusCreateSessionOptions(distributedTransactionsSupport), isV2);
+            new ServiceBusCreateSessionOptions(distributedTransactionsSupport));
     }
 }
