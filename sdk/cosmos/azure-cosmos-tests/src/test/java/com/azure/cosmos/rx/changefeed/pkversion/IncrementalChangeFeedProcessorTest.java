@@ -2064,7 +2064,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     //           then AllVersionsAndDeletes / FULL_FIDELITY ChangeFeedProcessor should throw the exception.
     //         b) If not, then AllVersionsAndDeletes / FULL_FIDELITY ChangeFeedProcessor should be able to reuse the lease
     //            left behind and use its own continuation.
-    @Test(groups = { "query" }, dataProvider = "incrementalChangeFeedModeStartFromSetting")
+    @Test(groups = { "emulator" }, dataProvider = "incrementalChangeFeedModeStartFromSetting")
     public void fullFidelityToIncrementalChangeFeed(boolean isStartFromBeginning) throws InterruptedException, JsonProcessingException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
