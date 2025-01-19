@@ -33,7 +33,7 @@ public class LocationToLocationSpecificHealthContextHolder implements Serializab
             if (locationToLocationSpecificHealthContext != null && !locationToLocationSpecificHealthContext.isEmpty()) {
                 gen.writeStartObject();
 
-                gen.writePOJOField("partitionLevelCircuitBreakerCtx", locationToLocationSpecificHealthContext);
+                gen.writePOJOField("locSpecificHealthCtx", locationToLocationSpecificHealthContext);
 
                 gen.writeEndObject();
             }

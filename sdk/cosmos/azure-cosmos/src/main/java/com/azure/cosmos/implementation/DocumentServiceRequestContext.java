@@ -69,8 +69,8 @@ public class DocumentServiceRequestContext implements Cloneable {
     private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
 
-    private final LocationToLocationSpecificHealthContextHolder locationToLocationHealthContextHolderForCircuitBreaker = new LocationToLocationSpecificHealthContextHolder();
-    private final PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder = new PerPartitionFailoverInfoHolder();
+    private volatile LocationToLocationSpecificHealthContextHolder locationToLocationHealthContextHolderForCircuitBreaker;
+    private volatile PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
     public DocumentServiceRequestContext() {}
 
@@ -241,7 +241,13 @@ public class DocumentServiceRequestContext implements Cloneable {
     }
 
     public void setLocationToLocationSpecificHealthContext(Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext) {
-        this.locationToLocationHealthContextHolderForCircuitBreaker.setLocationToLocationSpecificHealthContext(locationToLocationSpecificHealthContext);
+
+        if (this.locationToLocationHealthContextHolderForCircuitBreaker == null) {
+            this.locationToLocationHealthContextHolderForCircuitBreaker = new LocationToLocationSpecificHealthContextHolder();
+            this.locationToLocationHealthContextHolderForCircuitBreaker.setLocationToLocationSpecificHealthContext(locationToLocationSpecificHealthContext);
+        } else {
+            this.locationToLocationHealthContextHolderForCircuitBreaker.setLocationToLocationSpecificHealthContext(locationToLocationSpecificHealthContext);
+        }
     }
 
     public PerPartitionFailoverInfoHolder getPerPartitionFailoverContextHolder() {
@@ -249,7 +255,13 @@ public class DocumentServiceRequestContext implements Cloneable {
     }
 
     public void setPerPartitionAutomaticFailoverInfoHolder(PartitionLevelFailoverInfo partitionLevelFailoverInfo) {
-        this.perPartitionFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelFailoverInfo);
+
+        if (this.perPartitionFailoverInfoHolder == null) {
+            this.perPartitionFailoverInfoHolder = new PerPartitionFailoverInfoHolder();
+            this.perPartitionFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelFailoverInfo);
+        } else {
+            this.perPartitionFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelFailoverInfo);
+        }
     }
 }
 

@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -130,215 +131,216 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         GlobalEndpointManager globalEndpointManager,
         boolean expectedCanOpOrchestrateFailover) throws NoSuchFieldException, IllegalAccessException {
 
-        System.setProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY, "true");
+        try {
+            System.setProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY, "true");
 
-        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-            = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(globalEndpointManager, Configs.isPerPartitionAutomaticFailoverEnabled());
+            GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(globalEndpointManager, Configs.isPerPartitionAutomaticFailoverEnabled());
 
-        String pkRangeId = "0";
-        String minInclusive = "AA";
-        String maxExclusive = "BB";
-        String collectionResourceId = "dbs/db1/colls/coll1";
+            String pkRangeId = "0";
+            String minInclusive = "AA";
+            String maxExclusive = "BB";
+            String collectionResourceId = "dbs/db1/colls/coll1";
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class.getDeclaredClasses();
-        Class<?> partitionLevelFailoverInfoClass = getClassBySimpleName(enclosedClasses, "PartitionLevelFailoverInfo");
+            Field failedLocationsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedLocations");
 
-        assertThat(partitionLevelFailoverInfoClass).isNotNull();
+            assertThat(failedLocationsField).isNotNull();
 
-        Field failedLocationsField = partitionLevelFailoverInfoClass.getDeclaredField("failedLocations");
+            Field currentField = PartitionLevelFailoverInfo.class.getDeclaredField("current");
 
-        assertThat(failedLocationsField).isNotNull();
+            assertThat(currentField).isNotNull();
 
-        Field currentField = partitionLevelFailoverInfoClass.getDeclaredField("current");
+            failedLocationsField.setAccessible(true);
+            currentField.setAccessible(true);
 
-        assertThat(currentField).isNotNull();
+            Field partitionKeyRangeToLocationField
+                = GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class.getDeclaredField("partitionKeyRangeToLocation");
 
-        failedLocationsField.setAccessible(true);
-        currentField.setAccessible(true);
+            partitionKeyRangeToLocationField.setAccessible(true);
 
-        Field partitionKeyRangeToLocationField
-            = GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class.getDeclaredField("partitionKeyRangeToLocation");
+            ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocation
+                = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationField.get(globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
-        partitionKeyRangeToLocationField.setAccessible(true);
+            RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
+                operationType,
+                ResourceType.Document,
+                collectionResourceId,
+                pkRangeId,
+                collectionResourceId,
+                minInclusive,
+                maxExclusive,
+                regionEndpointWithFailure);
 
-        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocation
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationField.get(globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            boolean canOpOrchestrateFailover
+                = globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request);
 
-        RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
-            operationType,
-            ResourceType.Document,
-            collectionResourceId,
-            pkRangeId,
-            collectionResourceId,
-            minInclusive,
-            maxExclusive,
-            regionEndpointWithFailure);
+            assertThat(canOpOrchestrateFailover).isEqualTo(expectedCanOpOrchestrateFailover);
 
-        boolean canOpOrchestrateFailover
-            = globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request);
+            Object partitionLevelFailoverInfo
+                = partitionKeyRangeToLocation.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        assertThat(canOpOrchestrateFailover).isEqualTo(expectedCanOpOrchestrateFailover);
+            if (canOpOrchestrateFailover) {
+                Set<URI> failedLocations = (Set<URI>) failedLocationsField.get(partitionLevelFailoverInfo);
+                assertThat(failedLocations.contains(regionEndpointWithFailure)).isTrue();
+                URI current = (URI) currentField.get(partitionLevelFailoverInfo);
+                assertThat(current).isEqualTo(regionEndpointToUsePostFailover);
+            }
 
-        Object partitionLevelFailoverInfo
-            = partitionKeyRangeToLocation.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
-
-        if (canOpOrchestrateFailover) {
-            Set<URI> failedLocations = (Set<URI>) failedLocationsField.get(partitionLevelFailoverInfo);
-            assertThat(failedLocations.contains(regionEndpointWithFailure)).isTrue();
-            URI current = (URI) currentField.get(partitionLevelFailoverInfo);
-            assertThat(current).isEqualTo(regionEndpointToUsePostFailover);
+        } finally {
+            System.clearProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY);
         }
-
-        System.clearProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY);
     }
 
     @Test(groups = {"unit"})
     public void allRegionUnavailableHandlingWithMultiThreading() {
 
-        System.setProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY, "true");
+        try {
 
-        int threadPoolSizeForExecutors = 4;
+            System.setProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY, "true");
 
-        ScheduledThreadPoolExecutor executorForEastUs = new ScheduledThreadPoolExecutor(threadPoolSizeForExecutors);
-        executorForEastUs.setRemoveOnCancelPolicy(true);
-        executorForEastUs.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+            int threadPoolSizeForExecutors = 4;
 
-        ScheduledThreadPoolExecutor executorForCentralUs = new ScheduledThreadPoolExecutor(threadPoolSizeForExecutors);
-        executorForCentralUs.setRemoveOnCancelPolicy(true);
-        executorForCentralUs.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+            ScheduledThreadPoolExecutor executorForEastUs = new ScheduledThreadPoolExecutor(threadPoolSizeForExecutors);
+            executorForEastUs.setRemoveOnCancelPolicy(true);
+            executorForEastUs.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
 
-        ScheduledThreadPoolExecutor executorForEastUs2 = new ScheduledThreadPoolExecutor(threadPoolSizeForExecutors);
-        executorForEastUs2.setRemoveOnCancelPolicy(true);
-        executorForEastUs2.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+            ScheduledThreadPoolExecutor executorForCentralUs = new ScheduledThreadPoolExecutor(threadPoolSizeForExecutors);
+            executorForCentralUs.setRemoveOnCancelPolicy(true);
+            executorForCentralUs.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
 
-        List<ScheduledFuture<?>> scheduledFutures = new ArrayList<>();
+            ScheduledThreadPoolExecutor executorForEastUs2 = new ScheduledThreadPoolExecutor(threadPoolSizeForExecutors);
+            executorForEastUs2.setRemoveOnCancelPolicy(true);
+            executorForEastUs2.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
 
-        String pkRangeId = "0";
-        String minInclusive = "AA";
-        String maxExclusive = "BB";
-        String collectionResourceId = "dbs/db1/colls/coll1";
-        PartitionKeyRange partitionKeyRange = new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive);
+            List<ScheduledFuture<?>> scheduledFutures = new ArrayList<>();
 
-        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
-                LocationEastUs2EndpointToLocationPair,
-                LocationEastUsEndpointToLocationPair,
-                LocationCentralUsEndpointToLocationPair)
-            .stream()
-            .map(Pair::getLeft)
-            .collect(Collectors.toList());
+            String pkRangeId = "0";
+            String minInclusive = "AA";
+            String maxExclusive = "BB";
+            String collectionResourceId = "dbs/db1/colls/coll1";
+            PartitionKeyRange partitionKeyRange = new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive);
 
-        RxDocumentServiceRequest requestCentralUs = constructRxDocumentServiceRequestInstance(
-            OperationType.Create,
-            ResourceType.Document,
-            collectionResourceId,
-            pkRangeId,
-            collectionResourceId,
-            minInclusive,
-            maxExclusive,
-            LocationCentralUsEndpointToLocationPair.getKey());
+            List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+                    LocationEastUs2EndpointToLocationPair,
+                    LocationEastUsEndpointToLocationPair,
+                    LocationCentralUsEndpointToLocationPair)
+                .stream()
+                .map(Pair::getLeft)
+                .collect(Collectors.toList());
 
-        RxDocumentServiceRequest requestEastUs = constructRxDocumentServiceRequestInstance(
-            OperationType.Create,
-            ResourceType.Document,
-            collectionResourceId,
-            pkRangeId,
-            collectionResourceId,
-            minInclusive,
-            maxExclusive,
-            LocationEastUsEndpointToLocationPair.getKey());
+            RxDocumentServiceRequest requestCentralUs = constructRxDocumentServiceRequestInstance(
+                OperationType.Create,
+                ResourceType.Document,
+                collectionResourceId,
+                pkRangeId,
+                collectionResourceId,
+                minInclusive,
+                maxExclusive,
+                LocationCentralUsEndpointToLocationPair.getKey());
 
-        RxDocumentServiceRequest requestEastUs2 = constructRxDocumentServiceRequestInstance(
-            OperationType.Create,
-            ResourceType.Document,
-            collectionResourceId,
-            pkRangeId,
-            collectionResourceId,
-            minInclusive,
-            maxExclusive,
-            LocationEastUs2EndpointToLocationPair.getKey());
+            RxDocumentServiceRequest requestEastUs = constructRxDocumentServiceRequestInstance(
+                OperationType.Create,
+                ResourceType.Document,
+                collectionResourceId,
+                pkRangeId,
+                collectionResourceId,
+                minInclusive,
+                maxExclusive,
+                LocationEastUsEndpointToLocationPair.getKey());
 
-        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-            = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.singleWriteAccountGlobalEndpointManagerMock, Configs.isPerPartitionAutomaticFailoverEnabled());
+            RxDocumentServiceRequest requestEastUs2 = constructRxDocumentServiceRequestInstance(
+                OperationType.Create,
+                ResourceType.Document,
+                collectionResourceId,
+                pkRangeId,
+                collectionResourceId,
+                minInclusive,
+                maxExclusive,
+                LocationEastUs2EndpointToLocationPair.getKey());
 
-        for (int i = 1; i <= 100; i++) {
+            GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.singleWriteAccountGlobalEndpointManagerMock, Configs.isPerPartitionAutomaticFailoverEnabled());
 
-            ScheduledFuture<?> scheduledFutureForEastUs = executorForEastUs.schedule(
-                () -> {
-                    try {
-                        validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
-                            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
-                            requestEastUs,
-                            LocationEastUsEndpointToLocationPair.getKey(),
-                            collectionResourceId,
-                            partitionKeyRange,
-                            applicableReadWriteEndpoints);
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
+            for (int i = 1; i <= 100; i++) {
+
+                ScheduledFuture<?> scheduledFutureForEastUs = executorForEastUs.schedule(
+                    () -> {
+                        try {
+                            validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
+                                globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                                requestEastUs,
+                                LocationEastUsEndpointToLocationPair.getKey(),
+                                collectionResourceId,
+                                partitionKeyRange,
+                                applicableReadWriteEndpoints);
+                        } catch (NoSuchFieldException | IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    1,
+                    TimeUnit.MILLISECONDS);
+
+                ScheduledFuture<?> scheduledFutureForCentralUs = executorForCentralUs.schedule(
+                    () -> {
+                        try {
+                            validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
+                                globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                                requestCentralUs,
+                                LocationCentralUsEndpointToLocationPair.getKey(),
+                                collectionResourceId,
+                                partitionKeyRange,
+                                applicableReadWriteEndpoints);
+                        } catch (NoSuchFieldException | IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    1,
+                    TimeUnit.MILLISECONDS);
+
+                ScheduledFuture<?> scheduledFutureForEastUs2 = executorForEastUs2.schedule(
+                    () -> {
+                        try {
+                            validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
+                                globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                                requestEastUs2,
+                                LocationEastUs2EndpointToLocationPair.getKey(),
+                                collectionResourceId,
+                                partitionKeyRange,
+                                applicableReadWriteEndpoints);
+                        } catch (NoSuchFieldException | IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    1,
+                    TimeUnit.MILLISECONDS);
+
+                scheduledFutures.add(scheduledFutureForEastUs);
+                scheduledFutures.add(scheduledFutureForCentralUs);
+                scheduledFutures.add(scheduledFutureForEastUs2);
+            }
+
+            while (true) {
+
+                boolean areTasksStillRunning = false;
+
+                for (ScheduledFuture<?> scheduledFuture : scheduledFutures) {
+                    if (!scheduledFuture.isDone()) {
+                        areTasksStillRunning = true;
+                        break;
                     }
-                },
-                1,
-                TimeUnit.MILLISECONDS);
+                }
 
-            ScheduledFuture<?> scheduledFutureForCentralUs = executorForCentralUs.schedule(
-                () -> {
-                    try {
-                        validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
-                            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
-                            requestCentralUs,
-                            LocationCentralUsEndpointToLocationPair.getKey(),
-                            collectionResourceId,
-                            partitionKeyRange,
-                            applicableReadWriteEndpoints);
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                },
-                1,
-                TimeUnit.MILLISECONDS);
-
-            ScheduledFuture<?> scheduledFutureForEastUs2 = executorForEastUs2.schedule(
-                () -> {
-                    try {
-                        validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
-                            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
-                            requestEastUs2,
-                            LocationEastUs2EndpointToLocationPair.getKey(),
-                            collectionResourceId,
-                            partitionKeyRange,
-                            applicableReadWriteEndpoints);
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                },
-                1,
-                TimeUnit.MILLISECONDS);
-
-            scheduledFutures.add(scheduledFutureForEastUs);
-            scheduledFutures.add(scheduledFutureForCentralUs);
-            scheduledFutures.add(scheduledFutureForEastUs2);
-        }
-
-        while (true) {
-
-            boolean areTasksStillRunning = false;
-
-            for (ScheduledFuture<?> scheduledFuture : scheduledFutures) {
-                if (!scheduledFuture.isDone()) {
-                    areTasksStillRunning = true;
+                if (!areTasksStillRunning) {
                     break;
                 }
             }
 
-            if (!areTasksStillRunning) {
-                break;
-            }
+            executorForEastUs.shutdown();
+            executorForCentralUs.shutdown();
+            executorForEastUs2.shutdown();
+        } finally {
+            System.clearProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY);
         }
-
-        executorForEastUs.shutdown();
-        executorForCentralUs.shutdown();
-        executorForEastUs2.shutdown();
-
-        System.clearProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY);
     }
 
     private static void validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
@@ -352,16 +354,11 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         logger.warn("Handling exception for {}", locationWithFailure.getPath());
         globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request);
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class.getDeclaredClasses();
-        Class<?> partitionLevelFailoverInfoClass = getClassBySimpleName(enclosedClasses, "PartitionLevelFailoverInfo");
-
-        assertThat(partitionLevelFailoverInfoClass).isNotNull();
-
-        Field failedLocationsField = partitionLevelFailoverInfoClass.getDeclaredField("failedLocations");
+        Field failedLocationsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedLocations");
 
         assertThat(failedLocationsField).isNotNull();
 
-        Field currentField = partitionLevelFailoverInfoClass.getDeclaredField("current");
+        Field currentField = PartitionLevelFailoverInfo.class.getDeclaredField("current");
 
         assertThat(currentField).isNotNull();
 

@@ -1000,8 +1000,8 @@ public class ClientSideRequestStatistics {
                 }
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
-                this.writeNonNullPOJO(jsonGenerator, gatewayStatistics.getLocationToLocationSpecificHealthContext());
-                this.writeNonNullPOJO(jsonGenerator, gatewayStatistics.getPerPartitionFailoverInfoHolder());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionCircuitBreakerCtx", gatewayStatistics.getLocationToLocationSpecificHealthContext());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionAutomaticFailoverCtx", gatewayStatistics.getPerPartitionFailoverInfoHolder());
 
                 jsonGenerator.writeEndObject();
             }
@@ -1036,15 +1036,6 @@ public class ClientSideRequestStatistics {
                 }
 
                 jsonGenerator.writePOJOField(fieldName, object);
-            }
-
-            private void writeNonNullPOJO(JsonGenerator jsonGenerator, Object object) throws IOException {
-
-                if (object == null) {
-                    return;
-                }
-
-                jsonGenerator.writePOJO(object);
             }
         }
     }
