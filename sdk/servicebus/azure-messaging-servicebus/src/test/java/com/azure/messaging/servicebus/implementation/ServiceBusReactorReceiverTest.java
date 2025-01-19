@@ -5,18 +5,14 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
-import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReceiveLinkHandlerWrapper;
 import com.azure.core.amqp.implementation.TokenManager;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
-import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.junit.jupiter.api.AfterEach;
@@ -58,18 +54,13 @@ class ServiceBusReactorReceiverTest {
     private final Sinks.Many<EndpointState> endpointStates
         = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
 
-    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
-
     @Mock
     private Receiver receiver;
     @Mock
     private TokenManager tokenManager;
     @Mock
-    private ReactorProvider reactorProvider;
-    @Mock
     private ReactorDispatcher reactorDispatcher;
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-    private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
     @Mock
     private AmqpConnection connection;
 
@@ -92,17 +83,13 @@ class ServiceBusReactorReceiverTest {
             return null;
         }).when(reactorDispatcher).invoke(any(), any());
 
-        ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, "", LINK_NAME, "", null) {
-            @Override
-            public Flux<Delivery> getDeliveredMessages() {
-                return deliveries.asFlux();
-            }
-
-            @Override
-            public Flux<EndpointState> getEndpointStates() {
-                return endpointStates.asFlux();
-            }
-        };
+        ReceiveLinkHandler2 receiveLinkHandler
+            = new ReceiveLinkHandler2(CONNECTION_ID, "", LINK_NAME, "", null, null, retryOptions, true, null) {
+                @Override
+                public Flux<EndpointState> getEndpointStates() {
+                    return endpointStates.asFlux();
+                }
+            };
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
 
