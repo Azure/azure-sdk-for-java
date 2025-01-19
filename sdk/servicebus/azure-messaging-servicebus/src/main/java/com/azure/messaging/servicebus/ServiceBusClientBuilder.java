@@ -965,8 +965,7 @@ public final class ServiceBusClientBuilder
                     final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
 
                     return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, provider,
-                        handlerProvider, linkProvider, tokenManagerProvider, serializer, crossEntityTransactions, true,
-                        true);
+                        handlerProvider, linkProvider, tokenManagerProvider, serializer, crossEntityTransactions);
                 };
                 final String fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
                 final String entityPath = "N/A";

@@ -58,7 +58,6 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     private final AmqpConnection amqpConnection;
     private final AmqpRetryOptions retryOptions;
     private final boolean distributedTransactionsSupport;
-    private final boolean isV2;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -71,13 +70,12 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      *     operations on the message broker.
      * @param retryOptions Retry options.
      * @param createOptions  the options to create {@link ServiceBusReactorSession}.
-     * @param isV2 (temporary) flag indicating which receiver, v1 or v2, to create.
      */
     ServiceBusReactorSession(AmqpConnection amqpConnection, ProtonSessionWrapper session,
         ReactorHandlerProvider handlerProvider, ServiceBusAmqpLinkProvider linkProvider,
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
-        ServiceBusCreateSessionOptions createOptions, boolean isV2) {
+        ServiceBusCreateSessionOptions createOptions) {
         super(amqpConnection, session, handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider,
             messageSerializer, retryOptions);
         this.amqpConnection = amqpConnection;
@@ -87,7 +85,6 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         this.tokenManagerProvider = tokenManagerProvider;
         this.cbsNodeSupplier = cbsNodeSupplier;
         this.distributedTransactionsSupport = createOptions.isDistributedTransactionsSupported();
-        this.isV2 = isV2;
     }
 
     @Override
@@ -199,12 +196,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 return Mono.error(new RuntimeException("ReceiveMode is not supported: " + receiveMode));
         }
 
-        final ConsumerFactory consumerFactory;
-        if (isV2) {
-            consumerFactory = new ConsumerFactory(deliverySettleMode, true);
-        } else {
-            consumerFactory = new ConsumerFactory();
-        }
+        final ConsumerFactory consumerFactory = new ConsumerFactory(deliverySettleMode, true);
 
         if (distributedTransactionsSupport) {
             return getOrCreateTransactionCoordinator()

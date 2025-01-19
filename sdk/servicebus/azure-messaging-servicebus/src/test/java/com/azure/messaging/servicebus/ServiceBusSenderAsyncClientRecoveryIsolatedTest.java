@@ -886,7 +886,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             when(tokenManagerProvider.getTokenManager(any(), anyString())).thenReturn(tokenManager);
 
             return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, reactorProvider,
-                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, true, true);
+                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false);
         }
 
         AmqpSendLink getAmqpSendLink(int sessionIdx, int linkIdx) {
