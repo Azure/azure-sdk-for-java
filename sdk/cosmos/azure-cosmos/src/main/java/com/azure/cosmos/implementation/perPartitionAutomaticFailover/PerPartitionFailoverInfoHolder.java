@@ -29,11 +29,15 @@ public class PerPartitionFailoverInfoHolder implements Serializable {
         @Override
         public void serialize(PerPartitionFailoverInfoHolder value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 
-            gen.writeStartObject();
+            PartitionLevelFailoverInfo partitionLevelFailoverInfo = value.getPartitionLevelFailoverInfo();
 
-            gen.writeObjectField("perPartitionAutomaticFailoverCtx", value.getPartitionLevelFailoverInfo());
+            if (partitionLevelFailoverInfo != null) {
+                gen.writeStartObject();
 
-            gen.writeEndObject();
+                gen.writeObjectField("perPartitionAutomaticFailoverCtx", value.getPartitionLevelFailoverInfo());
+
+                gen.writeEndObject();
+            }
         }
     }
 }

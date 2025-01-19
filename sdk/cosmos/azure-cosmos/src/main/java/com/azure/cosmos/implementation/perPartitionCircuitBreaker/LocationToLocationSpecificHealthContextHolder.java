@@ -28,13 +28,15 @@ public class LocationToLocationSpecificHealthContextHolder implements Serializab
         @Override
         public void serialize(LocationToLocationSpecificHealthContextHolder value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 
-            gen.writeStartObject();
-
             Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext = value.getLocationToLocationSpecificHealthContext();
 
-            gen.writePOJOField("partitionLevelCircuitBreakerCtx", locationToLocationSpecificHealthContext);
+            if (locationToLocationSpecificHealthContext != null && !locationToLocationSpecificHealthContext.isEmpty()) {
+                gen.writeStartObject();
 
-            gen.writeEndObject();
+                gen.writePOJOField("partitionLevelCircuitBreakerCtx", locationToLocationSpecificHealthContext);
+
+                gen.writeEndObject();
+            }
         }
     }
 }
