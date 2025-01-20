@@ -1,0 +1,82 @@
+pr:
+  branches:
+    include:
+    # JRS - These are commented so the pipeline will only run in pipelinev3 until it's ready
+    # - main
+    # - feature/*
+    # - hotfix/*
+    # - release/*
+    # - restapi*
+    - pipelinev3*
+  paths:
+    include:
+    - "*"
+    # Note: The ExcludePaths template below needs to duplicate
+    # any excludes here. The reason being is that we can't access
+    # pr->paths->exclude. These are paths only, not individual files
+    exclude:
+    - sdk/batch/microsoft-azure-batch/
+    - sdk/boms
+    - sdk/cosmos
+    - sdk/cognitiveservices/ms-azure-cs-autosuggest/
+    - sdk/cognitiveservices/ms-azure-cs-computervision/
+    - sdk/cognitiveservices/ms-azure-cs-contentmoderator/
+    - sdk/cognitiveservices/ms-azure-cs-customimagesearch/
+    - sdk/cognitiveservices/ms-azure-cs-customsearch/
+    - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/
+    - sdk/cognitiveservices/ms-azure-cs-customvision-training/
+    - sdk/cognitiveservices/ms-azure-cs-entitysearch/
+    - sdk/cognitiveservices/ms-azure-cs-faceapi/
+    - sdk/cognitiveservices/ms-azure-cs-imagesearch/
+    - sdk/cognitiveservices/ms-azure-cs-luis-authoring/
+    - sdk/cognitiveservices/ms-azure-cs-luis-runtime/
+    - sdk/cognitiveservices/ms-azure-cs-newssearch/
+    - sdk/cognitiveservices/ms-azure-cs-qnamaker/
+    - sdk/cognitiveservices/ms-azure-cs-spellcheck/
+    - sdk/cognitiveservices/ms-azure-cs-videosearch/
+    - sdk/cognitiveservices/ms-azure-cs-visualsearch/
+    - sdk/cognitiveservices/ms-azure-cs-websearch/
+    - sdk/eventhubs/microsoft-azure-eventhubs/
+    - sdk/eventhubs/microsoft-azure-eventhubs-eph/
+    - sdk/mediaservices/microsoft-azure-media/
+    - sdk/servicebus/microsoft-azure-servicebus/
+    - sdk/spring
+
+parameters:
+  - name: Service
+    type: string
+    default: auto
+
+extends:
+  template: ../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: ${{ parameters.Service }}
+    # See pr->paths->exclude comment above. Anything added/removed there
+    # needs to be added/removed here.
+    ExcludePaths:
+      - sdk/batch/microsoft-azure-batch/
+      - sdk/boms
+      - sdk/cosmos
+      - sdk/cognitiveservices/ms-azure-cs-autosuggest/
+      - sdk/cognitiveservices/ms-azure-cs-computervision/
+      - sdk/cognitiveservices/ms-azure-cs-contentmoderator/
+      - sdk/cognitiveservices/ms-azure-cs-customimagesearch/
+      - sdk/cognitiveservices/ms-azure-cs-customsearch/
+      - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/
+      - sdk/cognitiveservices/ms-azure-cs-customvision-training/
+      - sdk/cognitiveservices/ms-azure-cs-entitysearch/
+      - sdk/cognitiveservices/ms-azure-cs-faceapi/
+      - sdk/cognitiveservices/ms-azure-cs-imagesearch/
+      - sdk/cognitiveservices/ms-azure-cs-luis-authoring/
+      - sdk/cognitiveservices/ms-azure-cs-luis-runtime/
+      - sdk/cognitiveservices/ms-azure-cs-newssearch/
+      - sdk/cognitiveservices/ms-azure-cs-qnamaker/
+      - sdk/cognitiveservices/ms-azure-cs-spellcheck/
+      - sdk/cognitiveservices/ms-azure-cs-videosearch/
+      - sdk/cognitiveservices/ms-azure-cs-visualsearch/
+      - sdk/cognitiveservices/ms-azure-cs-websearch/
+      - sdk/eventhubs/microsoft-azure-eventhubs/
+      - sdk/eventhubs/microsoft-azure-eventhubs-eph/
+      - sdk/mediaservices/microsoft-azure-media/
+      - sdk/servicebus/microsoft-azure-servicebus/
+      - sdk/spring
