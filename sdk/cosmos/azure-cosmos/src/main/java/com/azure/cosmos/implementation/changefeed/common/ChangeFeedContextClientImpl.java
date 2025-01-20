@@ -38,7 +38,6 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -54,7 +53,6 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     private Scheduler scheduler;
    private static final ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor cosmosAsyncDatabaseAccessor =
         ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
-    private AtomicInteger count = new AtomicInteger(0);
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.

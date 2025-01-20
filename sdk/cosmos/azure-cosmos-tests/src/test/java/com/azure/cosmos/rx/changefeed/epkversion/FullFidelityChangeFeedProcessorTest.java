@@ -62,8 +62,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -1802,13 +1800,13 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         assertThat(remainingWork > 0).as("Failed to receive all the feed documents").isTrue();
     }
 
-    @BeforeClass(groups = { "emulator", "query" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_FullFidelityChangeFeedProcessorTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
-    @AfterClass(groups = { "emulator", "query" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
@@ -1855,11 +1853,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     private CosmosAsyncContainer createFeedCollection(CosmosAsyncDatabase database, int provisionedThroughput) {
         CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
         return createCollection(database, getCollectionDefinitionWithFullFidelity(), optionsFeedCollection, provisionedThroughput);
-    }
-
-    private CosmosAsyncContainer createFeedCollectionWithoutRetention(int provisionedThroughput) {
-        CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
-        return createCollection(createdDatabase, getCollectionDefinition(UUID.randomUUID().toString()), optionsFeedCollection, provisionedThroughput);
     }
 
     private CosmosAsyncContainer createLeaseCollection(int provisionedThroughput) {
