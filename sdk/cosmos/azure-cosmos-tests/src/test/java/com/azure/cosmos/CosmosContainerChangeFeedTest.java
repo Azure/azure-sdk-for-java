@@ -329,51 +329,24 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
         );
-        insertDocuments(20, 7);
+        insertDocuments(1, 20);
 
-
-        final Map<String, String> continuations = new HashMap<>();
-
-
-
-        for (int i = 0; i < 20; i++) {
-            String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
-            logger.info(String.format("Initial validation - PK value: '%s'", pkValue));
-
-            final int initiallyDeletedDocuments = i < 2 ? 3 : 0;
-            final int expectedInitialEventCount = 7 - initiallyDeletedDocuments;
-
-            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-                .createForProcessingFromBeginning(
-                    FeedRange.forLogicalPartition(
-                        new PartitionKey(pkValue)
-                    ));
-            AtomicInteger count = new AtomicInteger(0);
-            createdContainer.asyncContainer.queryChangeFeed(options, ObjectNode.class).handle((r) -> {
-                count.incrementAndGet();
-            }).byPage().publishOn(Schedulers.boundedElastic());
-
-
-
-
-        }
-
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRange.forFullRange()).setMaxItemCount(10);
+        AtomicInteger count = new AtomicInteger(0);
+        // Will keep grabbing pages
+        createdContainer.asyncContainer.queryChangeFeed(options, ObjectNode.class).handle((r) ->
+            count.incrementAndGet()).byPage().subscribe();
 
         Thread.sleep(3000);
+        assertThat(count.get()).isNotEqualTo(2);
 
-        for (int i = 0; i < 20; i++) {
-            String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
-            logger.info(String.format("Validation after updates - PK value: '%s'", pkValue));
-
-            final int expectedEventCountAfterUpdates = i < 5 ?
-                i < 1 ? 0 : 2  // on the first logical partitions all updated documents were deleted
-                : 0; // no updates
-
-            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-                .createForProcessingFromContinuation(continuations.get(pkValue));
-
-            drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
-        }
+        count.set(0);
+        // should only get two pages
+        createdContainer.asyncContainer.queryChangeFeed(options, ObjectNode.class).handle((r) ->
+            count.incrementAndGet()).byPage().take(2, true).subscribe();
+        Thread.sleep(3000);
+        assertThat(count.get()).isEqualTo(2);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

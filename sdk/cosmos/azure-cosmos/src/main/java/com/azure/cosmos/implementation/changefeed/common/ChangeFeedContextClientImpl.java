@@ -37,14 +37,11 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static java.lang.Thread.sleep;
 
 /**
  * Implementation for ChangeFeedDocumentClient.
@@ -201,7 +198,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     public <T> Mono<CosmosItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
                                                        CosmosItemRequestOptions options) {
         return cosmosContainer.replaceItem(document, itemId, partitionKey, options)
-                    .publishOn(this.scheduler);
+            .publishOn(this.scheduler);
     }
 
     @Override

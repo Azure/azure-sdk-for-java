@@ -131,14 +131,17 @@ abstract class Fetcher<T> {
             (top.get() != 0) &&
             // if fullyDrained then done
             !this.isFullyDrained(this.isChangeFeed, response)) {
+            shouldFetchMore.set(true);
         } else {
             shouldFetchMore.set(false);
         }
 
-        logger.warn("Fetcher state updated: " +
+        if (logger.isDebugEnabled()) {
+            logger.debug("Fetcher state updated: " +
                     "isChangeFeed = {}, continuation token = {}, max item count = {}, should fetch more = {}, Context: {}",
                 isChangeFeed, this.getContinuationForLogging(), maxItemCount.get(), shouldFetchMore.get(),
                 this.operationContextTextProvider.get());
+        }
     }
 
     protected void reEnableShouldFetchMoreForRetry() {

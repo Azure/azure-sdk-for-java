@@ -39,12 +39,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor  feedResponseAccessor =
         ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
-    private static final Logger logger = LoggerFactory.getLogger(ChangeFeedFetcher.class);
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
     private final boolean completeAfterAllCurrentChangesRetrieved;
-    private int count = 0;
     private final Long endLSN;
 
     public ChangeFeedFetcher(
@@ -117,7 +115,6 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         return Mono.fromSupplier(() -> nextPageCore(retryPolicy))
                    .flatMap(Function.identity())
                    .flatMap((r) -> {
-                       logger.warn("ChangeFeedFetcher: received {} results", r.getResults().size());
                        FeedRangeContinuation continuationSnapshot =
                            this.changeFeedState.getContinuation();
 
@@ -174,11 +171,6 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         }
 
         FeedRangeContinuation continuation = this.changeFeedState.getContinuation();
-        logger.warn("ChangeFeedFetcher: isFullyDrained: {}, --- {}", continuation.isDone(), this.changeFeedState.getContinuation());
-        if (count ==  1) {
-            Thread.dumpStack();
-        }
-        count++;
         return continuation != null && continuation.isDone();
     }
 

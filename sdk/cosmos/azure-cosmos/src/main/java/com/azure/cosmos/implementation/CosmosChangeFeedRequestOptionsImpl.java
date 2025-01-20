@@ -19,8 +19,6 @@ import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.util.Beta;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,10 +51,8 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private Set<String> keywordIdentifiers;
     private boolean completeAfterAllCurrentChangesRetrieved;
     private Long endLSN;
-    private static final Logger logger = LoggerFactory.getLogger(CosmosChangeFeedRequestOptionsImpl.class);
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
-//        this.continuationState = toBeCloned.continuationState;
         if (toBeCloned.continuationState != null) {
             this.continuationState = new ChangeFeedStateV1((ChangeFeedStateV1) toBeCloned.continuationState);
         } else {

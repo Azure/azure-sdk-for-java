@@ -3,7 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.*;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
@@ -41,7 +45,6 @@ import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrott
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.FeedResponse;
 import io.netty.handler.ssl.SslContext;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -174,10 +177,6 @@ public class ReflectionUtils {
 
     public static GlobalAddressResolver getGlobalAddressResolver(RxDocumentClientImpl rxDocumentClient) {
         return get(GlobalAddressResolver.class, rxDocumentClient, "addressResolver");
-    }
-
-    public static FeedResponse<?> getFeedResponse(ChangeFeedProcessorContext context) {
-        return get(FeedResponse.class, context, "feedResponse");
     }
 
     public static void setBackgroundRefreshLocationTimeIntervalInMS(GlobalEndpointManager globalEndPointManager, int millSec){
