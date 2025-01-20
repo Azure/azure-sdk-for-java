@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
@@ -76,8 +75,6 @@ import static org.assertj.core.api.Assertions.fail;
 public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private final static Logger log = LoggerFactory.getLogger(IncrementalChangeFeedProcessorTest.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
-            ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
     private CosmosAsyncDatabase createdDatabase;
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
