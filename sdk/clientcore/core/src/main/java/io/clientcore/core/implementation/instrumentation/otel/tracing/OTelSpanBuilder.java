@@ -7,12 +7,12 @@ import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelAttributeKey.castAttributeValue;
@@ -21,17 +21,15 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_BUILDER_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_KIND_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTelUtils.getOTelContext;
 
 /**
  * OpenTelemetry implementation of {@link SpanBuilder}.
  */
 public class OTelSpanBuilder implements SpanBuilder {
     static final OTelSpanBuilder NOOP
-        = new OTelSpanBuilder(null, SpanKind.INTERNAL, Context.none(), new LibraryInstrumentationOptions("noop"));
+        = new OTelSpanBuilder(null, SpanKind.INTERNAL, null, new LibraryInstrumentationOptions("noop"));
 
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpanBuilder.class);
-    private static final OTelSpan NOOP_SPAN;
     private static final FallbackInvoker SET_PARENT_INVOKER;
     private static final FallbackInvoker SET_ATTRIBUTE_INVOKER;
     private static final FallbackInvoker SET_SPAN_KIND_INVOKER;
@@ -45,7 +43,7 @@ public class OTelSpanBuilder implements SpanBuilder {
     private final Object otelSpanBuilder;
     private final boolean suppressNestedSpans;
     private final SpanKind spanKind;
-    private final Context context;
+    private final InstrumentationContext context;
 
     static {
         ReflectiveInvoker setParentInvoker = null;
@@ -58,7 +56,6 @@ public class OTelSpanBuilder implements SpanBuilder {
         Object clientKind = null;
         Object producerKind = null;
         Object consumerKind = null;
-        OTelSpan noopSpan = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
@@ -78,18 +75,15 @@ public class OTelSpanBuilder implements SpanBuilder {
                 clientKind = SPAN_KIND_CLASS.getField("CLIENT").get(null);
                 producerKind = SPAN_KIND_CLASS.getField("PRODUCER").get(null);
                 consumerKind = SPAN_KIND_CLASS.getField("CONSUMER").get(null);
-
-                noopSpan = new OTelSpan(null, OTelContext.getCurrent(), SpanKind.INTERNAL);
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
         }
 
-        NOOP_SPAN = noopSpan;
         SET_PARENT_INVOKER = new FallbackInvoker(setParentInvoker, LOGGER);
         SET_ATTRIBUTE_INVOKER = new FallbackInvoker(setAttributeInvoker, LOGGER);
         SET_SPAN_KIND_INVOKER = new FallbackInvoker(setSpanKindInvoker, LOGGER);
-        START_SPAN_INVOKER = new FallbackInvoker(startSpanInvoker, NOOP_SPAN, LOGGER);
+        START_SPAN_INVOKER = new FallbackInvoker(startSpanInvoker, OTelSpan.NOOP_SPAN.getOtelSpan(), LOGGER);
         INTERNAL_KIND = internalKind;
         SERVER_KIND = serverKind;
         CLIENT_KIND = clientKind;
@@ -98,7 +92,7 @@ public class OTelSpanBuilder implements SpanBuilder {
 
     }
 
-    OTelSpanBuilder(Object otelSpanBuilder, SpanKind kind, Context parent,
+    OTelSpanBuilder(Object otelSpanBuilder, SpanKind kind, InstrumentationContext parent,
         LibraryInstrumentationOptions libraryOptions) {
         this.otelSpanBuilder = otelSpanBuilder;
         this.suppressNestedSpans = libraryOptions == null
@@ -125,7 +119,7 @@ public class OTelSpanBuilder implements SpanBuilder {
     @Override
     public Span startSpan() {
         if (isInitialized()) {
-            Object otelParentContext = getOTelContext(context);
+            Object otelParentContext = OTelContext.fromInstrumentationContext(context);
             SET_PARENT_INVOKER.invoke(otelSpanBuilder, otelParentContext);
             SET_SPAN_KIND_INVOKER.invoke(otelSpanBuilder, toOtelSpanKind(spanKind));
             Object otelSpan = shouldSuppress(otelParentContext)
@@ -136,13 +130,16 @@ public class OTelSpanBuilder implements SpanBuilder {
             }
         }
 
-        return NOOP_SPAN;
+        return OTelSpan.NOOP_SPAN;
     }
 
     private boolean shouldSuppress(Object parentContext) {
-        return suppressNestedSpans
-            && (this.spanKind == SpanKind.CLIENT || this.spanKind == SpanKind.INTERNAL)
-            && OTelContext.hasClientCoreSpan(parentContext);
+        if (suppressNestedSpans && (this.spanKind == SpanKind.CLIENT || this.spanKind == SpanKind.INTERNAL)) {
+            OTelSpan span = OTelContext.getClientCoreSpan(parentContext);
+            return span != null && (span.getSpanKind() == SpanKind.INTERNAL || span.getSpanKind() == SpanKind.CLIENT);
+        }
+
+        return false;
     }
 
     private Object toOtelSpanKind(SpanKind spanKind) {

@@ -82,10 +82,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-documenttranslator/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [product_documentation]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/overview#get-started
-[cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
+[cognitive_resource_cli]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
 [batch_document_translation_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/7cebc63a02f2f6ccd2a8adc9b7975e2e71bd3f74/sdk/translation/azure-ai-documenttranslator/src/main/java/com/azure/ai/documenttranslator/BatchDocumentTranslationClient.java
 [azure_portal]: https://portal.azure.com
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://central.sonatype.com/artifact/com.azure/azure-ai-documenttranslator
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-documenttranslator/src/samples/README.md
 
