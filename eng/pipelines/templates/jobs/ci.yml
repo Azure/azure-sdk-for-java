@@ -124,59 +124,59 @@ jobs:
             -SourcesDirectory $(Build.SourcesDirectory)
             -ProjectList $(ProjectList)
 
-  #     # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-  #     # as we require the GitHub service connection to be loaded.
-  #     - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-  #       - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
-  #         parameters:
-  #           Paths: $(SparseCheckoutDirectories)
-  #           SkipCheckoutNone: true
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the GitHub service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
+          parameters:
+            Paths: $(SparseCheckoutDirectories)
+            SkipCheckoutNone: true
 
-  #     - ${{ parameters.PreBuildSteps }}
+      - ${{ parameters.PreBuildSteps }}
 
-  #     - script: |
-  #         echo "##vso[build.addbuildtag]Scheduled"
-  #       displayName: 'Tag scheduled builds'
-  #       condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
+      - script: |
+          echo "##vso[build.addbuildtag]Scheduled"
+        displayName: 'Tag scheduled builds'
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
-  #     - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-  #       parameters:
-  #         PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-  #         ServiceDirectory: "template"
-  #         TestPipeline: ${{ parameters.TestPipeline }}
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
 
-  #     # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
-  #     # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
-  #     # PR pipeline, whose ServiceDirectory is 'auto' since the packageInfo files will be generated above.
-  #     - ${{if ne(parameters.ServiceDirectory, 'auto')}}:
-  #       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
-  #         parameters:
-  #           ServiceDirectory: ${{parameters.ServiceDirectory}}
+      # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
+      # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
+      # PR pipeline, whose ServiceDirectory is 'auto' since the packageInfo files will be generated above.
+      - ${{if ne(parameters.ServiceDirectory, 'auto')}}:
+        - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
+          parameters:
+            ServiceDirectory: ${{parameters.ServiceDirectory}}
 
-  #     - task: PowerShell@2
-  #       displayName: Setup Dev versioning
-  #       condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
-  #       inputs:
-  #         pwsh: true
-  #         filePath: eng/pipelines/scripts/Set-Dev-Versioning.ps1
-  #         arguments: >
-  #           -BuildNumber $(Build.BuildNumber)
-  #           -SdkType ${{parameters.SDKType}}
-  #       env:
-  #         ARTIFACTSJSON: $(ArtifactsJson)
+      - task: PowerShell@2
+        displayName: Setup Dev versioning
+        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+        inputs:
+          pwsh: true
+          filePath: eng/pipelines/scripts/Set-Dev-Versioning.ps1
+          arguments: >
+            -BuildNumber $(Build.BuildNumber)
+            -SdkType ${{parameters.SDKType}}
+        env:
+          ARTIFACTSJSON: $(ArtifactsJson)
 
-  #     - ${{if ne(parameters.ServiceDirectory, '')}}:
-  #       - task: Powershell@2
-  #         inputs:
-  #           filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
-  #           arguments: >
-  #             -ServiceDirectory ${{parameters.ServiceDirectory}}
-  #             -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
-  #             -AddDevVersion
-  #           pwsh: true
-  #           workingDirectory: $(Pipeline.Workspace)
-  #         displayName: Update package properties with dev version
-  #         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+      - ${{if ne(parameters.ServiceDirectory, '')}}:
+        - task: Powershell@2
+          inputs:
+            filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
+            arguments: >
+              -ServiceDirectory ${{parameters.ServiceDirectory}}
+              -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+              -AddDevVersion
+            pwsh: true
+            workingDirectory: $(Pipeline.Workspace)
+          displayName: Update package properties with dev version
+          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
 
   #     - script: |
   #         python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
