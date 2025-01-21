@@ -77,6 +77,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private CosmosAsyncDatabase createdDatabase;
+//    private final String databaseId = "testdb1";
+//    private final String hostName = "TestHost1";
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
     private final int FEED_COUNT = 10;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
