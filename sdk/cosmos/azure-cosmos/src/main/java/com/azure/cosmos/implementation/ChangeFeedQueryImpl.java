@@ -33,6 +33,8 @@ class ChangeFeedQueryImpl<T> {
 
     private final static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedRequestOptionsAccessor =
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+    private final static ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
 
     private static final int INITIAL_TOP_VALUE = -1;
 
@@ -45,7 +47,7 @@ class ChangeFeedQueryImpl<T> {
     private final Class<T> klass;
     private final CosmosChangeFeedRequestOptions options;
     private final ResourceType resourceType;
-    private final ChangeFeedState changeFeedState;
+    private ChangeFeedState changeFeedState;
     private final OperationContextAndListenerTuple operationContextAndListener;
     private final CosmosItemSerializer itemSerializer;
 
@@ -144,7 +146,18 @@ class ChangeFeedQueryImpl<T> {
 
         // always populate the collectionRid header
         // in case of container has been recreated, this will allow correct error being returned to SDK
-        headers.put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, this.changeFeedState.getContainerRid());
+        // this ensures compatibility with old leases that had the collection link instead of collection rid
+        if (this.collectionLink.equals(containerAccessor.getLinkWithoutTrailingSlash(this.changeFeedState.getContainerRid()))) {
+            headers.put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, changeFeedRequestOptionsAccessor.getCollectionRid(options));
+            this.changeFeedState = new ChangeFeedStateV1(
+                    changeFeedRequestOptionsAccessor.getCollectionRid(options),
+                    changeFeedState.getFeedRange(),
+                    changeFeedState.getMode(),
+                    changeFeedState.getStartFromSettings(),
+                    changeFeedState.getContinuation());
+        } else {
+            headers.put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, this.changeFeedState.getContainerRid());
+        }
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,

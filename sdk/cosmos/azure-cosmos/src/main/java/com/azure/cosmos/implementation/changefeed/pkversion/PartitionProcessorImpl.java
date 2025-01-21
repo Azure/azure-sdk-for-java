@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -14,8 +16,11 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedObserverContextImpl;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.common.ExceptionClassifier;
 import com.azure.cosmos.implementation.changefeed.common.StatusCodeErrorType;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
@@ -24,6 +29,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundEx
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -45,9 +51,16 @@ import static java.time.temporal.ChronoUnit.MILLIS;
  */
 class PartitionProcessorImpl implements PartitionProcessor {
     private static final Logger logger = LoggerFactory.getLogger(PartitionProcessorImpl.class);
+    private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+    private static final ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor optionsAccessor =
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
 
-    private final ProcessorSettings settings;
+    private ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
+    private final CosmosAsyncContainer cosmosAsyncContainer;
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
+    private final String collectionResourceId;
     private final ChangeFeedObserver<JsonNode> observer;
     private volatile CosmosChangeFeedRequestOptions options;
     private final ChangeFeedContextClient documentClient;
@@ -60,25 +73,19 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
     public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
                                   ChangeFeedContextClient documentClient,
-                                  ProcessorSettings settings,
+                                  CosmosAsyncContainer cosmosAsyncContainer,
+                                  ChangeFeedProcessorOptions changeFeedProcessorOptions,
+                                  String collectionResourceId,
                                   PartitionCheckpointer checkPointer,
                                   Lease lease,
                                   FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
         this.observer = observer;
         this.documentClient = documentClient;
-        this.settings = settings;
         this.checkpointer = checkPointer;
         this.lease = lease;
-
-        ChangeFeedState state = settings.getStartState();
-        this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
-        this.options.setMaxItemCount(settings.getMaxItemCount());
-        // For pk version, merge is not support, exclude it from the capabilities header
-        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
-            .setHeader(
-                this.options,
-                HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
-                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
+        this.cosmosAsyncContainer = cosmosAsyncContainer;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.collectionResourceId = collectionResourceId;
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
     }
 
@@ -100,28 +107,65 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     return Flux.empty();
                 }
 
-                // If there are still changes need to be processed, fetch right away
-                // If there are no changes, wait pollDelay time then try again
-                if(this.hasMoreResults && this.resultException == null) {
-                    return Flux.just(value);
-                }
+                return containerAccessor.extractCollectionRid(this.cosmosAsyncContainer).flux()
+                    .flatMap(collectionRid -> {
+                        FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                        ChangeFeedState state;
+                        if (Strings.isNullOrWhiteSpace(lease.getContinuationToken())) {
+                            state = new ChangeFeedStateV1(
+                                collectionRid,
+                                feedRange,
+                                ChangeFeedMode.INCREMENTAL,
+                                getStartFromSettings(
+                                    feedRange,
+                                    this.changeFeedProcessorOptions),
+                                null);
+                        } else {
+                            state = lease.getContinuationState(this.collectionResourceId, ChangeFeedMode.INCREMENTAL);
+                        }
+                        // only create settings once
+                        if (this.settings == null) {
+                            settings = new ProcessorSettings(state, this.cosmosAsyncContainer)
+                                .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
+                                .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount());
+                        }
+                        this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
+                        this.options.setMaxItemCount(settings.getMaxItemCount());
+                        // For pk version, merge is not support, exclude it from the capabilities header
+                        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+                            .setHeader(
+                                this.options,
+                                HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+                                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
+                        // If there are still changes need to be processed, fetch right away
+                        // If there are no changes, wait pollDelay time then try again
+                        if (this.hasMoreResults && this.resultException == null) {
+                            return Flux.just(value);
+                        }
 
-                Instant stopTimer = Instant.now().plus(this.settings.getFeedPollDelay());
-                return Mono.just(value)
-                    .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
-                    .repeat( () -> {
-                        Instant currentTime = Instant.now();
-                        return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
-                    }).last();
+                        Instant stopTimer = Instant.now().plus(this.settings.getFeedPollDelay());
+                        return Mono.just(value)
+                            .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
+                            .repeat(() -> {
+                                Instant currentTime = Instant.now();
+                                return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
+                            }).last();
+                    });
             })
             .flatMap(value -> {
                 if (throughputControlGroupConfigForFeedRange != null) {
                     this.options.setThroughputControlGroupName(throughputControlGroupConfigForFeedRange.getGroupName());
                 }
-                return this.documentClient.createDocumentChangeFeedQuery(
-                    this.settings.getCollectionSelfLink(),
-                    this.options,
-                    JsonNode.class).limitRequest(1);
+                return containerAccessor.extractCollectionRid(this.settings.getCollectionSelfLink()).flux()
+                    .flatMap(collectionRid -> {
+                            optionsAccessor.setCollectionRid(this.options, collectionRid);
+                            return this.documentClient.createDocumentChangeFeedQuery(
+                                    this.settings.getCollectionSelfLink(),
+                                    this.options,
+                                    JsonNode.class)
+                                .limitRequest(1);
+                        }
+                    );
             })
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
@@ -297,6 +341,24 @@ class PartitionProcessorImpl implements PartitionProcessor {
         }
 
         return this.feedRangeThroughputControlConfigManager.getThroughputControlConfigForFeedRange(lease.getFeedRange());
+    }
+
+    private static ChangeFeedStartFromInternal getStartFromSettings(FeedRangeInternal feedRange,
+        ChangeFeedProcessorOptions processorOptions) {
+        if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation())) {
+            return ChangeFeedStartFromInternal.createFromETagAndFeedRange(
+                processorOptions.getStartContinuation(),
+                feedRange);
+        }
+        if (processorOptions.getStartTime() != null) {
+            return ChangeFeedStartFromInternal.createFromPointInTime(processorOptions.getStartTime());
+        }
+
+        if (processorOptions.isStartFromBeginning()) {
+            return ChangeFeedStartFromInternal.createFromBeginning();
+        }
+
+        return ChangeFeedStartFromInternal.createFromNow();
     }
 
     @Override

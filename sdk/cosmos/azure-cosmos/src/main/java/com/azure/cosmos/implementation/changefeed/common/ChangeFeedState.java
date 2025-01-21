@@ -53,8 +53,6 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     public abstract String getContainerRid();
 
-    public abstract void setContainerRid(String containerRid);
-
     public static ChangeFeedState fromString(String base64EncodedJson) {
         checkNotNull(base64EncodedJson, "Argument 'base64EncodedJson' must not be null");
 

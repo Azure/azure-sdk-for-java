@@ -2,18 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
-import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -59,31 +54,14 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
         checkNotNull(observer, "Argument 'observer' can not be null");
         checkNotNull(lease, "Argument 'lease' can not be null");
 
-        ChangeFeedState state;
-        if (Strings.isNullOrWhiteSpace(lease.getContinuationToken())) {
-            state = new ChangeFeedStateV1(
-                BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
-                lease.getFeedRange(),
-                this.changeFeedMode,
-                PartitionProcessorHelper.getStartFromSettings(
-                    lease.getFeedRange(),
-                    this.changeFeedProcessorOptions,
-                    this.changeFeedMode),
-                null);
-        } else {
-            state = lease.getContinuationState(this.collectionResourceId, this.changeFeedMode);
-        }
-
-        ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)
-            .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
-            .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount());
-
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
 
         return new PartitionProcessorImpl<>(
             observer,
             this.documentClient,
-            settings,
+            this.collectionSelfLink,
+            this.changeFeedProcessorOptions,
+            this.collectionResourceId,
             checkpointer,
             lease,
             classType,

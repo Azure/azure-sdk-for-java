@@ -16,7 +16,7 @@ import java.util.Objects;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ChangeFeedStateV1 extends ChangeFeedState {
-    private String containerRid;
+    private final String containerRid;
     private final FeedRangeInternal feedRange;
     private final ChangeFeedMode mode;
     private final ChangeFeedStartFromInternal startFromSettings;
@@ -94,11 +94,6 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     @Override
     public String getContainerRid() {
         return this.containerRid;
-    }
-
-    @Override
-    public void setContainerRid(String containerRid) {
-        this.containerRid = containerRid;
     }
 
     private void populateEffectiveRangeAndStartFromSettingsToRequest(RxDocumentServiceRequest request) {
