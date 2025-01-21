@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.Exceptions;
@@ -175,6 +176,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
                 httpResponse.close();
 
+                throwIfDelayDurationExceedLimit(delayDuration);
+
                 return addBackoffDelay(attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressed),
                     delayDuration);
             } else {
@@ -184,6 +187,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 return Mono.just(httpResponse);
             }
         }).onErrorResume(Exception.class, err -> {
+            String message = err.getMessage();
+            if (!CoreUtils.isNullOrEmpty(message) && message.startsWith("Delay duration is too long.")) {
+                return Mono.error(err);
+            }
+
             if (shouldRetryException(retryStrategy, err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
@@ -220,6 +228,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                 Duration delayDuration = retryStrategy.calculateRetryDelay(tryCount);
                 if (!delayDuration.isNegative() && !delayDuration.isZero()) {
+                    throwIfDelayDurationExceedLimit(delayDuration);
                     try {
                         Thread.sleep(delayDuration.toMillis());
                     } catch (InterruptedException ex) {
@@ -249,6 +258,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             httpResponse.close();
 
             if (!delayDuration.isNegative() && !delayDuration.isZero()) {
+                throwIfDelayDurationExceedLimit(delayDuration);
                 try {
                     Thread.sleep(delayDuration.toMillis());
                 } catch (InterruptedException ie) {
@@ -285,6 +295,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         // Check all causal exceptions in the exception chain.
         while (causalThrowable != null) {
+            String message = causalThrowable.getMessage();
+            if (!CoreUtils.isNullOrEmpty(message) && message.startsWith("Delay duration is too long.")) {
+                return false;
+            }
+
             if (retryStrategy.shouldRetryCondition(requestRetryCondition)) {
                 return true;
             }
@@ -311,6 +326,13 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static void logRetryWithError(LoggingEventBuilder loggingEventBuilder, int tryCount, String format,
         Throwable throwable) {
         loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(format, throwable);
+    }
+
+    private static void throwIfDelayDurationExceedLimit(Duration delayDuration) {
+        if (delayDuration != null && delayDuration.getSeconds() > 6) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Delay duration is too long. Duration: "
+                + delayDuration));
+        }
     }
 
     /*
