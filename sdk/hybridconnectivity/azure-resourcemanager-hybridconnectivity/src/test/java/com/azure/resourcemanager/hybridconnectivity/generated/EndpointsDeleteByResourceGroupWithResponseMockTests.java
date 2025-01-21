@@ -27,8 +27,7 @@ public final class EndpointsDeleteByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.endpoints()
-            .deleteByResourceGroupWithResponse("rtumkdosvq", "hbmdgbbjfdd", com.azure.core.util.Context.NONE);
+        manager.endpoints().deleteByResourceGroupWithResponse("wau", "qncygupkvi", com.azure.core.util.Context.NONE);
 
     }
 }

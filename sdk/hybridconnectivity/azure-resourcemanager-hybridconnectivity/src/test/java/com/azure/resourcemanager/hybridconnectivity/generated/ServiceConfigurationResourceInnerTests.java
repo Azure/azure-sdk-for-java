@@ -13,22 +13,22 @@ public final class ServiceConfigurationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceConfigurationResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"ayhuy\",\"port\":5121116175733126512,\"provisioningState\":\"Canceled\"},\"id\":\"po\",\"name\":\"ginuvamih\",\"type\":\"ognarxzxtheotus\"}")
+            "{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"uaopppcqeq\",\"port\":8547123238533886867,\"provisioningState\":\"Succeeded\"},\"id\":\"zxctobgb\",\"name\":\"dmoizpostmg\",\"type\":\"cfbu\"}")
             .toObject(ServiceConfigurationResourceInner.class);
-        Assertions.assertEquals(ServiceName.WAC, model.serviceName());
-        Assertions.assertEquals("ayhuy", model.resourceId());
-        Assertions.assertEquals(5121116175733126512L, model.port());
+        Assertions.assertEquals(ServiceName.SSH, model.serviceName());
+        Assertions.assertEquals("uaopppcqeq", model.resourceId());
+        Assertions.assertEquals(8547123238533886867L, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceConfigurationResourceInner model
-            = new ServiceConfigurationResourceInner().withServiceName(ServiceName.WAC)
-                .withResourceId("ayhuy")
-                .withPort(5121116175733126512L);
+            = new ServiceConfigurationResourceInner().withServiceName(ServiceName.SSH)
+                .withResourceId("uaopppcqeq")
+                .withPort(8547123238533886867L);
         model = BinaryData.fromObject(model).toObject(ServiceConfigurationResourceInner.class);
-        Assertions.assertEquals(ServiceName.WAC, model.serviceName());
-        Assertions.assertEquals("ayhuy", model.resourceId());
-        Assertions.assertEquals(5121116175733126512L, model.port());
+        Assertions.assertEquals(ServiceName.SSH, model.serviceName());
+        Assertions.assertEquals("uaopppcqeq", model.resourceId());
+        Assertions.assertEquals(8547123238533886867L, model.port());
     }
 }

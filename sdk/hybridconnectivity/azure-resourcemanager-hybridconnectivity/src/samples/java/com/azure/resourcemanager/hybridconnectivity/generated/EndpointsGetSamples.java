@@ -10,7 +10,7 @@ package com.azure.resourcemanager.hybridconnectivity.generated;
 public final class EndpointsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/
+     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2024-12-01/examples/
      * EndpointsGetDefault.json
      */
     /**
@@ -28,7 +28,7 @@ public final class EndpointsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/
+     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2024-12-01/examples/
      * EndpointsGetCustom.json
      */
     /**

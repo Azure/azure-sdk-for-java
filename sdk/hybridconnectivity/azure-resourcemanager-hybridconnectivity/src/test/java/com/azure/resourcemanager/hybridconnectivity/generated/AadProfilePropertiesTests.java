@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AadProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AadProfileProperties model = BinaryData.fromString("{\"serverId\":\"czdzev\",\"tenantId\":\"dhkrwpdappdsbdk\"}")
+        AadProfileProperties model = BinaryData.fromString("{\"serverId\":\"tpvjzbexilzznfqq\",\"tenantId\":\"vwpm\"}")
             .toObject(AadProfileProperties.class);
-        Assertions.assertEquals("czdzev", model.serverId());
-        Assertions.assertEquals("dhkrwpdappdsbdk", model.tenantId());
+        Assertions.assertEquals("tpvjzbexilzznfqq", model.serverId());
+        Assertions.assertEquals("vwpm", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AadProfileProperties model = new AadProfileProperties().withServerId("czdzev").withTenantId("dhkrwpdappdsbdk");
+        AadProfileProperties model = new AadProfileProperties().withServerId("tpvjzbexilzznfqq").withTenantId("vwpm");
         model = BinaryData.fromObject(model).toObject(AadProfileProperties.class);
-        Assertions.assertEquals("czdzev", model.serverId());
-        Assertions.assertEquals("dhkrwpdappdsbdk", model.tenantId());
+        Assertions.assertEquals("tpvjzbexilzznfqq", model.serverId());
+        Assertions.assertEquals("vwpm", model.tenantId());
     }
 }

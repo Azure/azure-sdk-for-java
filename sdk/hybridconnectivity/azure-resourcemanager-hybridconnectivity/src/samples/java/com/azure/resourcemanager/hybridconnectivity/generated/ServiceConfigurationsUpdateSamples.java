@@ -12,7 +12,7 @@ import com.azure.resourcemanager.hybridconnectivity.models.ServiceConfigurationR
 public final class ServiceConfigurationsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/
+     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2024-12-01/examples/
      * ServiceConfigurationsPatchSSH.json
      */
     /**

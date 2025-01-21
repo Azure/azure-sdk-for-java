@@ -20,6 +20,22 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { HybridConnectivityManagementApiImpl.class })
 public final class HybridConnectivityManagementApiBuilder {
     /*
+     * The ID of the target subscription. The value must be an UUID.
+     */
+    private String subscriptionId;
+
+    /**
+     * Sets The ID of the target subscription. The value must be an UUID.
+     * 
+     * @param subscriptionId the subscriptionId value.
+     * @return the HybridConnectivityManagementApiBuilder.
+     */
+    public HybridConnectivityManagementApiBuilder subscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
+    }
+
+    /*
      * server parameter
      */
     private String endpoint;
@@ -116,7 +132,7 @@ public final class HybridConnectivityManagementApiBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         HybridConnectivityManagementApiImpl client = new HybridConnectivityManagementApiImpl(localPipeline,
-            localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

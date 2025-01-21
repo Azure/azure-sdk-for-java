@@ -4,6 +4,6 @@
 
 /**
  * Package containing the implementations for HybridConnectivityManagementApi.
- * REST API for Hybrid Connectivity.
+ * REST API for public clouds.
  */
 package com.azure.resourcemanager.hybridconnectivity.implementation;

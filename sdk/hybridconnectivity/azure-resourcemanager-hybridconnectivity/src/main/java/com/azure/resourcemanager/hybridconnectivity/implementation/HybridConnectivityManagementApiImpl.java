@@ -24,9 +24,14 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.hybridconnectivity.fluent.EndpointsClient;
+import com.azure.resourcemanager.hybridconnectivity.fluent.GenerateAwsTemplatesClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.HybridConnectivityManagementApi;
+import com.azure.resourcemanager.hybridconnectivity.fluent.InventoriesClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.OperationsClient;
+import com.azure.resourcemanager.hybridconnectivity.fluent.PublicCloudConnectorsClient;
 import com.azure.resourcemanager.hybridconnectivity.fluent.ServiceConfigurationsClient;
+import com.azure.resourcemanager.hybridconnectivity.fluent.SolutionConfigurationsClient;
+import com.azure.resourcemanager.hybridconnectivity.fluent.SolutionTypesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -41,6 +46,20 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = HybridConnectivityManagementApiBuilder.class)
 public final class HybridConnectivityManagementApiImpl implements HybridConnectivityManagementApi {
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
+    private final String subscriptionId;
+
+    /**
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String getSubscriptionId() {
+        return this.subscriptionId;
+    }
+
     /**
      * server parameter.
      */
@@ -112,6 +131,76 @@ public final class HybridConnectivityManagementApiImpl implements HybridConnecti
     }
 
     /**
+     * The SolutionConfigurationsClient object to access its operations.
+     */
+    private final SolutionConfigurationsClient solutionConfigurations;
+
+    /**
+     * Gets the SolutionConfigurationsClient object to access its operations.
+     * 
+     * @return the SolutionConfigurationsClient object.
+     */
+    public SolutionConfigurationsClient getSolutionConfigurations() {
+        return this.solutionConfigurations;
+    }
+
+    /**
+     * The InventoriesClient object to access its operations.
+     */
+    private final InventoriesClient inventories;
+
+    /**
+     * Gets the InventoriesClient object to access its operations.
+     * 
+     * @return the InventoriesClient object.
+     */
+    public InventoriesClient getInventories() {
+        return this.inventories;
+    }
+
+    /**
+     * The GenerateAwsTemplatesClient object to access its operations.
+     */
+    private final GenerateAwsTemplatesClient generateAwsTemplates;
+
+    /**
+     * Gets the GenerateAwsTemplatesClient object to access its operations.
+     * 
+     * @return the GenerateAwsTemplatesClient object.
+     */
+    public GenerateAwsTemplatesClient getGenerateAwsTemplates() {
+        return this.generateAwsTemplates;
+    }
+
+    /**
+     * The PublicCloudConnectorsClient object to access its operations.
+     */
+    private final PublicCloudConnectorsClient publicCloudConnectors;
+
+    /**
+     * Gets the PublicCloudConnectorsClient object to access its operations.
+     * 
+     * @return the PublicCloudConnectorsClient object.
+     */
+    public PublicCloudConnectorsClient getPublicCloudConnectors() {
+        return this.publicCloudConnectors;
+    }
+
+    /**
+     * The SolutionTypesClient object to access its operations.
+     */
+    private final SolutionTypesClient solutionTypes;
+
+    /**
+     * Gets the SolutionTypesClient object to access its operations.
+     * 
+     * @return the SolutionTypesClient object.
+     */
+    public SolutionTypesClient getSolutionTypes() {
+        return this.solutionTypes;
+    }
+
+    /**
      * The OperationsClient object to access its operations.
      */
     private final OperationsClient operations;
@@ -160,15 +249,22 @@ public final class HybridConnectivityManagementApiImpl implements HybridConnecti
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     HybridConnectivityManagementApiImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval, AzureEnvironment environment, String endpoint) {
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
+        this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-03-15";
+        this.apiVersion = "2024-12-01";
+        this.solutionConfigurations = new SolutionConfigurationsClientImpl(this);
+        this.inventories = new InventoriesClientImpl(this);
+        this.generateAwsTemplates = new GenerateAwsTemplatesClientImpl(this);
+        this.publicCloudConnectors = new PublicCloudConnectorsClientImpl(this);
+        this.solutionTypes = new SolutionTypesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
         this.serviceConfigurations = new ServiceConfigurationsClientImpl(this);

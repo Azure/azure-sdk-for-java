@@ -13,7 +13,7 @@ import com.azure.resourcemanager.hybridconnectivity.models.ServiceName;
 public final class EndpointsListManagedProxyDetailsSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/
+     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2024-12-01/examples/
      * EndpointsPostListManagedProxyDetails.json
      */
     /**

@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointProperties model = BinaryData
-            .fromString("{\"type\":\"custom\",\"resourceId\":\"dmailzydehojw\",\"provisioningState\":\"huxinpmqnj\"}")
-            .toObject(EndpointProperties.class);
+        EndpointProperties model
+            = BinaryData.fromString("{\"type\":\"custom\",\"resourceId\":\"gvpgy\",\"provisioningState\":\"qgitxmed\"}")
+                .toObject(EndpointProperties.class);
         Assertions.assertEquals(Type.CUSTOM, model.type());
-        Assertions.assertEquals("dmailzydehojw", model.resourceId());
+        Assertions.assertEquals("gvpgy", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointProperties model = new EndpointProperties().withType(Type.CUSTOM).withResourceId("dmailzydehojw");
+        EndpointProperties model = new EndpointProperties().withType(Type.CUSTOM).withResourceId("gvpgy");
         model = BinaryData.fromObject(model).toObject(EndpointProperties.class);
         Assertions.assertEquals(Type.CUSTOM, model.type());
-        Assertions.assertEquals("dmailzydehojw", model.resourceId());
+        Assertions.assertEquals("gvpgy", model.resourceId());
     }
 }

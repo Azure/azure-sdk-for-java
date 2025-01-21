@@ -16,21 +16,24 @@ public final class EndpointsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointsList model = BinaryData.fromString(
-            "{\"nextLink\":\"a\",\"value\":[{\"properties\":{\"type\":\"default\",\"resourceId\":\"hab\",\"provisioningState\":\"pikxwczbyscnpqxu\"},\"id\":\"vyq\",\"name\":\"iwbybrkxvdumjg\",\"type\":\"tfwvukxgaudc\"}]}")
+            "{\"nextLink\":\"ug\",\"value\":[{\"properties\":{\"type\":\"custom\",\"resourceId\":\"wjvzunluthnn\",\"provisioningState\":\"nxipeil\"},\"id\":\"zuaejxd\",\"name\":\"ltskzbbtd\",\"type\":\"umveekgpwozuhkf\"},{\"properties\":{\"type\":\"default\",\"resourceId\":\"yofd\",\"provisioningState\":\"uusdttouwa\"},\"id\":\"ekqvkeln\",\"name\":\"mvb\",\"type\":\"wyjsflhhcaalnjix\"}]}")
             .toObject(EndpointsList.class);
-        Assertions.assertEquals("a", model.nextLink());
-        Assertions.assertEquals(Type.DEFAULT, model.value().get(0).properties().type());
-        Assertions.assertEquals("hab", model.value().get(0).properties().resourceId());
+        Assertions.assertEquals("ug", model.nextLink());
+        Assertions.assertEquals(Type.CUSTOM, model.value().get(0).properties().type());
+        Assertions.assertEquals("wjvzunluthnn", model.value().get(0).properties().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointsList model = new EndpointsList().withNextLink("a")
-            .withValue(Arrays.asList(new EndpointResourceInner()
-                .withProperties(new EndpointProperties().withType(Type.DEFAULT).withResourceId("hab"))));
+        EndpointsList model = new EndpointsList().withNextLink("ug")
+            .withValue(Arrays.asList(
+                new EndpointResourceInner()
+                    .withProperties(new EndpointProperties().withType(Type.CUSTOM).withResourceId("wjvzunluthnn")),
+                new EndpointResourceInner()
+                    .withProperties(new EndpointProperties().withType(Type.DEFAULT).withResourceId("yofd"))));
         model = BinaryData.fromObject(model).toObject(EndpointsList.class);
-        Assertions.assertEquals("a", model.nextLink());
-        Assertions.assertEquals(Type.DEFAULT, model.value().get(0).properties().type());
-        Assertions.assertEquals("hab", model.value().get(0).properties().resourceId());
+        Assertions.assertEquals("ug", model.nextLink());
+        Assertions.assertEquals(Type.CUSTOM, model.value().get(0).properties().type());
+        Assertions.assertEquals("wjvzunluthnn", model.value().get(0).properties().resourceId());
     }
 }

@@ -12,21 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedProxyRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedProxyRequest model
-            = BinaryData.fromString("{\"service\":\"wrwjfeu\",\"hostname\":\"hutje\",\"serviceName\":\"SSH\"}")
-                .toObject(ManagedProxyRequest.class);
-        Assertions.assertEquals("wrwjfeu", model.service());
-        Assertions.assertEquals("hutje", model.hostname());
-        Assertions.assertEquals(ServiceName.SSH, model.serviceName());
+        ManagedProxyRequest model = BinaryData
+            .fromString("{\"service\":\"taruoujmkcj\",\"hostname\":\"qytjrybnwjewgd\",\"serviceName\":\"WAC\"}")
+            .toObject(ManagedProxyRequest.class);
+        Assertions.assertEquals("taruoujmkcj", model.service());
+        Assertions.assertEquals("qytjrybnwjewgd", model.hostname());
+        Assertions.assertEquals(ServiceName.WAC, model.serviceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedProxyRequest model
-            = new ManagedProxyRequest().withService("wrwjfeu").withHostname("hutje").withServiceName(ServiceName.SSH);
+        ManagedProxyRequest model = new ManagedProxyRequest().withService("taruoujmkcj")
+            .withHostname("qytjrybnwjewgd")
+            .withServiceName(ServiceName.WAC);
         model = BinaryData.fromObject(model).toObject(ManagedProxyRequest.class);
-        Assertions.assertEquals("wrwjfeu", model.service());
-        Assertions.assertEquals("hutje", model.hostname());
-        Assertions.assertEquals(ServiceName.SSH, model.serviceName());
+        Assertions.assertEquals("taruoujmkcj", model.service());
+        Assertions.assertEquals("qytjrybnwjewgd", model.hostname());
+        Assertions.assertEquals(ServiceName.WAC, model.serviceName());
     }
 }

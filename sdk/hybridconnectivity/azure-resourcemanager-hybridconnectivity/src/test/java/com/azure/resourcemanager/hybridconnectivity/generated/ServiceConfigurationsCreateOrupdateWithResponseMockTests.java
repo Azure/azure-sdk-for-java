@@ -22,7 +22,7 @@ public final class ServiceConfigurationsCreateOrupdateWithResponseMockTests {
     @Test
     public void testCreateOrupdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"jjxhvpmo\",\"port\":5563523584093599698,\"provisioningState\":\"Failed\"},\"id\":\"i\",\"name\":\"qeojnxqbzvddntw\",\"type\":\"deicbtwnpzao\"}";
+            = "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"mrhublwpc\",\"port\":3311635224555992257,\"provisioningState\":\"Canceled\"},\"id\":\"upauut\",\"name\":\"woqhihe\",\"type\":\"qg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class ServiceConfigurationsCreateOrupdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ServiceConfigurationResource response = manager.serviceConfigurations()
-            .define("jctbza")
-            .withExistingEndpoint("mcl", "hijco")
+            .define("lihhyuspskasdvlm")
+            .withExistingEndpoint("hirctymoxoftpipi", "yczuhxacpq")
             .withServiceName(ServiceName.WAC)
-            .withResourceId("y")
-            .withPort(5593632114623401437L)
+            .withResourceId("zxulucvpamrsreu")
+            .withPort(2458010483108140715L)
             .create();
 
         Assertions.assertEquals(ServiceName.WAC, response.serviceName());
-        Assertions.assertEquals("jjxhvpmo", response.resourceId());
-        Assertions.assertEquals(5563523584093599698L, response.port());
+        Assertions.assertEquals("mrhublwpc", response.resourceId());
+        Assertions.assertEquals(3311635224555992257L, response.port());
     }
 }

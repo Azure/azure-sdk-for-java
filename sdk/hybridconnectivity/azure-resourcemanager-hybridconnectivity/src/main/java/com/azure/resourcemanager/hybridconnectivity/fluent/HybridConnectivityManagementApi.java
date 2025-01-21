@@ -12,6 +12,13 @@ import java.time.Duration;
  */
 public interface HybridConnectivityManagementApi {
     /**
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
+     * @return the subscriptionId value.
+     */
+    String getSubscriptionId();
+
+    /**
      * Gets server parameter.
      * 
      * @return the endpoint value.
@@ -38,6 +45,41 @@ public interface HybridConnectivityManagementApi {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
+
+    /**
+     * Gets the SolutionConfigurationsClient object to access its operations.
+     * 
+     * @return the SolutionConfigurationsClient object.
+     */
+    SolutionConfigurationsClient getSolutionConfigurations();
+
+    /**
+     * Gets the InventoriesClient object to access its operations.
+     * 
+     * @return the InventoriesClient object.
+     */
+    InventoriesClient getInventories();
+
+    /**
+     * Gets the GenerateAwsTemplatesClient object to access its operations.
+     * 
+     * @return the GenerateAwsTemplatesClient object.
+     */
+    GenerateAwsTemplatesClient getGenerateAwsTemplates();
+
+    /**
+     * Gets the PublicCloudConnectorsClient object to access its operations.
+     * 
+     * @return the PublicCloudConnectorsClient object.
+     */
+    PublicCloudConnectorsClient getPublicCloudConnectors();
+
+    /**
+     * Gets the SolutionTypesClient object to access its operations.
+     * 
+     * @return the SolutionTypesClient object.
+     */
+    SolutionTypesClient getSolutionTypes();
 
     /**
      * Gets the OperationsClient object to access its operations.

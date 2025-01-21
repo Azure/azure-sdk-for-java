@@ -23,7 +23,7 @@ public final class ServiceConfigurationsListByEndpointResourceMockTests {
     @Test
     public void testListByEndpointResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"bnmo\",\"port\":7164396751895305600,\"provisioningState\":\"Updating\"},\"id\":\"rzafbljjgpbtoqcj\",\"name\":\"klj\",\"type\":\"vbqid\"}]}";
+            = "{\"value\":[{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"gioilqu\",\"port\":6255358176857067581,\"provisioningState\":\"Canceled\"},\"id\":\"mieoxorgguf\",\"name\":\"yaomtb\",\"type\":\"hhavgrvkffovjz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class ServiceConfigurationsListByEndpointResourceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ServiceConfigurationResource> response = manager.serviceConfigurations()
-            .listByEndpointResource("znorcj", "vsnb", com.azure.core.util.Context.NONE);
+        PagedIterable<ServiceConfigurationResource> response
+            = manager.serviceConfigurations().listByEndpointResource("x", "ejnt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ServiceName.SSH, response.iterator().next().serviceName());
-        Assertions.assertEquals("bnmo", response.iterator().next().resourceId());
-        Assertions.assertEquals(7164396751895305600L, response.iterator().next().port());
+        Assertions.assertEquals(ServiceName.WAC, response.iterator().next().serviceName());
+        Assertions.assertEquals("gioilqu", response.iterator().next().resourceId());
+        Assertions.assertEquals(6255358176857067581L, response.iterator().next().port());
     }
 }

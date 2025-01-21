@@ -14,18 +14,18 @@ public final class EndpointResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"custom\",\"resourceId\":\"s\",\"provisioningState\":\"nyejhkryhtnap\"},\"id\":\"wlokjyem\",\"name\":\"kvnipjoxz\",\"type\":\"nchgej\"}")
+            "{\"properties\":{\"type\":\"default\",\"resourceId\":\"awjoyaqcslyjp\",\"provisioningState\":\"idzyexznelixhnr\"},\"id\":\"folhbnxknal\",\"name\":\"ulppggdtpnapnyir\",\"type\":\"pu\"}")
             .toObject(EndpointResourceInner.class);
-        Assertions.assertEquals(Type.CUSTOM, model.properties().type());
-        Assertions.assertEquals("s", model.properties().resourceId());
+        Assertions.assertEquals(Type.DEFAULT, model.properties().type());
+        Assertions.assertEquals("awjoyaqcslyjp", model.properties().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EndpointResourceInner model = new EndpointResourceInner()
-            .withProperties(new EndpointProperties().withType(Type.CUSTOM).withResourceId("s"));
+            .withProperties(new EndpointProperties().withType(Type.DEFAULT).withResourceId("awjoyaqcslyjp"));
         model = BinaryData.fromObject(model).toObject(EndpointResourceInner.class);
-        Assertions.assertEquals(Type.CUSTOM, model.properties().type());
-        Assertions.assertEquals("s", model.properties().resourceId());
+        Assertions.assertEquals(Type.DEFAULT, model.properties().type());
+        Assertions.assertEquals("awjoyaqcslyjp", model.properties().resourceId());
     }
 }

@@ -23,7 +23,7 @@ public final class EndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"custom\",\"resourceId\":\"kgiawxklryplwck\",\"provisioningState\":\"syyp\"},\"id\":\"dhsgcba\",\"name\":\"phejkotynqgoulz\",\"type\":\"dlikwyqkgfgibma\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"default\",\"resourceId\":\"kkxwslol\",\"provisioningState\":\"pvuzlmv\"},\"id\":\"lfktgplcrpwjxe\",\"name\":\"noigbrnjwmwk\",\"type\":\"nbsazejjoqkag\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,9 @@ public final class EndpointsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<EndpointResource> response
-            = manager.endpoints().list("tyxolniwpwc", com.azure.core.util.Context.NONE);
+        PagedIterable<EndpointResource> response = manager.endpoints().list("umh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(Type.CUSTOM, response.iterator().next().properties().type());
-        Assertions.assertEquals("kgiawxklryplwck", response.iterator().next().properties().resourceId());
+        Assertions.assertEquals(Type.DEFAULT, response.iterator().next().properties().type());
+        Assertions.assertEquals("kkxwslol", response.iterator().next().properties().resourceId());
     }
 }

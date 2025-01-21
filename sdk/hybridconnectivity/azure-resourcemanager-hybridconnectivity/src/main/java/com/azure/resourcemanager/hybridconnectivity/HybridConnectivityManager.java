@@ -25,12 +25,22 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridconnectivity.fluent.HybridConnectivityManagementApi;
 import com.azure.resourcemanager.hybridconnectivity.implementation.EndpointsImpl;
+import com.azure.resourcemanager.hybridconnectivity.implementation.GenerateAwsTemplatesImpl;
 import com.azure.resourcemanager.hybridconnectivity.implementation.HybridConnectivityManagementApiBuilder;
+import com.azure.resourcemanager.hybridconnectivity.implementation.InventoriesImpl;
 import com.azure.resourcemanager.hybridconnectivity.implementation.OperationsImpl;
+import com.azure.resourcemanager.hybridconnectivity.implementation.PublicCloudConnectorsImpl;
 import com.azure.resourcemanager.hybridconnectivity.implementation.ServiceConfigurationsImpl;
+import com.azure.resourcemanager.hybridconnectivity.implementation.SolutionConfigurationsImpl;
+import com.azure.resourcemanager.hybridconnectivity.implementation.SolutionTypesImpl;
 import com.azure.resourcemanager.hybridconnectivity.models.Endpoints;
+import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplates;
+import com.azure.resourcemanager.hybridconnectivity.models.Inventories;
 import com.azure.resourcemanager.hybridconnectivity.models.Operations;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectors;
 import com.azure.resourcemanager.hybridconnectivity.models.ServiceConfigurations;
+import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurations;
+import com.azure.resourcemanager.hybridconnectivity.models.SolutionTypes;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -40,9 +50,19 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to HybridConnectivityManager.
- * REST API for Hybrid Connectivity.
+ * REST API for public clouds.
  */
 public final class HybridConnectivityManager {
+    private SolutionConfigurations solutionConfigurations;
+
+    private Inventories inventories;
+
+    private GenerateAwsTemplates generateAwsTemplates;
+
+    private PublicCloudConnectors publicCloudConnectors;
+
+    private SolutionTypes solutionTypes;
+
     private Operations operations;
 
     private Endpoints endpoints;
@@ -56,6 +76,7 @@ public final class HybridConnectivityManager {
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new HybridConnectivityManagementApiBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
             .buildClient();
     }
@@ -212,7 +233,7 @@ public final class HybridConnectivityManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hybridconnectivity")
                 .append("/")
-                .append("1.1.0");
+                .append("1.2.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -256,6 +277,67 @@ public final class HybridConnectivityManager {
                 .build();
             return new HybridConnectivityManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /**
+     * Gets the resource collection API of SolutionConfigurations. It manages SolutionConfiguration.
+     * 
+     * @return Resource collection API of SolutionConfigurations.
+     */
+    public SolutionConfigurations solutionConfigurations() {
+        if (this.solutionConfigurations == null) {
+            this.solutionConfigurations
+                = new SolutionConfigurationsImpl(clientObject.getSolutionConfigurations(), this);
+        }
+        return solutionConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of Inventories.
+     * 
+     * @return Resource collection API of Inventories.
+     */
+    public Inventories inventories() {
+        if (this.inventories == null) {
+            this.inventories = new InventoriesImpl(clientObject.getInventories(), this);
+        }
+        return inventories;
+    }
+
+    /**
+     * Gets the resource collection API of GenerateAwsTemplates.
+     * 
+     * @return Resource collection API of GenerateAwsTemplates.
+     */
+    public GenerateAwsTemplates generateAwsTemplates() {
+        if (this.generateAwsTemplates == null) {
+            this.generateAwsTemplates = new GenerateAwsTemplatesImpl(clientObject.getGenerateAwsTemplates(), this);
+        }
+        return generateAwsTemplates;
+    }
+
+    /**
+     * Gets the resource collection API of PublicCloudConnectors. It manages PublicCloudConnector.
+     * 
+     * @return Resource collection API of PublicCloudConnectors.
+     */
+    public PublicCloudConnectors publicCloudConnectors() {
+        if (this.publicCloudConnectors == null) {
+            this.publicCloudConnectors = new PublicCloudConnectorsImpl(clientObject.getPublicCloudConnectors(), this);
+        }
+        return publicCloudConnectors;
+    }
+
+    /**
+     * Gets the resource collection API of SolutionTypes.
+     * 
+     * @return Resource collection API of SolutionTypes.
+     */
+    public SolutionTypes solutionTypes() {
+        if (this.solutionTypes == null) {
+            this.solutionTypes = new SolutionTypesImpl(clientObject.getSolutionTypes(), this);
+        }
+        return solutionTypes;
     }
 
     /**
