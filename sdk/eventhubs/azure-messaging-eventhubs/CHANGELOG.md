@@ -1,6 +1,6 @@
 # Release History
 
-## 5.20.0-beta.1 (Unreleased)
+## 5.20.0 (2025-02-11)
 
 ### Features Added
 
@@ -28,8 +28,6 @@ Setting the v2 stack as the default. ([43725](https://github.com/Azure/azure-sdk
   when re-sending events received from another Event Hub. Message annotations should not be modified by the SDK and Event Hubs 
   will overwrite these values when the event is published.
   ([#43039](https://github.com/Azure/azure-sdk-for-java/pull/43039))
-
-### Other Changes
 
 ## 5.19.2 (2024-12-04)
 
