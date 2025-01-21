@@ -1,13 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http;
+package com.service.clientlibrary;
 
-import io.clientcore.core.annotation.ServiceInterface;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.annotation.PathParam;
+import com.service.clientlibrary.implementation.TestInterfaceClientService;
+import com.service.clientlibrary.implementation.models.MockHttpResponse;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -17,21 +14,18 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.implementation.util.JsonSerializer;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -41,43 +35,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for Service Interface Implementation.
  */
 public class RestProxyTests {
-    @ServiceInterface(name = "myService", host = "https://somecloud.com")
-    interface TestInterface {
-        static TestInterface getInstance(HttpPipeline pipeline) {
-            if (pipeline == null) {
-                throw new IllegalArgumentException("pipeline cannot be null");
-            }
-            try {
-                Class<?> clazz = Class.forName("io.clientcore.core.implementation.http.rest.TestInterfaceImpl");
-                return (TestInterface) clazz.getMethod("getInstance", HttpPipeline.class).invoke(null, pipeline);
-            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
-                | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
-        @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
-
-        @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
-        Response<Void> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Void testMethodReturnsVoid();
-
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "my/uri/path", expectedStatusCodes = { 200 })
-        void testHeadMethod();
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethodReturnsResponseVoid();
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<InputStream> testDownload();
+    @BeforeEach
+    public void resetState() {
+        TestInterfaceClientService.reset();
     }
 
     @Test
@@ -85,7 +46,7 @@ public class RestProxyTests {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterface testInterface = TestInterface.getInstance(pipeline);
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getInstance(pipeline, null, null);
         byte[] bytes = "hello".getBytes();
         try (Response<Void> response
             = testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
@@ -100,7 +61,7 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
+        TestInterfaceClientService testInterface = RestProxy.create(TestInterfaceClientService.class, pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
 
         streamResponse.close();
@@ -115,7 +76,7 @@ public class RestProxyTests {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterface testInterface = TestInterface.getInstance(pipeline);
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getInstance(pipeline, null, null);
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -144,8 +105,35 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
-        TestInterface testInterface = TestInterface.getInstance(pipeline);
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getInstance(pipeline, null, null);
         Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, contentLength);
+
+        assertEquals(200, response.getStatusCode());
+
+        Class<? extends BinaryData> actualContentClazz = client.getLastHttpRequest().getBody().getClass();
+
+        assertEquals(expectedContentClazz, actualContentClazz);
+    }
+
+    @Test
+    public void doesNotChangeBinaryDataContentTypeString() throws IOException {
+        String string = "hello";
+        byte[] bytes = string.getBytes();
+        Path file = Files.createTempFile("doesNotChangeBinaryDataContentTypeDataProvider", null);
+
+        file.toFile().deleteOnExit();
+
+        Files.write(file, bytes);
+        ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+        final long contentLength = bytes.length;
+        final BinaryData data = BinaryData.fromObject(bytes);
+
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+        Class<? extends BinaryData> expectedContentClazz = data.getClass();
+
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getInstance(pipeline, null, null);
+        Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, data.getLength());
 
         assertEquals(200, response.getStatusCode());
 
@@ -159,7 +147,7 @@ public class RestProxyTests {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterface testInterface = TestInterface.getInstance(pipeline);
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getInstance(pipeline, null, null);
 
         testInterface.testMethodReturnsVoid();
 
@@ -189,7 +177,7 @@ public class RestProxyTests {
         private volatile boolean closeCalledOnResponse;
 
         @Override
-        public Response<?> send(HttpRequest request) {
+        public synchronized Response<?> send(HttpRequest request) {
             lastHttpRequest = request;
             boolean success = request.getUri().getPath().equals("/my/uri/path");
 
@@ -210,7 +198,8 @@ public class RestProxyTests {
             };
         }
 
-        public HttpRequest getLastHttpRequest() {
+        //make this synchronized to ensure that the lastHttpRequest is always set before the response is processed
+        public synchronized HttpRequest getLastHttpRequest() {
             return lastHttpRequest;
         }
     }
@@ -225,7 +214,7 @@ public class RestProxyTests {
             return new MockHttpResponse(null, 200);
         }).build();
 
-        TestInterface testInterface = TestInterface.getInstance(pipeline);
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getInstance(pipeline, null, null);
 
         testInterface.testListNext(nextLinkUri).close();
     }
