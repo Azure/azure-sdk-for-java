@@ -340,6 +340,10 @@ public class StructuredMessageEncoder {
         }
     }
 
+    public int getMessageLength() {
+        return messageLength;
+    }
+
     //temporary for testing:
     public BigInteger getUnsignedCRC64() {
         return new BigInteger(Long.toUnsignedString(messageCRC64));
