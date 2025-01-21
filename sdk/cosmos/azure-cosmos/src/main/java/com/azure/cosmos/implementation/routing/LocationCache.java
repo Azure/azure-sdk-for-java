@@ -138,7 +138,7 @@ public class LocationCache {
             this.updateLocationCache();
         }
 
-        return this.locationInfo.thinClientwriteEndpoints;
+        return this.locationInfo.thinClientWriteEndpoints;
     }
 
     /***
@@ -189,13 +189,15 @@ public class LocationCache {
         this.updateLocationCache(
                 databaseAccount.getWritableLocations(),
                 databaseAccount.getReadableLocations(),
+                databaseAccount.getThinClientWritableLocations(),
+                databaseAccount.getThinClientReadableLocations(),
                 null,
                 BridgeInternal.isEnableMultipleWriteLocations(databaseAccount));
     }
 
     void onLocationPreferenceChanged(UnmodifiableList<String> preferredLocations) {
         this.updateLocationCache(
-                null, null , preferredLocations, null);
+                null, null, null, null, preferredLocations, null);
     }
 
     /**
@@ -568,7 +570,7 @@ public class LocationCache {
     }
 
     private void updateLocationCache(){
-        updateLocationCache(null, null, null, null);
+        updateLocationCache(null, null, null, null, null, null);
     }
 
     private void updateLocationCache(
@@ -817,6 +819,8 @@ public class LocationCache {
         private UnmodifiableMap<URI, String> regionNameByReadEndpoint;
         private UnmodifiableList<URI> writeEndpoints;
         private UnmodifiableList<URI> readEndpoints;
+        private UnmodifiableList<URI> thinClientReadEndpoints;
+        private UnmodifiableList<URI> thinClientWriteEndpoints;
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             URI defaultEndpoint) {
