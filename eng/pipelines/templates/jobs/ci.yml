@@ -199,6 +199,8 @@ jobs:
             -PackageInfoDir $(Build.ArtifactStagingDirectory)/PackageInfo
             -InformationAction Continue
 
+      # JRS - This only copies the ReleaseArtifacts but for the PR pipeline
+      # just copy all of the built artifacts?
       - task: PowerShell@2
         displayName: 'Copy artifacts to staging'
         inputs:
@@ -209,6 +211,7 @@ jobs:
             -SourceDirectory $(System.DefaultWorkingDirectory)/build
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
+            -PackageInfoDir $(Build.ArtifactStagingDirectory)/PackageInfo
             -InformationAction Continue
 
       - task: Powershell@2

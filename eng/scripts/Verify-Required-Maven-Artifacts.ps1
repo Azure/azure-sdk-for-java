@@ -18,7 +18,11 @@ Write-Host "BuildOutputDirectory=$($BuildOutputDirectory)"
 Write-Host "BuildOutputDirectory contents"
 Get-ChildItem -Path $BuildOutputDirectory -Recurse -Name
 
-if (-not $ArtifactsList -or $ArtifactsList.Count -eq 0) {
+if (-not $ArtifactsList) {
+  $ArtifactsList = @()
+}
+
+if ($ArtifactsList.Count -eq 0) {
   if (-not $PackageInfoDir -or (-not (Test-Path -Path $PackageInfoDir))) {
     LogError "ArtifactsList was empty and PackageInfoDir was null or incorrect."
     exit(1)
