@@ -446,7 +446,6 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
         Bootstrapper bootstrapper = new BootstrapperImpl(
             synchronizer,
             leaseStoreManager,
-            leaseStoreManager,
             epkVersionLeaseStoreManager,
             this.changeFeedProcessorOptions,
             this.lockTime,

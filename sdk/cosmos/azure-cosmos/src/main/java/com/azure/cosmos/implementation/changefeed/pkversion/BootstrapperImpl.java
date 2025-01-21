@@ -26,7 +26,6 @@ class BootstrapperImpl implements Bootstrapper {
     private final LeaseStore leaseStore;
     private final Duration lockTime;
     private final Duration sleepTime;
-    private final LeaseStoreManager pkRangeBasedLeaseStoreManager;
     private final LeaseStoreManager epkRangeVersionLeaseStoreManager;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
 
@@ -36,7 +35,6 @@ class BootstrapperImpl implements Bootstrapper {
     public BootstrapperImpl(
         PartitionSynchronizer synchronizer,
         LeaseStore leaseStore,
-        LeaseStoreManager pkRangeBasedLeaseStoreManager,
         LeaseStoreManager epkRangeVersionLeaseStoreManager,
         ChangeFeedProcessorOptions changeFeedProcessorOptions,
         Duration lockTime,
@@ -58,10 +56,6 @@ class BootstrapperImpl implements Bootstrapper {
             throw new IllegalArgumentException("sleepTime should be non-null and positive");
         }
 
-        if (pkRangeBasedLeaseStoreManager == null) {
-            throw new IllegalArgumentException("pkRangeBasedLeaseStoreManager cannot be null!");
-        }
-
         if (epkRangeVersionLeaseStoreManager == null) {
             throw new IllegalArgumentException("epkRangeBasedLeaseStoreManager cannot be null!");
         }
@@ -74,7 +68,6 @@ class BootstrapperImpl implements Bootstrapper {
         this.leaseStore = leaseStore;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
-        this.pkRangeBasedLeaseStoreManager = pkRangeBasedLeaseStoreManager;
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
 
