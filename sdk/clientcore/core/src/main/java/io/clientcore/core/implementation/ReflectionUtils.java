@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -132,6 +132,31 @@ public abstract class ReflectionUtils {
 
         @Override
         public Object invokeWithArguments(Object target, Object... args) {
+            return null;
+        }
+
+        @Override
+        public Object invoke() {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1, Object arg2) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1, Object arg2, Object arg3) {
             return null;
         }
 

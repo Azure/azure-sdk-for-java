@@ -5,13 +5,16 @@ package com.azure.identity.extensions.implementation.template;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.extensions.implementation.credential.provider.CachingTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolver;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolverOptions;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import reactor.core.publisher.Mono;
 import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
 
@@ -41,7 +44,7 @@ public class AzureAuthenticationTemplate {
     /**
      * AzureAuthenticationTemplate constructor.
      *
-     * @param tokenCredentialProvider An TokenCredentialProvider class instance.
+     * @param tokenCredentialProvider A TokenCredentialProvider class instance.
      * @param accessTokenResolver An AccessTokenResolver class instance.
      */
     public AzureAuthenticationTemplate(TokenCredentialProvider tokenCredentialProvider,
@@ -60,8 +63,13 @@ public class AzureAuthenticationTemplate {
             LOGGER.verbose("Initializing AzureAuthenticationTemplate.");
 
             if (getTokenCredentialProvider() == null) {
-                this.tokenCredentialProvider
-                    = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties));
+                TokenCredentialProviderOptions options = new TokenCredentialProviderOptions(properties);
+                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(options);
+
+                if (Boolean.TRUE.equals(AuthProperty.TOKEN_CREDENTIAL_CACHE_ENABLED.getBoolean(properties))) {
+                    this.tokenCredentialProvider
+                        = new CachingTokenCredentialProvider(options, this.tokenCredentialProvider);
+                }
             }
 
             if (getAccessTokenResolver() == null) {
@@ -125,5 +133,4 @@ public class AzureAuthenticationTemplate {
     AtomicBoolean getIsInitialized() {
         return isInitialized;
     }
-
 }

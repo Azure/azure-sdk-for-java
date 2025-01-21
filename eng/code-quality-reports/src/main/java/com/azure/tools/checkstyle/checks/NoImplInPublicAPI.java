@@ -37,7 +37,7 @@ public class NoImplInPublicAPI extends AbstractCheck {
         + "for public API. " + ALTERNATIVE_MOVE_TO_PUBLIC_API;
 
     // Pattern that matches either an import statement or a fully-qualified type reference for being implementation.
-    private static final Pattern IMPLEMENTATION_CLASS = Pattern.compile("com\\.azure.*?\\.implementation.*?\\.(\\w+)");
+    private static final Pattern IMPLEMENTATION_CLASS = Pattern.compile(".*?\\.implementation.*?\\.(\\w+)");
 
     private Set<String> implementationClassSet = new HashSet<>();
 

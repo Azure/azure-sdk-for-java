@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.util;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;

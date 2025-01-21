@@ -60,7 +60,7 @@ public class RequestOptionsJavaDocCodeSnippets {
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
                 .setHttpMethod(HttpMethod.POST)
-                .setBody(BinaryData.fromString(requestBodyData))
+                .setBody(requestBodyData)
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: io.clientcore.core.http.rest.requestoptions.postrequest
         return options;

@@ -925,6 +925,19 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnostics diagnostics,
                 Throwable finalError);
 
+            boolean endOperation(
+                CosmosDiagnosticsContext ctx,
+                int statusCode,
+                int subStatusCode,
+                Integer actualItemCount,
+                Double requestCharge,
+                Long opCountPerEvaluation,
+                Long opRetriedCountPerEvaluation,
+                Long globalOpCount,
+                Integer targetMaxMicroBatchSize,
+                CosmosDiagnostics diagnostics,
+                Throwable finalError);
+
             void addRequestCharge(CosmosDiagnosticsContext ctx, float requestCharge);
 
             void addRequestSize(CosmosDiagnosticsContext ctx, int bytes);
@@ -953,6 +966,13 @@ public class ImplementationBridgeHelpers {
 
             String getQueryStatement(CosmosDiagnosticsContext ctx);
 
+            Long getOpCountPerEvaluation(CosmosDiagnosticsContext ctx);
+
+            Long getRetriedOpCountPerEvaluation(CosmosDiagnosticsContext ctx);
+
+            Long getGlobalOpCount(CosmosDiagnosticsContext ctx);
+
+            Integer getTargetMaxMicroBatchSize(CosmosDiagnosticsContext ctx);
         }
     }
 
@@ -1311,6 +1331,22 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchResponseAccessor {
             List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse);
+
+            void setOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long opCountPerEvaluation);
+
+            void setGlobalOpCount(CosmosBatchResponse cosmosBatchResponse, long globalOpCount);
+
+            void setRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long retriedOpCountPerEvaluation);
+
+            void setTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse, int targetMaxMicroBatchSize);
+
+            long getOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse);
+
+            long getGlobalOpCount(CosmosBatchResponse cosmosBatchResponse);
+
+            long getRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse);
+
+            int getTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse);
         }
     }
 
