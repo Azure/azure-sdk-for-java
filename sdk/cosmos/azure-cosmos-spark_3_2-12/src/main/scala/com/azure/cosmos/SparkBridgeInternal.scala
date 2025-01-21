@@ -79,7 +79,7 @@ private[cosmos] object SparkBridgeInternal {
   private[cosmos] def clearCollectionCache(container: CosmosAsyncContainer, obsoleteRid: String): Unit = {
     val clientWrapper = container.getDatabase.getDocClientWrapper
 
-    val link = container.getLinkWithoutTrailingSlash;
+    val link = CosmosAsyncContainer.getLinkWithoutTrailingSlash(container.getLink)
 
     val obsoleteValue = new DocumentCollection
     obsoleteValue.setResourceId(obsoleteRid)
@@ -95,7 +95,7 @@ private[cosmos] object SparkBridgeInternal {
       .getDatabase
       .getDocClientWrapper
       .getCollectionCache
-      .resolveByNameAsync(null, container.getLinkWithoutTrailingSlash, null)
+      .resolveByNameAsync(null, CosmosAsyncContainer.getLinkWithoutTrailingSlash(container.getLink), null)
       .block()
 
     if (documentCollectionHolder != null) {
