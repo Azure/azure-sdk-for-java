@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
+import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
@@ -116,7 +117,7 @@ class BootstrapperImpl implements Bootstrapper {
 
     private Mono<Void> validateLeaseCFModeInteroperabilityForEpkRangeBasedLease() {
 
-        // fetches only 1 epk-based lease for a given lease prefix
+        // fetch pk-range based lease first (all versions and deletes is bootstrapping)
         return this.pkRangeVersionLeaseStoreManager.getTopLeases(1).next()
             .flatMap(lease -> {
 
@@ -132,9 +133,10 @@ class BootstrapperImpl implements Bootstrapper {
                     return Mono.empty();
                 }
             )
+            // if no pk-range based lease exists, try fetching epk-range based lease
             .switchIfEmpty(this.epkRangeVersionLeaseStoreManager.getTopLeases(1).next())
-            .flatMap(ignore -> this.epkRangeVersionLeaseStoreManager.getTopLeases(1).next())
-            // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
+            // type is known from upstream so doing an explicit cast
+            .flatMap(epkRangeVersionLease -> Mono.just((Lease) epkRangeVersionLease))
             .flatMap(lease -> {
 
                 if (lease.getVersion() == LeaseVersion.EPK_RANGE_BASED_LEASE) {

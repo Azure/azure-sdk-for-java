@@ -186,7 +186,7 @@ public class BootstrapperImplTests {
         Mockito.verify(pkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
 
         if (pkRangeBasedLease == null) {
-            Mockito.verify(epkRangeVersionLeaseStoreManagerMock, atLeast(1)).getTopLeases(Mockito.eq(1));
+            Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         }
 
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases();
