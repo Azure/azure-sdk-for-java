@@ -145,8 +145,8 @@ class BootstrapperImpl implements Bootstrapper {
 
                             if (changeFeedState.getMode() != this.changeFeedModeToStart) {
 
-                                String errorMessage = String.format("ChangeFeedProcessor#handleAllVersionsAndDeletes cannot be invoked when" +
-                                    "ChangeFeedProcessor#handleLatestVersionChanges were also started for" +
+                                String errorMessage = String.format("ChangeFeedProcessor#handleAllVersionsAndDeletes cannot be invoked when " +
+                                    "ChangeFeedProcessor#handleLatestVersionChanges were also started for " +
                                     "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
 
                                 return Mono.error(new IllegalStateException(errorMessage));

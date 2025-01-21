@@ -171,8 +171,8 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                             ChangeFeedState changeFeedState = ChangeFeedState.fromString(lease.getContinuationToken());
 
                             if (changeFeedState.getMode() != this.changeFeedModeToStart) {
-                                String errorMessage = String.format("ChangeFeedProcessor#handleLatestVersionChanges cannot be invoked when" +
-                                    "ChangeFeedProcessor#handleAllVersionsAndDeletes was also started for" +
+                                String errorMessage = String.format("ChangeFeedProcessor#handleLatestVersionChanges cannot be invoked when " +
+                                    "ChangeFeedProcessor#handleAllVersionsAndDeletes was also started for " +
                                     "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
 
                                 return Mono.error(new IllegalStateException(errorMessage));

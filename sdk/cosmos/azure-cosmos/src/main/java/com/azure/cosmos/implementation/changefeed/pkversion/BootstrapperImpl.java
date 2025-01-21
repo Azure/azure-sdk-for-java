@@ -93,8 +93,8 @@ class BootstrapperImpl implements Bootstrapper {
                             if (lease.getVersion() == LeaseVersion.EPK_RANGE_BASED_LEASE) {
 
                                 String errorMessage = String.format("ChangeFeedProcessor#handleChanges cannot be invoked when one of " +
-                                    "ChangeFeedProcessor#handleLatestVersionChanges or" +
-                                    "ChangeFeedProcessor#handleAllVersionsAndDeletes were also started for" +
+                                    "ChangeFeedProcessor#handleLatestVersionChanges or " +
+                                    "ChangeFeedProcessor#handleAllVersionsAndDeletes were also started for " +
                                     "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
 
                                 return Mono.error(new IllegalStateException(errorMessage));
