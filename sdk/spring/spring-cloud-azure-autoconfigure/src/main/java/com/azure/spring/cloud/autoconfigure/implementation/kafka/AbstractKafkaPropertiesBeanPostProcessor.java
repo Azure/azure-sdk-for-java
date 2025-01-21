@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -39,7 +41,7 @@ import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
 import static org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule.OAUTHBEARER_MECHANISM;
 import static org.springframework.util.StringUtils.delimitedListToStringArray;
 
-abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostProcessor {
+abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostProcessor, ApplicationContextAware {
 
     static final String SECURITY_PROTOCOL_CONFIG_SASL = SASL_SSL.name();
     static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
@@ -47,6 +49,7 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_VALUE = "true";
     static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH =
         KafkaOAuth2AuthenticateCallbackHandler.class.getName();
+    protected ApplicationContext applicationContext;
     protected static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
     private static final Map<String, String> KAFKA_OAUTH_CONFIGS;
     private static final String LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE = "OAUTHBEARER authentication property {} will be configured as {} to support Azure Identity credentials.";
@@ -63,16 +66,13 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         KAFKA_OAUTH_CONFIGS = Collections.unmodifiableMap(configs);
     }
 
-    private final AzureGlobalProperties azureGlobalProperties;
-
-    AbstractKafkaPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
-        this.azureGlobalProperties = azureGlobalProperties;
-    }
+    private AzureGlobalProperties azureGlobalProperties;
 
     @SuppressWarnings("unchecked")
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (needsPostProcess(bean)) {
+            azureGlobalProperties = applicationContext.getBean(AzureGlobalProperties.class);
             T properties = (T) bean;
 
             replaceAzurePropertiesWithJaas(getMergedProducerProperties(properties), getRawProducerProperties(properties));
@@ -128,6 +128,11 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     protected abstract boolean needsPostProcess(Object bean);
 
     protected abstract Logger getLogger();
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
     /**
      * Process Kafka Spring properties for any customized operations.

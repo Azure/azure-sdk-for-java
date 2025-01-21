@@ -23,7 +23,6 @@ import org.springframework.context.annotation.Role;
  * @since 4.5.0
  */
 @Configuration(proxyBeanMethods = false)
-@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @ConditionalOnBean(DataSourceProperties.class)
 @ConditionalOnClass(AzureAuthenticationTemplate.class)
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
@@ -31,7 +30,6 @@ public class AzureJdbcAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     static JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor() {
         return new JdbcPropertiesBeanPostProcessor();
     }

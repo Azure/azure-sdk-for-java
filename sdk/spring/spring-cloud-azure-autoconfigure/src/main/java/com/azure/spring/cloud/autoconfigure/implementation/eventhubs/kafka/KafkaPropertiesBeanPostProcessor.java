@@ -8,8 +8,13 @@ import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.ResolvableType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,16 +27,12 @@ import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
 /**
  * {@link BeanPostProcessor} for {@link KafkaProperties} to configure connection string credentials.
  */
-class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
+class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPropertiesBeanPostProcessor.class);
     private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
 
-    private final ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider;
-
-    KafkaPropertiesBeanPostProcessor(ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
-        this.connectionStringProvider = connectionStringProvider;
-    }
+    private ApplicationContext applicationContext;
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -43,8 +44,15 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
                 + " instead, which can be set as spring.kafka.boostrap-servers=EventHubsNamespacesFQDN:9093.");
 
             KafkaProperties kafkaProperties = (KafkaProperties) bean;
-            String connectionString = connectionStringProvider.getConnectionString();
+            ResolvableType provider = ResolvableType.forClassWithGenerics(ServiceConnectionStringProvider.class, AzureServiceType.EventHubs.class);
+            ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.EventHubs>> beanProvider = applicationContext.getBeanProvider(provider);
 
+            ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider = beanProvider.getIfAvailable();
+            if (connectionStringProvider == null) {
+                throw new NoSuchBeanDefinitionException("Not found ServiceConnectionStringProvider<AzureServiceType.EventHubs> bean.");
+            }
+
+            String connectionString = connectionStringProvider.getConnectionString();
             String bootstrapServer = new EventHubsConnectionString(connectionString).getFullyQualifiedNamespace() + ":9093";
             kafkaProperties.setBootstrapServers(new ArrayList<>(Collections.singletonList(bootstrapServer)));
             kafkaProperties.getProperties().put(SECURITY_PROTOCOL_CONFIG, SASL_SSL.name());
@@ -55,4 +63,8 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }
