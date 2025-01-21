@@ -1,0 +1,4 @@
+directory: specification/hybridconnectivity/HybridConnectivity.Management
+commit: 54ea8598d4b8be93342221058ce39da670b4c3b1
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
