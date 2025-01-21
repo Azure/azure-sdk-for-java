@@ -66,7 +66,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         Map<String, String> defaultHeaders = new HashMap<>();
         // For ThinClient http/2 used for framing only
         // All operation-level headers are only added to the rntbd-encoded message
-        // the thin client proxy wil parse the rntbd headers (not the content!) and substitute any
+        // the thin client proxy will parse the rntbd headers (not the content!) and substitute any
         // missing headers for routing (like partitionId or replicaId)
         // Since the Thin client proxy also needs to set the user-agent header to a different value
         // it is not added to the rntbd headers - just http-headers in the SDK
@@ -91,15 +91,17 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
 
         // todo: neharao1 - validate whether Java heap buffer is okay v/s Direct buffer
+        // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
 
-        // todo: comment can be removed - RntbdRequestEncoder does the same - a type of ChannelHandler in ChannelPipeline (a Netty concept)
         // todo: lifting the logic from there to encode the RntbdRequest instance into a ByteBuf (ByteBuf is a network compatible format)
         // todo: double-check with fabianm to see if RntbdRequest across RNTBD over TCP (Direct connectivity mode) is same as that when using ThinClient proxy
         rntbdRequest.encode(byteBuf);
 
+        // todo: need to conditionally add some headers (userAgent, replicaId/endpoint, etc)
+        rntbdRequest.encode(byteBuf);
+
         return new HttpRequest(
-            // todo: HttpMethod when using ThinClient is presumably always an HttpMethod.POST - validate this
             HttpMethod.POST,
             requestUri,
             requestUri.getPort(),
@@ -109,12 +111,14 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
+        // todo: select only required headers from defaults
         Map<String, String> defaultHeaders = this.getDefaultHeaders();
 
         for (Map.Entry<String, String> header : defaultHeaders.entrySet()) {
             httpHeaders.set(header.getKey(), header.getValue());
         }
 
+        // todo: add thin client resourcetype/operationtype headers
         return httpHeaders;
     }
 }

@@ -34,7 +34,7 @@ param()
 
 # Since we're skipping Management for the moment, only look for files with certain parents. These
 # limitations will vanish once Management track is updated.
-$ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-parent", "azure-perf-test-parent", "azure-cosmos-spark_3_2-12")
+$ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-parent", "azure-perf-test-parent", "azure-cosmos-spark_3_2-12", "io.clientcore:clientcore-parent")
 
 # SpringSampleParents is necessary for the spring samples which have to build using the spring-boot-starter-parent BOM.
 # The problem with this is, it's a BOM file and the spring dependencies are pulled in through that which means any

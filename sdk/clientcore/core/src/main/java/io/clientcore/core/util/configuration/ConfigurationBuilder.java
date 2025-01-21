@@ -5,7 +5,7 @@ package io.clientcore.core.util.configuration;
 
 import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.util.EnvironmentConfiguration;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Collections;
 import java.util.HashMap;

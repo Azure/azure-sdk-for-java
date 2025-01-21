@@ -64,6 +64,7 @@
 
       --add-exports io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.instrumentation.fallback=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->

@@ -17,6 +17,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 import reactor.util.annotation.Nullable;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -104,6 +105,12 @@ class QuickPulsePingSender {
 
             CollectionConfigurationInfo body = responseMono.getValue();
             if (body != null && !configuration.get().getETag().equals(body.getETag())) {
+                try {
+                    logger.verbose("Received a new live metrics filtering configuration from ping response: {}",
+                        body.toJsonString());
+                } catch (IOException e) {
+                    logger.verbose(e.getMessage());
+                }
                 configuration.set(new FilteringConfiguration(body));
             }
 

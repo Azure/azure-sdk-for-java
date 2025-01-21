@@ -9,9 +9,9 @@ Azure Communication Job Router contains the APIs used in job router applications
 ### Prerequisites
 
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
-- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
+- [Java Development Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+- A deployed Communication Services resource. You can use the [Azure Portal](https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 ### Include the package
 #### Include the BOM file
 
@@ -246,7 +246,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-jobrouter/src
 [router_concepts]: https://learn.microsoft.com/azure/communication-services/concepts/router/concepts
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-jobrouter
 [api_documentation]: https://aka.ms/java-docs
 [rest_docs]: https://learn.microsoft.com/rest/api/communication/

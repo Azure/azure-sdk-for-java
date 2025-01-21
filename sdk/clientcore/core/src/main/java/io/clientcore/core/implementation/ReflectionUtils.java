@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

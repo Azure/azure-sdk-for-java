@@ -5,7 +5,7 @@ package io.clientcore.core.http.client;
 
 import io.clientcore.core.http.client.implementation.JdkHttpClientProxySelector;
 import io.clientcore.core.http.models.ProxyOptions;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.SharedExecutorService;
 import io.clientcore.core.util.configuration.Configuration;
 
