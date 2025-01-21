@@ -1775,7 +1775,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     shouldBloomFilterBeAccessed,
                     new PartitionKey(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion),
                     expectedCosmosContainerProperties.getPartitionKeyDefinition(),
-                    resolvedContainer.getLinkWithoutTrailingSlash(),
+                    CosmosAsyncContainer.getLinkWithoutTrailingSlash(resolvedContainer.getLink()),
                     normalizedSecondPreferredRegion,
                     documentClient
                 );
@@ -1845,7 +1845,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     shouldBloomFilterBeAccessed,
                     new PartitionKey(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion),
                     expectedCosmosContainerProperties.getPartitionKeyDefinition(),
-                    resolvedContainer.getLinkWithoutTrailingSlash(),
+                    CosmosAsyncContainer.getLinkWithoutTrailingSlash(resolvedContainer.getLink()),
                     normalizedSecondPreferredRegion,
                     documentClient
                 );
@@ -1904,7 +1904,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     shouldBloomFilterBeAccessed,
                     new PartitionKey(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion),
                     expectedCosmosContainerProperties.getPartitionKeyDefinition(),
-                    resolvedContainer.getLinkWithoutTrailingSlash(),
+                    CosmosAsyncContainer.getLinkWithoutTrailingSlash(resolvedContainer.getLink()),
                     normalizedSecondPreferredRegion,
                     documentClient
                 );
@@ -1958,7 +1958,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     shouldBloomFilterBeAccessed,
                     new PartitionKey(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion),
                     expectedCosmosContainerProperties.getPartitionKeyDefinition(),
-                    resolvedContainer.getLinkWithoutTrailingSlash(),
+                    CosmosAsyncContainer.getLinkWithoutTrailingSlash(resolvedContainer.getLink()),
                     normalizedSecondPreferredRegion,
                     documentClient
                 );
