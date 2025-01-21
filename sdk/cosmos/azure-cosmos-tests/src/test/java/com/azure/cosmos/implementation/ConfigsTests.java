@@ -194,26 +194,4 @@ public class ConfigsTests {
             System.clearProperty("COSMOS.THINCLIENT_ENDPOINT");
         }
     }
-
-    @Test(groups = { "unit" })
-    public void thinClientEnabledTest() {
-        Configs config = new Configs();
-        assertThat(config.getThinclientEnabled()).isFalse();
-
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        assertThat(config.getThinclientEnabled()).isTrue();
-
-        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-    }
-
-    @Test(groups = { "unit" })
-    public void thinClientEndpointTest() {
-        Configs config = new Configs();
-        assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create(""));
-
-        System.setProperty("COSMOS.THINCLIENT_ENDPOINT", "testThinClientEndpoint");
-        assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("testThinClientEndpoint"));
-
-        System.clearProperty("COSMOS.THINCLIENT_ENDPOINT");
-    }
 }

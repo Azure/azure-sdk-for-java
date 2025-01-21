@@ -96,8 +96,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
         // todo: lifting the logic from there to encode the RntbdRequest instance into a ByteBuf (ByteBuf is a network compatible format)
         // todo: double-check with fabianm to see if RntbdRequest across RNTBD over TCP (Direct connectivity mode) is same as that when using ThinClient proxy
-        rntbdRequest.encode(byteBuf);
-
         // todo: need to conditionally add some headers (userAgent, replicaId/endpoint, etc)
         rntbdRequest.encode(byteBuf);
 

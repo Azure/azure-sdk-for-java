@@ -104,12 +104,6 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createItem() throws Exception {
-        // TODO @nehrao/@fabianm REMOVE BEFORE CHECK-IN
-        if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT ||
-            client.asyncClient().getEffectiveConsistencyLevel(OperationType.Read, null) != ConsistencyLevel.STRONG) {
-
-            throw new SkipException("Disabled for debugging");
-        }
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
