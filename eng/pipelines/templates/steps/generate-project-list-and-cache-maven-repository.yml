@@ -29,6 +29,7 @@ steps:
   env:
     ARTIFACTSJSON: $(ArtifactsJson)
     ADDITIONALMODULESJSON: $(AdditionalModulesJson)
+    PACKAGEINFODIR: $(Build.ArtifactStagingDirectory)/PackageInfo
 
 # The Cache task, when restoring, can have a miss and still pass but, if nothing is built, the
 # Post-Job Cache will fail because there's no .m2/repository

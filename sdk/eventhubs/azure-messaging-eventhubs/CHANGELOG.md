@@ -1,16 +1,16 @@
 # Release History
 
-## 5.20.0-beta.1 (Unreleased)
+## 5.20.0 (2025-02-11)
 
 ### Features Added
 
-Setting the v2 stack as the default. ([43725](https://github.com/Azure/azure-sdk-for-java/pull/43725))
+- Setting the v2 stack as the default. ([43725](https://github.com/Azure/azure-sdk-for-java/pull/43725))
 
 ### Breaking Changes
 
 - Do not remove `x-opt-partition-key` message annotation when publishing events. 
   If event is received from an Event Hub, it may contain `x-opt-partition-key` message annotation. If this event is 
-  published to another Event Hub, previous version of the Event Hubs SDK did not pass this annotation to the next Event Hub. 
+  published to another Event Hub, previous version of the Event Hubs SDK did not pass this annotation to the next Event Hub.
   Starting with this version:
   - if the event is sent with `SendOptions` or `CreateBatchOptions` containing `null` partition key, the existing `x-opt-partition-key` 
     message annotation will be used when publishing the event. **This is a new behavior.**
@@ -28,8 +28,6 @@ Setting the v2 stack as the default. ([43725](https://github.com/Azure/azure-sdk
   when re-sending events received from another Event Hub. Message annotations should not be modified by the SDK and Event Hubs 
   will overwrite these values when the event is published.
   ([#43039](https://github.com/Azure/azure-sdk-for-java/pull/43039))
-
-### Other Changes
 
 ## 5.19.2 (2024-12-04)
 

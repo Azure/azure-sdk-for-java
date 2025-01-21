@@ -22,6 +22,12 @@ public final class CloudServiceVaultCertificate implements JsonSerializable<Clou
      */
     private String certificateUrl;
 
+    /*
+     * Flag indicating if the certificate provided is a bootstrap certificate to be used by the Key Vault Extension to
+     * fetch the remaining certificates.
+     */
+    private Boolean isBootstrapCertificate;
+
     /**
      * Creates an instance of CloudServiceVaultCertificate class.
      */
@@ -51,6 +57,28 @@ public final class CloudServiceVaultCertificate implements JsonSerializable<Clou
     }
 
     /**
+     * Get the isBootstrapCertificate property: Flag indicating if the certificate provided is a bootstrap certificate
+     * to be used by the Key Vault Extension to fetch the remaining certificates.
+     * 
+     * @return the isBootstrapCertificate value.
+     */
+    public Boolean isBootstrapCertificate() {
+        return this.isBootstrapCertificate;
+    }
+
+    /**
+     * Set the isBootstrapCertificate property: Flag indicating if the certificate provided is a bootstrap certificate
+     * to be used by the Key Vault Extension to fetch the remaining certificates.
+     * 
+     * @param isBootstrapCertificate the isBootstrapCertificate value to set.
+     * @return the CloudServiceVaultCertificate object itself.
+     */
+    public CloudServiceVaultCertificate withIsBootstrapCertificate(Boolean isBootstrapCertificate) {
+        this.isBootstrapCertificate = isBootstrapCertificate;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -65,6 +93,7 @@ public final class CloudServiceVaultCertificate implements JsonSerializable<Clou
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("certificateUrl", this.certificateUrl);
+        jsonWriter.writeBooleanField("isBootstrapCertificate", this.isBootstrapCertificate);
         return jsonWriter.writeEndObject();
     }
 
@@ -85,6 +114,9 @@ public final class CloudServiceVaultCertificate implements JsonSerializable<Clou
 
                 if ("certificateUrl".equals(fieldName)) {
                     deserializedCloudServiceVaultCertificate.certificateUrl = reader.getString();
+                } else if ("isBootstrapCertificate".equals(fieldName)) {
+                    deserializedCloudServiceVaultCertificate.isBootstrapCertificate
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

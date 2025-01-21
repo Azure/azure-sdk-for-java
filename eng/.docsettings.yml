@@ -50,7 +50,6 @@ known_presence_issues:
   - ['sdk/cognitiveservices/ms-azure-cs-videosearch', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-visualsearch', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-websearch', '#2847']
-  - ['sdk/eventhubs/microsoft-azure-eventhubs-extensions', '#2847']
   - ['sdk/mediaservices/microsoft-azure-media', '#2847']
   - ['sdk/servicebus/microsoft-azure-servicebus', '#2847']
   # Changelog List
@@ -80,7 +79,6 @@ known_presence_issues:
   - ['sdk/eventgrid/azure-messaging-eventgrid/CHANGELOG.md', '#2847']
   - ['sdk/eventhubs/microsoft-azure-eventhubs/CHANGELOG.md', '#2847']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/CHANGELOG.md', '#2847']
-  - ['sdk/eventhubs/microsoft-azure-eventhubs-extensions/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-core/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-cryptography/CHANGELOG.md', '#2847']
