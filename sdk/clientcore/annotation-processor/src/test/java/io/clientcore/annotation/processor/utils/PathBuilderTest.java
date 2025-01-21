@@ -162,8 +162,7 @@ public class PathBuilderTest {
     public void buildsPathWithEmptySubstitutionValue() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", ""));
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
-        assertEquals("\"https://\" +  + \"/keys\"", result);
+        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://{endpoint}/keys/", context));
     }
 
     @Test
