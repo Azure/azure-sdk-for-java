@@ -457,6 +457,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
             Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
                 = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
 
+            assertThat(partitionKeyRangesForContainer).isNotNull();
             assertThat(partitionKeyRangesForContainer.v).isNotNull();
             assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
 

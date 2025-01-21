@@ -118,7 +118,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                     partitionLevelLocationUnavailabilityInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableEndpoints));
             }
 
-            request.requestContext.setLocationToLocationSpecificHealthContext(partitionLevelLocationUnavailabilityInfoAsVal.regionToLocationSpecificHealthContext);
+            request.requestContext.setPerPartitionCircuitBreakerInfoHolder(partitionLevelLocationUnavailabilityInfoAsVal.regionToLocationSpecificHealthContext);
             return partitionLevelLocationUnavailabilityInfoAsVal;
         });
 
@@ -178,7 +178,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 succeededLocation,
                 request.isReadOnlyRequest());
 
-            request.requestContext.setLocationToLocationSpecificHealthContext(partitionKeyRangeToFailoverInfoAsVal.regionToLocationSpecificHealthContext);
+            request.requestContext.setPerPartitionCircuitBreakerInfoHolder(partitionKeyRangeToFailoverInfoAsVal.regionToLocationSpecificHealthContext);
             return partitionKeyRangeToFailoverInfoAsVal;
         });
     }

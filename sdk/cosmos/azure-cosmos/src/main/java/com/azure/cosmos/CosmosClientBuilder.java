@@ -229,7 +229,9 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets whether PPAF is enabled.
+     * The {@code perPartitionAutomaticFailoverEnabled} flag is a way for the {@link CosmosClient} or {@link CosmosAsyncClient}
+     * instance to opt in into failing over a specific physical partition(s) in the write region for single-write accounts as
+     * opposed to the write region as a whole.
      *
      * @param isPerPartitionAutomaticFailoverEnabled A boolean flag to indicate whether PPAF is enabled.
      * */
@@ -241,7 +243,7 @@ public class CosmosClientBuilder implements
     /**
      * Gets whether PPAF is enabled.
      *
-     * @return isPPAFEnabled
+     * @return isPerPartitionAutomaticFailoverEnabled
      * */
     boolean isPerPartitionAutomaticFailoverEnabled() {
         return this.isPerPartitionAutomaticFailoverEnabled;
@@ -885,13 +887,14 @@ public class CosmosClientBuilder implements
         }
     }
 
-    // todo: revert this method - only stick to system property
     void resetIsPerPartitionAutomaticFailoverEnabled() {
         boolean isPerPartitionAutomaticFailoverEnabledFromEnvVariable = Configs.isPerPartitionAutomaticFailoverEnabled();
-        boolean isPerPartitionAutomaticFailoverEnabledFromPublicApi = this.isPerPartitionAutomaticFailoverEnabled;
+
+        // internal only use case - test cases and benchmarking
+        boolean isPerPartitionAutomaticFailoverEnabledFromPackagePrivateMethod = this.isPerPartitionAutomaticFailoverEnabled;
 
         this.isPerPartitionAutomaticFailoverEnabled
-            = isPerPartitionAutomaticFailoverEnabledFromPublicApi || isPerPartitionAutomaticFailoverEnabledFromEnvVariable;
+            = isPerPartitionAutomaticFailoverEnabledFromPackagePrivateMethod || isPerPartitionAutomaticFailoverEnabledFromEnvVariable;
     }
 
     /**

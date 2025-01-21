@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 
-public class LocationToLocationSpecificHealthContextHolder implements Serializable {
+public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
 
     private final Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContextHolder = new Utils.ValueHolder<Map<String, LocationSpecificHealthContext>>();
 
@@ -23,10 +23,10 @@ public class LocationToLocationSpecificHealthContextHolder implements Serializab
         return locationToLocationSpecificHealthContextHolder.v;
     }
 
-    public static class LocationSpecificHealthContextHolderSerializer extends com.fasterxml.jackson.databind.JsonSerializer<LocationToLocationSpecificHealthContextHolder> {
+    public static class PerPartitionCircuitBreakerInfoHolderSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PerPartitionCircuitBreakerInfoHolder> {
 
         @Override
-        public void serialize(LocationToLocationSpecificHealthContextHolder value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(PerPartitionCircuitBreakerInfoHolder value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 
             Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext = value.getLocationToLocationSpecificHealthContext();
 

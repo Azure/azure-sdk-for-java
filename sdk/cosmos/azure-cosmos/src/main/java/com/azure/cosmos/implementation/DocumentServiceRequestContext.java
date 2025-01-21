@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionFailoverInfoHolder;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationToLocationSpecificHealthContextHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -69,7 +69,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
 
-    private volatile LocationToLocationSpecificHealthContextHolder locationToLocationHealthContextHolderForCircuitBreaker;
+    private volatile PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
     private volatile PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
     public DocumentServiceRequestContext() {}
@@ -236,17 +236,17 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.clientRetryPolicySupplier = clientRetryPolicySupplier;
     }
 
-    public LocationToLocationSpecificHealthContextHolder getLocationToLocationSpecificHealthContextHolder() {
-        return this.locationToLocationHealthContextHolderForCircuitBreaker;
+    public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+        return this.perPartitionCircuitBreakerInfoHolder;
     }
 
-    public void setLocationToLocationSpecificHealthContext(Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext) {
+    public void setPerPartitionCircuitBreakerInfoHolder(Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext) {
 
-        if (this.locationToLocationHealthContextHolderForCircuitBreaker == null) {
-            this.locationToLocationHealthContextHolderForCircuitBreaker = new LocationToLocationSpecificHealthContextHolder();
-            this.locationToLocationHealthContextHolderForCircuitBreaker.setLocationToLocationSpecificHealthContext(locationToLocationSpecificHealthContext);
+        if (this.perPartitionCircuitBreakerInfoHolder == null) {
+            this.perPartitionCircuitBreakerInfoHolder = new PerPartitionCircuitBreakerInfoHolder();
+            this.perPartitionCircuitBreakerInfoHolder.setLocationToLocationSpecificHealthContext(locationToLocationSpecificHealthContext);
         } else {
-            this.locationToLocationHealthContextHolderForCircuitBreaker.setLocationToLocationSpecificHealthContext(locationToLocationSpecificHealthContext);
+            this.perPartitionCircuitBreakerInfoHolder.setLocationToLocationSpecificHealthContext(locationToLocationSpecificHealthContext);
         }
     }
 

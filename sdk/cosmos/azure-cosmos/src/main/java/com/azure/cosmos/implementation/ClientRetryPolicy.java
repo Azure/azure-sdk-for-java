@@ -384,8 +384,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // 2. For any server returned 503s, SDK will retry
         // 3. For SDK generated 503, SDK will only retry if the subStatusCode is SERVER_GENERATED_410
         //
-        // With PPAF enabled, 503 for a write request should be used as a signal to mark the region unavailable for the partition
-        // With PPAF enabled, 503 for a write request should be eligible for cross-region retry too
+        // When PPAF is enabled,
+        // 1. 503 for a write request should be used as a signal to mark the region unavailable for the partition
+        // 2. 503 for a write request should be eligible for cross-region retry too
         if (!isReadRequest
             && !shouldRetryWriteOnServiceUnavailable(
                 nonIdempotentWriteRetriesEnabled,

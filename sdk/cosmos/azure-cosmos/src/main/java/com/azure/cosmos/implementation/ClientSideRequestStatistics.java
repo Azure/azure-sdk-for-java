@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionFailoverInfoHolder;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationToLocationSpecificHealthContextHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -169,7 +169,7 @@ public class ClientSideRequestStatistics {
 
             this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
             storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
-            storeResponseStatistics.locationToLocationSpecificHealthContextHolder = request.requestContext.getLocationToLocationSpecificHealthContextHolder();
+            storeResponseStatistics.perPartitionCircuitBreakerInfoHolder = request.requestContext.getPerPartitionCircuitBreakerInfoHolder();
             storeResponseStatistics.perPartitionFailoverInfoHolder = request.requestContext.getPerPartitionFailoverContextHolder();
 
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
@@ -246,7 +246,7 @@ public class ClientSideRequestStatistics {
 
                 if (rxDocumentServiceRequest.requestContext != null) {
                     gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
-                    gatewayStatistics.locationToLocationSpecificHealthContext = rxDocumentServiceRequest.requestContext.getLocationToLocationSpecificHealthContextHolder();
+                    gatewayStatistics.perPartitionCircuitBreakerInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionCircuitBreakerInfoHolder();
                     gatewayStatistics.perPartitionFailoverInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionFailoverContextHolder();
                 }
             }
@@ -688,8 +688,8 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private Set<String> sessionTokenEvaluationResults;
 
-        @JsonSerialize(using = LocationToLocationSpecificHealthContextHolder.LocationSpecificHealthContextHolderSerializer.class)
-        private LocationToLocationSpecificHealthContextHolder locationToLocationSpecificHealthContextHolder;
+        @JsonSerialize(using = PerPartitionCircuitBreakerInfoHolder.PerPartitionCircuitBreakerInfoHolderSerializer.class)
+        private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
 
         @JsonSerialize(using = PerPartitionFailoverInfoHolder.PerPartitionFailoverInfoHolderSerializer.class)
         private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
@@ -730,8 +730,8 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
-        public LocationToLocationSpecificHealthContextHolder getLocationToLocationSpecificHealthContextHolder() {
-            return locationToLocationSpecificHealthContextHolder;
+        public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+            return perPartitionCircuitBreakerInfoHolder;
         }
 
         public PerPartitionFailoverInfoHolder getPerPartitionFailoverInfoHolder() {
@@ -900,7 +900,7 @@ public class ClientSideRequestStatistics {
         private String faultInjectionRuleId;
         private List<String> faultInjectionEvaluationResults;
         private Set<String> sessionTokenEvaluationResults;
-        private LocationToLocationSpecificHealthContextHolder locationToLocationSpecificHealthContext;
+        private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
         private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
         public String getSessionToken() {
@@ -959,8 +959,8 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
-        public LocationToLocationSpecificHealthContextHolder getLocationToLocationSpecificHealthContext() {
-            return locationToLocationSpecificHealthContext;
+        public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+            return perPartitionCircuitBreakerInfoHolder;
         }
 
         public PerPartitionFailoverInfoHolder getPerPartitionFailoverInfoHolder() {
@@ -1000,7 +1000,7 @@ public class ClientSideRequestStatistics {
                 }
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
-                this.writeNonNullObjectField(jsonGenerator, "perPartitionCircuitBreakerCtx", gatewayStatistics.getLocationToLocationSpecificHealthContext());
+                this.writeNonNullObjectField(jsonGenerator, "perPartitionCircuitBreakerCtx", gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder());
                 this.writeNonNullObjectField(jsonGenerator, "perPartitionAutomaticFailoverCtx", gatewayStatistics.getPerPartitionFailoverInfoHolder());
 
                 jsonGenerator.writeEndObject();

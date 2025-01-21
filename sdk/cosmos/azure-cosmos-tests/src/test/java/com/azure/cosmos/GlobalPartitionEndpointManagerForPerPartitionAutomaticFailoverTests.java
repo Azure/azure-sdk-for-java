@@ -14,8 +14,6 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.Assertions;
@@ -43,7 +41,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static com.azure.cosmos.implementation.directconnectivity.ReflectionUtils.getClassBySimpleName;
 
 public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests extends TestSuiteBase {
 
@@ -52,7 +49,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
     private GlobalEndpointManager singleWriteAccountGlobalEndpointManagerMock;
     private GlobalEndpointManager multiWriteAccountGlobalEndpointManagerMock;
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests.class);
 
     private static final String EAST_US_CNST = "eastus";
     private static final String EAST_US_2_CNST = "eastus2";
