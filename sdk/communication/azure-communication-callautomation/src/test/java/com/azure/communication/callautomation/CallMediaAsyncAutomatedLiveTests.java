@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -193,8 +194,17 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
                     .stream()
                     .map(PurchasedPhoneNumber::getPhoneNumber)
                     .collect(Collectors.toList());
-                receiver = new PhoneNumberIdentifier(phoneNumbers.get(1));
-                caller = new PhoneNumberIdentifier(phoneNumbers.get(0));
+
+                Random random = new Random();
+                int index1 = random.nextInt(phoneNumbers.size());
+                int index2;
+
+                do {
+                    index2 = random.nextInt(phoneNumbers.size());
+                } while (index1 == index2);
+
+                receiver = new PhoneNumberIdentifier(phoneNumbers.get(index1));
+                caller = new PhoneNumberIdentifier(phoneNumbers.get(index2));
             }
 
             CallAutomationAsyncClient client = getCallAutomationClientUsingConnectionString(httpClient)
