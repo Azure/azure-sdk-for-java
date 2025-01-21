@@ -36,7 +36,7 @@ class AzureEventHubsKafkaConfigurationTests {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
                 AzureEventHubsKafkaAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class,
-                AzureTokenCredentialAutoConfiguration.class, KafkaPropertiesConfiguration.class,
+                AzureTokenCredentialAutoConfiguration.class,
                 KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
 
 
@@ -47,6 +47,7 @@ class AzureEventHubsKafkaConfigurationTests {
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(AzureGlobalProperties.class);
+                    assertThat(context).hasBean("testImport");
                     assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
                     assertThat(context).hasSingleBean(ConsumerFactory.class);

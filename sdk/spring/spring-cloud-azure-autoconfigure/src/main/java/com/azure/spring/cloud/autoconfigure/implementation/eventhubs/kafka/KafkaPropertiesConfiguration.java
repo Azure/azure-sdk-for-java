@@ -26,6 +26,11 @@ import org.springframework.context.annotation.Role;
 class KafkaPropertiesConfiguration {
 
     @Bean
+    String testImport() {
+        return "testImport";
+    }
+
+    @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
     static KafkaPropertiesBeanPostProcessor kafkaPropertiesBeanPostProcessor(
