@@ -44,6 +44,11 @@ public final class NettyUtility {
     private static final String NETTY_TCNATIVE_VERSION_ARTIFACT = "netty-tcnative-boringssl-static";
 
     /**
+     * Key for the context to indicate that the content length was not set by the SDK.
+     */
+    public static final String DID_NOT_SET_CONTENT_LENGTH_CONTEXT_KEY = "sdk-did-not-set-content-length";
+
+    /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.
      * <p>
      * Using this method ensures that data returned by the network is resilient against Reactor Netty releasing the

@@ -22,19 +22,20 @@ import io.netty.channel.ChannelPromise;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
+import reactor.netty.ReactorNetty;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.AddressUtils;
 import reactor.netty.transport.ProxyProvider;
+import reactor.util.context.ContextView;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -253,10 +254,12 @@ public class NettyAsyncHttpClientBuilder {
                     if (msg instanceof io.netty.handler.codec.http.HttpRequest) {
                         io.netty.handler.codec.http.HttpRequest nettyRequest
                             = (io.netty.handler.codec.http.HttpRequest) msg;
-                        if ((nettyRequest.method() == HttpMethod.GET || nettyRequest.method() == HttpMethod.HEAD)
-                            && !nettyRequest.headers().contains(HttpHeaderNames.CONTENT_TYPE)
+                        ContextView channelContext = ReactorNetty.getChannelContext(ctx.channel());
+                        if (channelContext != null
+                            && Boolean.TRUE.equals(
+                                channelContext.getOrDefault(NettyUtility.DID_NOT_SET_CONTENT_LENGTH_CONTEXT_KEY, false))
                             && "0".equals(nettyRequest.headers().get(HttpHeaderNames.CONTENT_LENGTH))) {
-                            // Remove the content-length header if it is 0 and the method is GET or HEAD.
+                            // Remove the content-length header if it is 0 and the SDK did not set it.
                             nettyRequest.headers().remove(HttpHeaderNames.CONTENT_LENGTH);
                         }
                     }

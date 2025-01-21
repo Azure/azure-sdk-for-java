@@ -37,6 +37,8 @@ public final class NettyHttpClientLocalTestServer {
     public static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     public static final String PROXY_TO_ADDRESS = "/proxyToAddress";
     public static final String TIMEOUT = "/timeout";
+    public static final String VALID_CONTENT_LENGTH_ZERO = "/validContentLengthZero";
+    public static final String INVALID_CONTENT_LENGTH_ZERO = "/invalidContentLengthZero";
 
     public static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     public static final byte[] LONG_BODY = createLongBody();
@@ -144,6 +146,20 @@ public final class NettyHttpClientLocalTestServer {
                     resp.getHttpOutput().complete(Callback.NOOP);
                 } catch (InterruptedException e) {
                     throw new ServletException(e);
+                }
+            } else if (VALID_CONTENT_LENGTH_ZERO.equals(path)) {
+                String contentLength = req.getHeader("Content-Length");
+                if ("0".equals(contentLength)) {
+                    resp.setStatus(200);
+                } else {
+                    resp.setStatus(400);
+                }
+            } else if (INVALID_CONTENT_LENGTH_ZERO.equals(path)) {
+                String contentLength = req.getHeader("Content-Length");
+                if ("0".equals(contentLength)) {
+                    resp.setStatus(400);
+                } else {
+                    resp.setStatus(200);
                 }
             } else {
                 throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
