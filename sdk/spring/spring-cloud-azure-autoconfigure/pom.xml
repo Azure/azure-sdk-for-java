@@ -302,12 +302,7 @@
       <version>6.2.1</version> <!-- {x-version-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
       <optional>true</optional>
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-beans</artifactId>
-      <version>6.2.1</version> <!-- {x-version-update;springboot3_org.springframework:spring-beans;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
@@ -565,7 +560,6 @@
                 <include>org.springframework.security:spring-security-oauth2-client:[6.4.2]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-jose:[6.4.2]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-resource-server:[6.4.2]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
-                <include>org.springframework:spring-beans:[6.2.1]</include> <!-- {x-include-update;springboot3_org.springframework:spring-beans;external_dependency} -->
                 <include>org.springframework:spring-context-support:[6.2.1]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
                 <include>org.springframework:spring-jdbc:[6.2.1]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
                 <include>org.springframework:spring-jms:[6.2.1]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jms;external_dependency} -->
