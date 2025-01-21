@@ -94,6 +94,7 @@
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
     <revapi.skip>false</revapi.skip>
+    <generatedSources>${project.build.directory}/generated-sources/java</generatedSources>
 
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
@@ -750,7 +751,28 @@
               <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
             </annotationProcessors>
             <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+            <compilerArgument>full</compilerArgument>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.0.0</version>
+          <executions>
+            <execution>
+              <!-- Need to ensure the generated source folder is added to the project classpath, in jdt.ls -->
+              <id>add-source</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>add-source</goal>
+              </goals>
+              <configuration>
+                <sources>
+                  <source>${generatedSources}</source>
+                </sources>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
 
         <!-- This plugin scans checkstyle issues in the code -->

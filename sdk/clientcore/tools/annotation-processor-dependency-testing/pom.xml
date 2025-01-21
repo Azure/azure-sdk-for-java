@@ -8,23 +8,11 @@
   <artifactId>annotation-processor-dependency-testing</artifactId>
   <version>1.0.0-beta.1</version>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
-
   <dependencies>
-    <dependency>
-      <groupId>io.clientcore.tools</groupId>
-      <artifactId>annotation-processor</artifactId>
-      <version>1.0.0-beta.1</version>
-    </dependency>
-
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -33,20 +21,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-          <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
-          <annotationProcessors>
-            <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
-          </annotationProcessors>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
