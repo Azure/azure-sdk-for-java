@@ -36,9 +36,9 @@ private[spark] object ChangeFeedTable {
 
   private[spark] val defaultFullFidelityChangeFeedSchemaForInferenceDisabled = StructType(Seq(
     StructField(RawJsonBodyAttributeName, StringType, nullable=true),
-    StructField(IdAttributeName, StringType, nullable=false),
+    StructField(IdAttributeName, StringType, nullable=true),
     StructField(TimestampAttributeName, LongType, nullable=false),
-    StructField(ETagAttributeName, StringType, nullable=false),
+    StructField(ETagAttributeName, StringType, nullable=true),
     StructField(LsnAttributeName, LongType, nullable=false),
     StructField(MetadataJsonBodyAttributeName, StringType, nullable=false),
     StructField(PreviousRawJsonBodyAttributeName, StringType, nullable=true),
