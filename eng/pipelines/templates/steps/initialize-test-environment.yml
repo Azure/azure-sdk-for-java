@@ -5,6 +5,12 @@ parameters:
   - name: OS
     type: string
     default: $(OSVmImage)
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: ExcludePaths
+    type: object
+    default: []
 
 steps:
   # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
@@ -44,6 +50,8 @@ steps:
   - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
     parameters:
       JobType: 'test'
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      ExcludePaths: ${{parameters.ExcludePaths}}
 
   # This call is used generate the sparse checkout variables for non-FromSource runs.
   - task: PowerShell@2
