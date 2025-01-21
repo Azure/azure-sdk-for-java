@@ -20,6 +20,7 @@ steps:
       parameters:
         Paths:
           - '**/*.xml'
+          - '**/ci*.yml' # necessary for save-package-properties.yml
           - ${{ if not(parameters.CheckoutRecordings) }}:
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'
