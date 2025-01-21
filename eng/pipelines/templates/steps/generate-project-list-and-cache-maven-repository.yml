@@ -24,14 +24,14 @@ parameters:
 
 steps:
 
-  # This is the case for the PullReqest pipeline which has a ServiceDirectory of 'auto'.
-  # For the PullRequest pipeline, the packageInfo files generated from the diff end up
-  # being the source of truth for the artifacts list.
-  - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-    - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
-      parameters:
-        ServiceDirectory: ${{parameters.ServiceDirectory}}
-        ExcludePaths: ${{parameters.ExcludePaths}}
+# This is the case for the PullReqest pipeline which has a ServiceDirectory of 'auto'.
+# For the PullRequest pipeline, the packageInfo files generated from the diff end up
+# being the source of truth for the artifacts list.
+- ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      ExcludePaths: ${{parameters.ExcludePaths}}
 
   # Create the ProjectList and ProjectListSha256 variables.
   # The ProjectList is used by subsequent steps and tasks to run CI.
