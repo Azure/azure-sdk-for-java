@@ -5,29 +5,44 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The connection state. */
+/**
+ * The connection state.
+ */
 @Fluent
 public final class ConnectionPropertiesPrivateLinkServiceConnectionState extends ConnectionState {
-    /** Creates an instance of ConnectionPropertiesPrivateLinkServiceConnectionState class. */
+    /**
+     * Creates an instance of ConnectionPropertiesPrivateLinkServiceConnectionState class.
+     */
     public ConnectionPropertiesPrivateLinkServiceConnectionState() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionPropertiesPrivateLinkServiceConnectionState withStatus(PrivateLinkServiceConnectionStatus status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionPropertiesPrivateLinkServiceConnectionState withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionPropertiesPrivateLinkServiceConnectionState withActionsRequired(String actionsRequired) {
         super.withActionsRequired(actionsRequired);
@@ -36,11 +51,71 @@ public final class ConnectionPropertiesPrivateLinkServiceConnectionState extends
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (status() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model ConnectionPropertiesPrivateLinkServiceConnectionState"));
+        }
+        if (description() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model ConnectionPropertiesPrivateLinkServiceConnectionState"));
+        }
+    }
+
+    private static final ClientLogger LOGGER
+        = new ClientLogger(ConnectionPropertiesPrivateLinkServiceConnectionState.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", status() == null ? null : status().toString());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("actionsRequired", actionsRequired());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionPropertiesPrivateLinkServiceConnectionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionPropertiesPrivateLinkServiceConnectionState if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionPropertiesPrivateLinkServiceConnectionState.
+     */
+    public static ConnectionPropertiesPrivateLinkServiceConnectionState fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionPropertiesPrivateLinkServiceConnectionState deserializedConnectionPropertiesPrivateLinkServiceConnectionState
+                = new ConnectionPropertiesPrivateLinkServiceConnectionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedConnectionPropertiesPrivateLinkServiceConnectionState
+                        .withStatus(PrivateLinkServiceConnectionStatus.fromString(reader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedConnectionPropertiesPrivateLinkServiceConnectionState
+                        .withDescription(reader.getString());
+                } else if ("actionsRequired".equals(fieldName)) {
+                    deserializedConnectionPropertiesPrivateLinkServiceConnectionState
+                        .withActionsRequired(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionPropertiesPrivateLinkServiceConnectionState;
+        });
     }
 }

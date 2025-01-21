@@ -5,77 +5,77 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.PolicyEvaluatorType;
 import com.azure.resourcemanager.devtestlabs.models.PolicyFactName;
 import com.azure.resourcemanager.devtestlabs.models.PolicyStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of a Policy. */
+/**
+ * Properties of a Policy.
+ */
 @Fluent
-public final class PolicyProperties {
+public final class PolicyProperties implements JsonSerializable<PolicyProperties> {
     /*
      * The description of the policy.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The status of the policy.
      */
-    @JsonProperty(value = "status")
     private PolicyStatus status;
 
     /*
      * The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
      */
-    @JsonProperty(value = "factName")
     private PolicyFactName factName;
 
     /*
      * The fact data of the policy.
      */
-    @JsonProperty(value = "factData")
     private String factData;
 
     /*
      * The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of values for
      * AllowedValuesPolicy).
      */
-    @JsonProperty(value = "threshold")
     private String threshold;
 
     /*
      * The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
      */
-    @JsonProperty(value = "evaluatorType")
     private PolicyEvaluatorType evaluatorType;
 
     /*
      * The creation date of the policy.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of PolicyProperties class. */
+    /**
+     * Creates an instance of PolicyProperties class.
+     */
     public PolicyProperties() {
     }
 
     /**
      * Get the description property: The description of the policy.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -84,7 +84,7 @@ public final class PolicyProperties {
 
     /**
      * Set the description property: The description of the policy.
-     *
+     * 
      * @param description the description value to set.
      * @return the PolicyProperties object itself.
      */
@@ -95,7 +95,7 @@ public final class PolicyProperties {
 
     /**
      * Get the status property: The status of the policy.
-     *
+     * 
      * @return the status value.
      */
     public PolicyStatus status() {
@@ -104,7 +104,7 @@ public final class PolicyProperties {
 
     /**
      * Set the status property: The status of the policy.
-     *
+     * 
      * @param status the status value to set.
      * @return the PolicyProperties object itself.
      */
@@ -115,7 +115,7 @@ public final class PolicyProperties {
 
     /**
      * Get the factName property: The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
-     *
+     * 
      * @return the factName value.
      */
     public PolicyFactName factName() {
@@ -124,7 +124,7 @@ public final class PolicyProperties {
 
     /**
      * Set the factName property: The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
-     *
+     * 
      * @param factName the factName value to set.
      * @return the PolicyProperties object itself.
      */
@@ -135,7 +135,7 @@ public final class PolicyProperties {
 
     /**
      * Get the factData property: The fact data of the policy.
-     *
+     * 
      * @return the factData value.
      */
     public String factData() {
@@ -144,7 +144,7 @@ public final class PolicyProperties {
 
     /**
      * Set the factData property: The fact data of the policy.
-     *
+     * 
      * @param factData the factData value to set.
      * @return the PolicyProperties object itself.
      */
@@ -156,7 +156,7 @@ public final class PolicyProperties {
     /**
      * Get the threshold property: The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of
      * values for AllowedValuesPolicy).
-     *
+     * 
      * @return the threshold value.
      */
     public String threshold() {
@@ -166,7 +166,7 @@ public final class PolicyProperties {
     /**
      * Set the threshold property: The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of
      * values for AllowedValuesPolicy).
-     *
+     * 
      * @param threshold the threshold value to set.
      * @return the PolicyProperties object itself.
      */
@@ -177,7 +177,7 @@ public final class PolicyProperties {
 
     /**
      * Get the evaluatorType property: The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
-     *
+     * 
      * @return the evaluatorType value.
      */
     public PolicyEvaluatorType evaluatorType() {
@@ -186,7 +186,7 @@ public final class PolicyProperties {
 
     /**
      * Set the evaluatorType property: The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
-     *
+     * 
      * @param evaluatorType the evaluatorType value to set.
      * @return the PolicyProperties object itself.
      */
@@ -197,7 +197,7 @@ public final class PolicyProperties {
 
     /**
      * Get the createdDate property: The creation date of the policy.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -206,7 +206,7 @@ public final class PolicyProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -215,7 +215,7 @@ public final class PolicyProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -224,9 +224,67 @@ public final class PolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("factName", this.factName == null ? null : this.factName.toString());
+        jsonWriter.writeStringField("factData", this.factData);
+        jsonWriter.writeStringField("threshold", this.threshold);
+        jsonWriter.writeStringField("evaluatorType", this.evaluatorType == null ? null : this.evaluatorType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyProperties.
+     */
+    public static PolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyProperties deserializedPolicyProperties = new PolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedPolicyProperties.description = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedPolicyProperties.status = PolicyStatus.fromString(reader.getString());
+                } else if ("factName".equals(fieldName)) {
+                    deserializedPolicyProperties.factName = PolicyFactName.fromString(reader.getString());
+                } else if ("factData".equals(fieldName)) {
+                    deserializedPolicyProperties.factData = reader.getString();
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedPolicyProperties.threshold = reader.getString();
+                } else if ("evaluatorType".equals(fieldName)) {
+                    deserializedPolicyProperties.evaluatorType = PolicyEvaluatorType.fromString(reader.getString());
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedPolicyProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPolicyProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedPolicyProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyProperties;
+        });
     }
 }

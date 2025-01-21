@@ -20,7 +20,7 @@ public final class ReplicationPoliciesDeleteSamples {
      */
     public static void
         deleteThePolicy(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationPolicies().delete("vault1", "resourceGroupPS1", "protectionprofile1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationPolicies()
+            .delete("vault1", "resourceGroupPS1", "protectionprofile1", com.azure.core.util.Context.NONE);
     }
 }

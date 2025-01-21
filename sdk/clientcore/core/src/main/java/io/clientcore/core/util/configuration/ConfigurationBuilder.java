@@ -5,7 +5,7 @@ package io.clientcore.core.util.configuration;
 
 import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.util.EnvironmentConfiguration;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,8 +32,8 @@ public final class ConfigurationBuilder {
      * <!-- src_embed io.clientcore.core.util.ConfigurationBuilder#putProperty -->
      * <pre>
      * configuration = new ConfigurationBuilder&#40;&#41;
-     *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .putProperty&#40;&quot;my.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
      * ConfigurationProperty&lt;String&gt; connectionStringProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;connection-string&quot;&#41;
@@ -54,7 +54,7 @@ public final class ConfigurationBuilder {
      * <!-- src_embed io.clientcore.core.util.Configuration -->
      * <pre>
      * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
      * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
@@ -73,14 +73,12 @@ public final class ConfigurationBuilder {
 
     /**
      * Creates {@code ConfigurationBuilder} with configuration sources for explicit configuration, system properties and
-     * environment configuration sources. Use this constructor to customize known SDK system properties and
-     * environment variables retrieval.
+     * environment configuration sources. Use this constructor to customize known system properties and environment
+     * variables retrieval.
      *
-     * @param source Custom {@link ConfigurationSource} containing known SDK configuration properties
-     * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known Azure SDK system
-     * properties.
-     * @param environmentConfigurationSource {@link ConfigurationSource} containing known Azure SDK environment
-     * variables.
+     * @param source Custom {@link ConfigurationSource} containing known configuration properties
+     * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known system properties.
+     * @param environmentConfigurationSource {@link ConfigurationSource} containing known environment variables.
      */
     public ConfigurationBuilder(ConfigurationSource source, ConfigurationSource systemPropertiesConfigurationSource,
         ConfigurationSource environmentConfigurationSource) {
@@ -100,8 +98,8 @@ public final class ConfigurationBuilder {
      * <!-- src_embed io.clientcore.core.util.ConfigurationBuilder#putProperty -->
      * <pre>
      * configuration = new ConfigurationBuilder&#40;&#41;
-     *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .putProperty&#40;&quot;my.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
      * ConfigurationProperty&lt;String&gt; connectionStringProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;connection-string&quot;&#41;
@@ -131,7 +129,7 @@ public final class ConfigurationBuilder {
      * <!-- src_embed io.clientcore.core.util.Configuration -->
      * <pre>
      * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
      * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
@@ -159,7 +157,7 @@ public final class ConfigurationBuilder {
      * <pre>
      * &#47;&#47; Builds shared Configuration only.
      * Configuration sharedConfiguration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .build&#40;&#41;;
      * </pre>
      * <!-- end com.io.clientcore.core.util.ConfigurationBuilder#build -->
@@ -183,7 +181,7 @@ public final class ConfigurationBuilder {
      * <pre>
      * &#47;&#47; Builds Configuration for &lt;client-name&gt; with fallback to shared properties.
      * configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      * </pre>
      * <!-- end io.clientcore.core.util.ConfigurationBuilder#buildSection -->

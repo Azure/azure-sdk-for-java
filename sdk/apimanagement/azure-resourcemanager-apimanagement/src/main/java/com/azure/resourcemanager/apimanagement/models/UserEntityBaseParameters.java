@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserIdentityContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** User Entity Base Parameters set. */
+/**
+ * User Entity Base Parameters set.
+ */
 @Fluent
-public class UserEntityBaseParameters {
+public class UserEntityBaseParameters implements JsonSerializable<UserEntityBaseParameters> {
     /*
      * Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer
      * portal or call any APIs of subscribed products. Default state is Active.
      */
-    @JsonProperty(value = "state")
     private UserState state;
 
     /*
      * Optional note about a user set by the administrator.
      */
-    @JsonProperty(value = "note")
     private String note;
 
     /*
      * Collection of user identities.
      */
-    @JsonProperty(value = "identities")
     private List<UserIdentityContractInner> identities;
 
-    /** Creates an instance of UserEntityBaseParameters class. */
+    /**
+     * Creates an instance of UserEntityBaseParameters class.
+     */
     public UserEntityBaseParameters() {
     }
 
     /**
      * Get the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
      * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
+     * 
      * @return the state value.
      */
     public UserState state() {
@@ -48,7 +53,7 @@ public class UserEntityBaseParameters {
     /**
      * Set the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
      * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
+     * 
      * @param state the state value to set.
      * @return the UserEntityBaseParameters object itself.
      */
@@ -59,7 +64,7 @@ public class UserEntityBaseParameters {
 
     /**
      * Get the note property: Optional note about a user set by the administrator.
-     *
+     * 
      * @return the note value.
      */
     public String note() {
@@ -68,7 +73,7 @@ public class UserEntityBaseParameters {
 
     /**
      * Set the note property: Optional note about a user set by the administrator.
-     *
+     * 
      * @param note the note value to set.
      * @return the UserEntityBaseParameters object itself.
      */
@@ -79,7 +84,7 @@ public class UserEntityBaseParameters {
 
     /**
      * Get the identities property: Collection of user identities.
-     *
+     * 
      * @return the identities value.
      */
     public List<UserIdentityContractInner> identities() {
@@ -88,7 +93,7 @@ public class UserEntityBaseParameters {
 
     /**
      * Set the identities property: Collection of user identities.
-     *
+     * 
      * @param identities the identities value to set.
      * @return the UserEntityBaseParameters object itself.
      */
@@ -99,12 +104,56 @@ public class UserEntityBaseParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identities() != null) {
             identities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("note", this.note);
+        jsonWriter.writeArrayField("identities", this.identities, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserEntityBaseParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserEntityBaseParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserEntityBaseParameters.
+     */
+    public static UserEntityBaseParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserEntityBaseParameters deserializedUserEntityBaseParameters = new UserEntityBaseParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedUserEntityBaseParameters.state = UserState.fromString(reader.getString());
+                } else if ("note".equals(fieldName)) {
+                    deserializedUserEntityBaseParameters.note = reader.getString();
+                } else if ("identities".equals(fieldName)) {
+                    List<UserIdentityContractInner> identities
+                        = reader.readArray(reader1 -> UserIdentityContractInner.fromJson(reader1));
+                    deserializedUserEntityBaseParameters.identities = identities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserEntityBaseParameters;
+        });
     }
 }

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Vault properties. */
+/**
+ * Vault properties.
+ */
 @Fluent
-public final class VaultModelProperties {
+public final class VaultModelProperties implements JsonSerializable<VaultModelProperties> {
     /*
      * Gets or sets the provisioning state of the vault.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Gets or sets the service resource Id.
      */
-    @JsonProperty(value = "serviceResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceResourceId;
 
     /*
      * Gets or sets the type of vault.
      */
-    @JsonProperty(value = "vaultType")
     private ReplicationVaultType vaultType;
 
-    /** Creates an instance of VaultModelProperties class. */
+    /**
+     * Creates an instance of VaultModelProperties class.
+     */
     public VaultModelProperties() {
     }
 
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the vault.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -43,7 +48,7 @@ public final class VaultModelProperties {
 
     /**
      * Get the serviceResourceId property: Gets or sets the service resource Id.
-     *
+     * 
      * @return the serviceResourceId value.
      */
     public String serviceResourceId() {
@@ -52,7 +57,7 @@ public final class VaultModelProperties {
 
     /**
      * Get the vaultType property: Gets or sets the type of vault.
-     *
+     * 
      * @return the vaultType value.
      */
     public ReplicationVaultType vaultType() {
@@ -61,7 +66,7 @@ public final class VaultModelProperties {
 
     /**
      * Set the vaultType property: Gets or sets the type of vault.
-     *
+     * 
      * @param vaultType the vaultType value to set.
      * @return the VaultModelProperties object itself.
      */
@@ -72,9 +77,50 @@ public final class VaultModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vaultType", this.vaultType == null ? null : this.vaultType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultModelProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VaultModelProperties.
+     */
+    public static VaultModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultModelProperties deserializedVaultModelProperties = new VaultModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedVaultModelProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("serviceResourceId".equals(fieldName)) {
+                    deserializedVaultModelProperties.serviceResourceId = reader.getString();
+                } else if ("vaultType".equals(fieldName)) {
+                    deserializedVaultModelProperties.vaultType = ReplicationVaultType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultModelProperties;
+        });
     }
 }

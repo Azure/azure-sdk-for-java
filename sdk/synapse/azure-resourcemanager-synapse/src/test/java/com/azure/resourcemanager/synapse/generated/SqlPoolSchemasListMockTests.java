@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class SqlPoolSchemasListMockTests {
     @Test
     public void testList() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"xq\",\"name\":\"wrswyiljp\",\"type\":\"bkgx\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"axikhfjqebglcxk\",\"name\":\"gzzromv\",\"type\":\"g\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,8 +29,8 @@ public final class SqlPoolSchemasListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SqlPoolSchema> response
-            = manager.sqlPoolSchemas().list("aoijolb", "a", "ktwieope", "e", com.azure.core.util.Context.NONE);
+        PagedIterable<SqlPoolSchema> response = manager.sqlPoolSchemas()
+            .list("n", "qady", "zjahwriuomz", "zfkiceevsaaxwsp", com.azure.core.util.Context.NONE);
 
     }
 }

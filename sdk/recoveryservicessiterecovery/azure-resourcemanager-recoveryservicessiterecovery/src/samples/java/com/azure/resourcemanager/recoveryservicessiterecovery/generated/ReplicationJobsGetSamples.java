@@ -20,7 +20,8 @@ public final class ReplicationJobsGetSamples {
      */
     public static void
         getsTheJobDetails(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationJobs().getWithResponse("vault1", "resourceGroupPS1", "58776d0b-3141-48b2-a377-9ad863eb160d",
-            com.azure.core.util.Context.NONE);
+        manager.replicationJobs()
+            .getWithResponse("vault1", "resourceGroupPS1", "58776d0b-3141-48b2-a377-9ad863eb160d",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -21,7 +21,7 @@ public final class SqlPoolMetadataSyncConfigsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"enabled\":true,\"syncIntervalInMinutes\":1873262512},\"id\":\"tvsnvl\",\"name\":\"qdnzyza\",\"type\":\"atuwqkokbc\"}";
+            = "{\"properties\":{\"enabled\":false,\"syncIntervalInMinutes\":1811351267},\"id\":\"jfiimreoa\",\"name\":\"sqtaadusrexxfa\",\"type\":\"sqwudohzilfmnli\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SqlPoolMetadataSyncConfigsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         MetadataSyncConfig response = manager.sqlPoolMetadataSyncConfigs()
-            .getWithResponse("jawh", "ag", "qfqqdlcvmyolc", com.azure.core.util.Context.NONE)
+            .getWithResponse("yszekbhwlka", "ggkrehbf", "n", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.enabled());
-        Assertions.assertEquals(1873262512, response.syncIntervalInMinutes());
+        Assertions.assertEquals(false, response.enabled());
+        Assertions.assertEquals(1811351267, response.syncIntervalInMinutes());
     }
 }

@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.UserInner;
 import com.azure.resourcemanager.devtestlabs.models.UserFragment;
 
-/** An instance of this class provides access to all the operations defined in UsersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsersClient.
+ */
 public interface UsersClient {
     /**
      * List user profiles in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface UsersClient {
 
     /**
      * List user profiles in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=identity)'.
@@ -50,7 +52,7 @@ public interface UsersClient {
 
     /**
      * Get user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -67,7 +69,7 @@ public interface UsersClient {
 
     /**
      * Get user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -81,7 +83,7 @@ public interface UsersClient {
 
     /**
      * Create or replace an existing user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -97,7 +99,7 @@ public interface UsersClient {
 
     /**
      * Create or replace an existing user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -114,7 +116,7 @@ public interface UsersClient {
 
     /**
      * Create or replace an existing user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -129,7 +131,7 @@ public interface UsersClient {
 
     /**
      * Create or replace an existing user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -145,7 +147,7 @@ public interface UsersClient {
 
     /**
      * Delete user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -159,7 +161,7 @@ public interface UsersClient {
 
     /**
      * Delete user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -175,7 +177,7 @@ public interface UsersClient {
 
     /**
      * Delete user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -188,7 +190,7 @@ public interface UsersClient {
 
     /**
      * Delete user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -202,7 +204,7 @@ public interface UsersClient {
 
     /**
      * Allows modifying tags of user profiles. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -219,7 +221,7 @@ public interface UsersClient {
 
     /**
      * Allows modifying tags of user profiles. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.

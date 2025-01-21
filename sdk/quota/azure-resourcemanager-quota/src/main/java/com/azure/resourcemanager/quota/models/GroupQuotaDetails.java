@@ -5,54 +5,53 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.fluent.models.GroupQuotaDetailsName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Group Quota details.
  */
 @Fluent
-public final class GroupQuotaDetails {
+public final class GroupQuotaDetails implements JsonSerializable<GroupQuotaDetails> {
     /*
      * Location/Azure region for the quota requested for resource.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * The current Group Quota Limit at the parentId level.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * Any comment related to quota request.
      */
-    @JsonProperty(value = "comment")
     private String comment;
 
     /*
-     * Name of the resource provided by the resource provider. This property is already included in the request URI, so it is a readonly property returned in the response.
+     * Name of the resource provided by the resource provider. This property is already included in the request URI, so
+     * it is a readonly property returned in the response.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private GroupQuotaDetailsName innerName;
 
     /*
-     *  The usages units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET response in the request body of your PUT operation.
+     * The usages units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET
+     * response in the request body of your PUT operation.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
      * The available Group Quota Limit at the MG level. This Group quota can be allocated to subscription(s).
      */
-    @JsonProperty(value = "availableLimit", access = JsonProperty.Access.WRITE_ONLY)
     private Long availableLimit;
 
     /*
      * Quota allocated to subscriptions
      */
-    @JsonProperty(value = "allocatedToSubscriptions", access = JsonProperty.Access.WRITE_ONLY)
     private AllocatedQuotaToSubscriptionList allocatedToSubscriptions;
 
     /**
@@ -190,5 +189,56 @@ public final class GroupQuotaDetails {
         if (allocatedToSubscriptions() != null) {
             allocatedToSubscriptions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeStringField("comment", this.comment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupQuotaDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupQuotaDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupQuotaDetails.
+     */
+    public static GroupQuotaDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupQuotaDetails deserializedGroupQuotaDetails = new GroupQuotaDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("region".equals(fieldName)) {
+                    deserializedGroupQuotaDetails.region = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedGroupQuotaDetails.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("comment".equals(fieldName)) {
+                    deserializedGroupQuotaDetails.comment = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGroupQuotaDetails.innerName = GroupQuotaDetailsName.fromJson(reader);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedGroupQuotaDetails.unit = reader.getString();
+                } else if ("availableLimit".equals(fieldName)) {
+                    deserializedGroupQuotaDetails.availableLimit = reader.getNullable(JsonReader::getLong);
+                } else if ("allocatedToSubscriptions".equals(fieldName)) {
+                    deserializedGroupQuotaDetails.allocatedToSubscriptions
+                        = AllocatedQuotaToSubscriptionList.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupQuotaDetails;
+        });
     }
 }

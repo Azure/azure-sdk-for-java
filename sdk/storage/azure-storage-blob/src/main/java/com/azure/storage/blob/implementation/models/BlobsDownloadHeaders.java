@@ -17,7 +17,7 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -443,8 +443,8 @@ public final class BlobsDownloadHeaders {
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
-        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
-        Map<String, String> xMsOrHeaderCollection = new HashMap<>();
+        Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
+        Map<String, String> xMsOrHeaderCollection = new LinkedHashMap<>();
 
         for (HttpHeader header : rawHeaders) {
             String headerName = header.getName();

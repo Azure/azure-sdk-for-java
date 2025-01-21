@@ -124,9 +124,9 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "servicerunners");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servicerunners");
     }
 
     public ServiceRunner refresh() {

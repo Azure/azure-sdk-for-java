@@ -6,72 +6,53 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.GatewayType;
 import com.azure.resourcemanager.managednetworkfabric.models.InternetGateway;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class InternetGatewaysCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"ipv4Address\":\"yvsbfsinvabdjul\",\"port\":858540581,\"type\":\"Workload\",\"networkFabricControllerId\":\"tudamkiyaosthul\",\"provisioningState\":\"Succeeded\",\"internetGatewayRuleId\":\"fgspxldlnocsc\",\"annotation\":\"imizlukjbwmg\"},\"location\":\"rlmspppoeszt\",\"tags\":{\"iylgzzu\":\"ryjsk\",\"o\":\"ixpsybqowgvmxw\"},\"id\":\"xdhkoex\",\"name\":\"rhgnakajwscmneev\",\"type\":\"umqeu\"}";
+            = "{\"properties\":{\"ipv4Address\":\"ldaqwjun\",\"port\":300799614,\"type\":\"Workload\",\"networkFabricControllerId\":\"jhwcbrdsyp\",\"provisioningState\":\"Succeeded\",\"internetGatewayRuleId\":\"kbvzpkodngvnq\",\"annotation\":\"gsbtwgnldxu\"},\"location\":\"lhvbqyczn\",\"tags\":{\"qwucqsdgbx\":\"piiuvcqoq\",\"myvwp\":\"wtvmijccpkkjl\"},\"id\":\"jmaih\",\"name\":\"nnlb\",\"type\":\"xjppcbqetfzfppv\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         InternetGateway response = manager.internetGateways()
-            .define("vozjezchme")
-            .withRegion("owqrzvuxn")
-            .withExistingResourceGroup("mbhukdfpknvk")
-            .withTypePropertiesType(GatewayType.INFRASTRUCTURE)
-            .withNetworkFabricControllerId("kwqphfvsf")
-            .withTags(mapOf("mjdhypngo", "ohshzultdb", "zukekytkzvt", "bdxvrivptbczsuzg", "inha", "maatvogpyc",
-                "khwfjudapbq", "hbdxsbypl"))
-            .withInternetGatewayRuleId("wlpxc")
-            .withAnnotation("hdtezgfctu")
+            .define("mi")
+            .withRegion("xpijvapeak")
+            .withExistingResourceGroup("o")
+            .withTypePropertiesType(GatewayType.WORKLOAD)
+            .withNetworkFabricControllerId("znghuqzgpdglkf")
+            .withTags(mapOf("a", "cedliklxkyoddoq", "qyrgqmndk", "qtrkicw"))
+            .withInternetGatewayRuleId("gavtfy")
+            .withAnnotation("edfmzuk")
             .create();
 
-        Assertions.assertEquals("rlmspppoeszt", response.location());
-        Assertions.assertEquals("ryjsk", response.tags().get("iylgzzu"));
+        Assertions.assertEquals("lhvbqyczn", response.location());
+        Assertions.assertEquals("piiuvcqoq", response.tags().get("qwucqsdgbx"));
         Assertions.assertEquals(GatewayType.WORKLOAD, response.typePropertiesType());
-        Assertions.assertEquals("tudamkiyaosthul", response.networkFabricControllerId());
-        Assertions.assertEquals("fgspxldlnocsc", response.internetGatewayRuleId());
-        Assertions.assertEquals("imizlukjbwmg", response.annotation());
+        Assertions.assertEquals("jhwcbrdsyp", response.networkFabricControllerId());
+        Assertions.assertEquals("kbvzpkodngvnq", response.internetGatewayRuleId());
+        Assertions.assertEquals("gsbtwgnldxu", response.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

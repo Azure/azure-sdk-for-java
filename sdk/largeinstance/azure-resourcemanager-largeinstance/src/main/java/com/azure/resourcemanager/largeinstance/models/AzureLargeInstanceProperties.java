@@ -5,72 +5,66 @@
 package com.azure.resourcemanager.largeinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the properties of an Azure Large Instance.
  */
 @Fluent
-public final class AzureLargeInstanceProperties {
+public final class AzureLargeInstanceProperties implements JsonSerializable<AzureLargeInstanceProperties> {
     /*
      * Specifies the hardware settings for the Azure Large Instance.
      */
-    @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
      * Specifies the storage settings for the Azure Large Instance disks.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
      * Specifies the operating system settings for the Azure Large Instance.
      */
-    @JsonProperty(value = "osProfile")
     private OsProfile osProfile;
 
     /*
      * Specifies the network settings for the Azure Large Instance.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Specifies the Azure Large Instance unique ID.
      */
-    @JsonProperty(value = "azureLargeInstanceId", access = JsonProperty.Access.WRITE_ONLY)
     private String azureLargeInstanceId;
 
     /*
      * Resource power state
      */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
     private AzureLargeInstancePowerStateEnum powerState;
 
     /*
      * Resource proximity placement group
      */
-    @JsonProperty(value = "proximityPlacementGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String proximityPlacementGroup;
 
     /*
      * Hardware revision of an Azure Large Instance
      */
-    @JsonProperty(value = "hwRevision", access = JsonProperty.Access.WRITE_ONLY)
     private String hwRevision;
 
     /*
      * ARM ID of another AzureLargeInstance that will share a network with this
      * AzureLargeInstance
      */
-    @JsonProperty(value = "partnerNodeId")
     private String partnerNodeId;
 
     /*
      * State of provisioning of the AzureLargeInstance
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AzureLargeInstanceProvisioningStatesEnum provisioningState;
 
     /**
@@ -244,5 +238,65 @@ public final class AzureLargeInstanceProperties {
         if (networkProfile() != null) {
             networkProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeStringField("partnerNodeId", this.partnerNodeId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureLargeInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureLargeInstanceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureLargeInstanceProperties.
+     */
+    public static AzureLargeInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureLargeInstanceProperties deserializedAzureLargeInstanceProperties = new AzureLargeInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hardwareProfile".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.osProfile = OsProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("azureLargeInstanceId".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.azureLargeInstanceId = reader.getString();
+                } else if ("powerState".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.powerState
+                        = AzureLargeInstancePowerStateEnum.fromString(reader.getString());
+                } else if ("proximityPlacementGroup".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.proximityPlacementGroup = reader.getString();
+                } else if ("hwRevision".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.hwRevision = reader.getString();
+                } else if ("partnerNodeId".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.partnerNodeId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAzureLargeInstanceProperties.provisioningState
+                        = AzureLargeInstanceProvisioningStatesEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureLargeInstanceProperties;
+        });
     }
 }

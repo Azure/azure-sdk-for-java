@@ -6,45 +6,26 @@ package com.azure.resourcemanager.quantum.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quantum.AzureQuantumManager;
 import com.azure.resourcemanager.quantum.models.ProviderDescription;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class OfferingsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"value\":[{\"id\":\"bnnhadoocrkvcik\",\"name\":\"vpa\",\"properties\":{\"description\":\"x\",\"providerType\":\"u\",\"company\":\"ik\",\"defaultEndpoint\":\"ggxkallatmelwuip\",\"aad\":{\"applicationId\":\"jzkzi\",\"tenantId\":\"vvcnayr\"},\"managedApplication\":{\"publisherId\":\"nxxmueedndrdv\",\"offerId\":\"kwqqtchealmf\"},\"targets\":[{\"id\":\"aygdvwvgpioh\",\"name\":\"xrtfudxep\",\"description\":\"yqagvrvm\",\"acceptedDataFormats\":[\"ukghimdblxgw\"],\"acceptedContentEncodings\":[\"njhf\",\"xw\",\"szkkfoqre\",\"fkzikfj\"]}],\"skus\":[{\"id\":\"a\",\"name\":\"xwczelpcire\",\"version\":\"feaenwab\",\"description\":\"tkl\",\"restrictedAccessUri\":\"xbjhwuaanozjosph\",\"autoAdd\":false,\"targets\":[\"jrvxaglrv\",\"mjwosytx\"],\"quotaDimensions\":[{},{},{},{}],\"pricingDetails\":[{},{}]}],\"quotaDimensions\":[{\"id\":\"tq\",\"scope\":\"iekkezz\",\"period\":\"hlyfjhdgqgg\",\"quota\":29.760027,\"name\":\"nyga\",\"description\":\"idb\",\"unit\":\"atpxl\",\"unitPlural\":\"xcyjmoadsuvarmy\"},{\"id\":\"mjsjqb\",\"scope\":\"hyxxrwlycoduhpk\",\"period\":\"gymare\",\"quota\":23.266273,\"name\":\"xqugjhkycubedd\",\"description\":\"sofwqmzqalkrmnji\",\"unit\":\"xacqqudfnbyx\",\"unitPlural\":\"aabjyvayffimrz\"},{\"id\":\"uzqogsexnevf\",\"scope\":\"wnwmewzs\",\"period\":\"ceuzsoibjudpfr\",\"quota\":98.30812,\"name\":\"hzv\",\"description\":\"tdwkqbrq\",\"unit\":\"paxh\",\"unitPlural\":\"iilivpdtiirqtd\"},{\"id\":\"axoruzfgsquy\",\"scope\":\"rxxle\",\"period\":\"ramxjezwlwnw\",\"quota\":41.191147,\"name\":\"cvydypatdoo\",\"description\":\"jkniodko\",\"unit\":\"bw\",\"unitPlural\":\"jhemms\"}],\"pricingDimensions\":[{\"id\":\"c\",\"name\":\"dtjinfw\"},{\"id\":\"fltkacjv\",\"name\":\"kdlfoa\"}]}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AzureQuantumManager manager = AzureQuantumManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

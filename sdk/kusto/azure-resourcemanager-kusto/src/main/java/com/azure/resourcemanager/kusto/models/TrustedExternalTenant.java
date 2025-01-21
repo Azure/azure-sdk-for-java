@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a tenant ID that is trusted by the cluster. */
+/**
+ * Represents a tenant ID that is trusted by the cluster.
+ */
 @Fluent
-public final class TrustedExternalTenant {
+public final class TrustedExternalTenant implements JsonSerializable<TrustedExternalTenant> {
     /*
      * GUID representing an external tenant.
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of TrustedExternalTenant class. */
+    /**
+     * Creates an instance of TrustedExternalTenant class.
+     */
     public TrustedExternalTenant() {
     }
 
     /**
      * Get the value property: GUID representing an external tenant.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -31,7 +38,7 @@ public final class TrustedExternalTenant {
 
     /**
      * Set the value property: GUID representing an external tenant.
-     *
+     * 
      * @param value the value value to set.
      * @return the TrustedExternalTenant object itself.
      */
@@ -42,9 +49,45 @@ public final class TrustedExternalTenant {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrustedExternalTenant from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrustedExternalTenant if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrustedExternalTenant.
+     */
+    public static TrustedExternalTenant fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrustedExternalTenant deserializedTrustedExternalTenant = new TrustedExternalTenant();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedTrustedExternalTenant.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrustedExternalTenant;
+        });
     }
 }

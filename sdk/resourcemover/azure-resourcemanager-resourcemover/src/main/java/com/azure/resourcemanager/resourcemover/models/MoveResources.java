@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of MoveResources. */
+/**
+ * Resource collection API of MoveResources.
+ */
 public interface MoveResources {
     /**
      * Lists the Move Resources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,11 +26,11 @@ public interface MoveResources {
 
     /**
      * Lists the Move Resources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param filter The filter to apply on the operation. For example, you can use $filter=Properties/ProvisioningState
-     *     eq 'Succeeded'.
+     * eq 'Succeeded'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface MoveResources {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -53,7 +55,7 @@ public interface MoveResources {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -68,7 +70,7 @@ public interface MoveResources {
 
     /**
      * Gets the Move Resource.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -83,7 +85,7 @@ public interface MoveResources {
 
     /**
      * Gets the Move Resource.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -96,7 +98,7 @@ public interface MoveResources {
 
     /**
      * Gets the Move Resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,7 +109,7 @@ public interface MoveResources {
 
     /**
      * Gets the Move Resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +121,7 @@ public interface MoveResources {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,7 +132,7 @@ public interface MoveResources {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +144,7 @@ public interface MoveResources {
 
     /**
      * Begins definition for a new MoveResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new MoveResource definition.
      */

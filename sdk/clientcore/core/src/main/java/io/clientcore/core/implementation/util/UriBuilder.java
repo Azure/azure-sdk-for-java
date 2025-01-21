@@ -220,9 +220,6 @@ public final class UriBuilder {
     public Map<String, String> getQuery() {
         initializeQuery();
 
-        // This contains a map of key=value query parameters, replacing
-        // multiple values for a single key with a list of values under the same name,
-        // joined together with a comma. As discussed in https://github.com/Azure/azure-sdk-for-java/pull/21203.
         return query.entrySet()
             .stream()
             // get all parameters joined by a comma.

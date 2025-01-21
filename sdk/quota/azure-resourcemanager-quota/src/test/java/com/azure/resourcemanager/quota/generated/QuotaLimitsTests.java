@@ -6,7 +6,7 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.quota.fluent.models.CurrentQuotaLimitBaseInner;
-import com.azure.resourcemanager.quota.models.LimitObject;
+import com.azure.resourcemanager.quota.models.LimitJsonObject;
 import com.azure.resourcemanager.quota.models.QuotaLimits;
 import com.azure.resourcemanager.quota.models.QuotaProperties;
 import com.azure.resourcemanager.quota.models.ResourceName;
@@ -17,32 +17,36 @@ public final class QuotaLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaLimits model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitValue\"},\"unit\":\"gjljyoxgvc\",\"name\":{\"value\":\"gsncghkjeszz\",\"localizedValue\":\"ijhtxf\"},\"resourceType\":\"xbf\",\"quotaPeriod\":\"xnehmpvec\",\"isQuotaApplicable\":true,\"properties\":\"dataebfqkkrbm\"},\"id\":\"ukgri\",\"name\":\"flz\",\"type\":\"fbxzpuzycisp\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitValue\"},\"unit\":\"gkbrpyyd\",\"name\":{\"value\":\"nuqqkpikadrgvt\",\"localizedValue\":\"gnbuy\"},\"resourceType\":\"ijggmebfsiar\",\"quotaPeriod\":\"trcvpnazzmh\",\"isQuotaApplicable\":false,\"properties\":\"datampxttdbhrbnlankx\"},\"id\":\"yskpbhen\",\"name\":\"tkcxywnytnrsy\",\"type\":\"lqidyby\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitValue\"},\"unit\":\"haaxdbabphl\",\"name\":{\"value\":\"lfktsths\",\"localizedValue\":\"ocmnyyazttbtwwrq\"},\"resourceType\":\"edckzywbiexzfey\",\"quotaPeriod\":\"axibxujw\",\"isQuotaApplicable\":true,\"properties\":\"dataalmuzyoxaepdkzja\"},\"id\":\"cuxrhdwbavx\",\"name\":\"niwdjsw\",\"type\":\"tsdbpgn\"}],\"nextLink\":\"txhp\"}")
+            "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"c\",\"name\":{\"value\":\"hfnljkyq\",\"localizedValue\":\"vuujq\"},\"resourceType\":\"dokgjl\",\"quotaPeriod\":\"oxgvclt\",\"isQuotaApplicable\":true,\"properties\":\"datac\"},\"id\":\"hkjeszzhbi\",\"name\":\"htxfvgxbfsmxnehm\",\"type\":\"vecxgodebfqkk\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"ukgri\",\"name\":{\"value\":\"zlfbxzpuzycispnq\",\"localizedValue\":\"hmgkbrpyy\"},\"resourceType\":\"ibnuqqkpik\",\"quotaPeriod\":\"rgvtqag\",\"isQuotaApplicable\":false,\"properties\":\"datanhijggmebfsi\"},\"id\":\"rbu\",\"name\":\"rcvpnazzmhjrunmp\",\"type\":\"ttdbhrbnl\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"myskpbhenbtkcxy\",\"name\":{\"value\":\"tnrsyn\",\"localizedValue\":\"idybyxczf\"},\"resourceType\":\"haaxdbabphl\",\"quotaPeriod\":\"qlfktsths\",\"isQuotaApplicable\":true,\"properties\":\"datamnyyazt\"},\"id\":\"bt\",\"name\":\"wrqpue\",\"type\":\"ckzywbiexzfeyue\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"xujwbhqwalmuzyo\",\"name\":{\"value\":\"pdkzjancuxr\",\"localizedValue\":\"wbavxbniwdj\"},\"resourceType\":\"zt\",\"quotaPeriod\":\"bpg\",\"isQuotaApplicable\":false,\"properties\":\"datax\"},\"id\":\"pzxbz\",\"name\":\"fzab\",\"type\":\"lcuhxwtctyqiklb\"}],\"nextLink\":\"vplwzbhv\"}")
             .toObject(QuotaLimits.class);
-        Assertions.assertEquals("gsncghkjeszz", model.value().get(0).properties().name().value());
-        Assertions.assertEquals("xbf", model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("txhp", model.nextLink());
+        Assertions.assertEquals("hfnljkyq", model.value().get(0).properties().name().value());
+        Assertions.assertEquals("dokgjl", model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("vplwzbhv", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QuotaLimits model = new QuotaLimits().withValue(Arrays.asList(
-            new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitObject())
-                .withName(new ResourceName().withValue("gsncghkjeszz"))
-                .withResourceType("xbf")
-                .withProperties("dataebfqkkrbm")),
-            new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitObject())
-                .withName(new ResourceName().withValue("nuqqkpikadrgvt"))
-                .withResourceType("ijggmebfsiar")
-                .withProperties("datampxttdbhrbnlankx")),
-            new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitObject())
-                .withName(new ResourceName().withValue("lfktsths"))
-                .withResourceType("edckzywbiexzfey")
-                .withProperties("dataalmuzyoxaepdkzja"))))
-            .withNextLink("txhp");
+            new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
+                .withName(new ResourceName().withValue("hfnljkyq"))
+                .withResourceType("dokgjl")
+                .withProperties("datac")),
+            new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
+                .withName(new ResourceName().withValue("zlfbxzpuzycispnq"))
+                .withResourceType("ibnuqqkpik")
+                .withProperties("datanhijggmebfsi")),
+            new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
+                .withName(new ResourceName().withValue("tnrsyn"))
+                .withResourceType("haaxdbabphl")
+                .withProperties("datamnyyazt")),
+            new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
+                .withName(new ResourceName().withValue("pdkzjancuxr"))
+                .withResourceType("zt")
+                .withProperties("datax"))))
+            .withNextLink("vplwzbhv");
         model = BinaryData.fromObject(model).toObject(QuotaLimits.class);
-        Assertions.assertEquals("gsncghkjeszz", model.value().get(0).properties().name().value());
-        Assertions.assertEquals("xbf", model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("txhp", model.nextLink());
+        Assertions.assertEquals("hfnljkyq", model.value().get(0).properties().name().value());
+        Assertions.assertEquals("dokgjl", model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("vplwzbhv", model.nextLink());
     }
 }

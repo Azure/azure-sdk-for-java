@@ -6,37 +6,42 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Issue Attachment contract Properties. */
+/**
+ * Issue Attachment contract Properties.
+ */
 @Fluent
-public final class IssueAttachmentContractProperties {
+public final class IssueAttachmentContractProperties implements JsonSerializable<IssueAttachmentContractProperties> {
     /*
      * Filename by which the binary data will be saved.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
-     * Either 'link' if content is provided via an HTTP link or the MIME type of the Base64-encoded binary data
-     * provided in the 'content' property.
+     * Either 'link' if content is provided via an HTTP link or the MIME type of the Base64-encoded binary data provided
+     * in the 'content' property.
      */
-    @JsonProperty(value = "contentFormat", required = true)
     private String contentFormat;
 
     /*
      * An HTTP link or Base64-encoded binary data.
      */
-    @JsonProperty(value = "content", required = true)
     private String content;
 
-    /** Creates an instance of IssueAttachmentContractProperties class. */
+    /**
+     * Creates an instance of IssueAttachmentContractProperties class.
+     */
     public IssueAttachmentContractProperties() {
     }
 
     /**
      * Get the title property: Filename by which the binary data will be saved.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -45,7 +50,7 @@ public final class IssueAttachmentContractProperties {
 
     /**
      * Set the title property: Filename by which the binary data will be saved.
-     *
+     * 
      * @param title the title value to set.
      * @return the IssueAttachmentContractProperties object itself.
      */
@@ -57,7 +62,7 @@ public final class IssueAttachmentContractProperties {
     /**
      * Get the contentFormat property: Either 'link' if content is provided via an HTTP link or the MIME type of the
      * Base64-encoded binary data provided in the 'content' property.
-     *
+     * 
      * @return the contentFormat value.
      */
     public String contentFormat() {
@@ -67,7 +72,7 @@ public final class IssueAttachmentContractProperties {
     /**
      * Set the contentFormat property: Either 'link' if content is provided via an HTTP link or the MIME type of the
      * Base64-encoded binary data provided in the 'content' property.
-     *
+     * 
      * @param contentFormat the contentFormat value to set.
      * @return the IssueAttachmentContractProperties object itself.
      */
@@ -78,7 +83,7 @@ public final class IssueAttachmentContractProperties {
 
     /**
      * Get the content property: An HTTP link or Base64-encoded binary data.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -87,7 +92,7 @@ public final class IssueAttachmentContractProperties {
 
     /**
      * Set the content property: An HTTP link or Base64-encoded binary data.
-     *
+     * 
      * @param content the content value to set.
      * @return the IssueAttachmentContractProperties object itself.
      */
@@ -98,23 +103,70 @@ public final class IssueAttachmentContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property title in model IssueAttachmentContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property title in model IssueAttachmentContractProperties"));
         }
         if (contentFormat() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property contentFormat in model IssueAttachmentContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contentFormat in model IssueAttachmentContractProperties"));
         }
         if (content() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property content in model IssueAttachmentContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property content in model IssueAttachmentContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IssueAttachmentContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("contentFormat", this.contentFormat);
+        jsonWriter.writeStringField("content", this.content);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IssueAttachmentContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IssueAttachmentContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IssueAttachmentContractProperties.
+     */
+    public static IssueAttachmentContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IssueAttachmentContractProperties deserializedIssueAttachmentContractProperties
+                = new IssueAttachmentContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedIssueAttachmentContractProperties.title = reader.getString();
+                } else if ("contentFormat".equals(fieldName)) {
+                    deserializedIssueAttachmentContractProperties.contentFormat = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedIssueAttachmentContractProperties.content = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIssueAttachmentContractProperties;
+        });
+    }
 }

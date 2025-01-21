@@ -200,8 +200,8 @@ public final class WorkbookImpl implements Workbook, Workbook.Definition, Workbo
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "workbooks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workbooks");
     }
 
     public Workbook refresh() {

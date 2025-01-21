@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner;
 import com.azure.resourcemanager.resourcemover.fluent.models.OperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in MoveResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MoveResourcesClient.
+ */
 public interface MoveResourcesClient {
     /**
      * Lists the Move Resources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,11 +33,11 @@ public interface MoveResourcesClient {
 
     /**
      * Lists the Move Resources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param filter The filter to apply on the operation. For example, you can use $filter=Properties/ProvisioningState
-     *     eq 'Succeeded'.
+     * eq 'Succeeded'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,7 +50,7 @@ public interface MoveResourcesClient {
 
     /**
      * Creates or updates a Move Resource in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -63,11 +65,11 @@ public interface MoveResourcesClient {
 
     /**
      * Creates or updates a Move Resource in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
-     * @param body Defines the move resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,7 +82,7 @@ public interface MoveResourcesClient {
 
     /**
      * Creates or updates a Move Resource in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -94,11 +96,11 @@ public interface MoveResourcesClient {
 
     /**
      * Creates or updates a Move Resource in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
-     * @param body Defines the move resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -111,7 +113,7 @@ public interface MoveResourcesClient {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -126,7 +128,7 @@ public interface MoveResourcesClient {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -142,7 +144,7 @@ public interface MoveResourcesClient {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -156,7 +158,7 @@ public interface MoveResourcesClient {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -172,7 +174,7 @@ public interface MoveResourcesClient {
 
     /**
      * Gets the Move Resource.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -188,7 +190,7 @@ public interface MoveResourcesClient {
 
     /**
      * Gets the Move Resource.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.

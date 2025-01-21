@@ -37,10 +37,16 @@ import java.util.Set;
 public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager, VirtualMachineScaleSetInner>,
     Refreshable<VirtualMachineScaleSet>, Updatable<VirtualMachineScaleSet.UpdateStages.WithPrimaryLoadBalancer> {
     // Actions
-    /** @return entry point to manage virtual machine instances in the scale set. */
+    /**
+     * Gets entry point to manage virtual machine instances in the scale set..
+     *
+     * @return entry point to manage virtual machine instances in the scale set.
+     */
     VirtualMachineScaleSetVMs virtualMachines();
 
     /**
+     * Gets available SKUs for the virtual machine scale set.
+     *
      * @return available SKUs for the virtual machine scale set, including the minimum and maximum virtual machine
      *     instances allowed for a particular SKU
      */
@@ -160,34 +166,72 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Mono<RunCommandResult> runCommandVMInstanceAsync(String vmId, RunCommandInput inputCommand);
 
     // Getters
-    /** @return the name prefix of the virtual machines in the scale set */
+    /**
+     * Gets the name prefix of the virtual machines in the scale set.
+     *
+     * @return the name prefix of the virtual machines in the scale set
+     */
     String computerNamePrefix();
 
-    /** @return the operating system of the virtual machines in the scale set */
+    /**
+     * Gets the operating system of the virtual machines in the scale set.
+     *
+     * @return the operating system of the virtual machines in the scale set
+     */
     OperatingSystemTypes osType();
 
-    /** @return the operating system disk caching type */
+    /**
+     * Gets the operating system disk caching type.
+     *
+     * @return the operating system disk caching type
+     */
     CachingTypes osDiskCachingType();
 
-    /** @return the name of the OS disk of virtual machines in the scale set */
+    /**
+     * Gets the name of the OS disk of virtual machines in the scale set.
+     *
+     * @return the name of the OS disk of virtual machines in the scale set
+     */
     String osDiskName();
 
-    /** @return whether the instance OS disk is ephemeral */
+    /**
+     * Checks whether the instance OS disk is ephemeral.
+     *
+     * @return whether the instance OS disk is ephemeral
+     */
     boolean isEphemeralOSDisk();
 
-    /** @return the upgrade model, null for scale set with {@link OrchestrationMode#FLEXIBLE} */
+    /**
+     * Gets the upgrade model, null for scale set with {@link OrchestrationMode#FLEXIBLE}.
+     *
+     * @return the upgrade model, null for scale set with {@link OrchestrationMode#FLEXIBLE}
+     */
     UpgradeMode upgradeModel();
 
-    /** @return true if over provision is enabled for the virtual machines, false otherwise */
+    /**
+     * Checks whether over provision is enabled for the virtual machines.
+     *
+     * @return true if over provision is enabled for the virtual machines, false otherwise
+     */
     boolean overProvisionEnabled();
 
-    /** @return the SKU of the virtual machines in the scale set */
+    /**
+     * Gets the SKU of the virtual machines in the scale set.
+     *
+     * @return the SKU of the virtual machines in the scale set
+     */
     VirtualMachineScaleSetSkuTypes sku();
 
-    /** @return the number of virtual machine instances in the scale set */
+    /**
+     * Gets the number of virtual machine instances in the scale set.
+     *
+     * @return the number of virtual machine instances in the scale set
+     */
     int capacity();
 
     /**
+     * Gets the virtual network associated with the primary network interfaces of the virtual machines in the scale set.
+     *
      * @return the virtual network associated with the primary network interfaces of the virtual machines in the scale
      *     set.
      *     <p>A primary internal load balancer associated with the primary network interfaces of the scale set virtual
@@ -197,6 +241,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Network getPrimaryNetwork() throws IOException;
 
     /**
+     * Gets the Internet-facing load balancer associated with the primary network interface of the virtual machines
+     *     in the scale set.
+     *
      * @return the Internet-facing load balancer associated with the primary network interface of the virtual machines
      *     in the scale set.
      * @throws IOException the IO exception
@@ -204,6 +251,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     LoadBalancer getPrimaryInternetFacingLoadBalancer() throws IOException;
 
     /**
+     * Gets the Internet-facing load balancer's backends associated with the primary network interface of the virtual
+     *     machines in the scale set.
+     *
      * @return the Internet-facing load balancer's backends associated with the primary network interface of the virtual
      *     machines in the scale set
      * @throws IOException the IO exception
@@ -211,6 +261,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Map<String, LoadBalancerBackend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException;
 
     /**
+     * Gets the Internet-facing load balancer's inbound NAT pool associated with the primary network interface of the
+     *     virtual machines in the scale set.
+     *
      * @return the Internet-facing load balancer's inbound NAT pool associated with the primary network interface of the
      *     virtual machines in the scale set
      * @throws IOException the IO exception
@@ -218,6 +271,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Map<String, LoadBalancerInboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException;
 
     /**
+     * Gets the internal load balancer associated with the primary network interface of the virtual machines in the
+     *     scale set.
+     *
      * @return the internal load balancer associated with the primary network interface of the virtual machines in the
      *     scale set
      * @throws IOException the IO exception
@@ -225,6 +281,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     LoadBalancer getPrimaryInternalLoadBalancer() throws IOException;
 
     /**
+     * Gets the internal load balancer's backends associated with the primary network interface of the virtual
+     *     machines in the scale set.
+     *
      * @return the internal load balancer's backends associated with the primary network interface of the virtual
      *     machines in the scale set
      * @throws IOException the IO exception
@@ -232,6 +291,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Map<String, LoadBalancerBackend> listPrimaryInternalLoadBalancerBackends() throws IOException;
 
     /**
+     * Gets the inbound NAT pools of the internal load balancer associated with the primary network interface of the
+     *     virtual machines in the scale set.
+     *
      * @return the inbound NAT pools of the internal load balancer associated with the primary network interface of the
      *     virtual machines in the scale set, if any.
      * @throws IOException the IO exception
@@ -239,31 +301,62 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Map<String, LoadBalancerInboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException;
 
     /**
+     * Gets the list of IDs of the public IP addresses associated with the primary Internet-facing load balancer of
+     *     the scale set
+     *
      * @return the list of IDs of the public IP addresses associated with the primary Internet-facing load balancer of
      *     the scale set
      * @throws IOException the IO exception
      */
     List<String> primaryPublicIpAddressIds() throws IOException;
 
-    /** @return the URL to storage containers that store the VHDs of the virtual machines in the scale set */
+    /**
+     * Gets the URL to storage containers that store the VHDs of the virtual machines in the scale set.
+     *
+     * @return the URL to storage containers that store the VHDs of the virtual machines in the scale set
+     */
     List<String> vhdContainers();
 
-    /** @return the storage profile */
+    /**
+     * Gets the storage profile.
+     *
+     * @return the storage profile
+     */
     VirtualMachineScaleSetStorageProfile storageProfile();
 
-    /** @return the network profile */
+    /**
+     * Gets the network profile.
+     *
+     * @return the network profile
+     */
     VirtualMachineScaleSetNetworkProfile networkProfile();
 
-    /** @return the extensions attached to the virtual machines in the scale set */
+    /**
+     * Gets the extensions attached to the virtual machines in the scale set.
+     *
+     * @return the extensions attached to the virtual machines in the scale set
+     */
     Map<String, VirtualMachineScaleSetExtension> extensions();
 
-    /** @return the priority of virtual machines in the scale set. */
+    /**
+     * Gets the priority of virtual machines in the scale set.
+     *
+     * @return the priority of virtual machines in the scale set.
+     */
     VirtualMachinePriorityTypes virtualMachinePriority();
 
-    /** @return the billing related details of the low priority virtual machines in the scale set. */
+    /**
+     * Gets the billing related details of the low priority virtual machines in the scale set.
+     *
+     * @return the billing related details of the low priority virtual machines in the scale set.
+     */
     BillingProfile billingProfile();
 
-    /** @return the eviction policy of the virtual machines in the scale set. */
+    /**
+     * Gets the eviction policy of the virtual machines in the scale set.
+     *
+     * @return the eviction policy of the virtual machines in the scale set.
+     */
     VirtualMachineEvictionPolicyTypes virtualMachineEvictionPolicy();
 
     /**
@@ -284,7 +377,11 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
      */
     Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceByInstanceIdAsync(String instanceId, String name);
 
-    /** @return the network interfaces associated with all virtual machine instances in a scale set */
+    /**
+     * Gets the network interfaces associated with all virtual machine instances in a scale set.
+     *
+     * @return the network interfaces associated with all virtual machine instances in a scale set
+     */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 
     /**
@@ -305,70 +402,135 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     PagedFlux<VirtualMachineScaleSetNetworkInterface>
         listNetworkInterfacesByInstanceIdAsync(String virtualMachineInstanceId);
 
-    /** @return true if managed disk is used for the virtual machine scale set's disks (os, data) */
+    /**
+     * Checks whether managed disk is used for the virtual machine scale set's disks (os, data).
+     *
+     * @return true if managed disk is used for the virtual machine scale set's disks (os, data)
+     */
     boolean isManagedDiskEnabled();
 
-    /** @return true if Managed Service Identity is enabled for the virtual machine scale set */
+    /**
+     * Checks whether Managed Service Identity is enabled for the virtual machine scale set.
+     *
+     * @return true if Managed Service Identity is enabled for the virtual machine scale set
+     */
     boolean isManagedServiceIdentityEnabled();
 
     /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
+     *     virtual machine scale set.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
      *     virtual machine scale set.
      */
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
+     *     assigned to the virtual machine scale set.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
      *     assigned to the virtual machine scale set.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return the type of Managed Service Identity used for the virtual machine scale set. */
+    /**
+     * Gets the type of Managed Service Identity used for the virtual machine scale set.
+     *
+     * @return the type of Managed Service Identity used for the virtual machine scale set.
+     */
     ResourceIdentityType managedServiceIdentityType();
 
     /**
+     * Gets the resource ids of User Assigned Managed Service Identities associated with the virtual machine scale
+     *     set.
+     *
      * @return the resource ids of User Assigned Managed Service Identities associated with the virtual machine scale
      *     set.
      */
     Set<String> userAssignedManagedServiceIdentityIds();
 
-    /** @return the availability zones assigned to virtual machine scale set. */
+    /**
+     * Gets the availability zones assigned to virtual machine scale set.
+     *
+     * @return the availability zones assigned to virtual machine scale set.
+     */
     Set<AvailabilityZoneId> availabilityZones();
 
-    /** @return true if boot diagnostics is enabled for the virtual machine scale set. */
+    /**
+     * Checks whether boot diagnostics is enabled for the virtual machine scale set.
+     *
+     * @return true if boot diagnostics is enabled for the virtual machine scale set.
+     */
     boolean isBootDiagnosticsEnabled();
 
-    /** @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine scale set. */
+    /**
+     * Gets the storage blob endpoint uri.
+     *
+     * @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine scale set.
+     */
     String bootDiagnosticsStorageUri();
 
     /**
+     * Gets the storage account type of the OS managed disk.
+     *
      * @return the storage account type of the OS managed disk. A null value will be returned if the virtual machine
      *     scale set is based on un-managed disk.
      */
     StorageAccountTypes managedOSDiskStorageAccountType();
 
-    /** @return the public ip configuration of virtual machines in the scale set. */
+    /**
+     * Gets the public ip configuration of virtual machines in the scale set.
+     *
+     * @return the public ip configuration of virtual machines in the scale set.
+     */
     VirtualMachineScaleSetPublicIpAddressConfiguration virtualMachinePublicIpConfig();
 
-    /** @return true if ip forwarding is enabled for the virtual machine scale set. */
+    /**
+     * Checks whether ip forwarding is enabled for the virtual machine scale set.
+     *
+     * @return true if ip forwarding is enabled for the virtual machine scale set.
+     */
     boolean isIpForwardingEnabled();
 
-    /** @return true if accelerated networking is enabled for the virtual machine scale set. */
+    /**
+     * Checks whether accelerated networking is enabled for the virtual machine scale set.
+     *
+     * @return true if accelerated networking is enabled for the virtual machine scale set.
+     */
     boolean isAcceleratedNetworkingEnabled();
 
-    /** @return the network security group ARM id. */
+    /**
+     * Gets the network security group ARM id.
+     *
+     * @return the network security group ARM id.
+     */
     String networkSecurityGroupId();
 
-    /** @return true if single placement group is enabled for the virtual machine scale set. */
+    /**
+     * Checks whether single placement group is enabled for the virtual machine scale set.
+     *
+     * @return true if single placement group is enabled for the virtual machine scale set.
+     */
     boolean isSinglePlacementGroupEnabled();
 
-    /** @return the list of application gateway backend pool associated with the virtual machine scale set. */
+    /**
+     * Gets the list of application gateway backend pool associated with the virtual machine scale set.
+     *
+     * @return the list of application gateway backend pool associated with the virtual machine scale set.
+     */
     List<String> applicationGatewayBackendAddressPoolsIds();
 
-    /** @return the list of application security groups associated with the virtual machine scale set. */
+    /**
+     * Gets the list of application security groups associated with the virtual machine scale set.
+     *
+     * @return the list of application security groups associated with the virtual machine scale set.
+     */
     List<String> applicationSecurityGroupIds();
 
     /**
+     * Checks whether Overprovision is enabled.
+     *
      * @return When Overprovision is enabled, extensions are launched only on the requested number of VMs which are
      *     finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned
      *     VMs.
@@ -393,6 +555,8 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     AdditionalCapabilities additionalCapabilities();
 
     /**
+     * Gets the purchase plan information about marketplace image.
+     *
      * @return the purchase plan information about marketplace image
      */
     Plan plan();
@@ -997,7 +1161,11 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
 
-            /** @return the next stage of a unmanaged disk based virtual machine scale set definition */
+            /**
+             *  Specifies an unmanaged disk to be attached to the virtual machine.
+             *
+             * @return the next stage of an unmanaged disk based virtual machine scale set definition
+             */
             WithUnmanagedCreate withUnmanagedDisks();
         }
 

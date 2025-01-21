@@ -25,25 +25,28 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresql.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.postgresql.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.postgresql.models.PrivateLinkResourceListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(PostgreSqlManagementClientImpl client) {
@@ -58,10 +61,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
-    private interface PrivateLinkResourcesService {
+    public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/privateLinkResources")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResult>> listByServer(@HostParam("$host") String endpoint,
@@ -70,8 +72,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/privateLinkResources/{groupName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/privateLinkResources/{groupName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
@@ -90,14 +91,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources for PostgreSQL server along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByServerSinglePageAsync(String resourceGroupName,
@@ -129,7 +130,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -137,7 +138,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources for PostgreSQL server along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByServerSinglePageAsync(String resourceGroupName,
@@ -169,30 +170,30 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources for PostgreSQL server.
+     * @return the private link resources for PostgreSQL server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listByServerAsync(String resourceGroupName, String serverName) {
+    public PagedFlux<PrivateLinkResourceInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the private link resources for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources for PostgreSQL server.
+     * @return the private link resources for PostgreSQL server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkResourceInner> listByServerAsync(String resourceGroupName, String serverName,
@@ -203,13 +204,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources for PostgreSQL server.
+     * @return the private link resources for PostgreSQL server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByServer(String resourceGroupName, String serverName) {
@@ -218,14 +219,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources for PostgreSQL server.
+     * @return the private link resources for PostgreSQL server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByServer(String resourceGroupName, String serverName,
@@ -235,7 +236,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets a private link resource for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param groupName The name of the private link resource.
@@ -243,10 +244,10 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private link resource for PostgreSQL server along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+    public Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String groupName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -276,7 +277,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets a private link resource for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param groupName The name of the private link resource.
@@ -285,7 +286,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private link resource for PostgreSQL server along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String serverName,
@@ -317,7 +318,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets a private link resource for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param groupName The name of the private link resource.
@@ -327,36 +328,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return a private link resource for PostgreSQL server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateLinkResourceInner> getAsync(String resourceGroupName, String serverName, String groupName) {
+    public Mono<PrivateLinkResourceInner> getAsync(String resourceGroupName, String serverName, String groupName) {
         return getWithResponseAsync(resourceGroupName, serverName, groupName)
-            .flatMap((Response<PrivateLinkResourceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a private link resource for PostgreSQL server.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param groupName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for PostgreSQL server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceInner get(String resourceGroupName, String serverName, String groupName) {
-        return getAsync(resourceGroupName, serverName, groupName).block();
-    }
-
-    /**
-     * Gets a private link resource for PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param groupName The name of the private link resource.
@@ -373,14 +352,30 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * Gets a private link resource for PostgreSQL server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a private link resource for PostgreSQL server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourceInner get(String resourceGroupName, String serverName, String groupName) {
+        return getWithResponse(resourceGroupName, serverName, groupName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -401,14 +396,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByServerNextSinglePageAsync(String nextLink,

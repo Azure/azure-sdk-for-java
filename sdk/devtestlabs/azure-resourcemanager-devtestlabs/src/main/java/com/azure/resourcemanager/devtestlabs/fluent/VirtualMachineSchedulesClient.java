@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachineSchedulesClient.
+ */
 public interface VirtualMachineSchedulesClient {
     /**
      * List schedules in a given virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -32,7 +34,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * List schedules in a given virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -52,7 +54,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -70,7 +72,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -85,7 +87,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -103,7 +105,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -120,7 +122,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -137,7 +139,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -151,7 +153,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -169,7 +171,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -186,7 +188,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -202,7 +204,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -219,7 +221,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -233,7 +235,7 @@ public interface VirtualMachineSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.

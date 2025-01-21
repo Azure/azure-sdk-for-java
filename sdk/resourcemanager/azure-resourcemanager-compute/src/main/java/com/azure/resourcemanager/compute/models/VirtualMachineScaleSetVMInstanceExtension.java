@@ -10,6 +10,10 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 @Fluent
 public interface VirtualMachineScaleSetVMInstanceExtension
     extends VirtualMachineExtensionBase, ChildResource<VirtualMachineScaleSetVM> {
-    /** @return the instance view of the scale set virtual machine extension */
+    /**
+     * Gets the instance view of the scale set virtual machine extension.
+     *
+     * @return the instance view of the scale set virtual machine extension
+     */
     VirtualMachineExtensionInstanceView instanceView();
 }

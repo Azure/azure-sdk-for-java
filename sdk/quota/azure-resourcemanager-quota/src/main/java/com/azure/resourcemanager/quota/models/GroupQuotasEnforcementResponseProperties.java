@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GroupQuotasEnforcementResponseProperties model.
  */
 @Fluent
-public final class GroupQuotasEnforcementResponseProperties {
+public final class GroupQuotasEnforcementResponseProperties
+    implements JsonSerializable<GroupQuotasEnforcementResponseProperties> {
     /*
      * Is the GroupQuota Enforcement enabled for the Azure region.
      */
-    @JsonProperty(value = "enforcementEnabled")
     private EnforcementState enforcementEnabled;
 
     /*
      * Request status.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private RequestState provisioningState;
 
     /*
      * Details of the failure.
      */
-    @JsonProperty(value = "faultCode", access = JsonProperty.Access.WRITE_ONLY)
     private String faultCode;
 
     /**
@@ -80,5 +82,49 @@ public final class GroupQuotasEnforcementResponseProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enforcementEnabled",
+            this.enforcementEnabled == null ? null : this.enforcementEnabled.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupQuotasEnforcementResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupQuotasEnforcementResponseProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupQuotasEnforcementResponseProperties.
+     */
+    public static GroupQuotasEnforcementResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupQuotasEnforcementResponseProperties deserializedGroupQuotasEnforcementResponseProperties
+                = new GroupQuotasEnforcementResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enforcementEnabled".equals(fieldName)) {
+                    deserializedGroupQuotasEnforcementResponseProperties.enforcementEnabled
+                        = EnforcementState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGroupQuotasEnforcementResponseProperties.provisioningState
+                        = RequestState.fromString(reader.getString());
+                } else if ("faultCode".equals(fieldName)) {
+                    deserializedGroupQuotasEnforcementResponseProperties.faultCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupQuotasEnforcementResponseProperties;
+        });
     }
 }

@@ -29,7 +29,8 @@ public class FtpServerLinkedService extends LinkedService {
     private Object host;
 
     /*
-     * The TCP port number that the FTP server uses to listen for client connections. Default value is 21. Type: integer (or Expression with resultType integer), minimum: 0.
+     * The TCP port number that the FTP server uses to listen for client connections. Default value is 21. Type: integer
+     * (or Expression with resultType integer), minimum: 0.
      */
     private Object port;
 
@@ -49,17 +50,20 @@ public class FtpServerLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 
     /*
-     * If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
+     * If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     private Object enableSsl;
 
     /*
-     * If true, validate the FTP server SSL certificate when connect over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
+     * If true, validate the FTP server SSL certificate when connect over SSL/TLS channel. Default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      */
     private Object enableServerCertificateValidation;
 

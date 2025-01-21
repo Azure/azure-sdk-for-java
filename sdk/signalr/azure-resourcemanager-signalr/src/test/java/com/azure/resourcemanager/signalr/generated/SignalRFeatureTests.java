@@ -16,22 +16,22 @@ public final class SignalRFeatureTests {
     public void testDeserialize() throws Exception {
         SignalRFeature model = BinaryData
             .fromString(
-                "{\"flag\":\"EnableLiveTrace\",\"value\":\"nvrk\",\"properties\":{\"ixqtn\":\"uaibrebqaaysj\"}}")
+                "{\"flag\":\"EnableConnectivityLogs\",\"value\":\"s\",\"properties\":{\"hgfipnsxkmcw\":\"nzm\"}}")
             .toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.ENABLE_LIVE_TRACE, model.flag());
-        Assertions.assertEquals("nvrk", model.value());
-        Assertions.assertEquals("uaibrebqaaysj", model.properties().get("ixqtn"));
+        Assertions.assertEquals(FeatureFlags.ENABLE_CONNECTIVITY_LOGS, model.flag());
+        Assertions.assertEquals("s", model.value());
+        Assertions.assertEquals("nzm", model.properties().get("hgfipnsxkmcw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalRFeature model = new SignalRFeature().withFlag(FeatureFlags.ENABLE_LIVE_TRACE)
-            .withValue("nvrk")
-            .withProperties(mapOf("ixqtn", "uaibrebqaaysj"));
+        SignalRFeature model = new SignalRFeature().withFlag(FeatureFlags.ENABLE_CONNECTIVITY_LOGS)
+            .withValue("s")
+            .withProperties(mapOf("hgfipnsxkmcw", "nzm"));
         model = BinaryData.fromObject(model).toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.ENABLE_LIVE_TRACE, model.flag());
-        Assertions.assertEquals("nvrk", model.value());
-        Assertions.assertEquals("uaibrebqaaysj", model.properties().get("ixqtn"));
+        Assertions.assertEquals(FeatureFlags.ENABLE_CONNECTIVITY_LOGS, model.flag());
+        Assertions.assertEquals("s", model.value());
+        Assertions.assertEquals("nzm", model.properties().get("hgfipnsxkmcw"));
     }
 
     // Use "Map.of" if available

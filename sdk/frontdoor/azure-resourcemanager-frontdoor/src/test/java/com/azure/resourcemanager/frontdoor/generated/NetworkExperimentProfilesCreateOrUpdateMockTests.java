@@ -24,7 +24,7 @@ public final class NetworkExperimentProfilesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceState\":\"Disabled\",\"enabledState\":\"Enabled\"},\"etag\":\"ygvoavyunssxlgh\",\"location\":\"ee\",\"tags\":{\"gbuxantuygdh\":\"gvvpasek\",\"pirpiwrqof\":\"aq\",\"k\":\"lopmjnlexwhcbjpi\",\"intqpbrlcyr\":\"phuuuerctato\"},\"id\":\"uczkgofxyfsruc\",\"name\":\"crrpcjttbstvje\",\"type\":\"qnrmvvfko\"}";
+            = "{\"properties\":{\"resourceState\":\"Enabling\",\"enabledState\":\"Disabled\"},\"etag\":\"no\",\"location\":\"pziuwfbzkkdtnh\",\"tags\":{\"pkpbafvafhlbylcc\":\"cljse\",\"fwrsofpltdbmair\":\"evxrhyz\",\"pqigtuujwouhd\":\"hvhfnracw\",\"bvitvqkjya\":\"wsigrbjbxsj\"},\"id\":\"nu\",\"name\":\"tggmuwdchozfnkfe\",\"type\":\"lv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,18 @@ public final class NetworkExperimentProfilesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Profile response = manager.networkExperimentProfiles()
-            .define("jxcx")
-            .withRegion("mzwcjjncqt")
-            .withExistingResourceGroup("rzdcgdzbenribcaw")
-            .withTags(mapOf("gat", "izvg", "grebwggahttzlsw", "uuvbx", "oqza", "ajqfutlx", "zfrgqhaohcm", "unwqr"))
-            .withEtag("jwfljhznamtua")
-            .withEnabledState(State.DISABLED)
+            .define("bfw")
+            .withRegion("jwwviy")
+            .withExistingResourceGroup("rzx")
+            .withTags(mapOf("jxsqwjhqkbiwetp", "suhbrnn"))
+            .withEtag("xkrplbjaz")
+            .withEnabledState(State.ENABLED)
             .create();
 
-        Assertions.assertEquals("ee", response.location());
-        Assertions.assertEquals("gvvpasek", response.tags().get("gbuxantuygdh"));
-        Assertions.assertEquals("ygvoavyunssxlgh", response.etag());
-        Assertions.assertEquals(State.ENABLED, response.enabledState());
+        Assertions.assertEquals("pziuwfbzkkdtnh", response.location());
+        Assertions.assertEquals("cljse", response.tags().get("pkpbafvafhlbylcc"));
+        Assertions.assertEquals("no", response.etag());
+        Assertions.assertEquals(State.DISABLED, response.enabledState());
     }
 
     // Use "Map.of" if available

@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.notificationhubs.generated;
 
-import com.azure.resourcemanager.notificationhubs.models.PolicyKeyResource;
-import com.azure.resourcemanager.notificationhubs.models.PolicyKeyType;
+import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 
 /**
  * Samples for NotificationHubs RegenerateKeys.
@@ -13,18 +12,18 @@ import com.azure.resourcemanager.notificationhubs.models.PolicyKeyType;
 public final class NotificationHubsRegenerateKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * NotificationHubs/AuthorizationRuleRegenerateKey.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/
+     * NotificationHubs/NotificationHubAuthorizationRuleRegenrateKey.json
      */
     /**
-     * Sample code: NotificationHubs_RegenerateKeys.
+     * Sample code: NotificationHubAuthorizationRuleRegenrateKey.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void
-        notificationHubsRegenerateKeys(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().regenerateKeysWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            "DefaultListenSharedAccessSignature", new PolicyKeyResource().withPolicyKey(PolicyKeyType.PRIMARY_KEY),
-            com.azure.core.util.Context.NONE);
+    public static void notificationHubAuthorizationRuleRegenrateKey(
+        com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        manager.notificationHubs()
+            .regenerateKeysWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", "DefaultListenSharedAccessSignature",
+                new PolicykeyResource().withPolicyKey("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
     }
 }

@@ -12,15 +12,15 @@ public final class ServiceProviderResponseListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceProviderResponseListInner model = BinaryData.fromString(
-            "{\"nextLink\":\"u\",\"value\":[{\"properties\":{\"id\":\"rzayv\",\"displayName\":\"pgvdf\",\"serviceProviderName\":\"otkftutqxlngx\",\"devPortalUrl\":\"fgugnxkrxdqmid\",\"iconUrl\":\"hzrvqd\",\"parameters\":[{\"name\":\"jybige\",\"type\":\"qfbow\",\"displayName\":\"anyktzlcuiywg\",\"description\":\"wgndrvynhzgpp\",\"helpUrl\":\"cgyncocpecf\",\"default\":\"mcoo\",\"metadata\":{}}]}}]}")
+            "{\"nextLink\":\"lwtgrhpdj\",\"value\":[{\"properties\":{\"id\":\"sxazjpq\",\"displayName\":\"gual\",\"serviceProviderName\":\"xxhejjzzvd\",\"devPortalUrl\":\"gwdslfhotwm\",\"iconUrl\":\"npwlbjnpg\",\"parameters\":[{\"name\":\"adehxnltyfsopp\",\"type\":\"uesnzwdejbavo\",\"displayName\":\"zdmohctbqvu\",\"description\":\"xdn\",\"helpUrl\":\"vo\",\"default\":\"ujjugwdkcglh\",\"metadata\":{}},{\"name\":\"zj\",\"type\":\"ggd\",\"displayName\":\"ixhbkuofqweykhm\",\"description\":\"evfyexfwhybcib\",\"helpUrl\":\"vdcsitynn\",\"default\":\"mdectehfiqscjey\",\"metadata\":{}},{\"name\":\"ezrkgqhcjrefo\",\"type\":\"mkqsleyyv\",\"displayName\":\"qjpkcattpngjcrc\",\"description\":\"sqpjhvmdajvn\",\"helpUrl\":\"ounqecano\",\"default\":\"upfh\",\"metadata\":{}},{\"name\":\"trpmo\",\"type\":\"mcmatuokthfuiu\",\"displayName\":\"dsfcpkvxodpuoz\",\"description\":\"zydagfuaxbezyiuo\",\"helpUrl\":\"twhrdxwzywqsm\",\"default\":\"ureximoryocfs\",\"metadata\":{}}]}},{\"properties\":{\"id\":\"mddystkiiux\",\"displayName\":\"yudxorrqnbp\",\"serviceProviderName\":\"zvyifqrvkdvj\",\"devPortalUrl\":\"lrmv\",\"iconUrl\":\"f\",\"parameters\":[{\"name\":\"pnpulexxbczwtru\",\"type\":\"qzbqjvsov\",\"displayName\":\"okacspk\",\"description\":\"hzdobpxjmflbvvnc\",\"helpUrl\":\"kcciwwzjuqkhr\",\"default\":\"jiwkuofoskghsau\",\"metadata\":{}}]}},{\"properties\":{\"id\":\"mvxi\",\"displayName\":\"uugidyjrrfby\",\"serviceProviderName\":\"svexcsonpclhoco\",\"devPortalUrl\":\"lkevle\",\"iconUrl\":\"zfbuhf\",\"parameters\":[{\"name\":\"x\",\"type\":\"feiithlvmez\",\"displayName\":\"shxmzsbbzoggigrx\",\"description\":\"ur\",\"helpUrl\":\"xxjnspydptk\",\"default\":\"nkoukn\",\"metadata\":{}},{\"name\":\"wtiukbldn\",\"type\":\"pocipazyxoegu\",\"displayName\":\"jnpiucgyg\",\"description\":\"qzntypm\",\"helpUrl\":\"p\",\"default\":\"c\",\"metadata\":{}},{\"name\":\"j\",\"type\":\"pyd\",\"displayName\":\"yhxdeoejzicwi\",\"description\":\"jttgzf\",\"helpUrl\":\"shcbkhajdeyeamdp\",\"default\":\"g\",\"metadata\":{}}]}}]}")
             .toObject(ServiceProviderResponseListInner.class);
-        Assertions.assertEquals("u", model.nextLink());
+        Assertions.assertEquals("lwtgrhpdj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceProviderResponseListInner model = new ServiceProviderResponseListInner().withNextLink("u");
+        ServiceProviderResponseListInner model = new ServiceProviderResponseListInner().withNextLink("lwtgrhpdj");
         model = BinaryData.fromObject(model).toObject(ServiceProviderResponseListInner.class);
-        Assertions.assertEquals("u", model.nextLink());
+        Assertions.assertEquals("lwtgrhpdj", model.nextLink());
     }
 }

@@ -38,7 +38,7 @@ For your convenience, we have provided a multi-service package that includes som
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.45.0</version>
+  <version>2.46.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -300,7 +300,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.45.0</version>
+  <version>2.46.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

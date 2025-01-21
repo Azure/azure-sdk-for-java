@@ -14,8 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
 import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
@@ -44,6 +47,12 @@ public class Configs {
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
     private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
+    private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
+    private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
+    private static final String THINCLIENT_ENDPOINT_VARIABLE = "COSMOS_THINCLIENT_ENDPOINT";
+    private static final boolean DEFAULT_THINCLIENT_ENABLED = false;
+    private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
+    private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
@@ -207,6 +216,19 @@ public class Configs {
     public static final String PREVENT_INVALID_ID_CHARS = "COSMOS.PREVENT_INVALID_ID_CHARS";
     public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
     public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
+
+    // Bulk default settings
+    public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE = "COSMOS.MIN_TARGET_BULK_MICRO_BATCH_SIZE";
+    public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE = "COSMOS_MIN_TARGET_BULK_MICRO_BATCH_SIZE";
+    public static final int DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE = 1;
+
+    public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY = "COSMOS.MAX_BULK_MICRO_BATCH_CONCURRENCY";
+    public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_CONCURRENCY";
+    public static final int DEFAULT_MAX_BULK_MICRO_BATCH_CONCURRENCY = 1;
+
+    public static final String MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = "COSMOS.MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final String MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final int DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = 1000;
 
     // Config of CodingErrorAction on charset decoder for malformed input
     public static final String CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT";
@@ -392,6 +414,34 @@ public class Configs {
         return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
     }
 
+    public URI getThinclientEndpoint() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_ENDPOINT);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return URI.create(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_ENDPOINT_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return URI.create(valueFromEnvVariable);
+        }
+
+        return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
+    }
+
+    public static boolean getThinclientEnabled() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        return DEFAULT_THINCLIENT_ENABLED;
+    }
+
     public int getUnavailableLocationsExpirationTimeInSeconds() {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
     }
@@ -493,6 +543,48 @@ public class Configs {
         }
 
         return DEFAULT_PREVENT_INVALID_ID_CHARS;
+    }
+
+    public static int getMinTargetBulkMicroBatchSize() {
+        String valueFromSystemProperty = System.getProperty(MIN_TARGET_BULK_MICRO_BATCH_SIZE);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE;
+    }
+
+    public static int getMaxBulkMicroBatchConcurrency() {
+        String valueFromSystemProperty = System.getProperty(MAX_BULK_MICRO_BATCH_CONCURRENCY);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_MAX_BULK_MICRO_BATCH_CONCURRENCY;
+    }
+
+    public static int getMaxBulkMicroBatchFlushIntervalInMs() {
+        String valueFromSystemProperty = System.getProperty(MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS;
     }
 
     public static int getMaxHttpRequestTimeout() {

@@ -25,10 +25,16 @@ import com.azure.communication.callautomation.models.events.DialogLanguageChange
 import com.azure.communication.callautomation.models.events.DialogSensitivityUpdate;
 import com.azure.communication.callautomation.models.events.DialogStarted;
 import com.azure.communication.callautomation.models.events.DialogTransfer;
+import com.azure.communication.callautomation.models.events.HoldAudioCompleted;
+import com.azure.communication.callautomation.models.events.HoldAudioPaused;
+import com.azure.communication.callautomation.models.events.HoldAudioResumed;
+import com.azure.communication.callautomation.models.events.HoldAudioStarted;
 import com.azure.communication.callautomation.models.events.HoldFailed;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
+import com.azure.communication.callautomation.models.events.PlayPaused;
+import com.azure.communication.callautomation.models.events.PlayResumed;
 import com.azure.communication.callautomation.models.events.PlayFailed;
 import com.azure.communication.callautomation.models.events.ReasonCode;
 import com.azure.communication.callautomation.models.events.ReasonCode.Recognize;
@@ -40,8 +46,6 @@ import com.azure.communication.callautomation.models.events.RemoveParticipantFai
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
-import com.azure.communication.callautomation.models.events.TeamsComplianceRecordingStateChanged;
-import com.azure.communication.callautomation.models.events.TeamsRecordingStateChanged;
 import com.azure.communication.callautomation.models.events.TranscriptionFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionResumed;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
@@ -118,50 +122,6 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
         RecordingStateChanged recordingEvent = (RecordingStateChanged) event;
-        assertNotNull(recordingEvent);
-        assertEquals("serverCallId", recordingEvent.getServerCallId());
-        assertEquals("recordingId", recordingEvent.getRecordingId());
-        assertEquals(RecordingState.ACTIVE, recordingEvent.getRecordingState());
-    }
-
-    @Test
-    public void parseTeamsComplianceRecordingStateChangedEvent() {
-        String receivedEvent = "[\n" + "    {\n" + "        \"id\": \"bf59843a-888f-47ca-8d1c-885c1f5e71dc\",\n"
-            + "        \"source\": \"calling/recordings/serverCallId/recordingId/recordingId/TeamsComplianceRecordingStateChanged\",\n"
-            + "        \"type\": \"Microsoft.Communication.TeamsComplianceRecordingStateChanged\",\n"
-            + "        \"data\": {\n" + "            \"type\": \"teamsComplianceRecordingStateChanged\",\n"
-            + "            \"recordingId\": \"recordingId\",\n" + "            \"state\": \"active\",\n"
-            + "            \"startDateTime\": \"2022-08-11T23:42:45.4394211+00:00\",\n"
-            + "            \"callConnectionId\": \"callConnectionId\",\n"
-            + "            \"serverCallId\": \"serverCallId\",\n" + "            \"correlationId\": \"correlationId\"\n"
-            + "        },\n" + "        \"time\": \"2022-08-11T23:42:45.5346632+00:00\",\n"
-            + "        \"specversion\": \"1.0\",\n" + "        \"datacontenttype\": \"application/json\",\n"
-            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n" + "    }\n" + "]";
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
-        assertNotNull(event);
-        TeamsComplianceRecordingStateChanged recordingEvent = (TeamsComplianceRecordingStateChanged) event;
-        assertNotNull(recordingEvent);
-        assertEquals("serverCallId", recordingEvent.getServerCallId());
-        assertEquals("recordingId", recordingEvent.getRecordingId());
-        assertEquals(RecordingState.ACTIVE, recordingEvent.getRecordingState());
-    }
-
-    @Test
-    public void parseTeamsRecordingStateChangedEvent() {
-        String receivedEvent = "[\n" + "    {\n" + "        \"id\": \"bf59843a-888f-47ca-8d1c-885c1f5e71dc\",\n"
-            + "        \"source\": \"calling/recordings/serverCallId/recordingId/recordingId/TeamsRecordingStateChanged\",\n"
-            + "        \"type\": \"Microsoft.Communication.TeamsRecordingStateChanged\",\n" + "        \"data\": {\n"
-            + "            \"type\": \"teamsRecordingStateChanged\",\n"
-            + "            \"recordingId\": \"recordingId\",\n" + "            \"state\": \"active\",\n"
-            + "            \"startDateTime\": \"2022-08-11T23:42:45.4394211+00:00\",\n"
-            + "            \"callConnectionId\": \"callConnectionId\",\n"
-            + "            \"serverCallId\": \"serverCallId\",\n" + "            \"correlationId\": \"correlationId\"\n"
-            + "        },\n" + "        \"time\": \"2022-08-11T23:42:45.5346632+00:00\",\n"
-            + "        \"specversion\": \"1.0\",\n" + "        \"datacontenttype\": \"application/json\",\n"
-            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n" + "    }\n" + "]";
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
-        assertNotNull(event);
-        TeamsRecordingStateChanged recordingEvent = (TeamsRecordingStateChanged) event;
         assertNotNull(recordingEvent);
         assertEquals("serverCallId", recordingEvent.getServerCallId());
         assertEquals("recordingId", recordingEvent.getRecordingId());
@@ -1265,5 +1225,119 @@ public class CallAutomationEventParserAndProcessorUnitTests {
             event.getMediaStreamingUpdateResult().getMediaStreamingStatus());
         assertEquals(MediaStreamingStatusDetails.STREAM_CONNECTION_UNSUCCESSFUL,
             event.getMediaStreamingUpdateResult().getMediaStreamingStatusDetails());
+    }
+
+    @Test
+    public void parsePlayPausedEvent() {
+        String receivedEvent = "[{\n" + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayPaused\",\n"
+            + "\"type\": \"Microsoft.Communication.PlayPaused\",\n" + "\"data\": {\n" + "\"resultInformation\": {\n"
+            + "\"code\": 200,\n" + "\"subCode\": 0,\n" + "\"message\": \"Action completed successfully.\"\n" + "},\n"
+            + "\"type\": \"PlayPaused\",\n" + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n" + "\"correlationId\": \"correlationId\"\n" + "},\n"
+            + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n" + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n" + "}]";
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        PlayPaused playPaused = (PlayPaused) event;
+        assertNotNull(playPaused);
+        assertEquals("serverCallId", playPaused.getServerCallId());
+        assertEquals(200, playPaused.getResultInformation().getCode());
+    }
+
+    @Test
+    public void parsePlayResumedEvent() {
+        String receivedEvent = "[{\n" + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayResumed\",\n"
+            + "\"type\": \"Microsoft.Communication.PlayResumed\",\n" + "\"data\": {\n" + "\"resultInformation\": {\n"
+            + "\"code\": 200,\n" + "\"subCode\": 0,\n" + "\"message\": \"Action completed successfully.\"\n" + "},\n"
+            + "\"type\": \"PlayResumed\",\n" + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n" + "\"correlationId\": \"correlationId\"\n" + "},\n"
+            + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n" + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n" + "}]";
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        PlayResumed playResumed = (PlayResumed) event;
+        assertNotNull(playResumed);
+        assertEquals("serverCallId", playResumed.getServerCallId());
+        assertEquals(200, playResumed.getResultInformation().getCode());
+    }
+
+    @Test
+    public void parseHoldAudioCompletedEvent() {
+        String receivedEvent = "[{\n" + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/HoldAudioCompleted\",\n"
+            + "\"type\": \"Microsoft.Communication.HoldAudioCompleted\",\n" + "\"data\": {\n"
+            + "\"resultInformation\": {\n" + "\"code\": 200,\n" + "\"subCode\": 0,\n"
+            + "\"message\": \"Action completed successfully.\"\n" + "},\n" + "\"type\": \"HoldAudioCompleted\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n" + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n" + "},\n" + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n" + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n" + "}]";
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        HoldAudioCompleted holdAudioCompleted = (HoldAudioCompleted) event;
+        assertNotNull(holdAudioCompleted);
+        assertEquals("serverCallId", holdAudioCompleted.getServerCallId());
+        assertEquals(200, holdAudioCompleted.getResultInformation().getCode());
+    }
+
+    @Test
+    public void parseHoldAudioStartedEvent() {
+        String receivedEvent = "[{\n" + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/HoldAudioStarted\",\n"
+            + "\"type\": \"Microsoft.Communication.HoldAudioStarted\",\n" + "\"data\": {\n"
+            + "\"resultInformation\": {\n" + "\"code\": 200,\n" + "\"subCode\": 0,\n"
+            + "\"message\": \"Action completed successfully.\"\n" + "},\n" + "\"type\": \"HoldAudioStarted\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n" + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n" + "},\n" + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n" + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n" + "}]";
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        HoldAudioStarted holdAudioStarted = (HoldAudioStarted) event;
+        assertNotNull(holdAudioStarted);
+        assertEquals("serverCallId", holdAudioStarted.getServerCallId());
+        assertEquals(200, holdAudioStarted.getResultInformation().getCode());
+    }
+
+    @Test
+    public void parseHoldAudioPausedEvent() {
+        String receivedEvent = "[{\n" + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/HoldAudioPaused\",\n"
+            + "\"type\": \"Microsoft.Communication.HoldAudioPaused\",\n" + "\"data\": {\n"
+            + "\"resultInformation\": {\n" + "\"code\": 200,\n" + "\"subCode\": 0,\n"
+            + "\"message\": \"Action completed successfully.\"\n" + "},\n" + "\"type\": \"HoldAudioPaused\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n" + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n" + "},\n" + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n" + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n" + "}]";
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        HoldAudioPaused holdAudioPaused = (HoldAudioPaused) event;
+        assertNotNull(holdAudioPaused);
+        assertEquals("serverCallId", holdAudioPaused.getServerCallId());
+        assertEquals(200, holdAudioPaused.getResultInformation().getCode());
+    }
+
+    @Test
+    public void parseHoldAudioResumedEvent() {
+        String receivedEvent = "[{\n" + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/HoldAudioResumed\",\n"
+            + "\"type\": \"Microsoft.Communication.HoldAudioResumed\",\n" + "\"data\": {\n"
+            + "\"resultInformation\": {\n" + "\"code\": 200,\n" + "\"subCode\": 0,\n"
+            + "\"message\": \"Action completed successfully.\"\n" + "},\n" + "\"type\": \"HoldAudioResumed\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n" + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n" + "},\n" + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n" + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n" + "}]";
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        HoldAudioResumed holdAudioResumed = (HoldAudioResumed) event;
+        assertNotNull(holdAudioResumed);
+        assertEquals("serverCallId", holdAudioResumed.getServerCallId());
+        assertEquals(200, holdAudioResumed.getResultInformation().getCode());
     }
 }

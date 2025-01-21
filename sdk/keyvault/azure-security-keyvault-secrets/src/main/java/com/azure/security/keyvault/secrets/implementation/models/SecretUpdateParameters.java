@@ -20,7 +20,7 @@ public final class SecretUpdateParameters implements JsonSerializable<SecretUpda
     /*
      * Type of the secret value such as a password.
      */
-    private String contentType;
+    private String secretContentType;
 
     /*
      * The secret management attributes.
@@ -39,22 +39,22 @@ public final class SecretUpdateParameters implements JsonSerializable<SecretUpda
     }
 
     /**
-     * Get the contentType property: Type of the secret value such as a password.
+     * Get the secretContentType property: Type of the secret value such as a password.
      * 
-     * @return the contentType value.
+     * @return the secretContentType value.
      */
-    public String getContentType() {
-        return this.contentType;
+    public String getSecretContentType() {
+        return this.secretContentType;
     }
 
     /**
-     * Set the contentType property: Type of the secret value such as a password.
+     * Set the secretContentType property: Type of the secret value such as a password.
      * 
-     * @param contentType the contentType value to set.
+     * @param secretContentType the secretContentType value to set.
      * @return the SecretUpdateParameters object itself.
      */
-    public SecretUpdateParameters setContentType(String contentType) {
-        this.contentType = contentType;
+    public SecretUpdateParameters setSecretContentType(String secretContentType) {
+        this.secretContentType = secretContentType;
         return this;
     }
 
@@ -104,7 +104,7 @@ public final class SecretUpdateParameters implements JsonSerializable<SecretUpda
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeStringField("contentType", this.secretContentType);
         jsonWriter.writeJsonField("attributes", this.secretAttributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -126,7 +126,7 @@ public final class SecretUpdateParameters implements JsonSerializable<SecretUpda
                 reader.nextToken();
 
                 if ("contentType".equals(fieldName)) {
-                    deserializedSecretUpdateParameters.contentType = reader.getString();
+                    deserializedSecretUpdateParameters.secretContentType = reader.getString();
                 } else if ("attributes".equals(fieldName)) {
                     deserializedSecretUpdateParameters.secretAttributes = SecretAttributes.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {

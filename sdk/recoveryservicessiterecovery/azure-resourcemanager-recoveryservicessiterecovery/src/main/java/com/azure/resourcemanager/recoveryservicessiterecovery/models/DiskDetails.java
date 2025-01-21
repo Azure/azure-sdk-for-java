@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Onprem disk details data.
  */
 @Fluent
-public final class DiskDetails {
+public final class DiskDetails implements JsonSerializable<DiskDetails> {
     /*
      * The hard disk max size in MB.
      */
-    @JsonProperty(value = "maxSizeMB")
     private Long maxSizeMB;
 
     /*
      * The type of the volume.
      */
-    @JsonProperty(value = "vhdType")
     private String vhdType;
 
     /*
      * The VHD Id.
      */
-    @JsonProperty(value = "vhdId")
     private String vhdId;
 
     /*
      * The VHD name.
      */
-    @JsonProperty(value = "vhdName")
     private String vhdName;
 
     /**
@@ -128,5 +128,50 @@ public final class DiskDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxSizeMB", this.maxSizeMB);
+        jsonWriter.writeStringField("vhdType", this.vhdType);
+        jsonWriter.writeStringField("vhdId", this.vhdId);
+        jsonWriter.writeStringField("vhdName", this.vhdName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskDetails.
+     */
+    public static DiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskDetails deserializedDiskDetails = new DiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxSizeMB".equals(fieldName)) {
+                    deserializedDiskDetails.maxSizeMB = reader.getNullable(JsonReader::getLong);
+                } else if ("vhdType".equals(fieldName)) {
+                    deserializedDiskDetails.vhdType = reader.getString();
+                } else if ("vhdId".equals(fieldName)) {
+                    deserializedDiskDetails.vhdId = reader.getString();
+                } else if ("vhdName".equals(fieldName)) {
+                    deserializedDiskDetails.vhdName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskDetails;
+        });
     }
 }

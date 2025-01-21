@@ -13,25 +13,53 @@ import java.util.List;
  */
 @Fluent
 public interface ConnectivityCheck extends Executable<ConnectivityCheck>, HasParent<NetworkWatcher> {
-    /** @return list of hops between the source and the destination */
+    /**
+     * Gets list of hops between the source and the destination.
+     *
+     * @return list of hops between the source and the destination
+     */
     List<ConnectivityHop> hops();
 
-    /** @return the connection status */
+    /**
+     * Gets the connection status.
+     *
+     * @return the connection status
+     */
     ConnectionStatus connectionStatus();
 
-    /** @return average latency in milliseconds */
+    /**
+     * Gets average latency in milliseconds.
+     *
+     * @return average latency in milliseconds
+     */
     int avgLatencyInMs();
 
-    /** @return minimum latency in milliseconds */
+    /**
+     * Gets minimum latency in milliseconds.
+     *
+     * @return minimum latency in milliseconds
+     */
     int minLatencyInMs();
 
-    /** @return maximum latency in milliseconds */
+    /**
+     * Gets maximum latency in milliseconds.
+     *
+     * @return maximum latency in milliseconds
+     */
     int maxLatencyInMs();
 
-    /** @return total number of probes sent */
+    /**
+     * Gets total number of probes sent.
+     *
+     * @return total number of probes sent
+     */
     int probesSent();
 
-    /** @return number of failed probes */
+    /**
+     * Gets number of failed probes.
+     *
+     * @return number of failed probes
+     */
     int probesFailed();
 
     /** The entirety of connectivity check parameters definition. */
@@ -44,12 +72,16 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>, HasPar
         /** Sets the source property. */
         interface FromSourceVirtualMachine {
             /**
+             * Specifies the ID of the virtual machine from which a connectivity check will be initiated.
+             *
              * @param resourceId the ID of the virtual machine from which a connectivity check will be initiated
              * @return next definition stage
              */
             WithExecute fromSourceVirtualMachine(String resourceId);
 
             /**
+             * Specifies virtual machine from which a connectivity check will be initiated.
+             *
              * @param vm virtual machine from which a connectivity check will be initiated
              * @return next definition stage
              */
@@ -59,12 +91,16 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>, HasPar
         /** Sets the destination property. */
         interface ToDestination {
             /**
+             * Specifies the ID of the resource to which a connection attempt will be made.
+             *
              * @param resourceId the ID of the resource to which a connection attempt will be made
              * @return next definition stage
              */
             ToDestinationPort toDestinationResourceId(String resourceId);
 
             /**
+             * Specifies the IP address or URI the resource to which a connection attempt will be made.
+             *
              * @param address the IP address or URI the resource to which a connection attempt will be made
              * @return next definition stage
              */
@@ -74,6 +110,8 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>, HasPar
         /** Sets the destination port on which check connectivity will be performed. */
         interface ToDestinationPort {
             /**
+             * Specifies destination port.
+             *
              * @param port destination port
              * @return next definition stage
              */
@@ -83,6 +121,8 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>, HasPar
         /** Sets the source port from which a connectivity check will be performed. */
         interface FromSourcePort {
             /**
+             * Specifies source port.
+             *
              * @param port source port
              * @return next definition stage
              */

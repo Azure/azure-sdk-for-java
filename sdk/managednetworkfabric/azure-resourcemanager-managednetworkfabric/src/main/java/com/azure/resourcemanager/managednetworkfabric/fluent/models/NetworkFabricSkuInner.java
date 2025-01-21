@@ -6,28 +6,55 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.FabricSkuType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The Network Fabric SKU resource definition. */
+/**
+ * The Network Fabric SKU resource definition.
+ */
 @Fluent
 public final class NetworkFabricSkuInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private NetworkFabricSkuProperties innerProperties = new NetworkFabricSkuProperties();
 
-    /** Creates an instance of NetworkFabricSkuInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NetworkFabricSkuInner class.
+     */
     public NetworkFabricSkuInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkFabricSkuProperties innerProperties() {
@@ -35,8 +62,47 @@ public final class NetworkFabricSkuInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the type property: Type of Network Fabric SKU.
-     *
+     * 
      * @return the type value.
      */
     public FabricSkuType typePropertiesType() {
@@ -46,7 +112,7 @@ public final class NetworkFabricSkuInner extends ProxyResource {
     /**
      * Get the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU. The
      * value of max count racks is 4 for 4 rack SKU and 8 for 8 rack SKU.
-     *
+     * 
      * @return the maxComputeRacks value.
      */
     public Integer maxComputeRacks() {
@@ -56,7 +122,7 @@ public final class NetworkFabricSkuInner extends ProxyResource {
     /**
      * Set the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU. The
      * value of max count racks is 4 for 4 rack SKU and 8 for 8 rack SKU.
-     *
+     * 
      * @param maxComputeRacks the maxComputeRacks value to set.
      * @return the NetworkFabricSkuInner object itself.
      */
@@ -70,7 +136,7 @@ public final class NetworkFabricSkuInner extends ProxyResource {
 
     /**
      * Get the maximumServerCount property: Maximum number of servers available for this Network Fabric SKU.
-     *
+     * 
      * @return the maximumServerCount value.
      */
     public Integer maximumServerCount() {
@@ -79,7 +145,7 @@ public final class NetworkFabricSkuInner extends ProxyResource {
 
     /**
      * Set the maximumServerCount property: Maximum number of servers available for this Network Fabric SKU.
-     *
+     * 
      * @param maximumServerCount the maximumServerCount value to set.
      * @return the NetworkFabricSkuInner object itself.
      */
@@ -93,7 +159,7 @@ public final class NetworkFabricSkuInner extends ProxyResource {
 
     /**
      * Get the supportedVersions property: List of supported Network Fabric SKU versions.
-     *
+     * 
      * @return the supportedVersions value.
      */
     public List<String> supportedVersions() {
@@ -102,7 +168,7 @@ public final class NetworkFabricSkuInner extends ProxyResource {
 
     /**
      * Get the details property: URL providing detailed configuration of the fabric SKU.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -111,7 +177,7 @@ public final class NetworkFabricSkuInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -120,17 +186,63 @@ public final class NetworkFabricSkuInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model NetworkFabricSkuInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model NetworkFabricSkuInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkFabricSkuInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFabricSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFabricSkuInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkFabricSkuInner.
+     */
+    public static NetworkFabricSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFabricSkuInner deserializedNetworkFabricSkuInner = new NetworkFabricSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkFabricSkuInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkFabricSkuInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkFabricSkuInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkFabricSkuInner.innerProperties = NetworkFabricSkuProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNetworkFabricSkuInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFabricSkuInner;
+        });
+    }
 }

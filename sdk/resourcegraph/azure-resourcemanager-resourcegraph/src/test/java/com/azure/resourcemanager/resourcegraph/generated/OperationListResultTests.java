@@ -10,11 +10,10 @@ import com.azure.resourcemanager.resourcegraph.models.OperationDisplay;
 import com.azure.resourcemanager.resourcegraph.models.OperationListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
             "{\"value\":[{\"name\":\"siznto\",\"display\":{\"provider\":\"a\",\"resource\":\"ajpsquc\",\"operation\":\"o\",\"description\":\"dkfo\"},\"origin\":\"nygj\"},{\"name\":\"jddeqsrdeupewnw\",\"display\":{\"provider\":\"tjzyflus\",\"resource\":\"hmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"txukcdmp\"},{\"name\":\"cryuan\",\"display\":{\"provider\":\"xzdxtayrlhmwh\",\"resource\":\"mrqobmtukknr\",\"operation\":\"tihfx\",\"description\":\"jbpzvgnwzsymg\"},\"origin\":\"uf\"},{\"name\":\"zk\",\"display\":{\"provider\":\"bihanuf\",\"resource\":\"cbjy\",\"operation\":\"git\",\"description\":\"qhabifpikxwcz\"},\"origin\":\"scnpqxuhivy\"}]}")
             .toObject(OperationListResult.class);
@@ -26,8 +25,8 @@ public final class OperationListResultTests {
         Assertions.assertEquals("nygj", model.value().get(0).origin());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult().withValue(Arrays.asList(
             new OperationInner().withName("siznto")
                 .withDisplay(new OperationDisplay().withProvider("a")

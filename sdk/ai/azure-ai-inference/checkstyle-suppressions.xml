@@ -11,4 +11,9 @@
   <suppress files="com.azure.ai.inference.ChatCompletionsAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.inference.ChatCompletionsClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.inference.implementation.InferenceServerSentEvents.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+
+  <suppress checks="IllegalImport" files="com.azure.ai.inference.ChatCompletionClientTracerTest.java" />
+  <suppress checks="IllegalImport" files="com.azure.ai.inference.ChatCompletionsSyncClientTest.java" />
+  <suppress checks="IllegalImport" files="com.azure.ai.inference.usage.TraceChatCompletionsToolCallSample.java" />
+  <suppress checks="IllegalImport" files="com.azure.ai.inference.usage.TraceStreamingChatCompletionsToolCallSample.java" />
 </suppressions>

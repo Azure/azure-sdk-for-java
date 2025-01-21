@@ -28,10 +28,18 @@ public class RoleAssignmentHelper {
      * assignments needs to be done.
      */
     public interface IdProvider {
-        /** @return the service principal id (object id) */
+        /**
+         * Gets the service principal id (object id).
+         *
+         * @return the service principal id (object id)
+         */
         String principalId();
 
-        /** @return ARM resource id of the resource */
+        /**
+         * Gets ARM resource id of the resource.
+         *
+         * @return ARM resource id of the resource
+         */
         String resourceId();
     }
 

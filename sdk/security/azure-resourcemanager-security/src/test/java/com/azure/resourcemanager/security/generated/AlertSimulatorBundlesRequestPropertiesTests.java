@@ -14,16 +14,16 @@ public final class AlertSimulatorBundlesRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertSimulatorBundlesRequestProperties model = BinaryData.fromString(
-            "{\"kind\":\"Bundles\",\"bundles\":[\"DNS\",\"KeyVaults\",\"ResourceManager\",\"AppServices\"],\"\":{\"btxluevsolzwil\":\"dataofuckc\",\"fxfjwp\":\"datangojfsqebuuxjx\",\"gzzxljbkhxsd\":\"datakktpmbmxbmbr\"}}")
+            "{\"kind\":\"Bundles\",\"bundles\":[\"KubernetesService\"],\"\":{\"ubkmifo\":\"datapivlsbbjpm\",\"vgovpbbttefjokn\":\"dataxkubvphavpmhbrbq\"}}")
             .toObject(AlertSimulatorBundlesRequestProperties.class);
-        Assertions.assertEquals(BundleType.DNS, model.bundles().get(0));
+        Assertions.assertEquals(BundleType.KUBERNETES_SERVICE, model.bundles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertSimulatorBundlesRequestProperties model = new AlertSimulatorBundlesRequestProperties().withBundles(
-            Arrays.asList(BundleType.DNS, BundleType.KEY_VAULTS, BundleType.RESOURCE_MANAGER, BundleType.APP_SERVICES));
+        AlertSimulatorBundlesRequestProperties model
+            = new AlertSimulatorBundlesRequestProperties().withBundles(Arrays.asList(BundleType.KUBERNETES_SERVICE));
         model = BinaryData.fromObject(model).toObject(AlertSimulatorBundlesRequestProperties.class);
-        Assertions.assertEquals(BundleType.DNS, model.bundles().get(0));
+        Assertions.assertEquals(BundleType.KUBERNETES_SERVICE, model.bundles().get(0));
     }
 }

@@ -19,13 +19,25 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 @Fluent
 public interface RoleAssignment
     extends Indexable, HasInnerModel<RoleAssignmentInner>, HasId, HasName, HasManager<AuthorizationManager> {
-    /** @return the role assignment scope */
+    /**
+     * Gets the role assignment scope.
+     *
+     * @return the role assignment scope
+     */
     String scope();
 
-    /** @return the role definition ID */
+    /**
+     * Gets the role definition ID.
+     *
+     * @return the role definition ID
+     */
     String roleDefinitionId();
 
-    /** @return the principal ID */
+    /**
+     * Gets the principal ID.
+     *
+     * @return the principal ID
+     */
     String principalId();
 
     /**

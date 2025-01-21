@@ -17,22 +17,44 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 @Fluent
 public interface AppServicePlan extends GroupableResource<AppServiceManager, AppServicePlanInner>, HasName,
     Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update> {
-    /** @return maximum number of instances that can be assigned */
+    /**
+     * Gets maximum number of instances that can be assigned.
+     *
+     * @return maximum number of instances that can be assigned
+     */
     int maxInstances();
 
-    /** @return maximum number of instances that can be assigned */
+    /**
+     * Gets maximum number of instances that can be assigned.
+     *
+     * @return maximum number of instances that can be assigned */
     int capacity();
 
-    /** @return if apps assigned to this App Service Plan can be scaled independently */
+    /**
+     * Check whether apps assigned to this App Service Plan can be scaled independently.
+     *
+     * @return if apps assigned to this App Service Plan can be scaled independently */
     boolean perSiteScaling();
 
-    /** @return number of web apps assigned to this App Service Plan */
+    /**
+     * Gets number of web apps assigned to this App Service Plan.
+     *
+     * @return number of web apps assigned to this App Service Plan
+     */
     int numberOfWebApps();
 
-    /** @return the pricing tier information of the App Service Plan */
+    /**
+     * Gets the pricing tier information of the App Service Plan
+     *
+     * @return the pricing tier information of the App Service Plan
+     */
     PricingTier pricingTier();
 
-    /** @return the operating system the web app is running on */
+    /**
+     * Gets the operating system the web app is running on.
+     *
+     * @return the operating system the web app is running on
+     */
     OperatingSystem operatingSystem();
 
     /**************************************************************

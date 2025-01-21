@@ -138,7 +138,6 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

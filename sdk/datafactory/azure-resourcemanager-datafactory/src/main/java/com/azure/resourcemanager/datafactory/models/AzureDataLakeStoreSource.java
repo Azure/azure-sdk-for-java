@@ -109,7 +109,6 @@ public final class AzureDataLakeStoreSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

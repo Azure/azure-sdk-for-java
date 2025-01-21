@@ -9,18 +9,20 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentFavoriteInner;
 import java.util.List;
 
-/** Resource collection API of Favorites. */
+/**
+ * Resource collection API of Favorites.
+ */
 public interface Favorites {
     /**
      * Gets a list of favorites defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteType The type of favorite. Value can be either shared or user.
      * @param sourceType Source type of favorite to return. When left out, the source type defaults to 'other' (not
-     *     present in this enum).
+     * present in this enum).
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable favorite. If
-     *     false, only return summary content for favorites.
+     * false, only return summary content for favorites.
      * @param tags Tags that must be present on each favorite returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,7 +36,7 @@ public interface Favorites {
 
     /**
      * Gets a list of favorites defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +48,7 @@ public interface Favorites {
 
     /**
      * Get a single favorite by its FavoriteId, defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component.
@@ -54,15 +56,15 @@ public interface Favorites {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single favorite by its FavoriteId, defined within an Application Insights component along with {@link
-     *     Response}.
+     * @return a single favorite by its FavoriteId, defined within an Application Insights component along with
+     * {@link Response}.
      */
     Response<ApplicationInsightsComponentFavorite> getWithResponse(String resourceGroupName, String resourceName,
         String favoriteId, Context context);
 
     /**
      * Get a single favorite by its FavoriteId, defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component.
@@ -75,30 +77,30 @@ public interface Favorites {
 
     /**
      * Adds a new favorites to an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component.
      * @param favoriteProperties Properties that need to be specified to create a new favorite and add it to an
-     *     Application Insights component.
+     * Application Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a favorite that is associated to an Application Insights component along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     Response<ApplicationInsightsComponentFavorite> addWithResponse(String resourceGroupName, String resourceName,
         String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties, Context context);
 
     /**
      * Adds a new favorites to an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component.
      * @param favoriteProperties Properties that need to be specified to create a new favorite and add it to an
-     *     Application Insights component.
+     * Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -109,7 +111,7 @@ public interface Favorites {
 
     /**
      * Updates a favorite that has already been added to an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component.
@@ -119,14 +121,14 @@ public interface Favorites {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a favorite that is associated to an Application Insights component along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     Response<ApplicationInsightsComponentFavorite> updateWithResponse(String resourceGroupName, String resourceName,
         String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties, Context context);
 
     /**
      * Updates a favorite that has already been added to an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component.
@@ -141,7 +143,7 @@ public interface Favorites {
 
     /**
      * Remove a favorite that is associated to an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component.
@@ -156,7 +158,7 @@ public interface Favorites {
 
     /**
      * Remove a favorite that is associated to an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component.

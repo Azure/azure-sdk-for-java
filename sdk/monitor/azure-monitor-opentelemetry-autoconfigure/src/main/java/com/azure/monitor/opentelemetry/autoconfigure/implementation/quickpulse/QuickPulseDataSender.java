@@ -6,17 +6,21 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PublishHeaders;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 class QuickPulseDataSender implements Runnable {
@@ -39,14 +43,17 @@ class QuickPulseDataSender implements Runnable {
 
     private static final long TICKS_AT_EPOCH = 621355968000000000L;
 
+    private final AtomicReference<FilteringConfiguration> configuration;
+
     QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,
         ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl,
-        Supplier<String> instrumentationKey) {
+        Supplier<String> instrumentationKey, AtomicReference<FilteringConfiguration> configuration) {
         this.sendQueue = sendQueue;
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
         this.qpStatus = QuickPulseStatus.QP_IS_OFF;
         this.instrumentationKey = instrumentationKey;
+        this.configuration = configuration;
     }
 
     @Override
@@ -73,10 +80,16 @@ class QuickPulseDataSender implements Runnable {
             dataPointList.add(point);
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
+            String etag = configuration.get().getETag();
+
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                logger.verbose("Attempting to send data points to quickpulse with etag {}: {}", etag,
+                    printListOfMonitoringPoints(dataPointList));
+            }
+
             try {
-                //TODO (harskaur): for a future PR populate the saved etag here for filtering
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
-                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "",
+                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), etag,
                         transmissionTimeInTicks, dataPointList)
                     .block();
                 if (responseMono == null) {
@@ -96,7 +109,16 @@ class QuickPulseDataSender implements Runnable {
                 }
 
                 lastValidRequestTimeNs = sendTime;
-                //TODO (harskaur): for a future PR parse the response body here for filtering
+                CollectionConfigurationInfo body = responseMono.getValue();
+                if (body != null && !etag.equals(body.getETag())) {
+                    configuration.set(new FilteringConfiguration(body));
+                    try {
+                        logger.verbose("Received a new live metrics filtering configuration from post response: {}",
+                            body.toJsonString());
+                    } catch (IOException e) {
+                        logger.verbose(e.getMessage());
+                    }
+                }
 
             } catch (RuntimeException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
                 onPostError(sendTime);
@@ -117,6 +139,20 @@ class QuickPulseDataSender implements Runnable {
         if (timeFromlastValidRequestTimeNs >= 20.0) {
             qpStatus = QuickPulseStatus.ERROR;
         }
+    }
+
+    private String printListOfMonitoringPoints(List<MonitoringDataPoint> points) {
+        StringBuilder dataPointsPrint = new StringBuilder("[");
+        for (MonitoringDataPoint p : points) {
+            try {
+                dataPointsPrint.append(p.toJsonString());
+                dataPointsPrint.append("\n");
+            } catch (IOException e) {
+                logger.verbose(e.getMessage());
+            }
+        }
+        dataPointsPrint.append("]");
+        return dataPointsPrint.toString();
     }
 
     public void setRedirectEndpointPrefix(String endpointPrefix) {

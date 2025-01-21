@@ -9,14 +9,12 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
@@ -97,7 +95,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     private Mono<Void> runInternalAsync() {
         return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())), response -> {
-            ((HttpResponse<?>) response).getBody().toBytes();
+            response.getBody().toBytes();
             return Mono.empty();
         }, response -> Mono.fromRunnable(() -> {
             try {
@@ -111,8 +109,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     // Method to run using CompletableFuture
     private CompletableFuture<Void> runAsyncWithCompletableFutureInternal() {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                Response<?> response = pipeline.send(createRequest());
+            try (Response<?> response = pipeline.send(createRequest())) {
                 response.getBody().toBytes();
             } catch (Exception e) {
                 LOGGER.logThrowableAsError(e);
@@ -123,28 +120,24 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     // Method to run using ExecutorService
     private Runnable runAsyncWithExecutorServiceInternal() {
-        Runnable task = () -> {
-            try {
-                Response<?> response = pipeline.send(createRequest());
+        return () -> {
+            try (Response<?> response = pipeline.send(createRequest())) {
                 response.getBody().toBytes();
             } catch (Exception e) {
                 LOGGER.logThrowableAsError(e);
             }
         };
-        return task;
     }
 
     // Method to run using Virtual Threads
     private Runnable runAsyncWithVirtualThreadInternal() {
-        Runnable task = () -> {
-            try {
-                Response<?> response = pipeline.send(createRequest());
+        return () -> {
+            try (Response<?> response = pipeline.send(createRequest())) {
                 response.getBody().toBytes();
             } catch (Exception e) {
                 LOGGER.logThrowableAsError(e);
             }
         };
-        return task;
     }
 
     private HttpRequest createRequest() {
@@ -158,13 +151,11 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private HttpPipelineBuilder getPipelineBuilder() {
         HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
 
-        HttpPipelineBuilder builder
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
+        HttpPipelineBuilder builder = new HttpPipelineBuilder().policies(new HttpRetryPolicy(),
+            new HttpInstrumentationPolicy(null, logOptions));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());
-        } else if (options.getHttpClient() == PerfStressOptions.HttpClientType.JDK) {
-            builder.httpClient(new JdkHttpClientProvider().getSharedInstance());
         } else {
             builder.httpClient(new DefaultHttpClientBuilder().build());
         }

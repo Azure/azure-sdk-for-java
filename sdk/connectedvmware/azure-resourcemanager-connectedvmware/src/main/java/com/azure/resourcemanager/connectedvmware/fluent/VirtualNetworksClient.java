@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.connectedvmware.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePatch;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworksClient.
+ */
 public interface VirtualNetworksClient {
     /**
      * Implements virtual network PUT method.
-     *
-     * <p>Create Or Update virtual network.
-     *
+     * 
+     * Create Or Update virtual network.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,9 +36,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Implements virtual network PUT method.
-     *
-     * <p>Create Or Update virtual network.
-     *
+     * 
+     * Create Or Update virtual network.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @param body Request payload.
@@ -52,9 +54,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Implements virtual network PUT method.
-     *
-     * <p>Create Or Update virtual network.
-     *
+     * 
+     * Create Or Update virtual network.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,9 +69,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Implements virtual network PUT method.
-     *
-     * <p>Create Or Update virtual network.
-     *
+     * 
+     * Create Or Update virtual network.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @param body Request payload.
@@ -85,9 +87,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Gets a virtual network.
-     *
-     * <p>Implements virtual network GET method.
-     *
+     * 
+     * Implements virtual network GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @param context The context to associate with this operation.
@@ -102,9 +104,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Gets a virtual network.
-     *
-     * <p>Implements virtual network GET method.
-     *
+     * 
+     * Implements virtual network GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,9 +119,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Updates a virtual network.
-     *
-     * <p>API to update certain properties of the virtual network resource.
-     *
+     * 
+     * API to update certain properties of the virtual network resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @param body Resource properties to update.
@@ -135,9 +137,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Updates a virtual network.
-     *
-     * <p>API to update certain properties of the virtual network resource.
-     *
+     * 
+     * API to update certain properties of the virtual network resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,9 +152,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
+     * 
+     * Implements virtual network DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,9 +167,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
+     * 
+     * Implements virtual network DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @param force Whether force delete was specified.
@@ -183,9 +185,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
+     * 
+     * Implements virtual network DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,9 +199,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
+     * 
+     * Implements virtual network DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @param force Whether force delete was specified.
@@ -213,9 +215,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Implements GET virtualNetworks in a subscription.
-     *
-     * <p>List of virtualNetworks in a subscription.
-     *
+     * 
+     * List of virtualNetworks in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VirtualNetworks as paginated response with {@link PagedIterable}.
@@ -225,9 +227,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Implements GET virtualNetworks in a subscription.
-     *
-     * <p>List of virtualNetworks in a subscription.
-     *
+     * 
+     * List of virtualNetworks in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -239,9 +241,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Implements GET virtualNetworks in a resource group.
-     *
-     * <p>List of virtualNetworks in a resource group.
-     *
+     * 
+     * List of virtualNetworks in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -253,9 +255,9 @@ public interface VirtualNetworksClient {
 
     /**
      * Implements GET virtualNetworks in a resource group.
-     *
-     * <p>List of virtualNetworks in a resource group.
-     *
+     * 
+     * List of virtualNetworks in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

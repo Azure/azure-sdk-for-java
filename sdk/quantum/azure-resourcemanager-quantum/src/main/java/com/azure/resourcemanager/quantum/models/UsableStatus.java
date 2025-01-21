@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class UsableStatus extends ExpandableStringEnum<UsableStatus> {
      * @param name a name to look for.
      * @return the corresponding UsableStatus.
      */
-    @JsonCreator
     public static UsableStatus fromString(String name) {
         return fromString(name, UsableStatus.class);
     }

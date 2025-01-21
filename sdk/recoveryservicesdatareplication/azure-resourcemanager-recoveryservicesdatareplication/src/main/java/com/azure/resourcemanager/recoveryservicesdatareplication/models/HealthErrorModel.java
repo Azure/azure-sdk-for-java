@@ -5,17 +5,23 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Health error model. */
+/**
+ * Health error model.
+ */
 @Fluent
-public final class HealthErrorModel {
+public final class HealthErrorModel implements JsonSerializable<HealthErrorModel> {
     /*
      * Gets or sets the type of affected resource type.
      */
-    @JsonProperty(value = "affectedResourceType")
     private String affectedResourceType;
 
     /*
@@ -23,88 +29,77 @@ public final class HealthErrorModel {
      * uniquely identify the count of items affected by a specific category and severity
      * as well as count of item affected by an specific issue.
      */
-    @JsonProperty(value = "affectedResourceCorrelationIds")
     private List<String> affectedResourceCorrelationIds;
 
     /*
      * Gets or sets a list of child health errors associated with this error.
      */
-    @JsonProperty(value = "childErrors")
     private List<InnerHealthErrorModel> childErrors;
 
     /*
      * Gets or sets the error code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Gets or sets the health category.
      */
-    @JsonProperty(value = "healthCategory", access = JsonProperty.Access.WRITE_ONLY)
     private String healthCategory;
 
     /*
      * Gets or sets the error category.
      */
-    @JsonProperty(value = "category", access = JsonProperty.Access.WRITE_ONLY)
     private String category;
 
     /*
      * Gets or sets the error severity.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private String severity;
 
     /*
      * Gets or sets the error source.
      */
-    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY)
     private String source;
 
     /*
      * Gets or sets the error creation time.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets a value indicating whether the error is customer resolvable.
      */
-    @JsonProperty(value = "isCustomerResolvable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCustomerResolvable;
 
     /*
      * Gets or sets the error summary.
      */
-    @JsonProperty(value = "summary", access = JsonProperty.Access.WRITE_ONLY)
     private String summary;
 
     /*
      * Gets or sets the error message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Gets or sets possible causes of the error.
      */
-    @JsonProperty(value = "causes", access = JsonProperty.Access.WRITE_ONLY)
     private String causes;
 
     /*
      * Gets or sets recommended action to resolve the error.
      */
-    @JsonProperty(value = "recommendation", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendation;
 
-    /** Creates an instance of HealthErrorModel class. */
+    /**
+     * Creates an instance of HealthErrorModel class.
+     */
     public HealthErrorModel() {
     }
 
     /**
      * Get the affectedResourceType property: Gets or sets the type of affected resource type.
-     *
+     * 
      * @return the affectedResourceType value.
      */
     public String affectedResourceType() {
@@ -113,7 +108,7 @@ public final class HealthErrorModel {
 
     /**
      * Set the affectedResourceType property: Gets or sets the type of affected resource type.
-     *
+     * 
      * @param affectedResourceType the affectedResourceType value to set.
      * @return the HealthErrorModel object itself.
      */
@@ -124,9 +119,10 @@ public final class HealthErrorModel {
 
     /**
      * Get the affectedResourceCorrelationIds property: Gets or sets the list of affected resource correlation Ids. This
-     * can be used to uniquely identify the count of items affected by a specific category and severity as well as count
-     * of item affected by an specific issue.
-     *
+     * can be used to
+     * uniquely identify the count of items affected by a specific category and severity
+     * as well as count of item affected by an specific issue.
+     * 
      * @return the affectedResourceCorrelationIds value.
      */
     public List<String> affectedResourceCorrelationIds() {
@@ -135,9 +131,10 @@ public final class HealthErrorModel {
 
     /**
      * Set the affectedResourceCorrelationIds property: Gets or sets the list of affected resource correlation Ids. This
-     * can be used to uniquely identify the count of items affected by a specific category and severity as well as count
-     * of item affected by an specific issue.
-     *
+     * can be used to
+     * uniquely identify the count of items affected by a specific category and severity
+     * as well as count of item affected by an specific issue.
+     * 
      * @param affectedResourceCorrelationIds the affectedResourceCorrelationIds value to set.
      * @return the HealthErrorModel object itself.
      */
@@ -148,7 +145,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the childErrors property: Gets or sets a list of child health errors associated with this error.
-     *
+     * 
      * @return the childErrors value.
      */
     public List<InnerHealthErrorModel> childErrors() {
@@ -157,7 +154,7 @@ public final class HealthErrorModel {
 
     /**
      * Set the childErrors property: Gets or sets a list of child health errors associated with this error.
-     *
+     * 
      * @param childErrors the childErrors value to set.
      * @return the HealthErrorModel object itself.
      */
@@ -168,7 +165,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the code property: Gets or sets the error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -177,7 +174,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the healthCategory property: Gets or sets the health category.
-     *
+     * 
      * @return the healthCategory value.
      */
     public String healthCategory() {
@@ -186,7 +183,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the category property: Gets or sets the error category.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -195,7 +192,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the severity property: Gets or sets the error severity.
-     *
+     * 
      * @return the severity value.
      */
     public String severity() {
@@ -204,7 +201,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the source property: Gets or sets the error source.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -213,7 +210,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the creationTime property: Gets or sets the error creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -222,7 +219,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the isCustomerResolvable property: Gets or sets a value indicating whether the error is customer resolvable.
-     *
+     * 
      * @return the isCustomerResolvable value.
      */
     public Boolean isCustomerResolvable() {
@@ -231,7 +228,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the summary property: Gets or sets the error summary.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -240,7 +237,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the message property: Gets or sets the error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -249,7 +246,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the causes property: Gets or sets possible causes of the error.
-     *
+     * 
      * @return the causes value.
      */
     public String causes() {
@@ -258,7 +255,7 @@ public final class HealthErrorModel {
 
     /**
      * Get the recommendation property: Gets or sets recommended action to resolve the error.
-     *
+     * 
      * @return the recommendation value.
      */
     public String recommendation() {
@@ -267,12 +264,81 @@ public final class HealthErrorModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (childErrors() != null) {
             childErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("affectedResourceType", this.affectedResourceType);
+        jsonWriter.writeArrayField("affectedResourceCorrelationIds", this.affectedResourceCorrelationIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("childErrors", this.childErrors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthErrorModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthErrorModel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthErrorModel.
+     */
+    public static HealthErrorModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthErrorModel deserializedHealthErrorModel = new HealthErrorModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("affectedResourceType".equals(fieldName)) {
+                    deserializedHealthErrorModel.affectedResourceType = reader.getString();
+                } else if ("affectedResourceCorrelationIds".equals(fieldName)) {
+                    List<String> affectedResourceCorrelationIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHealthErrorModel.affectedResourceCorrelationIds = affectedResourceCorrelationIds;
+                } else if ("childErrors".equals(fieldName)) {
+                    List<InnerHealthErrorModel> childErrors
+                        = reader.readArray(reader1 -> InnerHealthErrorModel.fromJson(reader1));
+                    deserializedHealthErrorModel.childErrors = childErrors;
+                } else if ("code".equals(fieldName)) {
+                    deserializedHealthErrorModel.code = reader.getString();
+                } else if ("healthCategory".equals(fieldName)) {
+                    deserializedHealthErrorModel.healthCategory = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedHealthErrorModel.category = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedHealthErrorModel.severity = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedHealthErrorModel.source = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedHealthErrorModel.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isCustomerResolvable".equals(fieldName)) {
+                    deserializedHealthErrorModel.isCustomerResolvable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("summary".equals(fieldName)) {
+                    deserializedHealthErrorModel.summary = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedHealthErrorModel.message = reader.getString();
+                } else if ("causes".equals(fieldName)) {
+                    deserializedHealthErrorModel.causes = reader.getString();
+                } else if ("recommendation".equals(fieldName)) {
+                    deserializedHealthErrorModel.recommendation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthErrorModel;
+        });
     }
 }

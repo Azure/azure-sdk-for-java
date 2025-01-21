@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.IpEntityProperties;
 import java.io.IOException;
 import java.util.List;
@@ -19,11 +18,11 @@ import java.util.Map;
  * Represents an ip entity.
  */
 @Immutable
-public final class IpEntity extends EntityInner {
+public final class IpEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.IP;
+    private EntityKindEnum kind = EntityKindEnum.IP;
 
     /*
      * Ip entity properties
@@ -62,7 +61,7 @@ public final class IpEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -210,7 +209,7 @@ public final class IpEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedIpEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedIpEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedIpEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedIpEntity.innerProperties = IpEntityProperties.fromJson(reader);
                 } else {

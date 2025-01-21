@@ -7,32 +7,34 @@ package com.azure.resourcemanager.kusto.models;
 import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependenciesEndpointInner;
 import java.util.List;
 
-/** An immutable client-side representation of OutboundNetworkDependenciesEndpoint. */
+/**
+ * An immutable client-side representation of OutboundNetworkDependenciesEndpoint.
+ */
 public interface OutboundNetworkDependenciesEndpoint {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
@@ -40,28 +42,28 @@ public interface OutboundNetworkDependenciesEndpoint {
     /**
      * Gets the category property: The type of service accessed by the Kusto Service Environment, e.g., Azure Storage,
      * Azure SQL Database, and Azure Active Directory.
-     *
+     * 
      * @return the category value.
      */
     String category();
 
     /**
      * Gets the endpoints property: The endpoints that the Kusto Service Environment reaches the service at.
-     *
+     * 
      * @return the endpoints value.
      */
     List<EndpointDependency> endpoints();
 
     /**
      * Gets the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the inner com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependenciesEndpointInner object.
-     *
+     * 
      * @return the inner object.
      */
     OutboundNetworkDependenciesEndpointInner innerModel();

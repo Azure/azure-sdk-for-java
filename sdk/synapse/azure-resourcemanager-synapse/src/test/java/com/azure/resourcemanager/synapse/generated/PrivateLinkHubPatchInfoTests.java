@@ -13,19 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubPatchInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubPatchInfo model = BinaryData
-            .fromString(
-                "{\"tags\":{\"cykvceo\":\"vnm\",\"vnotyfjfcnj\":\"eil\",\"nxdhbt\":\"k\",\"nermcl\":\"kphywpnvjto\"}}")
-            .toObject(PrivateLinkHubPatchInfo.class);
-        Assertions.assertEquals("vnm", model.tags().get("cykvceo"));
+        PrivateLinkHubPatchInfo model
+            = BinaryData.fromString("{\"tags\":{\"ftnkhtj\":\"bwccsnjvcdwxlpqe\",\"ngwfqatm\":\"y\"}}")
+                .toObject(PrivateLinkHubPatchInfo.class);
+        Assertions.assertEquals("bwccsnjvcdwxlpqe", model.tags().get("ftnkhtj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubPatchInfo model = new PrivateLinkHubPatchInfo()
-            .withTags(mapOf("cykvceo", "vnm", "vnotyfjfcnj", "eil", "nxdhbt", "k", "nermcl", "kphywpnvjto"));
+        PrivateLinkHubPatchInfo model
+            = new PrivateLinkHubPatchInfo().withTags(mapOf("ftnkhtj", "bwccsnjvcdwxlpqe", "ngwfqatm", "y"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubPatchInfo.class);
-        Assertions.assertEquals("vnm", model.tags().get("cykvceo"));
+        Assertions.assertEquals("bwccsnjvcdwxlpqe", model.tags().get("ftnkhtj"));
     }
 
     // Use "Map.of" if available

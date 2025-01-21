@@ -166,10 +166,10 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
     PolicyImpl(PolicyInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.policySetName = Utils.getValueFromIdByName(innerObject.id(), "policysets");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "policies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.policySetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "policysets");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "policies");
     }
 
     public Policy refresh() {

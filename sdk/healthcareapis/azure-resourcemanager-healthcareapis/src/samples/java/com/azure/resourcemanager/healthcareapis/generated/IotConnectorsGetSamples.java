@@ -9,7 +9,9 @@ package com.azure.resourcemanager.healthcareapis.generated;
  */
 public final class IotConnectorsGetSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/iotconnector_Get.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/
+     * iotconnector_Get.json
      */
     /**
      * Sample code: Get an IoT Connector.

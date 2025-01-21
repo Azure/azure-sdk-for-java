@@ -17,44 +17,42 @@ public final class PrivateEndpointConnectionForPrivateLinkHubResourceCollectionR
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"hoxus\",\"type\":\"pabgyeps\",\"id\":\"tazqugxywpmueefj\",\"properties\":{\"privateEndpoint\":{\"id\":\"kqujidsuyono\"},\"privateLinkServiceConnectionState\":{\"status\":\"aocqxtccmgy\",\"description\":\"xy\",\"actionsRequired\":\"moyrxvwfudwpz\"},\"provisioningState\":\"xhdzhlrqjbhckf\"}},{\"name\":\"hrxsbk\",\"type\":\"pycanuzbpz\",\"id\":\"fkuwbcrnwbmehhse\",\"properties\":{\"privateEndpoint\":{\"id\":\"srtslhspkdeem\"},\"privateLinkServiceConnectionState\":{\"status\":\"mx\",\"description\":\"kv\",\"actionsRequired\":\"elmqk\"},\"provisioningState\":\"ahvljuaha\"}}],\"nextLink\":\"hcdhmdual\"}")
+            "{\"value\":[{\"name\":\"mdvy\",\"type\":\"ikdgszywkbir\",\"id\":\"uzhlhkjoqrv\",\"properties\":{\"privateEndpoint\":{\"id\":\"t\"},\"privateLinkServiceConnectionState\":{\"status\":\"rv\",\"description\":\"upmfiibfg\",\"actionsRequired\":\"ioolvrwxkvtkkgll\"},\"provisioningState\":\"jygvjayvbl\"}},{\"name\":\"vkzuhbxvvyhgso\",\"type\":\"yrqufegxuvwz\",\"id\":\"nhlmctlpdng\",\"properties\":{\"privateEndpoint\":{\"id\":\"bmhrixkwmyijejv\"},\"privateLinkServiceConnectionState\":{\"status\":\"hbpnaixexccbd\",\"description\":\"ax\",\"actionsRequired\":\"exdrrvqahqkg\"},\"provisioningState\":\"pwijnhy\"}}],\"nextLink\":\"vfycxzb\"}")
             .toObject(PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.class);
-        Assertions.assertEquals("tazqugxywpmueefj", model.value().get(0).id());
-        Assertions.assertEquals("aocqxtccmgy",
-            model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("xy",
+        Assertions.assertEquals("uzhlhkjoqrv", model.value().get(0).id());
+        Assertions.assertEquals("rv", model.value().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("upmfiibfg",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("hoxus", model.value().get(0).name());
-        Assertions.assertEquals("pabgyeps", model.value().get(0).type());
-        Assertions.assertEquals("hcdhmdual", model.nextLink());
+        Assertions.assertEquals("mdvy", model.value().get(0).name());
+        Assertions.assertEquals("ikdgszywkbir", model.value().get(0).type());
+        Assertions.assertEquals("vfycxzb", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse model
             = new PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse().withValue(Arrays.asList(
-                new PrivateEndpointConnectionForPrivateLinkHubInner().withId("tazqugxywpmueefj")
+                new PrivateEndpointConnectionForPrivateLinkHubInner().withId("uzhlhkjoqrv")
                     .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                         .withPrivateLinkServiceConnectionState(
-                            new PrivateLinkServiceConnectionState().withStatus("aocqxtccmgy").withDescription("xy")))
-                    .withName("hoxus")
-                    .withType("pabgyeps"),
-                new PrivateEndpointConnectionForPrivateLinkHubInner().withId("fkuwbcrnwbmehhse")
+                            new PrivateLinkServiceConnectionState().withStatus("rv").withDescription("upmfiibfg")))
+                    .withName("mdvy")
+                    .withType("ikdgszywkbir"),
+                new PrivateEndpointConnectionForPrivateLinkHubInner().withId("nhlmctlpdng")
                     .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                         .withPrivateLinkServiceConnectionState(
-                            new PrivateLinkServiceConnectionState().withStatus("mx").withDescription("kv")))
-                    .withName("hrxsbk")
-                    .withType("pycanuzbpz")))
-                .withNextLink("hcdhmdual");
+                            new PrivateLinkServiceConnectionState().withStatus("hbpnaixexccbd").withDescription("ax")))
+                    .withName("vkzuhbxvvyhgso")
+                    .withType("yrqufegxuvwz")))
+                .withNextLink("vfycxzb");
         model = BinaryData.fromObject(model)
             .toObject(PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.class);
-        Assertions.assertEquals("tazqugxywpmueefj", model.value().get(0).id());
-        Assertions.assertEquals("aocqxtccmgy",
-            model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("xy",
+        Assertions.assertEquals("uzhlhkjoqrv", model.value().get(0).id());
+        Assertions.assertEquals("rv", model.value().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("upmfiibfg",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("hoxus", model.value().get(0).name());
-        Assertions.assertEquals("pabgyeps", model.value().get(0).type());
-        Assertions.assertEquals("hcdhmdual", model.nextLink());
+        Assertions.assertEquals("mdvy", model.value().get(0).name());
+        Assertions.assertEquals("ikdgszywkbir", model.value().get(0).type());
+        Assertions.assertEquals("vfycxzb", model.nextLink());
     }
 }

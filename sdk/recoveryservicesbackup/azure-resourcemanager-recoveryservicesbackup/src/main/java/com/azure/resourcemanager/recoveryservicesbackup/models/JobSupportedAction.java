@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for JobSupportedAction.
  */
@@ -41,7 +38,6 @@ public enum JobSupportedAction {
      * @param value the serialized value to parse.
      * @return the parsed JobSupportedAction object, or null if unable to parse.
      */
-    @JsonCreator
     public static JobSupportedAction fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum JobSupportedAction {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

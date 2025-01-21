@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storagecache.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Day of the week on which the maintenance window will occur.
  */
@@ -61,7 +58,6 @@ public enum MaintenanceDayOfWeekType {
      * @param value the serialized value to parse.
      * @return the parsed MaintenanceDayOfWeekType object, or null if unable to parse.
      */
-    @JsonCreator
     public static MaintenanceDayOfWeekType fromString(String value) {
         if (value == null) {
             return null;
@@ -78,7 +74,6 @@ public enum MaintenanceDayOfWeekType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

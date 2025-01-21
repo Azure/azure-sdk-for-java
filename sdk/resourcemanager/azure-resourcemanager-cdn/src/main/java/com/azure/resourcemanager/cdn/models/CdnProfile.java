@@ -26,11 +26,15 @@ public interface CdnProfile
     extends GroupableResource<CdnManager, ProfileInner>, Refreshable<CdnProfile>, Updatable<CdnProfile.Update> {
 
     /**
+     * Gets the SKU of the CDN profile.
+     *
      * @return the SKU of the CDN profile
      */
     Sku sku();
 
     /**
+     * Gets CDN profile state.
+     *
      * @return CDN profile state
      */
     String resourceState();
@@ -161,11 +165,15 @@ public interface CdnProfile
     Mono<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name);
 
     /**
+     * Check whether this CDN profile's SKU is of Premium Verizon.
+     *
      * @return true if this CDN profile's SKU is of Premium Verizon, else false.
      */
     boolean isPremiumVerizon();
 
     /**
+     * Gets quotas and actual usages of endpoints under the current CDN profile.
+     *
      * @return quotas and actual usages of endpoints under the current CDN profile
      */
     PagedIterable<ResourceUsage> listResourceUsage();

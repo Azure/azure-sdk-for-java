@@ -21,7 +21,7 @@ public final class NetworkConnectionsListHealthDetailsMockTests {
     @Test
     public void testListHealthDetails() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-03-08T04:04:59Z\",\"endDateTime\":\"2021-09-27T22:32:56Z\",\"healthChecks\":[{\"status\":\"Failed\",\"displayName\":\"hf\",\"startDateTime\":\"2021-08-21T02:34:59Z\",\"endDateTime\":\"2021-12-04T02:32:58Z\",\"errorType\":\"xj\",\"recommendedAction\":\"gcm\",\"additionalDetails\":\"qjhhhqxuwyvc\"}]},\"id\":\"oyvivbsiz\",\"name\":\"sjsz\",\"type\":\"bscm\"}]}";
+            = "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-05-12T08:22:14Z\",\"endDateTime\":\"2021-02-23T23:42:20Z\",\"healthChecks\":[{\"status\":\"Running\",\"displayName\":\"hkrttzrazis\",\"startDateTime\":\"2021-05-21T21:38:58Z\",\"endDateTime\":\"2021-12-09T05:38:48Z\",\"errorType\":\"mvanbwzo\",\"recommendedAction\":\"nrxxbsojklin\",\"additionalDetails\":\"dptysprqs\"},{\"status\":\"Pending\",\"displayName\":\"ojpslsvjgpliufi\",\"startDateTime\":\"2021-03-01T00:59:22Z\",\"endDateTime\":\"2021-02-16T14:43:20Z\",\"errorType\":\"vapcoh\",\"recommendedAction\":\"ucqpqojxcxzrz\",\"additionalDetails\":\"gdzbenr\"}]},\"id\":\"cawetzqddt\",\"name\":\"wflj\",\"type\":\"zn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class NetworkConnectionsListHealthDetailsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<HealthCheckStatusDetails> response = manager.networkConnections()
-            .listHealthDetails("wrlohapqinfszpyg", "qdhmrjzralcxpjby", 391224209, com.azure.core.util.Context.NONE);
+            .listHealthDetails("kjopwbeon", "lkwzdqybxceakxcp", 1877879239, com.azure.core.util.Context.NONE);
 
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -250,8 +251,8 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
                 } else if ("createdBy".equals(fieldName)) {
                     deserializedSparkConfiguration.createdBy = reader.getString();
                 } else if ("created".equals(fieldName)) {
-                    deserializedSparkConfiguration.created
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkConfiguration.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("configMergeRule".equals(fieldName)) {
                     Map<String, String> configMergeRule = reader.readMap(reader1 -> reader1.getString());
                     deserializedSparkConfiguration.configMergeRule = configMergeRule;

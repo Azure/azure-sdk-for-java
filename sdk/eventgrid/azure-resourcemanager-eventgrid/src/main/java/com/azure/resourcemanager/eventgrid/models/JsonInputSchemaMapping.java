@@ -5,35 +5,26 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.JsonInputSchemaMappingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * This enables publishing to Event Grid using a custom input schema. This can be used to map properties from a custom
  * input JSON schema to the Event Grid event schema.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "inputSchemaMappingType",
-    defaultImpl = JsonInputSchemaMapping.class,
-    visible = true)
-@JsonTypeName("Json")
 @Fluent
 public final class JsonInputSchemaMapping extends InputSchemaMapping {
     /*
      * Type of the custom mapping
      */
-    @JsonTypeId
-    @JsonProperty(value = "inputSchemaMappingType", required = true)
     private InputSchemaMappingType inputSchemaMappingType = InputSchemaMappingType.JSON;
 
     /*
      * JSON Properties of the input schema mapping
      */
-    @JsonProperty(value = "properties")
     private JsonInputSchemaMappingProperties innerProperties;
 
     /**
@@ -206,9 +197,50 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inputSchemaMappingType",
+            this.inputSchemaMappingType == null ? null : this.inputSchemaMappingType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonInputSchemaMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonInputSchemaMapping if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JsonInputSchemaMapping.
+     */
+    public static JsonInputSchemaMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonInputSchemaMapping deserializedJsonInputSchemaMapping = new JsonInputSchemaMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inputSchemaMappingType".equals(fieldName)) {
+                    deserializedJsonInputSchemaMapping.inputSchemaMappingType
+                        = InputSchemaMappingType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJsonInputSchemaMapping.innerProperties
+                        = JsonInputSchemaMappingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonInputSchemaMapping;
+        });
     }
 }

@@ -5,43 +5,46 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Network and credentials configuration already applied to terminal server. */
+/**
+ * Network and credentials configuration already applied to terminal server.
+ */
 @Fluent
 public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
     extends TerminalServerPatchableProperties {
     /*
      * IPv4 Address Prefix.
      */
-    @JsonProperty(value = "primaryIpv4Prefix")
     private String primaryIpv4Prefix;
 
     /*
      * IPv6 Address Prefix.
      */
-    @JsonProperty(value = "primaryIpv6Prefix")
     private String primaryIpv6Prefix;
 
     /*
      * Secondary IPv4 Address Prefix.
      */
-    @JsonProperty(value = "secondaryIpv4Prefix")
     private String secondaryIpv4Prefix;
 
     /*
      * Secondary IPv6 Address Prefix.
      */
-    @JsonProperty(value = "secondaryIpv6Prefix")
     private String secondaryIpv6Prefix;
 
-    /** Creates an instance of NetworkFabricPatchablePropertiesTerminalServerConfiguration class. */
+    /**
+     * Creates an instance of NetworkFabricPatchablePropertiesTerminalServerConfiguration class.
+     */
     public NetworkFabricPatchablePropertiesTerminalServerConfiguration() {
     }
 
     /**
      * Get the primaryIpv4Prefix property: IPv4 Address Prefix.
-     *
+     * 
      * @return the primaryIpv4Prefix value.
      */
     public String primaryIpv4Prefix() {
@@ -50,7 +53,7 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
 
     /**
      * Set the primaryIpv4Prefix property: IPv4 Address Prefix.
-     *
+     * 
      * @param primaryIpv4Prefix the primaryIpv4Prefix value to set.
      * @return the NetworkFabricPatchablePropertiesTerminalServerConfiguration object itself.
      */
@@ -61,7 +64,7 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
 
     /**
      * Get the primaryIpv6Prefix property: IPv6 Address Prefix.
-     *
+     * 
      * @return the primaryIpv6Prefix value.
      */
     public String primaryIpv6Prefix() {
@@ -70,7 +73,7 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
 
     /**
      * Set the primaryIpv6Prefix property: IPv6 Address Prefix.
-     *
+     * 
      * @param primaryIpv6Prefix the primaryIpv6Prefix value to set.
      * @return the NetworkFabricPatchablePropertiesTerminalServerConfiguration object itself.
      */
@@ -81,7 +84,7 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
 
     /**
      * Get the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix.
-     *
+     * 
      * @return the secondaryIpv4Prefix value.
      */
     public String secondaryIpv4Prefix() {
@@ -90,7 +93,7 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
 
     /**
      * Set the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix.
-     *
+     * 
      * @param secondaryIpv4Prefix the secondaryIpv4Prefix value to set.
      * @return the NetworkFabricPatchablePropertiesTerminalServerConfiguration object itself.
      */
@@ -102,7 +105,7 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
 
     /**
      * Get the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix.
-     *
+     * 
      * @return the secondaryIpv6Prefix value.
      */
     public String secondaryIpv6Prefix() {
@@ -111,7 +114,7 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
 
     /**
      * Set the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix.
-     *
+     * 
      * @param secondaryIpv6Prefix the secondaryIpv6Prefix value to set.
      * @return the NetworkFabricPatchablePropertiesTerminalServerConfiguration object itself.
      */
@@ -121,21 +124,27 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkFabricPatchablePropertiesTerminalServerConfiguration withUsername(String username) {
         super.withUsername(username);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkFabricPatchablePropertiesTerminalServerConfiguration withPassword(String password) {
         super.withPassword(password);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkFabricPatchablePropertiesTerminalServerConfiguration withSerialNumber(String serialNumber) {
         super.withSerialNumber(serialNumber);
@@ -144,11 +153,74 @@ public final class NetworkFabricPatchablePropertiesTerminalServerConfiguration
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", username());
+        jsonWriter.writeStringField("password", password());
+        jsonWriter.writeStringField("serialNumber", serialNumber());
+        jsonWriter.writeStringField("primaryIpv4Prefix", this.primaryIpv4Prefix);
+        jsonWriter.writeStringField("primaryIpv6Prefix", this.primaryIpv6Prefix);
+        jsonWriter.writeStringField("secondaryIpv4Prefix", this.secondaryIpv4Prefix);
+        jsonWriter.writeStringField("secondaryIpv6Prefix", this.secondaryIpv6Prefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFabricPatchablePropertiesTerminalServerConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFabricPatchablePropertiesTerminalServerConfiguration if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * NetworkFabricPatchablePropertiesTerminalServerConfiguration.
+     */
+    public static NetworkFabricPatchablePropertiesTerminalServerConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFabricPatchablePropertiesTerminalServerConfiguration deserializedNetworkFabricPatchablePropertiesTerminalServerConfiguration
+                = new NetworkFabricPatchablePropertiesTerminalServerConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedNetworkFabricPatchablePropertiesTerminalServerConfiguration
+                        .withUsername(reader.getString());
+                } else if ("password".equals(fieldName)) {
+                    deserializedNetworkFabricPatchablePropertiesTerminalServerConfiguration
+                        .withPassword(reader.getString());
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedNetworkFabricPatchablePropertiesTerminalServerConfiguration
+                        .withSerialNumber(reader.getString());
+                } else if ("primaryIpv4Prefix".equals(fieldName)) {
+                    deserializedNetworkFabricPatchablePropertiesTerminalServerConfiguration.primaryIpv4Prefix
+                        = reader.getString();
+                } else if ("primaryIpv6Prefix".equals(fieldName)) {
+                    deserializedNetworkFabricPatchablePropertiesTerminalServerConfiguration.primaryIpv6Prefix
+                        = reader.getString();
+                } else if ("secondaryIpv4Prefix".equals(fieldName)) {
+                    deserializedNetworkFabricPatchablePropertiesTerminalServerConfiguration.secondaryIpv4Prefix
+                        = reader.getString();
+                } else if ("secondaryIpv6Prefix".equals(fieldName)) {
+                    deserializedNetworkFabricPatchablePropertiesTerminalServerConfiguration.secondaryIpv6Prefix
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFabricPatchablePropertiesTerminalServerConfiguration;
+        });
     }
 }

@@ -25,11 +25,6 @@ public final class CreateOrderLimitForSubscriptionValidationResponseProperties e
      */
     private ValidationStatus status;
 
-    /*
-     * Error code and message of validation response.
-     */
-    private CloudError error;
-
     /**
      * Creates an instance of CreateOrderLimitForSubscriptionValidationResponseProperties class.
      */
@@ -53,16 +48,6 @@ public final class CreateOrderLimitForSubscriptionValidationResponseProperties e
      */
     public ValidationStatus status() {
         return this.status;
-    }
-
-    /**
-     * Get the error property: Error code and message of validation response.
-     * 
-     * @return the error value.
-     */
-    @Override
-    public CloudError error() {
-        return this.error;
     }
 
     /**
@@ -107,8 +92,8 @@ public final class CreateOrderLimitForSubscriptionValidationResponseProperties e
                 reader.nextToken();
 
                 if ("error".equals(fieldName)) {
-                    deserializedCreateOrderLimitForSubscriptionValidationResponseProperties.error
-                        = CloudError.fromJson(reader);
+                    deserializedCreateOrderLimitForSubscriptionValidationResponseProperties
+                        .withError(CloudError.fromJson(reader));
                 } else if ("validationType".equals(fieldName)) {
                     deserializedCreateOrderLimitForSubscriptionValidationResponseProperties.validationType
                         = ValidationInputDiscriminator.fromString(reader.getString());

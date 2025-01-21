@@ -14,41 +14,37 @@ import com.azure.resourcemanager.apimanagement.models.PortalConfigTermsOfService
 import com.azure.resourcemanager.apimanagement.models.PortalSettingsCspMode;
 import java.util.Arrays;
 
-/** Samples for PortalConfig Update. */
+/**
+ * Samples for PortalConfig Update.
+ */
 public final class PortalConfigUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdatePortalConfig.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementUpdatePortalConfig.json
      */
     /**
      * Sample code: ApiManagementUpdatePortalConfig.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementUpdatePortalConfig(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        PortalConfigContract resource =
-            manager
-                .portalConfigs()
-                .getWithResponse("rg1", "apimService1", "default", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        apiManagementUpdatePortalConfig(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        PortalConfigContract resource = manager.portalConfigs()
+            .getWithResponse("rg1", "apimService1", "default", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withEnableBasicAuth(true)
             .withSignin(new PortalConfigPropertiesSignin().withRequire(false))
-            .withSignup(
-                new PortalConfigPropertiesSignup()
-                    .withTermsOfService(
-                        new PortalConfigTermsOfServiceProperties()
-                            .withText("I agree to the service terms and conditions.")
-                            .withRequireConsent(false)))
+            .withSignup(new PortalConfigPropertiesSignup().withTermsOfService(
+                new PortalConfigTermsOfServiceProperties().withText("I agree to the service terms and conditions.")
+                    .withRequireConsent(false)))
             .withDelegation(
                 new PortalConfigDelegationProperties().withDelegateRegistration(false).withDelegateSubscription(false))
             .withCors(new PortalConfigCorsProperties().withAllowedOrigins(Arrays.asList("https://contoso.com")))
-            .withCsp(
-                new PortalConfigCspProperties()
-                    .withMode(PortalSettingsCspMode.REPORT_ONLY)
-                    .withReportUri(Arrays.asList("https://report.contoso.com"))
-                    .withAllowedSources(Arrays.asList("*.contoso.com")))
+            .withCsp(new PortalConfigCspProperties().withMode(PortalSettingsCspMode.REPORT_ONLY)
+                .withReportUri(Arrays.asList("https://report.contoso.com"))
+                .withAllowedSources(Arrays.asList("*.contoso.com")))
             .withIfMatch("*")
             .apply();
     }

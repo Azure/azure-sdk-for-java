@@ -169,8 +169,8 @@ public final class NetworkTapImpl implements NetworkTap, NetworkTap.Definition, 
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkTapName = Utils.getValueFromIdByName(innerObject.id(), "networkTaps");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkTapName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkTaps");
     }
 
     public NetworkTap refresh() {

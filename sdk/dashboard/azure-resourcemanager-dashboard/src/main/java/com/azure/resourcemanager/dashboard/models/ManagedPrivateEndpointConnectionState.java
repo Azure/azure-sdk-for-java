@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The state of managed private endpoint connection.
  */
 @Immutable
-public final class ManagedPrivateEndpointConnectionState {
+public final class ManagedPrivateEndpointConnectionState
+    implements JsonSerializable<ManagedPrivateEndpointConnectionState> {
     /*
      * The approval/rejection status of managed private endpoint connection.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedPrivateEndpointConnectionStatus status;
 
     /*
      * Gets or sets the reason for approval/rejection of the connection.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**
@@ -54,5 +57,44 @@ public final class ManagedPrivateEndpointConnectionState {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedPrivateEndpointConnectionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedPrivateEndpointConnectionState if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedPrivateEndpointConnectionState.
+     */
+    public static ManagedPrivateEndpointConnectionState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedPrivateEndpointConnectionState deserializedManagedPrivateEndpointConnectionState
+                = new ManagedPrivateEndpointConnectionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointConnectionState.status
+                        = ManagedPrivateEndpointConnectionStatus.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointConnectionState.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedPrivateEndpointConnectionState;
+        });
     }
 }

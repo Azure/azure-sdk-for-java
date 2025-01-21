@@ -8,7 +8,6 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistItemInner;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 /**
  * An immutable client-side representation of WatchlistItem.
@@ -110,14 +109,14 @@ public interface WatchlistItem {
      * 
      * @return the itemsKeyValue value.
      */
-    Map<String, Object> itemsKeyValue();
+    Object itemsKeyValue();
 
     /**
      * Gets the entityMapping property: key-value pairs for a watchlist item entity mapping.
      * 
      * @return the entityMapping value.
      */
-    Map<String, Object> entityMapping();
+    Object entityMapping();
 
     /**
      * Gets the name of the resource group.
@@ -159,7 +158,7 @@ public interface WatchlistItem {
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param workspaceName The name of the workspace.
-             * @param watchlistAlias Watchlist Alias.
+             * @param watchlistAlias The watchlist alias.
              * @return the next definition stage.
              */
             WithCreate withExistingWatchlist(String resourceGroupName, String workspaceName, String watchlistAlias);
@@ -316,7 +315,7 @@ public interface WatchlistItem {
              * @param itemsKeyValue key-value pairs for a watchlist item.
              * @return the next definition stage.
              */
-            WithCreate withItemsKeyValue(Map<String, Object> itemsKeyValue);
+            WithCreate withItemsKeyValue(Object itemsKeyValue);
         }
 
         /**
@@ -329,7 +328,7 @@ public interface WatchlistItem {
              * @param entityMapping key-value pairs for a watchlist item entity mapping.
              * @return the next definition stage.
              */
-            WithCreate withEntityMapping(Map<String, Object> entityMapping);
+            WithCreate withEntityMapping(Object entityMapping);
         }
     }
 
@@ -494,7 +493,7 @@ public interface WatchlistItem {
              * @param itemsKeyValue key-value pairs for a watchlist item.
              * @return the next definition stage.
              */
-            Update withItemsKeyValue(Map<String, Object> itemsKeyValue);
+            Update withItemsKeyValue(Object itemsKeyValue);
         }
 
         /**
@@ -507,7 +506,7 @@ public interface WatchlistItem {
              * @param entityMapping key-value pairs for a watchlist item entity mapping.
              * @return the next definition stage.
              */
-            Update withEntityMapping(Map<String, Object> entityMapping);
+            Update withEntityMapping(Object entityMapping);
         }
     }
 

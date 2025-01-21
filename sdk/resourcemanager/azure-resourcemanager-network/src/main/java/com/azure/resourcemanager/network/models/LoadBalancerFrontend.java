@@ -13,15 +13,31 @@ import java.util.Map;
 public interface LoadBalancerFrontend
     extends HasInnerModel<FrontendIpConfigurationInner>, ChildResource<LoadBalancer>, HasLoadBalancingRules {
 
-    /** @return true if the frontend is public, i.e. it has a public IP address associated with it */
+    /**
+     * Checks whether the frontend is public.
+     *
+     * @return true if the frontend is public, i.e. it has a public IP address associated with it
+     */
     boolean isPublic();
 
-    /** @return the inbound NAT pools on this load balancer that use this frontend, indexed by their names */
+    /**
+     * Gets the inbound NAT pools on this load balancer that use this frontend.
+     *
+     * @return the inbound NAT pools on this load balancer that use this frontend, indexed by their names
+     */
     Map<String, LoadBalancerInboundNatPool> inboundNatPools();
 
-    /** @return the inbound NAT rules on this load balancer that use this frontend, indexed by their names */
+    /**
+     * Gets the inbound NAT rules on this load balancer that use this frontend.
+     *
+     * @return the inbound NAT rules on this load balancer that use this frontend, indexed by their names
+     */
     Map<String, LoadBalancerInboundNatRule> inboundNatRules();
 
-    /** @return the outbound rules on this load balancer that use this frontend, indexed by their names */
+    /**
+     * Gets the outbound rules on this load balancer that use this frontend.
+     *
+     * @return the outbound rules on this load balancer that use this frontend, indexed by their names
+     */
     Map<String, LoadBalancerOutboundRule> outboundRules();
 }

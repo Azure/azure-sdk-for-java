@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class ArtifactManifestState extends ExpandableStringEnum<ArtifactMa
      * @param name a name to look for.
      * @return the corresponding ArtifactManifestState.
      */
-    @JsonCreator
     public static ArtifactManifestState fromString(String name) {
         return fromString(name, ArtifactManifestState.class);
     }

@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The SIMs to clone.
  */
 @Fluent
-public final class SimClone {
+public final class SimClone implements JsonSerializable<SimClone> {
     /*
      * The SIM Group where the SIMs should be cloned.
      */
-    @JsonProperty(value = "targetSimGroupId")
     private SimGroupResourceId targetSimGroupId;
 
     /*
      * A list of SIM resource names to be cloned.
      */
-    @JsonProperty(value = "sims")
     private List<String> sims;
 
     /**
@@ -80,5 +82,45 @@ public final class SimClone {
         if (targetSimGroupId() != null) {
             targetSimGroupId().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("targetSimGroupId", this.targetSimGroupId);
+        jsonWriter.writeArrayField("sims", this.sims, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimClone from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimClone if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SimClone.
+     */
+    public static SimClone fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimClone deserializedSimClone = new SimClone();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetSimGroupId".equals(fieldName)) {
+                    deserializedSimClone.targetSimGroupId = SimGroupResourceId.fromJson(reader);
+                } else if ("sims".equals(fieldName)) {
+                    List<String> sims = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSimClone.sims = sims;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimClone;
+        });
     }
 }

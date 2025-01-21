@@ -66,10 +66,18 @@ public interface MetricAlert extends GroupableResource<MonitorManager, MetricAle
      */
     Duration windowSize();
 
-    /** @return metric alert criterias, indexed by name */
+    /**
+     * Gets metric alert criterias, indexed by name.
+     *
+     * @return metric alert criterias, indexed by name
+     */
     Map<String, MetricAlertCondition> alertCriterias();
 
-    /** @return metric dynamic alert criterias, indexed by name */
+    /**
+     * Gets metric dynamic alert criterias, indexed by name.
+     *
+     * @return metric dynamic alert criterias, indexed by name
+     */
     Map<String, MetricDynamicAlertCondition> dynamicAlertCriterias();
 
     /**

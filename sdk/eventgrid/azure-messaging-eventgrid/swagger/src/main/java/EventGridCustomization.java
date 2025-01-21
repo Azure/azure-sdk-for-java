@@ -248,6 +248,27 @@ public class EventGridCustomization extends Customization {
         customizeCommunicationIdentifierModelKind(customization);
         customizeAcsMessageChannelEventError(customization);
         customizeCentralCommuicationEvents(customization);
+        customizeCommuicationSMSEvents(customization);
+    }
+
+    public void customizeCommuicationSMSEvents(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("AcsSmsReceivedEventData");
+        classCustomization.customizeAst(ast -> {
+            ast.getClassByName("AcsSmsReceivedEventData").ifPresent(clazz -> {
+                clazz.getFieldByName("segmentCount").get().getVariable(0).setType("Integer");
+            });
+        });
+
+        classCustomization.customizeAst(comp -> {
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsSmsReceivedEventData").get();
+            clazz.getMethodsByName("setSegmentCount").forEach(m -> {
+                m.getParameter(0).setType(Integer.class);
+            });
+            clazz.getMethodsByName("getSegmentCount").forEach(m -> {
+                m.setType(Integer.class);
+            });
+        });
     }
 
     public void customizeCentralCommuicationEvents(LibraryCustomization customization) {

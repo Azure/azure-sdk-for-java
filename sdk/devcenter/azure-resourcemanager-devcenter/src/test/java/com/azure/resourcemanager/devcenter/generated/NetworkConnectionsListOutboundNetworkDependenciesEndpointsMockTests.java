@@ -21,7 +21,7 @@ public final class NetworkConnectionsListOutboundNetworkDependenciesEndpointsMoc
     @Test
     public void testListOutboundNetworkDependenciesEndpoints() throws Exception {
         String responseStr
-            = "{\"value\":[{\"category\":\"omew\",\"endpoints\":[{\"domainName\":\"liuhqawmoaiancz\",\"description\":\"odrrslblxyd\",\"endpointDetails\":[{\"port\":1854783135},{\"port\":879177175}]}]}]}";
+            = "{\"value\":[{\"category\":\"tqpbrlcy\",\"endpoints\":[{\"domainName\":\"zkgofxyf\",\"description\":\"uc\",\"endpointDetails\":[{\"port\":1456514758}]},{\"domainName\":\"jttbstv\",\"description\":\"aqnrmvvfkoxmlg\",\"endpointDetails\":[{\"port\":1858596156},{\"port\":2137769434},{\"port\":480189667}]},{\"domainName\":\"zlpdwwex\",\"description\":\"zvlazipbhpwvqsgn\",\"endpointDetails\":[{\"port\":1287157964},{\"port\":1792217092},{\"port\":2008029409},{\"port\":1210376320}]},{\"domainName\":\"meyyvpkpatlb\",\"description\":\"pzgsk\",\"endpointDetails\":[{\"port\":1155999563}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,8 @@ public final class NetworkConnectionsListOutboundNetworkDependenciesEndpointsMoc
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<OutboundEnvironmentEndpoint> response = manager.networkConnections()
-            .listOutboundNetworkDependenciesEndpoints("czuejdtxptl", "h", 1326865352, com.azure.core.util.Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints("hcbjpibk", "phuuuerctato", 762617620,
+                com.azure.core.util.Context.NONE);
 
     }
 }

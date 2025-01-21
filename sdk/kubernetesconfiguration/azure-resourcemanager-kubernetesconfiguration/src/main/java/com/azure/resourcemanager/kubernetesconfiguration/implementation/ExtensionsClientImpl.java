@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExtensionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExtensionsClient.
+ */
 public final class ExtensionsClientImpl implements ExtensionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExtensionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SourceControlConfigurationClientImpl client;
 
     /**
      * Initializes an instance of ExtensionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExtensionsClientImpl(SourceControlConfigurationClientImpl client) {
@@ -132,12 +138,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -189,12 +195,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -246,12 +252,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -272,12 +278,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -300,12 +306,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -325,12 +331,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -352,12 +358,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -375,12 +381,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -399,12 +405,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -422,12 +428,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create a new Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param extension Properties necessary to Create an Extension.
@@ -446,12 +452,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Gets Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -497,12 +503,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Gets Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param context The context to associate with this operation.
@@ -547,12 +553,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Gets Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -569,12 +575,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Gets Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param context The context to associate with this operation.
@@ -592,12 +598,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Gets Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -614,12 +620,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -666,12 +672,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -717,12 +723,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -742,12 +748,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -767,12 +773,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -794,12 +800,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -819,12 +825,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -845,12 +851,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -868,12 +874,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -891,12 +897,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -915,12 +921,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -936,12 +942,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
@@ -959,12 +965,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1016,12 +1022,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1074,12 +1080,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1100,12 +1106,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1128,12 +1134,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1154,12 +1160,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1181,12 +1187,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1204,12 +1210,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1228,12 +1234,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1251,12 +1257,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
      * @param patchExtension Properties to Patch in an existing Extension.
@@ -1275,18 +1281,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * List all Extensions in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Extensions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtensionInner>> listSinglePageAsync(String resourceGroupName, String clusterRp,
@@ -1325,19 +1331,19 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * List all Extensions in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Extensions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtensionInner>> listSinglePageAsync(String resourceGroupName, String clusterRp,
@@ -1375,12 +1381,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * List all Extensions in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1397,12 +1403,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * List all Extensions in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1420,12 +1426,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * List all Extensions in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1440,12 +1446,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * List all Extensions in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1461,14 +1467,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Extensions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtensionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1488,15 +1493,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Extensions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtensionInner>> listNextSinglePageAsync(String nextLink, Context context) {

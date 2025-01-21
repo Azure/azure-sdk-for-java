@@ -15,32 +15,32 @@ public final class VaultUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultUsageInner model = BinaryData.fromString(
-            "{\"unit\":\"Percent\",\"quotaPeriod\":\"isgwbnbbeldawkz\",\"nextResetTime\":\"2021-01-06T08:15:40Z\",\"currentValue\":489170478703847309,\"limit\":4089645691345581060,\"name\":{\"value\":\"auhashsfwx\",\"localizedValue\":\"owzxcu\"}}")
+            "{\"unit\":\"Seconds\",\"quotaPeriod\":\"v\",\"nextResetTime\":\"2021-01-05T18:56:58Z\",\"currentValue\":2755642234733454971,\"limit\":1169778557052880447,\"name\":{\"value\":\"deemao\",\"localizedValue\":\"xagkvtmelmqkrh\"}}")
             .toObject(VaultUsageInner.class);
-        Assertions.assertEquals(UsagesUnit.PERCENT, model.unit());
-        Assertions.assertEquals("isgwbnbbeldawkz", model.quotaPeriod());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T08:15:40Z"), model.nextResetTime());
-        Assertions.assertEquals(489170478703847309L, model.currentValue());
-        Assertions.assertEquals(4089645691345581060L, model.limit());
-        Assertions.assertEquals("auhashsfwx", model.name().value());
-        Assertions.assertEquals("owzxcu", model.name().localizedValue());
+        Assertions.assertEquals(UsagesUnit.SECONDS, model.unit());
+        Assertions.assertEquals("v", model.quotaPeriod());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T18:56:58Z"), model.nextResetTime());
+        Assertions.assertEquals(2755642234733454971L, model.currentValue());
+        Assertions.assertEquals(1169778557052880447L, model.limit());
+        Assertions.assertEquals("deemao", model.name().value());
+        Assertions.assertEquals("xagkvtmelmqkrh", model.name().localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultUsageInner model = new VaultUsageInner().withUnit(UsagesUnit.PERCENT)
-            .withQuotaPeriod("isgwbnbbeldawkz")
-            .withNextResetTime(OffsetDateTime.parse("2021-01-06T08:15:40Z"))
-            .withCurrentValue(489170478703847309L)
-            .withLimit(4089645691345581060L)
-            .withName(new NameInfo().withValue("auhashsfwx").withLocalizedValue("owzxcu"));
+        VaultUsageInner model = new VaultUsageInner().withUnit(UsagesUnit.SECONDS)
+            .withQuotaPeriod("v")
+            .withNextResetTime(OffsetDateTime.parse("2021-01-05T18:56:58Z"))
+            .withCurrentValue(2755642234733454971L)
+            .withLimit(1169778557052880447L)
+            .withName(new NameInfo().withValue("deemao").withLocalizedValue("xagkvtmelmqkrh"));
         model = BinaryData.fromObject(model).toObject(VaultUsageInner.class);
-        Assertions.assertEquals(UsagesUnit.PERCENT, model.unit());
-        Assertions.assertEquals("isgwbnbbeldawkz", model.quotaPeriod());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T08:15:40Z"), model.nextResetTime());
-        Assertions.assertEquals(489170478703847309L, model.currentValue());
-        Assertions.assertEquals(4089645691345581060L, model.limit());
-        Assertions.assertEquals("auhashsfwx", model.name().value());
-        Assertions.assertEquals("owzxcu", model.name().localizedValue());
+        Assertions.assertEquals(UsagesUnit.SECONDS, model.unit());
+        Assertions.assertEquals("v", model.quotaPeriod());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T18:56:58Z"), model.nextResetTime());
+        Assertions.assertEquals(2755642234733454971L, model.currentValue());
+        Assertions.assertEquals(1169778557052880447L, model.limit());
+        Assertions.assertEquals("deemao", model.name().value());
+        Assertions.assertEquals("xagkvtmelmqkrh", model.name().localizedValue());
     }
 }

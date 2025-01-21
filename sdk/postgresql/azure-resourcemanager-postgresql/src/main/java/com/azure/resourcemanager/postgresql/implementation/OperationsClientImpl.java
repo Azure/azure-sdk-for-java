@@ -20,24 +20,27 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresql.fluent.OperationsClient;
 import com.azure.resourcemanager.postgresql.fluent.models.OperationListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(PostgreSqlManagementClientImpl client) {
@@ -52,7 +55,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
-    private interface OperationsService {
+    public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.DBforPostgreSQL/operations")
         @ExpectedResponses({ 200 })
@@ -63,14 +66,14 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all of the available REST API operations.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a list of resource provider operations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationListResultInner>> listWithResponseAsync() {
+    public Mono<Response<OperationListResultInner>> listWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -83,13 +86,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all of the available REST API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a list of resource provider operations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationListResultInner>> listWithResponseAsync(Context context) {
@@ -105,37 +108,19 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all of the available REST API operations.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of resource provider operations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationListResultInner> listAsync() {
-        return listWithResponseAsync().flatMap((Response<OperationListResultInner> res) -> {
-            if (res.getValue() != null) {
-                return Mono.just(res.getValue());
-            } else {
-                return Mono.empty();
-            }
-        });
+    public Mono<OperationListResultInner> listAsync() {
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Lists all of the available REST API operations.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationListResultInner list() {
-        return listAsync().block();
-    }
-
-    /**
-     * Lists all of the available REST API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -145,5 +130,17 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationListResultInner> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
+    }
+
+    /**
+     * Lists all of the available REST API operations.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of resource provider operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationListResultInner list() {
+        return listWithResponse(Context.NONE).getValue();
     }
 }

@@ -22,7 +22,7 @@ public final class RoutingInfoesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"controlPlaneAccessRoutes\":[{\"destination\":\"lazipbhpwvq\",\"nextHops\":[{}]},{\"destination\":\"yuuzivens\",\"nextHops\":[{},{},{}]},{\"destination\":\"yyvpkpatlb\",\"nextHops\":[{},{}]},{\"destination\":\"gsksrfhf\",\"nextHops\":[{},{},{}]}],\"userPlaneAccessRoutes\":[{\"destination\":\"bnxwc\",\"nextHops\":[{},{}]},{\"destination\":\"pvfqawz\",\"nextHops\":[{},{},{}]},{\"destination\":\"ttuiaclkiexhajl\",\"nextHops\":[{}]},{\"destination\":\"iqfyuttdi\",\"nextHops\":[{}]}],\"userPlaneDataRoutes\":[{\"attachedDataNetwork\":{\"id\":\"wswmt\"},\"routes\":[{},{}]},{\"attachedDataNetwork\":{\"id\":\"twwgzwx\"},\"routes\":[{},{},{},{}]}]},\"id\":\"cvogygzyvne\",\"name\":\"zaifghtmoqqtlff\",\"type\":\"zbkr\"}]}";
+            = "{\"value\":[{\"properties\":{\"controlPlaneAccessRoutes\":[{\"destination\":\"gkqu\",\"nextHops\":[{},{},{},{}]},{\"destination\":\"ptdacarvvl\",\"nextHops\":[{},{},{},{}]}],\"userPlaneAccessRoutes\":[{\"destination\":\"poi\",\"nextHops\":[{}]}],\"userPlaneDataRoutes\":[{\"attachedDataNetwork\":{\"id\":\"r\"},\"routes\":[{}]},{\"attachedDataNetwork\":{\"id\":\"sqalsxkdn\"},\"routes\":[{},{},{},{}]},{\"attachedDataNetwork\":{\"id\":\"fgsdpcvessmzhhk\"},\"routes\":[{}]},{\"attachedDataNetwork\":{\"id\":\"ldqqctekv\"},\"routes\":[{},{}]}]},\"id\":\"htjqvqyvw\",\"name\":\"hta\",\"type\":\"mxhzzysevus\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,11 @@ public final class RoutingInfoesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RoutingInfoModel> response
-            = manager.routingInfoes().list("ktuidvrm", "zlpdwwex", com.azure.core.util.Context.NONE);
+            = manager.routingInfoes().list("w", "d", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lazipbhpwvq",
-            response.iterator().next().controlPlaneAccessRoutes().get(0).destination());
-        Assertions.assertEquals("bnxwc", response.iterator().next().userPlaneAccessRoutes().get(0).destination());
-        Assertions.assertEquals("wswmt",
+        Assertions.assertEquals("gkqu", response.iterator().next().controlPlaneAccessRoutes().get(0).destination());
+        Assertions.assertEquals("poi", response.iterator().next().userPlaneAccessRoutes().get(0).destination());
+        Assertions.assertEquals("r",
             response.iterator().next().userPlaneDataRoutes().get(0).attachedDataNetwork().id());
     }
 }

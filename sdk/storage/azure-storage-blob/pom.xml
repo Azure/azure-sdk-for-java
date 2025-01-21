@@ -57,7 +57,6 @@
       --add-reads com.azure.storage.blob=com.azure.core.http.jdk.httpclient
       --add-reads com.azure.storage.blob=com.azure.core.http.vertx
     </javaModulesSurefireArgLine>
-    <graalvm.disable>false</graalvm.disable>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
 
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
@@ -119,7 +118,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -6,24 +6,32 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The EventHub consumer group. */
+/**
+ * The EventHub consumer group.
+ */
 @Fluent
-public final class EventHubConsumerGroupBodyDescription {
+public final class EventHubConsumerGroupBodyDescription
+    implements JsonSerializable<EventHubConsumerGroupBodyDescription> {
     /*
      * The EventHub consumer group name.
      */
-    @JsonProperty(value = "properties", required = true)
     private EventHubConsumerGroupName properties;
 
-    /** Creates an instance of EventHubConsumerGroupBodyDescription class. */
+    /**
+     * Creates an instance of EventHubConsumerGroupBodyDescription class.
+     */
     public EventHubConsumerGroupBodyDescription() {
     }
 
     /**
      * Get the properties property: The EventHub consumer group name.
-     *
+     * 
      * @return the properties value.
      */
     public EventHubConsumerGroupName properties() {
@@ -32,7 +40,7 @@ public final class EventHubConsumerGroupBodyDescription {
 
     /**
      * Set the properties property: The EventHub consumer group name.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the EventHubConsumerGroupBodyDescription object itself.
      */
@@ -43,17 +51,57 @@ public final class EventHubConsumerGroupBodyDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property properties in model EventHubConsumerGroupBodyDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model EventHubConsumerGroupBodyDescription"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerGroupBodyDescription.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubConsumerGroupBodyDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubConsumerGroupBodyDescription if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventHubConsumerGroupBodyDescription.
+     */
+    public static EventHubConsumerGroupBodyDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubConsumerGroupBodyDescription deserializedEventHubConsumerGroupBodyDescription
+                = new EventHubConsumerGroupBodyDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedEventHubConsumerGroupBodyDescription.properties
+                        = EventHubConsumerGroupName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubConsumerGroupBodyDescription;
+        });
+    }
 }

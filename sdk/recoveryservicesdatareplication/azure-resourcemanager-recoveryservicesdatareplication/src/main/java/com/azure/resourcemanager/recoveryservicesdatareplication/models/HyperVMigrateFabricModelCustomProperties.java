@@ -6,52 +6,65 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HyperV migrate fabric model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVMigrate")
+/**
+ * HyperV migrate fabric model custom properties.
+ */
 @Fluent
 public final class HyperVMigrateFabricModelCustomProperties extends FabricModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "HyperVMigrate";
+
+    /*
      * Gets or sets the ARM Id of the HyperV site.
      */
-    @JsonProperty(value = "hyperVSiteId", required = true)
     private String hyperVSiteId;
 
     /*
      * Gets or sets the fabric resource Id.
      */
-    @JsonProperty(value = "fabricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricResourceId;
 
     /*
      * Gets or sets the fabric container Id.
      */
-    @JsonProperty(value = "fabricContainerId", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricContainerId;
 
     /*
      * Gets or sets the migration solution ARM Id.
      */
-    @JsonProperty(value = "migrationSolutionId", required = true)
     private String migrationSolutionId;
 
     /*
      * Gets or sets the migration hub Uri.
      */
-    @JsonProperty(value = "migrationHubUri", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationHubUri;
 
-    /** Creates an instance of HyperVMigrateFabricModelCustomProperties class. */
+    /**
+     * Creates an instance of HyperVMigrateFabricModelCustomProperties class.
+     */
     public HyperVMigrateFabricModelCustomProperties() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the hyperVSiteId property: Gets or sets the ARM Id of the HyperV site.
-     *
+     * 
      * @return the hyperVSiteId value.
      */
     public String hyperVSiteId() {
@@ -60,7 +73,7 @@ public final class HyperVMigrateFabricModelCustomProperties extends FabricModelC
 
     /**
      * Set the hyperVSiteId property: Gets or sets the ARM Id of the HyperV site.
-     *
+     * 
      * @param hyperVSiteId the hyperVSiteId value to set.
      * @return the HyperVMigrateFabricModelCustomProperties object itself.
      */
@@ -71,7 +84,7 @@ public final class HyperVMigrateFabricModelCustomProperties extends FabricModelC
 
     /**
      * Get the fabricResourceId property: Gets or sets the fabric resource Id.
-     *
+     * 
      * @return the fabricResourceId value.
      */
     public String fabricResourceId() {
@@ -80,7 +93,7 @@ public final class HyperVMigrateFabricModelCustomProperties extends FabricModelC
 
     /**
      * Get the fabricContainerId property: Gets or sets the fabric container Id.
-     *
+     * 
      * @return the fabricContainerId value.
      */
     public String fabricContainerId() {
@@ -89,7 +102,7 @@ public final class HyperVMigrateFabricModelCustomProperties extends FabricModelC
 
     /**
      * Get the migrationSolutionId property: Gets or sets the migration solution ARM Id.
-     *
+     * 
      * @return the migrationSolutionId value.
      */
     public String migrationSolutionId() {
@@ -98,7 +111,7 @@ public final class HyperVMigrateFabricModelCustomProperties extends FabricModelC
 
     /**
      * Set the migrationSolutionId property: Gets or sets the migration solution ARM Id.
-     *
+     * 
      * @param migrationSolutionId the migrationSolutionId value to set.
      * @return the HyperVMigrateFabricModelCustomProperties object itself.
      */
@@ -109,7 +122,7 @@ public final class HyperVMigrateFabricModelCustomProperties extends FabricModelC
 
     /**
      * Get the migrationHubUri property: Gets or sets the migration hub Uri.
-     *
+     * 
      * @return the migrationHubUri value.
      */
     public String migrationHubUri() {
@@ -118,22 +131,72 @@ public final class HyperVMigrateFabricModelCustomProperties extends FabricModelC
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (hyperVSiteId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property hyperVSiteId in model HyperVMigrateFabricModelCustomProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hyperVSiteId in model HyperVMigrateFabricModelCustomProperties"));
         }
         if (migrationSolutionId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property migrationSolutionId in model"
-                    + " HyperVMigrateFabricModelCustomProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property migrationSolutionId in model HyperVMigrateFabricModelCustomProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HyperVMigrateFabricModelCustomProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hyperVSiteId", this.hyperVSiteId);
+        jsonWriter.writeStringField("migrationSolutionId", this.migrationSolutionId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVMigrateFabricModelCustomProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVMigrateFabricModelCustomProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HyperVMigrateFabricModelCustomProperties.
+     */
+    public static HyperVMigrateFabricModelCustomProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVMigrateFabricModelCustomProperties deserializedHyperVMigrateFabricModelCustomProperties
+                = new HyperVMigrateFabricModelCustomProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hyperVSiteId".equals(fieldName)) {
+                    deserializedHyperVMigrateFabricModelCustomProperties.hyperVSiteId = reader.getString();
+                } else if ("migrationSolutionId".equals(fieldName)) {
+                    deserializedHyperVMigrateFabricModelCustomProperties.migrationSolutionId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVMigrateFabricModelCustomProperties.instanceType = reader.getString();
+                } else if ("fabricResourceId".equals(fieldName)) {
+                    deserializedHyperVMigrateFabricModelCustomProperties.fabricResourceId = reader.getString();
+                } else if ("fabricContainerId".equals(fieldName)) {
+                    deserializedHyperVMigrateFabricModelCustomProperties.fabricContainerId = reader.getString();
+                } else if ("migrationHubUri".equals(fieldName)) {
+                    deserializedHyperVMigrateFabricModelCustomProperties.migrationHubUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVMigrateFabricModelCustomProperties;
+        });
+    }
 }

@@ -40,17 +40,23 @@ import com.azure.resourcemanager.apimanagement.models.IssueCollection;
 import com.azure.resourcemanager.apimanagement.models.IssueUpdateContract;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiIssuesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiIssuesClient.
+ */
 public final class ApiIssuesClientImpl implements ApiIssuesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApiIssuesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ApiIssuesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApiIssuesClientImpl(ApiManagementClientImpl client) {
@@ -143,22 +149,22 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Lists all issues associated with the specified API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt,
-     *     lt | substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
      * @param expandCommentsAttachments Expand the comment attachments.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Issue list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -193,14 +199,14 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Lists all issues associated with the specified API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt,
-     *     lt | substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
      * @param expandCommentsAttachments Expand the comment attachments.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -208,8 +214,8 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Issue list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -245,14 +251,14 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Lists all issues associated with the specified API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt,
-     *     lt | substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
      * @param expandCommentsAttachments Expand the comment attachments.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -270,7 +276,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Lists all issues associated with the specified API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -292,14 +298,14 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Lists all issues associated with the specified API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt,
-     *     lt | substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
      * @param expandCommentsAttachments Expand the comment attachments.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -319,7 +325,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Lists all issues associated with the specified API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -340,14 +346,14 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Lists all issues associated with the specified API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt,
-     *     lt | substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;.
      * @param expandCommentsAttachments Expand the comment attachments.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -366,7 +372,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -375,7 +381,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Issue for an API specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssuesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -410,7 +416,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -420,7 +426,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Issue for an API specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssuesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -454,7 +460,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -463,7 +469,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Issue for an API specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String apiId, String issueId) {
@@ -473,7 +479,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -492,7 +498,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -508,7 +514,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the details of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -553,7 +559,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the details of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -597,7 +603,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the details of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -617,7 +623,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the details of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -638,7 +644,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Gets the details of the Issue for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -657,7 +663,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Creates a new Issue for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -708,7 +714,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Creates a new Issue for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -759,7 +765,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Creates a new Issue for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -780,7 +786,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Creates a new Issue for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -802,7 +808,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Creates a new Issue for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -823,13 +829,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Updates an existing issue for an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -878,13 +884,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Updates an existing issue for an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -932,13 +938,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Updates an existing issue for an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -954,13 +960,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Updates an existing issue for an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -977,13 +983,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Updates an existing issue for an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -999,13 +1005,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Deletes the specified Issue from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1047,13 +1053,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Deletes the specified Issue from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1095,13 +1101,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Deletes the specified Issue from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1116,13 +1122,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Deletes the specified Issue from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1137,13 +1143,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Deletes the specified Issue from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1155,14 +1161,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Issue list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1183,15 +1188,14 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Issue list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueContractInner>> listByServiceNextSinglePageAsync(String nextLink, Context context) {

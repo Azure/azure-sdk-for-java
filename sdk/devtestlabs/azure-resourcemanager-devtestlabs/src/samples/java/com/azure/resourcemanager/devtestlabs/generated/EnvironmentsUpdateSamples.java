@@ -8,28 +8,25 @@ import com.azure.resourcemanager.devtestlabs.models.DtlEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Environments Update. */
+/**
+ * Samples for Environments Update.
+ */
 public final class EnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_Update.
+     * json
      */
     /**
      * Sample code: Environments_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void environmentsUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        DtlEnvironment resource =
-            manager
-                .environments()
-                .getWithResponse(
-                    "resourceGroupName",
-                    "{labName}",
-                    "@me",
-                    "{environmentName}",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        DtlEnvironment resource = manager.environments()
+            .getWithResponse("resourceGroupName", "{labName}", "@me", "{environmentName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 

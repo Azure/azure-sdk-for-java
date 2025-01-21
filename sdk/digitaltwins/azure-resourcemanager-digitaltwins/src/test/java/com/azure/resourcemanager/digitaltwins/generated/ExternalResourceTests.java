@@ -11,7 +11,7 @@ public final class ExternalResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalResource model
-            = BinaryData.fromString("{\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
+            = BinaryData.fromString("{\"id\":\"norcjxvsnbyxqab\",\"name\":\"mocpc\",\"type\":\"shurzafbljjgpbto\"}")
                 .toObject(ExternalResource.class);
     }
 

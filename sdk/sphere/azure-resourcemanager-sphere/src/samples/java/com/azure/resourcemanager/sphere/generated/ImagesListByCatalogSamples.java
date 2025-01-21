@@ -18,7 +18,7 @@ public final class ImagesListByCatalogSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void imagesListByCatalog(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.images().listByCatalog("MyResourceGroup1", "MyCatalog1", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.images()
+            .listByCatalog("MyResourceGroup1", "MyCatalog1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

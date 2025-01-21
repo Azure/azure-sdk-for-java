@@ -12,17 +12,17 @@ public final class SubscriptionQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionQuota model = BinaryData.fromString(
-            "{\"properties\":{\"maxCount\":1096221203,\"currentCount\":1641560645},\"name\":\"xyqj\",\"type\":\"cattpngjcrcczsq\",\"id\":\"hvmdajvnysounq\"}")
+            "{\"properties\":{\"maxCount\":1059745678,\"currentCount\":1329177264},\"name\":\"snzwd\",\"type\":\"bavo\",\"id\":\"zdmohctbqvu\"}")
             .toObject(SubscriptionQuota.class);
-        Assertions.assertEquals("hvmdajvnysounq", model.id());
-        Assertions.assertEquals("xyqj", model.name());
+        Assertions.assertEquals("zdmohctbqvu", model.id());
+        Assertions.assertEquals("snzwd", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriptionQuota model = new SubscriptionQuota().withId("hvmdajvnysounq").withName("xyqj");
+        SubscriptionQuota model = new SubscriptionQuota().withId("zdmohctbqvu").withName("snzwd");
         model = BinaryData.fromObject(model).toObject(SubscriptionQuota.class);
-        Assertions.assertEquals("hvmdajvnysounq", model.id());
-        Assertions.assertEquals("xyqj", model.name());
+        Assertions.assertEquals("zdmohctbqvu", model.id());
+        Assertions.assertEquals("snzwd", model.name());
     }
 }

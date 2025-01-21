@@ -22,7 +22,7 @@ public final class TriggersListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Trigger\",\"description\":\"ixxxgltqldlh\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datald\"],\"\":{\"nogyvpfyjlfnjmwb\":\"datacajhnnbp\",\"rpwkvz\":\"dataoqhy\",\"tfc\":\"databvdlhcyoykmp\",\"fea\":\"dataugitjnwajqzig\"}},\"name\":\"bkcqoyqmbup\",\"type\":\"bzhczyhtjqtzl\",\"etag\":\"qp\",\"id\":\"c\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Trigger\",\"description\":\"klxnbbkbjnnzqzu\",\"runtimeState\":\"Started\",\"annotations\":[\"datavlacll\"],\"\":{\"ielyhow\":\"dataksguccotgqge\",\"bdcheydcts\":\"datanzwhypjpypalptjp\"}},\"name\":\"wqsszd\",\"type\":\"kgbzmcprtanagehb\",\"etag\":\"wkaatjssebydus\",\"id\":\"ilp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class TriggersListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TriggerResource> response
-            = manager.triggers().listByFactory("gaeeqgpvirozl", "ccpg", com.azure.core.util.Context.NONE);
+            = manager.triggers().listByFactory("rrixkobmrrnkdmn", "qhkju", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("c", response.iterator().next().id());
-        Assertions.assertEquals("ixxxgltqldlh", response.iterator().next().properties().description());
+        Assertions.assertEquals("ilp", response.iterator().next().id());
+        Assertions.assertEquals("klxnbbkbjnnzqzu", response.iterator().next().properties().description());
     }
 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A header to add to the WebTest. */
+/**
+ * A header to add to the WebTest.
+ */
 @Fluent
-public final class HeaderField {
+public final class HeaderField implements JsonSerializable<HeaderField> {
     /*
      * The name of the header.
      */
-    @JsonProperty(value = "key")
     private String headerFieldName;
 
     /*
      * The value of the header.
      */
-    @JsonProperty(value = "value")
     private String headerFieldValue;
 
-    /** Creates an instance of HeaderField class. */
+    /**
+     * Creates an instance of HeaderField class.
+     */
     public HeaderField() {
     }
 
     /**
      * Get the headerFieldName property: The name of the header.
-     *
+     * 
      * @return the headerFieldName value.
      */
     public String headerFieldName() {
@@ -37,7 +43,7 @@ public final class HeaderField {
 
     /**
      * Set the headerFieldName property: The name of the header.
-     *
+     * 
      * @param headerFieldName the headerFieldName value to set.
      * @return the HeaderField object itself.
      */
@@ -48,7 +54,7 @@ public final class HeaderField {
 
     /**
      * Get the headerFieldValue property: The value of the header.
-     *
+     * 
      * @return the headerFieldValue value.
      */
     public String headerFieldValue() {
@@ -57,7 +63,7 @@ public final class HeaderField {
 
     /**
      * Set the headerFieldValue property: The value of the header.
-     *
+     * 
      * @param headerFieldValue the headerFieldValue value to set.
      * @return the HeaderField object itself.
      */
@@ -68,9 +74,48 @@ public final class HeaderField {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.headerFieldName);
+        jsonWriter.writeStringField("value", this.headerFieldValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HeaderField from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HeaderField if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HeaderField.
+     */
+    public static HeaderField fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HeaderField deserializedHeaderField = new HeaderField();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedHeaderField.headerFieldName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedHeaderField.headerFieldValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHeaderField;
+        });
     }
 }

@@ -31,11 +31,6 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseError extends Migr
      */
     private List<SyncMigrationDatabaseErrorEvent> events;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlDbSyncTaskOutputDatabaseError class.
      */
@@ -93,16 +88,6 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseError extends Migr
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -143,7 +128,7 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseError extends Migr
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlDbSyncTaskOutputDatabaseError.id = reader.getString();
+                    deserializedMigrateSqlServerSqlDbSyncTaskOutputDatabaseError.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbSyncTaskOutputDatabaseError.resultType = reader.getString();
                 } else if ("errorMessage".equals(fieldName)) {

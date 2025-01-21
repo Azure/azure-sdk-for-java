@@ -11,7 +11,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsComponentFeatureCapabilitiesInner model = BinaryData.fromString(
-            "{\"SupportExportData\":false,\"BurstThrottlePolicy\":\"ndhkrw\",\"MetadataClass\":\"appd\",\"LiveStreamMetrics\":true,\"ApplicationMap\":false,\"WorkItemIntegration\":false,\"PowerBIIntegration\":false,\"OpenSchema\":false,\"ProactiveDetection\":false,\"AnalyticsIntegration\":false,\"MultipleStepWebTest\":false,\"ApiAccessLevel\":\"eltmrldhugjzzdat\",\"TrackingType\":\"hocdgeab\",\"DailyCap\":22.124004,\"DailyCapResetTime\":91.44667,\"ThrottleRate\":89.55463}")
+            "{\"SupportExportData\":false,\"BurstThrottlePolicy\":\"tjelt\",\"MetadataClass\":\"ldhugjzzdatqxh\",\"LiveStreamMetrics\":true,\"ApplicationMap\":false,\"WorkItemIntegration\":true,\"PowerBIIntegration\":true,\"OpenSchema\":true,\"ProactiveDetection\":false,\"AnalyticsIntegration\":true,\"MultipleStepWebTest\":false,\"ApiAccessLevel\":\"kao\",\"TrackingType\":\"yiftyhxhuro\",\"DailyCap\":63.022675,\"DailyCapResetTime\":81.88607,\"ThrottleRate\":95.32984}")
             .toObject(ApplicationInsightsComponentFeatureCapabilitiesInner.class);
     }
 

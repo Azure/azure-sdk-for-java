@@ -23,7 +23,7 @@ public final class ProjectsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"devCenterUri\":\"mwmqtibx\",\"devCenterId\":\"jddtvqct\",\"description\":\"dija\",\"maxDevBoxesPerUser\":778752924,\"displayName\":\"rsiee\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"413ab9cb-b389-4596-b019-0ccdc3bf758d\",\"tenantId\":\"c4bb57b6-d249-474e-86f5-693e410a49d0\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"wig\":{\"principalId\":\"cd1be032-7484-4e2f-a6ef-966cd539085d\",\"clientId\":\"5777c1c2-10a6-4826-a437-83f018b477b3\"},\"udqwyxebeybpmzz\":{\"principalId\":\"c3ff50b6-272d-47d7-a6b1-db8dfe4a54e0\",\"clientId\":\"0dad1410-9dfe-41e3-adb2-23d254d52528\"}}},\"location\":\"tffyaqit\",\"tags\":{\"fuqyrxpdlcgqlsi\":\"eioqaqhvse\",\"rsjuivfcdisyir\":\"mjqfrddgamquhio\"},\"id\":\"xzhczexrxz\",\"name\":\"ujrtrhqvwr\",\"type\":\"vk\"}";
+            = "{\"properties\":{\"provisioningState\":\"MovingResources\",\"devCenterUri\":\"mewip\",\"devCenterId\":\"ekdxuku\",\"description\":\"sjjxundxgketw\",\"maxDevBoxesPerUser\":1226400983,\"displayName\":\"jhfjmhvvmuvgpm\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"4b2fad98-3016-4ce4-bb55-f509b1daf450\",\"tenantId\":\"23d3614f-c594-4764-8fe7-484fd2d118e8\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"yihsasbhudypohyu\":{\"principalId\":\"b505a655-f762-4332-9fdc-27811b212008\",\"clientId\":\"020e2658-4e3b-4b2b-aef6-6d248baf0fa0\"},\"lynsqyrpf\":{\"principalId\":\"7d51c2df-55fd-468c-b476-1f2b6718c189\",\"clientId\":\"cabdbcd3-c384-4f4f-9428-73fbf0f9ab72\"},\"rlttymsjnygqdnfw\":{\"principalId\":\"7b766ca7-ab11-4df1-9ede-4cc7c4297c3e\",\"clientId\":\"165f7104-618e-4e17-b166-111c7eb346d4\"},\"zgtila\":{\"principalId\":\"75d755fe-3f5a-4793-b410-6a655831df23\",\"clientId\":\"c53e9a1a-7dad-4792-bb01-8141affbe8df\"}}},\"location\":\"nfhqlyvijouwivk\",\"tags\":{\"ti\":\"zunbixx\",\"vtsoxf\":\"vcpwpgclrc\",\"m\":\"kenx\",\"ao\":\"yefrpmpdnqqska\"},\"id\":\"vmm\",\"name\":\"npqfrtqlkzmeg\",\"type\":\"itgvkx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class ProjectsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Project response = manager.projects()
-            .getByResourceGroupWithResponse("emwmdxmebwjs", "jpahlxvea", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("vetnwsdtutn", "lduycv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tffyaqit", response.location());
-        Assertions.assertEquals("eioqaqhvse", response.tags().get("fuqyrxpdlcgqlsi"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("jddtvqct", response.devCenterId());
-        Assertions.assertEquals("dija", response.description());
-        Assertions.assertEquals(778752924, response.maxDevBoxesPerUser());
-        Assertions.assertEquals("rsiee", response.displayName());
+        Assertions.assertEquals("nfhqlyvijouwivk", response.location());
+        Assertions.assertEquals("zunbixx", response.tags().get("ti"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ekdxuku", response.devCenterId());
+        Assertions.assertEquals("sjjxundxgketw", response.description());
+        Assertions.assertEquals(1226400983, response.maxDevBoxesPerUser());
+        Assertions.assertEquals("jhfjmhvvmuvgpm", response.displayName());
         Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
             response.catalogSettings().catalogItemSyncTypes().get(0));
     }

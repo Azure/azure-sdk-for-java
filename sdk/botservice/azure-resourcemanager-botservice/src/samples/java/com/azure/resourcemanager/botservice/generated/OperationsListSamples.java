@@ -10,8 +10,7 @@ package com.azure.resourcemanager.botservice.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetOperations.
-     * json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetOperations.json
      */
     /**
      * Sample code: Get Operations.

@@ -69,7 +69,6 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
      */
     @Override
     public void validate() {
-        super.validate();
         if (key() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

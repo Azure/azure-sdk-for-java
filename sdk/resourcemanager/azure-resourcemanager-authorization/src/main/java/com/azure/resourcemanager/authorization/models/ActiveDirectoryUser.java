@@ -15,16 +15,32 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 @Fluent
 public interface ActiveDirectoryUser
     extends ActiveDirectoryObject, HasInnerModel<MicrosoftGraphUserInner>, Updatable<ActiveDirectoryUser.Update> {
-    /** @return user principal name */
+    /**
+     * Gets user principal name.
+     *
+     * @return user principal name
+     */
     String userPrincipalName();
 
-    /** @return user mail */
+    /**
+     * Gets user mail.
+     *
+     * @return user mail
+     */
     String mail();
 
-    /** @return the mail alias for the user */
+    /**
+     * Gets the mail alias for the user.
+     *
+     * @return the mail alias for the user
+     */
     String mailNickname();
 
-    /** @return the usage location of the user */
+    /**
+     * Gets the usage location of the user.
+     *
+     * @return the usage location of the user
+     */
     CountryIsoCode usageLocation();
 
     /**************************************************************

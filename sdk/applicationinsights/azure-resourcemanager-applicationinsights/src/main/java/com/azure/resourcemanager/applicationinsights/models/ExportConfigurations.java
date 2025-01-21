@@ -8,26 +8,28 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of ExportConfigurations. */
+/**
+ * Resource collection API of ExportConfigurations.
+ */
 public interface ExportConfigurations {
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component along with {@link
-     *     Response}.
+     * @return a list of Continuous Export configuration of an Application Insights component along with
+     * {@link Response}.
      */
     Response<List<ApplicationInsightsComponentExportConfiguration>> listWithResponse(String resourceGroupName,
         String resourceName, Context context);
 
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,11 +41,11 @@ public interface ExportConfigurations {
 
     /**
      * Create a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a
-     *     Application Insights component.
+     * Application Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,11 +57,11 @@ public interface ExportConfigurations {
 
     /**
      * Create a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a
-     *     Application Insights component.
+     * Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -70,7 +72,7 @@ public interface ExportConfigurations {
 
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -85,7 +87,7 @@ public interface ExportConfigurations {
 
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -99,7 +101,7 @@ public interface ExportConfigurations {
 
     /**
      * Get the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -114,7 +116,7 @@ public interface ExportConfigurations {
 
     /**
      * Get the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -127,7 +129,7 @@ public interface ExportConfigurations {
 
     /**
      * Update the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -144,7 +146,7 @@ public interface ExportConfigurations {
 
     /**
      * Update the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.

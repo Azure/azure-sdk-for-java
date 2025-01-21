@@ -111,7 +111,11 @@ public final class PricingTier {
         return skuDescription.tier() + "_" + skuDescription.size();
     }
 
-    /** @return the underneath sku description */
+    /**
+     * Gets the underneath sku description.
+     *
+     * @return the underneath sku description
+     */
     public SkuDescription toSkuDescription() {
         return this.skuDescription;
     }

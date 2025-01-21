@@ -73,23 +73,23 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
 
     public PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SapVirtualInstanceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<SapVirtualInstanceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SapVirtualInstance> list() {
         PagedIterable<SapVirtualInstanceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SapVirtualInstance> list(Context context) {
         PagedIterable<SapVirtualInstanceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapVirtualInstanceImpl(inner1, this.manager()));
     }
 
     public OperationStatusResult start(String resourceGroupName, String sapVirtualInstanceName) {
@@ -132,12 +132,12 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
     }
 
     public SapVirtualInstance getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sapVirtualInstanceName = Utils.getValueFromIdByName(id, "sapVirtualInstances");
+        String sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "sapVirtualInstances");
         if (sapVirtualInstanceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
@@ -146,12 +146,12 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
     }
 
     public Response<SapVirtualInstance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sapVirtualInstanceName = Utils.getValueFromIdByName(id, "sapVirtualInstances");
+        String sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "sapVirtualInstances");
         if (sapVirtualInstanceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
@@ -160,12 +160,12 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
     }
 
     public OperationStatusResult deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sapVirtualInstanceName = Utils.getValueFromIdByName(id, "sapVirtualInstances");
+        String sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "sapVirtualInstances");
         if (sapVirtualInstanceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
@@ -174,12 +174,12 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
     }
 
     public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sapVirtualInstanceName = Utils.getValueFromIdByName(id, "sapVirtualInstances");
+        String sapVirtualInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "sapVirtualInstances");
         if (sapVirtualInstanceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));

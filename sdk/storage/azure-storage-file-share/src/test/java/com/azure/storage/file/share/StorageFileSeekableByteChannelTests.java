@@ -59,7 +59,7 @@ public class StorageFileSeekableByteChannelTests extends FileShareTestBase {
                 .setChunkSizeInBytes((long) streamBufferSize));
 
         //then: "Channel initialized to position zero"
-        assertEquals(channel.position(), 0);
+        assertEquals(0, channel.position());
 
         //when: "write to channel"
         int copied = FileShareTestHelper.copy(new ByteArrayInputStream(data), channel, copyBufferSize);
@@ -91,7 +91,7 @@ public class StorageFileSeekableByteChannelTests extends FileShareTestBase {
             new ShareFileSeekableByteChannelReadOptions().setChunkSizeInBytes((long) streamBufferSize));
 
         //then: "Channel initialized to position zero"
-        assertEquals(channel.position(), 0);
+        assertEquals(0, channel.position());
 
         //when: "read from channel"
         ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();

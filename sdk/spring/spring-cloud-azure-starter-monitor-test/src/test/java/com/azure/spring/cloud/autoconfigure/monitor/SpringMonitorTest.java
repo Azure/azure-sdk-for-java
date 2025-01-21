@@ -10,10 +10,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
-import com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.SelfDiagnosticsLevel;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
-import io.opentelemetry.sdk.common.internal.OtelVersion;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigureOptions;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.*;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import reactor.util.annotation.Nullable;
 
 import java.io.IOException;
@@ -50,10 +47,10 @@ class SpringMonitorTest {
     static class TestConfig {
 
         @Bean
-        AzureMonitorExporterOptions azureMonitorExporterBuilder() {
+        AzureMonitorAutoConfigureOptions azureMonitorExporterBuilder() {
             countDownLatch = new CountDownLatch(2);
             customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-            return new AzureMonitorExporterOptions()
+            return new AzureMonitorAutoConfigureOptions()
                 .connectionString("InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=https://test.in.applicationinsights.azure.com/;LiveEndpoint=https://test.livediagnostics.monitor.azure.com/")
                 .pipeline(getHttpPipeline(customValidationPolicy));
         }
@@ -63,12 +60,6 @@ class SpringMonitorTest {
                 .httpClient(HttpClient.createDefault())
                 .policies(policy)
                 .build();
-        }
-
-        @Bean
-        @Primary
-        SelfDiagnosticsLevel testSelfDiagnosticsLevel() {
-            return SelfDiagnosticsLevel.DEBUG;
         }
     }
 

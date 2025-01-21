@@ -31,9 +31,9 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     private DiskRestorePointProperties innerProperties;
 
     /*
-     * Resource Id
+     * Resource type
      */
-    private String id;
+    private String type;
 
     /*
      * Resource name
@@ -41,9 +41,9 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     private String name;
 
     /*
-     * Resource type
+     * Resource Id
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of DiskRestorePointInner class.
@@ -61,13 +61,13 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the id property: Resource Id.
+     * Get the type property: Resource type.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -81,13 +81,13 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the id property: Resource Id.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -393,7 +393,6 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

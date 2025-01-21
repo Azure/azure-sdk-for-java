@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBDatabaseAccountPatch.json
      */
     /**
@@ -73,7 +73,8 @@ public final class DatabaseAccountsUpdateSamples {
                 .withCapacity(new Capacity().withTotalThroughputLimit(2000))
                 .withEnablePartitionMerge(true)
                 .withMinimalTlsVersion(MinimalTlsVersion.TLS)
-                .withEnableBurstCapacity(true), com.azure.core.util.Context.NONE);
+                .withEnableBurstCapacity(true)
+                .withEnablePerRegionPerPartitionAutoscale(true), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

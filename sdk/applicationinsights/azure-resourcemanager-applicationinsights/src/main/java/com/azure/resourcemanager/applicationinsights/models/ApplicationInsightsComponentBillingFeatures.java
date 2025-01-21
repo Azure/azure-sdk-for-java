@@ -7,11 +7,13 @@ package com.azure.resourcemanager.applicationinsights.models;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentBillingFeaturesInner;
 import java.util.List;
 
-/** An immutable client-side representation of ApplicationInsightsComponentBillingFeatures. */
+/**
+ * An immutable client-side representation of ApplicationInsightsComponentBillingFeatures.
+ */
 public interface ApplicationInsightsComponentBillingFeatures {
     /**
      * Gets the dataVolumeCap property: An Application Insights component daily data volume cap.
-     *
+     * 
      * @return the dataVolumeCap value.
      */
     ApplicationInsightsComponentDataVolumeCap dataVolumeCap();
@@ -19,7 +21,7 @@ public interface ApplicationInsightsComponentBillingFeatures {
     /**
      * Gets the currentBillingFeatures property: Current enabled pricing plan. When the component is in the Enterprise
      * plan, this will list both 'Basic' and 'Application Insights Enterprise'.
-     *
+     * 
      * @return the currentBillingFeatures value.
      */
     List<String> currentBillingFeatures();
@@ -28,7 +30,7 @@ public interface ApplicationInsightsComponentBillingFeatures {
      * Gets the inner
      * com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentBillingFeaturesInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ApplicationInsightsComponentBillingFeaturesInner innerModel();

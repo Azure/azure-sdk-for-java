@@ -14,16 +14,16 @@ public final class ChaosTargetSimpleFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChaosTargetSimpleFilter model = BinaryData
-            .fromString("{\"type\":\"Simple\",\"parameters\":{\"zones\":[\"fgmjzrwrdgrt\",\"aenuuz\",\"opbminrfdw\"]}}")
+            .fromString("{\"type\":\"Simple\",\"parameters\":{\"zones\":[\"grtwae\",\"u\",\"zkopb\",\"inrfdwoyu\"]}}")
             .toObject(ChaosTargetSimpleFilter.class);
-        Assertions.assertEquals("fgmjzrwrdgrt", model.parameters().zones().get(0));
+        Assertions.assertEquals("grtwae", model.parameters().zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChaosTargetSimpleFilter model = new ChaosTargetSimpleFilter().withParameters(
-            new ChaosTargetSimpleFilterParameters().withZones(Arrays.asList("fgmjzrwrdgrt", "aenuuz", "opbminrfdw")));
+            new ChaosTargetSimpleFilterParameters().withZones(Arrays.asList("grtwae", "u", "zkopb", "inrfdwoyu")));
         model = BinaryData.fromObject(model).toObject(ChaosTargetSimpleFilter.class);
-        Assertions.assertEquals("fgmjzrwrdgrt", model.parameters().zones().get(0));
+        Assertions.assertEquals("grtwae", model.parameters().zones().get(0));
     }
 }

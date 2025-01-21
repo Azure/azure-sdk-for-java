@@ -36,7 +36,7 @@ public final class JobSchedulesCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         JobSchedule response = manager.jobSchedules()
-            .define(UUID.fromString("3f72f619-7a8c-4bc6-9d9d-b224968cb729"))
+            .define(UUID.fromString("d82d3a67-2186-4bcb-9f91-2522b082f23a"))
             .withExistingAutomationAccount("zgczfcmfpfbode", "resrgvtshuvft")
             .withSchedule(new ScheduleAssociationProperty().withName("ivmuqkevzgjyp"))
             .withRunbook(new RunbookAssociationProperty().withName("hxmpdxxz"))
