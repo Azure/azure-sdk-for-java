@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.azure</groupId>
-    <artifactId>azure-openrewrite-recipes</artifactId>
+    <artifactId>azure-openrewrite</artifactId>
     <version>1.0.0</version>
 
-    <name>azure-openrewrite-recipes</name>
+    <name>azure-openrewrite</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,13 +64,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.3</version>
+            <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.3</version>
+            <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
         <!-- Optional dependency on assertJ to provide fluent assertions. -->
@@ -80,17 +80,22 @@
             <version>3.26.0</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.15.0</version>
+            <version>2.15.2</version>
         </dependency>
         <!-- Jackson Dataformat Smile -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-smile</artifactId>
-            <version>2.15.0</version>
+            <version>2.15.2</version>
+        </dependency>
+        <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.15.2</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -98,14 +103,15 @@
             <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
-        <!--
+
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-translation-text</artifactId>
             <version>1.0.0-beta.1</version>
             <scope>test</scope>
         </dependency>
-        
+      <!-- Alternatively, use this project version -->
+        <!--
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-translation-text-v1</artifactId>

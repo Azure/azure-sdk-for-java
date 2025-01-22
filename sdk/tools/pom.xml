@@ -9,6 +9,6 @@
   <modules>
     <module>azure-sdk-archetype</module>
     <module>azure-sdk-build-tool</module>
-    <module>azure-openrewrite-recipes</module>
+    <module>azure-openrewrite</module>
   </modules>
 </project>

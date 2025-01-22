@@ -1,39 +1,38 @@
 package com.azure.openrewrite.recipe;
 
-
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-public class ClientLoggerTest implements RewriteTest {
+public class UtilConfigurationTest implements RewriteTest {
     /**
-     * ClientLoggerTest tests the recipe that changes
-     * com.azure.core.util.logging.ClientLogger to io.clientcore.core.util.ClientLogger.
-     * @author Ali Soltanian Fard Jahromi
+     * UtilConfigurationTest tests util.Configuration migrations from
+     * com.azure.core.util to io.clientcore.core.util.configuration.
+     * @author Annabelle Mittendorf Smith
      */
 
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.rewrite.java.core.MigrateAzureCoreSamplesToAzureCoreV2");
+                "com.azure.openrewrite.migrateToVNext");
     }
 
-    /* Test to make sure ClientLogger import is changed */
+    /* Testing ChangeType recipe for changing import */
     @Test
-    public void testClientLoggerWithImport() {
-        @Language("java") String before = "import com.azure.core.util.logging.ClientLogger;";
+    public void testConfigurationWithImport() {
+        @Language("java") String before = "import com.azure.core.util.Configuration;";
         before += "\npublic class Testing {";
         before += "\n  public Testing(){";
-        before += "\n    ClientLogger c = new ClientLogger(Testing.class);";
+        before += "\n    Configuration c = new Configuration();";
         before += "\n  }";
         before += "\n}";
 
-        @Language("java") String after = "import io.clientcore.core.util.ClientLogger;";
+        @Language("java") String after = "import io.clientcore.core.util.configuration.Configuration;";
         after += "\n\npublic class Testing {";
         after += "\n  public Testing(){";
-        after += "\n    ClientLogger c = new ClientLogger(Testing.class);";
+        after += "\n    Configuration c = new Configuration();";
         after += "\n  }";
         after += "\n}";
         rewriteRun(
@@ -41,18 +40,18 @@ public class ClientLoggerTest implements RewriteTest {
         );
     }
 
-    /* Test to make sure ClientLogger type is changed */
+    /* Testing ChangeType recipe for changing type */
     @Test
-    public void testClientLoggerWithFullyQualifiedName() {
+    public void testConfigurationWithFullyQualifiedName() {
         @Language("java") String before = "public class Testing {";
         before += "\n  public Testing(){";
-        before += "\n    com.azure.core.util.logging.ClientLogger c = new com.azure.core.util.logging.ClientLogger(Testing.class);";
+        before += "\n    com.azure.core.util.Configuration c = new com.azure.core.util.Configuration();";
         before += "\n  }";
         before += "\n}";
 
         @Language("java") String after = "public class Testing {";
         after += "\n  public Testing(){";
-        after += "\n    io.clientcore.core.util.ClientLogger c = new io.clientcore.core.util.ClientLogger(Testing.class);";
+        after += "\n    io.clientcore.core.util.configuration.Configuration c = new io.clientcore.core.util.configuration.Configuration();";
         after += "\n  }";
         after += "\n}";
         rewriteRun(

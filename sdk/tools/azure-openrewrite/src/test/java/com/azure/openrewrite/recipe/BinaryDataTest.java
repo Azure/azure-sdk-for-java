@@ -20,7 +20,7 @@ public class BinaryDataTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.rewrite.java.core.MigrateAzureCoreSamplesToAzureCoreV2");
+                "com.azure.openrewrite.migrateToVNext");
         // Added due to bug in OpenRewrite parser when parsing azure TypeReference instantiation
         spec.typeValidationOptions(TypeValidation.none());
     }

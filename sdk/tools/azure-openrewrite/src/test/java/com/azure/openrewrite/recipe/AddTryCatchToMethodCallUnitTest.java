@@ -22,10 +22,10 @@ public class AddTryCatchToMethodCallUnitTest implements RewriteTest {
      */
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipes(new AddTryCatchToMethodCallRecipe("UserClass myMethod(..)",
+        spec.recipes(new com.azure.recipes.core.v2.AddTryCatchToMethodCallRecipe("UserClass myMethod(..)",
                 "catch (IOException e) { e.printStackTrace(); }",
                 "java.io.IOException",false),
-                new AddTryCatchToMethodCallRecipe("CatchAndThrow myMethod(..)",
+                new com.azure.recipes.core.v2.AddTryCatchToMethodCallRecipe("CatchAndThrow myMethod(..)",
                         "catch (IOException e) { throw new RuntimeException(e); }",
                         "java.io.IOException",false)
         );

@@ -17,7 +17,7 @@ public class HttpHeaderNameTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.rewrite.java.core.MigrateAzureCoreSamplesToAzureCoreV2");
+                "com.azure.openrewrite.migrateToVNext");
     }
 
     /* Test to make sure HttpHeaderName type is changed */
