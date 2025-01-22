@@ -415,4 +415,18 @@ public class UnionTests {
 
         assertFalse(union.tryConsume(ignore -> fail("Should not consume List<Float>"), LIST_OF_FLOAT_TYPE));
     }
+
+    @Test
+    void unionWithNestedUnion() {
+        Union union = Union.ofTypes(String.class, Union.class);
+        Union nestedUnion = Union.ofTypes(String.class, Integer.class, Double.class);
+        nestedUnion.setValue(STRING_VALUE);
+        union.setValue(nestedUnion);
+
+        assertEquals(Union.class, union.getCurrentType());
+        Union unionValue = union.getValue(Union.class);
+        assertNotNull(unionValue);
+        assertEquals(nestedUnion, unionValue);
+        assertEquals(STRING_VALUE, unionValue.getValue());
+    }
 }
