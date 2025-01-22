@@ -154,7 +154,7 @@ public class ValidationsTest {
             LOGGER.debug("Test case : " + testCase.getDescription());
             if (hasException(testCase)) { // TODO(mametcal). Currently we didn't throw the exception when parameter is
                                           // invalid
-                assertNull(managementProperties.getOnOff().get(testCase.getFeatureFlagName()));
+                assertNull(managementProperties.getFeatureFlags().stream().anyMatch(flag -> flag.getId().equals(testCase.getFeatureFlagName())));
                 continue;
             }
             if (hasInput(testCase)) { // Set inputs
