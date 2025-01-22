@@ -240,6 +240,11 @@
       <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>annotation-processor</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -656,7 +661,6 @@
               </excludes>
               <includes combine.children="append">
                 <include>io.clientcore:*</include>
-
                </includes>
             </bannedDependencies>
 
@@ -734,12 +738,16 @@
             <!-- <proc>${compiler.proc}</proc> -->
             <annotationProcessorPaths>
               <annotationProcessorPath>
-                <groupId>io.clientcore.tools</groupId>
+                <groupId>io.clientcore</groupId>
                 <artifactId>annotation-processor</artifactId>
-                <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore.tools:annotation-processor;external_dependency} -->
+                <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
               </annotationProcessorPath>
             </annotationProcessorPaths>
             <createMissingPackageInfoClass>false</createMissingPackageInfoClass>
+            <annotationProcessors>
+              <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
+            </annotationProcessors>
+            <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
           </configuration>
         </plugin>
 
@@ -1220,6 +1228,10 @@
                 </goals>
                 <configuration>
                   <release>${java.vm.specification.version}</release>
+                  <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+                  <annotationProcessors>
+                    <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
+                  </annotationProcessors>
                 </configuration>
               </execution>
 

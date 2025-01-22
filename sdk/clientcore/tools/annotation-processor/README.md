@@ -9,9 +9,9 @@ The client-core annotation processor for introducing compile-time code generatio
    ```xml
    <dependencies>
     <dependency>
-        <groupId>io.clientcore.tools</groupId>
+        <groupId>io.clientcore</groupId>
         <artifactId>annotation-processor</artifactId>
-        <version>1.0.0.beta.1</version> <!-- {x-version-update;io.clientcore.tools:annotation-processor;external_dependency} -->
+        <version>1.0.0.beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
         <scope>provided</scope>
     </dependency>
    </dependencies>
