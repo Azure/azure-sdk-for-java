@@ -23,7 +23,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleClient;
+import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleMgmtClient;
 import com.azure.resourcemanager.computeschedule.fluent.OperationsClient;
 import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionsClient;
 import java.io.IOException;
@@ -36,10 +36,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the ComputeScheduleClientImpl type.
+ * Initializes a new instance of the ComputeScheduleMgmtClientImpl type.
  */
-@ServiceClient(builder = ComputeScheduleClientBuilder.class)
-public final class ComputeScheduleClientImpl implements ComputeScheduleClient {
+@ServiceClient(builder = ComputeScheduleMgmtClientBuilder.class)
+public final class ComputeScheduleMgmtClientImpl implements ComputeScheduleMgmtClient {
     /**
      * Service host.
      */
@@ -153,7 +153,7 @@ public final class ComputeScheduleClientImpl implements ComputeScheduleClient {
     }
 
     /**
-     * Initializes an instance of ComputeScheduleClient client.
+     * Initializes an instance of ComputeScheduleMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -162,14 +162,14 @@ public final class ComputeScheduleClientImpl implements ComputeScheduleClient {
      * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    ComputeScheduleClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+    ComputeScheduleMgmtClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-08-15-preview";
+        this.apiVersion = "2024-10-01";
         this.operations = new OperationsClientImpl(this);
         this.scheduledActions = new ScheduledActionsClientImpl(this);
     }
@@ -300,5 +300,5 @@ public final class ComputeScheduleClientImpl implements ComputeScheduleClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ComputeScheduleClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ComputeScheduleMgmtClientImpl.class);
 }

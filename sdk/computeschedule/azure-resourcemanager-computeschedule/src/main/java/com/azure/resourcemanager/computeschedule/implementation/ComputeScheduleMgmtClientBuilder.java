@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the ComputeScheduleClientImpl type.
+ * A builder for creating a new instance of the ComputeScheduleMgmtClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { ComputeScheduleClientImpl.class })
-public final class ComputeScheduleClientBuilder {
+@ServiceClientBuilder(serviceClients = { ComputeScheduleMgmtClientImpl.class })
+public final class ComputeScheduleMgmtClientBuilder {
     /*
      * Service host
      */
@@ -28,9 +28,9 @@ public final class ComputeScheduleClientBuilder {
      * Sets Service host.
      * 
      * @param endpoint the endpoint value.
-     * @return the ComputeScheduleClientBuilder.
+     * @return the ComputeScheduleMgmtClientBuilder.
      */
-    public ComputeScheduleClientBuilder endpoint(String endpoint) {
+    public ComputeScheduleMgmtClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class ComputeScheduleClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the ComputeScheduleClientBuilder.
+     * @return the ComputeScheduleMgmtClientBuilder.
      */
-    public ComputeScheduleClientBuilder subscriptionId(String subscriptionId) {
+    public ComputeScheduleMgmtClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class ComputeScheduleClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the ComputeScheduleClientBuilder.
+     * @return the ComputeScheduleMgmtClientBuilder.
      */
-    public ComputeScheduleClientBuilder environment(AzureEnvironment environment) {
+    public ComputeScheduleMgmtClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class ComputeScheduleClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the ComputeScheduleClientBuilder.
+     * @return the ComputeScheduleMgmtClientBuilder.
      */
-    public ComputeScheduleClientBuilder pipeline(HttpPipeline pipeline) {
+    public ComputeScheduleMgmtClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class ComputeScheduleClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the ComputeScheduleClientBuilder.
+     * @return the ComputeScheduleMgmtClientBuilder.
      */
-    public ComputeScheduleClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public ComputeScheduleMgmtClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class ComputeScheduleClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the ComputeScheduleClientBuilder.
+     * @return the ComputeScheduleMgmtClientBuilder.
      */
-    public ComputeScheduleClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public ComputeScheduleMgmtClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of ComputeScheduleClientImpl with the provided parameters.
+     * Builds an instance of ComputeScheduleMgmtClientImpl with the provided parameters.
      * 
-     * @return an instance of ComputeScheduleClientImpl.
+     * @return an instance of ComputeScheduleMgmtClientImpl.
      */
-    public ComputeScheduleClientImpl buildClient() {
+    public ComputeScheduleMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,7 +131,7 @@ public final class ComputeScheduleClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ComputeScheduleClientImpl client = new ComputeScheduleClientImpl(localPipeline, localSerializerAdapter,
+        ComputeScheduleMgmtClientImpl client = new ComputeScheduleMgmtClientImpl(localPipeline, localSerializerAdapter,
             localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }

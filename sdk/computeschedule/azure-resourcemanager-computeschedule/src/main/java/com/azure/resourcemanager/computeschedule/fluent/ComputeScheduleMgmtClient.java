@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for ComputeScheduleClient class.
+ * The interface for ComputeScheduleMgmtClient class.
  */
-public interface ComputeScheduleClient {
+public interface ComputeScheduleMgmtClient {
     /**
      * Gets Service host.
      * 
