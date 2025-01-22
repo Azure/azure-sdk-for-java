@@ -331,8 +331,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static void throwIfDelayDurationExceedLimit(Duration delayDuration) {
         // 600 seconds is the proposed maximum delay duration.
         if (delayDuration != null && delayDuration.getSeconds() > 600) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Delay duration is too long. Duration: "
-                + delayDuration));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Delay duration is too long. Duration: " + delayDuration));
         }
     }
 

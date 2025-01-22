@@ -783,7 +783,7 @@ public class RetryPolicyTests {
     @Test
     public void retryOptionsCanConfigureThrowableRetryLogic() {
         // Fixed delay retry options which only retries IOException-based exceptions.
-        RetryOptions retryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(601)))
+        RetryOptions retryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1)))
             .setShouldRetryCondition(retryInfo -> retryInfo.getThrowable() instanceof IOException);
 
         AtomicInteger attemptCount = new AtomicInteger();
@@ -824,13 +824,14 @@ public class RetryPolicyTests {
 
         RetryPolicy retryPolicy = new RetryPolicy(customRetryStrategy);
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(retryPolicy)
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 503))).build();
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 503)))
+            .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
 
         StepVerifier.create(pipeline.send(request))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalStateException &&
-                throwable.getMessage().startsWith("Delay duration is too long."))
+            .expectErrorMatches(throwable -> throwable instanceof IllegalStateException
+                && throwable.getMessage().startsWith("Delay duration is too long."))
             .verify();
     }
 }
