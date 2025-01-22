@@ -89,14 +89,6 @@ mvn:test
 ```
 
 
-## Openrewrite Reference
-- [Rewrite Recipe Starter](https://github.com/moderneinc/rewrite-recipe-starter):  Template for building your own recipe JARs
-- [Best practices for writing recipes](https://docs.openrewrite.org/recipes/recipes/openrewritebestpractices)
-- [Recipe Testing](https://docs.openrewrite.org/authoring-recipes/recipe-testing): Information on testing the recipe with unit tests.
-- [Collaboration Proposal](https://github.com/openrewrite/collaboration-proposals/issues/new/choose): collaboration with OpenRewrite
-
-
-
 
 
 
