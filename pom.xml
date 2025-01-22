@@ -124,6 +124,7 @@
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
     <module>sdk/largeinstance</module>
+    <module>sdk/liftrpinecone</module>
     <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
     <module>sdk/logic</module>
