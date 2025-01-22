@@ -12,14 +12,14 @@ The following tools are required to build and execute this project:
 
 ### Recipe Configuration
 
-The migration recipe is defined in the `rewrite-java-core` module as detailed below:
+The migration recipe is defined in the `azure-openrewrite` module as detailed below:
 
 ```yaml
 ### Recipe Configuration for OpenRewrite
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.rewrite.java.core.MigrateAzureCoreSamplesToAzureCoreV2
-displayName: Migrate azure-core samples to azure-core-v2
-description: This recipe migrates the samples in azure-core to azure-core-v2
+name: com.azure.openrewrite.migrateToVNext
+displayName: Migrate from azure-core to azure-core-v2
+description: This recipe migrates the azure sdk libraries from azure-core to azure-core-v2 and clientcore libraries.
 recipeList:
   ...
 ```
@@ -37,13 +37,13 @@ as follows:
     <version>5.7.1</version>
     <configuration>
         <activeRecipes>
-            <recipe>com.azure.rewrite.java.core.MigrateAzureCoreSamplesToAzureCoreV2</recipe>
+            <recipe>com.azure.openrewrite.migrateToVNext</recipe>
         </activeRecipes>
     </configuration>
     <dependencies>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>rewrite-java-core</artifactId>
+            <artifactId>azure-openrewrite</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
