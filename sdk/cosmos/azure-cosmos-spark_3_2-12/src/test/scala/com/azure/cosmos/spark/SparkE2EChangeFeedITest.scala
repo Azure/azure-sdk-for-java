@@ -8,8 +8,10 @@ import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, CreateSpark2ContinuationsFromChangeFeedOffset, GetFeedRangeForPartitionKeyValue}
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.spark.sql.functions
+import org.apache.spark.sql.functions.{col, concat, lit}
 import org.apache.spark.sql.types._
 
 import java.io.{BufferedReader, InputStreamReader}
@@ -17,12 +19,13 @@ import java.nio.file.Paths
 import java.util.UUID
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
+import scala.jdk.CollectionConverters.asScalaBufferConverter
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
     with SparkWithDropwizardAndSlf4jMetrics
     with CosmosClient
-    with CosmosContainer
+    with CosmosContainerWithRetention
     with BasicLoggingTrait
     with MetricAssertions {
 
@@ -522,7 +525,7 @@ class SparkE2EChangeFeedITest
     }
 
     // wait for the log store to get these changes
-    Thread.sleep(2000)
+    Thread.sleep(1000)
 
     val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
     val groupedFrame = df2.groupBy(CosmosTableSchemaInferrer.OperationTypeAttributeName)
@@ -543,20 +546,28 @@ class SparkE2EChangeFeedITest
     })
   }
 
-    "spark change feed query (full fidelity)" can "used default schema with different operations" in {
+    "spark change feed query streaming (full fidelity)" can "use default schema" in {
 
         val cosmosEndpoint = TestConfigurations.HOST
         val cosmosMasterKey = TestConfigurations.MASTER_KEY
-        val cosmosDatabase = "Test"
-        val cosmosContainer = "testContainer"
-        val sinkContainerName = "testSinkContainer"
-        val checkpointLocation = s"/tmp/checkpoints/${UUID.randomUUID().toString}"
+        val cosmosContainerName = cosmosClient
+            .getDatabase(cosmosDatabase)
+            .createContainer(s"${UUID.randomUUID().toString}", "/pk")
+            .block
+            .getProperties
+            .getId
+        val sinkContainerName = cosmosClient
+            .getDatabase(cosmosDatabase)
+            .createContainer(s"sink-${UUID.randomUUID().toString}", "/pk")
+            .block
+            .getProperties
+            .getId
 
         val readCfg = Map(
             "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
             "spark.cosmos.accountKey" -> cosmosMasterKey,
             "spark.cosmos.database" -> cosmosDatabase,
-            "spark.cosmos.container" -> cosmosContainer,
+            "spark.cosmos.container" -> cosmosContainerName,
             "spark.cosmos.read.inferSchema.enabled" -> "false",
             "spark.cosmos.changeFeed.mode" -> "FullFidelity",
             "spark.cosmos.changeFeed.startFrom" -> "NOW",
@@ -577,66 +588,72 @@ class SparkE2EChangeFeedITest
             .options(readCfg)
             .load()
 
-//        val query = changeFeedDF.writeStream
-//            .format("console")
-//            .outputMode("append")
-//            .start()
-         val microBatchQuery = changeFeedDF
-             .writeStream
-             .format("cosmos.oltp")
-             .options(writeCfg)
-             .option("checkpointLocation", "/tmp/" + UUID.randomUUID().toString)
-             .outputMode("append")
-             .start()
+        val modifiedChangeFeedDF = changeFeedDF.withColumn("_rawBody", concat(lit("{\"id\":\""), col("id"), lit("\"}")))
 
+        val microBatchQuery = modifiedChangeFeedDF
+            .writeStream
+            .format("cosmos.oltp")
+            .options(writeCfg)
+            .option("checkpointLocation", "/tmp/" + UUID.randomUUID().toString)
+            .outputMode("append")
+            .start()
 
-
-        val container = cosmosClient.getDatabase("Test").getContainer("testContainer")
+        val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainerName)
 
         val createdObjectIds = new mutable.HashMap[String, String]()
         val replacedObjectIds = new mutable.HashMap[String, String]()
         val deletedObjectIds = new mutable.HashMap[String, String]()
-            for (sequenceNumber <- 1 to 20) {
-                val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-                objectNode.put("name", "Shrodigner's cat")
-                objectNode.put("type", "cat")
-                val pk = UUID.randomUUID().toString
-                objectNode.put("pk", pk)
-                objectNode.put("age", 20)
-                objectNode.put("sequenceNumber", sequenceNumber)
-                val id = UUID.randomUUID().toString
-                objectNode.put("id", id)
-                createdObjectIds.put(id, pk)
-                if (sequenceNumber % 2 == 0) {
-                    replacedObjectIds.put(id, pk)
-                }
-                if (sequenceNumber % 3 == 0) {
-                    deletedObjectIds.put(id, pk)
-                }
-                container.createItem(objectNode).block()
+        // Perform operations for change feed to capture
+        for (sequenceNumber <- 1 to 20) {
+            val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+            objectNode.put("name", "Shrodigner's cat")
+            objectNode.put("type", "cat")
+            val pk = UUID.randomUUID().toString
+            objectNode.put("pk", pk)
+            objectNode.put("age", 20)
+            objectNode.put("sequenceNumber", sequenceNumber)
+            val id = UUID.randomUUID().toString
+            objectNode.put("id", id)
+            createdObjectIds.put(id, pk)
+            if (sequenceNumber % 2 == 0) {
+                replacedObjectIds.put(id, pk)
             }
+            if (sequenceNumber % 3 == 0) {
+                deletedObjectIds.put(id, pk)
+            }
+            container.createItem(objectNode).block()
+        }
 
-            for (id <- replacedObjectIds.keys) {
-                val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-                objectNode.put("name", "Shrodigner's cat")
-                objectNode.put("type", "dog")
-                objectNode.put("age", 25)
-                objectNode.put("id", id)
-                objectNode.put("pk", replacedObjectIds(id))
-                container.replaceItem(objectNode, id, new PartitionKey(replacedObjectIds(id))).block()
-            }
+        for (id <- replacedObjectIds.keys) {
+            val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+            objectNode.put("name", "Shrodigner's cat")
+            objectNode.put("type", "dog")
+            objectNode.put("age", 25)
+            objectNode.put("id", id)
+            objectNode.put("pk", replacedObjectIds(id))
+            container.replaceItem(objectNode, id, new PartitionKey(replacedObjectIds(id))).block()
+        }
 
-            for (id <- deletedObjectIds.keys) {
-                container.deleteItem(id, new PartitionKey(deletedObjectIds(id))).block()
-            }
+        for (id <- deletedObjectIds.keys) {
+            container.deleteItem(id, new PartitionKey(deletedObjectIds(id))).block()
+        }
         // wait for the log store to get these changes
-        Thread.sleep(2000)
+        Thread.sleep(1000)
         changeFeedDF.schema.equals(
             ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
+        microBatchQuery.processAllAvailable()
+        microBatchQuery.stop()
 
-//        query.stop()
-         microBatchQuery.processAllAvailable()
-         microBatchQuery.stop()
+        val sinkContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(sinkContainerName)
+        val feedResponses = sinkContainer.queryItems("SELECT * FROM c", classOf[ObjectNode]).byPage().collectList().block()
+
+        var numResults = 0
+        for (feedResponse <- feedResponses.asScala) {
+            numResults += feedResponse.getResults.size()
+        }
+
+        // Basic validation that something was written from bulk
+        numResults should be > 0
     }
 
   "spark change feed query (incremental)" can "proceed with simulated Spark2 Checkpoint" in {
