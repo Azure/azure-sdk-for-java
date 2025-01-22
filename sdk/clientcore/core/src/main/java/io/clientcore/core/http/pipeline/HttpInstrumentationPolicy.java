@@ -185,8 +185,10 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         HttpInstrumentationOptions optionsToUse
             = instrumentationOptions == null ? DEFAULT_OPTIONS : instrumentationOptions;
-        this.isLoggingEnabled = optionsToUse.isHttpLoggingEnabled();
-        this.isContentLoggingEnabled = optionsToUse.isContentLoggingEnabled();
+        this.isLoggingEnabled = optionsToUse.getHttpLogLevel() != HttpInstrumentationOptions.HttpLogDetailLevel.NONE;
+        this.isContentLoggingEnabled
+            = optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogDetailLevel.BODY
+                || optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogDetailLevel.BODY_AND_HEADERS;
         this.isRedactedHeadersLoggingEnabled = optionsToUse.isRedactedHeaderNamesLoggingEnabled();
         this.allowedHeaderNames = optionsToUse.getAllowedHeaderNames();
         this.allowedQueryParameterNames = optionsToUse.getAllowedQueryParamNames()

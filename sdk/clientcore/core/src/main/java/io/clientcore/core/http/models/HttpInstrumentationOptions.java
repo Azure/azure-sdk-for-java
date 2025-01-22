@@ -38,7 +38,7 @@ import java.util.Set;
  *     <li>Error details if the request fails</li>
  *     <li>Time it takes to receive response</li>
  *     <li>Correlation identifiers</li>
- *     <li>When content logging is enabled via {@link #setContentLoggingEnabled(boolean)}: request and response body, and time-to-last-byte</li>
+ *     <li>When content logging is enabled via {@link HttpLogDetailLevel#BODY_AND_HEADERS}: request and response body, and time-to-last-byte</li>
  * </ul>
  *
  * Client libraries auto-discover global OpenTelemetry SDK instance configured by the java agent or
@@ -80,8 +80,7 @@ import java.util.Set;
  * <!-- end io.clientcore.core.telemetry.useexplicitopentelemetry -->
  */
 public final class HttpInstrumentationOptions extends InstrumentationOptions {
-    private boolean isHttpLoggingEnabled;
-    private boolean isContentLoggingEnabled;
+    private HttpLogDetailLevel logDetailLevel;
     private boolean isRedactedHeaderNamesLoggingEnabled;
     private Set<HttpHeaderName> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
@@ -93,17 +92,9 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
             HttpHeaderName.PRAGMA, HttpHeaderName.RETRY_AFTER, HttpHeaderName.SERVER, HttpHeaderName.TRANSFER_ENCODING,
             HttpHeaderName.USER_AGENT, HttpHeaderName.WWW_AUTHENTICATE);
 
+    static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL
+        = HttpLogDetailLevel.fromConfiguration(Configuration.getGlobalConfiguration());
     private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList("api-version");
-
-    private static final ConfigurationProperty<Boolean> HTTP_LOGGING_ENABLED
-        = ConfigurationPropertyBuilder.ofBoolean("http.logging.enabled")
-            .shared(true)
-            .environmentVariableName(Configuration.PROPERTY_HTTP_LOGGING_ENABLED)
-            .defaultValue(false)
-            .build();
-
-    private static final boolean DEFAULT_HTTP_LOGGING_ENABLED
-        = Configuration.getGlobalConfiguration().get(HTTP_LOGGING_ENABLED);
 
     /**
      * Creates a new instance using default options:
@@ -114,24 +105,22 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
      */
     public HttpInstrumentationOptions() {
         super();
-        isHttpLoggingEnabled = DEFAULT_HTTP_LOGGING_ENABLED;
-        isContentLoggingEnabled = false;
+        logDetailLevel = ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL;
         isRedactedHeaderNamesLoggingEnabled = true;
         allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_ALLOWLIST);
         allowedQueryParamNames = new HashSet<>(DEFAULT_QUERY_PARAMS_ALLOWLIST);
     }
 
     /**
-     * Flag indicating whether detailed HTTP request and response logging is enabled.
-     * False by default.
+     * Gets the level of detail for HTTP request logs. Default is {@link HttpLogDetailLevel#NONE}.
      * <p>
      * When HTTP logging is disabled, basic information about the request and response is still recorded
      * on distributed tracing spans.
      *
-     * @return True if logging is enabled, false otherwise.
+     * @return The {@link HttpLogDetailLevel}.
      */
-    public boolean isHttpLoggingEnabled() {
-        return isHttpLoggingEnabled;
+    public HttpLogDetailLevel getHttpLogLevel() {
+        return logDetailLevel;
     }
 
     /**
@@ -158,46 +147,15 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
     }
 
     /**
-     * Flag indicating whether HTTP request and response body is logged.
-     * False by default.
-     * <p>
-     * Note: even when content logging is explicitly enabled, content is not logged
-     * for requests and responses where the content length is not known or greater than 16KB.
+     * Sets the level of detail for HTTP request logs.
+     * Default is {@link HttpLogDetailLevel#NONE}.
      *
-     * @return True if content logging is enabled, false otherwise.
-     */
-    public boolean isContentLoggingEnabled() {
-        return isContentLoggingEnabled;
-    }
-
-    /**
-     * Enables or disables logging of HTTP request and response.
-     * False by default.
-     * <p>
-     * When HTTP logging is disabled, basic information about the request and response is still recorded
-     * via distributed tracing.
+     * @param logDetailLevel The {@link HttpLogDetailLevel}.
      *
-     * @param isHttpLoggingEnabled True to enable detailed HTTP logging, false otherwise.
      * @return The updated {@link HttpInstrumentationOptions} object.
      */
-    public HttpInstrumentationOptions setHttpLoggingEnabled(boolean isHttpLoggingEnabled) {
-        this.isHttpLoggingEnabled = isHttpLoggingEnabled;
-        return this;
-    }
-
-    /**
-     * Enables or disables logging of HTTP request and response body. False by default.
-     * Enabling content logging also enables HTTP logging in general.
-     * <p>
-     * Note: even when content logging is explicitly enabled, content is not logged for requests and responses where the
-     * content length is not known or greater than 16KB.
-     *
-     * @param isContentLoggingEnabled True to enable content logging, false otherwise.
-     * @return The updated {@link HttpInstrumentationOptions} object.
-     */
-    public HttpInstrumentationOptions setContentLoggingEnabled(boolean isContentLoggingEnabled) {
-        this.isHttpLoggingEnabled |= isContentLoggingEnabled;
-        this.isContentLoggingEnabled = isContentLoggingEnabled;
+    public HttpInstrumentationOptions setHttpLogLevel(HttpLogDetailLevel logDetailLevel) {
+        this.logDetailLevel = logDetailLevel;
         return this;
     }
 
@@ -226,7 +184,7 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
      * @return The updated HttpLogOptions object.
      */
     public HttpInstrumentationOptions setAllowedHeaderNames(final Set<HttpHeaderName> allowedHeaderNames) {
-        this.allowedHeaderNames = allowedHeaderNames == null ? new HashSet<>() : allowedHeaderNames;
+        this.allowedHeaderNames = allowedHeaderNames == null ? new HashSet<>() : new HashSet<>(allowedHeaderNames);
 
         return this;
     }
@@ -266,7 +224,8 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
      * @return The updated {@code allowedQueryParamName} object.
      */
     public HttpInstrumentationOptions setAllowedQueryParamNames(final Set<String> allowedQueryParamNames) {
-        this.allowedQueryParamNames = allowedQueryParamNames == null ? new HashSet<>() : allowedQueryParamNames;
+        this.allowedQueryParamNames
+            = allowedQueryParamNames == null ? new HashSet<>() : new HashSet<>(allowedQueryParamNames);
 
         return this;
     }
@@ -295,5 +254,88 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
     public HttpInstrumentationOptions setTelemetryProvider(Object telemetryProvider) {
         super.setTelemetryProvider(telemetryProvider);
         return this;
+    }
+
+    /**
+     * The level of detail for HTTP request logs.
+     */
+    public enum HttpLogDetailLevel {
+        /**
+         * HTTP logging is turned off.
+         */
+        NONE,
+
+        /**
+         * Enables logging the following information on detailed HTTP logs
+         * <ul>
+         *     <li>Request method, URI, and body size. URI is sanitized based on allowed query parameters configurable with {@link #setAllowedQueryParamNames(Set)} and {@link #addAllowedQueryParamName(String)}</li>
+         *     <li>Response status code and body size</li>
+         *     <li>Request and response headers from allow-list configured via {@link #setAllowedHeaderNames(Set)} and {@link #addAllowedHeaderName(HttpHeaderName)}.</li>
+         *     <li>Error details if the request fails</li>
+         *     <li>Time it takes to receive response</li>
+         *     <li>Correlation identifiers</li>
+         * </ul>
+         */
+        HEADERS,
+
+        /**
+         * Enables logging the following information on detailed HTTP logs
+         * <ul>
+         *     <li>Request method, URI, and body size. URI is sanitized based on allowed query parameters configurable with {@link #setAllowedQueryParamNames(Set)} and {@link #addAllowedQueryParamName(String)}</li>
+         *     <li>Response status code and body size</li>
+         *     <li>Error details if the request fails</li>
+         *     <li>Time it takes to receive response</li>
+         *     <li>Correlation identifiers</li>
+         *     <li>Request and response bodies</li>
+         *     <li>Time-to-last-byte</li>
+         * </ul>
+         *
+         * <p>
+         * The request and response body will be buffered into memory even if it is never consumed by an application, possibly impacting
+         * performance.
+         * <p>
+         * Body is not logged (and not buffered) for requests and responses where the content length is not known or greater than 16KB.
+         */
+        BODY,
+
+        /**
+         * Enables logging everything in {@link #HEADERS} and {@link #BODY}.
+         *
+         * <p>
+         * The request and response body will be buffered into memory even if it is never consumed by an application, possibly impacting
+         * performance.
+         * <p>
+         * Body is not logged (and not buffered) for requests and responses where the content length is not known or greater than 16KB.
+         */
+        BODY_AND_HEADERS;
+
+        private static final String HEADERS_VALUE = "headers";
+        private static final String BODY_VALUE = "body";
+        private static final String BODY_AND_HEADERS_VALUE = "body_and_headers";
+
+        private static final ConfigurationProperty<String> HTTP_LOG_DETAIL_LEVEL
+            = ConfigurationPropertyBuilder.ofString("http.log.detail.level")
+                .shared(true)
+                .environmentVariableName(Configuration.PROPERTY_HTTP_LOG_DETAIL_LEVEL)
+                .defaultValue("none")
+                .build();
+
+        static HttpLogDetailLevel fromConfiguration(Configuration configuration) {
+            String detailLevel = configuration.get(HTTP_LOG_DETAIL_LEVEL);
+
+            HttpLogDetailLevel logDetailLevel;
+
+            if (HEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
+                logDetailLevel = HEADERS;
+            } else if (BODY_VALUE.equalsIgnoreCase(detailLevel)) {
+                logDetailLevel = BODY;
+            } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
+                logDetailLevel = BODY_AND_HEADERS;
+            } else {
+                logDetailLevel = NONE;
+            }
+
+            return logDetailLevel;
+        }
     }
 }

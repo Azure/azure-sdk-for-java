@@ -1492,7 +1492,8 @@ public abstract class HttpClientTests {
 
         // Order in which policies applied will be the order in which they added to builder
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new HttpInstrumentationPolicy(new HttpInstrumentationOptions().setContentLoggingEnabled(true)))
+            .policies(new HttpInstrumentationPolicy(new HttpInstrumentationOptions()
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
 
         Response<HttpBinJSON> response

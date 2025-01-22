@@ -58,7 +58,7 @@ public class Configuration {
     /**
      * Enables HTTP request/response logging by setting an HTTP log detail level.
      */
-    public static final String PROPERTY_HTTP_LOGGING_ENABLED = "HTTP_LOGGING_ENABLED";
+    public static final String PROPERTY_HTTP_LOG_DETAIL_LEVEL = "HTTP_LOG_DETAIL_LEVEL";
 
     /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it

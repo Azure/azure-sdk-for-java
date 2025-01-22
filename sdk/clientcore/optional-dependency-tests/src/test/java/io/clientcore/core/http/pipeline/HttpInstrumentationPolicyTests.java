@@ -324,8 +324,8 @@ public class HttpInstrumentationPolicyTests {
 
     @Test
     public void enrichSpans() throws IOException {
-        HttpInstrumentationPolicy httpInstrumentationPolicy
-            = new HttpInstrumentationPolicy(otelOptions.setHttpLoggingEnabled(true));
+        HttpInstrumentationPolicy httpInstrumentationPolicy = new HttpInstrumentationPolicy(
+            otelOptions.setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS));
 
         HttpPipelinePolicy enrichingPolicy = (request, next) -> {
             io.clientcore.core.instrumentation.tracing.Span span
