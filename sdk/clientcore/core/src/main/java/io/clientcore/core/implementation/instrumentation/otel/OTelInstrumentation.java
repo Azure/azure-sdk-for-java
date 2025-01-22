@@ -78,9 +78,9 @@ public class OTelInstrumentation implements Instrumentation {
      * @param applicationOptions the application options
      * @param libraryOptions the library options
      */
-    public OTelInstrumentation(InstrumentationOptions<?> applicationOptions,
+    public OTelInstrumentation(InstrumentationOptions applicationOptions,
         LibraryInstrumentationOptions libraryOptions) {
-        Object explicitOTel = applicationOptions == null ? null : applicationOptions.getProvider();
+        Object explicitOTel = applicationOptions == null ? null : applicationOptions.getTelemetryProvider();
         if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
             throw LOGGER.atError()
                 .addKeyValue("expectedProvider", OTEL_CLASS.getName())

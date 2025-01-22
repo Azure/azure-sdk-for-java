@@ -17,7 +17,7 @@ import io.clientcore.core.instrumentation.tracing.Tracer;
 public class FallbackInstrumentation implements Instrumentation {
     public static final FallbackInstrumentation DEFAULT_INSTANCE = new FallbackInstrumentation(null, null);
 
-    private final InstrumentationOptions<?> instrumentationOptions;
+    private final InstrumentationOptions instrumentationOptions;
     private final LibraryInstrumentationOptions libraryOptions;
 
     /**
@@ -25,7 +25,7 @@ public class FallbackInstrumentation implements Instrumentation {
      * @param instrumentationOptions the application instrumentation options
      * @param libraryOptions the library instrumentation options
      */
-    public FallbackInstrumentation(InstrumentationOptions<?> instrumentationOptions,
+    public FallbackInstrumentation(InstrumentationOptions instrumentationOptions,
         LibraryInstrumentationOptions libraryOptions) {
         this.instrumentationOptions = instrumentationOptions;
         this.libraryOptions = libraryOptions;
