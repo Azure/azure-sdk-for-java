@@ -51,8 +51,14 @@ public class AzureAppConfigDataLocationResolver
         Boolean hasConnectionString = StringUtils.hasText(context.getBinder()
             .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].connection-string", String.class)
             .orElse(""));
+        Boolean hasEndpoints = StringUtils.hasText(context.getBinder()
+            .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].endpoints", String.class)
+            .orElse(""));
+        Boolean hasConnectionStrings = StringUtils.hasText(context.getBinder()
+            .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].connection-strings", String.class)
+            .orElse(""));
 
-        return (hasEndpoint || hasConnectionString);
+        return (hasEndpoint || hasConnectionString || hasEndpoints || hasConnectionStrings);
     }
 
     @Override
@@ -72,8 +78,8 @@ public class AzureAppConfigDataLocationResolver
 
         for (ConfigStore store : holder.properties.getStores()) {
             locations.add(
-                new AzureAppConfigDataResource(store, profiles, holder.appProperties, START_UP.get()));
-
+                new AzureAppConfigDataResource(store, profiles, holder.appProperties, START_UP.get(),
+                    holder.properties.getRefreshInterval()));
         }
         START_UP.set(false);
         return locations;

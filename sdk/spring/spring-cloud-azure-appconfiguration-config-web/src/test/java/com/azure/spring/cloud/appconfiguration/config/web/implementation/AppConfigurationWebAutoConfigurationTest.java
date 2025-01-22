@@ -21,7 +21,7 @@ import org.springframework.cloud.bus.event.RefreshRemoteApplicationEvent;
 import org.springframework.cloud.endpoint.RefreshEndpoint;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationAutoConfiguration;
-import com.azure.spring.cloud.appconfiguration.config.implementation.config.AppConfigurationBootstrapConfiguration;
+import com.azure.spring.cloud.appconfiguration.config.AppConfigurationWatchAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 
 public class AppConfigurationWebAutoConfigurationTest {
@@ -29,8 +29,7 @@ public class AppConfigurationWebAutoConfigurationTest {
     private static final ApplicationContextRunner CONTEXT_RUNNER = new ApplicationContextRunner()
         .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING),
             propPair(STORE_ENDPOINT_PROP, TEST_STORE_NAME))
-        .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class,
-            AppConfigurationAutoConfiguration.class, AppConfigurationWebAutoConfiguration.class,
+        .withConfiguration(AutoConfigurations.of(AppConfigurationWatchAutoConfiguration.class, AppConfigurationWebAutoConfiguration.class,
             RefreshAutoConfiguration.class, PathDestinationFactory.class, AzureGlobalPropertiesAutoConfiguration.class))
         .withUserConfiguration(BusProperties.class);
 

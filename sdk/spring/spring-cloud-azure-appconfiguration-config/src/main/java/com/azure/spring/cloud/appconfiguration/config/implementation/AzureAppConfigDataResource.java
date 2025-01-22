@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +35,10 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
 
     private final boolean isRefresh;
 
+    private Duration refreshInterval;
+
     AzureAppConfigDataResource(ConfigStore configStore, Profiles profiles,
-        AppConfigurationProviderProperties appProperties, boolean isRefresh) {
+        AppConfigurationProviderProperties appProperties, boolean isRefresh, Duration refreshInterval) {
         this.configStoreEnabled = configStore.isEnabled();
         this.endpoint = configStore.getEndpoint();
         this.selects = configStore.getSelects();
@@ -45,6 +48,7 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
         this.profiles = profiles;
         this.appProperties = appProperties;
         this.isRefresh = isRefresh;
+        this.refreshInterval = refreshInterval;
     }
 
     /**
@@ -129,6 +133,20 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
      */
     public AppConfigurationProviderProperties getAppProperties() {
         return appProperties;
+    }
+
+    /**
+     * @return the refreshInterval
+     */
+    public Duration getRefreshInterval() {
+        return refreshInterval;
+    }
+
+    /**
+     * @param refreshInterval the refreshInterval to set
+     */
+    public void setRefreshInterval(Duration refreshInterval) {
+        this.refreshInterval = refreshInterval;
     }
 
 }

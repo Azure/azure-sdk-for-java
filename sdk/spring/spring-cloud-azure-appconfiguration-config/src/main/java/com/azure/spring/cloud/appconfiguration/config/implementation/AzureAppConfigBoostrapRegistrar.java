@@ -32,11 +32,23 @@ class AzureAppConfigurationBootstrapRegistrar {
     static void register(ConfigDataLocationResolverContext context, Binder binder,
         AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties,
         ReplicaLookUp replicaLookup) {
+
+        AzureGlobalProperties globalProperties = binder
+            .bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
+            .orElseGet(AzureGlobalProperties::new);
+        AzureAppConfigurationProperties appConfigurationProperties = binder
+            .bind(AzureAppConfigurationProperties.PREFIX, Bindable.of(AzureAppConfigurationProperties.class))
+            .orElseGet(AzureAppConfigurationProperties::new);
+        // the properties are used to custom the ConfigurationClientBuilder
+        AzureAppConfigurationProperties loadedProperties = AzureGlobalPropertiesUtils.loadProperties(globalProperties,
+            appConfigurationProperties);
+
+        boolean isCredentialConfigured = isCredentialConfigured(loadedProperties);
+
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory = appConfigurationKeyVaultClientFactory(
-            appProperties, context,
-            binder);
+            appProperties, context, isCredentialConfigured);
         AppConfigurationReplicaClientsBuilder replicaClientsBuilder = replicaClientBuilder(context, binder,
-            appProperties, keyVaultClientFactory);
+            appProperties, keyVaultClientFactory, loadedProperties, isCredentialConfigured);
         AppConfigurationReplicaClientFactory replicaClientFactory = buildClientFactory(replicaClientsBuilder,
             properties, replicaLookup);
 
@@ -48,7 +60,7 @@ class AzureAppConfigurationBootstrapRegistrar {
 
     private static AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(
         AppConfigurationProviderProperties appProperties,
-        ConfigDataLocationResolverContext context, Binder binder)
+        ConfigDataLocationResolverContext context, Boolean isCredentialConfigured)
         throws IllegalArgumentException {
 
         SecretClientCustomizer customizer = context.getBootstrapContext().getOrElse(SecretClientCustomizer.class, null);
@@ -56,18 +68,6 @@ class AzureAppConfigurationBootstrapRegistrar {
             null);
         SecretClientBuilderFactory secretClientFactory = context.getBootstrapContext()
             .getOrElse(SecretClientBuilderFactory.class, null);
-
-        AzureGlobalProperties globalProperties = binder
-            .bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
-            .orElseGet(AzureGlobalProperties::new);
-        AzureAppConfigurationProperties appConfigurationProperties = binder
-            .bind(AzureAppConfigurationProperties.PREFIX, Bindable.of(AzureAppConfigurationProperties.class))
-            .orElseGet(AzureAppConfigurationProperties::new);
-        // the properties are used to custom the ConfigurationClientBuilder
-        AzureAppConfigurationProperties properties = AzureGlobalPropertiesUtils.loadProperties(globalProperties,
-            appConfigurationProperties);
-
-        boolean isCredentialConfigured = isCredentialConfigured(properties);
 
         return new AppConfigurationKeyVaultClientFactory(customizer, secretProvider, secretClientFactory,
             isCredentialConfigured,
@@ -82,18 +82,9 @@ class AzureAppConfigurationBootstrapRegistrar {
 
     @SuppressWarnings("unchecked")
     private static AppConfigurationReplicaClientsBuilder replicaClientBuilder(ConfigDataLocationResolverContext context,
-        Binder binder,
-        AppConfigurationProviderProperties appProperties, AppConfigurationKeyVaultClientFactory keyVaultClientFactory) {
+        Binder binder, AppConfigurationProviderProperties appProperties,
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, AzureAppConfigurationProperties properties, Boolean isCredentialConfigured) {
 
-        AzureGlobalProperties globalProperties = binder
-            .bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
-            .orElseGet(AzureGlobalProperties::new);
-        AzureAppConfigurationProperties appConfigurationProperties = binder
-            .bind(AzureAppConfigurationProperties.PREFIX, Bindable.of(AzureAppConfigurationProperties.class))
-            .orElseGet(AzureAppConfigurationProperties::new);
-        // the properties are used to custom the ConfigurationClientBuilder
-        AzureAppConfigurationProperties properties = AzureGlobalPropertiesUtils.loadProperties(globalProperties,
-            appConfigurationProperties);
         InstanceSupplier<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> customizer = context
             .getBootstrapContext()
             .getRegisteredInstanceSupplier(
@@ -111,8 +102,6 @@ class AzureAppConfigurationBootstrapRegistrar {
             clientFactory.addBuilderCustomizer(customizer.get(context.getBootstrapContext()));
         }
 
-        boolean isCredentialConfigured = isCredentialConfigured(properties);
-
         InstanceSupplier<ConfigurationClientCustomizer> configurationClientCustomizer = context
             .getBootstrapContext()
             .getRegisteredInstanceSupplier(
@@ -123,8 +112,8 @@ class AzureAppConfigurationBootstrapRegistrar {
             clientCustomizer = configurationClientCustomizer.get(context.getBootstrapContext());
         }
 
-        return new AppConfigurationReplicaClientsBuilder(3, clientFactory, clientCustomizer, isCredentialConfigured,
-            keyVaultClientFactory.isConfigured());
+        return new AppConfigurationReplicaClientsBuilder(appProperties.getMaxRetries(), clientFactory, clientCustomizer,
+            isCredentialConfigured, keyVaultClientFactory.isConfigured());
     }
 
     private static boolean isCredentialConfigured(AbstractAzureHttpConfigurationProperties properties) {

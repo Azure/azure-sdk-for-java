@@ -6,15 +6,12 @@ import java.util.List;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.AzureAppConfigDataResource;
 
 public class FeatureFlags {
 
     private SettingSelector settingSelector;
 
     private List<ConfigurationSetting> featureFlags;
-
-    private AzureAppConfigDataResource resource;
 
     public FeatureFlags(SettingSelector settingSelector, List<ConfigurationSetting> featureFlags) {
         this.settingSelector = settingSelector;
@@ -26,20 +23,6 @@ public class FeatureFlags {
      */
     public SettingSelector getSettingSelector() {
         return settingSelector;
-    }
-
-    /**
-     * @return the resource
-     */
-    public AzureAppConfigDataResource getResource() {
-        return resource;
-    }
-
-    /**
-     * @param resource the resource to set
-     */
-    public void setResource(AzureAppConfigDataResource resource) {
-        this.resource = resource;
     }
 
     /**

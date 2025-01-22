@@ -42,6 +42,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * </p>
      *
      * @param trim prefix to trim
+     * @param isRefresh true if a refresh triggered the loading of the Snapshot.
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
     public void initProperties(List<String> trim, boolean isRefresh) throws InvalidConfigurationPropertyValueException {

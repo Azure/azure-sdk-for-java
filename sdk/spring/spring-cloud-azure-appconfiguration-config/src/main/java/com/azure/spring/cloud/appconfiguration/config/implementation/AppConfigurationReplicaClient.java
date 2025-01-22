@@ -104,6 +104,7 @@ class AppConfigurationReplicaClient {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
+
     /**
      * Gets a list of Configuration Settings from the given config store that match the Setting Selector criteria.
      *
@@ -157,7 +158,9 @@ class AppConfigurationReplicaClient {
     List<ConfigurationSetting> listSettingSnapshot(String snapshotName, boolean isRefresh) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
-            Context context = new Context("refresh", false);
+            // Because Spring always refreshes all we still have to load snapshots on refresh to build the property
+            // sources.
+            Context context = new Context("refresh", isRefresh);
             ConfigurationSnapshot snapshot = client.getSnapshotWithResponse(snapshotName, null, context).getValue();
             if (!SnapshotComposition.KEY.equals(snapshot.getSnapshotComposition())) {
                 throw new IllegalArgumentException("Snapshot " + snapshotName + " needs to be of type Key.");
