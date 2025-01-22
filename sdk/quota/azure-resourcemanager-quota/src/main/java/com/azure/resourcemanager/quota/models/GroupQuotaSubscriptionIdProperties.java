@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.quota.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * The GroupQuotaSubscriptionIdProperties model.
  */
-@Immutable
+@Fluent
 public final class GroupQuotaSubscriptionIdProperties implements JsonSerializable<GroupQuotaSubscriptionIdProperties> {
     /*
      * An Azure subscriptionId.
@@ -42,6 +42,17 @@ public final class GroupQuotaSubscriptionIdProperties implements JsonSerializabl
     }
 
     /**
+     * Set the subscriptionId property: An Azure subscriptionId.
+     * 
+     * @param subscriptionId the subscriptionId value to set.
+     * @return the GroupQuotaSubscriptionIdProperties object itself.
+     */
+    public GroupQuotaSubscriptionIdProperties withSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Status of this subscriptionId being associated with the GroupQuotasEntity.
      * 
      * @return the provisioningState value.
@@ -64,6 +75,7 @@ public final class GroupQuotaSubscriptionIdProperties implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
         return jsonWriter.writeEndObject();
     }
 

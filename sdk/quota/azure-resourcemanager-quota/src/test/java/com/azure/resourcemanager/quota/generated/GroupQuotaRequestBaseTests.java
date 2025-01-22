@@ -12,20 +12,21 @@ public final class GroupQuotaRequestBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaRequestBase model = BinaryData.fromString(
-            "{\"properties\":{\"limit\":270477454684900932,\"name\":{\"value\":\"ajzyul\",\"localizedValue\":\"u\"},\"region\":\"krlkhbzhfepg\",\"comments\":\"qex\"}}")
+            "{\"properties\":{\"limit\":73742112490406036,\"name\":{\"value\":\"rjb\",\"localizedValue\":\"orcjxvsnby\"},\"region\":\"abnmocpcyshu\",\"comments\":\"afbljjgpbtoqcjmk\"}}")
             .toObject(GroupQuotaRequestBase.class);
-        Assertions.assertEquals(270477454684900932L, model.limit());
-        Assertions.assertEquals("krlkhbzhfepg", model.region());
-        Assertions.assertEquals("qex", model.comments());
+        Assertions.assertEquals(73742112490406036L, model.limit());
+        Assertions.assertEquals("abnmocpcyshu", model.region());
+        Assertions.assertEquals("afbljjgpbtoqcjmk", model.comments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotaRequestBase model
-            = new GroupQuotaRequestBase().withLimit(270477454684900932L).withRegion("krlkhbzhfepg").withComments("qex");
+        GroupQuotaRequestBase model = new GroupQuotaRequestBase().withLimit(73742112490406036L)
+            .withRegion("abnmocpcyshu")
+            .withComments("afbljjgpbtoqcjmk");
         model = BinaryData.fromObject(model).toObject(GroupQuotaRequestBase.class);
-        Assertions.assertEquals(270477454684900932L, model.limit());
-        Assertions.assertEquals("krlkhbzhfepg", model.region());
-        Assertions.assertEquals("qex", model.comments());
+        Assertions.assertEquals(73742112490406036L, model.limit());
+        Assertions.assertEquals("abnmocpcyshu", model.region());
+        Assertions.assertEquals("afbljjgpbtoqcjmk", model.comments());
     }
 }

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceName model = BinaryData.fromString("{\"value\":\"ngkpocipazy\",\"localizedValue\":\"egukgjnpiucg\"}")
+        ResourceName model = BinaryData.fromString("{\"value\":\"bq\",\"localizedValue\":\"sovmyokacspkwl\"}")
             .toObject(ResourceName.class);
-        Assertions.assertEquals("ngkpocipazy", model.value());
+        Assertions.assertEquals("bq", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceName model = new ResourceName().withValue("ngkpocipazy");
+        ResourceName model = new ResourceName().withValue("bq");
         model = BinaryData.fromObject(model).toObject(ResourceName.class);
-        Assertions.assertEquals("ngkpocipazy", model.value());
+        Assertions.assertEquals("bq", model.value());
     }
 }
