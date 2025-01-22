@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosContainerProperties, PartitionKey}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, CreateSpark2ContinuationsFromChangeFeedOffset, GetFeedRangeForPartitionKeyValue}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -16,6 +16,7 @@ import org.apache.spark.sql.types._
 
 import java.io.{BufferedReader, InputStreamReader}
 import java.nio.file.Paths
+import java.time.Duration
 import java.util.UUID
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
@@ -550,12 +551,15 @@ class SparkE2EChangeFeedITest
 
         val cosmosEndpoint = TestConfigurations.HOST
         val cosmosMasterKey = TestConfigurations.MASTER_KEY
-        val cosmosContainerName = cosmosClient
+        val cosmosContainerName = s"${UUID.randomUUID().toString}"
+        val properties: CosmosContainerProperties =
+            new CosmosContainerProperties(cosmosContainerName, "/pk")
+        properties.setChangeFeedPolicy(
+            ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
+        cosmosClient
             .getDatabase(cosmosDatabase)
-            .createContainer(s"${UUID.randomUUID().toString}", "/pk")
+            .createContainer(properties)
             .block
-            .getProperties
-            .getId
         val sinkContainerName = cosmosClient
             .getDatabase(cosmosDatabase)
             .createContainer(s"sink-${UUID.randomUUID().toString}", "/pk")
