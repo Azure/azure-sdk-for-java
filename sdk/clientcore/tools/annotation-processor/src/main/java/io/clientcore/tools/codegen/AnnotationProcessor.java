@@ -47,10 +47,6 @@ import java.util.stream.Collectors;
 @SupportedAnnotationTypes("io.clientcore.core.annotation.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class AnnotationProcessor extends AbstractProcessor {
-    public AnnotationProcessor() {
-        System.out.println("AnnotationProcessor created");
-    }
-
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         // We iterate through each interface annotated with @ServiceInterface separately.
@@ -71,7 +67,6 @@ public class AnnotationProcessor extends AbstractProcessor {
 
 
     private void processServiceInterface(Element serviceInterface) {
-        System.out.println("Processing service interface: " + serviceInterface);
         if (serviceInterface == null || serviceInterface.getKind() != ElementKind.INTERFACE) {
             throw new IllegalArgumentException("Invalid service interface provided.");
         }

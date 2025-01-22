@@ -734,8 +734,7 @@
               <arg>-Xlint:varargs</arg>
             </compilerArgs>
 
-            <!-- Default is annotation processing being off. -->
-            <!-- <proc>${compiler.proc}</proc> -->
+            <!-- Default is annotation processing being on. -->
             <annotationProcessorPaths>
               <annotationProcessorPath>
                 <groupId>io.clientcore</groupId>
