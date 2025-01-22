@@ -6,6 +6,8 @@ package com.azure.identity.extensions.implementation.template;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.credential.provider.CachingTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.provider.DefaultTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,7 +81,43 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
-    void testGetTokenAsPassword() throws InterruptedException {
+    void cacheTokenCredential() {
+        Properties properties = new Properties();
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        template.init(properties);
+
+        AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
+        template2.init(properties);
+
+        TokenCredentialProviderOptions providerOptions = new TokenCredentialProviderOptions(properties);
+
+        TokenCredential tokenCredential = template.getTokenCredentialProvider().get(providerOptions);
+        TokenCredential tokenCredential2 = template2.getTokenCredentialProvider().get(providerOptions);
+        assertNotNull(tokenCredential);
+        assertNotNull(tokenCredential2);
+        assertTrue(tokenCredential == tokenCredential2);
+    }
+
+    @Test
+    void nonCacheTokenCredential() {
+        Properties properties = new Properties();
+        properties.setProperty("azure.tokenCredentialCacheEnabled", "false");
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        template.init(properties);
+
+        AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
+        template2.init(properties);
+
+        TokenCredentialProviderOptions providerOptions = new TokenCredentialProviderOptions(properties);
+
+        assertNotNull(template.getTokenCredentialProvider().get(providerOptions));
+        assertNotNull(template2.getTokenCredentialProvider().get(providerOptions));
+        assertNotEquals(template.getTokenCredentialProvider().get(providerOptions),
+            template2.getTokenCredentialProvider().get(providerOptions));
+    }
+
+    @Test
+    void getTokenAsPasswordWithDefaultCredentialProvider() throws InterruptedException {
         // setup
         String token1 = "token1";
         String token2 = "token2";
@@ -93,11 +132,12 @@ class AzureAuthenticationTemplateTest {
             }
         });
         // mock
-        try (MockedConstruction<DefaultTokenCredentialProvider> identityClientMock
+        try (MockedConstruction<DefaultTokenCredentialProvider> defaultCredentialProviderMock
             = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
                 when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
             })) {
             Properties properties = new Properties();
+            properties.setProperty("azure.tokenCredentialCacheEnabled", "false");
 
             AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
             template.init(properties);
@@ -107,7 +147,48 @@ class AzureAuthenticationTemplateTest {
             TimeUnit.SECONDS.sleep(tokenExpireSeconds);
             assertEquals(token2, template.getTokenAsPassword());
 
-            assertNotNull(identityClientMock);
+            assertNotNull(defaultCredentialProviderMock);
+        }
+    }
+
+    @Test
+    void getTokenAsPasswordWithCachingCredentialProvider() throws InterruptedException {
+        int tokenExpireSeconds = 2;
+        AtomicInteger tokenIndex1 = new AtomicInteger();
+        AtomicInteger tokenIndex2 = new AtomicInteger(1);
+        TokenCredential mockTokenCredential = mock(TokenCredential.class);
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(tokenExpireSeconds);
+        when(mockTokenCredential.getToken(any())).thenAnswer(u -> {
+            if (OffsetDateTime.now().isBefore(offsetDateTime)) {
+                return Mono.just(new AccessToken("token1-" + (tokenIndex1.getAndIncrement()), offsetDateTime));
+            } else {
+                return Mono.just(new AccessToken("token2-" + (tokenIndex2.getAndIncrement()),
+                    offsetDateTime.plusSeconds(tokenExpireSeconds)));
+            }
+        });
+        // mock
+        try (MockedConstruction<CachingTokenCredentialProvider> credentialProviderMock
+            = mockConstruction(CachingTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+                when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+            })) {
+            Properties properties = new Properties();
+
+            AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+            template.init(properties);
+            AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
+            template2.init(properties);
+
+            verifyToken("token1-", 0, template);
+            TimeUnit.SECONDS.sleep(tokenExpireSeconds + 1);
+            verifyToken("token2-", 1, template);
+            assertNotNull(credentialProviderMock);
+        }
+    }
+
+    private static void verifyToken(String tokenPrefix, int tokenInitialIndexValue,
+        AzureAuthenticationTemplate template) {
+        for (int i = 0; i < 5; i++) {
+            assertEquals(tokenPrefix + (tokenInitialIndexValue + i), template.getTokenAsPassword());
         }
     }
 

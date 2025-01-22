@@ -24,48 +24,92 @@ public interface SqlDatabaseThreatDetectionPolicy
     HasInnerModel<DatabaseSecurityAlertPolicyInner>, HasResourceGroup, Refreshable<SqlDatabaseThreatDetectionPolicy>,
     Updatable<SqlDatabaseThreatDetectionPolicy.Update> {
 
-    /** @return the geo-location where the resource lives */
+    /**
+     * Gets the geo-location where the resource lives.
+     *
+     * @return the geo-location where the resource lives
+     */
     Region region();
 
-    /** @return the resource kind */
+    /**
+     * Gets the resource kind.
+     *
+     * @return the resource kind
+     */
     String kind();
 
-    /** @return the state of the policy. */
+    /**
+     * Gets the state of the policy.
+     *
+     * @return the state of the policy.
+     */
     SecurityAlertPolicyState currentState();
 
     /**
+     * Gets the semicolon-separated list of alerts that are disabled.
+     *
      * @return the semicolon-separated list of alerts that are disabled
      * @deprecated use {@link SqlDatabaseThreatDetectionPolicy#disabledAlertList()}
      */
     @Deprecated
     String disabledAlerts();
 
-    /** @return a list of disabled alerts */
+    /**
+     * Gets a list of disabled alerts.
+     *
+     * @return a list of disabled alerts
+     */
     List<String> disabledAlertList();
 
     /**
+     * Gets the semicolon-separated list of e-mail addresses to which the alert is sent.
+     *
      * @return the semicolon-separated list of e-mail addresses to which the alert is sent
      * @deprecated use {@link SqlDatabaseThreatDetectionPolicy#emailAddressList()}
      */
     @Deprecated
     String emailAddresses();
 
-    /** @return a list of e-mail addresses to which the alert is sent */
+    /**
+     * Gets a list of e-mail addresses to which the alert is sent.
+     *
+     * @return a list of e-mail addresses to which the alert is sent
+     */
     List<String> emailAddressList();
 
-    /** @return true if the alert is sent to the account administrators */
+    /**
+     * Checks whether the alert is sent to the account administrators.
+     *
+     * @return true if the alert is sent to the account administrators
+     */
     boolean emailAccountAdmins();
 
-    /** @return the blob storage endpoint */
+    /**
+     * Gets the blob storage endpoint.
+     *
+     * @return the blob storage endpoint
+     */
     String storageEndpoint();
 
-    /** @return the identifier key of the Threat Detection audit storage account */
+    /**
+     * Gets the identifier key of the Threat Detection audit storage account.
+     *
+     * @return the identifier key of the Threat Detection audit storage account
+     */
     String storageAccountAccessKey();
 
-    /** @return the number of days to keep in the Threat Detection audit logs */
+    /**
+     * Gets the number of days to keep in the Threat Detection audit logs.
+     *
+     * @return the number of days to keep in the Threat Detection audit logs
+     */
     int retentionDays();
 
-    /** @return true if using default server policy */
+    /**
+     * Checks whether using default server policy.
+     *
+     * @return true if using default server policy
+     */
     boolean isDefaultSecurityAlertPolicy();
 
     /** Container interface for SQL database threat detection policy operations. */

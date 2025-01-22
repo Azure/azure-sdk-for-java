@@ -20,10 +20,18 @@ import java.util.Map;
 public interface NetworkInterface
     extends NetworkInterfaceBase, GroupableResource<NetworkManager, NetworkInterfaceInner>,
     Refreshable<NetworkInterface>, Updatable<NetworkInterface.Update>, UpdatableWithTags<NetworkInterface> {
-    /** @return the IP configurations of this network interface, indexed by their names. */
+    /**
+     * Gets the IP configurations of this network interface.
+     *
+     * @return the IP configurations of this network interface, indexed by their names.
+     */
     Map<String, NicIpConfiguration> ipConfigurations();
 
-    /** @return the primary IP configuration of this network interface */
+    /**
+     * Gets the primary IP configuration of this network interface.
+     *
+     * @return the primary IP configuration of this network interface
+     */
     NicIpConfiguration primaryIPConfiguration();
 
     /** The entirety of the network interface definition. */

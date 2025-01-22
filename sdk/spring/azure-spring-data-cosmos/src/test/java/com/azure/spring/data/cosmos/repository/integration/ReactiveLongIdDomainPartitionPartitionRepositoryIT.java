@@ -35,8 +35,11 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     private static final Long ID_2 = 67890L;
     private static final String NAME_2 = "camille";
 
+    private static final Long ID_3 = 98765L;
+
     private static final LongIdDomainPartition DOMAIN_1 = new LongIdDomainPartition(ID_1, NAME_1);
     private static final LongIdDomainPartition DOMAIN_2 = new LongIdDomainPartition(ID_2, NAME_2);
+    private static final LongIdDomainPartition DOMAIN_3 = new LongIdDomainPartition(ID_3, NAME_1);
 
     @ClassRule
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
@@ -190,6 +193,18 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
         final Sort descSort = Sort.by(Sort.Direction.DESC, "number");
         Flux<LongIdDomainPartition> descAllFlux = this.repository.findAll(descSort);
         StepVerifier.create(descAllFlux).expectNext(DOMAIN_2, other, DOMAIN_1).verifyComplete();
+    }
+
+    @Test
+    public void testSum() {
+        Mono<Long> sum1 = this.repository.annotatedSumLongIdValuesByName(NAME_1);
+        StepVerifier.create(sum1).expectNext(12345L).verifyComplete();
+
+        Mono<LongIdDomainPartition> saveMono = this.repository.save(DOMAIN_3);
+        StepVerifier.create(saveMono).expectNext(DOMAIN_3).expectComplete().verify();
+
+        Mono<Long> sum2 = this.repository.annotatedSumLongIdValuesByName(NAME_1);
+        StepVerifier.create(sum2).expectNext(111110L).verifyComplete();
     }
 
     private static class InvalidDomain {

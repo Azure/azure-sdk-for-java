@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
@@ -29,6 +30,9 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
@@ -89,6 +93,8 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     private volatile boolean hasFeedRangeFilteringBeenApplied = false;
     public boolean isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
+
+    private final AtomicReference<HttpTransportSerializer> httpTransportSerializer = new AtomicReference<>(null);
 
     public boolean isReadOnlyRequest() {
         return this.operationType.isReadOnlyOperation();
@@ -1234,5 +1240,29 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setEffectivePartitionKey(String effectivePartitionKey) {
         this.effectivePartitionKey = effectivePartitionKey;
+    }
+
+    public void setThinclientHeaders(String operationType, String resourceType) {
+        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_OPERATION_TYPE, operationType);
+        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_RESOURCE_TYPE, resourceType);
+    }
+
+    public RxDocumentServiceRequest setHttpTransportSerializer(HttpTransportSerializer transportSerializer) {
+        this.httpTransportSerializer.set(transportSerializer);
+
+        return this;
+    }
+
+    public HttpTransportSerializer getEffectiveHttpTransportSerializer(
+        HttpTransportSerializer defaultTransportSerializer) {
+
+        checkNotNull(defaultTransportSerializer, "Argument 'defaultTransportSerializer' must not be null.");
+
+        HttpTransportSerializer snapshot = this.httpTransportSerializer.get();
+        if (snapshot != null) {
+            return snapshot;
+        }
+
+        return defaultTransportSerializer;
     }
 }
