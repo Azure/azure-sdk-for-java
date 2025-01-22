@@ -105,6 +105,11 @@
       <version>5.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus;current} -->
     </dependency>
     <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+      <version>4.2.0</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
