@@ -33,7 +33,6 @@ import com.azure.spring.cloud.feature.management.models.Conditions;
 import com.azure.spring.cloud.feature.management.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
-import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 
 /**
  * Unit tests for FeatureManager.
@@ -51,9 +50,6 @@ public class FeatureManagerTest {
 
     @Mock
     private FeatureManagementProperties featureManagementPropertiesMock;
-
-    @Mock
-    private ContextualTargetingContextAccessor contextualAccessor;
 
     @BeforeEach
     public void setup() {
