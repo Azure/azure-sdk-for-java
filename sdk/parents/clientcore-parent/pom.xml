@@ -732,7 +732,13 @@
 
             <!-- Default is annotation processing being off. -->
             <proc>${compiler.proc}</proc>
-
+            <annotationProcessorPaths>
+              <annotationProcessorPath>
+                <groupId>io.clientcore.tools</groupId>
+                <artifactId>annotation-processor</artifactId>
+                <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore.tools:annotation-processor;external_dependency} -->
+              </annotationProcessorPath>
+            </annotationProcessorPaths>
             <createMissingPackageInfoClass>false</createMissingPackageInfoClass>
           </configuration>
         </plugin>
