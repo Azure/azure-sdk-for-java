@@ -731,7 +731,7 @@
             </compilerArgs>
 
             <!-- Default is annotation processing being off. -->
-            <proc>${compiler.proc}</proc>
+            <!-- <proc>${compiler.proc}</proc> -->
             <annotationProcessorPaths>
               <annotationProcessorPath>
                 <groupId>io.clientcore.tools</groupId>
@@ -1154,6 +1154,10 @@
               </testExcludes>
               <testSource>1.8</testSource>
               <testTarget>1.8</testTarget>
+              <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+              <annotationProcessors>
+                <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
+              </annotationProcessors>
             </configuration>
           </plugin>
           <!-- Avoid errors from module-info -->
@@ -1165,6 +1169,7 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
+
             </configuration>
           </plugin>
         </plugins>
@@ -1248,6 +1253,10 @@
                   <excludes>
                     <exclude>module-info.java</exclude>
                   </excludes>
+                  <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+                  <annotationProcessors>
+                    <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
+                  </annotationProcessors>
                 </configuration>
               </execution>
 
