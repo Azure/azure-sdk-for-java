@@ -47,7 +47,7 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
       - name: azure-openrewrite
-        groupId: com.azure.tools
+        groupId: com.azure
         safeName: azureopenrewrite
         skipPublishDocGithubIo: true
         skipPublishDocMs: true

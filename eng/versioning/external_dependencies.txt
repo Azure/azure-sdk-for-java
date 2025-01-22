@@ -16,6 +16,7 @@ com.fasterxml.jackson.core:jackson-core;2.17.2
 com.fasterxml.jackson.core:jackson-databind;2.17.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.17.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.17.2
+com.fasterxml.jackson.dataformat:jackson-dataformat-smile;2.17.2
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.17.2
 com.fasterxml.jackson.module:jackson-module-afterburner;2.17.2
 com.fasterxml.jackson.module:jackson-module-blackbird;2.17.2
@@ -98,6 +99,7 @@ io.lettuce:lettuce-core;6.4.0.RELEASE
 org.redisson:redisson;3.36.0
 testdep_net.bytebuddy:byte-buddy;1.15.5
 testdep_net.bytebuddy:byte-buddy-agent;1.15.5
+org.openrewrite.recipe:rewrite-recipe-bom;3.0.2
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-maven-plugin;2.7.18
