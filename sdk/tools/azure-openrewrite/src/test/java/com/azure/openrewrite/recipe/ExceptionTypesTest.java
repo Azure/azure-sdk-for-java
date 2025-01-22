@@ -1,5 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
-
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,6 @@ public class ExceptionTypesTest implements RewriteTest {
      * io.clientcore.core.http.exception
      *      HttpResponseException
      *
-     * @author Annabelle Mittendorf Smith
-     * @editor Ali Soltanian Fard Jahromi
      */
 
     @Override

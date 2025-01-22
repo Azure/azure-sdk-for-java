@@ -1,5 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
-
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ public class ClientLoggerTest implements RewriteTest {
     /**
      * ClientLoggerTest tests the recipe that changes
      * com.azure.core.util.logging.ClientLogger to io.clientcore.core.util.ClientLogger.
-     * @author Ali Soltanian Fard Jahromi
      */
 
     @Override

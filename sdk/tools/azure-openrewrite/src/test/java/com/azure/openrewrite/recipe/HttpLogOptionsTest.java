@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
 
 import org.intellij.lang.annotations.Language;
@@ -12,7 +14,6 @@ public class HttpLogOptionsTest implements RewriteTest {
      * com.azure.core.http.policy.HttpLogDetailLevel to io.clientcore.core.http.models.HttpLogOptions.HttpLogDetailLevel
      * and com.azure.core.http.policy.HttpLogOptions to io.clientcore.core.http.models.HttpLogOptions
      *
-     * @author Ali Soltanian Fard Jahromi
      */
 
     @Override

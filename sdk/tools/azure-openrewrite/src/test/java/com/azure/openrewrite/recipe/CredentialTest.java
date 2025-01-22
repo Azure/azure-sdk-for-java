@@ -1,5 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
-
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,6 @@ import org.openrewrite.test.RewriteTest;
 /**
  * CredentialTest is used to test out the recipe that changes the package name com.azure.core.credential
  * to io.clientcore.core.credential.
- * @author Ali Soltanian Fard Jahromi
  */
 public class CredentialTest implements RewriteTest {
 

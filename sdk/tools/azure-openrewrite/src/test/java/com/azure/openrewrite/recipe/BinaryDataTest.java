@@ -1,5 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
-
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ public class BinaryDataTest implements RewriteTest {
      * com.azure.core.util.BinaryData to io.clientcore.core.util.binarydata.BinaryData.
      * This recipe also tests to ensure that the TypeReference is correctly changed
      * when used in conjunction with BinaryData.
-     * @author Ali Soltanian Fard Jahromi
      */
 
     @Override

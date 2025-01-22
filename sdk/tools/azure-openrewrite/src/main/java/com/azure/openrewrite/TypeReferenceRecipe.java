@@ -1,4 +1,6 @@
-package com.azure.recipes;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.openrewrite;
 
 import org.jetbrains.annotations.NotNull;
 import org.openrewrite.Cursor;

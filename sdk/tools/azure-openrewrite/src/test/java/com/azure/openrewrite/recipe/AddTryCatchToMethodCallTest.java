@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
 
 import org.intellij.lang.annotations.Language;
@@ -11,7 +13,6 @@ import org.openrewrite.test.TypeValidation;
  * Add try-catch recipe wraps all method calls that match the supplied method pattern
  * in a try-catch block with the provided catch code snippet.
  * This test class tests the recipe as part of .
- * @author Annabelle Mittendorf Smith
  */
 public class AddTryCatchToMethodCallTest implements RewriteTest {
 

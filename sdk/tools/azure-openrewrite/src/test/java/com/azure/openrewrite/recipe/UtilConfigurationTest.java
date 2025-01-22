@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
 
 import org.intellij.lang.annotations.Language;
@@ -10,7 +12,6 @@ public class UtilConfigurationTest implements RewriteTest {
     /**
      * UtilConfigurationTest tests util.Configuration migrations from
      * com.azure.core.util to io.clientcore.core.util.configuration.
-     * @author Annabelle Mittendorf Smith
      */
 
     @Override

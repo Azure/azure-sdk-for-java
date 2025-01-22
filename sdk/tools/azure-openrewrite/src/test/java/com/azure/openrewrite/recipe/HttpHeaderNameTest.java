@@ -1,5 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
-
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ public class HttpHeaderNameTest implements RewriteTest {
     /**
      * HttpHeaderNameTest tests the recipe that changes
      * com.azure.core.http.HttpHeaderName to io.clientcore.core.http.models.HttpHeaderName.
-     * @author Ali Soltanian Fard Jahromi
      */
 
     @Override

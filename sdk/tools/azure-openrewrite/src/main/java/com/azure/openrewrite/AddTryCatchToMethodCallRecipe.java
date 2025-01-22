@@ -1,9 +1,19 @@
-package com.azure.recipes;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.openrewrite;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
-import org.openrewrite.*;
+
+
+import org.openrewrite.Cursor;
+import org.openrewrite.ExecutionContext;
+import org.openrewrite.NlsRewrite;
+import org.openrewrite.Option;
+import org.openrewrite.Recipe;
+import org.openrewrite.Tree;
+import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.ListUtils;
 import org.openrewrite.internal.lang.NonNull;
 import org.openrewrite.internal.lang.Nullable;

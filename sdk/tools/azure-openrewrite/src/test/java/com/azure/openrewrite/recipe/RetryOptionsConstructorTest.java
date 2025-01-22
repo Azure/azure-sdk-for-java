@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
 
 
@@ -11,7 +13,6 @@ import org.openrewrite.test.RewriteTest;
  * RetryOptionsTest is used to test out the recipe that removes usage of
  * FixedDelay and ExponentialDelay from the RetryOptions constructor and updates
  * it to use the new azure-core-v2 HttpRetryOptions class.
- * @author Ali Soltanian Fard Jahromi
  */
 public class RetryOptionsConstructorTest implements RewriteTest {
 

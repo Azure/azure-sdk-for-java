@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
 
 
@@ -11,7 +13,6 @@ import org.openrewrite.test.RewriteTest;
  * HttpTraitTest tests interface migration from com.azure.core.client.traits.HttpTrait
  * to io.clientcore.core.models.traits.HttpTrait.
  * Tests simple method renaming with declarative recipe.
- * @author Annabelle Mittendorf Smith
  */
 
 public class TextTranslationClientBuilderHttpTraitTest implements RewriteTest {

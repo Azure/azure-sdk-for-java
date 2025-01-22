@@ -1,5 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
-
 
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import static org.openrewrite.java.Assertions.java;
  * Add try-catch recipe wraps all method calls that match the supplied method pattern
  * in a try-catch block with the provided catch code snippet.
  * This test class tests the recipe alone.
- * @author Annabelle Mittendorf Smith
  */
 public class AddTryCatchToMethodCallUnitTest implements RewriteTest {
     /**
@@ -22,10 +22,10 @@ public class AddTryCatchToMethodCallUnitTest implements RewriteTest {
      */
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipes(new com.azure.recipes.core.v2.AddTryCatchToMethodCallRecipe("UserClass myMethod(..)",
+        spec.recipes(new com.azure.openrewrite.AddTryCatchToMethodCallRecipe("UserClass myMethod(..)",
                 "catch (IOException e) { e.printStackTrace(); }",
                 "java.io.IOException",false),
-                new com.azure.recipes.core.v2.AddTryCatchToMethodCallRecipe("CatchAndThrow myMethod(..)",
+                new com.azure.openrewrite.AddTryCatchToMethodCallRecipe("CatchAndThrow myMethod(..)",
                         "catch (IOException e) { throw new RuntimeException(e); }",
                         "java.io.IOException",false)
         );

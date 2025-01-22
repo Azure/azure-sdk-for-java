@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.recipe;
 
 
@@ -11,7 +13,6 @@ import org.openrewrite.test.TypeValidation;
 /**
  * TypeReferenceTest is used to test out the recipe that changes the usage of TypeReference (azure core v1)
  * to ParameterizedType (azure core v2)
- * @author Ali Soltanian Fard Jahromi
  */
 public class TypeReferenceTest implements RewriteTest {
 

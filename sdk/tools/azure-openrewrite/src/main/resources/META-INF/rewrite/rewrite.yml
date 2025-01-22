@@ -102,7 +102,7 @@ recipeList:
       oldFullyQualifiedTypeName: com.azure.core.http.policy.HttpPipelinePolicy
       newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipelinePolicy
       ignoreDefinition: false
- 
+
   # Rename methods
   # Alternatively, can target HttpTrait directly
 
@@ -196,8 +196,8 @@ recipeList:
   # } catch (IOException e) {
   #     e.printStackTrace();
   # }
-  # WARNING: This recipe MUST be run before com.azure.recipes.core.v2.TypeReferenceRecipe.
-  - com.azure.recipes.core.v2.AddTryCatchToMethodCallRecipe:
+  # WARNING: This recipe MUST be run before com.azure.openrewrite.TypeReferenceRecipe.
+  - com.azure.openrewrite.AddTryCatchToMethodCallRecipe:
       methodPattern: com.azure.core.util.BinaryData toObject(..)
       catchTemplateString: catch (IOException e) { e.printStackTrace(); }
       fullyQualifiedExceptionName: java.io.IOException
@@ -214,18 +214,18 @@ recipeList:
   # } catch (IOException e) {
   #     throw new RuntimeException(e);
   # }
-  - com.azure.recipes.core.v2.AddTryCatchToMethodCallRecipe:
+  - com.azure.openrewrite.AddTryCatchToMethodCallRecipe:
       methodPattern: com.azure.ai.translation.text.TextTranslationClient translate(..)
       catchTemplateString: catch (IOException e) { throw new RuntimeException(e); }
       fullyQualifiedExceptionName: java.io.IOException
       excludeOwner: true
 
-  - com.azure.recipes.core.v2.ResponseRecipe
-  - com.azure.recipes.core.v2.ContextRecipe
-  - com.azure.recipes.core.v2.RetryOptionsConstructorRecipe
-  - com.azure.recipes.core.v2.TypeReferenceRecipe
-  - com.azure.recipes.core.v2.HttpLogOptionsRecipe
-  - com.azure.recipes.core.v2.RemoveFixedDelayRecipe
+  - com.azure.openrewrite.clientcore.ResponseRecipe
+  - com.azure.openrewrite.clientcore.ContextRecipe
+  - com.azure.openrewrite.clientcore.RetryOptionsConstructorRecipe
+  - com.azure.openrewrite.TypeReferenceRecipe
+  - com.azure.openrewrite.clientcore.HttpLogOptionsRecipe
+  - com.azure.openrewrite.RemoveFixedDelayRecipe
 
   # Recipe to re-order imports to match standard conventions
   - org.openrewrite.java.OrderImports
