@@ -1,0 +1,255 @@
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migrateToVNext
+displayName: Migrate from azure-core to azure-core-v2
+description: This recipe migrates the azure sdk libraries from azure-core to azure-core-v2 and clientcore libraries.
+recipeList:
+  # ----------------------------------
+  #
+  # Java-Based LST Replacement Recipes
+  #
+  # ----------------------------------
+
+  # Recipe that changes all instances of com.azure.core.http.HttpHeaderName
+  # to io.clientcore.core.http.models.HttpHeaderName
+  # Before:
+  # import com.azure.core.http.HttpHeaderName;
+  # After:
+  # import io.clientcore.core.http.models.HttpHeaderName;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpHeaderName
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpHeaderName
+
+  # Recipe that changes all instances of com.azure.core.util.logging.ClientLogger
+  # to io.clientcore.core.util.ClientLogger
+  # Before:
+  # import com.azure.core.util.logging.ClientLogger;
+  # After:
+  # import io.clientcore.core.util.ClientLogger;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.logging.ClientLogger
+      newFullyQualifiedTypeName: io.clientcore.core.util.ClientLogger
+
+  # Recipe that changes all instances of com.azure.core.util.CoreUtils
+  # to com.azure.core.v2.util.CoreUtils
+  # Before:
+  # import com.azure.core.util.CoreUtils;
+  # After:
+  # import com.azure.core.v2.util.CoreUtils;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.CoreUtils
+      newFullyQualifiedTypeName: com.azure.core.v2.util.CoreUtils
+
+  # Recipe that changes all instances of com.azure.core.http.policy.KeyCredentialPolicy
+  # to io.clientcore.core.http.pipeline.KeyCredentialPolicy
+  # Before:
+  # import com.azure.core.http.policy.KeyCredentialPolicy;
+  # After:
+  # import io.clientcore.core.http.pipeline.KeyCredentialPolicy;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.KeyCredentialPolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.KeyCredentialPolicy
+
+  # Recipe that changes all instances of com.azure.core.credential.KeyCredential
+  # to io.clientcore.core.credential.KeyCredential
+  # Before:
+  # import com.azure.core.credential.KeyCredential;
+  # After:
+  # import io.clientcore.core.credential.KeyCredential;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.credential.KeyCredential
+      newFullyQualifiedTypeName: io.clientcore.core.credential.KeyCredential
+
+  # Recipe that changes all instances of com.azure.core.client.traits.KeyCredentialTrait
+  # to io.clientcore.core.models.traits.KeyCredentialTrait
+  # Before:
+  # import com.azure.core.client.traits.KeyCredentialTrait;
+  # After:
+  # import io.clientcore.core.models.traits.KeyCredentialTrait;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.KeyCredentialTrait
+      newFullyQualifiedTypeName: io.clientcore.core.models.traits.KeyCredentialTrait
+
+  # NOTE:
+  #    A copy of the client-core jar file must be in the resources\classpath
+  #    directory to reliably parse from clientcore library
+
+  # --------------------------------------------------------------------
+  # Recipes to migrate TextTranslationClientBuilder HttpTrait implemented
+  # methods and parameters
+  # --------------------------------------------------------------------
+  # Change Types from the azure-core to clientcore versions
+  # Before:
+  # import com.azure.core.http.HttpClient;
+  # After:
+  # import io.clientcore.core.http.client.HttpClient;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpClient
+      newFullyQualifiedTypeName: io.clientcore.core.http.client.HttpClient
+      ignoreDefinition: false
+  # Before:
+  # import com.azure.core.http.HttpPipeline;
+  # After:
+  # import io.clientcore.core.http.pipeline.HttpPipeline;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpPipeline
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipeline
+      ignoreDefinition: false
+  # Before:
+  # import com.azure.core.http.policy.HttpPipelinePolicy;
+  # After:
+  # import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.HttpPipelinePolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipelinePolicy
+      ignoreDefinition: false
+ 
+  # Rename methods
+  # Alternatively, can target HttpTrait directly
+
+  # Before:
+  # textTranslationClient.retryOptions(new RetryOptions())
+  # After:
+  # textTranslationClient.httpRetryOptions(new RetryOptions())
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.azure.ai.translation.text.TextTranslationClientBuilder retryOptions(..)
+      newMethodName: httpRetryOptions
+      matchOverrides: true
+  # Before:
+  # textTranslationClient.pipeline(pipeline)
+  # After:
+  # textTranslationClient.httpPipeline(pipeline)
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.azure.ai.translation.text.TextTranslationClientBuilder pipeline(..)
+      newMethodName: httpPipeline
+      matchOverrides: true
+  # Before:
+  # textTranslationClient.addPolicy(customPolicy)
+  # After:
+  # textTranslationClient.addHttpPipelinePolicy(customPolicy)
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.azure.ai.translation.text.TextTranslationClientBuilder addPolicy(..)
+      newMethodName: addHttpPipelinePolicy
+      matchOverrides: true
+  # End TextTranslationClientBuilder - HttpTrait implementation recipes
+
+  # Recipe to change com.azure.core.credential package name to io.clientcore.core.credential
+  # Before:
+  # import com.azure.core.credential.*;
+  # After:
+  # import io.clientcore.core.credential.*;
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: com.azure.core.credential
+      newPackageName: io.clientcore.core.credential
+
+  # Recipes that update all instances of azure-core exceptions where
+  # use is equivalent and type/name change is sufficient/safe.
+  # Update to azure-core-v2 version
+  # Before:
+  # import com.azure.core.exception.ClientAuthenticationException;
+  # After:
+  # import com.azure.core.v2.exception.ClientAuthenticationException;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.exception.ClientAuthenticationException
+      newFullyQualifiedTypeName: com.azure.core.v2.exception.ClientAuthenticationException
+  # Before:
+  # import com.azure.core.exception.ResourceModifiedException;
+  # After:
+  # import com.azure.core.v2.exception.ResourceModifiedException;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.exception.ResourceModifiedException
+      newFullyQualifiedTypeName: com.azure.core.v2.exception.ResourceModifiedException
+  # Before:
+  # import com.azure.core.exception.ResourceNotFoundException;
+  # After:
+  # import com.azure.core.v2.exception.ResourceNotFoundException;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.exception.ResourceNotFoundException
+      newFullyQualifiedTypeName: com.azure.core.v2.exception.ResourceNotFoundException
+  # Update to clientcore version
+  # Before:
+  # import com.azure.core.exception.HttpResponseException;
+  # After:
+  # import io.clientcore.core.http.exception.HttpResponseException;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.exception.HttpResponseException
+      newFullyQualifiedTypeName: io.clientcore.core.http.exception.HttpResponseException
+  # End azure-core-exception change type Recipes
+
+  # Recipe that changes all instances of com.azure.core.util.Configuration
+  # to io.clientcore.core.util.configuration.Configuration
+  # Before:
+  # import com.azure.core.util.Configuration;
+  # After:
+  # import io.clientcore.core.util.configuration.Configuration;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.Configuration
+      newFullyQualifiedTypeName: io.clientcore.core.util.configuration.Configuration
+
+  # azure-core v2 BinaryData.toObject throws an IOException. This recipe encloses all calls in
+  # a try-catch block.
+  # Before:
+  # List<TranslatedTextItem> result = binaryDataResponse.getValue().toObject( /* Any Args */);
+  # After:
+  # List<TranslatedTextItem> result = null;
+  # try {
+  #     result = binaryDataResponse.getValue().toObject( /* Any Args */);
+  # } catch (IOException e) {
+  #     e.printStackTrace();
+  # }
+  # WARNING: This recipe MUST be run before com.azure.recipes.core.v2.TypeReferenceRecipe.
+  - com.azure.recipes.core.v2.AddTryCatchToMethodCallRecipe:
+      methodPattern: com.azure.core.util.BinaryData toObject(..)
+      catchTemplateString: catch (IOException e) { e.printStackTrace(); }
+      fullyQualifiedExceptionName: java.io.IOException
+      excludeOwner: true
+
+  # azure-core v2 TextTranslationClient.translate throws an IOException. This recipe encloses all calls in
+  # a try-catch block.
+  # Before:
+  # List<TranslatedTextItem> result = textTranslationClient.translate( /* Any Args */);
+  # After:
+  # List<TranslatedTextItem> result = null;
+  # try {
+  #     result = textTranslationClient.translate( /* Any Args */);
+  # } catch (IOException e) {
+  #     throw new RuntimeException(e);
+  # }
+  - com.azure.recipes.core.v2.AddTryCatchToMethodCallRecipe:
+      methodPattern: com.azure.ai.translation.text.TextTranslationClient translate(..)
+      catchTemplateString: catch (IOException e) { throw new RuntimeException(e); }
+      fullyQualifiedExceptionName: java.io.IOException
+      excludeOwner: true
+
+  - com.azure.recipes.core.v2.ResponseRecipe
+  - com.azure.recipes.core.v2.ContextRecipe
+  - com.azure.recipes.core.v2.RetryOptionsConstructorRecipe
+  - com.azure.recipes.core.v2.TypeReferenceRecipe
+  - com.azure.recipes.core.v2.HttpLogOptionsRecipe
+  - com.azure.recipes.core.v2.RemoveFixedDelayRecipe
+
+  # Recipe to re-order imports to match standard conventions
+  - org.openrewrite.java.OrderImports
+
+  # ----------------------------------
+  #
+  # Text-Based Replacement Recipes
+  #
+  # ----------------------------------
+
+  # Recipe to replace HttpLogDetailLevel call with HttpLogOptions.HttpLogDetailLevel
+  # Before:
+  # HttpLogDetailLevel.BODY_AND_HEADERS
+  # After:
+  # HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS
+  - org.openrewrite.text.FindAndReplace:
+      find: '(?<!\.)[\w]*[\s]*HttpLogDetailLevel'
+      replace: 'HttpLogOptions.HttpLogDetailLevel'
+      regex: true
+
+  # Ignore module-info.java for now until OpenRewrite implements support for it
+  # Recipe to migrate com.azure.core requirements in module-info.java to com.azure.core.v2
+  #- org.openrewrite.text.FindAndReplace:
+  #    regex: true
+  #    find: 'requires\s+(transitive\s+)?com\.azure\.core(?!\.v2)'
+  #    replace: 'requires $1com.azure.core.v2'
+  #    filePattern: '**/module-info.java'
