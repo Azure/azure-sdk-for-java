@@ -45,22 +45,19 @@ class AzureAppConfigurationBootstrapRegistrar {
 
         boolean isCredentialConfigured = isCredentialConfigured(loadedProperties);
 
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory = appConfigurationKeyVaultClientFactory(
-            appProperties, context, isCredentialConfigured);
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory = appConfigurationKeyVaultClientFactory(context,
+            isCredentialConfigured, appProperties.getMaxRetryTime());
         AppConfigurationReplicaClientsBuilder replicaClientsBuilder = replicaClientBuilder(context, binder,
-            appProperties, keyVaultClientFactory, loadedProperties, isCredentialConfigured);
-        AppConfigurationReplicaClientFactory replicaClientFactory = buildClientFactory(replicaClientsBuilder,
-            properties, replicaLookup);
+            keyVaultClientFactory, loadedProperties, isCredentialConfigured, appProperties.getMaxRetries());
 
         context.getBootstrapContext().registerIfAbsent(AppConfigurationKeyVaultClientFactory.class,
             InstanceSupplier.from(() -> keyVaultClientFactory));
         context.getBootstrapContext().registerIfAbsent(AppConfigurationReplicaClientFactory.class,
-            InstanceSupplier.from(() -> replicaClientFactory));
+            InstanceSupplier.from(() -> buildClientFactory(replicaClientsBuilder, properties, replicaLookup)));
     }
 
     private static AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(
-        AppConfigurationProviderProperties appProperties,
-        ConfigDataLocationResolverContext context, Boolean isCredentialConfigured)
+        ConfigDataLocationResolverContext context, boolean isCredentialConfigured, Integer maxRetryTime)
         throws IllegalArgumentException {
 
         SecretClientCustomizer customizer = context.getBootstrapContext().getOrElse(SecretClientCustomizer.class, null);
@@ -70,20 +67,19 @@ class AzureAppConfigurationBootstrapRegistrar {
             .getOrElse(SecretClientBuilderFactory.class, null);
 
         return new AppConfigurationKeyVaultClientFactory(customizer, secretProvider, secretClientFactory,
-            isCredentialConfigured,
-            appProperties.getMaxRetryTime());
+            isCredentialConfigured, maxRetryTime);
     }
 
     private static AppConfigurationReplicaClientFactory buildClientFactory(
-        AppConfigurationReplicaClientsBuilder clientBuilder,
-        AppConfigurationProperties properties, ReplicaLookUp replicaLookup) {
+        AppConfigurationReplicaClientsBuilder clientBuilder, AppConfigurationProperties properties,
+        ReplicaLookUp replicaLookup) {
         return new AppConfigurationReplicaClientFactory(clientBuilder, properties.getStores(), replicaLookup);
     }
 
     @SuppressWarnings("unchecked")
     private static AppConfigurationReplicaClientsBuilder replicaClientBuilder(ConfigDataLocationResolverContext context,
-        Binder binder, AppConfigurationProviderProperties appProperties,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, AzureAppConfigurationProperties properties, Boolean isCredentialConfigured) {
+        Binder binder, AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
+        AzureAppConfigurationProperties properties, boolean isCredentialConfigured, Integer maxRetries) {
 
         InstanceSupplier<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> customizer = context
             .getBootstrapContext()
@@ -112,7 +108,7 @@ class AzureAppConfigurationBootstrapRegistrar {
             clientCustomizer = configurationClientCustomizer.get(context.getBootstrapContext());
         }
 
-        return new AppConfigurationReplicaClientsBuilder(appProperties.getMaxRetries(), clientFactory, clientCustomizer,
+        return new AppConfigurationReplicaClientsBuilder(maxRetries, clientFactory, clientCustomizer,
             isCredentialConfigured, keyVaultClientFactory.isConfigured());
     }
 
