@@ -1,4 +1,4 @@
-package com.azure.recipes.core.v2;
+package com.azure.recipes;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

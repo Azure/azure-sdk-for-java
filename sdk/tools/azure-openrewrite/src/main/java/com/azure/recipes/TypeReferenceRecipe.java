@@ -1,4 +1,4 @@
-package com.azure.recipes.core.v2;
+package com.azure.recipes;
 
 import org.jetbrains.annotations.NotNull;
 import org.openrewrite.Cursor;

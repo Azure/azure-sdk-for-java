@@ -1,4 +1,4 @@
-package com.azure.recipes.core.v2;
+package com.azure.recipes.clientcore;
 
 import org.jetbrains.annotations.NotNull;
 import org.openrewrite.ExecutionContext;
