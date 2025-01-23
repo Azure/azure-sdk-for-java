@@ -33,7 +33,6 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final LeaseManager leaseManager;
     private final int degreeOfParallelism;
     private final int maxBatchSize;
-    private final String collectionResourceId;
 
     public PartitionSynchronizerImpl(
             ChangeFeedContextClient documentClient,
@@ -41,8 +40,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             LeaseContainer leaseContainer,
             LeaseManager leaseManager,
             int degreeOfParallelism,
-            int maxBatchSize,
-            String collectionResourceId) {
+            int maxBatchSize) {
 
         this.documentClient = documentClient;
         this.collectionSelfLink = collectionSelfLink;
@@ -50,7 +48,6 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         this.leaseManager = leaseManager;
         this.degreeOfParallelism = degreeOfParallelism;
         this.maxBatchSize = maxBatchSize;
-        this.collectionResourceId = collectionResourceId;
     }
 
     @Override

@@ -147,7 +147,8 @@ class ChangeFeedQueryImpl<T> {
         // always populate the collectionRid header
         // in case of container has been recreated, this will allow correct error being returned to SDK
         // this ensures compatibility with old leases that had the collection link instead of collection rid
-        if (this.collectionLink.equals(containerAccessor.getLinkWithoutTrailingSlash(this.changeFeedState.getContainerRid()))) {
+        if (this.collectionLink.equals(containerAccessor.getLinkWithoutTrailingSlash(this.changeFeedState.getContainerRid()))
+            || parseCollectionFromLink(this.collectionLink).equals(this.changeFeedState.getContainerRid())) {
             headers.put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, changeFeedRequestOptionsAccessor.getCollectionRid(options));
             this.changeFeedState = new ChangeFeedStateV1(
                     changeFeedRequestOptionsAccessor.getCollectionRid(options),
@@ -215,6 +216,11 @@ class ChangeFeedQueryImpl<T> {
                 })
                 .doOnError(ex -> listener.exceptionListener(operationContext, ex));
         }
+    }
+
+    private static String parseCollectionFromLink(String collectionLink) {
+        String[] segments = collectionLink.split("/");
+        return segments[3];
     }
 
     private Mono<RxDocumentServiceRequest> handlePartitionLevelCircuitBreakingPrerequisites(RxDocumentServiceRequest request) {
