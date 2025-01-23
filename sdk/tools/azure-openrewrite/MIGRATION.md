@@ -1,7 +1,7 @@
 # Azure Code Migration with OpenRewrite
 
-This repository showcases the integration of OpenRewrite with Maven for code migration purposes.
-The migration recipe is defined to transition from `azure-core` to `azure-core-v2` libraries.
+This library contains integrations for OpenRewrite with Maven for code migrating Azure SDK libraries
+such as `azure-core` to `azure-core-v2`.
 
 ## Setup
 
