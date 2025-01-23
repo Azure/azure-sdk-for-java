@@ -6,7 +6,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-openrewrite</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-openrewrite;dependency} -->
 
     <name>Microsoft Azure OpenRewrite Plugin library for Java</name>
     <description>This module contains OpenRewrite recipe for migrating to next generation Microsoft Azure client libraries.</description>
