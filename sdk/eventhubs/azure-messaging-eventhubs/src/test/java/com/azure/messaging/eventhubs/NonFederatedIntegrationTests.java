@@ -34,7 +34,7 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
     @Test
     @EnabledIfEnvironmentVariable(
         named = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS",
-        matches = ".*ShadAccessSignature .*")
+        matches = ".*SharedAccessSignature .*")
     void sendWithSasConnectionString() {
         final String eventHubName = TestUtils.getEventHubName();
         final EventData event = new EventData("body");
