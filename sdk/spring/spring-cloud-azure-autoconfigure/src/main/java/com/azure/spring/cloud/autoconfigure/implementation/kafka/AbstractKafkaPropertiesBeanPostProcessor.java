@@ -82,8 +82,8 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
                     + "Spring Cloud Azure does not perform JAAS enhancements on the {} bean.", beanName);
                 return bean;
             }
-            T properties = (T) bean;
 
+            T properties = (T) bean;
             replaceAzurePropertiesWithJaas(getMergedProducerProperties(properties), getRawProducerProperties(properties));
             replaceAzurePropertiesWithJaas(getMergedConsumerProperties(properties), getRawConsumerProperties(properties));
             replaceAzurePropertiesWithJaas(getMergedAdminProperties(properties), getRawAdminProperties(properties));
