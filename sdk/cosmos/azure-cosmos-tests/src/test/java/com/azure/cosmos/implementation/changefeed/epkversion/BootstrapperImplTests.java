@@ -210,6 +210,7 @@ public class BootstrapperImplTests {
 
         if (withContinuation) {
             FeedRangePartitionKeyRangeImpl feedRangePartitionKeyRangeImpl = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
             String continuationAsJsonString = String.format(
                 BASE_CONTINUATION_STRING_FOR_EPK_FULL_RANGE,
                 collectionRid,
