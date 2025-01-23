@@ -48,7 +48,7 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor, Application
 
             ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider = beanProvider.getIfAvailable();
             if (connectionStringProvider == null) {
-                LOGGER.warn("Cannot find a bean of type ServiceConnectionStringProvider<AzureServiceType.EventHubs>, "
+                LOGGER.debug("Cannot find a bean of type ServiceConnectionStringProvider<AzureServiceType.EventHubs>, "
                     + "Spring Cloud Azure will skip performing JAAS enhancements on the KafkaProperties bean.");
                 return bean;
             }

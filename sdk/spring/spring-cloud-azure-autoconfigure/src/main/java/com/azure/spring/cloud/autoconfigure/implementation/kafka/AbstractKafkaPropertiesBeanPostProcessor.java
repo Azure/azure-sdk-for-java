@@ -13,7 +13,9 @@ import org.apache.kafka.common.message.ApiVersionsRequestData;
 import org.apache.kafka.common.requests.ApiVersionsRequest;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.ApplicationContext;
@@ -43,6 +45,7 @@ import static org.springframework.util.StringUtils.delimitedListToStringArray;
 
 abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostProcessor, ApplicationContextAware {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractKafkaPropertiesBeanPostProcessor.class);
     static final String SECURITY_PROTOCOL_CONFIG_SASL = SASL_SSL.name();
     static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_KEY = "azure.configured";
@@ -72,7 +75,13 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (needsPostProcess(bean)) {
-            azureGlobalProperties = applicationContext.getBean(AzureGlobalProperties.class);
+            ObjectProvider<AzureGlobalProperties> beanProvider = applicationContext.getBeanProvider(AzureGlobalProperties.class);
+            azureGlobalProperties = beanProvider.getIfAvailable();
+            if (azureGlobalProperties == null) {
+                LOGGER.debug("Not found AzureGlobalProperties bean, "
+                    + "Spring Cloud Azure does not perform JAAS enhancements on the {} bean.", beanName);
+                return bean;
+            }
             T properties = (T) bean;
 
             replaceAzurePropertiesWithJaas(getMergedProducerProperties(properties), getRawProducerProperties(properties));
