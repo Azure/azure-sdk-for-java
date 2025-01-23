@@ -422,7 +422,11 @@ jobs:
       OsVmImage: $(LINUXVMIMAGE)
       Pool: $(LINUXPOOL)
       Os: linux
-      MatrixConfigs: ${{ parameters.MatrixConfigs }}
+      MatrixConfigs:
+        - ${{ each config in parameters.MatrixConfigs }}:
+          - ${{ config }}
+        - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+          - ${{ config }}
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:
