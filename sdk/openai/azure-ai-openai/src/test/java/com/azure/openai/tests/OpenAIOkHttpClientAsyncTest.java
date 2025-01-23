@@ -11,7 +11,6 @@ import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.core.JsonValue;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.errors.BadRequestException;
 import com.openai.models.ChatCompletion;
 import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatCompletionMessage;
@@ -39,9 +38,7 @@ import static com.openai.models.ResponseFormatJsonObject.Type.JSON_OBJECT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     private OpenAIClientAsync client;
