@@ -63,7 +63,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
-    TokenCredential tokenCredential(DefaultAzureCredentialBuilderFactory factory,
+    TokenCredential springCloudAzureDefaultCredential(DefaultAzureCredentialBuilderFactory factory,
                                     AzureTokenCredentialResolver resolver) {
         TokenCredential globalTokenCredential = resolver.resolve(this.identityClientProperties);
         if (globalTokenCredential != null) {
@@ -210,7 +210,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
 
     @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
-    ThreadPoolTaskExecutor credentialTaskExecutor() {
+    ThreadPoolTaskExecutor springCloudAzureCredentialTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(8);
         executor.setAllowCoreThreadTimeOut(true);
