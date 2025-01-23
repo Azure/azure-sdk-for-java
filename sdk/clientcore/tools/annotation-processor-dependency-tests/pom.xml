@@ -76,6 +76,22 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>enable-annotation-processing</id>
+      <activation>
+        <property>
+          <name>enable.annotation.processing</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <skipCompile>false</skipCompile>
+      </properties>
+    </profile>
+  </profiles>
+
+
   <build>
     <testResources>
       <testResource>
