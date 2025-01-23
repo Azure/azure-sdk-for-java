@@ -74,7 +74,7 @@ directive:
         to: RedisExportRdbCompletedEventData
     - rename-model:
           from: MicrosoftTeamsAppIdentifierModel
-          to: MicrosoftTeamsAppIdentifier
+          to: AcsMicrosoftTeamsAppIdentifier
     - where-model: AcsIncomingCallEventData
       rename-property:
           from: onBehalfOfCallee

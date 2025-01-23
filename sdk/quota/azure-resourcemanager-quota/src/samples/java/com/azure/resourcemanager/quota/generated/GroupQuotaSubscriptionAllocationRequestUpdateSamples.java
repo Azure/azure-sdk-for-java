@@ -4,15 +4,18 @@
 
 package com.azure.resourcemanager.quota.generated;
 
-import com.azure.resourcemanager.quota.fluent.models.QuotaAllocationRequestStatusInner;
-import com.azure.resourcemanager.quota.models.QuotaAllocationRequestBase;
+import com.azure.resourcemanager.quota.fluent.models.SubscriptionQuotaAllocationsListInner;
+import com.azure.resourcemanager.quota.models.SubscriptionQuotaAllocations;
+import com.azure.resourcemanager.quota.models.SubscriptionQuotaAllocationsListProperties;
+import com.azure.resourcemanager.quota.models.SubscriptionQuotaAllocationsProperties;
+import java.util.Arrays;
 
 /**
  * Samples for GroupQuotaSubscriptionAllocationRequest Update.
  */
 public final class GroupQuotaSubscriptionAllocationRequestUpdateSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/
+     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/
      * SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
      */
     /**
@@ -23,9 +26,15 @@ public final class GroupQuotaSubscriptionAllocationRequestUpdateSamples {
     public static void
         subscriptionQuotaAllocationPatchRequestForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.groupQuotaSubscriptionAllocationRequests()
-            .update("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "standardav2family",
-                new QuotaAllocationRequestStatusInner()
-                    .withRequestedResource(new QuotaAllocationRequestBase().withLimit(10L).withRegion("westus")),
+            .update("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus",
+                new SubscriptionQuotaAllocationsListInner()
+                    .withProperties(new SubscriptionQuotaAllocationsListProperties().withValue(Arrays.asList(
+                        new SubscriptionQuotaAllocations().withProperties(
+                            new SubscriptionQuotaAllocationsProperties().withResourceName("standardddv4family")
+                                .withLimit(110L)),
+                        new SubscriptionQuotaAllocations().withProperties(
+                            new SubscriptionQuotaAllocationsProperties().withResourceName("standardav2family")
+                                .withLimit(110L))))),
                 com.azure.core.util.Context.NONE);
     }
 }

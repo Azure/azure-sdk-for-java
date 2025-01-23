@@ -80,10 +80,6 @@
     <Class name="io.clientcore.core.serialization.xml.implementation.aalto.out.CharXmlWriter" />
   </Match>
   <Match>
-    <Bug pattern="DCN_NULLPOINTER_EXCEPTION" />
-    <Class name="io.clientcore.core.http.pipeline.HttpLoggingPolicy" />
-  </Match>
-  <Match>
     <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     <Or>
       <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData" />

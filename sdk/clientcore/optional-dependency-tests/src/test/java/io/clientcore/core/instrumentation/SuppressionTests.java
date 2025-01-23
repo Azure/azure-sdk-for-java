@@ -49,7 +49,7 @@ public class SuppressionTests {
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private InstrumentationOptions<OpenTelemetry> otelOptions;
+    private InstrumentationOptions otelOptions;
     private Tracer tracer;
 
     @BeforeEach
@@ -57,7 +57,7 @@ public class SuppressionTests {
         exporter = InMemorySpanExporter.create();
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
         tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
     }
 
@@ -307,7 +307,7 @@ public class SuppressionTests {
         private final HttpPipeline pipeline;
         private final Tracer tracer;
 
-        SampleClient(HttpPipeline pipeline, InstrumentationOptions<?> options) {
+        SampleClient(HttpPipeline pipeline, InstrumentationOptions options) {
             this.pipeline = pipeline;
             this.tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
         }

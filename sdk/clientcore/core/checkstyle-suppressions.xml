@@ -24,7 +24,6 @@
   <suppress files="io.clientcore.core.http.client.DefaultHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="io.clientcore.core.http.client.implementation.InputStreamTimeoutResponseSubscriber.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="io.clientcore.core.http.pipeline.HttpLoggingPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.MethodHandleReflectiveInvoker.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.http.rest.LengthValidatingInputStream.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.JsonReader.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
