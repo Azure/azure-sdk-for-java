@@ -92,23 +92,12 @@ public class AzureAppConfigDataLocationResolver
         AppConfigurationProviderProperties appProperties;
         Holder holder = new Holder();
 
-        if (context.getBootstrapContext().isRegistered(AppConfigurationProperties.class)) {
-            properties = new AppConfigurationProperties();
-            BeanUtils.copyProperties(context.getBootstrapContext().get(AppConfigurationProperties.class), properties);
-        } else {
-            properties = binder.bind(AppConfigurationProperties.CONFIG_PREFIX,
-                Bindable.of(AppConfigurationProperties.class), bindHandler).get();
-        }
+        properties = binder.bind(AppConfigurationProperties.CONFIG_PREFIX,
+            Bindable.of(AppConfigurationProperties.class), bindHandler).get();
 
-        if (context.getBootstrapContext().isRegistered(AppConfigurationProviderProperties.class)) {
-            appProperties = new AppConfigurationProviderProperties();
-            BeanUtils.copyProperties(context.getBootstrapContext().get(AppConfigurationProviderProperties.class),
-                appProperties);
-        } else {
-            appProperties = binder.bind(AppConfigurationProviderProperties.CONFIG_PREFIX,
-                Bindable.of(AppConfigurationProviderProperties.class), bindHandler)
-                .orElseGet(AppConfigurationProviderProperties::new);
-        }
+        appProperties = binder.bind(AppConfigurationProviderProperties.CONFIG_PREFIX,
+            Bindable.of(AppConfigurationProviderProperties.class), bindHandler)
+            .orElseGet(AppConfigurationProviderProperties::new);
 
         properties.validateAndInit();
         ReplicaLookUp replicaLookup = null;
