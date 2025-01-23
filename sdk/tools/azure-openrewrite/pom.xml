@@ -55,6 +55,7 @@
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
             <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.openrewrite</groupId>

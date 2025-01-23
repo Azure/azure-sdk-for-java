@@ -30,7 +30,6 @@ import java.util.Map;
  * ...
  * new HttpRetryOptions(3, Duration.ofMillis(50))
  * --------------------------------------------------
- * @author Ali Soltanian Fard Jahromi
  */
 public class RetryOptionsConstructorRecipe extends Recipe {
     /**

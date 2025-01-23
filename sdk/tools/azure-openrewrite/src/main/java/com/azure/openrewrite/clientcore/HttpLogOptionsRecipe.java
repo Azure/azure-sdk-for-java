@@ -29,7 +29,6 @@ import org.openrewrite.java.tree.TypeTree;
  * ...
  * public void logOptions(){ print(new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)); }
  * --------------------------------------------------
- * @author Ali Soltanian Fard Jahromi
  */
 public class HttpLogOptionsRecipe extends Recipe {
     /**

@@ -26,7 +26,6 @@ import org.openrewrite.java.tree.TypeTree;
  * ...
  * public void context(){ print(Context.none()); }
  * --------------------------------------------------
- * @author Ali Soltanian Fard Jahromi
  */
 public class ContextRecipe extends Recipe {
     /**

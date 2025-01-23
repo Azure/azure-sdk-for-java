@@ -46,7 +46,6 @@ import java.util.Set;
     }
     });
  * --------------------------------------------------
- * @author Ali Soltanian Fard Jahromi
  */
 public class TypeReferenceRecipe extends Recipe {
 

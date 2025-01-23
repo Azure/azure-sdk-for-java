@@ -20,7 +20,6 @@ import org.openrewrite.java.tree.TypeTree;
  * After applying this recipe:
  * import io.clientcore.core.http.models.Response;
  * --------------------------------------------------
- * @author Ali Soltanian Fard Jahromi
  */
 public class ResponseRecipe extends Recipe {
     /**

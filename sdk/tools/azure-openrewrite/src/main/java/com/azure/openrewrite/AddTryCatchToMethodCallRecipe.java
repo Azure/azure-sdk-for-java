@@ -42,7 +42,6 @@ import java.util.regex.Pattern;
  * Recipe does not check if the method throws the supplied exception, only that the method is
  * in a suitable try-catch block.
  * If the template is not syntactically correct, the recipe will not make any changes.
- * @author Annabelle Mittendorf Smith
  */
 
 @Value

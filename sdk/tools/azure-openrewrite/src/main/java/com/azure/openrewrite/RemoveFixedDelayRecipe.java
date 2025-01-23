@@ -18,7 +18,6 @@ import org.openrewrite.java.tree.J;
  * ...
  * FixedDelayOptions s;
  * --------------------------------------------------
- * @author Ali Soltanian Fard Jahromi
  */
 public class RemoveFixedDelayRecipe extends Recipe {
     /**
