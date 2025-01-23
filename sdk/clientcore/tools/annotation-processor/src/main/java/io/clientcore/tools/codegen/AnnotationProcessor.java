@@ -36,6 +36,9 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -44,9 +47,13 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Annotation processor that generates client code based on annotated interfaces.
+ */
 @SupportedAnnotationTypes("io.clientcore.core.annotation.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class AnnotationProcessor extends AbstractProcessor {
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         // We iterate through each interface annotated with @ServiceInterface separately.
@@ -64,7 +71,6 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         return true;
     }
-
 
     private void processServiceInterface(Element serviceInterface) {
         if (serviceInterface == null || serviceInterface.getKind() != ElementKind.INTERFACE) {
@@ -150,9 +156,8 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
 
         // Add return type as an import
-        String returnTypeShortName = templateInput.addImport(requestMethod.getReturnType());
-        method.setMethodReturnType(returnTypeShortName);
-
+        setReturnTypeFormMethod(method, requestMethod, templateInput);
+        boolean isEncoded = false;
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
             // Cache annotations for each parameter
@@ -169,6 +174,9 @@ public class AnnotationProcessor extends AbstractProcessor {
                     param.getSimpleName().toString(),
                     hostParam.encoded()));
             } else if (pathParam != null) {
+                if (pathParam.encoded()) {
+                    isEncoded = true;
+                }
                 method.addSubstitution(new Substitution(
                     pathParam.value(),
                     param.getSimpleName().toString(),
@@ -191,14 +199,65 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         // Pre-compute host substitutions
-        method.setHost(getHost(templateInput, method));
+        method.setHost(getHost(templateInput, method, isEncoded));
 
         return method;
     }
 
-    private static String getHost(TemplateInput templateInput, HttpRequestContext method) {
-        String rawHost = templateInput.getHost() + method.getPath();
+    private void setReturnTypeFormMethod(HttpRequestContext method, ExecutableElement requestMethod,
+                                         TemplateInput templateInput) {
+        // Get the return type from the method
+        TypeMirror returnType = requestMethod.getReturnType();
 
+        // If the return type is a declared type (e.g., Response<InputStream>)
+        if (returnType.getKind() == TypeKind.DECLARED) {
+            DeclaredType declaredType = (DeclaredType) returnType;
+            TypeElement typeElement = (TypeElement) declaredType.asElement();
+            String fullTypeName = typeElement.getQualifiedName().toString();
+
+
+            // Handle generic arguments for declared types
+            List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
+            if (!typeArguments.isEmpty()) {
+                StringBuilder typeWithArguments = new StringBuilder(fullTypeName);
+                typeWithArguments.append("<");
+
+                for (int i = 0; i < typeArguments.size(); i++) {
+                    TypeMirror typeArgument = typeArguments.get(i);
+                    // Add the type argument to the final type string
+                    typeWithArguments.append(typeArgument.toString());
+                    if (i < typeArguments.size() - 1) {
+                        typeWithArguments.append(", ");
+                    }
+                }
+
+                typeWithArguments.append(">");
+                method.setMethodReturnType(typeWithArguments.toString());
+            } else {
+                // If no generic arguments, set the return type to the base type
+                method.setMethodReturnType(fullTypeName);
+            }
+        } else {
+            // For non-declared types (simple types like String, int, etc.)
+            String returnTypeShortName = templateInput.addImport(requestMethod.getReturnType());
+            method.setMethodReturnType(returnTypeShortName);
+        }
+
+    }
+
+    private static String getHost(TemplateInput templateInput, HttpRequestContext method, boolean isEncoded) {
+        String rawHost;
+        if (isEncoded) {
+            rawHost = method.getPath();
+        } else {
+            String host = templateInput.getHost();
+            String path = method.getPath();
+            if (!host.endsWith("/") && !path.startsWith("/")) {
+                rawHost = host + "/" + path;
+            } else {
+                rawHost = host + path;
+            }
+        }
         return PathBuilder.buildPath(rawHost, method);
     }
 }

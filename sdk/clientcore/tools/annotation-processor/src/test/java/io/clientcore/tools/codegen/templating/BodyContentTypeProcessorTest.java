@@ -3,14 +3,15 @@
 
 package io.clientcore.tools.codegen.templating;
 
-import io.clientcore.tools.codegen.models.HttpRequestContext;
 import com.squareup.javapoet.MethodSpec;
-import java.util.stream.Stream;
+import io.clientcore.tools.codegen.models.HttpRequestContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -43,7 +44,7 @@ public class BodyContentTypeProcessorTest {
 
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("testMethod");
         processor.configureRequestWithBodyAndContentType(methodBuilder, body.getParameterType(), body.getContentType(),
-            body.getParameterName());
+            body.getParameterName(), false);
         MethodSpec methodSpec = methodBuilder.build();
 
         // Expected output
@@ -63,7 +64,7 @@ public class BodyContentTypeProcessorTest {
     public void testConfigureRequestWithBodyAndParameterType(HttpRequestContext.Body body, String expectedOutput) {
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("testMethod");
         processor.configureRequestWithBodyAndContentType(methodBuilder, body.getParameterType(), body.getContentType(),
-            body.getParameterName());
+            body.getParameterName(), false);
         MethodSpec methodSpec = methodBuilder.build();
 
         // Actual output
@@ -82,7 +83,7 @@ public class BodyContentTypeProcessorTest {
 
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("testMethod");
         processor.configureRequestWithBodyAndContentType(methodBuilder, context.getBody().getParameterType(),
-            context.getBody().getContentType(), context.getBody().getParameterName());
+            context.getBody().getContentType(), context.getBody().getParameterName(), false);
         MethodSpec methodSpec = methodBuilder.build();
 
         // Expected output
@@ -95,6 +96,39 @@ public class BodyContentTypeProcessorTest {
 
         assertTrue(actualOutput.contains(expectedOutput));
     }
+
+    @Test
+    public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
+        // Create a new HttpRequestContext
+        HttpRequestContext context = new HttpRequestContext();
+        byte[] bytes = "hello".getBytes();
+
+        // Set the body
+        // BodyParam annotation is set to "application/octet-stream"
+        context.setBody(new HttpRequestContext.Body("application/octet-stream", "ByteBuffer", "request"));
+
+        // Add headers
+        // Content-Type header is set to "application/json"
+        context.addHeader("Content-Type", "application/json");
+        context.addHeader("Content-Length", String.valueOf((long) bytes.length));
+        HttpRequestContext.Body body = context.getBody();
+
+        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("testMethod");
+        processor.configureRequestWithBodyAndContentType(methodBuilder, body.getParameterType(), body.getContentType(),
+            body.getParameterName(), true);
+        MethodSpec methodSpec = methodBuilder.build();
+
+        // Expected output
+        String expectedOutput =
+            "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromBytes(((ByteBuffer) request).array()));";
+
+        // Actual output
+        String actualOutput = methodSpec.toString();
+
+        assertTrue(actualOutput.contains(expectedOutput));
+        // Verify headers in a separate test request content type header is set to application/octet-stream
+    }
+
 
     private static Stream<Arguments> knownContentTypesProvider() {
         return Stream.of(

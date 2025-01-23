@@ -3,21 +3,24 @@
 
 package io.clientcore.tools.codegen.templating;
 
-import io.clientcore.tools.codegen.models.TemplateInput;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.tools.codegen.models.TemplateInput;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.annotation.processing.Filer;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Modifier;
+import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import javax.annotation.processing.Filer;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Modifier;
-import javax.tools.JavaFileObject;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,6 +40,8 @@ public class HttpPipelineBuilderMethodTest {
     private JavaPoetTemplateProcessor processor;
     private ProcessingEnvironment processingEnv;
     private TemplateInput templateInput;
+    private final ClassName CLIENT_LOGGER_NAME = ClassName.bestGuess(ClientLogger.class.getName());
+    private final ClassName HTTP_PIPELINE = ClassName.bestGuess(HttpPipeline.class.getName());
 
     @BeforeEach
     public void setUp() {
@@ -81,7 +86,7 @@ public class HttpPipelineBuilderMethodTest {
         MethodSpec method = processor.getPipelineMethod();
         assertEquals("getPipeline", method.name);
         assertEquals(Modifier.PUBLIC, method.modifiers.iterator().next());
-        assertEquals(processor.HTTP_PIPELINE, method.returnType);
+        assertEquals(HTTP_PIPELINE, method.returnType);
     }
 
     @Test
@@ -100,24 +105,11 @@ public class HttpPipelineBuilderMethodTest {
     }
 
     @Test
-    public void testServiceImplConstructorGeneration() {
-        MethodSpec constructor = processor.getServiceImplConstructor(PACKAGE_NAME,
-            SERVICE_INTERFACE_SHORT_NAME);
-        assertEquals(Modifier.PUBLIC, constructor.modifiers.iterator().next());
-        assertEquals(4, constructor.parameters.size());
-        assertTrue(constructor.code.toString().contains("this.defaultPipeline = defaultPipeline"));
-        assertTrue(constructor.code.toString().contains("this.serializer = serializer"));
-        assertTrue(constructor.code.toString().contains("this.endpoint = endpoint"));
-        assertTrue(constructor.code.toString().contains("this.apiVersion = serviceVersion.getVersion()"));
-        assertTrue(constructor.code.toString().contains("this.serviceVersion = serviceVersion"));
-    }
-
-    @Test
     public void testLoggerFieldGeneration() {
         FieldSpec loggerField = processor.getLoggerField(PACKAGE_NAME, SERVICE_INTERFACE_SHORT_NAME);
         assertEquals(new HashSet<>(Arrays.asList(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)),
             loggerField.modifiers);
-        assertEquals(processor.CLIENTLOGGER_NAME, loggerField.type);
+        assertEquals(CLIENT_LOGGER_NAME, loggerField.type);
         assertEquals("LOGGER", loggerField.name);
         assertTrue(loggerField.initializer.toString().contains("new io.clientcore.core.instrumentation.logging.ClientLogger(com.example.ExampleClientServiceImpl.class)"));
     }

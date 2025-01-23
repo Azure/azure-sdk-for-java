@@ -7,6 +7,9 @@ import io.clientcore.tools.codegen.models.TemplateInput;
 
 import javax.annotation.processing.ProcessingEnvironment;
 
+/**
+ * Interface for processing templates.
+ */
 public interface TemplateProcessor {
     static TemplateProcessor getInstance() {
         return new JavaPoetTemplateProcessor();

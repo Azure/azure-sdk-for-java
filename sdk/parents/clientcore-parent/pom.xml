@@ -94,7 +94,6 @@
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
     <revapi.skip>false</revapi.skip>
-
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
 
@@ -239,11 +238,6 @@
       <classifier>runtime</classifier>
       <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.clientcore</groupId>
-      <artifactId>annotation-processor</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
     </dependency>
   </dependencies>
 
@@ -1216,6 +1210,10 @@
                 <arg>-Xlint:removal</arg>
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
+              <generatedSourcesDirectory>${project.build.directory}/generated-test-sources/</generatedSourcesDirectory>
+              <annotationProcessors>
+                <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
+              </annotationProcessors>
             </configuration>
             <executions>
               <!-- compile first with VM's default Java version -->
@@ -1227,10 +1225,6 @@
                 </goals>
                 <configuration>
                   <release>${java.vm.specification.version}</release>
-                  <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
-                  <annotationProcessors>
-                    <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
-                  </annotationProcessors>
                 </configuration>
               </execution>
 
@@ -1264,10 +1258,6 @@
                   <excludes>
                     <exclude>module-info.java</exclude>
                   </excludes>
-                  <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
-                  <annotationProcessors>
-                    <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
-                  </annotationProcessors>
                 </configuration>
               </execution>
 
@@ -1300,6 +1290,25 @@
                     <testExclude>module-info.java</testExclude>
                   </testExcludes>
                   <useModulePath>false</useModulePath>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>add-test-sources</id>
+                <phase>generate-test-sources</phase>
+                <goals>
+                  <goal>add-test-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>${project.build.directory}/generated-sources/</source>
+                  </sources>
                 </configuration>
               </execution>
             </executions>
