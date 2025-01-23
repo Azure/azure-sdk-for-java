@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
  * Annotation processor that generates client code based on annotated interfaces.
  */
 @SupportedAnnotationTypes("io.clientcore.core.annotation.*")
-@SupportedSourceVersion(SourceVersion.RELEASE_17)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
 
     @Override
