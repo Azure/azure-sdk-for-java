@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.tools.codegen.utils;
+package io.clientcore.annotation.processor.utils;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;

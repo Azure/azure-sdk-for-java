@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.tools.codegen.utils;
+package io.clientcore.annotation.processor.utils;
 
-import io.clientcore.tools.codegen.exceptions.MissingSubstitutionException;
-import io.clientcore.tools.codegen.models.HttpRequestContext;
-import io.clientcore.tools.codegen.models.Substitution;
+import io.clientcore.annotation.processor.exceptions.MissingSubstitutionException;
+import io.clientcore.annotation.processor.models.HttpRequestContext;
+import io.clientcore.annotation.processor.models.Substitution;
 
 import java.util.Objects;
 import java.util.regex.Matcher;

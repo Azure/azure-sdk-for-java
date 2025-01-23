@@ -201,7 +201,7 @@
     "sdk/clientcore/core/**",
     "sdk/clientcore/http-okhttp3/**",
     "sdk/clientcore/annotation-processor/**",
-    "sdk/clientcore/annotation-processor-tests/**",
+    "sdk/clientcore/annotation-processor-test/**",
     "sdk/clientcore/tools/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",

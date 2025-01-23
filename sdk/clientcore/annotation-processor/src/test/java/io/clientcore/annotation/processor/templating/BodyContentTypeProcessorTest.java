@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.tools.codegen.templating;
+package io.clientcore.annotation.processor.templating;
 
 import com.squareup.javapoet.MethodSpec;
-import io.clientcore.tools.codegen.models.HttpRequestContext;
+import io.clientcore.annotation.processor.models.HttpRequestContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

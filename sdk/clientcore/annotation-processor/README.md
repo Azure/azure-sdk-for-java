@@ -26,7 +26,7 @@ The client-core annotation processor for introducing compile-time code generatio
         <configuration>
           <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
           <annotationProcessors>
-            <annotationProcessor>io.generation.tools.codegen.AnnotationProcessor</annotationProcessor>
+            <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
           </annotationProcessors>
         </configuration>
       </plugin>

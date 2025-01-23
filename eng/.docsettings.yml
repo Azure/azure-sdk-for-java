@@ -102,7 +102,7 @@ known_content_issues:
   - ['sdk/clientcore/tools/annotation-processor/README.md', '#3113']
   - ['sdk/clientcore/optional-dependency-tests/README.md', '#3113']
   - ['sdk/clientcore/annotation-processor/README.md', '#3113']
-  - ['sdk/clientcore/annotation-processor-tests/README.md', '#3113']
+  - ['sdk/clientcore/annotation-processor-test/README.md', '#3113']
   - ['sdk/core/azure-core-experimental/README.md', '#3113']
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-benchmark/README.md', '#3113']

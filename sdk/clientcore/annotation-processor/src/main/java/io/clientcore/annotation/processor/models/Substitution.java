@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.tools.codegen.models;
+package io.clientcore.annotation.processor.models;
 
 /**
  * A Substitution is a value that can be used to replace placeholder values in a URL. Placeholders look like:

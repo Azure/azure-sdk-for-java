@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.tools.codegen.exceptions;
+package io.clientcore.annotation.processor.exceptions;
 
 /**
  * Exception thrown when a substitution is missing from the template.

@@ -740,7 +740,7 @@
             </annotationProcessorPaths>
             <createMissingPackageInfoClass>false</createMissingPackageInfoClass>
             <annotationProcessors>
-              <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
+              <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
             </annotationProcessors>
             <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
           </configuration>
@@ -1159,7 +1159,7 @@
               <testTarget>1.8</testTarget>
               <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
               <annotationProcessors>
-                <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
+                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
               </annotationProcessors>
             </configuration>
           </plugin>
