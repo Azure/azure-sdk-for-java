@@ -149,7 +149,6 @@ public class AddTryCatchToMethodCallRecipe extends Recipe {
             J.Assignment dummyAssignment = (J.Assignment) _try.getBody().getStatements().get(1);
 
             if (_try.getCatches().isEmpty()) {
-                // The catch template was incorrect, recipe is unsafe.
                 return body;
             }
             // The original list of statements to alter
