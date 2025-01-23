@@ -3,6 +3,11 @@
 
 package io.clientcore.annotation.processor;
 
+import io.clientcore.annotation.processor.models.HttpRequestContext;
+import io.clientcore.annotation.processor.models.Substitution;
+import io.clientcore.annotation.processor.models.TemplateInput;
+import io.clientcore.annotation.processor.templating.TemplateProcessor;
+import io.clientcore.annotation.processor.utils.PathBuilder;
 import io.clientcore.core.annotation.ServiceInterface;
 import io.clientcore.core.http.annotation.BodyParam;
 import io.clientcore.core.http.annotation.HeaderParam;
@@ -20,17 +25,10 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.annotation.processor.models.HttpRequestContext;
-import io.clientcore.annotation.processor.models.Substitution;
-import io.clientcore.annotation.processor.models.TemplateInput;
-import io.clientcore.annotation.processor.templating.TemplateProcessor;
-import io.clientcore.annotation.processor.utils.PathBuilder;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -51,7 +49,6 @@ import java.util.stream.Collectors;
  * Annotation processor that generates client code based on annotated interfaces.
  */
 @SupportedAnnotationTypes("io.clientcore.core.annotation.*")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
 
     @Override
