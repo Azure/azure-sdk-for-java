@@ -42,9 +42,8 @@ public class AppConfigurationWatchAutoConfiguration {
         AppConfigurationReplicaClientFactory clientFactory = context
             .get(AppConfigurationReplicaClientFactory.class);
         ReplicaLookUp replicaLookUp = context.get(ReplicaLookUp.class);
-        AppConfigurationRefreshUtil refreshUtils = context.get(AppConfigurationRefreshUtil.class); 
 
         return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
-            appProperties.getDefaultMinBackoff(), replicaLookUp, refreshUtils);
+            appProperties.getDefaultMinBackoff(), replicaLookUp, new AppConfigurationRefreshUtil());
     }
 }
