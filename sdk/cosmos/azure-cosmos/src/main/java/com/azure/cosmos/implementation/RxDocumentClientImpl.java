@@ -2325,7 +2325,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return handlePerPartitionFeedback(getPointOperationResponseMonoWithE2ETimeout(
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
             nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(() ->
@@ -2446,7 +2446,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return rxDocumentServiceResponseMono;
     }
 
-    private <T> Mono<T> handlePerPartitionFeedback(
+    private <T> Mono<T> handleCircuitBreakingFeedbackForPointOperation(
         Mono<T> response,
         AtomicReference<RxDocumentServiceRequest> requestReference) {
 
@@ -2505,8 +2505,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         }
                     }
                 }
-
-                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(requestReference.get());
             });
     }
 
@@ -2635,7 +2633,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return handlePerPartitionFeedback(getPointOperationResponseMonoWithE2ETimeout(
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
                 ObservableHelper.inlineIfPossibleAsObs(
@@ -2770,7 +2768,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return handlePerPartitionFeedback(getPointOperationResponseMonoWithE2ETimeout(
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
                 ObservableHelper.inlineIfPossibleAsObs(
@@ -2861,7 +2859,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return handlePerPartitionFeedback(ObservableHelper.inlineIfPossibleAsObs(
+        return handleCircuitBreakingFeedbackForPointOperation(ObservableHelper.inlineIfPossibleAsObs(
             () -> replaceDocumentInternal(
                 document,
                 options,
@@ -3086,7 +3084,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return handlePerPartitionFeedback(
+        return handleCircuitBreakingFeedbackForPointOperation(
             getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
@@ -3286,7 +3284,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return handlePerPartitionFeedback(getPointOperationResponseMonoWithE2ETimeout(
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
                 ObservableHelper.inlineIfPossibleAsObs(
@@ -3464,7 +3462,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return handlePerPartitionFeedback(getPointOperationResponseMonoWithE2ETimeout(
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
             nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
@@ -4644,7 +4642,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, ResourceType.Document, OperationType.Batch);
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
-        return handlePerPartitionFeedback(
+        return handleCircuitBreakingFeedbackForPointOperation(
             getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
                 endToEndPolicyConfig,
