@@ -27,10 +27,10 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     /**
      * Format of User Agent
      */
-    public static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
+    private static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 
-    final TracingInfo tracingInfo;
+    private final TracingInfo tracingInfo;
 
     /**
      * App Configuration Http Pipeline Policy
@@ -40,6 +40,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         this.tracingInfo = tracingInfo;
     }
 
+    
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         Boolean watchRequests = (Boolean) context.getData("refresh").orElse(false);

@@ -37,7 +37,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
@@ -45,7 +44,6 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.identity.CredentialUnavailableException;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
 import reactor.core.publisher.Mono;
 
@@ -67,7 +65,10 @@ public class AppConfigurationReplicaClientTest {
     private Supplier<Mono<PagedResponse<ConfigurationSetting>>> supplierMock;
 
     @Mock
-    private Response<ConfigurationSetting> mockResponse;
+    private Response<ConfigurationSetting> configurationSettingResponse;
+
+    @Mock
+    private Response<ConfigurationSnapshot> snapshotResponseMock;
 
     private final String endpoint = "clientTest.azconfig.io";
 
@@ -87,20 +88,17 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void getWatchKeyTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         ConfigurationSetting watchKey = new ConfigurationSetting().setKey("watch").setLabel("\0");
 
-        when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.isNull(), Mockito.anyBoolean(),
-            Mockito.any())).thenReturn(mockResponse);
-        when(mockResponse.getValue()).thenReturn(watchKey);
+        when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.any(), Mockito.anyBoolean(),
+            Mockito.any())).thenReturn(configurationSettingResponse);
+        when(configurationSettingResponse.getValue()).thenReturn(watchKey);
 
-        //assertEquals(watchKey, client.getWatchKey("watch", "\0", false));
+        assertEquals(watchKey, client.getWatchKey("watch", "\0", false));
 
-        when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.isNull(), Mockito.anyBoolean(),
-            Mockito.any())).thenReturn(mockResponse);
-        when(mockResponse.getValue()).thenThrow(exceptionMock);
+        when(configurationSettingResponse.getValue()).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
         assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", false));
@@ -114,15 +112,14 @@ public class AppConfigurationReplicaClientTest {
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class, () -> client.getWatchKey("watch", "\0", false));
 
-        when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.isNull(), Mockito.anyBoolean(),
+        when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.any(), Mockito.anyBoolean(),
             Mockito.any())).thenThrow(new UncheckedIOException(new UnknownHostException()));
         assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", false));
     }
 
     @Test
     public void listSettingsTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         ConfigurationSetting configurationSetting = new ConfigurationSetting().setKey("test-key");
         List<ConfigurationSetting> configurations = List.of(configurationSetting);
@@ -154,8 +151,7 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void listFeatureFlagsTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         FeatureFlagConfigurationSetting featureFlag = new FeatureFlagConfigurationSetting("Alpha", false);
         List<ConfigurationSetting> configurations = List.of(featureFlag);
@@ -192,8 +188,7 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void listSettingsUnknownHostTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
             .thenThrow(new UncheckedIOException(new UnknownHostException()));
@@ -202,8 +197,7 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void listSettingsNoCredentialTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
             .thenThrow(new CredentialUnavailableException("No Credential"));
@@ -213,12 +207,9 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void getWatchNoCredentialTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
-        when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.isNull(), Mockito.anyBoolean(),
-            Mockito.any())).thenReturn(mockResponse);
-        when(mockResponse.getValue())
+        when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.any(), Mockito.anyBoolean(), Mockito.any()))
             .thenThrow(new CredentialUnavailableException("No Credential"));
 
         assertThrows(CredentialUnavailableException.class, () -> client.getWatchKey("key", "label", false));
@@ -226,8 +217,7 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void backoffTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         // Setups in the past and with no errors.
         assertTrue(client.getBackoffEndTime().isBefore(Instant.now()));
@@ -255,55 +245,57 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void listSettingSnapshotTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         List<ConfigurationSetting> configurations = new ArrayList<>();
         ConfigurationSnapshot snapshot = new ConfigurationSnapshot(null);
         snapshot.setSnapshotComposition(SnapshotComposition.KEY);
 
-        when(clientMock.getSnapshot(Mockito.any())).thenReturn(snapshot);
+        when(clientMock.getSnapshotWithResponse(Mockito.any(), Mockito.any(), Mockito.any()))
+            .thenReturn(snapshotResponseMock);
+        when(snapshotResponseMock.getValue()).thenReturn(snapshot);
         when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any())).thenReturn(settingsMock);
 
-        assertEquals(configurations, client.listSettingSnapshot("SnapshotName"));
+        assertEquals(configurations, client.listSettingSnapshot("SnapshotName", false));
 
         when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any())).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName"));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", false));
 
         when(responseMock.getStatusCode()).thenReturn(408);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName"));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", false));
 
         when(responseMock.getStatusCode()).thenReturn(500);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName"));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", false));
 
         when(responseMock.getStatusCode()).thenReturn(499);
-        assertThrows(HttpResponseException.class, () -> client.listSettingSnapshot("SnapshotName"));
+        assertThrows(HttpResponseException.class, () -> client.listSettingSnapshot("SnapshotName", false));
 
-        when(clientMock.getSnapshot(Mockito.any())).thenThrow(new UncheckedIOException(new UnknownHostException()));
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName"));
+        when(clientMock.getSnapshotWithResponse(Mockito.any(), Mockito.any(), Mockito.any()))
+            .thenThrow(new UncheckedIOException(new UnknownHostException()));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", false));
     }
 
     @Test
     public void listSettingSnapshotInvalidCompositionTypeTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         ConfigurationSnapshot snapshot = new ConfigurationSnapshot(null);
         snapshot.setSnapshotComposition(SnapshotComposition.KEY_LABEL);
 
-        when(clientMock.getSnapshot(Mockito.any())).thenReturn(snapshot);
+        when(clientMock.getSnapshotWithResponse(Mockito.any(), Mockito.any(), Mockito.any()))
+            .thenReturn(snapshotResponseMock);
+        when(snapshotResponseMock.getValue()).thenReturn(snapshot);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-            () -> client.listSettingSnapshot("SnapshotName"));
+            () -> client.listSettingSnapshot("SnapshotName", false));
         assertEquals("Snapshot SnapshotName needs to be of type Key.", e.getMessage());
     }
 
     @Test
     public void updateSyncTokenTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
         String fakeToken = "fake_sync_token";
 
         client.updateSyncToken(fakeToken);
@@ -316,8 +308,7 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void checkWatchKeysTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         FeatureFlagConfigurationSetting featureFlag = new FeatureFlagConfigurationSetting("Alpha", false);
         List<ConfigurationSetting> configurations = List.of(featureFlag);

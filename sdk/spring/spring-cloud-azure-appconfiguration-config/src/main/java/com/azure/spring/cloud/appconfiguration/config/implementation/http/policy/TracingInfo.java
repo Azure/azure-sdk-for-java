@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.http.policy;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 
 import org.springframework.util.StringUtils;
@@ -14,8 +13,6 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.RequestType
 
 public class TracingInfo {
 
-    private boolean isDev = false;
-
     private boolean isKeyVaultConfigured = false;
 
     private int replicaCount;
@@ -24,17 +21,15 @@ public class TracingInfo {
 
     private final Configuration configuration;
 
-    public TracingInfo(boolean isDev, boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
-        this.isDev = isDev;
+    public TracingInfo(boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
         this.isKeyVaultConfigured = isKeyVaultConfigured;
         this.replicaCount = replicaCount;
         this.featureFlagTracing = new FeatureFlagTracing();
         this.configuration = configuration;
     }
 
-    public String getValue(boolean watchRequests) {
-        String track = configuration
-            .get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
+    String getValue(boolean watchRequests) {
+        String track = configuration.get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
         if (track != null && Boolean.valueOf(track)) {
             return "";
         }
@@ -51,10 +46,6 @@ public class TracingInfo {
         String hostType = getHostType();
         if (!hostType.isEmpty()) {
             sb.append(",").append(RequestTracingConstants.HOST_TYPE_KEY).append("=").append(hostType);
-        }
-
-        if (isDev) {
-            sb.append(",Env=").append(DEV_ENV_TRACING);
         }
         if (isKeyVaultConfigured) {
             sb.append(",").append(KEY_VAULT_CONFIGURED_TRACING);
