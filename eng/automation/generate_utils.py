@@ -20,7 +20,7 @@ from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
-from utils import set_or_increase_version
+from utils import set_or_default_version
 
 os.chdir(pwd)
 
@@ -414,7 +414,7 @@ def generate_typespec_project(
                     # clear existing generated source code, and regenerate
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
-                    _, current_version = set_or_increase_version(sdk_root, group_id, module, version=version)
+                    _, current_version = set_or_default_version(sdk_root, group_id, module, version=version)
                     tsp_cmd.append("--emitter-options")
                     tsp_cmd.append(f'package-version={current_version}')
                     # regenerate
