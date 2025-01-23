@@ -478,7 +478,7 @@ io.clientcore:http-okhttp3;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:annotation-processor;1.0.0-beta.1;1.0.0-beta.1
-io.clientcore:annotation-processor-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
+io.clientcore:annotation-processor-tests;1.0.0-beta.1;1.0.0-beta.1
 
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current

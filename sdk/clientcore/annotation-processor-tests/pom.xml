@@ -15,7 +15,7 @@
   <groupId>io.clientcore</groupId>
   <artifactId>annotation-processor-tests</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor-dependency-tests;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor-tests;current} -->
 
   <name>Java Core library tests for annotation-processor features.</name>
   <description>Tests that validate features of the annotation-processor tooling.</description>

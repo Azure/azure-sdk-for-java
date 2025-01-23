@@ -16,4 +16,4 @@ Tests that validate annotation-processor features of generating Service Interfac
 
 <!-- links -->
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%clientcore%2Fannotation-processor-dependency-tests%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%clientcore%2Fannotation-processor-tests%2FREADME.png)

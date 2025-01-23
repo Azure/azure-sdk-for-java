@@ -11,7 +11,7 @@ The client-core annotation processor for introducing compile-time code generatio
     <dependency>
         <groupId>io.clientcore</groupId>
         <artifactId>annotation-processor</artifactId>
-        <version>1.0.0.beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+        <version>1.0.0.beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;dependency} -->
         <scope>provided</scope>
     </dependency>
    </dependencies>
@@ -22,7 +22,7 @@ The client-core annotation processor for introducing compile-time code generatio
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
           <annotationProcessors>

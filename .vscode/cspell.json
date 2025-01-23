@@ -200,6 +200,8 @@
     "sdk/loadtesting/azure-developer-loadtesting/**",
     "sdk/clientcore/core/**",
     "sdk/clientcore/http-okhttp3/**",
+    "sdk/clientcore/annotation-processor/**",
+    "sdk/clientcore/annotation-processor-tests/**",
     "sdk/clientcore/tools/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
