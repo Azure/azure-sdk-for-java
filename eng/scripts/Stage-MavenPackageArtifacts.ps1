@@ -16,7 +16,7 @@ if ($Artifacts -eq $null) {
   $Artifacts = @()
 }
 
-if ($ArtifactsList.Count -eq 0) {
+if ($Artifacts.Count -eq 0) {
   if (-not $PackageInfoDir -or (-not (Test-Path -Path $PackageInfoDir))) {
     LogError "Artifacts list was empty and PackageInfoDir was null or incorrect."
     exit(1)
