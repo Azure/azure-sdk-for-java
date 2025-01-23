@@ -37,7 +37,7 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
     private TypeSpec.Builder classBuilder;
     final ClassName HTTP_PIPELINE = ClassName.get("io.clientcore.core.http.pipeline", "HttpPipeline");
     static ClassName SERVICE_VERSION_TYPE;
-    final ClassName CLIENTLOGGER_NAME = ClassName.get("io.clientcore.core.util", "ClientLogger");
+    final ClassName CLIENTLOGGER_NAME = ClassName.get("io.clientcore.core.instrumentation.logging", "ClientLogger");
 
     @Override
     public void process(TemplateInput templateInput, ProcessingEnvironment processingEnv) {

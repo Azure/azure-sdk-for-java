@@ -5,14 +5,13 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
-import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
@@ -76,7 +75,7 @@ public class HttpInstrumentationPolicyTests {
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
     private OpenTelemetry openTelemetry;
-    private InstrumentationOptions<OpenTelemetry> otelOptions;
+    private HttpInstrumentationOptions otelOptions;
 
     @BeforeEach
     public void setUp() {
@@ -84,7 +83,7 @@ public class HttpInstrumentationPolicyTests {
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        otelOptions = new HttpInstrumentationOptions().setTelemetryProvider(openTelemetry);
     }
 
     @AfterEach
@@ -98,15 +97,14 @@ public class HttpInstrumentationPolicyTests {
     public void simpleRequestIsRecorded(int statusCode) throws IOException {
         AtomicReference<Span> current = new AtomicReference<>();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
-            .httpClient(request -> {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions)).httpClient(request -> {
                 assertStartAttributes((ReadableSpan) Span.current(), request.getHttpMethod(), request.getUri());
                 assertNull(request.getHeaders().get(TRACESTATE));
                 assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
                 current.set(Span.current());
                 return new MockHttpResponse(request, statusCode);
-            })
-            .build();
+            }).build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/")).close();
         assertNotNull(exporter.getFinishedSpanItems());
@@ -127,7 +125,7 @@ public class HttpInstrumentationPolicyTests {
     @ParameterizedTest
     @ValueSource(ints = { 400, 404, 500, 503 })
     public void errorResponseIsRecorded(int statusCode) throws IOException {
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions))
             .httpClient(request -> new MockHttpResponse(request, statusCode))
             .build();
 
@@ -152,17 +150,17 @@ public class HttpInstrumentationPolicyTests {
         try (Scope scope = testSpan.makeCurrent()) {
             AtomicInteger count = new AtomicInteger(0);
 
-            HttpPipeline pipeline = new HttpPipelineBuilder()
-                .policies(new HttpRetryPolicy(), new HttpInstrumentationPolicy(otelOptions, null))
-                .httpClient(request -> {
-                    assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
-                    if (count.getAndIncrement() == 0) {
-                        throw new UnknownHostException("test exception");
-                    } else {
-                        return new MockHttpResponse(request, 200);
-                    }
-                })
-                .build();
+            HttpPipeline pipeline
+                = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new HttpInstrumentationPolicy(otelOptions))
+                    .httpClient(request -> {
+                        assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
+                        if (count.getAndIncrement() == 0) {
+                            throw new UnknownHostException("test exception");
+                        } else {
+                            return new MockHttpResponse(request, 200);
+                        }
+                    })
+                    .build();
 
             pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param"))
                 .close();
@@ -195,16 +193,14 @@ public class HttpInstrumentationPolicyTests {
             .addSpanProcessor(SimpleSpanProcessor.create(exporter))
             .build();
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(sampleNone).build();
-        InstrumentationOptions<OpenTelemetry> otelOptions
-            = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        HttpInstrumentationOptions otelOptions = new HttpInstrumentationOptions().setTelemetryProvider(openTelemetry);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
-            .httpClient(request -> {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions)).httpClient(request -> {
                 assertTrue(Span.current().getSpanContext().isValid());
                 assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
                 return new MockHttpResponse(request, 200);
-            })
-            .build();
+            }).build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
         assertNotNull(exporter.getFinishedSpanItems());
@@ -218,13 +214,12 @@ public class HttpInstrumentationPolicyTests {
             = SpanContext.create(IdGenerator.random().generateTraceId(), IdGenerator.random().generateSpanId(),
                 TraceFlags.getSampled(), TraceState.builder().put("key", "value").build());
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
-            .httpClient(request -> {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions)).httpClient(request -> {
                 assertEquals("key=value", request.getHeaders().get(TRACESTATE).getValue());
                 assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
                 return new MockHttpResponse(request, 200);
-            })
-            .build();
+            }).build();
 
         try (Scope scope = Span.wrap(parentContext).makeCurrent()) {
             pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
@@ -259,15 +254,13 @@ public class HttpInstrumentationPolicyTests {
             .setPropagators(ContextPropagators.create(testPropagator))
             .build();
 
-        InstrumentationOptions<OpenTelemetry> otelOptions
-            = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        HttpInstrumentationOptions otelOptions = new HttpInstrumentationOptions().setTelemetryProvider(openTelemetry);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
-            .httpClient(request -> {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions)).httpClient(request -> {
                 assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
                 return new MockHttpResponse(request, 200);
-            })
-            .build();
+            }).build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
     }
@@ -275,11 +268,10 @@ public class HttpInstrumentationPolicyTests {
     @Test
     public void exceptionIsRecorded() {
         SocketException exception = new SocketException("test exception");
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
-            .httpClient(request -> {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions)).httpClient(request -> {
                 throw exception;
-            })
-            .build();
+            }).build();
 
         assertThrows(UncheckedIOException.class,
             () -> pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/")).close());
@@ -295,10 +287,10 @@ public class HttpInstrumentationPolicyTests {
 
     @Test
     public void tracingIsDisabledOnInstance() throws IOException {
-        InstrumentationOptions<OpenTelemetry> options
-            = new InstrumentationOptions<OpenTelemetry>().setTracingEnabled(false).setProvider(openTelemetry);
+        HttpInstrumentationOptions options
+            = new HttpInstrumentationOptions().setTracingEnabled(false).setTelemetryProvider(openTelemetry);
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(options, null)).httpClient(request -> {
+            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(options)).httpClient(request -> {
                 assertFalse(Span.current().getSpanContext().isValid());
                 assertFalse(Span.current().isRecording());
                 assertNull(request.getHeaders().get(TRACEPARENT));
@@ -313,7 +305,7 @@ public class HttpInstrumentationPolicyTests {
 
     @Test
     public void userAgentIsRecorded() throws IOException {
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions))
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
@@ -332,9 +324,8 @@ public class HttpInstrumentationPolicyTests {
 
     @Test
     public void enrichSpans() throws IOException {
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
-
-        HttpInstrumentationPolicy httpInstrumentationPolicy = new HttpInstrumentationPolicy(otelOptions, logOptions);
+        HttpInstrumentationPolicy httpInstrumentationPolicy = new HttpInstrumentationPolicy(
+            otelOptions.setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS));
 
         HttpPipelinePolicy enrichingPolicy = (request, next) -> {
             io.clientcore.core.instrumentation.tracing.Span span
@@ -371,7 +362,7 @@ public class HttpInstrumentationPolicyTests {
         Span testSpan = testTracer.spanBuilder("test").startSpan();
 
         try (Scope scope = testSpan.makeCurrent()) {
-            HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
+            HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions))
                 .httpClient(request -> new MockHttpResponse(request, 200))
                 .build();
 
@@ -395,7 +386,7 @@ public class HttpInstrumentationPolicyTests {
         Tracer testTracer = tracerProvider.get("test");
         Span testSpan = testTracer.spanBuilder("test").startSpan();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions))
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
@@ -417,11 +408,10 @@ public class HttpInstrumentationPolicyTests {
 
     @Test
     public void customUrlRedaction() throws IOException {
-        HttpLogOptions logOptions = new HttpLogOptions().setAllowedQueryParamNames(Collections.singleton("key1"));
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, logOptions))
-                .httpClient(request -> new MockHttpResponse(request, 200))
-                .build();
+        otelOptions.setAllowedQueryParamNames(Collections.singleton("key1"));
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions))
+            .httpClient(request -> new MockHttpResponse(request, 200))
+            .build();
 
         pipeline
             .send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param&key1=value1"))
@@ -446,7 +436,7 @@ public class HttpInstrumentationPolicyTests {
 
         requestOptions.setInstrumentationContext(parent.getInstrumentationContext());
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions, null))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(otelOptions))
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 

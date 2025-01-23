@@ -90,7 +90,6 @@ extends:
           Location: 'westus2'
           CalledFromClient: true
           ServiceDirectory: identity
-          SupportedClouds: 'Public,UsGov,China'
           EnvVars:
             AZ_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
             AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET: $(AZURE-IDENTITY-MULTI-TENANT-CLIENT-SECRET)
