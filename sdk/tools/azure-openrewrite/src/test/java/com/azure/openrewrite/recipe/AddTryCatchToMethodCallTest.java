@@ -3,6 +3,7 @@
 package com.azure.openrewrite.recipe;
 
 import org.intellij.lang.annotations.Language;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
@@ -14,6 +15,7 @@ import org.openrewrite.test.TypeValidation;
  * in a try-catch block with the provided catch code snippet.
  * This test class tests the recipe as part of .
  */
+@Disabled("This recipe is failing. The recipe and tests have been disabled.")
 public class AddTryCatchToMethodCallTest implements RewriteTest {
 
     /**

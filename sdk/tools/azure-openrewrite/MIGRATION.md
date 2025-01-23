@@ -87,8 +87,3 @@ To run the unit tests for the OpenRewrite recipe, execute the following command:
 ```shell
 mvn:test
 ```
-
-
-
-
-

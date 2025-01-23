@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.openrewrite;
 
-import org.jetbrains.annotations.NotNull;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
@@ -25,7 +24,7 @@ public class RemoveFixedDelayRecipe extends Recipe {
      * @return A simple short description/name of the recipe
      */
     @Override
-    public @NotNull String getDisplayName() {
+    public String getDisplayName() {
         return "Removes imports and variable declarations for FixedDelayOptions";
     }
     /**
@@ -33,7 +32,7 @@ public class RemoveFixedDelayRecipe extends Recipe {
      * @return A short description of the recipe
      */
     @Override
-    public @NotNull String getDescription() {
+    public String getDescription() {
         return "This recipe removes any leftover imports and variables using FixedDelayOptions.";
     }
     /**
@@ -41,7 +40,7 @@ public class RemoveFixedDelayRecipe extends Recipe {
      * @return A TreeVisitor to visit the usages of FixedDelayOptions
      */
     @Override
-    public @NotNull TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new FixedDelayVisitor();
     }
     /**

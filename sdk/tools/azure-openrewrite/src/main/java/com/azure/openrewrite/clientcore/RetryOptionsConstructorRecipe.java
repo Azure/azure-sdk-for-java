@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.openrewrite.clientcore;
 
-import org.jetbrains.annotations.NotNull;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
@@ -37,7 +36,7 @@ public class RetryOptionsConstructorRecipe extends Recipe {
      * @return A simple short description/name of the recipe
      */
     @Override
-    public @NotNull String getDisplayName() {
+    public String getDisplayName() {
         return "Change RetryOptions constructor";
     }
     /**
@@ -45,7 +44,7 @@ public class RetryOptionsConstructorRecipe extends Recipe {
      * @return A short description of the recipe
      */
     @Override
-    public @NotNull String getDescription() {
+    public String getDescription() {
         return "This recipe changes the constructor for RetryOptions to HttpRetryOptions.\n" +
                 "This includes removing any references to FixedDelay and ExponentialDelay and changing\n" +
                 " * com.azure.core.http.policy.RetryOptions to io.clientcore.core.http.models.HttpRetryOptions.";
@@ -55,7 +54,7 @@ public class RetryOptionsConstructorRecipe extends Recipe {
      * @return A TreeVisitor to change RetryOptions constructor to HttpRetryOptions constructor
      */
     @Override
-    public @NotNull TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new RetryVisitor();
     }
     /**
@@ -120,7 +119,7 @@ public class RetryOptionsConstructorRecipe extends Recipe {
          * Method to change RetryOptions to HttpRetryOptions
          */
         @Override
-        public J.@NotNull Identifier visitIdentifier(J.@NotNull Identifier identifier, @NotNull ExecutionContext ctx) {
+        public J.Identifier visitIdentifier(J.Identifier identifier, ExecutionContext ctx) {
             J.Identifier visitedIdentifier = super.visitIdentifier(identifier, ctx);
             if (visitedIdentifier.getSimpleName().equals("RetryOptions")) {
                 return visitedIdentifier.withSimpleName("HttpRetryOptions");
@@ -132,7 +131,7 @@ public class RetryOptionsConstructorRecipe extends Recipe {
          * Method to change import to HttpRetryOptions
          */
         @Override
-        public J.@NotNull FieldAccess visitFieldAccess(J.@NotNull FieldAccess fieldAccess, @NotNull ExecutionContext ctx) {
+        public J.FieldAccess visitFieldAccess(J.FieldAccess fieldAccess, ExecutionContext ctx) {
             J.FieldAccess visitedFieldAccess = super.visitFieldAccess(fieldAccess, ctx);
             String fullyQualified = visitedFieldAccess.getTarget() + "." + visitedFieldAccess.getSimpleName();
             if (fullyQualified.equals("com.azure.core.http.policy.HttpRetryOptions")) {

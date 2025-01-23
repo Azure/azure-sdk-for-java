@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.openrewrite.clientcore;
 
-import org.jetbrains.annotations.NotNull;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
@@ -33,7 +32,7 @@ public class ContextRecipe extends Recipe {
      * @return A simple short description/name of the recipe
      */
     @Override
-    public @NotNull String getDisplayName() {
+    public String getDisplayName() {
         return "Change static field 'Context.NONE' to Method 'Context.none()'";
     }
     /**
@@ -41,7 +40,7 @@ public class ContextRecipe extends Recipe {
      * @return A short description of the recipe
      */
     @Override
-    public @NotNull String getDescription() {
+    public String getDescription() {
         return "This recipe changes any calls to Context.NONE to Context.none().\n" +
                 "It also changes the import statement of com.azure.core.util.Context to io.clientcore.core.util.Context.";
     }
@@ -50,7 +49,7 @@ public class ContextRecipe extends Recipe {
      * @return A TreeVisitor to visit the NONE identifier and change it to none()
      */
     @Override
-    public @NotNull TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new ChangeStaticFieldToMethodVisitor();
     }
     /**
@@ -61,7 +60,7 @@ public class ContextRecipe extends Recipe {
          * Method to change com.azure.core.util.Context to io.clientcore.core.util.Context
          */
         @Override
-        public J.@NotNull FieldAccess visitFieldAccess(J.@NotNull FieldAccess fieldAccess, @NotNull ExecutionContext ctx) {
+        public J.FieldAccess visitFieldAccess(J.FieldAccess fieldAccess, ExecutionContext ctx) {
             J.FieldAccess visitedFieldAccess = super.visitFieldAccess(fieldAccess, ctx);
             String fullyQualified = visitedFieldAccess.getTarget() + "." + visitedFieldAccess.getSimpleName();
             if (fullyQualified.equals("com.azure.core.http.rest.RequestOptions")) {

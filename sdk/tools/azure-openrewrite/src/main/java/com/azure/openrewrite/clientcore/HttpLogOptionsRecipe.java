@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.openrewrite.clientcore;
 
-import org.jetbrains.annotations.NotNull;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
@@ -36,7 +35,7 @@ public class HttpLogOptionsRecipe extends Recipe {
      * @return A simple short description/name of the recipe
      */
     @Override
-    public @NotNull String getDisplayName() {
+    public String getDisplayName() {
         return "Migrate the HttpLogOptions and HttpLogDetail usages";
     }
     /**
@@ -44,7 +43,7 @@ public class HttpLogOptionsRecipe extends Recipe {
      * @return A short description of the recipe
      */
     @Override
-    public @NotNull String getDescription() {
+    public String getDescription() {
         return "This recipe changes any usages of HttpLogOptions from azure core v1 to its respective type from azure core v2.\n" +
                 "It also migrates any usages of HttpLogDetailLevel to azure core v2.";
     }
@@ -53,7 +52,7 @@ public class HttpLogOptionsRecipe extends Recipe {
      * @return A TreeVisitor to visit the usages of HttpLogOptions and HttpLogDetailLevel
      */
     @Override
-    public @NotNull TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new HttpLogOptionsVisitor();
     }
     /**
@@ -64,7 +63,7 @@ public class HttpLogOptionsRecipe extends Recipe {
          * Method to change usage of the HttpLogDetailLevel while also changing the HttpLogOptions Type
          */
         @Override
-        public J.@NotNull FieldAccess visitFieldAccess(J.@NotNull FieldAccess fieldAccess, @NotNull ExecutionContext ctx) {
+        public J.FieldAccess visitFieldAccess(J.FieldAccess fieldAccess, ExecutionContext ctx) {
             J.FieldAccess visitedFieldAccess = super.visitFieldAccess(fieldAccess, ctx);
             String fullyQualified = visitedFieldAccess.getTarget() + "." + visitedFieldAccess.getSimpleName();
             if (fullyQualified.equals("com.azure.core.http.policy.HttpLogOptions")) {

@@ -6,15 +6,10 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-openrewrite</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-beta.1</version>
 
-    <name>azure-openrewrite</name>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+    <name>Microsoft Azure OpenRewrite Plugin library for Java</name>
+    <description>This module contains OpenRewrite recipe for migrating to next generation Microsoft Azure client libraries.</description>
 
     <dependencyManagement>
         <dependencies>
@@ -108,8 +103,15 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-translation-text</artifactId>
-            <version>1.0.0-beta.1</version>
+            <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-ai-translation-text;dependency} -->
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob</artifactId>
+          <version>12.29.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+          <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.openrewrite;
 
-import org.jetbrains.annotations.NotNull;
 import org.openrewrite.Cursor;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
@@ -50,17 +49,17 @@ import java.util.Set;
 public class TypeReferenceRecipe extends Recipe {
 
     @Override
-    public @NotNull String getDisplayName() {
+    public String getDisplayName() {
         return "Convert TypeReference to ParameterizedType and remove imports";
     }
 
     @Override
-    public @NotNull String getDescription() {
+    public String getDescription() {
         return "This recipe converts TypeReference<> to ParameterizedType and removes the import statement for TypeReference.";
     }
 
     @Override
-    public @NotNull TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new ConvertTypeReferenceVisitor();
     }
 
@@ -70,7 +69,7 @@ public class TypeReferenceRecipe extends Recipe {
          * instantiation including override methods.
          * */
         @Override
-        public J.@NotNull NewClass visitNewClass(J.@NotNull NewClass newClass, @NotNull ExecutionContext ctx) {
+        public J.NewClass visitNewClass(J.NewClass newClass, ExecutionContext ctx) {
             J.NewClass visitedNewClass = super.visitNewClass(newClass, ctx);
 
             // Check if the TypeReference reference has already been transformed
@@ -140,7 +139,7 @@ public class TypeReferenceRecipe extends Recipe {
         private final Set<String> importSet = new HashSet<>();
 
         @Override
-        public J.@NotNull Import visitImport(J.@NotNull Import importStmt, @NotNull ExecutionContext ctx) {
+        public J.Import visitImport(J.Import importStmt, ExecutionContext ctx) {
             String importQualid = importStmt.getQualid().toString();
 
             // Add the import to the set and check if it already exists
@@ -170,7 +169,7 @@ public class TypeReferenceRecipe extends Recipe {
          * Method to visit variable declaration for TypeReference and make sure it is converted to java.lang.reflect.Type
          */
         @Override
-        public J.@NotNull VariableDeclarations visitVariableDeclarations(J.VariableDeclarations multiVariable, ExecutionContext executionContext) {
+        public J.VariableDeclarations visitVariableDeclarations(J.VariableDeclarations multiVariable, ExecutionContext executionContext) {
             J.VariableDeclarations visitedDeclarations = super.visitVariableDeclarations(multiVariable, executionContext);
             if (visitedDeclarations.toString().contains("TypeReference")
                     && visitedDeclarations.toString().contains("ParameterizedType")) {
@@ -184,7 +183,7 @@ public class TypeReferenceRecipe extends Recipe {
          * Method to visit BinaryData type and change it to the new version
          */
         @Override
-        public J.@NotNull FieldAccess visitFieldAccess(J.@NotNull FieldAccess fieldAccess, @NotNull ExecutionContext ctx) {
+        public J.FieldAccess visitFieldAccess(J.FieldAccess fieldAccess, ExecutionContext ctx) {
             J.FieldAccess fa = super.visitFieldAccess(fieldAccess, ctx);
             String fullyQualified = fa.getTarget() + "." + fa.getSimpleName();
             if (fullyQualified.equals("com.azure.core.util.BinaryData")) {

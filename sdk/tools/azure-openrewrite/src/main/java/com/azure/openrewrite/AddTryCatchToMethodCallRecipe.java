@@ -4,8 +4,6 @@ package com.azure.openrewrite;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.jetbrains.annotations.NotNull;
-
 
 import org.openrewrite.Cursor;
 import org.openrewrite.ExecutionContext;
@@ -89,12 +87,12 @@ public class AddTryCatchToMethodCallRecipe extends Recipe {
 
 
     @Override
-    public @NlsRewrite.DisplayName @NotNull String getDisplayName() {
+    public @NlsRewrite.DisplayName String getDisplayName() {
         return "Add try-catch to method";
     }
 
     @Override
-    public @NlsRewrite.Description @NotNull String getDescription() {
+    public @NlsRewrite.Description String getDescription() {
         return "Surrounds calls to the target method in a custom try-catch block.";
     }
 
@@ -104,7 +102,7 @@ public class AddTryCatchToMethodCallRecipe extends Recipe {
      * @return Returns the visitor that performs the checks and changes
      */
     @Override
-    public @NotNull TreeVisitor<?, ExecutionContext> getVisitor() {
+    public TreeVisitor<?, ExecutionContext> getVisitor() {
         return new AddTryCatchVisitor();
     }
 
@@ -119,7 +117,7 @@ public class AddTryCatchToMethodCallRecipe extends Recipe {
          * Overridden visitBlock method performs the changes to methods filtered by visitMethodCall.
          */
         @Override
-        public J.@NotNull Block visitBlock(J.@NotNull Block block, @NotNull ExecutionContext context) {
+        public J.Block visitBlock(J.Block block, ExecutionContext context) {
             J.Block body = super.visitBlock(block, context);
 
             // Get the method that needs to be changed
