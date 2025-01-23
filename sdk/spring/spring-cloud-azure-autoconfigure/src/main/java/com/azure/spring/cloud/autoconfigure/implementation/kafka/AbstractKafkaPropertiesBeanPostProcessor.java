@@ -78,8 +78,8 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
             ObjectProvider<AzureGlobalProperties> beanProvider = applicationContext.getBeanProvider(AzureGlobalProperties.class);
             azureGlobalProperties = beanProvider.getIfAvailable();
             if (azureGlobalProperties == null) {
-                LOGGER.debug("Not found AzureGlobalProperties bean, "
-                    + "Spring Cloud Azure does not perform JAAS enhancements on the {} bean.", beanName);
+                LOGGER.debug("Cannot find a bean of type AzureGlobalProperties, "
+                    + "Spring Cloud Azure will skip performing JAAS enhancements on the {} bean.", beanName);
                 return bean;
             }
 
