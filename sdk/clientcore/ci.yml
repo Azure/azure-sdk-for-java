@@ -61,3 +61,5 @@ extends:
     AdditionalModules:
       - name: optional-dependency-tests
         groupId: io.clientcore
+      - name: annotation-processor-tests
+        groupId: io.clientcore

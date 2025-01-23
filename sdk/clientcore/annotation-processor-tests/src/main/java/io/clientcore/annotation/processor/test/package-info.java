@@ -4,4 +4,4 @@
 /**
  * Package containing the implementation of the code generation.
  */
-package io.clientcore.tools.codegen;
+package io.clientcore.annotation.processor.test;

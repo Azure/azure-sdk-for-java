@@ -9,11 +9,11 @@
     <groupId>io.clientcore</groupId>
     <artifactId>clientcore-parent</artifactId>
     <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
-    <relativePath>../../../parents/clientcore-parent</relativePath>
+    <relativePath>../../parents/clientcore-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.clientcore</groupId>
-  <artifactId>annotation-processor-dependency-tests</artifactId>
+  <artifactId>annotation-processor-tests</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor-dependency-tests;current} -->
 

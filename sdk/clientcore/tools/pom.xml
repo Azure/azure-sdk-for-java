@@ -8,8 +8,4 @@
   <artifactId>clientcore-tools-parent</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version> <!-- Need not change for every release-->
-  <modules>
-    <module>annotation-processor</module>
-    <module>annotation-processor-dependency-tests</module>
-  </modules>
 </project>
