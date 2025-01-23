@@ -104,6 +104,20 @@ public final class Union {
 
     /**
      * Creates a new instance of {@link Union} with the provided types.
+     * <p>
+     * Currently, the types can be of type {@link Class} or {@link ParameterizedType}. If the type is a {@link Class},
+     * it represents a simple type. If the type is a {@link ParameterizedType}, it represents a generic type.
+     * For example, {@code List<String>} would be represented as {@code new GenericParameterizedType(List.class, String.class)}.
+     * </p>
+     *
+     * It throws {@link IllegalArgumentException} if:
+     * <ul>
+     *   <li>value is not of one of the types in the union,</li>
+     *   <li>value is null,</li>
+     *   <li>types array is null or empty,</li>
+     *   <li>types array contains a null value,</li>
+     *   <li>types array contains a type that is not of type {@link Class} or {@link ParameterizedType}.</li>
+     * </ul>
      *
      * @param types The types of the union.
      * @return A new instance of {@link Union}.
