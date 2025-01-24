@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.feature.management.models;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,6 +24,12 @@ public class Feature {
 
     @JsonProperty("conditions")
     private Conditions conditions = new Conditions();
+
+    @JsonProperty("allocation")
+    private Allocation allocation;
+    
+    @JsonProperty("variants")
+    private List<VariantReference> variants;
 
     /**
      * @return the id
@@ -82,5 +90,34 @@ public class Feature {
         this.conditions = conditions;
         return this;
     }
+  
+    /**
+     * @return the allocation
+     */
+    public Allocation getAllocation() {
+        return allocation;
+    }
 
+    /**
+     * @param allocation the allocation to set
+     */
+    public Feature setAllocation(Allocation allocation) {
+        this.allocation = allocation;
+        return this;
+    }
+
+    /**
+     * @return the variants
+     */
+    public List<VariantReference> getVariants() {
+        return variants;
+    }
+
+    /**
+     * @param variants the variants to set
+     */
+    public Feature setVariants(List<VariantReference> variants) {
+        this.variants = variants;
+        return this;
+    }
 }

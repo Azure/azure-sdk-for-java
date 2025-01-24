@@ -3,12 +3,9 @@
 
 package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
 
-import com.azure.spring.cloud.feature.management.implementation.models.Recurrence;
-import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
-import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePatternType;
-import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRangeType;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_RECURRENCE;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -16,9 +13,12 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_RECURRENCE;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
+import com.azure.spring.cloud.feature.management.implementation.models.Recurrence;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePatternType;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRangeType;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
 
 public class RecurrenceValidator {
     public static void validateSettings(TimeWindowFilterSettings settings) {

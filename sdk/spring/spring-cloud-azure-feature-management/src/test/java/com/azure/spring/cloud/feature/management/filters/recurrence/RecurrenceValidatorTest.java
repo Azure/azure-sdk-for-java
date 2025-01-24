@@ -3,15 +3,8 @@
 
 package com.azure.spring.cloud.feature.management.filters.recurrence;
 
-import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
-import com.azure.spring.cloud.feature.management.implementation.models.Recurrence;
-import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
-import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRange;
-import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.management.models.FilterParameters;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,8 +13,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
+import com.azure.spring.cloud.feature.management.implementation.models.Recurrence;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRange;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
+import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.management.models.FilterParameters;
 
 public class RecurrenceValidatorTest {
     private final String recurrencePatter = "Recurrence.Pattern";
