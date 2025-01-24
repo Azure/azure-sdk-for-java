@@ -26,7 +26,8 @@ public final class NetworkProfileTests {
     public void testSerialize() throws Exception {
         NetworkProfile model = new NetworkProfile()
             .withLoadBalancerProfile(new NetworkProfileLoadBalancerProfile().withCount(1372882397))
-            .withNetworkPolicy(NetworkPolicy.CALICO).withPodCidr("k");
+            .withNetworkPolicy(NetworkPolicy.CALICO)
+            .withPodCidr("k");
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
         Assertions.assertEquals(1372882397, model.loadBalancerProfile().count());
         Assertions.assertEquals(NetworkPolicy.CALICO, model.networkPolicy());

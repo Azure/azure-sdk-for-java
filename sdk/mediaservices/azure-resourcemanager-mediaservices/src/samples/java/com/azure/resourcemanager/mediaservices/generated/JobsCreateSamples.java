@@ -10,27 +10,30 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Jobs Create. */
+/**
+ * Samples for Jobs Create.
+ */
 public final class JobsCreateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-create.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-create.json
      */
     /**
      * Sample code: Create a Job.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
     public static void createAJob(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager
-            .jobs()
+        manager.jobs()
             .define("job1")
             .withExistingTransform("contosoresources", "contosomedia", "exampleTransform")
             .withInput(new JobInputAsset().withAssetName("job1-InputAsset"))
             .withOutputs(Arrays.asList(new JobOutputAsset().withAssetName("job1-OutputAsset")))
-            .withCorrelationData(mapOf("Key 2", "Value 2", "key1", "value1"))
+            .withCorrelationData(mapOf("Key 2", "fakeTokenPlaceholder", "key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -11,7 +11,8 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModelProperties;
 public final class CustomFormModelPropertiesHelper {
     private static CustomFormModelPropertiesAccessor accessor;
 
-    private CustomFormModelPropertiesHelper() { }
+    private CustomFormModelPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link CustomFormModelProperties} instance.

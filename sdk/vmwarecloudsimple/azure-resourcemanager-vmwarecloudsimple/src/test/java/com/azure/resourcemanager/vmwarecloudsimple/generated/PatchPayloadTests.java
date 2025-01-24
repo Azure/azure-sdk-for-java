@@ -13,23 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchPayload model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"ueluqhhahhxvrhmz\":\"sexso\",\"ughftqsx\":\"wpjgwws\",\"grjguufzd\":\"qxujxukndxd\"}}")
-                .toObject(PatchPayload.class);
-        Assertions.assertEquals("sexso", model.tags().get("ueluqhhahhxvrhmz"));
+        PatchPayload model = BinaryData.fromString("{\"tags\":{\"srzpgepqtybbww\":\"rutlwexxwlalniex\"}}")
+            .toObject(PatchPayload.class);
+        Assertions.assertEquals("rutlwexxwlalniex", model.tags().get("srzpgepqtybbww"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchPayload model =
-            new PatchPayload()
-                .withTags(mapOf("ueluqhhahhxvrhmz", "sexso", "ughftqsx", "wpjgwws", "grjguufzd", "qxujxukndxd"));
+        PatchPayload model = new PatchPayload().withTags(mapOf("srzpgepqtybbww", "rutlwexxwlalniex"));
         model = BinaryData.fromObject(model).toObject(PatchPayload.class);
-        Assertions.assertEquals("sexso", model.tags().get("ueluqhhahhxvrhmz"));
+        Assertions.assertEquals("rutlwexxwlalniex", model.tags().get("srzpgepqtybbww"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

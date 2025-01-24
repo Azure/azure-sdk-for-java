@@ -6,26 +6,26 @@ package com.azure.resourcemanager.automanage.generated;
 
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileAssignmentProperties;
 
-/** Samples for ConfigurationProfileAssignments CreateOrUpdate. */
+/**
+ * Samples for ConfigurationProfileAssignments CreateOrUpdate.
+ */
 public final class ConfigurationProfileAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/createOrUpdateConfigurationProfileAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * createOrUpdateConfigurationProfileAssignment.json
      */
     /**
      * Sample code: Create or update configuration profile assignment.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void createOrUpdateConfigurationProfileAssignment(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfileAssignments()
+    public static void
+        createOrUpdateConfigurationProfileAssignment(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfileAssignments()
             .define("default")
             .withExistingVirtualMachine("myResourceGroupName", "myVMName")
-            .withProperties(
-                new ConfigurationProfileAssignmentProperties()
-                    .withConfigurationProfile(
-                        "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"))
+            .withProperties(new ConfigurationProfileAssignmentProperties()
+                .withConfigurationProfile("/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"))
             .create();
     }
 }

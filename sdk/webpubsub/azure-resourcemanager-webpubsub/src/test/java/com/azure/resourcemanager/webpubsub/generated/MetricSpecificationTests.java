@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"cgyncocpecf\",\"displayName\":\"mcoo\",\"displayDescription\":\"xlzevgbmqjqabcy\",\"unit\":\"ivkwlzuvccfwnfnb\",\"aggregationType\":\"fionl\",\"fillGapWithZero\":\"x\",\"category\":\"qgtz\",\"dimensions\":[{\"name\":\"qbqqwxr\",\"displayName\":\"eallnwsubisnj\",\"internalName\":\"pmng\",\"toBeExportedForShoebox\":false},{\"name\":\"xaqwoochcbonqv\",\"displayName\":\"vlrxnjeaseiph\",\"internalName\":\"f\",\"toBeExportedForShoebox\":false},{\"name\":\"yyien\",\"displayName\":\"dlwtgrhpdj\",\"internalName\":\"umasxazjpq\",\"toBeExportedForShoebox\":false}]}")
-                .toObject(MetricSpecification.class);
+        MetricSpecification model = BinaryData.fromString(
+            "{\"name\":\"cgyncocpecf\",\"displayName\":\"mcoo\",\"displayDescription\":\"xlzevgbmqjqabcy\",\"unit\":\"ivkwlzuvccfwnfnb\",\"aggregationType\":\"fionl\",\"fillGapWithZero\":\"x\",\"category\":\"qgtz\",\"dimensions\":[{\"name\":\"qbqqwxr\",\"displayName\":\"eallnwsubisnj\",\"internalName\":\"pmng\",\"toBeExportedForShoebox\":false},{\"name\":\"xaqwoochcbonqv\",\"displayName\":\"vlrxnjeaseiph\",\"internalName\":\"f\",\"toBeExportedForShoebox\":false},{\"name\":\"yyien\",\"displayName\":\"dlwtgrhpdj\",\"internalName\":\"umasxazjpq\",\"toBeExportedForShoebox\":false}]}")
+            .toObject(MetricSpecification.class);
         Assertions.assertEquals("cgyncocpecf", model.name());
         Assertions.assertEquals("mcoo", model.displayName());
         Assertions.assertEquals("xlzevgbmqjqabcy", model.displayDescription());
@@ -33,33 +31,26 @@ public final class MetricSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecification model =
-            new MetricSpecification()
-                .withName("cgyncocpecf")
-                .withDisplayName("mcoo")
-                .withDisplayDescription("xlzevgbmqjqabcy")
-                .withUnit("ivkwlzuvccfwnfnb")
-                .withAggregationType("fionl")
-                .withFillGapWithZero("x")
-                .withCategory("qgtz")
-                .withDimensions(
-                    Arrays
-                        .asList(
-                            new Dimension()
-                                .withName("qbqqwxr")
-                                .withDisplayName("eallnwsubisnj")
-                                .withInternalName("pmng")
-                                .withToBeExportedForShoebox(false),
-                            new Dimension()
-                                .withName("xaqwoochcbonqv")
-                                .withDisplayName("vlrxnjeaseiph")
-                                .withInternalName("f")
-                                .withToBeExportedForShoebox(false),
-                            new Dimension()
-                                .withName("yyien")
-                                .withDisplayName("dlwtgrhpdj")
-                                .withInternalName("umasxazjpq")
-                                .withToBeExportedForShoebox(false)));
+        MetricSpecification model = new MetricSpecification().withName("cgyncocpecf")
+            .withDisplayName("mcoo")
+            .withDisplayDescription("xlzevgbmqjqabcy")
+            .withUnit("ivkwlzuvccfwnfnb")
+            .withAggregationType("fionl")
+            .withFillGapWithZero("x")
+            .withCategory("qgtz")
+            .withDimensions(Arrays.asList(
+                new Dimension().withName("qbqqwxr")
+                    .withDisplayName("eallnwsubisnj")
+                    .withInternalName("pmng")
+                    .withToBeExportedForShoebox(false),
+                new Dimension().withName("xaqwoochcbonqv")
+                    .withDisplayName("vlrxnjeaseiph")
+                    .withInternalName("f")
+                    .withToBeExportedForShoebox(false),
+                new Dimension().withName("yyien")
+                    .withDisplayName("dlwtgrhpdj")
+                    .withInternalName("umasxazjpq")
+                    .withToBeExportedForShoebox(false)));
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
         Assertions.assertEquals("cgyncocpecf", model.name());
         Assertions.assertEquals("mcoo", model.displayName());

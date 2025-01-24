@@ -138,29 +138,24 @@ public final class ScalingPlanPooledScheduleImpl
     }
 
     public ScalingPlanPooledSchedule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPooledSchedules()
-                .createWithResponse(
-                    resourceGroupName, scalingPlanName, scalingPlanScheduleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPooledSchedules()
+            .createWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScalingPlanPooledSchedule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPooledSchedules()
-                .createWithResponse(
-                    resourceGroupName, scalingPlanName, scalingPlanScheduleName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPooledSchedules()
+            .createWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ScalingPlanPooledScheduleImpl(
-        String name, com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
+    ScalingPlanPooledScheduleImpl(String name,
+        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = new ScalingPlanPooledScheduleInner();
         this.serviceManager = serviceManager;
         this.scalingPlanScheduleName = name;
@@ -172,58 +167,45 @@ public final class ScalingPlanPooledScheduleImpl
     }
 
     public ScalingPlanPooledSchedule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPooledSchedules()
-                .updateWithResponse(
-                    resourceGroupName,
-                    scalingPlanName,
-                    scalingPlanScheduleName,
-                    updateScalingPlanSchedule,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPooledSchedules()
+            .updateWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, updateScalingPlanSchedule,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScalingPlanPooledSchedule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPooledSchedules()
-                .updateWithResponse(
-                    resourceGroupName, scalingPlanName, scalingPlanScheduleName, updateScalingPlanSchedule, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPooledSchedules()
+            .updateWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, updateScalingPlanSchedule,
+                context)
+            .getValue();
         return this;
     }
 
-    ScalingPlanPooledScheduleImpl(
-        ScalingPlanPooledScheduleInner innerObject,
+    ScalingPlanPooledScheduleImpl(ScalingPlanPooledScheduleInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.scalingPlanName = Utils.getValueFromIdByName(innerObject.id(), "scalingPlans");
-        this.scalingPlanScheduleName = Utils.getValueFromIdByName(innerObject.id(), "pooledSchedules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.scalingPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scalingPlans");
+        this.scalingPlanScheduleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "pooledSchedules");
     }
 
     public ScalingPlanPooledSchedule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPooledSchedules()
-                .getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPooledSchedules()
+            .getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScalingPlanPooledSchedule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPooledSchedules()
-                .getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPooledSchedules()
+            .getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, context)
+            .getValue();
         return this;
     }
 
@@ -247,8 +229,8 @@ public final class ScalingPlanPooledScheduleImpl
         }
     }
 
-    public ScalingPlanPooledScheduleImpl withRampUpLoadBalancingAlgorithm(
-        SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm) {
+    public ScalingPlanPooledScheduleImpl
+        withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm) {
         if (isInCreateMode()) {
             this.innerModel().withRampUpLoadBalancingAlgorithm(rampUpLoadBalancingAlgorithm);
             return this;
@@ -288,8 +270,8 @@ public final class ScalingPlanPooledScheduleImpl
         }
     }
 
-    public ScalingPlanPooledScheduleImpl withPeakLoadBalancingAlgorithm(
-        SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm) {
+    public ScalingPlanPooledScheduleImpl
+        withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm) {
         if (isInCreateMode()) {
             this.innerModel().withPeakLoadBalancingAlgorithm(peakLoadBalancingAlgorithm);
             return this;
@@ -309,8 +291,8 @@ public final class ScalingPlanPooledScheduleImpl
         }
     }
 
-    public ScalingPlanPooledScheduleImpl withRampDownLoadBalancingAlgorithm(
-        SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm) {
+    public ScalingPlanPooledScheduleImpl
+        withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm) {
         if (isInCreateMode()) {
             this.innerModel().withRampDownLoadBalancingAlgorithm(rampDownLoadBalancingAlgorithm);
             return this;
@@ -390,8 +372,8 @@ public final class ScalingPlanPooledScheduleImpl
         }
     }
 
-    public ScalingPlanPooledScheduleImpl withOffPeakLoadBalancingAlgorithm(
-        SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm) {
+    public ScalingPlanPooledScheduleImpl
+        withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm) {
         if (isInCreateMode()) {
             this.innerModel().withOffPeakLoadBalancingAlgorithm(offPeakLoadBalancingAlgorithm);
             return this;

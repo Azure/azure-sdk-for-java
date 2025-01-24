@@ -5,105 +5,101 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.PrivateLinkScopedResource;
 import com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceCapping;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceEntityStatus;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceFeatures;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Workspace properties. */
+/**
+ * Workspace properties.
+ */
 @Fluent
-public final class WorkspaceProperties {
+public final class WorkspaceProperties implements JsonSerializable<WorkspaceProperties> {
     /*
      * The provisioning state of the workspace.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkspaceEntityStatus provisioningState;
 
     /*
      * This is a read-only property. Represents the ID associated with the workspace.
      */
-    @JsonProperty(value = "customerId", access = JsonProperty.Access.WRITE_ONLY)
     private String customerId;
 
     /*
      * The SKU of the workspace.
      */
-    @JsonProperty(value = "sku")
     private WorkspaceSku sku;
 
     /*
      * The workspace data retention in days. Allowed values are per pricing plan. See pricing tiers documentation for
      * details.
      */
-    @JsonProperty(value = "retentionInDays")
     private Integer retentionInDays;
 
     /*
      * The daily volume cap for ingestion.
      */
-    @JsonProperty(value = "workspaceCapping")
     private WorkspaceCapping workspaceCapping;
 
     /*
      * Workspace creation date.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private String createdDate;
 
     /*
      * Workspace modification date.
      */
-    @JsonProperty(value = "modifiedDate", access = JsonProperty.Access.WRITE_ONLY)
     private String modifiedDate;
 
     /*
      * The network access type for accessing Log Analytics ingestion.
      */
-    @JsonProperty(value = "publicNetworkAccessForIngestion")
     private PublicNetworkAccessType publicNetworkAccessForIngestion;
 
     /*
      * The network access type for accessing Log Analytics query.
      */
-    @JsonProperty(value = "publicNetworkAccessForQuery")
     private PublicNetworkAccessType publicNetworkAccessForQuery;
 
     /*
      * Indicates whether customer managed storage is mandatory for query management.
      */
-    @JsonProperty(value = "forceCmkForQuery")
     private Boolean forceCmkForQuery;
 
     /*
      * List of linked private link scope resources.
      */
-    @JsonProperty(value = "privateLinkScopedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateLinkScopedResource> privateLinkScopedResources;
 
     /*
      * Workspace features.
      */
-    @JsonProperty(value = "features")
     private WorkspaceFeatures features;
 
     /*
      * The resource ID of the default Data Collection Rule to use for this workspace. Expected format is -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/
+     * dataCollectionRules/{dcrName}.
      */
-    @JsonProperty(value = "defaultDataCollectionRuleResourceId")
     private String defaultDataCollectionRuleResourceId;
 
-    /** Creates an instance of WorkspaceProperties class. */
+    /**
+     * Creates an instance of WorkspaceProperties class.
+     */
     public WorkspaceProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the workspace.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkspaceEntityStatus provisioningState() {
@@ -112,7 +108,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the customerId property: This is a read-only property. Represents the ID associated with the workspace.
-     *
+     * 
      * @return the customerId value.
      */
     public String customerId() {
@@ -121,7 +117,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the sku property: The SKU of the workspace.
-     *
+     * 
      * @return the sku value.
      */
     public WorkspaceSku sku() {
@@ -130,7 +126,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the sku property: The SKU of the workspace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -142,7 +138,7 @@ public final class WorkspaceProperties {
     /**
      * Get the retentionInDays property: The workspace data retention in days. Allowed values are per pricing plan. See
      * pricing tiers documentation for details.
-     *
+     * 
      * @return the retentionInDays value.
      */
     public Integer retentionInDays() {
@@ -152,7 +148,7 @@ public final class WorkspaceProperties {
     /**
      * Set the retentionInDays property: The workspace data retention in days. Allowed values are per pricing plan. See
      * pricing tiers documentation for details.
-     *
+     * 
      * @param retentionInDays the retentionInDays value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -163,7 +159,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the workspaceCapping property: The daily volume cap for ingestion.
-     *
+     * 
      * @return the workspaceCapping value.
      */
     public WorkspaceCapping workspaceCapping() {
@@ -172,7 +168,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the workspaceCapping property: The daily volume cap for ingestion.
-     *
+     * 
      * @param workspaceCapping the workspaceCapping value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -183,7 +179,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the createdDate property: Workspace creation date.
-     *
+     * 
      * @return the createdDate value.
      */
     public String createdDate() {
@@ -192,7 +188,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the modifiedDate property: Workspace modification date.
-     *
+     * 
      * @return the modifiedDate value.
      */
     public String modifiedDate() {
@@ -201,7 +197,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the publicNetworkAccessForIngestion property: The network access type for accessing Log Analytics ingestion.
-     *
+     * 
      * @return the publicNetworkAccessForIngestion value.
      */
     public PublicNetworkAccessType publicNetworkAccessForIngestion() {
@@ -210,19 +206,19 @@ public final class WorkspaceProperties {
 
     /**
      * Set the publicNetworkAccessForIngestion property: The network access type for accessing Log Analytics ingestion.
-     *
+     * 
      * @param publicNetworkAccessForIngestion the publicNetworkAccessForIngestion value to set.
      * @return the WorkspaceProperties object itself.
      */
-    public WorkspaceProperties withPublicNetworkAccessForIngestion(
-        PublicNetworkAccessType publicNetworkAccessForIngestion) {
+    public WorkspaceProperties
+        withPublicNetworkAccessForIngestion(PublicNetworkAccessType publicNetworkAccessForIngestion) {
         this.publicNetworkAccessForIngestion = publicNetworkAccessForIngestion;
         return this;
     }
 
     /**
      * Get the publicNetworkAccessForQuery property: The network access type for accessing Log Analytics query.
-     *
+     * 
      * @return the publicNetworkAccessForQuery value.
      */
     public PublicNetworkAccessType publicNetworkAccessForQuery() {
@@ -231,7 +227,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the publicNetworkAccessForQuery property: The network access type for accessing Log Analytics query.
-     *
+     * 
      * @param publicNetworkAccessForQuery the publicNetworkAccessForQuery value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -242,7 +238,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the forceCmkForQuery property: Indicates whether customer managed storage is mandatory for query management.
-     *
+     * 
      * @return the forceCmkForQuery value.
      */
     public Boolean forceCmkForQuery() {
@@ -251,7 +247,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the forceCmkForQuery property: Indicates whether customer managed storage is mandatory for query management.
-     *
+     * 
      * @param forceCmkForQuery the forceCmkForQuery value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -262,7 +258,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the privateLinkScopedResources property: List of linked private link scope resources.
-     *
+     * 
      * @return the privateLinkScopedResources value.
      */
     public List<PrivateLinkScopedResource> privateLinkScopedResources() {
@@ -271,7 +267,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the features property: Workspace features.
-     *
+     * 
      * @return the features value.
      */
     public WorkspaceFeatures features() {
@@ -280,7 +276,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the features property: Workspace features.
-     *
+     * 
      * @param features the features value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -293,7 +289,7 @@ public final class WorkspaceProperties {
      * Get the defaultDataCollectionRuleResourceId property: The resource ID of the default Data Collection Rule to use
      * for this workspace. Expected format is -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
-     *
+     * 
      * @return the defaultDataCollectionRuleResourceId value.
      */
     public String defaultDataCollectionRuleResourceId() {
@@ -304,7 +300,7 @@ public final class WorkspaceProperties {
      * Set the defaultDataCollectionRuleResourceId property: The resource ID of the default Data Collection Rule to use
      * for this workspace. Expected format is -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
-     *
+     * 
      * @param defaultDataCollectionRuleResourceId the defaultDataCollectionRuleResourceId value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -315,7 +311,7 @@ public final class WorkspaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -331,5 +327,79 @@ public final class WorkspaceProperties {
         if (features() != null) {
             features().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeNumberField("retentionInDays", this.retentionInDays);
+        jsonWriter.writeJsonField("workspaceCapping", this.workspaceCapping);
+        jsonWriter.writeStringField("publicNetworkAccessForIngestion",
+            this.publicNetworkAccessForIngestion == null ? null : this.publicNetworkAccessForIngestion.toString());
+        jsonWriter.writeStringField("publicNetworkAccessForQuery",
+            this.publicNetworkAccessForQuery == null ? null : this.publicNetworkAccessForQuery.toString());
+        jsonWriter.writeBooleanField("forceCmkForQuery", this.forceCmkForQuery);
+        jsonWriter.writeJsonField("features", this.features);
+        jsonWriter.writeStringField("defaultDataCollectionRuleResourceId", this.defaultDataCollectionRuleResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceProperties.
+     */
+    public static WorkspaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceProperties deserializedWorkspaceProperties = new WorkspaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkspaceProperties.provisioningState
+                        = WorkspaceEntityStatus.fromString(reader.getString());
+                } else if ("customerId".equals(fieldName)) {
+                    deserializedWorkspaceProperties.customerId = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedWorkspaceProperties.sku = WorkspaceSku.fromJson(reader);
+                } else if ("retentionInDays".equals(fieldName)) {
+                    deserializedWorkspaceProperties.retentionInDays = reader.getNullable(JsonReader::getInt);
+                } else if ("workspaceCapping".equals(fieldName)) {
+                    deserializedWorkspaceProperties.workspaceCapping = WorkspaceCapping.fromJson(reader);
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedWorkspaceProperties.createdDate = reader.getString();
+                } else if ("modifiedDate".equals(fieldName)) {
+                    deserializedWorkspaceProperties.modifiedDate = reader.getString();
+                } else if ("publicNetworkAccessForIngestion".equals(fieldName)) {
+                    deserializedWorkspaceProperties.publicNetworkAccessForIngestion
+                        = PublicNetworkAccessType.fromString(reader.getString());
+                } else if ("publicNetworkAccessForQuery".equals(fieldName)) {
+                    deserializedWorkspaceProperties.publicNetworkAccessForQuery
+                        = PublicNetworkAccessType.fromString(reader.getString());
+                } else if ("forceCmkForQuery".equals(fieldName)) {
+                    deserializedWorkspaceProperties.forceCmkForQuery = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privateLinkScopedResources".equals(fieldName)) {
+                    List<PrivateLinkScopedResource> privateLinkScopedResources
+                        = reader.readArray(reader1 -> PrivateLinkScopedResource.fromJson(reader1));
+                    deserializedWorkspaceProperties.privateLinkScopedResources = privateLinkScopedResources;
+                } else if ("features".equals(fieldName)) {
+                    deserializedWorkspaceProperties.features = WorkspaceFeatures.fromJson(reader);
+                } else if ("defaultDataCollectionRuleResourceId".equals(fieldName)) {
+                    deserializedWorkspaceProperties.defaultDataCollectionRuleResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceProperties;
+        });
     }
 }

@@ -204,10 +204,8 @@ public final class VideoAnalyzerProperties {
      */
     public void validate() {
         if (storageAccounts() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccounts in model VideoAnalyzerProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageAccounts in model VideoAnalyzerProperties"));
         } else {
             storageAccounts().forEach(e -> e.validate());
         }

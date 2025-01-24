@@ -23,8 +23,7 @@ public class AvroObject {
      * @param nextObjectIndex The index of the next object in the block.
      * @param object The object.
      */
-    public AvroObject(long blockOffset, long objectIndex, long nextBlockOffset, long nextObjectIndex,
-        Object object) {
+    public AvroObject(long blockOffset, long objectIndex, long nextBlockOffset, long nextObjectIndex, Object object) {
         this.blockOffset = blockOffset;
         this.objectIndex = objectIndex;
         this.nextBlockOffset = nextBlockOffset;

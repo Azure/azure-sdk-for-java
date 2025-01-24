@@ -113,6 +113,8 @@ public final class JsonNumber extends JsonElement {
 
     /**
      * Returns the Number value from a JsonNumber object.
+     * <p>
+     * The value returned by this method will never be null.
      *
      * @return The Number value.
      */

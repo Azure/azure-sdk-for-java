@@ -31,22 +31,28 @@ import com.azure.resourcemanager.reservations.fluent.models.CatalogInner;
 import com.azure.resourcemanager.reservations.models.CatalogsResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,54 +63,40 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiR")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/catalogs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CatalogsResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("reservedResourceType") String reservedResourceType,
-            @QueryParam("location") String location,
-            @QueryParam("publisherId") String publisherId,
-            @QueryParam("offerId") String offerId,
-            @QueryParam("planId") String planId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$skip") Float skip,
-            @QueryParam("$take") Float take,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CatalogsResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("reservedResourceType") String reservedResourceType, @QueryParam("location") String location,
+            @QueryParam("publisherId") String publisherId, @QueryParam("offerId") String offerId,
+            @QueryParam("planId") String planId, @QueryParam("$filter") String filter, @QueryParam("$skip") Float skip,
+            @QueryParam("$take") Float take, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/appliedReservations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AppliedReservationsInner>> getAppliedReservationList(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AppliedReservationsInner>> getAppliedReservationList(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CatalogsResult>> getCatalogNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CatalogsResult>> getCatalogNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -115,24 +107,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take) {
+    private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(String subscriptionId, String reservedResourceType,
+        String location, String publisherId, String offerId, String planId, String filter, Float skip, Float take) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -140,42 +122,20 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            subscriptionId,
-                            reservedResourceType,
-                            location,
-                            publisherId,
-                            offerId,
-                            planId,
-                            filter,
-                            skip,
-                            take,
-                            accept,
-                            context))
-            .<PagedResponse<CatalogInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, subscriptionId,
+                reservedResourceType, location, publisherId, offerId, planId, filter, skip, take, accept, context))
+            .<PagedResponse<CatalogInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -187,25 +147,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take,
+    private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(String subscriptionId, String reservedResourceType,
+        String location, String publisherId, String offerId, String planId, String filter, Float skip, Float take,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -214,38 +164,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                subscriptionId,
-                reservedResourceType,
-                location,
-                publisherId,
-                offerId,
-                planId,
-                filter,
-                skip,
-                take,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, subscriptionId, reservedResourceType, location, publisherId,
+                offerId, planId, filter, skip, take, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -256,35 +187,24 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CatalogInner> listAsync(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    subscriptionId, reservedResourceType, location, publisherId, offerId, planId, filter, skip, take),
-            nextLink -> getCatalogNextSinglePageAsync(nextLink));
+    private PagedFlux<CatalogInner> listAsync(String subscriptionId, String reservedResourceType, String location,
+        String publisherId, String offerId, String planId, String filter, Float skip, Float take) {
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, reservedResourceType, location, publisherId,
+            offerId, planId, filter, skip, take), nextLink -> getCatalogNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CatalogInner> listAsync(String subscriptionId) {
@@ -296,20 +216,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String filter = null;
         final Float skip = null;
         final Float take = null;
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    subscriptionId, reservedResourceType, location, publisherId, offerId, planId, filter, skip, take),
-            nextLink -> getCatalogNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, reservedResourceType, location, publisherId,
+            offerId, planId, filter, skip, take), nextLink -> getCatalogNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -321,45 +238,25 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CatalogInner> listAsync(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    subscriptionId,
-                    reservedResourceType,
-                    location,
-                    publisherId,
-                    offerId,
-                    planId,
-                    filter,
-                    skip,
-                    take,
-                    context),
+    private PagedFlux<CatalogInner> listAsync(String subscriptionId, String reservedResourceType, String location,
+        String publisherId, String offerId, String planId, String filter, Float skip, Float take, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, reservedResourceType, location, publisherId,
+            offerId, planId, filter, skip, take, context),
             nextLink -> getCatalogNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CatalogInner> list(String subscriptionId) {
@@ -371,18 +268,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String filter = null;
         final Float skip = null;
         final Float take = null;
-        return new PagedIterable<>(
-            listAsync(
-                subscriptionId, reservedResourceType, location, publisherId, offerId, planId, filter, skip, take));
+        return new PagedIterable<>(listAsync(subscriptionId, reservedResourceType, location, publisherId, offerId,
+            planId, filter, skip, take));
     }
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -394,54 +290,32 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CatalogInner> list(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take,
-        Context context) {
-        return new PagedIterable<>(
-            listAsync(
-                subscriptionId,
-                reservedResourceType,
-                location,
-                publisherId,
-                offerId,
-                planId,
-                filter,
-                skip,
-                take,
-                context));
+    public PagedIterable<CatalogInner> list(String subscriptionId, String reservedResourceType, String location,
+        String publisherId, String offerId, String planId, String filter, Float skip, Float take, Context context) {
+        return new PagedIterable<>(listAsync(subscriptionId, reservedResourceType, location, publisherId, offerId,
+            planId, filter, skip, take, context));
     }
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription along with {@link Response} on successful completion of {@link Mono}.
+     * subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppliedReservationsInner>> getAppliedReservationListWithResponseAsync(String subscriptionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -449,36 +323,30 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAppliedReservationList(
-                            this.client.getEndpoint(), apiVersion, subscriptionId, accept, context))
+            .withContext(context -> service.getAppliedReservationList(this.client.getEndpoint(), apiVersion,
+                subscriptionId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription along with {@link Response} on successful completion of {@link Mono}.
+     * subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AppliedReservationsInner>> getAppliedReservationListWithResponseAsync(
-        String subscriptionId, Context context) {
+    private Mono<Response<AppliedReservationsInner>> getAppliedReservationListWithResponseAsync(String subscriptionId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -486,22 +354,21 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAppliedReservationList(this.client.getEndpoint(), apiVersion, subscriptionId, accept, context);
+        return service.getAppliedReservationList(this.client.getEndpoint(), apiVersion, subscriptionId, accept,
+            context);
     }
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription on successful completion of {@link Mono}.
+     * subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AppliedReservationsInner> getAppliedReservationListAsync(String subscriptionId) {
@@ -511,36 +378,34 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription along with {@link Response}.
+     * subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppliedReservationsInner> getAppliedReservationListWithResponse(
-        String subscriptionId, Context context) {
+    public Response<AppliedReservationsInner> getAppliedReservationListWithResponse(String subscriptionId,
+        Context context) {
         return getAppliedReservationListWithResponseAsync(subscriptionId, context).block();
     }
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription.
+     * subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppliedReservationsInner getAppliedReservationList(String subscriptionId) {
@@ -549,14 +414,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of catalogs and pagination information along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CatalogInner>> getCatalogNextSinglePageAsync(String nextLink) {
@@ -564,37 +428,27 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCatalogNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CatalogInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CatalogInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of catalogs and pagination information along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CatalogInner>> getCatalogNextSinglePageAsync(String nextLink, Context context) {
@@ -602,23 +456,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getCatalogNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.getCatalogNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.LoggerType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters supplied to the Update Logger operation. */
+/**
+ * Parameters supplied to the Update Logger operation.
+ */
 @Fluent
-public final class LoggerUpdateParameters {
+public final class LoggerUpdateParameters implements JsonSerializable<LoggerUpdateParameters> {
     /*
      * Logger type.
      */
-    @JsonProperty(value = "loggerType")
     private LoggerType loggerType;
 
     /*
      * Logger description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Logger credentials.
      */
-    @JsonProperty(value = "credentials")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> credentials;
 
     /*
      * Whether records are buffered in the logger before publishing. Default is assumed to be true.
      */
-    @JsonProperty(value = "isBuffered")
     private Boolean isBuffered;
 
-    /** Creates an instance of LoggerUpdateParameters class. */
+    /**
+     * Creates an instance of LoggerUpdateParameters class.
+     */
     public LoggerUpdateParameters() {
     }
 
     /**
      * Get the loggerType property: Logger type.
-     *
+     * 
      * @return the loggerType value.
      */
     public LoggerType loggerType() {
@@ -53,7 +55,7 @@ public final class LoggerUpdateParameters {
 
     /**
      * Set the loggerType property: Logger type.
-     *
+     * 
      * @param loggerType the loggerType value to set.
      * @return the LoggerUpdateParameters object itself.
      */
@@ -64,7 +66,7 @@ public final class LoggerUpdateParameters {
 
     /**
      * Get the description property: Logger description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -73,7 +75,7 @@ public final class LoggerUpdateParameters {
 
     /**
      * Set the description property: Logger description.
-     *
+     * 
      * @param description the description value to set.
      * @return the LoggerUpdateParameters object itself.
      */
@@ -84,7 +86,7 @@ public final class LoggerUpdateParameters {
 
     /**
      * Get the credentials property: Logger credentials.
-     *
+     * 
      * @return the credentials value.
      */
     public Map<String, String> credentials() {
@@ -93,7 +95,7 @@ public final class LoggerUpdateParameters {
 
     /**
      * Set the credentials property: Logger credentials.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the LoggerUpdateParameters object itself.
      */
@@ -105,7 +107,7 @@ public final class LoggerUpdateParameters {
     /**
      * Get the isBuffered property: Whether records are buffered in the logger before publishing. Default is assumed to
      * be true.
-     *
+     * 
      * @return the isBuffered value.
      */
     public Boolean isBuffered() {
@@ -115,7 +117,7 @@ public final class LoggerUpdateParameters {
     /**
      * Set the isBuffered property: Whether records are buffered in the logger before publishing. Default is assumed to
      * be true.
-     *
+     * 
      * @param isBuffered the isBuffered value to set.
      * @return the LoggerUpdateParameters object itself.
      */
@@ -126,9 +128,55 @@ public final class LoggerUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("loggerType", this.loggerType == null ? null : this.loggerType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("credentials", this.credentials, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isBuffered", this.isBuffered);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoggerUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoggerUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoggerUpdateParameters.
+     */
+    public static LoggerUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoggerUpdateParameters deserializedLoggerUpdateParameters = new LoggerUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loggerType".equals(fieldName)) {
+                    deserializedLoggerUpdateParameters.loggerType = LoggerType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedLoggerUpdateParameters.description = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    Map<String, String> credentials = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLoggerUpdateParameters.credentials = credentials;
+                } else if ("isBuffered".equals(fieldName)) {
+                    deserializedLoggerUpdateParameters.isBuffered = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoggerUpdateParameters;
+        });
     }
 }

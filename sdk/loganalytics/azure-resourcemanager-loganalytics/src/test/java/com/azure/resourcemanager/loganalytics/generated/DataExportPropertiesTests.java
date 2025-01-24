@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataExportPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataExportProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dataExportId\":\"svexcsonpclhoco\",\"tableNames\":[\"lkevle\",\"gz\"],\"destination\":{\"resourceId\":\"u\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"axkffei\"}},\"enable\":false,\"createdDate\":\"vmezy\",\"lastModifiedDate\":\"hxmzsbbzoggig\"}")
-                .toObject(DataExportProperties.class);
+        DataExportProperties model = BinaryData.fromString(
+            "{\"dataExportId\":\"svexcsonpclhoco\",\"tableNames\":[\"lkevle\",\"gz\"],\"destination\":{\"resourceId\":\"u\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"axkffei\"}},\"enable\":false,\"createdDate\":\"vmezy\",\"lastModifiedDate\":\"hxmzsbbzoggig\"}")
+            .toObject(DataExportProperties.class);
         Assertions.assertEquals("svexcsonpclhoco", model.dataExportId());
         Assertions.assertEquals("lkevle", model.tableNames().get(0));
         Assertions.assertEquals(false, model.enable());
@@ -28,15 +26,13 @@ public final class DataExportPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataExportProperties model =
-            new DataExportProperties()
-                .withDataExportId("svexcsonpclhoco")
-                .withTableNames(Arrays.asList("lkevle", "gz"))
-                .withEnable(false)
-                .withCreatedDate("vmezy")
-                .withLastModifiedDate("hxmzsbbzoggig")
-                .withResourceId("u")
-                .withEventHubName("axkffei");
+        DataExportProperties model = new DataExportProperties().withDataExportId("svexcsonpclhoco")
+            .withTableNames(Arrays.asList("lkevle", "gz"))
+            .withEnable(false)
+            .withCreatedDate("vmezy")
+            .withLastModifiedDate("hxmzsbbzoggig")
+            .withResourceId("u")
+            .withEventHubName("axkffei");
         model = BinaryData.fromObject(model).toObject(DataExportProperties.class);
         Assertions.assertEquals("svexcsonpclhoco", model.dataExportId());
         Assertions.assertEquals("lkevle", model.tableNames().get(0));

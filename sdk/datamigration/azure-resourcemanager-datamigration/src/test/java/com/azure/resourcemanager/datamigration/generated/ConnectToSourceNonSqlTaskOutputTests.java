@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ConnectToSourceNonSqlTaskO
 public final class ConnectToSourceNonSqlTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectToSourceNonSqlTaskOutput model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"vmkfssxqu\",\"sourceServerBrandVersion\":\"fpl\",\"serverProperties\":{\"serverPlatform\":\"sxnkjzkdeslpvlo\",\"serverName\":\"i\",\"serverVersion\":\"ghxpkdw\",\"serverEdition\":\"aiuebbaumnyqu\",\"serverOperatingSystemVersion\":\"deoj\",\"serverDatabaseCount\":746279797},\"databases\":[\"hsmtxpsiebtfhvp\",\"sapskr\",\"qmhjjdhtld\"],\"validationErrors\":[{\"message\":\"xuutkncwscwsv\",\"actionableMessage\":\"otogtwrupqs\",\"filePath\":\"nmic\",\"lineNumber\":\"vce\",\"hResult\":579723655,\"stackTrace\":\"lo\"},{\"message\":\"oty\",\"actionableMessage\":\"fcnj\",\"filePath\":\"cn\",\"lineNumber\":\"hbttkphyw\",\"hResult\":1284749235,\"stackTrace\":\"t\"},{\"message\":\"nermcl\",\"actionableMessage\":\"lphox\",\"filePath\":\"crpab\",\"lineNumber\":\"epsbjtazqu\",\"hResult\":1647814243,\"stackTrace\":\"pmueefjzwfqk\"}]}")
-                .toObject(ConnectToSourceNonSqlTaskOutput.class);
+        ConnectToSourceNonSqlTaskOutput model = BinaryData.fromString(
+            "{\"id\":\"w\",\"sourceServerBrandVersion\":\"sjttgzfbish\",\"serverProperties\":{\"serverPlatform\":\"hajdeyeamdpha\",\"serverName\":\"lpbuxwgipwhonowk\",\"serverVersion\":\"hwankixzbinjepu\",\"serverEdition\":\"mryw\",\"serverOperatingSystemVersion\":\"zoqftiyqzrnkcqvy\",\"serverDatabaseCount\":798441434},\"databases\":[\"lsicohoqqnwv\",\"ryavwhheunmmqh\"],\"validationErrors\":[{\"message\":\"konocu\",\"actionableMessage\":\"klyaxuconu\",\"filePath\":\"zf\",\"lineNumber\":\"eyp\",\"hResult\":1039817033,\"stackTrace\":\"jmwvvj\"}]}")
+            .toObject(ConnectToSourceNonSqlTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test

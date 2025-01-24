@@ -6,23 +6,48 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.DscNodeExtensionHandlerAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Definition of a DscNode. */
+/**
+ * Definition of a DscNode.
+ */
 @Fluent
 public final class DscNodeInner extends ProxyResource {
     /*
      * The properties of a DscNode.
      */
-    @JsonProperty(value = "properties")
     private DscNodeProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DscNodeInner class.
+     */
+    public DscNodeInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a DscNode.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DscNodeProperties innerProperties() {
@@ -30,8 +55,38 @@ public final class DscNodeInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the lastSeen property: Gets or sets the last seen time of the node.
-     *
+     * 
      * @return the lastSeen value.
      */
     public OffsetDateTime lastSeen() {
@@ -40,7 +95,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the lastSeen property: Gets or sets the last seen time of the node.
-     *
+     * 
      * @param lastSeen the lastSeen value to set.
      * @return the DscNodeInner object itself.
      */
@@ -54,7 +109,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Get the registrationTime property: Gets or sets the registration time of the node.
-     *
+     * 
      * @return the registrationTime value.
      */
     public OffsetDateTime registrationTime() {
@@ -63,7 +118,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the registrationTime property: Gets or sets the registration time of the node.
-     *
+     * 
      * @param registrationTime the registrationTime value to set.
      * @return the DscNodeInner object itself.
      */
@@ -77,7 +132,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Get the ip property: Gets or sets the ip of the node.
-     *
+     * 
      * @return the ip value.
      */
     public String ip() {
@@ -86,7 +141,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the ip property: Gets or sets the ip of the node.
-     *
+     * 
      * @param ip the ip value to set.
      * @return the DscNodeInner object itself.
      */
@@ -100,7 +155,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Get the accountId property: Gets or sets the account id of the node.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -109,7 +164,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the accountId property: Gets or sets the account id of the node.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the DscNodeInner object itself.
      */
@@ -123,7 +178,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Get the status property: Gets or sets the status of the node.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -132,7 +187,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the status property: Gets or sets the status of the node.
-     *
+     * 
      * @param status the status value to set.
      * @return the DscNodeInner object itself.
      */
@@ -146,7 +201,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Get the nodeId property: Gets or sets the node id.
-     *
+     * 
      * @return the nodeId value.
      */
     public String nodeId() {
@@ -155,7 +210,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the nodeId property: Gets or sets the node id.
-     *
+     * 
      * @param nodeId the nodeId value to set.
      * @return the DscNodeInner object itself.
      */
@@ -169,7 +224,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Get the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -178,7 +233,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the DscNodeInner object itself.
      */
@@ -192,7 +247,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Get the totalCount property: Gets the total number of records matching filter criteria.
-     *
+     * 
      * @return the totalCount value.
      */
     public Integer totalCount() {
@@ -201,7 +256,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the totalCount property: Gets the total number of records matching filter criteria.
-     *
+     * 
      * @param totalCount the totalCount value to set.
      * @return the DscNodeInner object itself.
      */
@@ -215,7 +270,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Get the extensionHandler property: Gets or sets the list of extensionHandler properties for a Node.
-     *
+     * 
      * @return the extensionHandler value.
      */
     public List<DscNodeExtensionHandlerAssociationProperty> extensionHandler() {
@@ -224,7 +279,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the extensionHandler property: Gets or sets the list of extensionHandler properties for a Node.
-     *
+     * 
      * @param extensionHandler the extensionHandler value to set.
      * @return the DscNodeInner object itself.
      */
@@ -238,7 +293,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Get the name property: Gets or sets the name of the dsc node configuration.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -247,7 +302,7 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Set the name property: Gets or sets the name of the dsc node configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the DscNodeInner object itself.
      */
@@ -261,12 +316,55 @@ public final class DscNodeInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscNodeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscNodeInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DscNodeInner.
+     */
+    public static DscNodeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscNodeInner deserializedDscNodeInner = new DscNodeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDscNodeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDscNodeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDscNodeInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDscNodeInner.innerProperties = DscNodeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscNodeInner;
+        });
     }
 }

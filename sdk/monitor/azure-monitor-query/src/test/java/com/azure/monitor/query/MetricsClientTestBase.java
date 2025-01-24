@@ -15,7 +15,8 @@ import java.util.Arrays;
 
 public class MetricsClientTestBase extends TestProxyTestBase {
 
-    static final String FAKE_RESOURCE_ID = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg/providers/Microsoft.Compute/virtualMachines/vm";
+    static final String FAKE_RESOURCE_ID
+        = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg/providers/Microsoft.Compute/virtualMachines/vm";
     protected String metricEndpoint;
     protected MetricsClientBuilder clientBuilder;
     protected ConfigurationClient configClient;
@@ -23,37 +24,33 @@ public class MetricsClientTestBase extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        metricEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_ENDPOINT", "https://westus.metrics.monitor.azure.com");
+        metricEndpoint = Configuration.getGlobalConfiguration()
+            .get("AZURE_MONITOR_METRICS_ENDPOINT", "https://westus.metrics.monitor.azure.com");
         credential = TestUtil.getTestTokenCredential(interceptorManager);
 
-        MetricsClientBuilder clientBuilder = new MetricsClientBuilder()
-            .credential(credential);
+        MetricsClientBuilder clientBuilder = new MetricsClientBuilder().credential(credential);
 
-        String appConfigEndpoint = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_ENDPOINT", "https://fake.azconfig.io");
-        ConfigurationClientBuilder configClientBuilder = new ConfigurationClientBuilder()
-            .endpoint(appConfigEndpoint)
-            .credential(credential);
+        String appConfigEndpoint
+            = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_ENDPOINT", "https://fake.azconfig.io");
+        ConfigurationClientBuilder configClientBuilder
+            = new ConfigurationClientBuilder().endpoint(appConfigEndpoint).credential(credential);
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            interceptorManager.addMatchers(new CustomMatcher()
-                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
-                .setComparingBodies(false)
-                .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
-            clientBuilder
-                .httpClient(interceptorManager.getPlaybackClient());
+            interceptorManager.addMatchers(
+                new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
+                    .setComparingBodies(false)
+                    .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
 
-            configClientBuilder
-                .httpClient(interceptorManager.getPlaybackClient());
+            configClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
-            interceptorManager.addMatchers(new CustomMatcher()
-                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
-                .setComparingBodies(false)
-                .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
-            clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy());
+            interceptorManager.addMatchers(
+                new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
+                    .setComparingBodies(false)
+                    .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
 
-            configClientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy());
+            configClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         this.clientBuilder = clientBuilder.endpoint(metricEndpoint);

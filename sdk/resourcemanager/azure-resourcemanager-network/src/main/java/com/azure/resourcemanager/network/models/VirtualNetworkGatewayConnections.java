@@ -16,12 +16,9 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface VirtualNetworkGatewayConnections
     extends SupportsCreating<VirtualNetworkGatewayConnection.DefinitionStages.Blank>,
-        SupportsListing<VirtualNetworkGatewayConnection>,
-        SupportsGettingByName<VirtualNetworkGatewayConnection>,
-        SupportsGettingById<VirtualNetworkGatewayConnection>,
-        SupportsDeletingByName,
-        SupportsDeletingById,
-        HasParent<VirtualNetworkGateway> {
+    SupportsListing<VirtualNetworkGatewayConnection>, SupportsGettingByName<VirtualNetworkGatewayConnection>,
+    SupportsGettingById<VirtualNetworkGatewayConnection>, SupportsDeletingByName, SupportsDeletingById,
+    HasParent<VirtualNetworkGateway> {
 
     /**
      * Gets the shared key of the virtual network gateway connection by resource ID.

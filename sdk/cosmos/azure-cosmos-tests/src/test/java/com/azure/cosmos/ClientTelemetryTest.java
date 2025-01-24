@@ -22,6 +22,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.rx.proxy.HttpProxyServer;
+import io.netty.channel.ChannelOption;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
@@ -126,7 +127,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
 
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
         setClientTelemetrySchedulingInSec(clientTelemetry, 5);
-        clientTelemetry.init();
+        clientTelemetry.init().subscribe();
 
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         cosmosContainer.createItem(internalObjectNode); //create operation
@@ -190,7 +191,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
             "clientTelemetrySchedulingSec");
         backgroundRefreshLocationTimeIntervalInMSField.setAccessible(true);
         backgroundRefreshLocationTimeIntervalInMSField.setInt(clientTelemetry, 5);
-        clientTelemetry.init();
+        clientTelemetry.init().subscribe();
 
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         cosmosContainer.createItem(internalObjectNode); // create operation
@@ -240,20 +241,68 @@ public class ClientTelemetryTest extends TestSuiteBase {
     public void httpClientTests(CosmosClient cosmosClient) throws Exception {
         // Test using different http client for client telemetry requests and metaRequests
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
-        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
-        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
+        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
+        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
 
         assertThat(clientTelemetryHttpClient).isNotSameAs(clientTelemetryMetadataHttpClient);
 
         // Test metadataHttpClient is used for IMDS requests
-        HttpClientUnderTestWrapper clientTelemetryMetadataHttpClientWrapper = new HttpClientUnderTestWrapper(clientTelemetryHttpClient);
+        HttpClientUnderTestWrapper clientTelemetryMetadataHttpClientWrapper = new HttpClientUnderTestWrapper(clientTelemetryMetadataHttpClient);
         ReflectionUtils.setClientTelemetryMetadataHttpClient(clientTelemetry, clientTelemetryMetadataHttpClientWrapper.getSpyHttpClient());
         AtomicReference<AzureVMMetadata> vmMetadata = ReflectionUtils.getAzureVMMetadata(clientTelemetry);
         vmMetadata.set(null);
 
-        clientTelemetry.init();
+        clientTelemetry.init().subscribe();
         assertThat(clientTelemetryMetadataHttpClientWrapper.capturedRequests.size()).isEqualTo(1);
     }
+
+
+    @Test(groups = {"emulator"}, dataProvider = "clients", timeOut = TIMEOUT)
+    public void shouldDisableIMDSAccess(CosmosClient cosmosClient) throws Exception {
+        // Test using different http client for client telemetry requests and metaRequests
+
+        System.setProperty("COSMOS.DISABLE_IMDS_ACCESS", "true");
+
+        ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
+        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
+        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
+
+        assertThat(clientTelemetryHttpClient).isNotSameAs(clientTelemetryMetadataHttpClient);
+
+        // Test metadataHttpClient is used for IMDS requests
+        HttpClientUnderTestWrapper clientTelemetryMetadataHttpClientWrapper = new HttpClientUnderTestWrapper(clientTelemetryMetadataHttpClient);
+        ReflectionUtils.setClientTelemetryMetadataHttpClient(clientTelemetry, clientTelemetryMetadataHttpClientWrapper.getSpyHttpClient());
+        AtomicReference<AzureVMMetadata> vmMetadata = ReflectionUtils.getAzureVMMetadata(clientTelemetry);
+        vmMetadata.set(null);
+
+        clientTelemetry.init().subscribe();
+        //  Call should not go through loading azure VM metadata
+        assertThat(clientTelemetryMetadataHttpClientWrapper.capturedRequests.size()).isEqualTo(0);
+
+        System.setProperty("COSMOS.DISABLE_IMDS_ACCESS", "false");// setting it back for other tests
+    }
+
+
+    @Test(groups = {"emulator"}, dataProvider = "clients", timeOut = TIMEOUT)
+    public void httpClientsConfigurationTests(CosmosClient cosmosClient) throws Exception {
+        // Test using different http client for client telemetry requests and metaRequests
+        ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
+        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
+        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
+
+        assertThat(clientTelemetryHttpClient).isNotSameAs(clientTelemetryMetadataHttpClient);
+
+        reactor.netty.http.client.HttpClient reactorHttpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, clientTelemetryMetadataHttpClient,
+                "httpClient");
+
+        int maxConnections = reactorHttpClient.configuration().connectionProvider().maxConnections();
+        Integer connectionAcquireTimeout = (Integer) reactorHttpClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
+
+        assertThat(maxConnections).isEqualTo(ClientTelemetry.IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE);
+        assertThat(connectionAcquireTimeout).isEqualTo((int) ClientTelemetry.IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT.toMillis());
+    }
+
 
     @Test(groups = {"unit"})
     public void clientTelemetryScheduling() {
@@ -304,7 +353,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 cosmosClient.getDatabase(databaseId).getContainer(containerId);
             ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
             setClientTelemetrySchedulingInSec(clientTelemetry, 5);
-            clientTelemetry.init();
+            clientTelemetry.init().subscribe();
 
             // If this test need to run on local machine please add below env property,
             // in test env we add the env property with cosmos-client-telemetry-endpoint variable in tests.yml,

@@ -11,9 +11,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A private endpoint connection. */
 @Fluent
-public interface PrivateEndpointConnection
-    extends HasInnerModel<PrivateEndpointConnectionInner>,
-        ExternalChildResource<PrivateEndpointConnection, CosmosDBAccount> {
+public interface PrivateEndpointConnection extends HasInnerModel<PrivateEndpointConnectionInner>,
+    ExternalChildResource<PrivateEndpointConnection, CosmosDBAccount> {
     /**
      * Get private endpoint which the connection belongs to.
      *
@@ -83,10 +82,8 @@ public interface PrivateEndpointConnection
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithState<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithState<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of private endpoint connection definition stages as part of parent cosmos db account update. */
@@ -144,10 +141,8 @@ public interface PrivateEndpointConnection
      *
      * @param <ParentT> the stage of the parent update to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithState<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithState<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of private endpoint connection update stages. */

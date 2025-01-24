@@ -10,11 +10,9 @@ import com.azure.resourcemanager.deploymentmanager.models.StepOperationInfo;
 public final class StepOperationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StepOperationInfo model =
-            BinaryData
-                .fromString(
-                    "{\"deploymentName\":\"iuaod\",\"correlationId\":\"cpkvxodp\",\"startTime\":\"2021-10-28T03:11:40Z\",\"endTime\":\"2021-03-25T05:12:44Z\",\"lastUpdatedTime\":\"2021-06-16T00:33:51Z\"}")
-                .toObject(StepOperationInfo.class);
+        StepOperationInfo model = BinaryData.fromString(
+            "{\"deploymentName\":\"iuaod\",\"correlationId\":\"cpkvxodp\",\"startTime\":\"2021-10-28T03:11:40Z\",\"endTime\":\"2021-03-25T05:12:44Z\",\"lastUpdatedTime\":\"2021-06-16T00:33:51Z\"}")
+            .toObject(StepOperationInfo.class);
     }
 
     @org.junit.jupiter.api.Test

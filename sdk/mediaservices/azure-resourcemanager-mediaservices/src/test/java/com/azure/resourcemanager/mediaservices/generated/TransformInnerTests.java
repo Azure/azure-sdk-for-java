@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mediaservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.fluent.models.TransformInner;
 import com.azure.resourcemanager.mediaservices.models.OnErrorType;
+import com.azure.resourcemanager.mediaservices.models.Preset;
 import com.azure.resourcemanager.mediaservices.models.Priority;
 import com.azure.resourcemanager.mediaservices.models.TransformOutput;
 import java.util.Arrays;
@@ -15,35 +16,29 @@ import org.junit.jupiter.api.Assertions;
 public final class TransformInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransformInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"created\":\"2020-12-27T06:38:54Z\",\"description\":\"mkh\",\"lastModified\":\"2021-08-19T13:39:55Z\",\"outputs\":[{\"onError\":\"ContinueJob\",\"relativePriority\":\"Low\"},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\"},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\"}]},\"id\":\"bpbewtghfgb\",\"name\":\"c\",\"type\":\"wxzvlvqhjkb\"}")
-                .toObject(TransformInner.class);
-        Assertions.assertEquals("mkh", model.description());
+        TransformInner model = BinaryData.fromString(
+            "{\"properties\":{\"created\":\"2021-02-04T15:03:28Z\",\"description\":\"zoymibmrqyibahw\",\"lastModified\":\"2021-06-22T01:48:05Z\",\"outputs\":[{\"onError\":\"ContinueJob\",\"relativePriority\":\"Low\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Low\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"StopProcessingJob\",\"relativePriority\":\"High\",\"preset\":{\"@odata.type\":\"Preset\"}}]},\"id\":\"oqac\",\"name\":\"iexpbtgiwbwo\",\"type\":\"nwashrtd\"}")
+            .toObject(TransformInner.class);
+        Assertions.assertEquals("zoymibmrqyibahw", model.description());
         Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.outputs().get(0).onError());
         Assertions.assertEquals(Priority.LOW, model.outputs().get(0).relativePriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransformInner model =
-            new TransformInner()
-                .withDescription("mkh")
-                .withOutputs(
-                    Arrays
-                        .asList(
-                            new TransformOutput()
-                                .withOnError(OnErrorType.CONTINUE_JOB)
-                                .withRelativePriority(Priority.LOW),
-                            new TransformOutput()
-                                .withOnError(OnErrorType.CONTINUE_JOB)
-                                .withRelativePriority(Priority.NORMAL),
-                            new TransformOutput()
-                                .withOnError(OnErrorType.CONTINUE_JOB)
-                                .withRelativePriority(Priority.NORMAL)));
+        TransformInner model = new TransformInner().withDescription("zoymibmrqyibahw")
+            .withOutputs(Arrays.asList(
+                new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
+                    .withRelativePriority(Priority.LOW)
+                    .withPreset(new Preset()),
+                new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
+                    .withRelativePriority(Priority.LOW)
+                    .withPreset(new Preset()),
+                new TransformOutput().withOnError(OnErrorType.STOP_PROCESSING_JOB)
+                    .withRelativePriority(Priority.HIGH)
+                    .withPreset(new Preset())));
         model = BinaryData.fromObject(model).toObject(TransformInner.class);
-        Assertions.assertEquals("mkh", model.description());
+        Assertions.assertEquals("zoymibmrqyibahw", model.description());
         Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.outputs().get(0).onError());
         Assertions.assertEquals(Priority.LOW, model.outputs().get(0).relativePriority());
     }

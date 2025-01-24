@@ -4,19 +4,23 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for ComponentContainers Get. */
+/**
+ * Samples for ComponentContainers Get.
+ */
 public final class ComponentContainersGetSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ComponentContainer/get.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/ComponentContainer/get.json
      */
     /**
-     * Sample code: Get Component Container.
-     *
+     * Sample code: Get Workspace Component Container.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void getComponentContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .componentContainers()
+    public static void
+        getWorkspaceComponentContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.componentContainers()
             .getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }

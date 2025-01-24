@@ -16,8 +16,10 @@ import com.azure.resourcemanager.hdinsight.containers.models.ClusterServiceConfi
 import com.azure.resourcemanager.hdinsight.containers.models.ComparisonOperator;
 import com.azure.resourcemanager.hdinsight.containers.models.ComparisonRule;
 import com.azure.resourcemanager.hdinsight.containers.models.ComputeProfile;
-import com.azure.resourcemanager.hdinsight.containers.models.IdentityProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.LoadBasedConfig;
+import com.azure.resourcemanager.hdinsight.containers.models.ManagedIdentityProfile;
+import com.azure.resourcemanager.hdinsight.containers.models.ManagedIdentitySpec;
+import com.azure.resourcemanager.hdinsight.containers.models.ManagedIdentityType;
 import com.azure.resourcemanager.hdinsight.containers.models.NodeProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.RangerAdminSpec;
 import com.azure.resourcemanager.hdinsight.containers.models.RangerAdminSpecDatabase;
@@ -43,7 +45,7 @@ import java.util.Map;
 public final class ClustersCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * CreateSparkCluster.json
      */
     /**
@@ -53,22 +55,28 @@ public final class ClustersCreateSamples {
      */
     public static void
         hDInsightSparkClusterPut(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusters().define("cluster1").withRegion("West US 2")
+        manager.clusters()
+            .define("cluster1")
+            .withRegion("West US 2")
             .withExistingClusterpool("hiloResourcegroup", "clusterpool1")
             .withProperties(new ClusterResourceProperties().withClusterType("spark")
-                .withComputeProfile(new ComputeProfile().withNodes(
-                    Arrays.asList(new NodeProfile().withType("worker").withVmSize("Standard_D3_v2").withCount(4))))
-                .withClusterProfile(new ClusterProfile().withClusterVersion("0.0.1").withOssVersion("2.2.3")
-                    .withIdentityProfile(new IdentityProfile().withMsiResourceId(
-                        "/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi")
-                        .withMsiClientId("de91f1d8-767f-460a-ac11-3cf103f74b34")
-                        .withMsiObjectId("40491351-c240-4042-91e0-f644a1d2b441"))
+                .withComputeProfile(new ComputeProfile()
+                    .withNodes(
+                        Arrays.asList(new NodeProfile().withType("worker").withVmSize("Standard_D3_v2").withCount(4)))
+                    .withAvailabilityZones(Arrays.asList("1", "2", "3")))
+                .withClusterProfile(new ClusterProfile().withClusterVersion("0.0.1")
+                    .withOssVersion("2.2.3")
+                    .withManagedIdentityProfile(new ManagedIdentityProfile()
+                        .withIdentityList(Arrays.asList(new ManagedIdentitySpec().withType(ManagedIdentityType.CLUSTER)
+                            .withResourceId(
+                                "/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi")
+                            .withClientId("de91f1d8-767f-460a-ac11-3cf103f74b34")
+                            .withObjectId("40491351-c240-4042-91e0-f644a1d2b441"))))
                     .withAuthorizationProfile(
                         new AuthorizationProfile().withUserIds(Arrays.asList("testuser1", "testuser2")))
                     .withServiceConfigsProfiles(Arrays.asList(
-                        new ClusterServiceConfigsProfile().withServiceName("spark-service").withConfigs(
-                            Arrays.asList(new ClusterServiceConfig()
-                                .withComponent("spark-config")
+                        new ClusterServiceConfigsProfile().withServiceName("spark-service")
+                            .withConfigs(Arrays.asList(new ClusterServiceConfig().withComponent("spark-config")
                                 .withFiles(Arrays.asList(new ClusterConfigFile().withFileName("spark-defaults.conf")
                                     .withValues(mapOf("spark.eventLog.enabled", "true")))))),
                         new ClusterServiceConfigsProfile().withServiceName("yarn-service")
@@ -81,13 +89,14 @@ public final class ClustersCreateSamples {
                                             "storage.name", "teststorage", "storage.protocol", "wasb")),
                                     new ClusterConfigFile().withFileName("yarn-site.xml")
                                         .withValues(mapOf("yarn.webapp.ui2.enable", "false"))))))))
-                    .withSshProfile(new SshProfile().withCount(2)).withSparkProfile(new SparkProfile())))
+                    .withSshProfile(new SshProfile().withCount(2).withVmSize("Standard_D3_v2"))
+                    .withSparkProfile(new SparkProfile())))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * CreateSparkClusterWithInternalIngress.json
      */
     /**
@@ -97,22 +106,28 @@ public final class ClustersCreateSamples {
      */
     public static void hDInsightSparkClusterPutWithInternalIngress(
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusters().define("cluster1").withRegion("West US 2")
+        manager.clusters()
+            .define("cluster1")
+            .withRegion("West US 2")
             .withExistingClusterpool("hiloResourcegroup", "clusterpool1")
             .withProperties(new ClusterResourceProperties().withClusterType("spark")
-                .withComputeProfile(new ComputeProfile().withNodes(
-                    Arrays.asList(new NodeProfile().withType("worker").withVmSize("Standard_D3_v2").withCount(4))))
-                .withClusterProfile(new ClusterProfile().withClusterVersion("0.0.1").withOssVersion("2.2.3")
-                    .withIdentityProfile(new IdentityProfile().withMsiResourceId(
-                        "/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi")
-                        .withMsiClientId("de91f1d8-767f-460a-ac11-3cf103f74b34")
-                        .withMsiObjectId("40491351-c240-4042-91e0-f644a1d2b441"))
+                .withComputeProfile(new ComputeProfile()
+                    .withNodes(
+                        Arrays.asList(new NodeProfile().withType("worker").withVmSize("Standard_D3_v2").withCount(4)))
+                    .withAvailabilityZones(Arrays.asList("1", "2", "3")))
+                .withClusterProfile(new ClusterProfile().withClusterVersion("0.0.1")
+                    .withOssVersion("2.2.3")
+                    .withManagedIdentityProfile(new ManagedIdentityProfile()
+                        .withIdentityList(Arrays.asList(new ManagedIdentitySpec().withType(ManagedIdentityType.CLUSTER)
+                            .withResourceId(
+                                "/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi")
+                            .withClientId("de91f1d8-767f-460a-ac11-3cf103f74b34")
+                            .withObjectId("40491351-c240-4042-91e0-f644a1d2b441"))))
                     .withAuthorizationProfile(
                         new AuthorizationProfile().withUserIds(Arrays.asList("testuser1", "testuser2")))
                     .withServiceConfigsProfiles(Arrays.asList(
-                        new ClusterServiceConfigsProfile().withServiceName("spark-service").withConfigs(
-                            Arrays.asList(new ClusterServiceConfig()
-                                .withComponent("spark-config")
+                        new ClusterServiceConfigsProfile().withServiceName("spark-service")
+                            .withConfigs(Arrays.asList(new ClusterServiceConfig().withComponent("spark-config")
                                 .withFiles(Arrays.asList(new ClusterConfigFile().withFileName("spark-defaults.conf")
                                     .withValues(mapOf("spark.eventLog.enabled", "true")))))),
                         new ClusterServiceConfigsProfile().withServiceName("yarn-service")
@@ -126,13 +141,14 @@ public final class ClustersCreateSamples {
                                     new ClusterConfigFile().withFileName("yarn-site.xml")
                                         .withValues(mapOf("yarn.webapp.ui2.enable", "false"))))))))
                     .withClusterAccessProfile(new ClusterAccessProfile().withEnableInternalIngress(true))
-                    .withSshProfile(new SshProfile().withCount(2)).withSparkProfile(new SparkProfile())))
+                    .withSshProfile(new SshProfile().withCount(2).withVmSize("Standard_D3_v2"))
+                    .withSparkProfile(new SparkProfile())))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * CreateAutoscaleCluster.json
      */
     /**
@@ -142,48 +158,62 @@ public final class ClustersCreateSamples {
      */
     public static void
         hDInsightClusterPut(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusters().define("cluster1").withRegion("West US 2")
+        manager.clusters()
+            .define("cluster1")
+            .withRegion("West US 2")
             .withExistingClusterpool("hiloResourcegroup", "clusterpool1")
             .withProperties(new ClusterResourceProperties().withClusterType("Trino")
-                .withComputeProfile(new ComputeProfile().withNodes(
-                    Arrays.asList(new NodeProfile().withType("Head").withVmSize("Standard_E8as_v5").withCount(2),
-                        new NodeProfile().withType("Worker").withVmSize("Standard_E8as_v5").withCount(3))))
-                .withClusterProfile(new ClusterProfile().withClusterVersion("1.0.6").withOssVersion("0.410.0")
-                    .withIdentityProfile(new IdentityProfile().withMsiResourceId(
-                        "/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi")
-                        .withMsiClientId("de91f1d8-767f-460a-ac11-3cf103f74b34")
-                        .withMsiObjectId("40491351-c240-4042-91e0-f644a1d2b441"))
+                .withComputeProfile(new ComputeProfile()
+                    .withNodes(
+                        Arrays.asList(new NodeProfile().withType("Head").withVmSize("Standard_E8as_v5").withCount(2),
+                            new NodeProfile().withType("Worker").withVmSize("Standard_E8as_v5").withCount(3)))
+                    .withAvailabilityZones(Arrays.asList("1", "2", "3")))
+                .withClusterProfile(new ClusterProfile().withClusterVersion("1.0.6")
+                    .withOssVersion("0.410.0")
+                    .withManagedIdentityProfile(new ManagedIdentityProfile()
+                        .withIdentityList(Arrays.asList(new ManagedIdentitySpec().withType(ManagedIdentityType.CLUSTER)
+                            .withResourceId(
+                                "/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi")
+                            .withClientId("de91f1d8-767f-460a-ac11-3cf103f74b34")
+                            .withObjectId("40491351-c240-4042-91e0-f644a1d2b441"))))
                     .withAuthorizationProfile(
                         new AuthorizationProfile().withUserIds(Arrays.asList("testuser1", "testuser2")))
-                    .withSshProfile(new SshProfile().withCount(2))
-                    .withAutoscaleProfile(
-                        new AutoscaleProfile().withEnabled(true).withGracefulDecommissionTimeout(3600)
-                            .withAutoscaleType(AutoscaleType.SCHEDULE_BASED)
-                            .withScheduleBasedConfig(new ScheduleBasedConfig()
-                                .withTimeZone("Cen. Australia Standard Time").withDefaultCount(10)
-                                .withSchedules(Arrays.asList(
-                                    new Schedule().withStartTime("00:00").withEndTime("12:00").withCount(20)
-                                        .withDays(Arrays.asList(ScheduleDay.MONDAY)),
-                                    new Schedule().withStartTime("00:00").withEndTime("12:00").withCount(25)
-                                        .withDays(Arrays.asList(ScheduleDay.SUNDAY)))))
-                            .withLoadBasedConfig(new LoadBasedConfig().withMinNodes(10).withMaxNodes(20)
-                                .withPollInterval(60).withCooldownPeriod(300)
-                                .withScalingRules(Arrays.asList(
-                                    new ScalingRule().withActionType(ScaleActionType.SCALEUP).withEvaluationCount(3)
-                                        .withScalingMetric("cpu")
-                                        .withComparisonRule(new ComparisonRule()
-                                            .withOperator(ComparisonOperator.GREATER_THAN).withThreshold(90f)),
-                                    new ScalingRule().withActionType(ScaleActionType.SCALEDOWN).withEvaluationCount(3)
-                                        .withScalingMetric("cpu")
-                                        .withComparisonRule(new ComparisonRule()
-                                            .withOperator(ComparisonOperator.LESS_THAN).withThreshold(20f))))))
+                    .withSshProfile(new SshProfile().withCount(2).withVmSize("Standard_E8as_v5"))
+                    .withAutoscaleProfile(new AutoscaleProfile().withEnabled(true)
+                        .withGracefulDecommissionTimeout(3600)
+                        .withAutoscaleType(AutoscaleType.SCHEDULE_BASED)
+                        .withScheduleBasedConfig(new ScheduleBasedConfig().withTimeZone("Cen. Australia Standard Time")
+                            .withDefaultCount(10)
+                            .withSchedules(Arrays.asList(
+                                new Schedule().withStartTime("00:00")
+                                    .withEndTime("12:00")
+                                    .withCount(20)
+                                    .withDays(Arrays.asList(ScheduleDay.MONDAY)),
+                                new Schedule().withStartTime("00:00")
+                                    .withEndTime("12:00")
+                                    .withCount(25)
+                                    .withDays(Arrays.asList(ScheduleDay.SUNDAY)))))
+                        .withLoadBasedConfig(new LoadBasedConfig().withMinNodes(10)
+                            .withMaxNodes(20)
+                            .withPollInterval(60)
+                            .withCooldownPeriod(300)
+                            .withScalingRules(Arrays.asList(new ScalingRule().withActionType(ScaleActionType.SCALEUP)
+                                .withEvaluationCount(3)
+                                .withScalingMetric("cpu")
+                                .withComparisonRule(new ComparisonRule().withOperator(ComparisonOperator.GREATER_THAN)
+                                    .withThreshold(90f)),
+                                new ScalingRule().withActionType(ScaleActionType.SCALEDOWN)
+                                    .withEvaluationCount(3)
+                                    .withScalingMetric("cpu")
+                                    .withComparisonRule(new ComparisonRule().withOperator(ComparisonOperator.LESS_THAN)
+                                        .withThreshold(20f))))))
                     .withTrinoProfile(new TrinoProfile())))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * CreateRangerCluster.json
      */
     /**
@@ -193,22 +223,32 @@ public final class ClustersCreateSamples {
      */
     public static void
         hDInsightRangerClusterPut(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusters().define("cluster1").withRegion("West US 2")
+        manager.clusters()
+            .define("cluster1")
+            .withRegion("West US 2")
             .withExistingClusterpool("hiloResourcegroup", "clusterpool1")
             .withProperties(new ClusterResourceProperties().withClusterType("ranger")
-                .withComputeProfile(new ComputeProfile().withNodes(
-                    Arrays.asList(new NodeProfile().withType("head").withVmSize("Standard_D3_v2").withCount(2))))
-                .withClusterProfile(new ClusterProfile().withClusterVersion("0.0.1").withOssVersion("2.2.3")
-                    .withIdentityProfile(new IdentityProfile().withMsiResourceId(
-                        "/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi")
-                        .withMsiClientId("de91f1d8-767f-460a-ac11-3cf103f74b34")
-                        .withMsiObjectId("40491351-c240-4042-91e0-f644a1d2b441"))
+                .withComputeProfile(new ComputeProfile()
+                    .withNodes(
+                        Arrays.asList(new NodeProfile().withType("head").withVmSize("Standard_D3_v2").withCount(2)))
+                    .withAvailabilityZones(Arrays.asList("1", "2", "3")))
+                .withClusterProfile(new ClusterProfile().withClusterVersion("0.0.1")
+                    .withOssVersion("2.2.3")
+                    .withManagedIdentityProfile(new ManagedIdentityProfile()
+                        .withIdentityList(Arrays.asList(new ManagedIdentitySpec().withType(ManagedIdentityType.CLUSTER)
+                            .withResourceId(
+                                "/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi")
+                            .withClientId("de91f1d8-767f-460a-ac11-3cf103f74b34")
+                            .withObjectId("40491351-c240-4042-91e0-f644a1d2b441"))))
                     .withAuthorizationProfile(
                         new AuthorizationProfile().withUserIds(Arrays.asList("testuser1", "testuser2")))
-                    .withRangerProfile(new RangerProfile().withRangerAdmin(new RangerAdminSpec()
-                        .withAdmins(Arrays.asList("testuser1@contoso.com", "testuser2@contoso.com"))
-                        .withDatabase(new RangerAdminSpecDatabase().withHost("testsqlserver.database.windows.net")
-                            .withName("testdb").withPasswordSecretRef("fakeTokenPlaceholder").withUsername("admin")))
+                    .withRangerProfile(new RangerProfile()
+                        .withRangerAdmin(new RangerAdminSpec()
+                            .withAdmins(Arrays.asList("testuser1@contoso.com", "testuser2@contoso.com"))
+                            .withDatabase(new RangerAdminSpecDatabase().withHost("testsqlserver.database.windows.net")
+                                .withName("testdb")
+                                .withPasswordSecretRef("fakeTokenPlaceholder")
+                                .withUsername("admin")))
                         .withRangerAudit(new RangerAuditSpec()
                             .withStorageAccount("https://teststorage.blob.core.windows.net/testblob"))
                         .withRangerUsersync(new RangerUsersyncSpec().withEnabled(true)

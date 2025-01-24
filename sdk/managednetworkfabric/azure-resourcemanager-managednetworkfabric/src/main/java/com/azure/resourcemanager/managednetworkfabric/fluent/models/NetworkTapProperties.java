@@ -6,68 +6,68 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapPropertiesDestinationsItem;
 import com.azure.resourcemanager.managednetworkfabric.models.PollingType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Tap Properties defines the properties of the resource. */
+/**
+ * Network Tap Properties defines the properties of the resource.
+ */
 @Fluent
 public final class NetworkTapProperties extends AnnotationResource {
     /*
      * ARM resource ID of the Network Packet Broker.
      */
-    @JsonProperty(value = "networkPacketBrokerId", required = true)
     private String networkPacketBrokerId;
 
     /*
      * Source Tap Rule Id. ARM Resource ID of the Network Tap Rule.
      */
-    @JsonProperty(value = "sourceTapRuleId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceTapRuleId;
 
     /*
      * List of destinations to send the filter traffic.
      */
-    @JsonProperty(value = "destinations", required = true)
     private List<NetworkTapPropertiesDestinationsItem> destinations;
 
     /*
      * Polling type.
      */
-    @JsonProperty(value = "pollingType")
     private PollingType pollingType;
 
     /*
      * Gets the configurations state of the resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
      * this process, the states keep changing based on the status of Network Tap provisioning.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource. Example -Enabled/Disabled
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
-    /** Creates an instance of NetworkTapProperties class. */
+    /**
+     * Creates an instance of NetworkTapProperties class.
+     */
     public NetworkTapProperties() {
     }
 
     /**
      * Get the networkPacketBrokerId property: ARM resource ID of the Network Packet Broker.
-     *
+     * 
      * @return the networkPacketBrokerId value.
      */
     public String networkPacketBrokerId() {
@@ -76,7 +76,7 @@ public final class NetworkTapProperties extends AnnotationResource {
 
     /**
      * Set the networkPacketBrokerId property: ARM resource ID of the Network Packet Broker.
-     *
+     * 
      * @param networkPacketBrokerId the networkPacketBrokerId value to set.
      * @return the NetworkTapProperties object itself.
      */
@@ -87,7 +87,7 @@ public final class NetworkTapProperties extends AnnotationResource {
 
     /**
      * Get the sourceTapRuleId property: Source Tap Rule Id. ARM Resource ID of the Network Tap Rule.
-     *
+     * 
      * @return the sourceTapRuleId value.
      */
     public String sourceTapRuleId() {
@@ -96,7 +96,7 @@ public final class NetworkTapProperties extends AnnotationResource {
 
     /**
      * Get the destinations property: List of destinations to send the filter traffic.
-     *
+     * 
      * @return the destinations value.
      */
     public List<NetworkTapPropertiesDestinationsItem> destinations() {
@@ -105,7 +105,7 @@ public final class NetworkTapProperties extends AnnotationResource {
 
     /**
      * Set the destinations property: List of destinations to send the filter traffic.
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the NetworkTapProperties object itself.
      */
@@ -116,7 +116,7 @@ public final class NetworkTapProperties extends AnnotationResource {
 
     /**
      * Get the pollingType property: Polling type.
-     *
+     * 
      * @return the pollingType value.
      */
     public PollingType pollingType() {
@@ -125,7 +125,7 @@ public final class NetworkTapProperties extends AnnotationResource {
 
     /**
      * Set the pollingType property: Polling type.
-     *
+     * 
      * @param pollingType the pollingType value to set.
      * @return the NetworkTapProperties object itself.
      */
@@ -136,7 +136,7 @@ public final class NetworkTapProperties extends AnnotationResource {
 
     /**
      * Get the configurationState property: Gets the configurations state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -147,7 +147,7 @@ public final class NetworkTapProperties extends AnnotationResource {
      * Get the provisioningState property: Provides you the latest status of the NFC service, whether it is Accepted,
      * updating, Succeeded or Failed. During this process, the states keep changing based on the status of Network Tap
      * provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -156,14 +156,16 @@ public final class NetworkTapProperties extends AnnotationResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource. Example -Enabled/Disabled.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
         return this.administrativeState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -172,27 +174,83 @@ public final class NetworkTapProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (networkPacketBrokerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkPacketBrokerId in model NetworkTapProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkPacketBrokerId in model NetworkTapProperties"));
         }
         if (destinations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinations in model NetworkTapProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destinations in model NetworkTapProperties"));
         } else {
             destinations().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkTapProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("networkPacketBrokerId", this.networkPacketBrokerId);
+        jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("pollingType", this.pollingType == null ? null : this.pollingType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkTapProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkTapProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkTapProperties.
+     */
+    public static NetworkTapProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkTapProperties deserializedNetworkTapProperties = new NetworkTapProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedNetworkTapProperties.withAnnotation(reader.getString());
+                } else if ("networkPacketBrokerId".equals(fieldName)) {
+                    deserializedNetworkTapProperties.networkPacketBrokerId = reader.getString();
+                } else if ("destinations".equals(fieldName)) {
+                    List<NetworkTapPropertiesDestinationsItem> destinations
+                        = reader.readArray(reader1 -> NetworkTapPropertiesDestinationsItem.fromJson(reader1));
+                    deserializedNetworkTapProperties.destinations = destinations;
+                } else if ("sourceTapRuleId".equals(fieldName)) {
+                    deserializedNetworkTapProperties.sourceTapRuleId = reader.getString();
+                } else if ("pollingType".equals(fieldName)) {
+                    deserializedNetworkTapProperties.pollingType = PollingType.fromString(reader.getString());
+                } else if ("configurationState".equals(fieldName)) {
+                    deserializedNetworkTapProperties.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkTapProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedNetworkTapProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkTapProperties;
+        });
+    }
 }

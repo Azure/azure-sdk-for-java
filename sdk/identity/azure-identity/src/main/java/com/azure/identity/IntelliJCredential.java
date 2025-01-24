@@ -7,13 +7,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.IntelliJAuthMethodDetails;
-import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.LoggingUtil;
@@ -59,8 +56,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <!-- src_embed com.azure.identity.credential.intellijcredential.construct -->
  * <pre>
- * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.intellijcredential.construct -->
  *
@@ -81,24 +77,8 @@ public class IntelliJCredential implements TokenCredential {
      */
     IntelliJCredential(String tenantId, IdentityClientOptions identityClientOptions) {
 
-        IdentityClientOptions options =
-                identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions;
-
-        IntelliJCacheAccessor accessor =
-                new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
-
-        IntelliJAuthMethodDetails authMethodDetails;
-        try {
-            authMethodDetails = accessor.getAuthDetailsIfAvailable();
-        } catch (Exception e) {
-            authMethodDetails = null;
-        }
-
-        if (CoreUtils.isNullOrEmpty(options.getAuthorityHost())) {
-            String azureEnv = authMethodDetails != null ? authMethodDetails.getAzureEnv() : "";
-            String cloudInstance = accessor.getAzureAuthHost(azureEnv);
-            options.setAuthorityHost(cloudInstance);
-        }
+        IdentityClientOptions options
+            = identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions;
 
         String tenant = tenantId;
 
@@ -106,11 +86,10 @@ public class IntelliJCredential implements TokenCredential {
             tenant = "common";
         }
 
-        identityClient = new IdentityClientBuilder()
-                             .identityClientOptions(options)
-                             .tenantId(tenant)
-                             .clientId(IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID)
-                             .build();
+        identityClient = new IdentityClientBuilder().identityClientOptions(options)
+            .tenantId(tenant)
+            .clientId(IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID)
+            .build();
 
         this.cachedToken = new AtomicReference<>();
     }
@@ -120,19 +99,17 @@ public class IntelliJCredential implements TokenCredential {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
                 return identityClient.authenticateWithPublicClientCache(request, cachedToken.get().getAccount())
-                           .onErrorResume(t -> Mono.empty());
+                    .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(
-            Mono.defer(() -> identityClient.authenticateWithIntelliJ(request)))
-                   .map(msalToken -> {
-                       cachedToken.set(msalToken);
-                       return (AccessToken) msalToken;
-                   })
+        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithIntelliJ(request))).map(msalToken -> {
+            cachedToken.set(msalToken);
+            return (AccessToken) msalToken;
+        })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error))
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error))
             .onErrorMap(error -> {
                 if (identityClient.getIdentityClientOptions().isChained()) {
                     return new CredentialUnavailableException(error.getMessage(), error);

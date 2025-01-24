@@ -15,8 +15,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.graphservices.GraphServicesManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.graphservices.GraphServicesManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.graphservices.GraphServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

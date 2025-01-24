@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the resource. */
+/**
+ * The provisioning state of the resource.
+ */
 public final class JobProvisioningState extends ExpandableStringEnum<JobProvisioningState> {
-    /** Static value Failed for JobProvisioningState. */
+    /**
+     * Static value Failed for JobProvisioningState.
+     */
     public static final JobProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for JobProvisioningState. */
+    /**
+     * Static value Succeeded for JobProvisioningState.
+     */
     public static final JobProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Suspended for JobProvisioningState. */
+    /**
+     * Static value Suspended for JobProvisioningState.
+     */
     public static final JobProvisioningState SUSPENDED = fromString("Suspended");
 
-    /** Static value Processing for JobProvisioningState. */
+    /**
+     * Static value Processing for JobProvisioningState.
+     */
     public static final JobProvisioningState PROCESSING = fromString("Processing");
 
     /**
+     * Creates a new instance of JobProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobProvisioningState() {
+    }
+
+    /**
      * Creates or finds a JobProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobProvisioningState.
      */
-    @JsonCreator
     public static JobProvisioningState fromString(String name) {
         return fromString(name, JobProvisioningState.class);
     }
 
     /**
      * Gets known JobProvisioningState values.
-     *
+     * 
      * @return known JobProvisioningState values.
      */
     public static Collection<JobProvisioningState> values() {

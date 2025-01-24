@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MatchedRouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MatchedRoute model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"name\":\"mubyynt\",\"source\":\"TwinChangeEvents\",\"condition\":\"bqtkoievseotgqr\",\"endpointNames\":[\"tmuwlauwzi\",\"xbmp\",\"cjefuzmu\",\"pbttdum\"],\"isEnabled\":false}}")
-                .toObject(MatchedRoute.class);
+        MatchedRoute model = BinaryData.fromString(
+            "{\"properties\":{\"name\":\"mubyynt\",\"source\":\"TwinChangeEvents\",\"condition\":\"bqtkoievseotgqr\",\"endpointNames\":[\"tmuwlauwzi\",\"xbmp\",\"cjefuzmu\",\"pbttdum\"],\"isEnabled\":false}}")
+            .toObject(MatchedRoute.class);
         Assertions.assertEquals("mubyynt", model.properties().name());
         Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.properties().source());
         Assertions.assertEquals("bqtkoievseotgqr", model.properties().condition());
@@ -28,15 +26,11 @@ public final class MatchedRouteTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MatchedRoute model =
-            new MatchedRoute()
-                .withProperties(
-                    new RouteProperties()
-                        .withName("mubyynt")
-                        .withSource(RoutingSource.TWIN_CHANGE_EVENTS)
-                        .withCondition("bqtkoievseotgqr")
-                        .withEndpointNames(Arrays.asList("tmuwlauwzi", "xbmp", "cjefuzmu", "pbttdum"))
-                        .withIsEnabled(false));
+        MatchedRoute model = new MatchedRoute().withProperties(new RouteProperties().withName("mubyynt")
+            .withSource(RoutingSource.TWIN_CHANGE_EVENTS)
+            .withCondition("bqtkoievseotgqr")
+            .withEndpointNames(Arrays.asList("tmuwlauwzi", "xbmp", "cjefuzmu", "pbttdum"))
+            .withIsEnabled(false));
         model = BinaryData.fromObject(model).toObject(MatchedRoute.class);
         Assertions.assertEquals("mubyynt", model.properties().name());
         Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.properties().source());

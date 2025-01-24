@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -202,13 +203,18 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
-        jsonWriter.writeStringField("receivedTimestamp", getReceivedTimestamp() == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
+        jsonWriter.writeStringField("receivedTimestamp",
+            getReceivedTimestamp() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("content", this.content);
         jsonWriter.writeStringField("channelType", this.channelKind == null ? null : this.channelKind.toString());
@@ -238,8 +244,8 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
                 } else if ("to".equals(fieldName)) {
                     deserializedAcsMessageReceivedEventData.setTo(reader.getString());
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsMessageReceivedEventData.setReceivedTimestamp(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAcsMessageReceivedEventData.setReceivedTimestamp(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("error".equals(fieldName)) {
                     deserializedAcsMessageReceivedEventData.setError(AcsMessageChannelEventError.fromJson(reader));
                 } else if ("content".equals(fieldName)) {

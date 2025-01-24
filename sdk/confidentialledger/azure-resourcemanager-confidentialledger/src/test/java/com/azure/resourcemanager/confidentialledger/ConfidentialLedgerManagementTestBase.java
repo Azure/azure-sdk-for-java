@@ -39,8 +39,8 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
     @Override
     protected void beforeTest() {
         if (getTestMode() == TestMode.PLAYBACK) {
-            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-                .setIgnoredQueryParameters(Arrays.asList("api-version"))));
+            interceptorManager.addMatchers(
+                Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
         }
     }
 
@@ -54,6 +54,7 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
         String testResourceGroupName = "acl-sdk-test-rg";
         setTestResourceGroup(testResourceGroupName);
     }
+
     @AfterAll
     public static void cleanUp() {
         // If AZURE_TEST_MODE isn't set to a value, use PLAYBACK mode as a default
@@ -61,28 +62,25 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
 
         // Delete the created resource group in LIVE and RECORD modes only
         if (!("PLAYBACK".equals(testMode))) {
-            ResourceManager
-                .authenticate(getCredential(), getAzureProfile())
+            ResourceManager.authenticate(getCredential(), getAzureProfile())
                 .withDefaultSubscription()
                 .resourceGroups()
                 .deleteByName(testResourceGroup.name());
         }
     }
+
     @BeforeEach
     public void setupManager() {
         ConfidentialLedgerManager ledgerManager = null;
         if (getTestMode() == TestMode.LIVE) {
-            ledgerManager = ConfidentialLedgerManager
-                .authenticate(getCredential(), getAzureProfile());
+            ledgerManager = ConfidentialLedgerManager.authenticate(getCredential(), getAzureProfile());
         } else if (getTestMode() == TestMode.RECORD) {
-            ledgerManager = ConfidentialLedgerManager
-                .configure()
+            ledgerManager = ConfidentialLedgerManager.configure()
                 .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .withPolicy(interceptorManager.getRecordPolicy())
                 .authenticate(getCredential(), getAzureProfile());
         } else if (getTestMode() == TestMode.PLAYBACK) {
-            ledgerManager = ConfidentialLedgerManager
-                .configure()
+            ledgerManager = ConfidentialLedgerManager.configure()
                 .withDefaultPollInterval(Duration.ofMillis(10))
                 .withHttpClient(interceptorManager.getPlaybackClient())
                 .authenticate(getCredential(), getAzureProfile());
@@ -97,16 +95,17 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
 
         ledgerOperationsInstance = new ConfidentialLedgerManagementOperations(ledgerManager);
     }
+
     public static ResourceGroup getTestResourceGroup() {
         return testResourceGroup;
     }
+
     public static void setTestResourceGroup(String testResourceGroupName) {
         String testMode = getTestModeForStaticMethods();
 
         // Create a resource group in LIVE and RECORD modes only, Mock it otherwise
         if (!("PLAYBACK".equals(testMode))) {
-            testResourceGroup = ResourceManager
-                .authenticate(getCredential(), getAzureProfile())
+            testResourceGroup = ResourceManager.authenticate(getCredential(), getAzureProfile())
                 .withDefaultSubscription()
                 .resourceGroups()
                 .define(testResourceGroupName)
@@ -117,9 +116,11 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
             when(testResourceGroup.name()).thenReturn(testResourceGroupName);
         }
     }
+
     public static AzureProfile getAzureProfile() {
         return azureProfile;
     }
+
     public static void setAzureProfile() {
         String testMode = getTestModeForStaticMethods();
         if ("PLAYBACK".equals(testMode)) {
@@ -155,6 +156,7 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
         }
         return testMode;
     }
+
     protected Map<String, String> mapOf(String... inputs) {
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < inputs.length; i += 2) {

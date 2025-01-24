@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes an available sku.". */
+/**
+ * Describes an available sku.".
+ */
 @Immutable
-public final class Sku {
+public final class Sku implements JsonSerializable<Sku> {
     /*
      * The resource type that this object applies to
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The billing information of the resource.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSku sku;
 
     /*
      * Describes scaling information of a sku.
      */
-    @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private SkuCapacity capacity;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the resourceType property: The resource type that this object applies to.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -43,7 +48,7 @@ public final class Sku {
 
     /**
      * Get the sku property: The billing information of the resource.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceSku sku() {
@@ -52,7 +57,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: Describes scaling information of a sku.
-     *
+     * 
      * @return the capacity value.
      */
     public SkuCapacity capacity() {
@@ -61,7 +66,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -71,5 +76,44 @@ public final class Sku {
         if (capacity() != null) {
             capacity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedSku.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSku.sku = ResourceSku.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSku.capacity = SkuCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
     }
 }

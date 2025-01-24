@@ -12,21 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class KpiPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KpiProperties model =
-            BinaryData
-                .fromString("{\"type\":\"Forecast\",\"id\":\"w\",\"enabled\":false}")
-                .toObject(KpiProperties.class);
+        KpiProperties model = BinaryData.fromString("{\"type\":\"Forecast\",\"id\":\"rhyrnxxmueed\",\"enabled\":true}")
+            .toObject(KpiProperties.class);
         Assertions.assertEquals(KpiType.FORECAST, model.type());
-        Assertions.assertEquals("w", model.id());
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("rhyrnxxmueed", model.id());
+        Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KpiProperties model = new KpiProperties().withType(KpiType.FORECAST).withId("w").withEnabled(false);
+        KpiProperties model = new KpiProperties().withType(KpiType.FORECAST).withId("rhyrnxxmueed").withEnabled(true);
         model = BinaryData.fromObject(model).toObject(KpiProperties.class);
         Assertions.assertEquals(KpiType.FORECAST, model.type());
-        Assertions.assertEquals("w", model.id());
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("rhyrnxxmueed", model.id());
+        Assertions.assertEquals(true, model.enabled());
     }
 }

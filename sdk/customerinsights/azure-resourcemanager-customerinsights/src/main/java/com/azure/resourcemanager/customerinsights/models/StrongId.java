@@ -6,47 +6,48 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Property/Properties which represent a unique ID. */
+/**
+ * Property/Properties which represent a unique ID.
+ */
 @Fluent
-public final class StrongId {
+public final class StrongId implements JsonSerializable<StrongId> {
     /*
      * The properties which make up the unique ID.
      */
-    @JsonProperty(value = "keyPropertyNames", required = true)
     private List<String> keyPropertyNames;
 
     /*
      * The Name identifying the strong ID.
      */
-    @JsonProperty(value = "strongIdName", required = true)
     private String strongIdName;
 
     /*
      * Localized display name.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Localized descriptions.
      */
-    @JsonProperty(value = "description")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
-    /** Creates an instance of StrongId class. */
+    /**
+     * Creates an instance of StrongId class.
+     */
     public StrongId() {
     }
 
     /**
      * Get the keyPropertyNames property: The properties which make up the unique ID.
-     *
+     * 
      * @return the keyPropertyNames value.
      */
     public List<String> keyPropertyNames() {
@@ -55,7 +56,7 @@ public final class StrongId {
 
     /**
      * Set the keyPropertyNames property: The properties which make up the unique ID.
-     *
+     * 
      * @param keyPropertyNames the keyPropertyNames value to set.
      * @return the StrongId object itself.
      */
@@ -66,7 +67,7 @@ public final class StrongId {
 
     /**
      * Get the strongIdName property: The Name identifying the strong ID.
-     *
+     * 
      * @return the strongIdName value.
      */
     public String strongIdName() {
@@ -75,7 +76,7 @@ public final class StrongId {
 
     /**
      * Set the strongIdName property: The Name identifying the strong ID.
-     *
+     * 
      * @param strongIdName the strongIdName value to set.
      * @return the StrongId object itself.
      */
@@ -86,7 +87,7 @@ public final class StrongId {
 
     /**
      * Get the displayName property: Localized display name.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -95,7 +96,7 @@ public final class StrongId {
 
     /**
      * Set the displayName property: Localized display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the StrongId object itself.
      */
@@ -106,7 +107,7 @@ public final class StrongId {
 
     /**
      * Get the description property: Localized descriptions.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -115,7 +116,7 @@ public final class StrongId {
 
     /**
      * Set the description property: Localized descriptions.
-     *
+     * 
      * @param description the description value to set.
      * @return the StrongId object itself.
      */
@@ -126,21 +127,69 @@ public final class StrongId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyPropertyNames() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyPropertyNames in model StrongId"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyPropertyNames in model StrongId"));
         }
         if (strongIdName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property strongIdName in model StrongId"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property strongIdName in model StrongId"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StrongId.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("keyPropertyNames", this.keyPropertyNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("strongIdName", this.strongIdName);
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("description", this.description, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StrongId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StrongId if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StrongId.
+     */
+    public static StrongId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StrongId deserializedStrongId = new StrongId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyPropertyNames".equals(fieldName)) {
+                    List<String> keyPropertyNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStrongId.keyPropertyNames = keyPropertyNames;
+                } else if ("strongIdName".equals(fieldName)) {
+                    deserializedStrongId.strongIdName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStrongId.displayName = displayName;
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStrongId.description = description;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStrongId;
+        });
+    }
 }

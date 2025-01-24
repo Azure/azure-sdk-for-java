@@ -14,9 +14,16 @@ import jakarta.validation.constraints.NotNull;
  */
 public final class AppConfigurationStoreTrigger {
 
+    /**
+     * Key value of the configuration setting checked when looking for changes.
+     */
     @NotNull
     private String key;
 
+    /**
+     * Label value of the configuration setting checked when looking for changes.
+     * If the label is not set, the default value is no label.
+     */
     private String label;
 
     /**
@@ -51,7 +58,7 @@ public final class AppConfigurationStoreTrigger {
      * Validates key isn't null
      */
     @PostConstruct
-    public void validateAndInit() {
+    void validateAndInit() {
         Assert.notNull(key, "All Triggers need a key value set.");
     }
 

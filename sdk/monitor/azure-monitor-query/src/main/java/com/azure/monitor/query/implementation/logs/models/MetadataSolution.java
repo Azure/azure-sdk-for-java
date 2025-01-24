@@ -175,6 +175,9 @@ public final class MetadataSolution implements JsonSerializable<MetadataSolution
         return this.related;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

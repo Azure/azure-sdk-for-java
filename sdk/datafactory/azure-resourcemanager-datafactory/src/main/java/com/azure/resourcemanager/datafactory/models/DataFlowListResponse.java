@@ -6,25 +6,27 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.DataFlowResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of data flow resources.
  */
 @Fluent
-public final class DataFlowListResponse {
+public final class DataFlowListResponse implements JsonSerializable<DataFlowListResponse> {
     /*
      * List of data flows.
      */
-    @JsonProperty(value = "value", required = true)
     private List<DataFlowResourceInner> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -88,4 +90,46 @@ public final class DataFlowListResponse {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataFlowListResponse.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowListResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataFlowListResponse.
+     */
+    public static DataFlowListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowListResponse deserializedDataFlowListResponse = new DataFlowListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DataFlowResourceInner> value
+                        = reader.readArray(reader1 -> DataFlowResourceInner.fromJson(reader1));
+                    deserializedDataFlowListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDataFlowListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlowListResponse;
+        });
+    }
 }

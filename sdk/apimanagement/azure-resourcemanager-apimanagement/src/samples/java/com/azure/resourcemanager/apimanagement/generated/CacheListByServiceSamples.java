@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Cache ListByService. */
+/**
+ * Samples for Cache ListByService.
+ */
 public final class CacheListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListCaches.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementListCaches.json
      */
     /**
      * Sample code: ApiManagementListCaches.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementListCaches(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {

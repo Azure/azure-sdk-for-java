@@ -70,10 +70,9 @@ public final class FormTableCell extends FormElement {
      * @param pageNumber the 1 based page number of the cell
      * @param fieldElements a list of references to the elements constituting this table cell.
      */
-    public FormTableCell(final int rowIndex, final int columnIndex, final int rowSpan,
-        final int columnSpan, final String text, final FieldBoundingBox boundingBox,
-        final float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
-        final List<FormElement> fieldElements) {
+    public FormTableCell(final int rowIndex, final int columnIndex, final int rowSpan, final int columnSpan,
+        final String text, final FieldBoundingBox boundingBox, final float confidence, final boolean isHeader,
+        final boolean isFooter, final int pageNumber, final List<FormElement> fieldElements) {
         super(text, boundingBox, pageNumber);
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
@@ -144,7 +143,6 @@ public final class FormTableCell extends FormElement {
     public int getRowSpan() {
         return this.rowSpan;
     }
-
 
     /**
      * Get the number of columns spanned by this cell.

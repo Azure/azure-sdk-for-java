@@ -14,8 +14,7 @@ public final class OperationDefinitionImpl implements OperationDefinition {
 
     private final com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager;
 
-    OperationDefinitionImpl(
-        OperationDefinitionInner innerObject,
+    OperationDefinitionImpl(OperationDefinitionInner innerObject,
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

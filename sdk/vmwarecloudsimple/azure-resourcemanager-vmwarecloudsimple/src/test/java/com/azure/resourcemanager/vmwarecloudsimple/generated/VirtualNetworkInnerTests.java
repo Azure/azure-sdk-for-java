@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkInner model =
-            BinaryData
-                .fromString(
-                    "{\"assignable\":false,\"id\":\"lwuip\",\"location\":\"cjzkzivgvvcna\",\"name\":\"hyrnxxmu\",\"properties\":{\"privateCloudId\":\"ndrdvstkwq\"},\"type\":\"chea\"}")
-                .toObject(VirtualNetworkInner.class);
-        Assertions.assertEquals("lwuip", model.id());
+        VirtualNetworkInner model = BinaryData.fromString(
+            "{\"assignable\":true,\"id\":\"mrtwna\",\"location\":\"slbi\",\"name\":\"ojgcyzt\",\"properties\":{\"privateCloudId\":\"z\"},\"type\":\"aeqphchqnr\"}")
+            .toObject(VirtualNetworkInner.class);
+        Assertions.assertEquals("mrtwna", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkInner model = new VirtualNetworkInner().withId("lwuip");
+        VirtualNetworkInner model = new VirtualNetworkInner().withId("mrtwna");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkInner.class);
-        Assertions.assertEquals("lwuip", model.id());
+        Assertions.assertEquals("mrtwna", model.id());
     }
 }

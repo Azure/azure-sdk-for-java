@@ -52,8 +52,7 @@ class RecognizeLinkedEntityUtilClient {
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    RecognizeLinkedEntityUtilClient(TextAnalyticsClientImpl legacyService,
-        TextAnalyticsServiceVersion serviceVersion) {
+    RecognizeLinkedEntityUtilClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
@@ -106,8 +105,8 @@ class RecognizeLinkedEntityUtilClient {
      *
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
-    Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+    Mono<Response<RecognizeLinkedEntitiesResultCollection>>
+        recognizeLinkedEntitiesBatch(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> getRecognizedLinkedEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
@@ -135,19 +134,17 @@ class RecognizeLinkedEntityUtilClient {
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
         final boolean finalIncludeStatistics = options.isIncludeStatistics();
         if (service != null) {
-            return service.analyzeTextWithResponseAsync(
-                new AnalyzeTextEntityLinkingInput()
-                    .setParameters(
-                        new EntityLinkingTaskParameters()
-                            .setStringIndexType(finalStringIndexType)
+            return service
+                .analyzeTextWithResponseAsync(
+                    new AnalyzeTextEntityLinkingInput()
+                        .setParameters(new EntityLinkingTaskParameters().setStringIndexType(finalStringIndexType)
                             .setModelVersion(finalModelVersion)
                             .setLoggingOptOut(finalLoggingOptOut))
-                    .setAnalysisInput(
-                        new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                finalIncludeStatistics,
-                finalContext)
-                .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                    getDocumentCount(documents)))
+                        .setAnalysisInput(
+                            new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                    finalIncludeStatistics, finalContext)
+                .doOnSubscribe(
+                    ignoredValue -> LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
                 .doOnSuccess(response -> LOGGER.info("Recognized linked entities for a batch of documents - {}",
                     response.getValue()))
                 .doOnError(error -> LOGGER.warning("Failed to recognize linked entities - {}", error))
@@ -155,15 +152,12 @@ class RecognizeLinkedEntityUtilClient {
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return legacyService.entitiesLinkingWithResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            finalModelVersion,
-            finalIncludeStatistics,
-            finalLoggingOptOut,
-            finalStringIndexType,
-            finalContext)
-            .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                getDocumentCount(documents)))
+        return legacyService
+            .entitiesLinkingWithResponseAsync(
+                new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)), finalModelVersion,
+                finalIncludeStatistics, finalLoggingOptOut, finalStringIndexType, finalContext)
+            .doOnSubscribe(
+                ignoredValue -> LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
             .doOnSuccess(response -> LOGGER.info("Recognized linked entities for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> LOGGER.warning("Failed to recognize linked entities - {}", error))
@@ -194,23 +188,16 @@ class RecognizeLinkedEntityUtilClient {
             return (service != null)
                 ? toRecognizeLinkedEntitiesResultCollectionResponseLanguageApi(service.analyzeTextWithResponse(
                     new AnalyzeTextEntityLinkingInput()
-                        .setParameters(
-                            new EntityLinkingTaskParameters()
-                                .setStringIndexType(finalStringIndexType)
-                                .setModelVersion(finalModelVersion)
-                                .setLoggingOptOut(finalLoggingOptOut))
+                        .setParameters(new EntityLinkingTaskParameters().setStringIndexType(finalStringIndexType)
+                            .setModelVersion(finalModelVersion)
+                            .setLoggingOptOut(finalLoggingOptOut))
                         .setAnalysisInput(
                             new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                    finalIncludeStatistics,
-                    finalContext))
+                    finalIncludeStatistics, finalContext))
                 : toRecognizeLinkedEntitiesResultCollectionResponseLegacyApi(
                     legacyService.entitiesLinkingWithResponseSync(
-                        new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        finalModelVersion,
-                        finalIncludeStatistics,
-                        finalLoggingOptOut,
-                        finalStringIndexType,
-                        finalContext));
+                        new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)), finalModelVersion,
+                        finalIncludeStatistics, finalLoggingOptOut, finalStringIndexType, finalContext));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
@@ -219,8 +206,8 @@ class RecognizeLinkedEntityUtilClient {
     private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
         if (options != null && options.isServiceLogsDisabled()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
-                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
         }
     }
 }

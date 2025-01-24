@@ -6,22 +6,26 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesComputeProfile;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ClusterPoolResourcePropertiesComputeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolResourcePropertiesComputeProfile model
-            = BinaryData.fromString("{\"vmSize\":\"kryhtnapczwlokj\",\"count\":1793570177}")
-                .toObject(ClusterPoolResourcePropertiesComputeProfile.class);
-        Assertions.assertEquals("kryhtnapczwlokj", model.vmSize());
+        ClusterPoolResourcePropertiesComputeProfile model = BinaryData.fromString(
+            "{\"vmSize\":\"felluwfzitonpe\",\"count\":794210755,\"availabilityZones\":[\"jlxofpdvhpfxxyp\",\"ninmayhuyb\",\"kpode\"]}")
+            .toObject(ClusterPoolResourcePropertiesComputeProfile.class);
+        Assertions.assertEquals("felluwfzitonpe", model.vmSize());
+        Assertions.assertEquals("jlxofpdvhpfxxyp", model.availabilityZones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterPoolResourcePropertiesComputeProfile model
-            = new ClusterPoolResourcePropertiesComputeProfile().withVmSize("kryhtnapczwlokj");
+            = new ClusterPoolResourcePropertiesComputeProfile().withVmSize("felluwfzitonpe")
+                .withAvailabilityZones(Arrays.asList("jlxofpdvhpfxxyp", "ninmayhuyb", "kpode"));
         model = BinaryData.fromObject(model).toObject(ClusterPoolResourcePropertiesComputeProfile.class);
-        Assertions.assertEquals("kryhtnapczwlokj", model.vmSize());
+        Assertions.assertEquals("felluwfzitonpe", model.vmSize());
+        Assertions.assertEquals("jlxofpdvhpfxxyp", model.availabilityZones().get(0));
     }
 }

@@ -17,7 +17,6 @@ public class MsalAuthenticationAccount implements IAccount {
     private String environment;
     private String username;
 
-
     public MsalAuthenticationAccount(AuthenticationRecord authenticationRecord) {
         this.authenticationRecord = authenticationRecord;
         this.homeAccountId = authenticationRecord.getHomeAccountId();
@@ -26,7 +25,7 @@ public class MsalAuthenticationAccount implements IAccount {
     }
 
     public MsalAuthenticationAccount(AuthenticationRecord authenticationRecord,
-                                     Map<String, ITenantProfile> tenantProfiles) {
+        Map<String, ITenantProfile> tenantProfiles) {
         this.authenticationRecord = authenticationRecord;
         this.tenantProfiles = tenantProfiles;
         this.homeAccountId = authenticationRecord.getHomeAccountId();

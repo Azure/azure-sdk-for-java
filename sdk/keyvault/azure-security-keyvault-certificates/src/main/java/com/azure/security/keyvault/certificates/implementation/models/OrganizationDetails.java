@@ -13,7 +13,9 @@ import com.azure.security.keyvault.certificates.models.AdministratorContact;
 import java.io.IOException;
 import java.util.List;
 
-/** Details of the organization of the certificate issuer. */
+/**
+ * Details of the organization of the certificate issuer.
+ */
 @Fluent
 public final class OrganizationDetails implements JsonSerializable<OrganizationDetails> {
     /*
@@ -26,12 +28,15 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
      */
     private List<AdministratorContact> adminDetails;
 
-    /** Creates an instance of OrganizationDetails class. */
-    public OrganizationDetails() {}
+    /**
+     * Creates an instance of OrganizationDetails class.
+     */
+    public OrganizationDetails() {
+    }
 
     /**
      * Get the id property: Id of the organization.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -40,7 +45,7 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
 
     /**
      * Set the id property: Id of the organization.
-     *
+     * 
      * @param id the id value to set.
      * @return the OrganizationDetails object itself.
      */
@@ -51,7 +56,7 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
 
     /**
      * Get the adminDetails property: Details of the organization administrator.
-     *
+     * 
      * @return the adminDetails value.
      */
     public List<AdministratorContact> getAdminDetails() {
@@ -60,7 +65,7 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
 
     /**
      * Set the adminDetails property: Details of the organization administrator.
-     *
+     * 
      * @param adminDetails the adminDetails value to set.
      * @return the OrganizationDetails object itself.
      */
@@ -69,6 +74,9 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -79,32 +87,31 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
 
     /**
      * Reads an instance of OrganizationDetails from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of OrganizationDetails if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the OrganizationDetails.
      */
     public static OrganizationDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    OrganizationDetails deserializedOrganizationDetails = new OrganizationDetails();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            OrganizationDetails deserializedOrganizationDetails = new OrganizationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedOrganizationDetails.id = reader.getString();
-                        } else if ("admin_details".equals(fieldName)) {
-                            List<AdministratorContact> adminDetails =
-                                    reader.readArray(reader1 -> AdministratorContact.fromJson(reader1));
-                            deserializedOrganizationDetails.adminDetails = adminDetails;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedOrganizationDetails.id = reader.getString();
+                } else if ("admin_details".equals(fieldName)) {
+                    List<AdministratorContact> adminDetails
+                        = reader.readArray(reader1 -> AdministratorContact.fromJson(reader1));
+                    deserializedOrganizationDetails.adminDetails = adminDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedOrganizationDetails;
-                });
+            return deserializedOrganizationDetails;
+        });
     }
 }

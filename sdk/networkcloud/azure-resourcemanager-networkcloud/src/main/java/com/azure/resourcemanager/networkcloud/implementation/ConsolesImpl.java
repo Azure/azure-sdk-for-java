@@ -11,8 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.ConsolesClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.ConsoleInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.Console;
 import com.azure.resourcemanager.networkcloud.models.Consoles;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 
 public final class ConsolesImpl implements Consoles {
     private static final ClientLogger LOGGER = new ClientLogger(ConsolesImpl.class);
@@ -21,34 +23,31 @@ public final class ConsolesImpl implements Consoles {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public ConsolesImpl(
-        ConsolesClient innerClient, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    public ConsolesImpl(ConsolesClient innerClient,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Console> listByVirtualMachine(String resourceGroupName, String virtualMachineName) {
-        PagedIterable<ConsoleInner> inner =
-            this.serviceClient().listByVirtualMachine(resourceGroupName, virtualMachineName);
-        return Utils.mapPage(inner, inner1 -> new ConsoleImpl(inner1, this.manager()));
+        PagedIterable<ConsoleInner> inner
+            = this.serviceClient().listByVirtualMachine(resourceGroupName, virtualMachineName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConsoleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Console> listByVirtualMachine(
-        String resourceGroupName, String virtualMachineName, Context context) {
-        PagedIterable<ConsoleInner> inner =
-            this.serviceClient().listByVirtualMachine(resourceGroupName, virtualMachineName, context);
-        return Utils.mapPage(inner, inner1 -> new ConsoleImpl(inner1, this.manager()));
+    public PagedIterable<Console> listByVirtualMachine(String resourceGroupName, String virtualMachineName,
+        Context context) {
+        PagedIterable<ConsoleInner> inner
+            = this.serviceClient().listByVirtualMachine(resourceGroupName, virtualMachineName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConsoleImpl(inner1, this.manager()));
     }
 
-    public Response<Console> getWithResponse(
-        String resourceGroupName, String virtualMachineName, String consoleName, Context context) {
-        Response<ConsoleInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, virtualMachineName, consoleName, context);
+    public Response<Console> getWithResponse(String resourceGroupName, String virtualMachineName, String consoleName,
+        Context context) {
+        Response<ConsoleInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, virtualMachineName, consoleName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConsoleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,120 +63,101 @@ public final class ConsolesImpl implements Consoles {
         }
     }
 
-    public void delete(String resourceGroupName, String virtualMachineName, String consoleName) {
-        this.serviceClient().delete(resourceGroupName, virtualMachineName, consoleName);
+    public OperationStatusResult delete(String resourceGroupName, String virtualMachineName, String consoleName) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, virtualMachineName, consoleName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String virtualMachineName, String consoleName, Context context) {
-        this.serviceClient().delete(resourceGroupName, virtualMachineName, consoleName, context);
+    public OperationStatusResult delete(String resourceGroupName, String virtualMachineName, String consoleName,
+        Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, virtualMachineName, consoleName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Console getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String virtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        String consoleName = Utils.getValueFromIdByName(id, "consoles");
+        String consoleName = ResourceManagerUtils.getValueFromIdByName(id, "consoles");
         if (consoleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'consoles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'consoles'.", id)));
         }
         return this.getWithResponse(resourceGroupName, virtualMachineName, consoleName, Context.NONE).getValue();
     }
 
     public Response<Console> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String virtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        String consoleName = Utils.getValueFromIdByName(id, "consoles");
+        String consoleName = ResourceManagerUtils.getValueFromIdByName(id, "consoles");
         if (consoleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'consoles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'consoles'.", id)));
         }
         return this.getWithResponse(resourceGroupName, virtualMachineName, consoleName, context);
     }
 
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String virtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        String consoleName = Utils.getValueFromIdByName(id, "consoles");
+        String consoleName = ResourceManagerUtils.getValueFromIdByName(id, "consoles");
         if (consoleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'consoles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'consoles'.", id)));
         }
-        this.delete(resourceGroupName, virtualMachineName, consoleName, Context.NONE);
+        return this.delete(resourceGroupName, virtualMachineName, consoleName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String virtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        String consoleName = Utils.getValueFromIdByName(id, "consoles");
+        String consoleName = ResourceManagerUtils.getValueFromIdByName(id, "consoles");
         if (consoleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'consoles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'consoles'.", id)));
         }
-        this.delete(resourceGroupName, virtualMachineName, consoleName, context);
+        return this.delete(resourceGroupName, virtualMachineName, consoleName, context);
     }
 
     private ConsolesClient serviceClient() {

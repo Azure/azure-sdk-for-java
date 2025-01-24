@@ -13,37 +13,32 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowTriggerCallbackUrlInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowTriggerCallbackUrlInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":\"nxkrx\",\"method\":\"mi\",\"basePath\":\"thz\",\"relativePath\":\"qdrabhjybigehoqf\",\"relativePathParameters\":[\"skanyk\"],\"queries\":{\"api-version\":\"cuiywgqyw\",\"sp\":\"drvyn\",\"sv\":\"gpphrcgyn\",\"sig\":\"cpecfvmmcoofs\",\"se\":\"zevgb\"}}")
-                .toObject(WorkflowTriggerCallbackUrlInner.class);
-        Assertions.assertEquals("skanyk", model.relativePathParameters().get(0));
-        Assertions.assertEquals("cuiywgqyw", model.queries().apiVersion());
-        Assertions.assertEquals("drvyn", model.queries().sp());
-        Assertions.assertEquals("gpphrcgyn", model.queries().sv());
-        Assertions.assertEquals("cpecfvmmcoofs", model.queries().sig());
-        Assertions.assertEquals("zevgb", model.queries().se());
+        WorkflowTriggerCallbackUrlInner model = BinaryData.fromString(
+            "{\"value\":\"p\",\"method\":\"jyofdxluusdtto\",\"basePath\":\"aboekqv\",\"relativePath\":\"lns\",\"relativePathParameters\":[\"xwyjsflhhc\",\"aln\",\"ixisxyawjoy\",\"qcslyjpkiid\"],\"queries\":{\"api-version\":\"xznelixhnrztf\",\"sp\":\"hb\",\"sv\":\"knalaulppg\",\"sig\":\"tpnapnyiropuhpig\",\"se\":\"gylgqgitxmedjvcs\"}}")
+            .toObject(WorkflowTriggerCallbackUrlInner.class);
+        Assertions.assertEquals("xwyjsflhhc", model.relativePathParameters().get(0));
+        Assertions.assertEquals("xznelixhnrztf", model.queries().apiVersion());
+        Assertions.assertEquals("hb", model.queries().sp());
+        Assertions.assertEquals("knalaulppg", model.queries().sv());
+        Assertions.assertEquals("tpnapnyiropuhpig", model.queries().sig());
+        Assertions.assertEquals("gylgqgitxmedjvcs", model.queries().se());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowTriggerCallbackUrlInner model =
-            new WorkflowTriggerCallbackUrlInner()
-                .withRelativePathParameters(Arrays.asList("skanyk"))
-                .withQueries(
-                    new WorkflowTriggerListCallbackUrlQueries()
-                        .withApiVersion("cuiywgqyw")
-                        .withSp("drvyn")
-                        .withSv("gpphrcgyn")
-                        .withSig("cpecfvmmcoofs")
-                        .withSe("zevgb"));
+        WorkflowTriggerCallbackUrlInner model = new WorkflowTriggerCallbackUrlInner()
+            .withRelativePathParameters(Arrays.asList("xwyjsflhhc", "aln", "ixisxyawjoy", "qcslyjpkiid"))
+            .withQueries(new WorkflowTriggerListCallbackUrlQueries().withApiVersion("xznelixhnrztf")
+                .withSp("hb")
+                .withSv("knalaulppg")
+                .withSig("tpnapnyiropuhpig")
+                .withSe("gylgqgitxmedjvcs"));
         model = BinaryData.fromObject(model).toObject(WorkflowTriggerCallbackUrlInner.class);
-        Assertions.assertEquals("skanyk", model.relativePathParameters().get(0));
-        Assertions.assertEquals("cuiywgqyw", model.queries().apiVersion());
-        Assertions.assertEquals("drvyn", model.queries().sp());
-        Assertions.assertEquals("gpphrcgyn", model.queries().sv());
-        Assertions.assertEquals("cpecfvmmcoofs", model.queries().sig());
-        Assertions.assertEquals("zevgb", model.queries().se());
+        Assertions.assertEquals("xwyjsflhhc", model.relativePathParameters().get(0));
+        Assertions.assertEquals("xznelixhnrztf", model.queries().apiVersion());
+        Assertions.assertEquals("hb", model.queries().sp());
+        Assertions.assertEquals("knalaulppg", model.queries().sv());
+        Assertions.assertEquals("tpnapnyiropuhpig", model.queries().sig());
+        Assertions.assertEquals("gylgqgitxmedjvcs", model.queries().se());
     }
 }

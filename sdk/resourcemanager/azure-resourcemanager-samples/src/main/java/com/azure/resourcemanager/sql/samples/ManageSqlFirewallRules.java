@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.sql.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -52,17 +51,22 @@ public final class ManageSqlFirewallRules {
 
             // ============================================================
             // Create a SQL Server, with 2 firewall rules.
-            System.out.println("Create a SQL server with 2 firewall rules adding a single IP Address and a range of IP Addresses");
+            System.out.println(
+                "Create a SQL server with 2 firewall rules adding a single IP Address and a range of IP Addresses");
 
-            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withAdministratorLogin(administratorLogin)
-                    .withAdministratorPassword(administratorPassword)
-                    .defineFirewallRule("filewallRule1").withIpAddress(firewallRuleIPAddress).attach()
-                    .defineFirewallRule("filewallRule2")
-                        .withIpAddressRange(firewallRuleStartIPAddress, firewallRuleEndIPAddress).attach()
-                    .create();
+            SqlServer sqlServer = azureResourceManager.sqlServers()
+                .define(sqlServerName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withAdministratorLogin(administratorLogin)
+                .withAdministratorPassword(administratorPassword)
+                .defineFirewallRule("filewallRule1")
+                .withIpAddress(firewallRuleIPAddress)
+                .attach()
+                .defineFirewallRule("filewallRule2")
+                .withIpAddressRange(firewallRuleStartIPAddress, firewallRuleEndIPAddress)
+                .attach()
+                .create();
 
             Utils.print(sqlServer);
 
@@ -71,7 +75,7 @@ public final class ManageSqlFirewallRules {
             System.out.println("Listing all firewall rules in SQL Server.");
 
             List<SqlFirewallRule> firewallRules = sqlServer.firewallRules().list();
-            for (SqlFirewallRule firewallRule: firewallRules) {
+            for (SqlFirewallRule firewallRule : firewallRules) {
                 // Print information of the firewall rule.
                 Utils.print(firewallRule);
 
@@ -83,9 +87,8 @@ public final class ManageSqlFirewallRules {
             // ============================================================
             // Add new firewall rules.
             System.out.println("Creating a firewall rule in existing SQL Server");
-            SqlFirewallRule firewallRule = sqlServer.firewallRules().define(myFirewallName)
-                    .withIpAddress(myFirewallRuleIPAddress)
-                    .create();
+            SqlFirewallRule firewallRule
+                = sqlServer.firewallRules().define(myFirewallName).withIpAddress(myFirewallRuleIPAddress).create();
 
             Utils.print(firewallRule);
 
@@ -96,13 +99,13 @@ public final class ManageSqlFirewallRules {
 
             System.out.println("Deleting and adding new firewall rules as part of SQL Server update.");
             sqlServer.update()
-                    .withoutFirewallRule(myFirewallName)
-                    .defineFirewallRule("filewallRule2")
-                        .withIpAddressRange(otherFirewallRuleStartIPAddress, otherFirewallRuleEndIPAddress)
-                        .attach()
-                    .apply();
+                .withoutFirewallRule(myFirewallName)
+                .defineFirewallRule("filewallRule2")
+                .withIpAddressRange(otherFirewallRuleStartIPAddress, otherFirewallRuleEndIPAddress)
+                .attach()
+                .apply();
 
-            for (SqlFirewallRule sqlFirewallRule: sqlServer.firewallRules().list()) {
+            for (SqlFirewallRule sqlFirewallRule : sqlServer.firewallRules().list()) {
                 // Print information of the firewall rule.
                 Utils.print(sqlFirewallRule);
             }
@@ -133,8 +136,7 @@ public final class ManageSqlFirewallRules {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

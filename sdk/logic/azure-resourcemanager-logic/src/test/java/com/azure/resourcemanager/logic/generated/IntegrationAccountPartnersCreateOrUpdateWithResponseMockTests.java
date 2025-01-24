@@ -6,80 +6,57 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
+import com.azure.resourcemanager.logic.models.B2BPartnerContent;
+import com.azure.resourcemanager.logic.models.BusinessIdentity;
 import com.azure.resourcemanager.logic.models.IntegrationAccountPartner;
 import com.azure.resourcemanager.logic.models.PartnerContent;
 import com.azure.resourcemanager.logic.models.PartnerType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationAccountPartnersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"partnerType\":\"B2B\",\"createdTime\":\"2021-10-30T09:46:10Z\",\"changedTime\":\"2021-09-06T02:07:05Z\",\"metadata\":\"dataf\",\"content\":{\"b2b\":{\"businessIdentities\":[{\"qualifier\":\"bmhqy\",\"value\":\"rsywiscoqtvx\"},{\"qualifier\":\"ipchdpdev\",\"value\":\"mpoqkc\"},{\"qualifier\":\"kfesh\",\"value\":\"omtvkxps\"},{\"qualifier\":\"lpyp\",\"value\":\"gdetydqgyhuy\"}]}}},\"location\":\"utspocr\",\"tags\":{\"ftjigtqyzoc\":\"raapczmzi\",\"lciooxybmktbwdfj\":\"yywc\",\"j\":\"epycpw\",\"icknsbbc\":\"kuhrtqnbdgc\"},\"id\":\"bqxwojvejxh\",\"name\":\"eolzftfyjcen\",\"type\":\"idlpmlxhzwyy\"}";
 
-        String responseStr =
-            "{\"properties\":{\"partnerType\":\"NotSpecified\",\"createdTime\":\"2021-02-01T06:27:25Z\",\"changedTime\":\"2021-06-23T17:16:34Z\",\"metadata\":\"dataxijvskwsdgkjgyac\",\"content\":{}},\"location\":\"asekwefcvoinw\",\"tags\":{\"qicladv\":\"rtwy\",\"quvjez\":\"tdavuqmcbymsfobj\",\"mvpsimioyo\":\"j\"},\"id\":\"glkmiqwnnr\",\"name\":\"clibbfqpsp\",\"type\":\"ladydgnhautwu\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IntegrationAccountPartner response = manager.integrationAccountPartners()
+            .define("cahdagchk")
+            .withRegion("kn")
+            .withExistingIntegrationAccount("oiqsrqebjg", "fm")
+            .withPartnerType(PartnerType.B2B)
+            .withContent(new PartnerContent().withB2B(new B2BPartnerContent()
+                .withBusinessIdentities(Arrays.asList(new BusinessIdentity().withQualifier("yebarw").withValue("mnxpp"),
+                    new BusinessIdentity().withQualifier("fep").withValue("nedjvataeao")))))
+            .withTags(mapOf("bgpwz", "vvkfbmrppjfce", "mvzc", "qewixnmvd", "xwihnpyexjrguzi", "cgftelim"))
+            .withMetadata("dataaomqqbslwxcfj")
+            .create();
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IntegrationAccountPartner response =
-            manager
-                .integrationAccountPartners()
-                .define("h")
-                .withRegion("rbf")
-                .withExistingIntegrationAccount("oxinh", "re")
-                .withPartnerType(PartnerType.B2B)
-                .withContent(new PartnerContent())
-                .withTags(mapOf("bcip", "xz", "dktxfv", "msexroqr", "gpkrie", "nfee"))
-                .withMetadata("datajpceeznzan")
-                .create();
-
-        Assertions.assertEquals("asekwefcvoinw", response.location());
-        Assertions.assertEquals("rtwy", response.tags().get("qicladv"));
-        Assertions.assertEquals(PartnerType.NOT_SPECIFIED, response.partnerType());
+        Assertions.assertEquals("utspocr", response.location());
+        Assertions.assertEquals("raapczmzi", response.tags().get("ftjigtqyzoc"));
+        Assertions.assertEquals(PartnerType.B2B, response.partnerType());
+        Assertions.assertEquals("bmhqy", response.content().b2B().businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("rsywiscoqtvx", response.content().b2B().businessIdentities().get(0).value());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

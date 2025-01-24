@@ -10,10 +10,8 @@ import com.azure.resourcemanager.digitaltwins.fluent.models.DigitalTwinsEndpoint
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsEndpointResource;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsEndpointResourceProperties;
 
-public final class DigitalTwinsEndpointResourceImpl
-    implements DigitalTwinsEndpointResource,
-        DigitalTwinsEndpointResource.Definition,
-        DigitalTwinsEndpointResource.Update {
+public final class DigitalTwinsEndpointResourceImpl implements DigitalTwinsEndpointResource,
+    DigitalTwinsEndpointResource.Definition, DigitalTwinsEndpointResource.Update {
     private DigitalTwinsEndpointResourceInner innerObject;
 
     private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
@@ -56,33 +54,29 @@ public final class DigitalTwinsEndpointResourceImpl
 
     private String endpointName;
 
-    public DigitalTwinsEndpointResourceImpl withExistingDigitalTwinsInstance(
-        String resourceGroupName, String resourceName) {
+    public DigitalTwinsEndpointResourceImpl withExistingDigitalTwinsInstance(String resourceGroupName,
+        String resourceName) {
         this.resourceGroupName = resourceGroupName;
         this.resourceName = resourceName;
         return this;
     }
 
     public DigitalTwinsEndpointResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwinsEndpoints()
-                .createOrUpdate(resourceGroupName, resourceName, endpointName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwinsEndpoints()
+            .createOrUpdate(resourceGroupName, resourceName, endpointName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DigitalTwinsEndpointResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwinsEndpoints()
-                .createOrUpdate(resourceGroupName, resourceName, endpointName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwinsEndpoints()
+            .createOrUpdate(resourceGroupName, resourceName, endpointName, this.innerModel(), context);
         return this;
     }
 
-    DigitalTwinsEndpointResourceImpl(
-        String name, com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
+    DigitalTwinsEndpointResourceImpl(String name,
+        com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = new DigitalTwinsEndpointResourceInner();
         this.serviceManager = serviceManager;
         this.endpointName = name;
@@ -93,50 +87,41 @@ public final class DigitalTwinsEndpointResourceImpl
     }
 
     public DigitalTwinsEndpointResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwinsEndpoints()
-                .createOrUpdate(resourceGroupName, resourceName, endpointName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwinsEndpoints()
+            .createOrUpdate(resourceGroupName, resourceName, endpointName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DigitalTwinsEndpointResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwinsEndpoints()
-                .createOrUpdate(resourceGroupName, resourceName, endpointName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwinsEndpoints()
+            .createOrUpdate(resourceGroupName, resourceName, endpointName, this.innerModel(), context);
         return this;
     }
 
-    DigitalTwinsEndpointResourceImpl(
-        DigitalTwinsEndpointResourceInner innerObject,
+    DigitalTwinsEndpointResourceImpl(DigitalTwinsEndpointResourceInner innerObject,
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "digitalTwinsInstances");
-        this.endpointName = Utils.getValueFromIdByName(innerObject.id(), "endpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "digitalTwinsInstances");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "endpoints");
     }
 
     public DigitalTwinsEndpointResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwinsEndpoints()
-                .getWithResponse(resourceGroupName, resourceName, endpointName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwinsEndpoints()
+            .getWithResponse(resourceGroupName, resourceName, endpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DigitalTwinsEndpointResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwinsEndpoints()
-                .getWithResponse(resourceGroupName, resourceName, endpointName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwinsEndpoints()
+            .getWithResponse(resourceGroupName, resourceName, endpointName, context)
+            .getValue();
         return this;
     }
 

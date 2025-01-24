@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Billing information related properties of a server. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Sku.class);
 
     /*
      * The name of the sku, typically, tier + family + cores, e.g. B_Gen4_1,

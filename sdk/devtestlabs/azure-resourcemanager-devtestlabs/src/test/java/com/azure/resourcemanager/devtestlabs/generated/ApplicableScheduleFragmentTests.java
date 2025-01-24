@@ -13,17 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicableScheduleFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicableScheduleFragment model =
-            BinaryData
-                .fromString("{\"tags\":{\"rx\":\"wzohm\",\"inhmdptys\":\"bsojk\",\"jp\":\"rqsgnzx\"}}")
+        ApplicableScheduleFragment model
+            = BinaryData.fromString("{\"tags\":{\"rx\":\"wzohm\",\"inhmdptys\":\"bsojk\",\"jp\":\"rqsgnzx\"}}")
                 .toObject(ApplicableScheduleFragment.class);
         Assertions.assertEquals("wzohm", model.tags().get("rx"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicableScheduleFragment model =
-            new ApplicableScheduleFragment().withTags(mapOf("rx", "wzohm", "inhmdptys", "bsojk", "jp", "rqsgnzx"));
+        ApplicableScheduleFragment model
+            = new ApplicableScheduleFragment().withTags(mapOf("rx", "wzohm", "inhmdptys", "bsojk", "jp", "rqsgnzx"));
         model = BinaryData.fromObject(model).toObject(ApplicableScheduleFragment.class);
         Assertions.assertEquals("wzohm", model.tags().get("rx"));
     }

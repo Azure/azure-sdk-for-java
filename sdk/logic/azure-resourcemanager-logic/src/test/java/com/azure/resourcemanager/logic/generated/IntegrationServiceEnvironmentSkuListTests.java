@@ -17,87 +17,58 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationServiceEnvironmentSkuListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationServiceEnvironmentSkuList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"ppipifhpfeoa\",\"sku\":{\"name\":\"Premium\",\"tier\":\"txjcsheafidlt\"},\"capacity\":{\"minimum\":1906339616,\"maximum\":1336294552,\"default\":893368789,\"scaleType\":\"None\"}},{\"resourceType\":\"h\",\"sku\":{\"name\":\"Developer\",\"tier\":\"f\"},\"capacity\":{\"minimum\":182361785,\"maximum\":49827324,\"default\":713923946,\"scaleType\":\"None\"}},{\"resourceType\":\"llu\",\"sku\":{\"name\":\"Developer\",\"tier\":\"gdqoh\"},\"capacity\":{\"minimum\":1560006884,\"maximum\":484782271,\"default\":1561127811,\"scaleType\":\"None\"}},{\"resourceType\":\"pwbralllibphbqz\",\"sku\":{\"name\":\"NotSpecified\",\"tier\":\"a\"},\"capacity\":{\"minimum\":637127559,\"maximum\":211189126,\"default\":10201834,\"scaleType\":\"Automatic\"}}],\"nextLink\":\"ajoylhjl\"}")
-                .toObject(IntegrationServiceEnvironmentSkuList.class);
-        Assertions.assertEquals("ppipifhpfeoa", model.value().get(0).resourceType());
-        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.PREMIUM, model.value().get(0).sku().name());
-        Assertions.assertEquals("txjcsheafidlt", model.value().get(0).sku().tier());
-        Assertions.assertEquals(1906339616, model.value().get(0).capacity().minimum());
-        Assertions.assertEquals(1336294552, model.value().get(0).capacity().maximum());
-        Assertions.assertEquals(893368789, model.value().get(0).capacity().defaultProperty());
-        Assertions
-            .assertEquals(IntegrationServiceEnvironmentSkuScaleType.NONE, model.value().get(0).capacity().scaleType());
-        Assertions.assertEquals("ajoylhjl", model.nextLink());
+        IntegrationServiceEnvironmentSkuList model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"xjbaqehgpdohzjq\",\"sku\":{\"name\":\"NotSpecified\",\"tier\":\"igebxncnwfepb\"},\"capacity\":{\"minimum\":1145439736,\"maximum\":657592284,\"default\":1395211030,\"scaleType\":\"Manual\"}},{\"resourceType\":\"jbgdlfgtdysnaquf\",\"sku\":{\"name\":\"NotSpecified\",\"tier\":\"q\"},\"capacity\":{\"minimum\":240582317,\"maximum\":708724607,\"default\":804332248,\"scaleType\":\"None\"}},{\"resourceType\":\"eqyj\",\"sku\":{\"name\":\"Premium\",\"tier\":\"njxdfzantk\"},\"capacity\":{\"minimum\":1769138109,\"maximum\":1902347173,\"default\":1915995196,\"scaleType\":\"Automatic\"}}],\"nextLink\":\"eqacjjvpilguooq\"}")
+            .toObject(IntegrationServiceEnvironmentSkuList.class);
+        Assertions.assertEquals("xjbaqehgpdohzjq", model.value().get(0).resourceType());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED, model.value().get(0).sku().name());
+        Assertions.assertEquals("igebxncnwfepb", model.value().get(0).sku().tier());
+        Assertions.assertEquals(1145439736, model.value().get(0).capacity().minimum());
+        Assertions.assertEquals(657592284, model.value().get(0).capacity().maximum());
+        Assertions.assertEquals(1395211030, model.value().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuScaleType.MANUAL,
+            model.value().get(0).capacity().scaleType());
+        Assertions.assertEquals("eqacjjvpilguooq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationServiceEnvironmentSkuList model =
-            new IntegrationServiceEnvironmentSkuList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new IntegrationServiceEnvironmentSkuDefinitionInner()
-                                .withResourceType("ppipifhpfeoa")
-                                .withSku(
-                                    new IntegrationServiceEnvironmentSkuDefinitionSku()
-                                        .withName(IntegrationServiceEnvironmentSkuName.PREMIUM)
-                                        .withTier("txjcsheafidlt"))
-                                .withCapacity(
-                                    new IntegrationServiceEnvironmentSkuCapacity()
-                                        .withMinimum(1906339616)
-                                        .withMaximum(1336294552)
-                                        .withDefaultProperty(893368789)
-                                        .withScaleType(IntegrationServiceEnvironmentSkuScaleType.NONE)),
-                            new IntegrationServiceEnvironmentSkuDefinitionInner()
-                                .withResourceType("h")
-                                .withSku(
-                                    new IntegrationServiceEnvironmentSkuDefinitionSku()
-                                        .withName(IntegrationServiceEnvironmentSkuName.DEVELOPER)
-                                        .withTier("f"))
-                                .withCapacity(
-                                    new IntegrationServiceEnvironmentSkuCapacity()
-                                        .withMinimum(182361785)
-                                        .withMaximum(49827324)
-                                        .withDefaultProperty(713923946)
-                                        .withScaleType(IntegrationServiceEnvironmentSkuScaleType.NONE)),
-                            new IntegrationServiceEnvironmentSkuDefinitionInner()
-                                .withResourceType("llu")
-                                .withSku(
-                                    new IntegrationServiceEnvironmentSkuDefinitionSku()
-                                        .withName(IntegrationServiceEnvironmentSkuName.DEVELOPER)
-                                        .withTier("gdqoh"))
-                                .withCapacity(
-                                    new IntegrationServiceEnvironmentSkuCapacity()
-                                        .withMinimum(1560006884)
-                                        .withMaximum(484782271)
-                                        .withDefaultProperty(1561127811)
-                                        .withScaleType(IntegrationServiceEnvironmentSkuScaleType.NONE)),
-                            new IntegrationServiceEnvironmentSkuDefinitionInner()
-                                .withResourceType("pwbralllibphbqz")
-                                .withSku(
-                                    new IntegrationServiceEnvironmentSkuDefinitionSku()
-                                        .withName(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED)
-                                        .withTier("a"))
-                                .withCapacity(
-                                    new IntegrationServiceEnvironmentSkuCapacity()
-                                        .withMinimum(637127559)
-                                        .withMaximum(211189126)
-                                        .withDefaultProperty(10201834)
-                                        .withScaleType(IntegrationServiceEnvironmentSkuScaleType.AUTOMATIC))))
-                .withNextLink("ajoylhjl");
+        IntegrationServiceEnvironmentSkuList model = new IntegrationServiceEnvironmentSkuList()
+            .withValue(Arrays.asList(
+                new IntegrationServiceEnvironmentSkuDefinitionInner().withResourceType("xjbaqehgpdohzjq")
+                    .withSku(new IntegrationServiceEnvironmentSkuDefinitionSku()
+                        .withName(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED)
+                        .withTier("igebxncnwfepb"))
+                    .withCapacity(new IntegrationServiceEnvironmentSkuCapacity().withMinimum(1145439736)
+                        .withMaximum(657592284)
+                        .withDefaultProperty(1395211030)
+                        .withScaleType(IntegrationServiceEnvironmentSkuScaleType.MANUAL)),
+                new IntegrationServiceEnvironmentSkuDefinitionInner().withResourceType("jbgdlfgtdysnaquf")
+                    .withSku(new IntegrationServiceEnvironmentSkuDefinitionSku()
+                        .withName(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED)
+                        .withTier("q"))
+                    .withCapacity(new IntegrationServiceEnvironmentSkuCapacity().withMinimum(240582317)
+                        .withMaximum(708724607)
+                        .withDefaultProperty(804332248)
+                        .withScaleType(IntegrationServiceEnvironmentSkuScaleType.NONE)),
+                new IntegrationServiceEnvironmentSkuDefinitionInner().withResourceType("eqyj")
+                    .withSku(new IntegrationServiceEnvironmentSkuDefinitionSku()
+                        .withName(IntegrationServiceEnvironmentSkuName.PREMIUM)
+                        .withTier("njxdfzantk"))
+                    .withCapacity(new IntegrationServiceEnvironmentSkuCapacity().withMinimum(1769138109)
+                        .withMaximum(1902347173)
+                        .withDefaultProperty(1915995196)
+                        .withScaleType(IntegrationServiceEnvironmentSkuScaleType.AUTOMATIC))))
+            .withNextLink("eqacjjvpilguooq");
         model = BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentSkuList.class);
-        Assertions.assertEquals("ppipifhpfeoa", model.value().get(0).resourceType());
-        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.PREMIUM, model.value().get(0).sku().name());
-        Assertions.assertEquals("txjcsheafidlt", model.value().get(0).sku().tier());
-        Assertions.assertEquals(1906339616, model.value().get(0).capacity().minimum());
-        Assertions.assertEquals(1336294552, model.value().get(0).capacity().maximum());
-        Assertions.assertEquals(893368789, model.value().get(0).capacity().defaultProperty());
-        Assertions
-            .assertEquals(IntegrationServiceEnvironmentSkuScaleType.NONE, model.value().get(0).capacity().scaleType());
-        Assertions.assertEquals("ajoylhjl", model.nextLink());
+        Assertions.assertEquals("xjbaqehgpdohzjq", model.value().get(0).resourceType());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.NOT_SPECIFIED, model.value().get(0).sku().name());
+        Assertions.assertEquals("igebxncnwfepb", model.value().get(0).sku().tier());
+        Assertions.assertEquals(1145439736, model.value().get(0).capacity().minimum());
+        Assertions.assertEquals(657592284, model.value().get(0).capacity().maximum());
+        Assertions.assertEquals(1395211030, model.value().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(IntegrationServiceEnvironmentSkuScaleType.MANUAL,
+            model.value().get(0).capacity().scaleType());
+        Assertions.assertEquals("eqacjjvpilguooq", model.nextLink());
     }
 }

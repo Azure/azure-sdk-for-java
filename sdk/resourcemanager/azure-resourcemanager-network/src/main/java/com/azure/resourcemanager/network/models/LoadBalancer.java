@@ -16,37 +16,65 @@ import java.util.Map;
 
 /** Entry point for load balancer management API in Azure. */
 @Fluent
-public interface LoadBalancer
-    extends GroupableResource<NetworkManager, LoadBalancerInner>,
-        Refreshable<LoadBalancer>,
-        Updatable<LoadBalancer.Update>,
-        UpdatableWithTags<LoadBalancer>,
-        HasLoadBalancingRules {
+public interface LoadBalancer extends GroupableResource<NetworkManager, LoadBalancerInner>, Refreshable<LoadBalancer>,
+    Updatable<LoadBalancer.Update>, UpdatableWithTags<LoadBalancer>, HasLoadBalancingRules {
 
     // Getters
 
-    /** @return resource IDs of the public IP addresses assigned to the frontends of this load balancer */
+    /**
+     * Gets resource IDs of the public IP addresses assigned to the frontends of this load balancer.
+     *
+     * @return resource IDs of the public IP addresses assigned to the frontends of this load balancer
+     */
     List<String> publicIpAddressIds();
 
-    /** @return TCP probes of this load balancer, indexed by the name */
+    /**
+     * Gets TCP probes of this load balancer.
+     *
+     * @return TCP probes of this load balancer, indexed by the name
+     */
     Map<String, LoadBalancerTcpProbe> tcpProbes();
 
-    /** @return HTTP probes of this load balancer, indexed by the name */
+    /**
+     * Gets HTTP probes of this load balancer.
+     *
+     * @return HTTP probes of this load balancer, indexed by the name
+     */
     Map<String, LoadBalancerHttpProbe> httpProbes();
 
-    /** @return HTTPS probes of this load balancer, indexed by the name */
+    /**
+     * Gets HTTPS probes of this load balancer.
+     *
+     * @return HTTPS probes of this load balancer, indexed by the name
+     */
     Map<String, LoadBalancerHttpProbe> httpsProbes();
 
-    /** @return backends for this load balancer to load balance the incoming traffic among, indexed by name */
+    /**
+     * Gets backends for this load balancer to load balance the incoming traffic among.
+     *
+     * @return backends for this load balancer to load balance the incoming traffic among, indexed by name
+     */
     Map<String, LoadBalancerBackend> backends();
 
-    /** @return inbound NAT rules for this balancer */
+    /**
+     * Gets inbound NAT rules for this balancer.
+     *
+     * @return inbound NAT rules for this balancer
+     */
     Map<String, LoadBalancerInboundNatRule> inboundNatRules();
 
-    /** @return frontends for this load balancer, for the incoming traffic to come from. */
+    /**
+     * Gets frontends for this load balancer, for the incoming traffic to come from.
+     *
+     * @return frontends for this load balancer, for the incoming traffic to come from.
+     */
     Map<String, LoadBalancerFrontend> frontends();
 
-    /** @return private (internal) frontends */
+    /**
+     * Gets private (internal) frontends.
+     *
+     * @return private (internal) frontends
+     */
     Map<String, LoadBalancerPrivateFrontend> privateFrontends();
 
     /**
@@ -65,31 +93,40 @@ public interface LoadBalancer
      */
     LoadBalancerPublicFrontend findFrontendByPublicIpAddress(String publicIPAddressId);
 
-    /** @return public (Internet-facing) frontends */
+    /**
+     * Gets public (Internet-facing) frontends.
+     *
+     * @return public (Internet-facing) frontends
+     */
     Map<String, LoadBalancerPublicFrontend> publicFrontends();
 
-    /** @return inbound NAT pools, indexed by name */
+    /**
+     * Gets inbound NAT pools.
+     *
+     * @return inbound NAT pools, indexed by name
+     */
     Map<String, LoadBalancerInboundNatPool> inboundNatPools();
 
-    /** @return load balancer sku. */
+    /**
+     * Gets load balancer sku.
+     *
+     * @return load balancer sku.
+     */
     LoadBalancerSkuType sku();
 
-    /** @return outbound rules for this balancer */
+    /**
+     * Gets outbound rules for this balancer.
+     *
+     * @return outbound rules for this balancer
+     */
     Map<String, LoadBalancerOutboundRule> outboundRules();
 
     /** The entirety of the load balancer definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithBackend,
-            DefinitionStages.WithLoadBalancingRule,
-            DefinitionStages.WithLBRuleOrNat,
-            DefinitionStages.WithLBRuleOrNatOrCreate,
-            DefinitionStages.WithCreateAndInboundNatPool,
-            DefinitionStages.WithCreateAndInboundNatRule,
-            DefinitionStages.WithCreateAndOutboundRule,
-            DefinitionStages.WithCreateAndNatChoice {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate,
+        DefinitionStages.WithBackend, DefinitionStages.WithLoadBalancingRule, DefinitionStages.WithLBRuleOrNat,
+        DefinitionStages.WithLBRuleOrNatOrCreate, DefinitionStages.WithCreateAndInboundNatPool,
+        DefinitionStages.WithCreateAndInboundNatRule, DefinitionStages.WithCreateAndOutboundRule,
+        DefinitionStages.WithCreateAndNatChoice {
     }
 
     /** Grouping of load balancer definition stages. */
@@ -134,7 +171,8 @@ public interface LoadBalancer
              * @param name the name for the frontend
              * @return the first stage of a new frontend definition
              */
-            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithCreateAndOutboundRule> definePublicFrontend(String name);
+            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithCreateAndOutboundRule>
+                definePublicFrontend(String name);
         }
 
         /** The stage of a load balancer definition allowing to add a backend. */
@@ -214,13 +252,8 @@ public interface LoadBalancer
          * The stage of a load balancer definition containing all the required inputs for the resource to be created,
          * but also allowing for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<LoadBalancer>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithBackend,
-                WithFrontend,
-                WithProbe,
-                WithSku {
+        interface WithCreate extends Creatable<LoadBalancer>, Resource.DefinitionWithTags<WithCreate>, WithBackend,
+            WithFrontend, WithProbe, WithSku {
         }
 
         /**
@@ -241,7 +274,7 @@ public interface LoadBalancer
         /**
          * The stage of a load balancer definition allowing to create the load balancer or add an outbound rule
          */
-        interface WithCreateAndOutboundRule extends  WithCreate, WithOutboundRule {
+        interface WithCreateAndOutboundRule extends WithCreate, WithOutboundRule {
         }
 
         /** The stage of a load balancer definition allowing to create a new inbound NAT rule. */
@@ -252,8 +285,8 @@ public interface LoadBalancer
              * @param name the name of the inbound NAT rule
              * @return the first stage of the new inbound NAT rule definition
              */
-            LoadBalancerInboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule> defineInboundNatRule(
-                String name);
+            LoadBalancerInboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule>
+                defineInboundNatRule(String name);
         }
 
         /**
@@ -266,7 +299,8 @@ public interface LoadBalancer
              * @param name the name of the outbound rule
              * @return the first stage of the new outbound rule definition
              */
-            LoadBalancerOutboundRule.DefinitionStages.Blank<? extends WithCreateAndOutboundRule> defineOutboundRule(String name);
+            LoadBalancerOutboundRule.DefinitionStages.Blank<? extends WithCreateAndOutboundRule>
+                defineOutboundRule(String name);
         }
 
         /**
@@ -283,8 +317,8 @@ public interface LoadBalancer
              * @param name the name of the inbound NAT pool
              * @return the first stage of the new inbound NAT pool definition
              */
-            LoadBalancerInboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool> defineInboundNatPool(
-                String name);
+            LoadBalancerInboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool>
+                defineInboundNatPool(String name);
         }
     }
 
@@ -553,16 +587,9 @@ public interface LoadBalancer
     }
 
     /** The template for a load balancer update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<LoadBalancer>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithProbe,
-            UpdateStages.WithBackend,
-            UpdateStages.WithLoadBalancingRule,
-            UpdateStages.WithPublicFrontend,
-            UpdateStages.WithPrivateFrontend,
-            UpdateStages.WithOutboundRule,
-            UpdateStages.WithInboundNatRule,
-            UpdateStages.WithInboundNatPool {
+    interface Update extends Appliable<LoadBalancer>, Resource.UpdateWithTags<Update>, UpdateStages.WithProbe,
+        UpdateStages.WithBackend, UpdateStages.WithLoadBalancingRule, UpdateStages.WithPublicFrontend,
+        UpdateStages.WithPrivateFrontend, UpdateStages.WithOutboundRule, UpdateStages.WithInboundNatRule,
+        UpdateStages.WithInboundNatPool {
     }
 }

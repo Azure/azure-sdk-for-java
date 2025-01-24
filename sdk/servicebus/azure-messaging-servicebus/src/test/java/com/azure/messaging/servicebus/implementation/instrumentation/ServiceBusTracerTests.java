@@ -63,11 +63,14 @@ public class ServiceBusTracerTests {
     }
 
     public static Stream<Arguments> getAmqpException() {
-        return Stream.of(
-            Arguments.of(new RuntimeException("foo"), null),
+        return Stream.of(Arguments.of(new RuntimeException("foo"), null),
             Arguments.of(new AmqpException(false, "foo", null, null), null),
-            Arguments.of(new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "foo", null), AmqpErrorCondition.NOT_FOUND.getErrorCondition()),
-            Arguments.of(new AmqpException(false, AmqpErrorCondition.TIMEOUT_ERROR, "", null), AmqpErrorCondition.TIMEOUT_ERROR.getErrorCondition()),
-            Arguments.of(new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, new RuntimeException("foo"), null), AmqpErrorCondition.SERVER_BUSY_ERROR.getErrorCondition()));
+            Arguments.of(new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "foo", null),
+                AmqpErrorCondition.NOT_FOUND.getErrorCondition()),
+            Arguments.of(new AmqpException(false, AmqpErrorCondition.TIMEOUT_ERROR, "", null),
+                AmqpErrorCondition.TIMEOUT_ERROR.getErrorCondition()),
+            Arguments.of(
+                new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, new RuntimeException("foo"), null),
+                AmqpErrorCondition.SERVER_BUSY_ERROR.getErrorCondition()));
     }
 }

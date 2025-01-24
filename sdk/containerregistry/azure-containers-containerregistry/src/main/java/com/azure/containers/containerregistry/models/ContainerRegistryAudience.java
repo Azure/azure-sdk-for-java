@@ -24,24 +24,28 @@ public final class ContainerRegistryAudience extends ExpandableStringEnum<Contai
     /**
      * Audience value used to get management (ARM) token scope for Azure Container Registry in Azure China cloud.
      */
-    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_CHINA = fromString("https://management.chinacloudapi.cn");
+    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_CHINA
+        = fromString("https://management.chinacloudapi.cn");
 
     /**
      * Audience value used to get management (ARM) token scope for Azure Container Registry in Azure Germany Germany cloud.
      * @deprecated Germany government cloud is no longer supported.
      */
     @Deprecated
-    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_GERMANY = fromString("https://management.microsoftazure.de");
+    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_GERMANY
+        = fromString("https://management.microsoftazure.de");
 
     /**
      * Audience value used to get management (ARM) token scope for Azure Container Registry in Azure US government cloud.
      */
-    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_GOVERNMENT = fromString("https://management.usgovcloudapi.net");
+    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_GOVERNMENT
+        = fromString("https://management.usgovcloudapi.net");
 
     /**
      * Audience value used to get management (ARM) token scope for Azure Container Registry in Azure public cloud.
      */
-    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD = fromString("https://management.azure.com");
+    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD
+        = fromString("https://management.azure.com");
 
     /**
      * Creates or finds a ContainerRegistryAudience from its string representation.

@@ -20,8 +20,8 @@ public final class AnalyzeSentimentResult extends TextAnalyticsResult {
      * @param error The document error.
      * @param documentSentiment The document sentiment.
      */
-    public AnalyzeSentimentResult(String id, TextDocumentStatistics textDocumentStatistics,
-                                  TextAnalyticsError error, DocumentSentiment documentSentiment) {
+    public AnalyzeSentimentResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
+        DocumentSentiment documentSentiment) {
         super(id, textDocumentStatistics, error);
         this.documentSentiment = documentSentiment;
     }

@@ -5,56 +5,71 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details about billing profile associated with agreement and available only for specific agreements. */
+/**
+ * Details about billing profile associated with agreement and available only for specific agreements.
+ */
 @Fluent
-public final class BillingProfileInfo {
+public final class BillingProfileInfo implements JsonSerializable<BillingProfileInfo> {
     /*
-     * The unique identifier for the billing profile.
+     * The fully qualified ID that uniquely identifies a billing account.
      */
-    @JsonProperty(value = "billingProfileId")
-    private String billingProfileId;
+    private String billingAccountId;
 
     /*
-     * The name of the billing profile
+     * The name of the billing profile.
      */
-    @JsonProperty(value = "billingProfileDisplayName")
     private String billingProfileDisplayName;
 
     /*
-     * Billing account name. This property is available for a specific type of agreement.
+     * The friendly ID that uniquely identifies a billing profile.
      */
-    @JsonProperty(value = "indirectRelationshipOrganizationName")
+    private String billingProfileId;
+
+    /*
+     * The fully qualified ID that uniquely identifies a billing profile.
+     */
+    private String billingProfileSystemId;
+
+    /*
+     * Billing account name. Available for a specific type of agreement.
+     */
     private String indirectRelationshipOrganizationName;
 
-    /** Creates an instance of BillingProfileInfo class. */
+    /**
+     * Creates an instance of BillingProfileInfo class.
+     */
     public BillingProfileInfo() {
     }
 
     /**
-     * Get the billingProfileId property: The unique identifier for the billing profile.
-     *
-     * @return the billingProfileId value.
+     * Get the billingAccountId property: The fully qualified ID that uniquely identifies a billing account.
+     * 
+     * @return the billingAccountId value.
      */
-    public String billingProfileId() {
-        return this.billingProfileId;
+    public String billingAccountId() {
+        return this.billingAccountId;
     }
 
     /**
-     * Set the billingProfileId property: The unique identifier for the billing profile.
-     *
-     * @param billingProfileId the billingProfileId value to set.
+     * Set the billingAccountId property: The fully qualified ID that uniquely identifies a billing account.
+     * 
+     * @param billingAccountId the billingAccountId value to set.
      * @return the BillingProfileInfo object itself.
      */
-    public BillingProfileInfo withBillingProfileId(String billingProfileId) {
-        this.billingProfileId = billingProfileId;
+    public BillingProfileInfo withBillingAccountId(String billingAccountId) {
+        this.billingAccountId = billingAccountId;
         return this;
     }
 
     /**
      * Get the billingProfileDisplayName property: The name of the billing profile.
-     *
+     * 
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
@@ -63,7 +78,7 @@ public final class BillingProfileInfo {
 
     /**
      * Set the billingProfileDisplayName property: The name of the billing profile.
-     *
+     * 
      * @param billingProfileDisplayName the billingProfileDisplayName value to set.
      * @return the BillingProfileInfo object itself.
      */
@@ -73,9 +88,49 @@ public final class BillingProfileInfo {
     }
 
     /**
-     * Get the indirectRelationshipOrganizationName property: Billing account name. This property is available for a
-     * specific type of agreement.
-     *
+     * Get the billingProfileId property: The friendly ID that uniquely identifies a billing profile.
+     * 
+     * @return the billingProfileId value.
+     */
+    public String billingProfileId() {
+        return this.billingProfileId;
+    }
+
+    /**
+     * Set the billingProfileId property: The friendly ID that uniquely identifies a billing profile.
+     * 
+     * @param billingProfileId the billingProfileId value to set.
+     * @return the BillingProfileInfo object itself.
+     */
+    public BillingProfileInfo withBillingProfileId(String billingProfileId) {
+        this.billingProfileId = billingProfileId;
+        return this;
+    }
+
+    /**
+     * Get the billingProfileSystemId property: The fully qualified ID that uniquely identifies a billing profile.
+     * 
+     * @return the billingProfileSystemId value.
+     */
+    public String billingProfileSystemId() {
+        return this.billingProfileSystemId;
+    }
+
+    /**
+     * Set the billingProfileSystemId property: The fully qualified ID that uniquely identifies a billing profile.
+     * 
+     * @param billingProfileSystemId the billingProfileSystemId value to set.
+     * @return the BillingProfileInfo object itself.
+     */
+    public BillingProfileInfo withBillingProfileSystemId(String billingProfileSystemId) {
+        this.billingProfileSystemId = billingProfileSystemId;
+        return this;
+    }
+
+    /**
+     * Get the indirectRelationshipOrganizationName property: Billing account name. Available for a specific type of
+     * agreement.
+     * 
      * @return the indirectRelationshipOrganizationName value.
      */
     public String indirectRelationshipOrganizationName() {
@@ -83,9 +138,9 @@ public final class BillingProfileInfo {
     }
 
     /**
-     * Set the indirectRelationshipOrganizationName property: Billing account name. This property is available for a
-     * specific type of agreement.
-     *
+     * Set the indirectRelationshipOrganizationName property: Billing account name. Available for a specific type of
+     * agreement.
+     * 
      * @param indirectRelationshipOrganizationName the indirectRelationshipOrganizationName value to set.
      * @return the BillingProfileInfo object itself.
      */
@@ -96,9 +151,57 @@ public final class BillingProfileInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingAccountId", this.billingAccountId);
+        jsonWriter.writeStringField("billingProfileDisplayName", this.billingProfileDisplayName);
+        jsonWriter.writeStringField("billingProfileId", this.billingProfileId);
+        jsonWriter.writeStringField("billingProfileSystemId", this.billingProfileSystemId);
+        jsonWriter.writeStringField("indirectRelationshipOrganizationName", this.indirectRelationshipOrganizationName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingProfileInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingProfileInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingProfileInfo.
+     */
+    public static BillingProfileInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingProfileInfo deserializedBillingProfileInfo = new BillingProfileInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingAccountId".equals(fieldName)) {
+                    deserializedBillingProfileInfo.billingAccountId = reader.getString();
+                } else if ("billingProfileDisplayName".equals(fieldName)) {
+                    deserializedBillingProfileInfo.billingProfileDisplayName = reader.getString();
+                } else if ("billingProfileId".equals(fieldName)) {
+                    deserializedBillingProfileInfo.billingProfileId = reader.getString();
+                } else if ("billingProfileSystemId".equals(fieldName)) {
+                    deserializedBillingProfileInfo.billingProfileSystemId = reader.getString();
+                } else if ("indirectRelationshipOrganizationName".equals(fieldName)) {
+                    deserializedBillingProfileInfo.indirectRelationshipOrganizationName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingProfileInfo;
+        });
     }
 }

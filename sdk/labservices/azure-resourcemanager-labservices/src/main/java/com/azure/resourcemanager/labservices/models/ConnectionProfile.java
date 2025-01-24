@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Connection profile for how users connect to lab virtual machines. */
+/**
+ * Connection profile for how users connect to lab virtual machines.
+ */
 @Fluent
-public final class ConnectionProfile {
+public final class ConnectionProfile implements JsonSerializable<ConnectionProfile> {
     /*
      * The enabled access level for Web Access over SSH.
      */
-    @JsonProperty(value = "webSshAccess")
     private ConnectionType webSshAccess;
 
     /*
      * The enabled access level for Web Access over RDP.
      */
-    @JsonProperty(value = "webRdpAccess")
     private ConnectionType webRdpAccess;
 
     /*
      * The enabled access level for Client Access over SSH.
      */
-    @JsonProperty(value = "clientSshAccess")
     private ConnectionType clientSshAccess;
 
     /*
      * The enabled access level for Client Access over RDP.
      */
-    @JsonProperty(value = "clientRdpAccess")
     private ConnectionType clientRdpAccess;
 
     /**
+     * Creates an instance of ConnectionProfile class.
+     */
+    public ConnectionProfile() {
+    }
+
+    /**
      * Get the webSshAccess property: The enabled access level for Web Access over SSH.
-     *
+     * 
      * @return the webSshAccess value.
      */
     public ConnectionType webSshAccess() {
@@ -45,7 +53,7 @@ public final class ConnectionProfile {
 
     /**
      * Set the webSshAccess property: The enabled access level for Web Access over SSH.
-     *
+     * 
      * @param webSshAccess the webSshAccess value to set.
      * @return the ConnectionProfile object itself.
      */
@@ -56,7 +64,7 @@ public final class ConnectionProfile {
 
     /**
      * Get the webRdpAccess property: The enabled access level for Web Access over RDP.
-     *
+     * 
      * @return the webRdpAccess value.
      */
     public ConnectionType webRdpAccess() {
@@ -65,7 +73,7 @@ public final class ConnectionProfile {
 
     /**
      * Set the webRdpAccess property: The enabled access level for Web Access over RDP.
-     *
+     * 
      * @param webRdpAccess the webRdpAccess value to set.
      * @return the ConnectionProfile object itself.
      */
@@ -76,7 +84,7 @@ public final class ConnectionProfile {
 
     /**
      * Get the clientSshAccess property: The enabled access level for Client Access over SSH.
-     *
+     * 
      * @return the clientSshAccess value.
      */
     public ConnectionType clientSshAccess() {
@@ -85,7 +93,7 @@ public final class ConnectionProfile {
 
     /**
      * Set the clientSshAccess property: The enabled access level for Client Access over SSH.
-     *
+     * 
      * @param clientSshAccess the clientSshAccess value to set.
      * @return the ConnectionProfile object itself.
      */
@@ -96,7 +104,7 @@ public final class ConnectionProfile {
 
     /**
      * Get the clientRdpAccess property: The enabled access level for Client Access over RDP.
-     *
+     * 
      * @return the clientRdpAccess value.
      */
     public ConnectionType clientRdpAccess() {
@@ -105,7 +113,7 @@ public final class ConnectionProfile {
 
     /**
      * Set the clientRdpAccess property: The enabled access level for Client Access over RDP.
-     *
+     * 
      * @param clientRdpAccess the clientRdpAccess value to set.
      * @return the ConnectionProfile object itself.
      */
@@ -116,9 +124,56 @@ public final class ConnectionProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("webSshAccess", this.webSshAccess == null ? null : this.webSshAccess.toString());
+        jsonWriter.writeStringField("webRdpAccess", this.webRdpAccess == null ? null : this.webRdpAccess.toString());
+        jsonWriter.writeStringField("clientSshAccess",
+            this.clientSshAccess == null ? null : this.clientSshAccess.toString());
+        jsonWriter.writeStringField("clientRdpAccess",
+            this.clientRdpAccess == null ? null : this.clientRdpAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionProfile.
+     */
+    public static ConnectionProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionProfile deserializedConnectionProfile = new ConnectionProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("webSshAccess".equals(fieldName)) {
+                    deserializedConnectionProfile.webSshAccess = ConnectionType.fromString(reader.getString());
+                } else if ("webRdpAccess".equals(fieldName)) {
+                    deserializedConnectionProfile.webRdpAccess = ConnectionType.fromString(reader.getString());
+                } else if ("clientSshAccess".equals(fieldName)) {
+                    deserializedConnectionProfile.clientSshAccess = ConnectionType.fromString(reader.getString());
+                } else if ("clientRdpAccess".equals(fieldName)) {
+                    deserializedConnectionProfile.clientRdpAccess = ConnectionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionProfile;
+        });
     }
 }

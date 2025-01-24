@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CapacitySkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapacitySku model =
-            BinaryData
-                .fromString("{\"name\":\"zyf\",\"tier\":\"Premium\",\"capacity\":272665329}")
-                .toObject(CapacitySku.class);
+        CapacitySku model = BinaryData.fromString("{\"name\":\"zyf\",\"tier\":\"Premium\",\"capacity\":272665329}")
+            .toObject(CapacitySku.class);
         Assertions.assertEquals("zyf", model.name());
         Assertions.assertEquals(CapacitySkuTier.PREMIUM, model.tier());
         Assertions.assertEquals(272665329, model.capacity());

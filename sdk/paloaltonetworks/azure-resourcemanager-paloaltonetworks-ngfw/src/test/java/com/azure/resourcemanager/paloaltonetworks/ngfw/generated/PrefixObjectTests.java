@@ -24,7 +24,8 @@ public final class PrefixObjectTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrefixObject model = new PrefixObject().withDescription("bahwfl")
-            .withPrefixList(Arrays.asList("zdtmhrkwofy", "voqacpiexpbt", "iwbwoenwashrtdtk")).withEtag("qxwbpokulpiu")
+            .withPrefixList(Arrays.asList("zdtmhrkwofy", "voqacpiexpbt", "iwbwoenwashrtdtk"))
+            .withEtag("qxwbpokulpiu")
             .withAuditComment("aasipqi");
         model = BinaryData.fromObject(model).toObject(PrefixObject.class);
         Assertions.assertEquals("bahwfl", model.description());

@@ -26,8 +26,7 @@ class AppServicePlanImpl
 
     @Override
     public Mono<AppServicePlan> createResourceAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getAppServicePlans()
             .createOrUpdateAsync(resourceGroupName(), name(), innerModel())

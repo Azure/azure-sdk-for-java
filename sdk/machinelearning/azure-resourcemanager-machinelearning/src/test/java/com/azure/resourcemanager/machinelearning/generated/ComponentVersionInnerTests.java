@@ -14,38 +14,35 @@ import org.junit.jupiter.api.Assertions;
 public final class ComponentVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComponentVersionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"componentSpec\":\"datarnjwmw\",\"isAnonymous\":true,\"isArchived\":false,\"description\":\"zejjoqk\",\"properties\":{\"azpxdtnkdmkqjjl\":\"hsxttaugzxnf\",\"ou\":\"uenvrkp\",\"aays\":\"ibreb\"},\"tags\":{\"tezlwff\":\"xqtnq\",\"pqqmted\":\"iakp\"}},\"id\":\"mmji\",\"name\":\"yeozphvwauyqncy\",\"type\":\"upkvipmdsc\"}")
-                .toObject(ComponentVersionInner.class);
-        Assertions.assertEquals("zejjoqk", model.properties().description());
-        Assertions.assertEquals("hsxttaugzxnf", model.properties().properties().get("azpxdtnkdmkqjjl"));
-        Assertions.assertEquals("xqtnq", model.properties().tags().get("tezlwff"));
+        ComponentVersionInner model = BinaryData.fromString(
+            "{\"properties\":{\"componentSpec\":\"datauaibrebqaaysj\",\"provisioningState\":\"Canceled\",\"isArchived\":true,\"isAnonymous\":true,\"description\":\"tezlwff\",\"tags\":{\"qqmtedltmmji\":\"kpj\",\"upkvipmdsc\":\"yeozphvwauyqncy\",\"totxhojujb\":\"xqupevzhf\",\"n\":\"pelmcuvhixbjxyf\"},\"properties\":{\"ujrywvtyl\":\"coolsttpkiwkkb\"}},\"id\":\"pncur\",\"name\":\"oiwiithtywub\",\"type\":\"cbihwqk\"}")
+            .toObject(ComponentVersionInner.class);
+        Assertions.assertEquals("tezlwff", model.properties().description());
+        Assertions.assertEquals("kpj", model.properties().tags().get("qqmtedltmmji"));
+        Assertions.assertEquals("coolsttpkiwkkb", model.properties().properties().get("ujrywvtyl"));
+        Assertions.assertEquals(true, model.properties().isArchived());
         Assertions.assertEquals(true, model.properties().isAnonymous());
-        Assertions.assertEquals(false, model.properties().isArchived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComponentVersionInner model =
-            new ComponentVersionInner()
-                .withProperties(
-                    new ComponentVersionProperties()
-                        .withDescription("zejjoqk")
-                        .withProperties(mapOf("azpxdtnkdmkqjjl", "hsxttaugzxnf", "ou", "uenvrkp", "aays", "ibreb"))
-                        .withTags(mapOf("tezlwff", "xqtnq", "pqqmted", "iakp"))
-                        .withIsAnonymous(true)
-                        .withIsArchived(false)
-                        .withComponentSpec("datarnjwmw"));
+        ComponentVersionInner model
+            = new ComponentVersionInner().withProperties(new ComponentVersionProperties().withDescription("tezlwff")
+                .withTags(mapOf("qqmtedltmmji", "kpj", "upkvipmdsc", "yeozphvwauyqncy", "totxhojujb", "xqupevzhf", "n",
+                    "pelmcuvhixbjxyf"))
+                .withProperties(mapOf("ujrywvtyl", "coolsttpkiwkkb"))
+                .withIsArchived(true)
+                .withIsAnonymous(true)
+                .withComponentSpec("datauaibrebqaaysj"));
         model = BinaryData.fromObject(model).toObject(ComponentVersionInner.class);
-        Assertions.assertEquals("zejjoqk", model.properties().description());
-        Assertions.assertEquals("hsxttaugzxnf", model.properties().properties().get("azpxdtnkdmkqjjl"));
-        Assertions.assertEquals("xqtnq", model.properties().tags().get("tezlwff"));
+        Assertions.assertEquals("tezlwff", model.properties().description());
+        Assertions.assertEquals("kpj", model.properties().tags().get("qqmtedltmmji"));
+        Assertions.assertEquals("coolsttpkiwkkb", model.properties().properties().get("ujrywvtyl"));
+        Assertions.assertEquals(true, model.properties().isArchived());
         Assertions.assertEquals(true, model.properties().isAnonymous());
-        Assertions.assertEquals(false, model.properties().isArchived());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

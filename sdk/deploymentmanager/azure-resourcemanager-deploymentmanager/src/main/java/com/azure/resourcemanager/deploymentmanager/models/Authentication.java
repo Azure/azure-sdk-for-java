@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "type",
     defaultImpl = Authentication.class)
 @JsonTypeName("Authentication")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Sas", value = SasAuthentication.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "Sas", value = SasAuthentication.class) })
 @Immutable
 public class Authentication {
     /** Creates an instance of Authentication class. */

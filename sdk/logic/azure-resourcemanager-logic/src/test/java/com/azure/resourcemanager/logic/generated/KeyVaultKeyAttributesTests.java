@@ -11,25 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class KeyVaultKeyAttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KeyVaultKeyAttributes model =
-            BinaryData
-                .fromString("{\"enabled\":false,\"created\":6834076343128735710,\"updated\":652867049720214090}")
-                .toObject(KeyVaultKeyAttributes.class);
+        KeyVaultKeyAttributes model = BinaryData
+            .fromString("{\"enabled\":false,\"created\":8794325641258946576,\"updated\":1791393814695153018}")
+            .toObject(KeyVaultKeyAttributes.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(6834076343128735710L, model.created());
-        Assertions.assertEquals(652867049720214090L, model.updated());
+        Assertions.assertEquals(8794325641258946576L, model.created());
+        Assertions.assertEquals(1791393814695153018L, model.updated());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KeyVaultKeyAttributes model =
-            new KeyVaultKeyAttributes()
-                .withEnabled(false)
-                .withCreated(6834076343128735710L)
-                .withUpdated(652867049720214090L);
+        KeyVaultKeyAttributes model = new KeyVaultKeyAttributes().withEnabled(false)
+            .withCreated(8794325641258946576L)
+            .withUpdated(1791393814695153018L);
         model = BinaryData.fromObject(model).toObject(KeyVaultKeyAttributes.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(6834076343128735710L, model.created());
-        Assertions.assertEquals(652867049720214090L, model.updated());
+        Assertions.assertEquals(8794325641258946576L, model.created());
+        Assertions.assertEquals(1791393814695153018L, model.updated());
     }
 }

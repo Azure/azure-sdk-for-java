@@ -17,8 +17,8 @@ public final class EventSummaryImpl implements EventSummary {
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    EventSummaryImpl(
-        EventSummaryInner innerObject, com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
+    EventSummaryImpl(EventSummaryInner innerObject,
+        com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

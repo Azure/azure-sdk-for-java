@@ -5,35 +5,36 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The status of the operation.
  */
 @Fluent
-public final class SsisObjectMetadataStatusResponseInner {
+public final class SsisObjectMetadataStatusResponseInner
+    implements JsonSerializable<SsisObjectMetadataStatusResponseInner> {
     /*
      * The status of the operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The operation name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The operation properties.
      */
-    @JsonProperty(value = "properties")
     private String properties;
 
     /*
      * The operation error message.
      */
-    @JsonProperty(value = "error")
     private String error;
 
     /**
@@ -128,5 +129,51 @@ public final class SsisObjectMetadataStatusResponseInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("properties", this.properties);
+        jsonWriter.writeStringField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisObjectMetadataStatusResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisObjectMetadataStatusResponseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisObjectMetadataStatusResponseInner.
+     */
+    public static SsisObjectMetadataStatusResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisObjectMetadataStatusResponseInner deserializedSsisObjectMetadataStatusResponseInner
+                = new SsisObjectMetadataStatusResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedSsisObjectMetadataStatusResponseInner.status = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSsisObjectMetadataStatusResponseInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSsisObjectMetadataStatusResponseInner.properties = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedSsisObjectMetadataStatusResponseInner.error = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisObjectMetadataStatusResponseInner;
+        });
     }
 }

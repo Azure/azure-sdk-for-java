@@ -35,12 +35,27 @@ public final class DeletedSecretBundle extends SecretBundle {
      */
     private Long deletedDate;
 
-    /** Creates an instance of DeletedSecretBundle class. */
-    public DeletedSecretBundle() {}
+    /*
+     * True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
+     * will be true.
+     */
+    private Boolean managed;
+
+    /*
+     * If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
+     * certificate.
+     */
+    private String kid;
+
+    /**
+     * Creates an instance of DeletedSecretBundle class.
+     */
+    public DeletedSecretBundle() {
+    }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted secret.
-     *
+     * 
      * @return the recoveryId value.
      */
     public String getRecoveryId() {
@@ -49,7 +64,7 @@ public final class DeletedSecretBundle extends SecretBundle {
 
     /**
      * Set the recoveryId property: The url of the recovery object, used to identify and recover the deleted secret.
-     *
+     * 
      * @param recoveryId the recoveryId value to set.
      * @return the DeletedSecretBundle object itself.
      */
@@ -60,7 +75,7 @@ public final class DeletedSecretBundle extends SecretBundle {
 
     /**
      * Get the scheduledPurgeDate property: The time when the secret is scheduled to be purged, in UTC.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime getScheduledPurgeDate() {
@@ -72,7 +87,7 @@ public final class DeletedSecretBundle extends SecretBundle {
 
     /**
      * Get the deletedDate property: The time when the secret was deleted, in UTC.
-     *
+     * 
      * @return the deletedDate value.
      */
     public OffsetDateTime getDeletedDate() {
@@ -82,41 +97,76 @@ public final class DeletedSecretBundle extends SecretBundle {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.deletedDate), ZoneOffset.UTC);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the managed property: True if the secret's lifetime is managed by key vault. If this is a secret backing a
+     * certificate, then managed will be true.
+     * 
+     * @return the managed value.
+     */
+    @Override
+    public Boolean isManaged() {
+        return this.managed;
+    }
+
+    /**
+     * Get the kid property: If this is a secret backing a KV certificate, then this field specifies the corresponding
+     * key backing the KV certificate.
+     * 
+     * @return the kid value.
+     */
+    @Override
+    public String getKid() {
+        return this.kid;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSecretBundle setValue(String value) {
         super.setValue(value);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSecretBundle setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSecretBundle setContentType(String contentType) {
         super.setContentType(contentType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSecretBundle setAttributes(SecretAttributes attributes) {
         super.setAttributes(attributes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSecretBundle setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -131,48 +181,46 @@ public final class DeletedSecretBundle extends SecretBundle {
 
     /**
      * Reads an instance of DeletedSecretBundle from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedSecretBundle if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeletedSecretBundle.
      */
     public static DeletedSecretBundle fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedSecretBundle deserializedDeletedSecretBundle = new DeletedSecretBundle();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedSecretBundle deserializedDeletedSecretBundle = new DeletedSecretBundle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setValue(reader.getString());
-                        } else if ("id".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setId(reader.getString());
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setContentType(reader.getString());
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setAttributes(SecretAttributes.fromJson(reader));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedDeletedSecretBundle.setTags(tags);
-                        } else if ("kid".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setKid(reader.getString());
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setManaged(reader.getNullable(JsonReader::getBoolean));
-                        } else if ("recoveryId".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.recoveryId = reader.getString();
-                        } else if ("scheduledPurgeDate".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.scheduledPurgeDate =
-                                    reader.getNullable(JsonReader::getLong);
-                        } else if ("deletedDate".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.deletedDate = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setValue(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setId(reader.getString());
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setContentType(reader.getString());
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setAttributes(SecretAttributes.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedSecretBundle.setTags(tags);
+                } else if ("kid".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.kid = reader.getString();
+                } else if ("managed".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoveryId".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.deletedDate = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedSecretBundle;
-                });
+            return deserializedDeletedSecretBundle;
+        });
     }
 }

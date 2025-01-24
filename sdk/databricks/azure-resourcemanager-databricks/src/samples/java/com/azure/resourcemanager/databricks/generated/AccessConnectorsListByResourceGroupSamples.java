@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.databricks.generated;
 
-/** Samples for AccessConnectors ListByResourceGroup. */
+/**
+ * Samples for AccessConnectors ListByResourceGroup.
+ */
 public final class AccessConnectorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/AccessConnectorsListByResourceGroup.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/
+     * AccessConnectorsListByResourceGroup.json
      */
     /**
      * Sample code: Lists azure databricks accessConnectors within a resource group.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void listsAzureDatabricksAccessConnectorsWithinAResourceGroup(

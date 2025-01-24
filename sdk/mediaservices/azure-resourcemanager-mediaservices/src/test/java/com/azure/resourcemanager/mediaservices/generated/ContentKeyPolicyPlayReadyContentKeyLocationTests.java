@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyPlayReadyC
 public final class ContentKeyPolicyPlayReadyContentKeyLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyPlayReadyContentKeyLocation model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"ContentKeyPolicyPlayReadyContentKeyLocation\"}")
+        ContentKeyPolicyPlayReadyContentKeyLocation model
+            = BinaryData.fromString("{\"@odata.type\":\"ContentKeyPolicyPlayReadyContentKeyLocation\"}")
                 .toObject(ContentKeyPolicyPlayReadyContentKeyLocation.class);
     }
 

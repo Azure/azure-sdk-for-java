@@ -8,7 +8,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.nimbusds.jwt.JWT;
@@ -51,12 +50,10 @@ public class TokenGenerationTest extends TestProxyTestBase {
     @MethodSource("getTokenOptions")
     @DoNotRecord
     public void testTokenGeneration(GetClientAccessTokenOptions tokenOptions, String connectionString,
-                                    String expectedUrlPrefix, String expectedSubject,
-                                    List<String> expectedRoles, List<String> expectedGroups) throws ParseException {
+        String expectedUrlPrefix, String expectedSubject, List<String> expectedRoles, List<String> expectedGroups)
+        throws ParseException {
 
-        WebPubSubServiceClient client = builder
-            .connectionString(connectionString)
-            .buildClient();
+        WebPubSubServiceClient client = builder.connectionString(connectionString).buildClient();
 
         WebPubSubClientAccessToken authenticationToken = client.getClientAccessToken(tokenOptions);
 
@@ -79,11 +76,11 @@ public class TokenGenerationTest extends TestProxyTestBase {
 
         String endpoint = TestUtils.getEndpoint();
 
-        WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(HttpClient.createDefault())
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .hub(TestUtils.HUB_NAME);
+        WebPubSubServiceClientBuilder webPubSubServiceClientBuilder
+            = new WebPubSubServiceClientBuilder().endpoint(endpoint)
+                .httpClient(HttpClient.createDefault())
+                .credential(TestUtils.getIdentityTestCredential(interceptorManager))
+                .hub(TestUtils.HUB_NAME);
 
         WebPubSubServiceClient client = webPubSubServiceClientBuilder.buildClient();
         WebPubSubClientAccessToken authenticationToken = client.getClientAccessToken(tokenOptions);
@@ -106,43 +103,32 @@ public class TokenGenerationTest extends TestProxyTestBase {
         return Stream.of(
 
             // HTTP
-            Arguments.of(
-                new GetClientAccessTokenOptions(),
+            Arguments.of(new GetClientAccessTokenOptions(),
                 "Endpoint=http://http.webpubsubdev.azure.com;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
                 "ws://http.webpubsubdev.azure.com/", null, null, null),
 
             // HTTP with port
-            Arguments.of(
-                new GetClientAccessTokenOptions()
-                    .setUserId("foo")
-                    .setExpiresAfter(Duration.ofDays(1)),
+            Arguments.of(new GetClientAccessTokenOptions().setUserId("foo").setExpiresAfter(Duration.ofDays(1)),
                 "Endpoint=http://testendpoint.webpubsubdev.azure.com;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;Port=8080",
                 "ws://testendpoint.webpubsubdev.azure.com:8080/", "foo", null, null),
 
             // HTTP with "http" in domain name
-            Arguments.of(
-                new GetClientAccessTokenOptions()
-                    .setUserId("foo"),
+            Arguments.of(new GetClientAccessTokenOptions().setUserId("foo"),
                 "Endpoint=http://http.webpubsubdev.azure.com;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
                 "ws://http.webpubsubdev.azure.com/", "foo", null, null),
 
             // HTTPS
-            Arguments.of(
-                new GetClientAccessTokenOptions()
-                    .setUserId("foo")
-                    .addRole("admin")
-                    .addRole("special&char"),
+            Arguments.of(new GetClientAccessTokenOptions().setUserId("foo").addRole("admin").addRole("special&char"),
                 "Endpoint=https://testendpoint.webpubsubdev.azure.com;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
                 "wss://testendpoint.webpubsubdev.azure.com/", "foo", Arrays.asList("admin", "special&char"), null),
 
             // HTTPS with port
             Arguments.of(
-                new GetClientAccessTokenOptions()
-                    .setUserId("foo")
+                new GetClientAccessTokenOptions().setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
                     .addRole("admin")
                     .addRole("special,char"),
@@ -152,8 +138,7 @@ public class TokenGenerationTest extends TestProxyTestBase {
 
             // HTTPS with "https" in domain name
             Arguments.of(
-                new GetClientAccessTokenOptions()
-                    .setUserId("foo")
+                new GetClientAccessTokenOptions().setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
                     .setRoles(Arrays.asList("admin", "owner")),
                 "Endpoint=https://https.webpubsubdev.azure.com;"
@@ -162,14 +147,13 @@ public class TokenGenerationTest extends TestProxyTestBase {
 
             // Endpoint with path fragments
             Arguments.of(
-                new GetClientAccessTokenOptions()
-                    .setUserId("foo")
+                new GetClientAccessTokenOptions().setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
                     .setRoles(Arrays.asList("admin", "owner"))
                     .setGroups(Arrays.asList("java", "special&char")),
                 "Endpoint=https://testendpoint.webpubsubdev.azure.com/test/path?query_param=value;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;Port=8080",
-                "wss://testendpoint.webpubsubdev.azure.com:8080/", "foo", Arrays.asList("admin", "owner"), Arrays.asList("java", "special&char"))
-        );
+                "wss://testendpoint.webpubsubdev.azure.com:8080/", "foo", Arrays.asList("admin", "owner"),
+                Arrays.asList("java", "special&char")));
     }
 }

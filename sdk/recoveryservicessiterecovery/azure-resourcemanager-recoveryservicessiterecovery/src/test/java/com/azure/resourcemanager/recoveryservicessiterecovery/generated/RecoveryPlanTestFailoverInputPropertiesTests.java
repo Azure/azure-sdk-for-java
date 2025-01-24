@@ -25,7 +25,8 @@ public final class RecoveryPlanTestFailoverInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanTestFailoverInputProperties model = new RecoveryPlanTestFailoverInputProperties()
-            .withFailoverDirection(PossibleOperationsDirections.RECOVERY_TO_PRIMARY).withNetworkType("vqmtdwckygroejn")
+            .withFailoverDirection(PossibleOperationsDirections.RECOVERY_TO_PRIMARY)
+            .withNetworkType("vqmtdwckygroejn")
             .withNetworkId("ljdjuskbrreqy")
             .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificFailoverInput(),
                 new RecoveryPlanProviderSpecificFailoverInput(), new RecoveryPlanProviderSpecificFailoverInput()));

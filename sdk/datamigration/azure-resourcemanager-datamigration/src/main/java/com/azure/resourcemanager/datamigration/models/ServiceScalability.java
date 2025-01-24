@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The scalability approach. */
+/**
+ * The scalability approach.
+ */
 public final class ServiceScalability extends ExpandableStringEnum<ServiceScalability> {
-    /** Static value none for ServiceScalability. */
+    /**
+     * Static value none for ServiceScalability.
+     */
     public static final ServiceScalability NONE = fromString("none");
 
-    /** Static value manual for ServiceScalability. */
+    /**
+     * Static value manual for ServiceScalability.
+     */
     public static final ServiceScalability MANUAL = fromString("manual");
 
-    /** Static value automatic for ServiceScalability. */
+    /**
+     * Static value automatic for ServiceScalability.
+     */
     public static final ServiceScalability AUTOMATIC = fromString("automatic");
 
     /**
      * Creates a new instance of ServiceScalability value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ServiceScalability extends ExpandableStringEnum<ServiceScalab
 
     /**
      * Creates or finds a ServiceScalability from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceScalability.
      */
-    @JsonCreator
     public static ServiceScalability fromString(String name) {
         return fromString(name, ServiceScalability.class);
     }
 
     /**
      * Gets known ServiceScalability values.
-     *
+     * 
      * @return known ServiceScalability values.
      */
     public static Collection<ServiceScalability> values() {

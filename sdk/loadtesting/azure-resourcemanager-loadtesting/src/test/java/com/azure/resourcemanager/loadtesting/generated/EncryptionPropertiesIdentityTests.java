@@ -8,25 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.models.EncryptionPropertiesIdentity;
 import com.azure.resourcemanager.loadtesting.models.Type;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EncryptionPropertiesIdentityTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EncryptionPropertiesIdentity model =
-            BinaryData
-                .fromString("{\"type\":\"SystemAssigned\",\"resourceId\":\"qytbciq\"}")
-                .toObject(EncryptionPropertiesIdentity.class);
-        Assertions.assertEquals(Type.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("qytbciq", model.resourceId());
+        EncryptionPropertiesIdentity model = BinaryData.fromString("{\"type\":\"UserAssigned\",\"resourceId\":\"w\"}")
+            .toObject(EncryptionPropertiesIdentity.class);
+        Assertions.assertEquals(Type.USER_ASSIGNED, model.type());
+        Assertions.assertEquals("w", model.resourceId());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EncryptionPropertiesIdentity model =
-            new EncryptionPropertiesIdentity().withType(Type.SYSTEM_ASSIGNED).withResourceId("qytbciq");
+        EncryptionPropertiesIdentity model
+            = new EncryptionPropertiesIdentity().withType(Type.USER_ASSIGNED).withResourceId("w");
         model = BinaryData.fromObject(model).toObject(EncryptionPropertiesIdentity.class);
-        Assertions.assertEquals(Type.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("qytbciq", model.resourceId());
+        Assertions.assertEquals(Type.USER_ASSIGNED, model.type());
+        Assertions.assertEquals("w", model.resourceId());
     }
 }

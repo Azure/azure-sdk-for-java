@@ -40,8 +40,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Jobs within the specified Experiment.
      */
-    PagedIterable<Job> listByExperiment(
-        String resourceGroupName, String workspaceName, String experimentName, Integer maxResults, Context context);
+    PagedIterable<Job> listByExperiment(String resourceGroupName, String workspaceName, String experimentName,
+        Integer maxResults, Context context);
 
     /**
      * Deletes a Job.
@@ -113,8 +113,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a Job.
      */
-    Response<Job> getWithResponse(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context);
+    Response<Job> getWithResponse(String resourceGroupName, String workspaceName, String experimentName, String jobName,
+        Context context);
 
     /**
      * List all directories and files inside the given directory of the Job's output directory (if the output directory
@@ -135,12 +135,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
-    PagedIterable<File> listOutputFiles(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid);
+    PagedIterable<File> listOutputFiles(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, String outputdirectoryid);
 
     /**
      * List all directories and files inside the given directory of the Job's output directory (if the output directory
@@ -165,15 +161,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation.
      */
-    PagedIterable<File> listOutputFiles(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid,
-        String directory,
-        Integer linkexpiryinminutes,
-        Integer maxResults,
+    PagedIterable<File> listOutputFiles(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, String outputdirectoryid, String directory, Integer linkexpiryinminutes, Integer maxResults,
         Context context);
 
     /**
@@ -193,8 +182,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of currently existing nodes which were used for the Job execution.
      */
-    PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName);
+    PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName);
 
     /**
      * Gets a list of currently existing nodes which were used for the Job execution. The returned information contains
@@ -214,8 +203,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of currently existing nodes which were used for the Job execution.
      */
-    PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context);
+    PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context);
 
     /**
      * Terminates a job.
@@ -250,8 +239,8 @@ public interface Jobs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void terminate(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context);
+    void terminate(String resourceGroupName, String workspaceName, String experimentName, String jobName,
+        Context context);
 
     /**
      * Gets information about a Job.

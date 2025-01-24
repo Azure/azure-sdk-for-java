@@ -6,11 +6,20 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner;
 
-/** An immutable client-side representation of DatastoreSecrets. */
+/**
+ * An immutable client-side representation of DatastoreSecrets.
+ */
 public interface DatastoreSecrets {
     /**
+     * Gets the secretsType property: [Required] Credential type used to authentication with storage.
+     * 
+     * @return the secretsType value.
+     */
+    SecretsType secretsType();
+
+    /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner object.
-     *
+     * 
      * @return the inner object.
      */
     DatastoreSecretsInner innerModel();

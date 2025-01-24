@@ -15,37 +15,32 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoScaleVCoreUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoScaleVCoreUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"hzdobpxjmflbvvnc\",\"tier\":\"AutoScale\",\"capacity\":682758161},\"tags\":{\"rsa\":\"wzjuqk\",\"ghsauuimjmvxied\":\"iwkuofos\",\"byao\":\"ugidyjrr\",\"xc\":\"v\"},\"properties\":{\"capacityLimit\":771742090}}")
-                .toObject(AutoScaleVCoreUpdateParameters.class);
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.sku().name());
+        AutoScaleVCoreUpdateParameters model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"nowkgshw\",\"tier\":\"AutoScale\",\"capacity\":691407592},\"tags\":{\"ttmrywnuzoqf\":\"injep\"},\"properties\":{\"capacityLimit\":1348586485}}")
+            .toObject(AutoScaleVCoreUpdateParameters.class);
+        Assertions.assertEquals("nowkgshw", model.sku().name());
         Assertions.assertEquals(VCoreSkuTier.AUTO_SCALE, model.sku().tier());
-        Assertions.assertEquals(682758161, model.sku().capacity());
-        Assertions.assertEquals("wzjuqk", model.tags().get("rsa"));
-        Assertions.assertEquals(771742090, model.capacityLimit());
+        Assertions.assertEquals(691407592, model.sku().capacity());
+        Assertions.assertEquals("injep", model.tags().get("ttmrywnuzoqf"));
+        Assertions.assertEquals(1348586485, model.capacityLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoScaleVCoreUpdateParameters model =
-            new AutoScaleVCoreUpdateParameters()
-                .withSku(
-                    new AutoScaleVCoreSku()
-                        .withName("hzdobpxjmflbvvnc")
-                        .withTier(VCoreSkuTier.AUTO_SCALE)
-                        .withCapacity(682758161))
-                .withTags(mapOf("rsa", "wzjuqk", "ghsauuimjmvxied", "iwkuofos", "byao", "ugidyjrr", "xc", "v"))
-                .withCapacityLimit(771742090);
+        AutoScaleVCoreUpdateParameters model = new AutoScaleVCoreUpdateParameters()
+            .withSku(
+                new AutoScaleVCoreSku().withName("nowkgshw").withTier(VCoreSkuTier.AUTO_SCALE).withCapacity(691407592))
+            .withTags(mapOf("ttmrywnuzoqf", "injep"))
+            .withCapacityLimit(1348586485);
         model = BinaryData.fromObject(model).toObject(AutoScaleVCoreUpdateParameters.class);
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.sku().name());
+        Assertions.assertEquals("nowkgshw", model.sku().name());
         Assertions.assertEquals(VCoreSkuTier.AUTO_SCALE, model.sku().tier());
-        Assertions.assertEquals(682758161, model.sku().capacity());
-        Assertions.assertEquals("wzjuqk", model.tags().get("rsa"));
-        Assertions.assertEquals(771742090, model.capacityLimit());
+        Assertions.assertEquals(691407592, model.sku().capacity());
+        Assertions.assertEquals("injep", model.tags().get("ttmrywnuzoqf"));
+        Assertions.assertEquals(1348586485, model.capacityLimit());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

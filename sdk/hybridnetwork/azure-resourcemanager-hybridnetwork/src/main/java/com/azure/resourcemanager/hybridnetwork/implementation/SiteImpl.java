@@ -84,14 +84,16 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
     }
 
     public Site create() {
-        this.innerObject = serviceManager.serviceClient().getSites().createOrUpdate(resourceGroupName, siteName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .createOrUpdate(resourceGroupName, siteName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Site create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSites().createOrUpdate(resourceGroupName, siteName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .createOrUpdate(resourceGroupName, siteName, this.innerModel(), context);
         return this;
     }
 
@@ -107,33 +109,41 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
     }
 
     public Site apply() {
-        this.innerObject = serviceManager.serviceClient().getSites()
-            .updateTagsWithResponse(resourceGroupName, siteName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .updateTagsWithResponse(resourceGroupName, siteName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Site apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSites()
-            .updateTagsWithResponse(resourceGroupName, siteName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .updateTagsWithResponse(resourceGroupName, siteName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     SiteImpl(SiteInner innerObject, com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.siteName = Utils.getValueFromIdByName(innerObject.id(), "sites");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.siteName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sites");
     }
 
     public Site refresh() {
-        this.innerObject = serviceManager.serviceClient().getSites()
-            .getByResourceGroupWithResponse(resourceGroupName, siteName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .getByResourceGroupWithResponse(resourceGroupName, siteName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Site refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSites()
-            .getByResourceGroupWithResponse(resourceGroupName, siteName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .getByResourceGroupWithResponse(resourceGroupName, siteName, context)
+            .getValue();
         return this;
     }
 

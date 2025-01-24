@@ -14,24 +14,24 @@ public final class ReplicationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationInner model = BinaryData.fromString(
-            "{\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"auvfbtkuwhhmhyk\",\"remoteVolumeRegion\":\"oxafn\"}")
+            "{\"replicationId\":\"fcktqumiekke\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"ly\",\"remoteVolumeRegion\":\"hdgqggeb\"}")
             .toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.SRC, model.endpointType());
         Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("auvfbtkuwhhmhyk", model.remoteVolumeResourceId());
-        Assertions.assertEquals("oxafn", model.remoteVolumeRegion());
+        Assertions.assertEquals("ly", model.remoteVolumeResourceId());
+        Assertions.assertEquals("hdgqggeb", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationInner model = new ReplicationInner().withEndpointType(EndpointType.SRC)
             .withReplicationSchedule(ReplicationSchedule.HOURLY)
-            .withRemoteVolumeResourceId("auvfbtkuwhhmhyk")
-            .withRemoteVolumeRegion("oxafn");
+            .withRemoteVolumeResourceId("ly")
+            .withRemoteVolumeRegion("hdgqggeb");
         model = BinaryData.fromObject(model).toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.SRC, model.endpointType());
         Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("auvfbtkuwhhmhyk", model.remoteVolumeResourceId());
-        Assertions.assertEquals("oxafn", model.remoteVolumeRegion());
+        Assertions.assertEquals("ly", model.remoteVolumeResourceId());
+        Assertions.assertEquals("hdgqggeb", model.remoteVolumeRegion());
     }
 }

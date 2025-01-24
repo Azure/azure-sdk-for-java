@@ -5,69 +5,69 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentCost;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentQuota;
 import com.azure.resourcemanager.cognitiveservices.models.HostingModel;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Cognitive Services account commitment tier. */
+/**
+ * Cognitive Services account commitment tier.
+ */
 @Fluent
-public final class CommitmentTierInner {
+public final class CommitmentTierInner implements JsonSerializable<CommitmentTierInner> {
     /*
      * The Kind of the resource.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * The name of the SKU. Ex - P3. It is typically a letter+number code
      */
-    @JsonProperty(value = "skuName")
     private String skuName;
 
     /*
      * Account hosting model.
      */
-    @JsonProperty(value = "hostingModel")
     private HostingModel hostingModel;
 
     /*
      * Commitment plan type.
      */
-    @JsonProperty(value = "planType")
     private String planType;
 
     /*
      * Commitment period commitment tier.
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * Commitment period commitment max count.
      */
-    @JsonProperty(value = "maxCount")
     private Integer maxCount;
 
     /*
      * Cognitive Services account commitment quota.
      */
-    @JsonProperty(value = "quota")
     private CommitmentQuota quota;
 
     /*
      * Cognitive Services account commitment cost.
      */
-    @JsonProperty(value = "cost")
     private CommitmentCost cost;
 
-    /** Creates an instance of CommitmentTierInner class. */
+    /**
+     * Creates an instance of CommitmentTierInner class.
+     */
     public CommitmentTierInner() {
     }
 
     /**
      * Get the kind property: The Kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -76,7 +76,7 @@ public final class CommitmentTierInner {
 
     /**
      * Set the kind property: The Kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the CommitmentTierInner object itself.
      */
@@ -87,7 +87,7 @@ public final class CommitmentTierInner {
 
     /**
      * Get the skuName property: The name of the SKU. Ex - P3. It is typically a letter+number code.
-     *
+     * 
      * @return the skuName value.
      */
     public String skuName() {
@@ -96,7 +96,7 @@ public final class CommitmentTierInner {
 
     /**
      * Set the skuName property: The name of the SKU. Ex - P3. It is typically a letter+number code.
-     *
+     * 
      * @param skuName the skuName value to set.
      * @return the CommitmentTierInner object itself.
      */
@@ -107,7 +107,7 @@ public final class CommitmentTierInner {
 
     /**
      * Get the hostingModel property: Account hosting model.
-     *
+     * 
      * @return the hostingModel value.
      */
     public HostingModel hostingModel() {
@@ -116,7 +116,7 @@ public final class CommitmentTierInner {
 
     /**
      * Set the hostingModel property: Account hosting model.
-     *
+     * 
      * @param hostingModel the hostingModel value to set.
      * @return the CommitmentTierInner object itself.
      */
@@ -127,7 +127,7 @@ public final class CommitmentTierInner {
 
     /**
      * Get the planType property: Commitment plan type.
-     *
+     * 
      * @return the planType value.
      */
     public String planType() {
@@ -136,7 +136,7 @@ public final class CommitmentTierInner {
 
     /**
      * Set the planType property: Commitment plan type.
-     *
+     * 
      * @param planType the planType value to set.
      * @return the CommitmentTierInner object itself.
      */
@@ -147,7 +147,7 @@ public final class CommitmentTierInner {
 
     /**
      * Get the tier property: Commitment period commitment tier.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -156,7 +156,7 @@ public final class CommitmentTierInner {
 
     /**
      * Set the tier property: Commitment period commitment tier.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the CommitmentTierInner object itself.
      */
@@ -167,7 +167,7 @@ public final class CommitmentTierInner {
 
     /**
      * Get the maxCount property: Commitment period commitment max count.
-     *
+     * 
      * @return the maxCount value.
      */
     public Integer maxCount() {
@@ -176,7 +176,7 @@ public final class CommitmentTierInner {
 
     /**
      * Set the maxCount property: Commitment period commitment max count.
-     *
+     * 
      * @param maxCount the maxCount value to set.
      * @return the CommitmentTierInner object itself.
      */
@@ -187,7 +187,7 @@ public final class CommitmentTierInner {
 
     /**
      * Get the quota property: Cognitive Services account commitment quota.
-     *
+     * 
      * @return the quota value.
      */
     public CommitmentQuota quota() {
@@ -196,7 +196,7 @@ public final class CommitmentTierInner {
 
     /**
      * Set the quota property: Cognitive Services account commitment quota.
-     *
+     * 
      * @param quota the quota value to set.
      * @return the CommitmentTierInner object itself.
      */
@@ -207,7 +207,7 @@ public final class CommitmentTierInner {
 
     /**
      * Get the cost property: Cognitive Services account commitment cost.
-     *
+     * 
      * @return the cost value.
      */
     public CommitmentCost cost() {
@@ -216,7 +216,7 @@ public final class CommitmentTierInner {
 
     /**
      * Set the cost property: Cognitive Services account commitment cost.
-     *
+     * 
      * @param cost the cost value to set.
      * @return the CommitmentTierInner object itself.
      */
@@ -227,7 +227,7 @@ public final class CommitmentTierInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -237,5 +237,62 @@ public final class CommitmentTierInner {
         if (cost() != null) {
             cost().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("skuName", this.skuName);
+        jsonWriter.writeStringField("hostingModel", this.hostingModel == null ? null : this.hostingModel.toString());
+        jsonWriter.writeStringField("planType", this.planType);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeNumberField("maxCount", this.maxCount);
+        jsonWriter.writeJsonField("quota", this.quota);
+        jsonWriter.writeJsonField("cost", this.cost);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommitmentTierInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommitmentTierInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommitmentTierInner.
+     */
+    public static CommitmentTierInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommitmentTierInner deserializedCommitmentTierInner = new CommitmentTierInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedCommitmentTierInner.kind = reader.getString();
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedCommitmentTierInner.skuName = reader.getString();
+                } else if ("hostingModel".equals(fieldName)) {
+                    deserializedCommitmentTierInner.hostingModel = HostingModel.fromString(reader.getString());
+                } else if ("planType".equals(fieldName)) {
+                    deserializedCommitmentTierInner.planType = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedCommitmentTierInner.tier = reader.getString();
+                } else if ("maxCount".equals(fieldName)) {
+                    deserializedCommitmentTierInner.maxCount = reader.getNullable(JsonReader::getInt);
+                } else if ("quota".equals(fieldName)) {
+                    deserializedCommitmentTierInner.quota = CommitmentQuota.fromJson(reader);
+                } else if ("cost".equals(fieldName)) {
+                    deserializedCommitmentTierInner.cost = CommitmentCost.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommitmentTierInner;
+        });
     }
 }

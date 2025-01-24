@@ -23,10 +23,11 @@ public final class ReplicationProtectedItemsTestFailoverCleanupSam {
      */
     public static void
         executeTestFailoverCleanup(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectedItems().testFailoverCleanup("vault1", "resourceGroupPS1", "cloud1",
-            "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b",
-            new TestFailoverCleanupInput()
-                .withProperties(new TestFailoverCleanupInputProperties().withComments("Test Failover Cleanup")),
-            com.azure.core.util.Context.NONE);
+        manager.replicationProtectedItems()
+            .testFailoverCleanup("vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+                "f8491e4f-817a-40dd-a90c-af773978c75b",
+                new TestFailoverCleanupInput()
+                    .withProperties(new TestFailoverCleanupInputProperties().withComments("Test Failover Cleanup")),
+                com.azure.core.util.Context.NONE);
     }
 }

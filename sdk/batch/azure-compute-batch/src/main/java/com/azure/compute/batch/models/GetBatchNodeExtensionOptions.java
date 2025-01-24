@@ -11,6 +11,12 @@ public class GetBatchNodeExtensionOptions extends BatchBaseOptions {
     private List<String> select;
 
     /**
+     * Creates an instance of {@link GetBatchNodeExtensionOptions}.
+     */
+    public GetBatchNodeExtensionOptions() {
+    }
+
+    /**
      * Gets the OData $select clause.
      *
      * The $select clause specifies which properties should be included in the response.

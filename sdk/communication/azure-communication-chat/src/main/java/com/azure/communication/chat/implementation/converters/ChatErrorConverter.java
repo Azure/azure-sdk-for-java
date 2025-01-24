@@ -25,19 +25,11 @@ public final class ChatErrorConverter {
         List<ChatError> details = new ArrayList<ChatError>();
 
         if (obj.getDetails() != null) {
-            details = obj.getDetails()
-                .stream()
-                .map(detail -> convert(detail))
-                .collect(Collectors.toList());
+            details = obj.getDetails().stream().map(detail -> convert(detail)).collect(Collectors.toList());
         }
 
-        ChatError chatError = new ChatError(
-            obj.getMessage(),
-            obj.getCode(),
-            obj.getTarget(),
-            details,
-            convert(obj.getInnerError())
-        );
+        ChatError chatError
+            = new ChatError(obj.getMessage(), obj.getCode(), obj.getTarget(), details, convert(obj.getInnerError()));
 
         return chatError;
     }

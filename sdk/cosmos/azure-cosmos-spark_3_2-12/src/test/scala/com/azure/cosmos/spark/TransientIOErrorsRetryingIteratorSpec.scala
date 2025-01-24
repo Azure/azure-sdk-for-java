@@ -44,6 +44,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
         continuationToken, pageCount, transientErrorCount, injectEmptyPages = false, injectedDelayOfFirstPage = None),
       pageSize,
       1,
+      None,
       None
     )
     iterator.maxRetryIntervalInMs = 5
@@ -63,6 +64,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
         continuationToken, pageCount, transientErrorCount, injectEmptyPages = true, injectedDelayOfFirstPage = None),
       pageSize,
       1,
+      None,
       None
     )
     iterator.maxRetryIntervalInMs = 5
@@ -82,6 +84,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
         continuationToken, pageCount, transientErrorCount, injectEmptyPages = false, injectedDelayOfFirstPage = Some(Duration.ofSeconds(70))),
       pageSize,
       1,
+      None,
       None
     )
     iterator.maxRetryIntervalInMs = 5

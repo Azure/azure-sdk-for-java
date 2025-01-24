@@ -94,7 +94,8 @@ public final class RunNotebookSparkSessionOptions implements JsonSerializable<Ru
     private Integer executorCount;
 
     /*
-     * Whether to queue session creation if Spark pool doesn't have enough capacity. Default value is true in notebook runs API
+     * Whether to queue session creation if Spark pool doesn't have enough capacity. Default value is true in notebook
+     * runs API
      */
     private Boolean isQueueable;
 

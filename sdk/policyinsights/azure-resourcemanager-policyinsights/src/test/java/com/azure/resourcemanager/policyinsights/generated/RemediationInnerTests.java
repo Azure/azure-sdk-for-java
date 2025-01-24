@@ -11,43 +11,38 @@ import com.azure.resourcemanager.policyinsights.models.RemediationPropertiesFail
 import com.azure.resourcemanager.policyinsights.models.ResourceDiscoveryMode;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RemediationInnerTests {
-    @Test
-    public void testDeserialize() {
-        RemediationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"policyAssignmentId\":\"appd\",\"policyDefinitionReferenceId\":\"dkvwrwjfe\",\"resourceDiscoveryMode\":\"ReEvaluateCompliance\",\"provisioningState\":\"utjeltmrldhugj\",\"createdOn\":\"2021-10-02T10:39:21Z\",\"lastUpdatedOn\":\"2021-10-25T23:35:46Z\",\"filters\":{\"locations\":[\"oc\",\"geablgphuticndvk\"]},\"deploymentStatus\":{\"totalDeployments\":563001635,\"successfulDeployments\":191194169,\"failedDeployments\":629729450},\"statusMessage\":\"hxh\",\"correlationId\":\"okftyxolniwpwcuk\",\"resourceCount\":1720882214,\"parallelDeployments\":1945467900,\"failureThreshold\":{\"percentage\":40.293247}},\"id\":\"lryplwckbasyy\",\"name\":\"nddhsgcbacph\",\"type\":\"jkot\"}")
-                .toObject(RemediationInner.class);
-        Assertions.assertEquals("appd", model.policyAssignmentId());
-        Assertions.assertEquals("dkvwrwjfe", model.policyDefinitionReferenceId());
-        Assertions.assertEquals(ResourceDiscoveryMode.RE_EVALUATE_COMPLIANCE, model.resourceDiscoveryMode());
-        Assertions.assertEquals("oc", model.filters().locations().get(0));
-        Assertions.assertEquals(1720882214, model.resourceCount());
-        Assertions.assertEquals(1945467900, model.parallelDeployments());
-        Assertions.assertEquals(40.293247F, model.failureThreshold().percentage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        RemediationInner model = BinaryData.fromString(
+            "{\"properties\":{\"policyAssignmentId\":\"vfqawrlyxwjkcpr\",\"policyDefinitionReferenceId\":\"wbxgjvt\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"sszdnru\",\"createdOn\":\"2021-07-18T17:10:22Z\",\"lastUpdatedOn\":\"2021-02-25T06:26:56Z\",\"filters\":{\"locations\":[\"uqfprwzw\",\"nguitnwuizgazxu\"]},\"deploymentStatus\":{\"totalDeployments\":1325323583,\"successfulDeployments\":935270600,\"failedDeployments\":1585023957},\"statusMessage\":\"hr\",\"correlationId\":\"dfvzwdzuhty\",\"resourceCount\":1847084741,\"parallelDeployments\":396497881,\"failureThreshold\":{\"percentage\":99.89794}},\"id\":\"wxmnteiwao\",\"name\":\"vkmijcmmxdcuf\",\"type\":\"fsrpymzidnse\"}")
+            .toObject(RemediationInner.class);
+        Assertions.assertEquals("vfqawrlyxwjkcpr", model.policyAssignmentId());
+        Assertions.assertEquals("wbxgjvt", model.policyDefinitionReferenceId());
+        Assertions.assertEquals(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT, model.resourceDiscoveryMode());
+        Assertions.assertEquals("uqfprwzw", model.filters().locations().get(0));
+        Assertions.assertEquals(1847084741, model.resourceCount());
+        Assertions.assertEquals(396497881, model.parallelDeployments());
+        Assertions.assertEquals(99.89794F, model.failureThreshold().percentage());
     }
 
-    @Test
-    public void testSerialize() {
-        RemediationInner model =
-            new RemediationInner()
-                .withPolicyAssignmentId("appd")
-                .withPolicyDefinitionReferenceId("dkvwrwjfe")
-                .withResourceDiscoveryMode(ResourceDiscoveryMode.RE_EVALUATE_COMPLIANCE)
-                .withFilters(new RemediationFilters().withLocations(Arrays.asList("oc", "geablgphuticndvk")))
-                .withResourceCount(1720882214)
-                .withParallelDeployments(1945467900)
-                .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(40.293247F));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        RemediationInner model = new RemediationInner().withPolicyAssignmentId("vfqawrlyxwjkcpr")
+            .withPolicyDefinitionReferenceId("wbxgjvt")
+            .withResourceDiscoveryMode(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT)
+            .withFilters(new RemediationFilters().withLocations(Arrays.asList("uqfprwzw", "nguitnwuizgazxu")))
+            .withResourceCount(1847084741)
+            .withParallelDeployments(396497881)
+            .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(99.89794F));
         model = BinaryData.fromObject(model).toObject(RemediationInner.class);
-        Assertions.assertEquals("appd", model.policyAssignmentId());
-        Assertions.assertEquals("dkvwrwjfe", model.policyDefinitionReferenceId());
-        Assertions.assertEquals(ResourceDiscoveryMode.RE_EVALUATE_COMPLIANCE, model.resourceDiscoveryMode());
-        Assertions.assertEquals("oc", model.filters().locations().get(0));
-        Assertions.assertEquals(1720882214, model.resourceCount());
-        Assertions.assertEquals(1945467900, model.parallelDeployments());
-        Assertions.assertEquals(40.293247F, model.failureThreshold().percentage());
+        Assertions.assertEquals("vfqawrlyxwjkcpr", model.policyAssignmentId());
+        Assertions.assertEquals("wbxgjvt", model.policyDefinitionReferenceId());
+        Assertions.assertEquals(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT, model.resourceDiscoveryMode());
+        Assertions.assertEquals("uqfprwzw", model.filters().locations().get(0));
+        Assertions.assertEquals(1847084741, model.resourceCount());
+        Assertions.assertEquals(396497881, model.parallelDeployments());
+        Assertions.assertEquals(99.89794F, model.failureThreshold().percentage());
     }
 }

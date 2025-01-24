@@ -22,9 +22,8 @@ import java.util.Map;
 class ApplicationGatewayUrlPathMapImpl
     extends ChildResourceImpl<ApplicationGatewayUrlPathMapInner, ApplicationGatewayImpl, ApplicationGateway>
     implements ApplicationGatewayUrlPathMap,
-        ApplicationGatewayUrlPathMap.Definition<ApplicationGateway.DefinitionStages.WithRequestRoutingRuleOrCreate>,
-        ApplicationGatewayUrlPathMap.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayUrlPathMap.Update {
+    ApplicationGatewayUrlPathMap.Definition<ApplicationGateway.DefinitionStages.WithRequestRoutingRuleOrCreate>,
+    ApplicationGatewayUrlPathMap.UpdateDefinition<ApplicationGateway.Update>, ApplicationGatewayUrlPathMap.Update {
     private Map<String, ApplicationGatewayPathRule> pathRules;
 
     ApplicationGatewayUrlPathMapImpl(ApplicationGatewayUrlPathMapInner inner, ApplicationGatewayImpl parent) {
@@ -85,8 +84,8 @@ class ApplicationGatewayUrlPathMapImpl
 
     @Override
     public ApplicationGatewayUrlPathMapImpl toBackendHttpConfiguration(String name) {
-        SubResource httpConfigRef =
-            new SubResource().withId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
+        SubResource httpConfigRef
+            = new SubResource().withId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
         this.innerModel().withDefaultBackendHttpSettings(httpConfigRef);
         return this;
     }
@@ -109,10 +108,9 @@ class ApplicationGatewayUrlPathMapImpl
         if (name == null) {
             this.innerModel().withDefaultRedirectConfiguration(null);
         } else {
-            SubResource ref =
-                new SubResource().withId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
-            this
-                .innerModel()
+            SubResource ref
+                = new SubResource().withId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
+            this.innerModel()
                 .withDefaultRedirectConfiguration(ref)
                 .withDefaultBackendAddressPool(null)
                 .withDefaultBackendHttpSettings(null);

@@ -23,7 +23,7 @@ public final class StandbyVirtualMachinePoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":87946417642997689},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"a\",\"provisioningState\":\"Failed\"},\"location\":\"ayvvtpgvdf\",\"tags\":{\"efgugnxk\":\"tkftutqxlngx\",\"hjybigehoqfbo\":\"xdqmidtthzrvqdra\",\"zlcuiywgqywgndrv\":\"skanyk\",\"ocpecfvmmco\":\"nhzgpphrcgyn\"},\"id\":\"fsxlzevgbmqjqa\",\"name\":\"c\",\"type\":\"pmivkwlzu\"}]}";
+            = "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":6384766698560420676,\"minReadyCapacity\":3228641384783910997},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"jf\",\"provisioningState\":\"Failed\"},\"location\":\"jcxerfuwu\",\"tags\":{\"xepcyvahfn\":\"xfvjrbirp\",\"xjvuujqgidokg\":\"jky\",\"sncghkjeszz\":\"ljyoxgvcltb\"},\"id\":\"bijhtxfvgxbf\",\"name\":\"mxnehmp\",\"type\":\"ec\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,12 +35,14 @@ public final class StandbyVirtualMachinePoolsListMockTests {
         PagedIterable<StandbyVirtualMachinePoolResource> response
             = manager.standbyVirtualMachinePools().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ayvvtpgvdf", response.iterator().next().location());
-        Assertions.assertEquals("tkftutqxlngx", response.iterator().next().tags().get("efgugnxk"));
-        Assertions.assertEquals(87946417642997689L,
+        Assertions.assertEquals("jcxerfuwu", response.iterator().next().location());
+        Assertions.assertEquals("xfvjrbirp", response.iterator().next().tags().get("xepcyvahfn"));
+        Assertions.assertEquals(6384766698560420676L,
             response.iterator().next().properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals(3228641384783910997L,
+            response.iterator().next().properties().elasticityProfile().minReadyCapacity());
         Assertions.assertEquals(VirtualMachineState.RUNNING,
             response.iterator().next().properties().virtualMachineState());
-        Assertions.assertEquals("a", response.iterator().next().properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("jf", response.iterator().next().properties().attachedVirtualMachineScaleSetId());
     }
 }

@@ -26,9 +26,11 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
     private KeyVaultAccessControlAsyncClient asyncClient;
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        asyncClient = getClientBuilder(buildAsyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
-            .buildAsyncClient();
+        asyncClient
+            = getClientBuilder(
+                buildAsyncAssertingClient(
+                    interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+                forCleanup).buildAsyncClient();
 
         if (!interceptorManager.isLiveMode()) {
             // Remove `id` and `name` sanitizers from the list of common sanitizers.
@@ -37,9 +39,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertAsync().build();
     }
 
     /**
@@ -78,7 +78,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         try {
             // Create a role definition.
-            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+            StepVerifier
+                .create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                     .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO))
                 .assertNext(roleDefinition -> {
                     assertNotNull(roleDefinition.getId());
@@ -109,7 +110,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         try {
             // Create a role definition to retrieve, then get the role assignment.
-            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+            StepVerifier
+                .create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                     .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO)
                     .flatMap(createdRoleDefinition -> Mono.zip(Mono.just(createdRoleDefinition),
                         asyncClient.getRoleDefinition(KeyVaultRoleScope.GLOBAL, createdRoleDefinition.getName()))))
@@ -139,11 +141,11 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         String roleDefinitionName = testResourceNamer.randomUuid();
 
         // Create a role definition to delete, then delete the role definition.
-        StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+        StepVerifier
+            .create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                 .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO)
-                .flatMap(createdRoleDefinition ->
-                    asyncClient.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL,
-                        createdRoleDefinition.getName())))
+                .flatMap(createdRoleDefinition -> asyncClient.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL,
+                    createdRoleDefinition.getName())))
             .assertNext(deleteResponse -> assertEquals(200, deleteResponse.getStatusCode()))
             .expectComplete()
             .verify();
@@ -205,7 +207,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         try {
             // Create a role assignment to delete.
-            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+            StepVerifier
+                .create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                     .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO)
                     .flatMap(roleDefinition -> Mono.zip(Mono.just(roleDefinition),
                         asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(),
@@ -252,15 +255,14 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         try {
             // Create a role assignment to delete.
-            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+            StepVerifier
+                .create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                     .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO)
-                    .flatMap(roleDefinition ->
-                        asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(),
-                            servicePrincipalId, roleAssignmentName))
+                    .flatMap(roleDefinition -> asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL,
+                        roleDefinition.getId(), servicePrincipalId, roleAssignmentName))
                     .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO)
-                    .flatMap(roleAssignment ->
-                        asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL,
-                            roleAssignment.getProperties().getRoleDefinitionId(), servicePrincipalId, roleAssignmentName)))
+                    .flatMap(roleAssignment -> asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL,
+                        roleAssignment.getProperties().getRoleDefinitionId(), servicePrincipalId, roleAssignmentName)))
                 .expectError(KeyVaultAdministrationException.class)
                 .verify();
         } finally {
@@ -283,11 +285,11 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         try {
             // Create a role assignment to delete.
-            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+            StepVerifier
+                .create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                     .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO)
-                    .flatMap(roleDefinition ->
-                        asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(),
-                            servicePrincipalId, roleAssignmentName))
+                    .flatMap(roleDefinition -> asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL,
+                        roleDefinition.getId(), servicePrincipalId, roleAssignmentName))
                     .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO)
                     .flatMap(roleAssignment -> Mono.zip(Mono.just(roleAssignment),
                         asyncClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignment.getName()))))
@@ -320,14 +322,14 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         try {
             // Create a role assignment to delete.
-            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+            StepVerifier
+                .create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                     .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO)
-                    .flatMap(roleDefinition ->
-                        asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(), servicePrincipalId,
-                            roleAssignmentName))
+                    .flatMap(roleDefinition -> asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL,
+                        roleDefinition.getId(), servicePrincipalId, roleAssignmentName))
                     .delayElement(!interceptorManager.isPlaybackMode() ? Duration.ofSeconds(5) : Duration.ZERO)
-                    .flatMap(roleAssignment ->
-                        asyncClient.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, roleAssignment.getName())))
+                    .flatMap(roleAssignment -> asyncClient.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL,
+                        roleAssignment.getName())))
                 .assertNext(deleteResponse -> assertEquals(200, deleteResponse.getStatusCode()))
                 .expectComplete()
                 .verify();

@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceAadAdminInfoInner;
 
-/** An instance of this class provides access to all the operations defined in WorkspaceSqlAadAdminsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspaceSqlAadAdminsClient.
+ */
 public interface WorkspaceSqlAadAdminsClient {
     /**
      * Gets a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -26,12 +28,12 @@ public interface WorkspaceSqlAadAdminsClient {
      * @return a workspace SQL active directory admin along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceAadAdminInfoInner> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<WorkspaceAadAdminInfoInner> getWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +46,7 @@ public interface WorkspaceSqlAadAdminsClient {
 
     /**
      * Creates or updates a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -54,12 +56,12 @@ public interface WorkspaceSqlAadAdminsClient {
      * @return the {@link SyncPoller} for polling of workspace active directory administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo);
+    SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner>
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo);
 
     /**
      * Creates or updates a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -75,7 +77,7 @@ public interface WorkspaceSqlAadAdminsClient {
 
     /**
      * Creates or updates a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -85,12 +87,12 @@ public interface WorkspaceSqlAadAdminsClient {
      * @return workspace active directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceAadAdminInfoInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo);
+    WorkspaceAadAdminInfoInner createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo);
 
     /**
      * Creates or updates a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -101,12 +103,12 @@ public interface WorkspaceSqlAadAdminsClient {
      * @return workspace active directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceAadAdminInfoInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context);
+    WorkspaceAadAdminInfoInner createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo, Context context);
 
     /**
      * Deletes a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +121,7 @@ public interface WorkspaceSqlAadAdminsClient {
 
     /**
      * Deletes a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -133,7 +135,7 @@ public interface WorkspaceSqlAadAdminsClient {
 
     /**
      * Deletes a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +147,7 @@ public interface WorkspaceSqlAadAdminsClient {
 
     /**
      * Deletes a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

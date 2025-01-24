@@ -6,34 +6,50 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the managed disks. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataAccountType")
-@JsonTypeName("ManagedDisk")
+/**
+ * Details of the managed disks.
+ */
 @Fluent
 public final class ManagedDiskDetails extends DataAccountDetails {
     /*
+     * Account Type of the data to be transferred.
+     */
+    private DataAccountType dataAccountType = DataAccountType.MANAGED_DISK;
+
+    /*
      * Resource Group Id of the compute disks.
      */
-    @JsonProperty(value = "resourceGroupId", required = true)
     private String resourceGroupId;
 
     /*
      * Resource Id of the storage account that can be used to copy the vhd for staging.
      */
-    @JsonProperty(value = "stagingStorageAccountId", required = true)
     private String stagingStorageAccountId;
 
-    /** Creates an instance of ManagedDiskDetails class. */
+    /**
+     * Creates an instance of ManagedDiskDetails class.
+     */
     public ManagedDiskDetails() {
     }
 
     /**
+     * Get the dataAccountType property: Account Type of the data to be transferred.
+     * 
+     * @return the dataAccountType value.
+     */
+    @Override
+    public DataAccountType dataAccountType() {
+        return this.dataAccountType;
+    }
+
+    /**
      * Get the resourceGroupId property: Resource Group Id of the compute disks.
-     *
+     * 
      * @return the resourceGroupId value.
      */
     public String resourceGroupId() {
@@ -42,7 +58,7 @@ public final class ManagedDiskDetails extends DataAccountDetails {
 
     /**
      * Set the resourceGroupId property: Resource Group Id of the compute disks.
-     *
+     * 
      * @param resourceGroupId the resourceGroupId value to set.
      * @return the ManagedDiskDetails object itself.
      */
@@ -54,7 +70,7 @@ public final class ManagedDiskDetails extends DataAccountDetails {
     /**
      * Get the stagingStorageAccountId property: Resource Id of the storage account that can be used to copy the vhd for
      * staging.
-     *
+     * 
      * @return the stagingStorageAccountId value.
      */
     public String stagingStorageAccountId() {
@@ -64,7 +80,7 @@ public final class ManagedDiskDetails extends DataAccountDetails {
     /**
      * Set the stagingStorageAccountId property: Resource Id of the storage account that can be used to copy the vhd for
      * staging.
-     *
+     * 
      * @param stagingStorageAccountId the stagingStorageAccountId value to set.
      * @return the ManagedDiskDetails object itself.
      */
@@ -73,7 +89,9 @@ public final class ManagedDiskDetails extends DataAccountDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedDiskDetails withSharePassword(String sharePassword) {
         super.withSharePassword(sharePassword);
@@ -82,25 +100,69 @@ public final class ManagedDiskDetails extends DataAccountDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (resourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceGroupId in model ManagedDiskDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceGroupId in model ManagedDiskDetails"));
         }
         if (stagingStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property stagingStorageAccountId in model ManagedDiskDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property stagingStorageAccountId in model ManagedDiskDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedDiskDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sharePassword", sharePassword());
+        jsonWriter.writeStringField("resourceGroupId", this.resourceGroupId);
+        jsonWriter.writeStringField("stagingStorageAccountId", this.stagingStorageAccountId);
+        jsonWriter.writeStringField("dataAccountType",
+            this.dataAccountType == null ? null : this.dataAccountType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDiskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedDiskDetails.
+     */
+    public static ManagedDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDiskDetails deserializedManagedDiskDetails = new ManagedDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sharePassword".equals(fieldName)) {
+                    deserializedManagedDiskDetails.withSharePassword(reader.getString());
+                } else if ("resourceGroupId".equals(fieldName)) {
+                    deserializedManagedDiskDetails.resourceGroupId = reader.getString();
+                } else if ("stagingStorageAccountId".equals(fieldName)) {
+                    deserializedManagedDiskDetails.stagingStorageAccountId = reader.getString();
+                } else if ("dataAccountType".equals(fieldName)) {
+                    deserializedManagedDiskDetails.dataAccountType = DataAccountType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDiskDetails;
+        });
+    }
 }

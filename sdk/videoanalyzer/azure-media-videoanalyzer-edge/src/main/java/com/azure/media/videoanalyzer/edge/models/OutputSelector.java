@@ -5,32 +5,41 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Allows for the selection of particular streams from another node. */
+/**
+ * Allows for the selection of particular streams from another node.
+ */
 @Fluent
-public final class OutputSelector {
+public final class OutputSelector implements JsonSerializable<OutputSelector> {
     /*
      * The property of the data stream to be used as the selection criteria.
      */
-    @JsonProperty(value = "property")
     private OutputSelectorProperty property;
 
     /*
      * The operator to compare properties by.
      */
-    @JsonProperty(value = "operator")
     private OutputSelectorOperator operator;
 
     /*
      * Value to compare against.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
+     * Creates an instance of OutputSelector class.
+     */
+    public OutputSelector() {
+    }
+
+    /**
      * Get the property property: The property of the data stream to be used as the selection criteria.
-     *
+     * 
      * @return the property value.
      */
     public OutputSelectorProperty getProperty() {
@@ -39,7 +48,7 @@ public final class OutputSelector {
 
     /**
      * Set the property property: The property of the data stream to be used as the selection criteria.
-     *
+     * 
      * @param property the property value to set.
      * @return the OutputSelector object itself.
      */
@@ -50,7 +59,7 @@ public final class OutputSelector {
 
     /**
      * Get the operator property: The operator to compare properties by.
-     *
+     * 
      * @return the operator value.
      */
     public OutputSelectorOperator getOperator() {
@@ -59,7 +68,7 @@ public final class OutputSelector {
 
     /**
      * Set the operator property: The operator to compare properties by.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the OutputSelector object itself.
      */
@@ -70,7 +79,7 @@ public final class OutputSelector {
 
     /**
      * Get the value property: Value to compare against.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
@@ -79,12 +88,54 @@ public final class OutputSelector {
 
     /**
      * Set the value property: Value to compare against.
-     *
+     * 
      * @param value the value value to set.
      * @return the OutputSelector object itself.
      */
     public OutputSelector setValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("property", this.property == null ? null : this.property.toString());
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutputSelector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutputSelector if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutputSelector.
+     */
+    public static OutputSelector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutputSelector deserializedOutputSelector = new OutputSelector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("property".equals(fieldName)) {
+                    deserializedOutputSelector.property = OutputSelectorProperty.fromString(reader.getString());
+                } else if ("operator".equals(fieldName)) {
+                    deserializedOutputSelector.operator = OutputSelectorOperator.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedOutputSelector.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutputSelector;
+        });
     }
 }

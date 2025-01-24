@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Resource stage details. */
+/**
+ * Resource stage details.
+ */
 @Immutable
-public final class StageDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StageDetails.class);
-
+public final class StageDetails implements JsonSerializable<StageDetails> {
     /*
      * Stage status.
      */
-    @JsonProperty(value = "stageStatus", access = JsonProperty.Access.WRITE_ONLY)
     private StageStatus stageStatus;
 
     /*
      * Stage name
      */
-    @JsonProperty(value = "stageName", access = JsonProperty.Access.WRITE_ONLY)
     private StageName stageName;
 
     /*
      * Display name of the resource stage.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Stage start time
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /**
+     * Creates an instance of StageDetails class.
+     */
+    public StageDetails() {
+    }
+
+    /**
      * Get the stageStatus property: Stage status.
-     *
+     * 
      * @return the stageStatus value.
      */
     public StageStatus stageStatus() {
@@ -50,7 +55,7 @@ public final class StageDetails {
 
     /**
      * Get the stageName property: Stage name.
-     *
+     * 
      * @return the stageName value.
      */
     public StageName stageName() {
@@ -59,7 +64,7 @@ public final class StageDetails {
 
     /**
      * Get the displayName property: Display name of the resource stage.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -68,7 +73,7 @@ public final class StageDetails {
 
     /**
      * Get the startTime property: Stage start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -77,9 +82,51 @@ public final class StageDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StageDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StageDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StageDetails.
+     */
+    public static StageDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StageDetails deserializedStageDetails = new StageDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("stageStatus".equals(fieldName)) {
+                    deserializedStageDetails.stageStatus = StageStatus.fromString(reader.getString());
+                } else if ("stageName".equals(fieldName)) {
+                    deserializedStageDetails.stageName = StageName.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedStageDetails.displayName = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedStageDetails.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStageDetails;
+        });
     }
 }

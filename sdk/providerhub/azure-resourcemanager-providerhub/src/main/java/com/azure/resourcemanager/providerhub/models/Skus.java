@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.SkuResourceInner;
 
-/** Resource collection API of Skus. */
+/**
+ * Resource collection API of Skus.
+ */
 public interface Skus {
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -27,7 +29,7 @@ public interface Skus {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -40,7 +42,7 @@ public interface Skus {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -54,7 +56,7 @@ public interface Skus {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -66,7 +68,7 @@ public interface Skus {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -77,12 +79,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response}.
      */
-    Response<SkuResource> getNestedResourceTypeFirstWithResponse(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku, Context context);
+    Response<SkuResource> getNestedResourceTypeFirstWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku, Context context);
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -92,12 +94,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name.
      */
-    SkuResource getNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku);
+    SkuResource getNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -109,17 +111,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<SkuResource> createOrUpdateNestedResourceTypeFirstWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String sku,
-        SkuResourceInner properties,
-        Context context);
+    Response<SkuResource> createOrUpdateNestedResourceTypeFirstWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String sku, SkuResourceInner properties, Context context);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -130,16 +127,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    SkuResource createOrUpdateNestedResourceTypeFirst(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String sku,
-        SkuResourceInner properties);
+    SkuResource createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku, SkuResourceInner properties);
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -150,12 +143,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteNestedResourceTypeFirstWithResponse(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku, Context context);
+    Response<Void> deleteNestedResourceTypeFirstWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String sku, Context context);
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -164,12 +157,12 @@ public interface Skus {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String sku);
+    void deleteNestedResourceTypeFirst(String providerNamespace, String resourceType, String nestedResourceTypeFirst,
+        String sku);
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -181,17 +174,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response}.
      */
-    Response<SkuResource> getNestedResourceTypeSecondWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        Context context);
+    Response<SkuResource> getNestedResourceTypeSecondWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, Context context);
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -202,16 +190,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name.
      */
-    SkuResource getNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku);
+    SkuResource getNestedResourceTypeSecond(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -224,18 +208,13 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<SkuResource> createOrUpdateNestedResourceTypeSecondWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        SkuResourceInner properties,
-        Context context);
+    Response<SkuResource> createOrUpdateNestedResourceTypeSecondWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku,
+        SkuResourceInner properties, Context context);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -247,17 +226,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    SkuResource createOrUpdateNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        SkuResourceInner properties);
+    SkuResource createOrUpdateNestedResourceTypeSecond(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, SkuResourceInner properties);
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -269,17 +243,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteNestedResourceTypeSecondWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku,
-        Context context);
+    Response<Void> deleteNestedResourceTypeSecondWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String sku, Context context);
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -289,16 +258,12 @@ public interface Skus {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String sku);
+    void deleteNestedResourceTypeSecond(String providerNamespace, String resourceType, String nestedResourceTypeFirst,
+        String nestedResourceTypeSecond, String sku);
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -311,18 +276,13 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response}.
      */
-    Response<SkuResource> getNestedResourceTypeThirdWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
+    Response<SkuResource> getNestedResourceTypeThirdWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
         Context context);
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -334,17 +294,12 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name.
      */
-    SkuResource getNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku);
+    SkuResource getNestedResourceTypeThird(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -358,19 +313,13 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<SkuResource> createOrUpdateNestedResourceTypeThirdWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
-        SkuResourceInner properties,
-        Context context);
+    Response<SkuResource> createOrUpdateNestedResourceTypeThirdWithResponse(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, String sku, SkuResourceInner properties, Context context);
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -383,18 +332,13 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    SkuResource createOrUpdateNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
+    SkuResource createOrUpdateNestedResourceTypeThird(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
         SkuResourceInner properties);
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -407,18 +351,13 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteNestedResourceTypeThirdWithResponse(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku,
+    Response<Void> deleteNestedResourceTypeThirdWithResponse(String providerNamespace, String resourceType,
+        String nestedResourceTypeFirst, String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku,
         Context context);
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -429,17 +368,12 @@ public interface Skus {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        String sku);
+    void deleteNestedResourceTypeThird(String providerNamespace, String resourceType, String nestedResourceTypeFirst,
+        String nestedResourceTypeSecond, String nestedResourceTypeThird, String sku);
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -451,7 +385,7 @@ public interface Skus {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -460,76 +394,72 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SkuResource> listByResourceTypeRegistrations(
-        String providerNamespace, String resourceType, Context context);
-
-    /**
-     * Gets the list of skus for the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst);
-
-    /**
-     * Gets the list of skus for the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeFirst(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, Context context);
-
-    /**
-     * Gets the list of skus for the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeSecond(
-        String providerNamespace, String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond);
-
-    /**
-     * Gets the list of skus for the given resource type.
-     *
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param nestedResourceTypeFirst The first child resource type.
-     * @param nestedResourceTypeSecond The second child resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeSecond(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
+    PagedIterable<SkuResource> listByResourceTypeRegistrations(String providerNamespace, String resourceType,
         Context context);
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeFirst(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst);
+
+    /**
+     * Gets the list of skus for the given resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeFirst(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, Context context);
+
+    /**
+     * Gets the list of skus for the given resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeSecond(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond);
+
+    /**
+     * Gets the list of skus for the given resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param nestedResourceTypeFirst The first child resource type.
+     * @param nestedResourceTypeSecond The second child resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeSecond(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond, Context context);
+
+    /**
+     * Gets the list of skus for the given resource type.
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -540,16 +470,13 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
+    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeThird(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
         String nestedResourceTypeThird);
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -561,17 +488,13 @@ public interface Skus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeThird(
-        String providerNamespace,
-        String resourceType,
-        String nestedResourceTypeFirst,
-        String nestedResourceTypeSecond,
-        String nestedResourceTypeThird,
-        Context context);
+    PagedIterable<SkuResource> listByResourceTypeRegistrationsNestedResourceTypeThird(String providerNamespace,
+        String resourceType, String nestedResourceTypeFirst, String nestedResourceTypeSecond,
+        String nestedResourceTypeThird, Context context);
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -582,7 +505,7 @@ public interface Skus {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,7 +517,7 @@ public interface Skus {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -604,7 +527,7 @@ public interface Skus {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -616,7 +539,7 @@ public interface Skus {
 
     /**
      * Begins definition for a new SkuResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SkuResource definition.
      */

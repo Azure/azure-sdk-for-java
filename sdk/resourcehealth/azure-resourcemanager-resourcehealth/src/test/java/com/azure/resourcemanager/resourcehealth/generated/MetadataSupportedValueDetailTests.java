@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetadataSupportedValueDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetadataSupportedValueDetail model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"i\",\"displayName\":\"ghxpkdw\",\"resourceTypes\":[\"iuebbaumny\",\"upedeojnabckhs\",\"txp\",\"ie\"]}")
-                .toObject(MetadataSupportedValueDetail.class);
+        MetadataSupportedValueDetail model = BinaryData.fromString(
+            "{\"id\":\"i\",\"displayName\":\"ghxpkdw\",\"resourceTypes\":[\"iuebbaumny\",\"upedeojnabckhs\",\"txp\",\"ie\"]}")
+            .toObject(MetadataSupportedValueDetail.class);
         Assertions.assertEquals("i", model.id());
         Assertions.assertEquals("ghxpkdw", model.displayName());
         Assertions.assertEquals("iuebbaumny", model.resourceTypes().get(0));
@@ -24,11 +22,9 @@ public final class MetadataSupportedValueDetailTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataSupportedValueDetail model =
-            new MetadataSupportedValueDetail()
-                .withId("i")
-                .withDisplayName("ghxpkdw")
-                .withResourceTypes(Arrays.asList("iuebbaumny", "upedeojnabckhs", "txp", "ie"));
+        MetadataSupportedValueDetail model = new MetadataSupportedValueDetail().withId("i")
+            .withDisplayName("ghxpkdw")
+            .withResourceTypes(Arrays.asList("iuebbaumny", "upedeojnabckhs", "txp", "ie"));
         model = BinaryData.fromObject(model).toObject(MetadataSupportedValueDetail.class);
         Assertions.assertEquals("i", model.id());
         Assertions.assertEquals("ghxpkdw", model.displayName());

@@ -22,17 +22,29 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public SoftwareUpdateConfigurationsImpl(
-        SoftwareUpdateConfigurationsClient innerClient,
+    public SoftwareUpdateConfigurationsImpl(SoftwareUpdateConfigurationsClient innerClient,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public SoftwareUpdateConfiguration getByName(
-        String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
-        SoftwareUpdateConfigurationInner inner =
-            this.serviceClient().getByName(resourceGroupName, automationAccountName, softwareUpdateConfigurationName);
+    public Response<SoftwareUpdateConfiguration> getByNameWithResponse(String resourceGroupName,
+        String automationAccountName, String softwareUpdateConfigurationName, String clientRequestId, Context context) {
+        Response<SoftwareUpdateConfigurationInner> inner = this.serviceClient()
+            .getByNameWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+                clientRequestId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SoftwareUpdateConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SoftwareUpdateConfiguration getByName(String resourceGroupName, String automationAccountName,
+        String softwareUpdateConfigurationName) {
+        SoftwareUpdateConfigurationInner inner
+            = this.serviceClient().getByName(resourceGroupName, automationAccountName, softwareUpdateConfigurationName);
         if (inner != null) {
             return new SoftwareUpdateConfigurationImpl(inner, this.manager());
         } else {
@@ -40,51 +52,32 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
     }
 
-    public Response<SoftwareUpdateConfiguration> getByNameWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        String clientRequestId,
-        Context context) {
-        Response<SoftwareUpdateConfigurationInner> inner =
-            this
-                .serviceClient()
-                .getByNameWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    softwareUpdateConfigurationName,
-                    clientRequestId,
-                    context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SoftwareUpdateConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String softwareUpdateConfigurationName, String clientRequestId, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+                clientRequestId, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, softwareUpdateConfigurationName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        String clientRequestId,
-        Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(
-                resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId, context);
+    public Response<SoftwareUpdateConfigurationListResult> listWithResponse(String resourceGroupName,
+        String automationAccountName, String clientRequestId, String filter, Context context) {
+        Response<SoftwareUpdateConfigurationListResultInner> inner = this.serviceClient()
+            .listWithResponse(resourceGroupName, automationAccountName, clientRequestId, filter, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SoftwareUpdateConfigurationListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SoftwareUpdateConfigurationListResult list(String resourceGroupName, String automationAccountName) {
-        SoftwareUpdateConfigurationListResultInner inner =
-            this.serviceClient().list(resourceGroupName, automationAccountName);
+        SoftwareUpdateConfigurationListResultInner inner
+            = this.serviceClient().list(resourceGroupName, automationAccountName);
         if (inner != null) {
             return new SoftwareUpdateConfigurationListResultImpl(inner, this.manager());
         } else {
@@ -92,173 +85,93 @@ public final class SoftwareUpdateConfigurationsImpl implements SoftwareUpdateCon
         }
     }
 
-    public Response<SoftwareUpdateConfigurationListResult> listWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String clientRequestId,
-        String filter,
-        Context context) {
-        Response<SoftwareUpdateConfigurationListResultInner> inner =
-            this
-                .serviceClient()
-                .listWithResponse(resourceGroupName, automationAccountName, clientRequestId, filter, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SoftwareUpdateConfigurationListResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public SoftwareUpdateConfiguration getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String softwareUpdateConfigurationName = Utils.getValueFromIdByName(id, "softwareUpdateConfigurations");
+        String softwareUpdateConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "softwareUpdateConfigurations");
         if (softwareUpdateConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'softwareUpdateConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'softwareUpdateConfigurations'.", id)));
         }
         String localClientRequestId = null;
         return this
-            .getByNameWithResponse(
-                resourceGroupName,
-                automationAccountName,
-                softwareUpdateConfigurationName,
-                localClientRequestId,
-                Context.NONE)
+            .getByNameWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+                localClientRequestId, Context.NONE)
             .getValue();
     }
 
-    public Response<SoftwareUpdateConfiguration> getByIdWithResponse(
-        String id, String clientRequestId, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public Response<SoftwareUpdateConfiguration> getByIdWithResponse(String id, String clientRequestId,
+        Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String softwareUpdateConfigurationName = Utils.getValueFromIdByName(id, "softwareUpdateConfigurations");
+        String softwareUpdateConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "softwareUpdateConfigurations");
         if (softwareUpdateConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'softwareUpdateConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'softwareUpdateConfigurations'.", id)));
         }
-        return this
-            .getByNameWithResponse(
-                resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId, context);
+        return this.getByNameWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+            clientRequestId, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String softwareUpdateConfigurationName = Utils.getValueFromIdByName(id, "softwareUpdateConfigurations");
+        String softwareUpdateConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "softwareUpdateConfigurations");
         if (softwareUpdateConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'softwareUpdateConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'softwareUpdateConfigurations'.", id)));
         }
         String localClientRequestId = null;
-        this
-            .deleteWithResponse(
-                resourceGroupName,
-                automationAccountName,
-                softwareUpdateConfigurationName,
-                localClientRequestId,
-                Context.NONE);
+        this.deleteWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+            localClientRequestId, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String clientRequestId, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String softwareUpdateConfigurationName = Utils.getValueFromIdByName(id, "softwareUpdateConfigurations");
+        String softwareUpdateConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "softwareUpdateConfigurations");
         if (softwareUpdateConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'softwareUpdateConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'softwareUpdateConfigurations'.", id)));
         }
-        return this
-            .deleteWithResponse(
-                resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId, context);
+        return this.deleteWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+            clientRequestId, context);
     }
 
     private SoftwareUpdateConfigurationsClient serviceClient() {

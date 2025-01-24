@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for MetricsConfigurations Get. */
+/**
+ * Samples for MetricsConfigurations Get.
+ */
 public final class MetricsConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/ClusterMetricsConfigurations_Get.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * ClusterMetricsConfigurations_Get.json
      */
     /**
      * Sample code: Get metrics configuration of cluster.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void getMetricsConfigurationOfCluster(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .metricsConfigurations()
+    public static void
+        getMetricsConfigurationOfCluster(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        manager.metricsConfigurations()
             .getWithResponse("resourceGroupName", "clusterName", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -32,19 +32,19 @@ public class ConfigurationSettingDeserializerTest {
     private static final String FEATURE_FLAG_DISPLAY_NAME = "Feature Flag X";
     private static final String SECRET_REFERENCE_URI_VALUE = "https://localhost";
     private static final String SETTING_VALUE = "world";
-    private static final String FEATURE_FLAG_VALUE_JSON =
-        "{\"id\":\"hello\",\"display_name\":\"Feature Flag X\",\"enabled\":false,"
+    private static final String FEATURE_FLAG_VALUE_JSON
+        = "{\"id\":\"hello\",\"display_name\":\"Feature Flag X\",\"enabled\":false,"
             + "\"conditions\":{\"client_filters\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":"
             + "{\"Value\":30}}]}}";
 
-    private static final String SECRET_REFERENCE_JSON =
-        "{\"key\":\"hello\",\"value\":\"{\\\"uri\\\":\\\"https://localhost\\\"}\","
+    private static final String SECRET_REFERENCE_JSON
+        = "{\"key\":\"hello\",\"value\":\"{\\\"uri\\\":\\\"https://localhost\\\"}\","
             + "\"content_type\":\"application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8\","
             + "\"etag\":null,\"locked\":false,\"tags\":{}}";
     private static final String SECRET_REFERENCE_VALUE_JSON = "{\"uri\":\"https://localhost\"}";
 
-    private static final String CONFIGURATION_SETTING_JSON =
-        "{\"key\":\"hello\",\"value\":\"world\",\"etag\":null,\"locked\":false,\"tags\":{}}";
+    private static final String CONFIGURATION_SETTING_JSON
+        = "{\"key\":\"hello\",\"value\":\"world\",\"etag\":null,\"locked\":false,\"tags\":{}}";
 
     @Test
     public void parseFeatureFlagValueTest() {
@@ -62,43 +62,34 @@ public class ConfigurationSettingDeserializerTest {
     @MethodSource("deserializeSupplier")
     public <T extends ConfigurationSetting> void deserialize(String json, T expectedGeo) {
         if (expectedGeo instanceof FeatureFlagConfigurationSetting) {
-            final KeyValue mockFeatureFlagSetting = new KeyValue()
-                .setKey(".appconfig.featureflag/hello")
+            final KeyValue mockFeatureFlagSetting = new KeyValue().setKey(".appconfig.featureflag/hello")
                 .setValue(FEATURE_FLAG_VALUE_JSON)
                 .setContentType(FEATURE_FLAG_CONTENT_TYPE);
-            assertFeatureFlagConfigurationSetting(
-                (FeatureFlagConfigurationSetting) expectedGeo,
+            assertFeatureFlagConfigurationSetting((FeatureFlagConfigurationSetting) expectedGeo,
                 (FeatureFlagConfigurationSetting) toConfigurationSetting(mockFeatureFlagSetting));
         } else if (expectedGeo instanceof SecretReferenceConfigurationSetting) {
-            final KeyValue mockSecretReferenceSetting = new KeyValue()
-                .setKey(KEY)
+            final KeyValue mockSecretReferenceSetting = new KeyValue().setKey(KEY)
                 .setValue(SECRET_REFERENCE_VALUE_JSON)
                 .setContentType(SECRET_REFERENCE_CONTENT_TYPE);
-            assertSecretReferenceConfigurationSetting(
-                (SecretReferenceConfigurationSetting) expectedGeo,
+            assertSecretReferenceConfigurationSetting((SecretReferenceConfigurationSetting) expectedGeo,
                 (SecretReferenceConfigurationSetting) toConfigurationSetting(mockSecretReferenceSetting));
         } else {
-            final KeyValue mockSetting = new KeyValue()
-                .setKey(KEY)
-                .setValue(SETTING_VALUE);
+            final KeyValue mockSetting = new KeyValue().setKey(KEY).setValue(SETTING_VALUE);
             assertConfigurationSetting(expectedGeo, toConfigurationSetting(mockSetting));
         }
     }
 
     public static Stream<Arguments> deserializeSupplier() {
-        return Stream.of(
-            Arguments.of(FEATURE_FLAG_VALUE_JSON, getFeatureFlagConfigurationSetting()),
+        return Stream.of(Arguments.of(FEATURE_FLAG_VALUE_JSON, getFeatureFlagConfigurationSetting()),
             Arguments.of(SECRET_REFERENCE_JSON, getSecretReferenceConfigurationSetting()),
-            Arguments.of(CONFIGURATION_SETTING_JSON, getConfigurationSetting())
-        );
+            Arguments.of(CONFIGURATION_SETTING_JSON, getConfigurationSetting()));
     }
 
     private static FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting() {
-        List<FeatureFlagFilter> filters = Collections.singletonList(new FeatureFlagFilter("Microsoft.Percentage")
-            .setParameters(Collections.singletonMap("Value", 30)));
+        List<FeatureFlagFilter> filters = Collections.singletonList(
+            new FeatureFlagFilter("Microsoft.Percentage").setParameters(Collections.singletonMap("Value", 30)));
 
-        return new FeatureFlagConfigurationSetting(KEY, false)
-            .setDisplayName(FEATURE_FLAG_DISPLAY_NAME)
+        return new FeatureFlagConfigurationSetting(KEY, false).setDisplayName(FEATURE_FLAG_DISPLAY_NAME)
             .setClientFilters(filters)
             .setValue(FEATURE_FLAG_VALUE_JSON);
     }

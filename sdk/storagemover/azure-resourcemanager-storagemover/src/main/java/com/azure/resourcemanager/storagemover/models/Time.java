@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The time of day.
  */
 @Fluent
-public final class Time {
+public final class Time implements JsonSerializable<Time> {
     /*
      * The hour element of the time. Allowed values range from 0 (start of the selected day) to 24 (end of the selected
      * day). Hour value 24 cannot be combined with any other minute value but 0.
      */
-    @JsonProperty(value = "hour", required = true)
     private int hour;
 
     /*
      * The minute element of the time. Allowed values are 0 and 30. If not specified, its value defaults to 0.
      */
-    @JsonProperty(value = "minute")
     private Minute minute;
 
     /**
@@ -81,5 +83,45 @@ public final class Time {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("hour", this.hour);
+        jsonWriter.writeNumberField("minute", this.minute == null ? null : this.minute.getValue());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Time from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Time if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Time.
+     */
+    public static Time fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Time deserializedTime = new Time();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hour".equals(fieldName)) {
+                    deserializedTime.hour = reader.getInt();
+                } else if ("minute".equals(fieldName)) {
+                    deserializedTime.minute = Minute.fromValue(reader.getInt());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTime;
+        });
     }
 }

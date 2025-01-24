@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** format for the workspace connection value. */
+/**
+ * format for the workspace connection value.
+ */
 public final class ValueFormat extends ExpandableStringEnum<ValueFormat> {
-    /** Static value JSON for ValueFormat. */
+    /**
+     * Static value JSON for ValueFormat.
+     */
     public static final ValueFormat JSON = fromString("JSON");
 
     /**
      * Creates a new instance of ValueFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class ValueFormat extends ExpandableStringEnum<ValueFormat> {
 
     /**
      * Creates or finds a ValueFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ValueFormat.
      */
-    @JsonCreator
     public static ValueFormat fromString(String name) {
         return fromString(name, ValueFormat.class);
     }
 
     /**
      * Gets known ValueFormat values.
-     *
+     * 
      * @return known ValueFormat values.
      */
     public static Collection<ValueFormat> values() {

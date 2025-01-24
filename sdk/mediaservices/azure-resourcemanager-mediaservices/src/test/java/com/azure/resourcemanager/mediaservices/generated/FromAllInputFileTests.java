@@ -12,17 +12,15 @@ import java.util.Arrays;
 public final class FromAllInputFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FromAllInputFile model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.FromAllInputFile\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]}")
-                .toObject(FromAllInputFile.class);
+        FromAllInputFile model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.FromAllInputFile\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]}")
+            .toObject(FromAllInputFile.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FromAllInputFile model =
-            new FromAllInputFile().withIncludedTracks(Arrays.asList(new TrackDescriptor(), new TrackDescriptor()));
+        FromAllInputFile model
+            = new FromAllInputFile().withIncludedTracks(Arrays.asList(new TrackDescriptor(), new TrackDescriptor()));
         model = BinaryData.fromObject(model).toObject(FromAllInputFile.class);
     }
 }

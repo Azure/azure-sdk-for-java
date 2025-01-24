@@ -4,38 +4,41 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for ScheduledActions ListByScope. */
+/**
+ * Samples for ScheduledActions ListByScope.
+ */
 public final class ScheduledActionsListByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledActions-listWithFilter-shared.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * scheduledActions/scheduledActions-listWithFilter-shared.json
      */
     /**
      * Sample code: ScheduledActionsListByScopeFilterByViewId.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void scheduledActionsListByScopeFilterByViewId(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .scheduledActions()
-            .listByScope(
-                "subscriptions/00000000-0000-0000-0000-000000000000",
+        manager.scheduledActions()
+            .listByScope("subscriptions/00000000-0000-0000-0000-000000000000",
                 "properties/viewId eq '/providers/Microsoft.CostManagement/views/swaggerExample'",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledActions-list-shared.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * scheduledActions/scheduledActions-list-shared.json
      */
     /**
      * Sample code: ScheduledActionsListByScope.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void scheduledActionsListByScope(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .scheduledActions()
+    public static void
+        scheduledActionsListByScope(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.scheduledActions()
             .listByScope("subscriptions/00000000-0000-0000-0000-000000000000", null, com.azure.core.util.Context.NONE);
     }
 }

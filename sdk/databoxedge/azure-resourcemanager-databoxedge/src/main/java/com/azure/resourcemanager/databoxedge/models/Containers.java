@@ -8,26 +8,28 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Containers. */
+/**
+ * Resource collection API of Containers.
+ */
 public interface Containers {
     /**
      * Lists all the containers of a storage Account in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The storage Account name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the containers on the Data Box Edge/Gateway device as paginated response with {@link
-     *     PagedIterable}.
+     * @return collection of all the containers on the Data Box Edge/Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<Container> listByStorageAccount(
-        String deviceName, String storageAccountName, String resourceGroupName);
+    PagedIterable<Container> listByStorageAccount(String deviceName, String storageAccountName,
+        String resourceGroupName);
 
     /**
      * Lists all the containers of a storage Account in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The storage Account name.
      * @param resourceGroupName The resource group name.
@@ -35,15 +37,15 @@ public interface Containers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the containers on the Data Box Edge/Gateway device as paginated response with {@link
-     *     PagedIterable}.
+     * @return collection of all the containers on the Data Box Edge/Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<Container> listByStorageAccount(
-        String deviceName, String storageAccountName, String resourceGroupName, Context context);
+    PagedIterable<Container> listByStorageAccount(String deviceName, String storageAccountName,
+        String resourceGroupName, Context context);
 
     /**
      * Gets a container by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container Name.
@@ -54,12 +56,12 @@ public interface Containers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container by name along with {@link Response}.
      */
-    Response<Container> getWithResponse(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
+    Response<Container> getWithResponse(String deviceName, String storageAccountName, String containerName,
+        String resourceGroupName, Context context);
 
     /**
      * Gets a container by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container Name.
@@ -73,7 +75,7 @@ public interface Containers {
 
     /**
      * Deletes the container on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -86,7 +88,7 @@ public interface Containers {
 
     /**
      * Deletes the container on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -96,12 +98,12 @@ public interface Containers {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
+    void delete(String deviceName, String storageAccountName, String containerName, String resourceGroupName,
+        Context context);
 
     /**
      * Refreshes the container metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -114,7 +116,7 @@ public interface Containers {
 
     /**
      * Refreshes the container metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -124,12 +126,12 @@ public interface Containers {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void refresh(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
+    void refresh(String deviceName, String storageAccountName, String containerName, String resourceGroupName,
+        Context context);
 
     /**
      * Gets a container by name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,7 +142,7 @@ public interface Containers {
 
     /**
      * Gets a container by name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +154,7 @@ public interface Containers {
 
     /**
      * Deletes the container on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,7 +164,7 @@ public interface Containers {
 
     /**
      * Deletes the container on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +175,7 @@ public interface Containers {
 
     /**
      * Begins definition for a new Container resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Container definition.
      */

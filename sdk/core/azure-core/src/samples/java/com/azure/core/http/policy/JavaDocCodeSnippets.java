@@ -8,6 +8,7 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 
@@ -188,9 +189,9 @@ public class JavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.policy.HttpLogOptions.constructor
         HttpLogOptions logOptions = new HttpLogOptions();
         logOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
-        logOptions.setAllowedHeaderNames(new HashSet<>(Arrays.asList("Date", "x-ms-request-id")));
+        logOptions.setAllowedHttpHeaderNames(new HashSet<>(Arrays.asList(HttpHeaderName.DATE,
+            HttpHeaderName.X_MS_REQUEST_ID)));
         logOptions.setAllowedQueryParamNames(new HashSet<>(Arrays.asList("api-version")));
-        logOptions.setPrettyPrintBody(true);
         HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
         // END: com.azure.core.http.policy.HttpLogOptions.constructor
     }

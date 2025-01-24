@@ -21,21 +21,18 @@ public final class DeploymentLicensesImpl implements DeploymentLicenses {
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    public DeploymentLicensesImpl(
-        DeploymentLicensesClient innerClient, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    public DeploymentLicensesImpl(DeploymentLicensesClient innerClient,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<DeploymentLicenseResponse> createWithResponse(
-        DeploymentLicenseRequest deploymentLicenseRequest, Context context) {
-        Response<DeploymentLicenseResponseInner> inner =
-            this.serviceClient().createWithResponse(deploymentLicenseRequest, context);
+    public Response<DeploymentLicenseResponse> createWithResponse(DeploymentLicenseRequest deploymentLicenseRequest,
+        Context context) {
+        Response<DeploymentLicenseResponseInner> inner
+            = this.serviceClient().createWithResponse(deploymentLicenseRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeploymentLicenseResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -19,8 +19,7 @@ public final class SoftwareUpdateConfigurationImpl
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    SoftwareUpdateConfigurationImpl(
-        SoftwareUpdateConfigurationInner innerObject,
+    SoftwareUpdateConfigurationImpl(SoftwareUpdateConfigurationInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -90,47 +89,33 @@ public final class SoftwareUpdateConfigurationImpl
 
     private String createClientRequestId;
 
-    public SoftwareUpdateConfigurationImpl withExistingAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
+    public SoftwareUpdateConfigurationImpl withExistingAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.automationAccountName = automationAccountName;
         return this;
     }
 
     public SoftwareUpdateConfiguration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSoftwareUpdateConfigurations()
-                .createWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    softwareUpdateConfigurationName,
-                    this.innerModel(),
-                    createClientRequestId,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSoftwareUpdateConfigurations()
+            .createWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+                this.innerModel(), createClientRequestId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SoftwareUpdateConfiguration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSoftwareUpdateConfigurations()
-                .createWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    softwareUpdateConfigurationName,
-                    this.innerModel(),
-                    createClientRequestId,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSoftwareUpdateConfigurations()
+            .createWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+                this.innerModel(), createClientRequestId, context)
+            .getValue();
         return this;
     }
 
-    SoftwareUpdateConfigurationImpl(
-        String name, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    SoftwareUpdateConfigurationImpl(String name,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = new SoftwareUpdateConfigurationInner();
         this.serviceManager = serviceManager;
         this.softwareUpdateConfigurationName = name;
@@ -139,33 +124,21 @@ public final class SoftwareUpdateConfigurationImpl
 
     public SoftwareUpdateConfiguration refresh() {
         String localClientRequestId = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSoftwareUpdateConfigurations()
-                .getByNameWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    softwareUpdateConfigurationName,
-                    localClientRequestId,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSoftwareUpdateConfigurations()
+            .getByNameWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+                localClientRequestId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SoftwareUpdateConfiguration refresh(Context context) {
         String localClientRequestId = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSoftwareUpdateConfigurations()
-                .getByNameWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    softwareUpdateConfigurationName,
-                    localClientRequestId,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSoftwareUpdateConfigurations()
+            .getByNameWithResponse(resourceGroupName, automationAccountName, softwareUpdateConfigurationName,
+                localClientRequestId, context)
+            .getValue();
         return this;
     }
 

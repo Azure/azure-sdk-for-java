@@ -6,11 +6,9 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.EventHandler;
 import com.azure.resourcemanager.webpubsub.models.EventListener;
@@ -21,117 +19,47 @@ import com.azure.resourcemanager.webpubsub.models.UpstreamAuthSettings;
 import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHub;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WebPubSubHubsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"rmfsvbpav\",\"userEventPattern\":\"pfppd\",\"systemEvents\":[\"upgahxkum\",\"sjcaacfdmmcpugm\",\"hqepvufhbzehewh\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{}}},{\"urlTemplate\":\"bqnbl\",\"userEventPattern\":\"eaclgschorimk\",\"systemEvents\":[\"rmoucsofl\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{}}},{\"urlTemplate\":\"yfcaabeolhbhlvbm\",\"userEventPattern\":\"qi\",\"systemEvents\":[\"tkcudfbsfarfsiow\",\"kjxnqpvwgfstmhq\",\"kizmdksaoafclu\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"im\",\"webSocketKeepAliveIntervalInSeconds\":614051045},\"id\":\"gc\",\"name\":\"wpbmzgwesydsxwef\",\"type\":\"hecbvopwndyq\"}";
 
-        String responseStr =
-            "{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"itgueiookjbs\",\"userEventPattern\":\"rtdtpdelq\",\"systemEvents\":[\"lmotoebnfxofvcj\",\"gdirazf\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"dujtmvcope\"},\"id\":\"m\",\"name\":\"urbuhhlkyqltq\",\"type\":\"rogtuwkf\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        WebPubSubManager manager = WebPubSubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WebPubSubHub response = manager.webPubSubHubs()
+            .define("o")
+            .withExistingWebPubSub("uxvnsasbcrymodi", "rxklobdxnazpmk")
+            .withProperties(new WebPubSubHubProperties()
+                .withEventHandlers(Arrays.asList(new EventHandler().withUrlTemplate("vevfxz")
+                    .withUserEventPattern("jhbzxliohrdddtf")
+                    .withSystemEvents(Arrays.asList("ba", "pcbbnzqcykna", "qofyuicdhzbdy", "wwgbdv"))
+                    .withAuth(new UpstreamAuthSettings().withType(UpstreamAuthType.NONE)
+                        .withManagedIdentity(new ManagedIdentitySettings()))))
+                .withEventListeners(Arrays.asList(new EventListener().withFilter(new EventListenerFilter())
+                    .withEndpoint(new EventListenerEndpoint())))
+                .withAnonymousConnectPolicy("ffplfmuvapckcc")
+                .withWebSocketKeepAliveIntervalInSeconds(643996998))
+            .create();
 
-        WebPubSubManager manager =
-            WebPubSubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WebPubSubHub response =
-            manager
-                .webPubSubHubs()
-                .define("n")
-                .withExistingWebPubSub("ixjawrtm", "fjmyccxlzhco")
-                .withProperties(
-                    new WebPubSubHubProperties()
-                        .withEventHandlers(
-                            Arrays
-                                .asList(
-                                    new EventHandler()
-                                        .withUrlTemplate("nekhenlusfnrdtj")
-                                        .withUserEventPattern("xrdcqtj")
-                                        .withSystemEvents(Arrays.asList("ttgepuslvyjtcv"))
-                                        .withAuth(
-                                            new UpstreamAuthSettings()
-                                                .withType(UpstreamAuthType.NONE)
-                                                .withManagedIdentity(new ManagedIdentitySettings())),
-                                    new EventHandler()
-                                        .withUrlTemplate("iziesfuughtuq")
-                                        .withUserEventPattern("cjxeygt")
-                                        .withSystemEvents(Arrays.asList("uicbuewmrsw"))
-                                        .withAuth(
-                                            new UpstreamAuthSettings()
-                                                .withType(UpstreamAuthType.MANAGED_IDENTITY)
-                                                .withManagedIdentity(new ManagedIdentitySettings())),
-                                    new EventHandler()
-                                        .withUrlTemplate("zrhwp")
-                                        .withUserEventPattern("xjbaqehgpdohzjq")
-                                        .withSystemEvents(Arrays.asList("coi", "e"))
-                                        .withAuth(
-                                            new UpstreamAuthSettings()
-                                                .withType(UpstreamAuthType.MANAGED_IDENTITY)
-                                                .withManagedIdentity(new ManagedIdentitySettings())),
-                                    new EventHandler()
-                                        .withUrlTemplate("wfepbnwgfmx")
-                                        .withUserEventPattern("cgbjbgdlfgt")
-                                        .withSystemEvents(Arrays.asList("naquflq", "ctqhamzjrwdk"))
-                                        .withAuth(
-                                            new UpstreamAuthSettings()
-                                                .withType(UpstreamAuthType.NONE)
-                                                .withManagedIdentity(new ManagedIdentitySettings()))))
-                        .withEventListeners(
-                            Arrays
-                                .asList(
-                                    new EventListener()
-                                        .withFilter(new EventListenerFilter())
-                                        .withEndpoint(new EventListenerEndpoint()),
-                                    new EventListener()
-                                        .withFilter(new EventListenerFilter())
-                                        .withEndpoint(new EventListenerEndpoint()),
-                                    new EventListener()
-                                        .withFilter(new EventListenerFilter())
-                                        .withEndpoint(new EventListenerEndpoint()),
-                                    new EventListener()
-                                        .withFilter(new EventListenerFilter())
-                                        .withEndpoint(new EventListenerEndpoint())))
-                        .withAnonymousConnectPolicy("zi"))
-                .create();
-
-        Assertions.assertEquals("itgueiookjbs", response.properties().eventHandlers().get(0).urlTemplate());
-        Assertions.assertEquals("rtdtpdelq", response.properties().eventHandlers().get(0).userEventPattern());
-        Assertions.assertEquals("lmotoebnfxofvcj", response.properties().eventHandlers().get(0).systemEvents().get(0));
-        Assertions.assertEquals(UpstreamAuthType.NONE, response.properties().eventHandlers().get(0).auth().type());
-        Assertions.assertEquals("dujtmvcope", response.properties().anonymousConnectPolicy());
+        Assertions.assertEquals("rmfsvbpav", response.properties().eventHandlers().get(0).urlTemplate());
+        Assertions.assertEquals("pfppd", response.properties().eventHandlers().get(0).userEventPattern());
+        Assertions.assertEquals("upgahxkum", response.properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions.assertEquals(UpstreamAuthType.MANAGED_IDENTITY,
+            response.properties().eventHandlers().get(0).auth().type());
+        Assertions.assertEquals("im", response.properties().anonymousConnectPolicy());
+        Assertions.assertEquals(614051045, response.properties().webSocketKeepAliveIntervalInSeconds());
     }
 }

@@ -17,10 +17,8 @@ import java.util.List;
 /**
  * Implementation for {@link CdnStandardRulesEngineRule}.
  */
-class CdnStandardRulesEngineRuleImpl
-    extends ChildResourceImpl<DeliveryRule, CdnEndpointImpl, CdnEndpoint>
-    implements CdnStandardRulesEngineRule,
-    CdnStandardRulesEngineRule.Definition<CdnEndpointImpl>,
+class CdnStandardRulesEngineRuleImpl extends ChildResourceImpl<DeliveryRule, CdnEndpointImpl, CdnEndpoint>
+    implements CdnStandardRulesEngineRule, CdnStandardRulesEngineRule.Definition<CdnEndpointImpl>,
     CdnStandardRulesEngineRule.Update<CdnEndpointImpl> {
 
     CdnStandardRulesEngineRuleImpl(CdnEndpointImpl parent, String name) {

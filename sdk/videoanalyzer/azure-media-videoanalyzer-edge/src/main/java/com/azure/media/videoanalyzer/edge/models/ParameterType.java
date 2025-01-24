@@ -5,38 +5,61 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ParameterType. */
+/**
+ * Type of the parameter.
+ */
 public final class ParameterType extends ExpandableStringEnum<ParameterType> {
-    /** Static value string for ParameterType. */
+    /**
+     * The parameter's value is a string.
+     */
     public static final ParameterType STRING = fromString("string");
 
-    /** Static value secretString for ParameterType. */
+    /**
+     * The parameter's value is a string that holds sensitive information.
+     */
     public static final ParameterType SECRET_STRING = fromString("secretString");
 
-    /** Static value int for ParameterType. */
+    /**
+     * The parameter's value is a 32-bit signed integer.
+     */
     public static final ParameterType INT = fromString("int");
 
-    /** Static value double for ParameterType. */
+    /**
+     * The parameter's value is a 64-bit double-precision floating point.
+     */
     public static final ParameterType DOUBLE = fromString("double");
 
-    /** Static value bool for ParameterType. */
+    /**
+     * The parameter's value is a boolean value that is either true or false.
+     */
     public static final ParameterType BOOL = fromString("bool");
 
     /**
+     * Creates a new instance of ParameterType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ParameterType() {
+    }
+
+    /**
      * Creates or finds a ParameterType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ParameterType.
      */
-    @JsonCreator
     public static ParameterType fromString(String name) {
         return fromString(name, ParameterType.class);
     }
 
-    /** @return known ParameterType values. */
+    /**
+     * Gets known ParameterType values.
+     * 
+     * @return known ParameterType values.
+     */
     public static Collection<ParameterType> values() {
         return values(ParameterType.class);
     }

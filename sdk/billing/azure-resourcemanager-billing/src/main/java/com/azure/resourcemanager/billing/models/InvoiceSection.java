@@ -4,81 +4,61 @@
 
 package com.azure.resourcemanager.billing.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner;
 import java.util.Map;
 
-/** An immutable client-side representation of InvoiceSection. */
+/**
+ * An immutable client-side representation of InvoiceSection.
+ */
 public interface InvoiceSection {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the displayName property: The name of the invoice section.
-     *
-     * @return the displayName value.
-     */
-    String displayName();
-
-    /**
-     * Gets the labels property: Dictionary of metadata associated with the invoice section.
-     *
-     * @return the labels value.
-     */
-    Map<String, String> labels();
-
-    /**
-     * Gets the state property: Identifies the state of an invoice section.
-     *
-     * @return the state value.
-     */
-    InvoiceSectionState state();
-
-    /**
-     * Gets the systemId property: The system generated unique identifier for an invoice section.
-     *
-     * @return the systemId value.
-     */
-    String systemId();
-
-    /**
-     * Gets the tags property: Dictionary of metadata associated with the invoice section. Maximum key/value length
-     * supported of 256 characters. Keys/value should not empty value nor null. Keys can not contain &lt; &gt; % &amp; \
-     * ? /.
-     *
+     * Gets the tags property: Dictionary of metadata associated with the resource. It may not be populated for all
+     * resource types. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor null.
+     * Keys can not contain &lt; &gt; % &amp; \ ? /.
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the targetCloud property: Identifies the cloud environments that are associated with an invoice section.
-     * This is a system managed optional field and gets updated as the invoice section gets associated with accounts in
-     * various clouds.
-     *
-     * @return the targetCloud value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    TargetCloud targetCloud();
+    SystemData systemData();
+
+    /**
+     * Gets the properties property: An invoice section.
+     * 
+     * @return the properties value.
+     */
+    InvoiceSectionProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     InvoiceSectionInner innerModel();

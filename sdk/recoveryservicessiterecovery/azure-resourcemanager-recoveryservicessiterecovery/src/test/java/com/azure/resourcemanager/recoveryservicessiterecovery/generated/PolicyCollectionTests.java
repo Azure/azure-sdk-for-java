@@ -28,23 +28,23 @@ public final class PolicyCollectionTests {
         PolicyCollection model
             = new PolicyCollection()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new PolicyInner()
-                                .withProperties(new PolicyProperties().withFriendlyName("ulaiywzejywhs")
-                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
-                                .withLocation("ojpllndnpdwrpqaf"),
-                            new PolicyInner().withProperties(new PolicyProperties().withFriendlyName("uyturml")
+                    Arrays.asList(
+                        new PolicyInner()
+                            .withProperties(new PolicyProperties().withFriendlyName("ulaiywzejywhs")
                                 .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
-                                .withLocation("wolba"),
-                            new PolicyInner()
-                                .withProperties(new PolicyProperties().withFriendlyName("myccx")
-                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
-                                .withLocation("coxovn"),
-                            new PolicyInner()
-                                .withProperties(new PolicyProperties().withFriendlyName("vidttgepuslvyjt")
-                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
-                                .withLocation("wkasiziesf")))
+                            .withLocation("ojpllndnpdwrpqaf"),
+                        new PolicyInner()
+                            .withProperties(new PolicyProperties().withFriendlyName("uyturml")
+                                .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                            .withLocation("wolba"),
+                        new PolicyInner()
+                            .withProperties(new PolicyProperties().withFriendlyName("myccx")
+                                .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                            .withLocation("coxovn"),
+                        new PolicyInner()
+                            .withProperties(new PolicyProperties().withFriendlyName("vidttgepuslvyjt")
+                                .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                            .withLocation("wkasiziesf")))
                 .withNextLink("wpusxjbaqehg");
         model = BinaryData.fromObject(model).toObject(PolicyCollection.class);
         Assertions.assertEquals("ulaiywzejywhs", model.value().get(0).properties().friendlyName());

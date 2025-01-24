@@ -20,21 +20,36 @@ import java.util.Map;
 
 /** An immutable client-side representation of an Azure Function App. */
 @Fluent
-public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<FunctionApp.Update>,
-    SupportsListingPrivateLinkResource,
-    SupportsListingPrivateEndpointConnection,
-    SupportsUpdatingPrivateEndpointConnection {
+public interface FunctionApp
+    extends FunctionAppBasic, WebAppBase, Updatable<FunctionApp.Update>, SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection, SupportsUpdatingPrivateEndpointConnection, SupportsOneDeploy {
 
-    /** @return the entry point to deployment slot management API under the function app */
+    /**
+     * Gets the entry point to deployment slot management API under the function app.
+     *
+     * @return the entry point to deployment slot management API under the function app
+     */
     FunctionDeploymentSlots deploymentSlots();
 
-    /** @return the storage account associated with the function app */
+    /**
+     * Gets the storage account associated with the function app.
+     *
+     * @return the storage account associated with the function app
+     */
     StorageAccount storageAccount();
 
-    /** @return the master key for the function app */
+    /**
+     * Gets the master key for the function app.
+     *
+     * @return the master key for the function app
+     */
     String getMasterKey();
 
-    /** @return the master key for the function app */
+    /**
+     * Gets the master key for the function app.
+     *
+     * @return the master key for the function app
+     */
     Mono<String> getMasterKeyAsync();
 
     /**
@@ -151,13 +166,9 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.ExistingAppServicePlanWithGroup,
-            DefinitionStages.WithStorageAccount,
-            DefinitionStages.WithDockerContainerImage,
-            DefinitionStages.WithCredentials,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.ExistingAppServicePlanWithGroup,
+        DefinitionStages.WithStorageAccount, DefinitionStages.WithDockerContainerImage,
+        DefinitionStages.WithCredentials, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the function app definition stages. */
@@ -414,15 +425,10 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
          * A function app definition with sufficient inputs to create a new function app in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<FunctionApp>,
-                DefinitionStages.WithNewAppServicePlan,
-                DefinitionStages.WithStorageAccount,
-                DefinitionStages.WithRuntimeVersion,
-                DefinitionStages.WithDailyUsageQuota,
-                DefinitionStages.WithManagedEnvironment,
-                DefinitionStages.WithScaleRulesOrDockerContainerImage,
-                WebAppBase.DefinitionStages.WithCreate<FunctionApp> {
+        interface WithCreate extends Creatable<FunctionApp>, DefinitionStages.WithNewAppServicePlan,
+            DefinitionStages.WithStorageAccount, DefinitionStages.WithRuntimeVersion,
+            DefinitionStages.WithDailyUsageQuota, DefinitionStages.WithManagedEnvironment,
+            DefinitionStages.WithScaleRulesOrDockerContainerImage, WebAppBase.DefinitionStages.WithCreate<FunctionApp> {
         }
 
         /**
@@ -810,13 +816,8 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
 
     /** The template for a function app update operation, containing all the settings that can be modified. */
     interface Update
-        extends WebAppBase.Update<FunctionApp>,
-            UpdateStages.WithAppServicePlan,
-            UpdateStages.WithRuntimeVersion,
-            UpdateStages.WithStorageAccount,
-            UpdateStages.WithDailyUsageQuota,
-            UpdateStages.WithDockerContainerImage,
-            UpdateStages.WithCredentials,
-            UpdateStages.WithManagedEnvironmentScaleRules {
+        extends WebAppBase.Update<FunctionApp>, UpdateStages.WithAppServicePlan, UpdateStages.WithRuntimeVersion,
+        UpdateStages.WithStorageAccount, UpdateStages.WithDailyUsageQuota, UpdateStages.WithDockerContainerImage,
+        UpdateStages.WithCredentials, UpdateStages.WithManagedEnvironmentScaleRules {
     }
 }

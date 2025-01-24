@@ -34,17 +34,23 @@ import com.azure.resourcemanager.securityinsights.models.ActionRequest;
 import com.azure.resourcemanager.securityinsights.models.ActionsList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ActionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ActionsClient.
+ */
 public final class ActionsClientImpl implements ActionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ActionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityInsightsImpl client;
 
     /**
      * Initializes an instance of ActionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ActionsClientImpl(SecurityInsightsImpl client) {
@@ -58,92 +64,57 @@ public final class ActionsClientImpl implements ActionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityInsightsActi")
-    private interface ActionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions")
-        @ExpectedResponses({200})
+    public interface ActionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActionsList>> listByAlertRule(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("ruleId") String ruleId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ActionsList>> listByAlertRule(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("ruleId") String ruleId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions"
-                + "/{actionId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActionResponseInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("ruleId") String ruleId,
-            @PathParam("actionId") String actionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ActionResponseInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("ruleId") String ruleId, @PathParam("actionId") String actionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions"
-                + "/{actionId}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActionResponseInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("ruleId") String ruleId,
-            @PathParam("actionId") String actionId,
-            @BodyParam("application/json") ActionRequest action,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ActionResponseInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("ruleId") String ruleId, @PathParam("actionId") String actionId,
+            @BodyParam("application/json") ActionRequest action, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions"
-                + "/{actionId}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("ruleId") String ruleId,
-            @PathParam("actionId") String actionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("ruleId") String ruleId, @PathParam("actionId") String actionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActionsList>> listByAlertRuleNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ActionsList>> listByAlertRuleNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all actions of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -153,19 +124,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return all actions of alert rule along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActionResponseInner>> listByAlertRuleSinglePageAsync(
-        String resourceGroupName, String workspaceName, String ruleId) {
+    private Mono<PagedResponse<ActionResponseInner>> listByAlertRuleSinglePageAsync(String resourceGroupName,
+        String workspaceName, String ruleId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,33 +146,16 @@ public final class ActionsClientImpl implements ActionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAlertRule(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            ruleId,
-                            accept,
-                            context))
-            .<PagedResponse<ActionResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAlertRule(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, ruleId, accept, context))
+            .<PagedResponse<ActionResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all actions of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -216,19 +166,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return all actions of alert rule along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActionResponseInner>> listByAlertRuleSinglePageAsync(
-        String resourceGroupName, String workspaceName, String ruleId, Context context) {
+    private Mono<PagedResponse<ActionResponseInner>> listByAlertRuleSinglePageAsync(String resourceGroupName,
+        String workspaceName, String ruleId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -243,29 +189,15 @@ public final class ActionsClientImpl implements ActionsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAlertRule(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                ruleId,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAlertRule(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, ruleId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all actions of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -275,16 +207,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return all actions of alert rule as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ActionResponseInner> listByAlertRuleAsync(
-        String resourceGroupName, String workspaceName, String ruleId) {
-        return new PagedFlux<>(
-            () -> listByAlertRuleSinglePageAsync(resourceGroupName, workspaceName, ruleId),
+    private PagedFlux<ActionResponseInner> listByAlertRuleAsync(String resourceGroupName, String workspaceName,
+        String ruleId) {
+        return new PagedFlux<>(() -> listByAlertRuleSinglePageAsync(resourceGroupName, workspaceName, ruleId),
             nextLink -> listByAlertRuleNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all actions of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -295,16 +226,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return all actions of alert rule as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ActionResponseInner> listByAlertRuleAsync(
-        String resourceGroupName, String workspaceName, String ruleId, Context context) {
-        return new PagedFlux<>(
-            () -> listByAlertRuleSinglePageAsync(resourceGroupName, workspaceName, ruleId, context),
+    private PagedFlux<ActionResponseInner> listByAlertRuleAsync(String resourceGroupName, String workspaceName,
+        String ruleId, Context context) {
+        return new PagedFlux<>(() -> listByAlertRuleSinglePageAsync(resourceGroupName, workspaceName, ruleId, context),
             nextLink -> listByAlertRuleNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all actions of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -314,14 +244,14 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return all actions of alert rule as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ActionResponseInner> listByAlertRule(
-        String resourceGroupName, String workspaceName, String ruleId) {
+    public PagedIterable<ActionResponseInner> listByAlertRule(String resourceGroupName, String workspaceName,
+        String ruleId) {
         return new PagedIterable<>(listByAlertRuleAsync(resourceGroupName, workspaceName, ruleId));
     }
 
     /**
      * Gets all actions of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -332,14 +262,14 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return all actions of alert rule as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ActionResponseInner> listByAlertRule(
-        String resourceGroupName, String workspaceName, String ruleId, Context context) {
+    public PagedIterable<ActionResponseInner> listByAlertRule(String resourceGroupName, String workspaceName,
+        String ruleId, Context context) {
         return new PagedIterable<>(listByAlertRuleAsync(resourceGroupName, workspaceName, ruleId, context));
     }
 
     /**
      * Gets the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -350,19 +280,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return the action of alert rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ActionResponseInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId) {
+    private Mono<Response<ActionResponseInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String ruleId, String actionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -379,25 +305,14 @@ public final class ActionsClientImpl implements ActionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            ruleId,
-                            actionId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, ruleId, actionId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -409,19 +324,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return the action of alert rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ActionResponseInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId, Context context) {
+    private Mono<Response<ActionResponseInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String ruleId, String actionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -438,22 +349,13 @@ public final class ActionsClientImpl implements ActionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                ruleId,
-                actionId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, ruleId, actionId, accept, context);
     }
 
     /**
      * Gets the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -464,32 +366,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return the action of alert rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ActionResponseInner> getAsync(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId) {
+    private Mono<ActionResponseInner> getAsync(String resourceGroupName, String workspaceName, String ruleId,
+        String actionId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, ruleId, actionId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the action of alert rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param ruleId Alert rule ID.
-     * @param actionId Action ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the action of alert rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActionResponseInner get(String resourceGroupName, String workspaceName, String ruleId, String actionId) {
-        return getAsync(resourceGroupName, workspaceName, ruleId, actionId).block();
-    }
-
-    /**
-     * Gets the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -501,14 +386,31 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return the action of alert rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ActionResponseInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId, Context context) {
+    public Response<ActionResponseInner> getWithResponse(String resourceGroupName, String workspaceName, String ruleId,
+        String actionId, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, ruleId, actionId, context).block();
     }
 
     /**
+     * Gets the action of alert rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param ruleId Alert rule ID.
+     * @param actionId Action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the action of alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActionResponseInner get(String resourceGroupName, String workspaceName, String ruleId, String actionId) {
+        return getWithResponse(resourceGroupName, workspaceName, ruleId, actionId, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -520,19 +422,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return action for alert rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ActionResponseInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId, ActionRequest action) {
+    private Mono<Response<ActionResponseInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String ruleId, String actionId, ActionRequest action) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -554,26 +452,15 @@ public final class ActionsClientImpl implements ActionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            ruleId,
-                            actionId,
-                            action,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, ruleId, actionId, action, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -586,24 +473,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return action for alert rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ActionResponseInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String ruleId,
-        String actionId,
-        ActionRequest action,
-        Context context) {
+    private Mono<Response<ActionResponseInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String ruleId, String actionId, ActionRequest action, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -625,23 +503,14 @@ public final class ActionsClientImpl implements ActionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                ruleId,
-                actionId,
-                action,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, ruleId, actionId, action, accept,
+            context);
     }
 
     /**
      * Creates or updates the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -653,34 +522,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return action for alert rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ActionResponseInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId, ActionRequest action) {
+    private Mono<ActionResponseInner> createOrUpdateAsync(String resourceGroupName, String workspaceName, String ruleId,
+        String actionId, ActionRequest action) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, ruleId, actionId, action)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates the action of alert rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param ruleId Alert rule ID.
-     * @param actionId Action ID.
-     * @param action The action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return action for alert rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActionResponseInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId, ActionRequest action) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, ruleId, actionId, action).block();
-    }
-
-    /**
-     * Creates or updates the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -693,20 +543,35 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return action for alert rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ActionResponseInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String ruleId,
-        String actionId,
-        ActionRequest action,
-        Context context) {
+    public Response<ActionResponseInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String ruleId, String actionId, ActionRequest action, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, ruleId, actionId, action, context)
             .block();
     }
 
     /**
+     * Creates or updates the action of alert rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param ruleId Alert rule ID.
+     * @param actionId Action ID.
+     * @param action The action.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return action for alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActionResponseInner createOrUpdate(String resourceGroupName, String workspaceName, String ruleId,
+        String actionId, ActionRequest action) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, ruleId, actionId, action, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Delete the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -717,19 +582,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName, String ruleId,
+        String actionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -746,25 +607,14 @@ public final class ActionsClientImpl implements ActionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            ruleId,
-                            actionId,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, ruleId, actionId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -776,19 +626,15 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName, String ruleId,
+        String actionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -805,22 +651,13 @@ public final class ActionsClientImpl implements ActionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                ruleId,
-                actionId,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, ruleId, actionId, accept, context);
     }
 
     /**
      * Delete the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -838,23 +675,7 @@ public final class ActionsClientImpl implements ActionsClient {
 
     /**
      * Delete the action of alert rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param ruleId Alert rule ID.
-     * @param actionId Action ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String ruleId, String actionId) {
-        deleteAsync(resourceGroupName, workspaceName, ruleId, actionId).block();
-    }
-
-    /**
-     * Delete the action of alert rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleId Alert rule ID.
@@ -866,16 +687,31 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String ruleId,
+        String actionId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, ruleId, actionId, context).block();
     }
 
     /**
+     * Delete the action of alert rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param ruleId Alert rule ID.
+     * @param actionId Action ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String ruleId, String actionId) {
+        deleteWithResponse(resourceGroupName, workspaceName, ruleId, actionId, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -887,31 +723,21 @@ public final class ActionsClientImpl implements ActionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAlertRuleNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ActionResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ActionResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -919,29 +745,19 @@ public final class ActionsClientImpl implements ActionsClient {
      * @return list all the actions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActionResponseInner>> listByAlertRuleNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ActionResponseInner>> listByAlertRuleNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAlertRuleNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAlertRuleNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

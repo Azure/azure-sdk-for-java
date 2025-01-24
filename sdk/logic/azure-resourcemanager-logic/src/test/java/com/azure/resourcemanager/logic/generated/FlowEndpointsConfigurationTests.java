@@ -14,51 +14,33 @@ import org.junit.jupiter.api.Assertions;
 public final class FlowEndpointsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FlowEndpointsConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"workflow\":{\"outgoingIpAddresses\":[{\"address\":\"mutduqktaps\"},{\"address\":\"gcue\"}],\"accessEndpointIpAddresses\":[{\"address\":\"kdosvqw\"},{\"address\":\"mdgbbjfdd\"},{\"address\":\"bmbexppbhtqqro\"},{\"address\":\"p\"}]},\"connector\":{\"outgoingIpAddresses\":[{\"address\":\"gbquxigj\"},{\"address\":\"gzjaoyfhrtxilne\"},{\"address\":\"ujysvle\"},{\"address\":\"vfqawrlyxwjkcpr\"}],\"accessEndpointIpAddresses\":[{\"address\":\"xgjvtbv\"},{\"address\":\"sszdnru\"}]}}")
-                .toObject(FlowEndpointsConfiguration.class);
-        Assertions.assertEquals("mutduqktaps", model.workflow().outgoingIpAddresses().get(0).address());
-        Assertions.assertEquals("kdosvqw", model.workflow().accessEndpointIpAddresses().get(0).address());
-        Assertions.assertEquals("gbquxigj", model.connector().outgoingIpAddresses().get(0).address());
-        Assertions.assertEquals("xgjvtbv", model.connector().accessEndpointIpAddresses().get(0).address());
+        FlowEndpointsConfiguration model = BinaryData.fromString(
+            "{\"workflow\":{\"outgoingIpAddresses\":[{\"address\":\"kymuctqhjfbebr\"},{\"address\":\"xerf\"},{\"address\":\"utttxfvjrbirp\"}],\"accessEndpointIpAddresses\":[{\"address\":\"c\"},{\"address\":\"ahfn\"},{\"address\":\"kyqxjvuujqgidokg\"}]},\"connector\":{\"outgoingIpAddresses\":[{\"address\":\"xgvcl\"},{\"address\":\"gsncghkjeszz\"},{\"address\":\"ijhtxf\"},{\"address\":\"xbf\"}],\"accessEndpointIpAddresses\":[{\"address\":\"eh\"},{\"address\":\"vecxgodebfqkk\"},{\"address\":\"mpukgriw\"}]}}")
+            .toObject(FlowEndpointsConfiguration.class);
+        Assertions.assertEquals("kymuctqhjfbebr", model.workflow().outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("c", model.workflow().accessEndpointIpAddresses().get(0).address());
+        Assertions.assertEquals("xgvcl", model.connector().outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("eh", model.connector().accessEndpointIpAddresses().get(0).address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FlowEndpointsConfiguration model =
-            new FlowEndpointsConfiguration()
-                .withWorkflow(
-                    new FlowEndpoints()
-                        .withOutgoingIpAddresses(
-                            Arrays
-                                .asList(
-                                    new IpAddress().withAddress("mutduqktaps"), new IpAddress().withAddress("gcue")))
-                        .withAccessEndpointIpAddresses(
-                            Arrays
-                                .asList(
-                                    new IpAddress().withAddress("kdosvqw"),
-                                    new IpAddress().withAddress("mdgbbjfdd"),
-                                    new IpAddress().withAddress("bmbexppbhtqqro"),
-                                    new IpAddress().withAddress("p"))))
-                .withConnector(
-                    new FlowEndpoints()
-                        .withOutgoingIpAddresses(
-                            Arrays
-                                .asList(
-                                    new IpAddress().withAddress("gbquxigj"),
-                                    new IpAddress().withAddress("gzjaoyfhrtxilne"),
-                                    new IpAddress().withAddress("ujysvle"),
-                                    new IpAddress().withAddress("vfqawrlyxwjkcpr")))
-                        .withAccessEndpointIpAddresses(
-                            Arrays
-                                .asList(
-                                    new IpAddress().withAddress("xgjvtbv"), new IpAddress().withAddress("sszdnru"))));
+        FlowEndpointsConfiguration model = new FlowEndpointsConfiguration()
+            .withWorkflow(new FlowEndpoints()
+                .withOutgoingIpAddresses(Arrays.asList(new IpAddress().withAddress("kymuctqhjfbebr"),
+                    new IpAddress().withAddress("xerf"), new IpAddress().withAddress("utttxfvjrbirp")))
+                .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress().withAddress("c"),
+                    new IpAddress().withAddress("ahfn"), new IpAddress().withAddress("kyqxjvuujqgidokg"))))
+            .withConnector(new FlowEndpoints()
+                .withOutgoingIpAddresses(
+                    Arrays.asList(new IpAddress().withAddress("xgvcl"), new IpAddress().withAddress("gsncghkjeszz"),
+                        new IpAddress().withAddress("ijhtxf"), new IpAddress().withAddress("xbf")))
+                .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress().withAddress("eh"),
+                    new IpAddress().withAddress("vecxgodebfqkk"), new IpAddress().withAddress("mpukgriw"))));
         model = BinaryData.fromObject(model).toObject(FlowEndpointsConfiguration.class);
-        Assertions.assertEquals("mutduqktaps", model.workflow().outgoingIpAddresses().get(0).address());
-        Assertions.assertEquals("kdosvqw", model.workflow().accessEndpointIpAddresses().get(0).address());
-        Assertions.assertEquals("gbquxigj", model.connector().outgoingIpAddresses().get(0).address());
-        Assertions.assertEquals("xgjvtbv", model.connector().accessEndpointIpAddresses().get(0).address());
+        Assertions.assertEquals("kymuctqhjfbebr", model.workflow().outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("c", model.workflow().accessEndpointIpAddresses().get(0).address());
+        Assertions.assertEquals("xgvcl", model.connector().outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("eh", model.connector().accessEndpointIpAddresses().get(0).address());
     }
 }

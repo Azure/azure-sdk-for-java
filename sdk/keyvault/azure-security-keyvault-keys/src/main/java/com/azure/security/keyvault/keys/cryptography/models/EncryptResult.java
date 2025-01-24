@@ -41,7 +41,6 @@ public final class EncryptResult {
      */
     private final byte[] additionalAuthenticatedData;
 
-
     /**
      * Creates the instance of Encrypt Result holding encryption operation response information.
      * @param ciphertext The encrypted content.
@@ -62,7 +61,7 @@ public final class EncryptResult {
      * @param additionalAuthenticatedData Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
      */
     public EncryptResult(byte[] ciphertext, EncryptionAlgorithm algorithm, String keyId, byte[] iv,
-                         byte[] authenticationTag, byte[] additionalAuthenticatedData) {
+        byte[] authenticationTag, byte[] additionalAuthenticatedData) {
         this.ciphertext = CoreUtils.clone(ciphertext);
         this.algorithm = algorithm;
         this.keyId = keyId;

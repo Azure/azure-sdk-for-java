@@ -23,9 +23,10 @@ public final class AzureOperatorNexusImageArtifactProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureOperatorNexusImageArtifactProfile model = new AzureOperatorNexusImageArtifactProfile()
-            .withArtifactStore(new ReferencedResource().withId("nmgixh")).withImageArtifactProfile(
-                new ImageArtifactProfile().withImageName("xiitdfuxt").withImageVersion("siibmiybnnustgn"));
+        AzureOperatorNexusImageArtifactProfile model
+            = new AzureOperatorNexusImageArtifactProfile().withArtifactStore(new ReferencedResource().withId("nmgixh"))
+                .withImageArtifactProfile(
+                    new ImageArtifactProfile().withImageName("xiitdfuxt").withImageVersion("siibmiybnnustgn"));
         model = BinaryData.fromObject(model).toObject(AzureOperatorNexusImageArtifactProfile.class);
         Assertions.assertEquals("nmgixh", model.artifactStore().id());
         Assertions.assertEquals("xiitdfuxt", model.imageArtifactProfile().imageName());

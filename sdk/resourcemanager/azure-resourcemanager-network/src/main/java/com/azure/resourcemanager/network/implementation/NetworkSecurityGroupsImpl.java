@@ -14,13 +14,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for NetworkSecurityGroups. */
-public class NetworkSecurityGroupsImpl
-    extends TopLevelModifiableResourcesImpl<
-        NetworkSecurityGroup,
-        NetworkSecurityGroupImpl,
-        NetworkSecurityGroupInner,
-        NetworkSecurityGroupsClient,
-        NetworkManager>
+public class NetworkSecurityGroupsImpl extends
+    TopLevelModifiableResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl, NetworkSecurityGroupInner, NetworkSecurityGroupsClient, NetworkManager>
     implements NetworkSecurityGroups {
 
     public NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
@@ -30,12 +25,11 @@ public class NetworkSecurityGroupsImpl
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
         // Clear NIC references if any
         return getByResourceGroupAsync(resourceGroupName, name)

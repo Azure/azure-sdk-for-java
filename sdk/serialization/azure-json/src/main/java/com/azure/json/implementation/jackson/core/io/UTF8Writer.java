@@ -136,13 +136,13 @@ public final class UTF8Writer extends Writer {
                     maxInCount = maxOutCount;
                 }
                 maxInCount += off;
-                ascii_loop: while (true) {
+                while (true) {
                     if (off >= maxInCount) { // done with max. ascii seq
                         continue output_loop;
                     }
                     c = cbuf[off++];
                     if (c >= 0x80) {
-                        break ascii_loop;
+                        break;
                     }
                     outBuf[outPtr++] = (byte) c;
                 }
@@ -280,13 +280,13 @@ public final class UTF8Writer extends Writer {
                     maxInCount = maxOutCount;
                 }
                 maxInCount += off;
-                ascii_loop: while (true) {
+                while (true) {
                     if (off >= maxInCount) { // done with max. ascii seq
                         continue output_loop;
                     }
                     c = str.charAt(off++);
                     if (c >= 0x80) {
-                        break ascii_loop;
+                        break;
                     }
                     outBuf[outPtr++] = (byte) c;
                 }
@@ -343,7 +343,7 @@ public final class UTF8Writer extends Writer {
      *
      * @throws IOException If surrogate pair is invalid
      */
-    protected int convertSurrogate(int secondPart) throws IOException {
+    private int convertSurrogate(int secondPart) throws IOException {
         int firstPart = _surrogate;
         _surrogate = 0;
 
@@ -355,11 +355,11 @@ public final class UTF8Writer extends Writer {
         return 0x10000 + ((firstPart - SURR1_FIRST) << 10) + (secondPart - SURR2_FIRST);
     }
 
-    protected static void illegalSurrogate(int code) throws IOException {
+    private static void illegalSurrogate(int code) throws IOException {
         throw new IOException(illegalSurrogateDesc(code));
     }
 
-    protected static String illegalSurrogateDesc(int code) {
+    static String illegalSurrogateDesc(int code) {
         if (code > 0x10FFFF) { // over max?
             return "Illegal character point (0x" + Integer.toHexString(code)
                 + ") to output; max is 0x10FFFF as per RFC 4627";

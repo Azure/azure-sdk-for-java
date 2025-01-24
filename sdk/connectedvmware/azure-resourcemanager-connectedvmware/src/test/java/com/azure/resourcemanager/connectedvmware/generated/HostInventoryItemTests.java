@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HostInventoryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HostInventoryItem model =
-            BinaryData
-                .fromString(
-                    "{\"inventoryType\":\"Host\",\"parent\":{\"inventoryItemId\":\"phbqz\",\"moName\":\"zakakankjpdn\",\"inventoryType\":\"VirtualNetwork\"},\"managedResourceId\":\"joylh\",\"moRefId\":\"muoyxprimr\",\"moName\":\"pteecjme\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(HostInventoryItem.class);
+        HostInventoryItem model = BinaryData.fromString(
+            "{\"inventoryType\":\"Host\",\"parent\":{\"inventoryItemId\":\"phbqz\",\"moName\":\"zakakankjpdn\",\"inventoryType\":\"VirtualNetwork\"},\"managedResourceId\":\"joylh\",\"moRefId\":\"muoyxprimr\",\"moName\":\"pteecjme\",\"provisioningState\":\"Succeeded\"}")
+            .toObject(HostInventoryItem.class);
         Assertions.assertEquals("joylh", model.managedResourceId());
         Assertions.assertEquals("muoyxprimr", model.moRefId());
         Assertions.assertEquals("pteecjme", model.moName());
@@ -28,16 +26,12 @@ public final class HostInventoryItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HostInventoryItem model =
-            new HostInventoryItem()
-                .withManagedResourceId("joylh")
-                .withMoRefId("muoyxprimr")
-                .withMoName("pteecjme")
-                .withParent(
-                    new InventoryItemDetails()
-                        .withInventoryItemId("phbqz")
-                        .withMoName("zakakankjpdn")
-                        .withInventoryType(InventoryType.VIRTUAL_NETWORK));
+        HostInventoryItem model = new HostInventoryItem().withManagedResourceId("joylh")
+            .withMoRefId("muoyxprimr")
+            .withMoName("pteecjme")
+            .withParent(new InventoryItemDetails().withInventoryItemId("phbqz")
+                .withMoName("zakakankjpdn")
+                .withInventoryType(InventoryType.VIRTUAL_NETWORK));
         model = BinaryData.fromObject(model).toObject(HostInventoryItem.class);
         Assertions.assertEquals("joylh", model.managedResourceId());
         Assertions.assertEquals("muoyxprimr", model.moRefId());

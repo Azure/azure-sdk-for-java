@@ -40,19 +40,24 @@ public final class SchemaRegistryClusterRecordInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaRegistryClusterRecordInner model
-            = new SchemaRegistryClusterRecordInner().withKind("kvtkkg").withId("qwjygvja")
-                .withMetadata(new SCMetadataEntity().withSelf("mhvkzuhbxvvyh").withResourceName("opbyrqufegxu")
-                    .withCreatedTimestamp("zfbn").withUpdatedTimestamp("mctlpdngitv")
-                    .withDeletedTimestamp("mhrixkwmyijejve"))
-                .withSpec(new SchemaRegistryClusterSpecEntity().withName("bpnaixexccbdre")
-                    .withHttpEndpoint("hcexdrrvqa").withPackageProperty("kghtpwijnh")
-                    .withRegion(new SchemaRegistryClusterEnvironmentRegionEntity().withId("vfycxzb")
-                        .withRelated("oowvrv").withResourceName("gjqppy"))
-                    .withEnvironment(new SchemaRegistryClusterEnvironmentRegionEntity().withId("ronzmyhgfip")
-                        .withRelated("xkmcwaekrrjre").withResourceName("xt"))
-                    .withCloud("umh"))
-                .withStatus(new SchemaRegistryClusterStatusEntity().withPhase("ikkx"));
+        SchemaRegistryClusterRecordInner model = new SchemaRegistryClusterRecordInner().withKind("kvtkkg")
+            .withId("qwjygvja")
+            .withMetadata(new SCMetadataEntity().withSelf("mhvkzuhbxvvyh")
+                .withResourceName("opbyrqufegxu")
+                .withCreatedTimestamp("zfbn")
+                .withUpdatedTimestamp("mctlpdngitv")
+                .withDeletedTimestamp("mhrixkwmyijejve"))
+            .withSpec(new SchemaRegistryClusterSpecEntity().withName("bpnaixexccbdre")
+                .withHttpEndpoint("hcexdrrvqa")
+                .withPackageProperty("kghtpwijnh")
+                .withRegion(new SchemaRegistryClusterEnvironmentRegionEntity().withId("vfycxzb")
+                    .withRelated("oowvrv")
+                    .withResourceName("gjqppy"))
+                .withEnvironment(new SchemaRegistryClusterEnvironmentRegionEntity().withId("ronzmyhgfip")
+                    .withRelated("xkmcwaekrrjre")
+                    .withResourceName("xt"))
+                .withCloud("umh"))
+            .withStatus(new SchemaRegistryClusterStatusEntity().withPhase("ikkx"));
         model = BinaryData.fromObject(model).toObject(SchemaRegistryClusterRecordInner.class);
         Assertions.assertEquals("kvtkkg", model.kind());
         Assertions.assertEquals("qwjygvja", model.id());

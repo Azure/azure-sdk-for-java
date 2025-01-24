@@ -39,14 +39,10 @@ public class GetCompletionsStreamSample {
         List<String> prompt = new ArrayList<>();
         prompt.add("Why did the eagles not carry Frodo Baggins to Mordor?");
         IterableStream<Completions> completionsStream = client.getCompletionsStream(deploymentOrModelId,
-            new CompletionsOptions(prompt).setMaxTokens(1000).setStream(true));
+            new CompletionsOptions(prompt).setMaxTokens(1000));
 
         completionsStream
             .stream()
-            // Remove .skip(1) when using Non-Azure OpenAI API
-            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-            // TODO: remove .skip(1) when service fix the issue.
-            .skip(1)
             .forEach(completions -> System.out.print(completions.getChoices().get(0).getText()));
     }
 }

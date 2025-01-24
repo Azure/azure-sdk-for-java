@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationPackageReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationPackageReference model
-            = BinaryData.fromString("{\"id\":\"ffimrzrtuzqogsex\",\"version\":\"vfdnwnwmewzsyyce\"}")
-                .toObject(ApplicationPackageReference.class);
-        Assertions.assertEquals("ffimrzrtuzqogsex", model.id());
-        Assertions.assertEquals("vfdnwnwmewzsyyce", model.version());
+        ApplicationPackageReference model = BinaryData.fromString("{\"id\":\"gbjcntujitcjed\",\"version\":\"wwa\"}")
+            .toObject(ApplicationPackageReference.class);
+        Assertions.assertEquals("gbjcntujitcjed", model.id());
+        Assertions.assertEquals("wwa", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationPackageReference model
-            = new ApplicationPackageReference().withId("ffimrzrtuzqogsex").withVersion("vfdnwnwmewzsyyce");
+            = new ApplicationPackageReference().withId("gbjcntujitcjed").withVersion("wwa");
         model = BinaryData.fromObject(model).toObject(ApplicationPackageReference.class);
-        Assertions.assertEquals("ffimrzrtuzqogsex", model.id());
-        Assertions.assertEquals("vfdnwnwmewzsyyce", model.version());
+        Assertions.assertEquals("gbjcntujitcjed", model.id());
+        Assertions.assertEquals("wwa", model.version());
     }
 }

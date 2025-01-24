@@ -28,19 +28,9 @@ public final class PartitionUsageInner extends UsageInner {
     private String partitionKeyRangeId;
 
     /*
-     * The unit of the metric.
+     * Current value for this metric
      */
-    private UnitType unit;
-
-    /*
-     * The name information for the metric.
-     */
-    private MetricName name;
-
-    /*
-     * The quota period used to summarize the usage values.
-     */
-    private String quotaPeriod;
+    private Long currentValue;
 
     /*
      * Maximum value for this metric
@@ -48,9 +38,19 @@ public final class PartitionUsageInner extends UsageInner {
     private Long limit;
 
     /*
-     * Current value for this metric
+     * The quota period used to summarize the usage values.
      */
-    private Long currentValue;
+    private String quotaPeriod;
+
+    /*
+     * The name information for the metric.
+     */
+    private MetricName name;
+
+    /*
+     * The unit of the metric.
+     */
+    private UnitType unit;
 
     /**
      * Creates an instance of PartitionUsageInner class.
@@ -77,33 +77,13 @@ public final class PartitionUsageInner extends UsageInner {
     }
 
     /**
-     * Get the unit property: The unit of the metric.
+     * Get the currentValue property: Current value for this metric.
      * 
-     * @return the unit value.
+     * @return the currentValue value.
      */
     @Override
-    public UnitType unit() {
-        return this.unit;
-    }
-
-    /**
-     * Get the name property: The name information for the metric.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public MetricName name() {
-        return this.name;
-    }
-
-    /**
-     * Get the quotaPeriod property: The quota period used to summarize the usage values.
-     * 
-     * @return the quotaPeriod value.
-     */
-    @Override
-    public String quotaPeriod() {
-        return this.quotaPeriod;
+    public Long currentValue() {
+        return this.currentValue;
     }
 
     /**
@@ -117,13 +97,33 @@ public final class PartitionUsageInner extends UsageInner {
     }
 
     /**
-     * Get the currentValue property: Current value for this metric.
+     * Get the quotaPeriod property: The quota period used to summarize the usage values.
      * 
-     * @return the currentValue value.
+     * @return the quotaPeriod value.
      */
     @Override
-    public Long currentValue() {
-        return this.currentValue;
+    public String quotaPeriod() {
+        return this.quotaPeriod;
+    }
+
+    /**
+     * Get the name property: The name information for the metric.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public MetricName name() {
+        return this.name;
+    }
+
+    /**
+     * Get the unit property: The unit of the metric.
+     * 
+     * @return the unit value.
+     */
+    @Override
+    public UnitType unit() {
+        return this.unit;
     }
 
     /**
@@ -133,7 +133,9 @@ public final class PartitionUsageInner extends UsageInner {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (name() != null) {
+            name().validate();
+        }
     }
 
     /**

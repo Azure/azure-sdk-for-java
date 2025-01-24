@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.WorkloadGroupListResult;
 public final class WorkloadGroupListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadGroupListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"minResourcePercent\":629393280,\"maxResourcePercent\":384824052,\"minResourcePercentPerRequest\":16.797453313308843,\"maxResourcePercentPerRequest\":54.3681983767773,\"importance\":\"oxoismsksbpim\",\"queryExecutionTimeout\":2072188488},\"id\":\"ljxkcgxxlx\",\"name\":\"ffgcvizqz\",\"type\":\"wlvwlyoupf\"},{\"properties\":{\"minResourcePercent\":1825475274,\"maxResourcePercent\":11112663,\"minResourcePercentPerRequest\":15.658754728553815,\"maxResourcePercentPerRequest\":65.38612430460616,\"importance\":\"gkfmins\",\"queryExecutionTimeout\":760014296},\"id\":\"zfttsttktlahb\",\"name\":\"actxtgzukxitm\",\"type\":\"qtgqqqxhrnxr\"}],\"nextLink\":\"pjui\"}")
-                .toObject(WorkloadGroupListResult.class);
+        WorkloadGroupListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"minResourcePercent\":1274607788,\"maxResourcePercent\":965940259,\"minResourcePercentPerRequest\":44.58868998024772,\"maxResourcePercentPerRequest\":37.32980536554752,\"importance\":\"swhvhczznvfbycj\",\"queryExecutionTimeout\":728305495},\"id\":\"wwixzvumw\",\"name\":\"xqhndvnoamlds\",\"type\":\"haohdjhhflzokxc\"},{\"properties\":{\"minResourcePercent\":94741475,\"maxResourcePercent\":256270382,\"minResourcePercentPerRequest\":55.13879535054193,\"maxResourcePercentPerRequest\":12.954779211935541,\"importance\":\"gltsxoat\",\"queryExecutionTimeout\":184618447},\"id\":\"zpnpbswv\",\"name\":\"floccsrmozih\",\"type\":\"ipgawtxx\"},{\"properties\":{\"minResourcePercent\":156137612,\"maxResourcePercent\":2137168460,\"minResourcePercentPerRequest\":47.95767631994743,\"maxResourcePercentPerRequest\":50.32173910151165,\"importance\":\"rytfmpcycil\",\"queryExecutionTimeout\":735394972},\"id\":\"aykggnoxu\",\"name\":\"t\",\"type\":\"ksxwpnd\"}],\"nextLink\":\"pfnznthjtwkj\"}")
+            .toObject(WorkloadGroupListResult.class);
     }
 
     @org.junit.jupiter.api.Test

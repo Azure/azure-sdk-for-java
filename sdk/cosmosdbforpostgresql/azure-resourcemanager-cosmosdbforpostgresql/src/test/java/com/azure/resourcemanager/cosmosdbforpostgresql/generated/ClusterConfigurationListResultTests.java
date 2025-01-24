@@ -16,12 +16,11 @@ public final class ClusterConfigurationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterConfigurationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"maajrmvdjwzrlo\",\"dataType\":\"Enumeration\",\"allowedValues\":\"whijcoejctbza\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"cbkbfkg\",\"defaultValue\":\"dkexxppofm\",\"source\":\"x\"},{\"role\":\"Worker\",\"value\":\"jpgd\",\"defaultValue\":\"ocjjxhvpmouexh\",\"source\":\"xibqeojnx\"}],\"provisioningState\":\"Failed\"},\"id\":\"ddntwndei\",\"name\":\"btwnpzaoqvuhrhcf\",\"type\":\"cyddglmjthjqk\"},{\"properties\":{\"description\":\"eicxmqciwqvhkhi\",\"dataType\":\"Integer\",\"allowedValues\":\"dtopbob\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"e\",\"defaultValue\":\"a\",\"source\":\"uhrzayvvt\"}],\"provisioningState\":\"Canceled\"},\"id\":\"f\",\"name\":\"iotkftutqxl\",\"type\":\"gxlefgugnxkrxd\"},{\"properties\":{\"description\":\"dt\",\"dataType\":\"Numeric\",\"allowedValues\":\"vqdra\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"igeho\",\"defaultValue\":\"bowsk\",\"source\":\"yktz\"}],\"provisioningState\":\"Succeeded\"},\"id\":\"y\",\"name\":\"gqywgndrv\",\"type\":\"nhzgpphrcgyn\"},{\"properties\":{\"description\":\"pec\",\"dataType\":\"Boolean\",\"allowedValues\":\"coofsxlzev\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Worker\",\"value\":\"qabcypm\",\"defaultValue\":\"kwlzuvccfwnfn\",\"source\":\"cfionl\"},{\"role\":\"Worker\",\"value\":\"x\",\"defaultValue\":\"qgtz\",\"source\":\"pnqbqqwxrjfe\"},{\"role\":\"Coordinator\",\"value\":\"lnwsubisn\",\"defaultValue\":\"mpmngnzscxaqwoo\",\"source\":\"cbonqvpk\"},{\"role\":\"Worker\",\"value\":\"rxnjeaseipheofl\",\"defaultValue\":\"eyy\",\"source\":\"nj\"}],\"provisioningState\":\"InProgress\"},\"id\":\"tgrhpdjpjumas\",\"name\":\"azjpqyegualhbxxh\",\"type\":\"jj\"}],\"nextLink\":\"v\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"ajzyul\",\"dataType\":\"Boolean\",\"allowedValues\":\"jkrlkhbzhfepg\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Worker\",\"value\":\"zloc\",\"defaultValue\":\"c\",\"source\":\"ierhhbcsglummaj\"}],\"provisioningState\":\"Canceled\"},\"id\":\"dxob\",\"name\":\"bdxkqpxokaj\",\"type\":\"onpimexgstxg\"},{\"properties\":{\"description\":\"dg\",\"dataType\":\"Enumeration\",\"allowedValues\":\"r\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Worker\",\"value\":\"zrlovmclwhijcoej\",\"defaultValue\":\"bzaqsqsycbkbfk\",\"source\":\"kdkexxp\"},{\"role\":\"Coordinator\",\"value\":\"fmxa\",\"defaultValue\":\"fjpgddtocjjxhvp\",\"source\":\"uexhdzx\"}],\"provisioningState\":\"Failed\"},\"id\":\"ojnxqbzvdd\",\"name\":\"t\",\"type\":\"ndei\"},{\"properties\":{\"description\":\"w\",\"dataType\":\"Boolean\",\"allowedValues\":\"oqvuhr\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Worker\",\"value\":\"yd\",\"defaultValue\":\"lmjthjq\",\"source\":\"pyeicxm\"},{\"role\":\"Coordinator\",\"value\":\"iwqvhkh\",\"defaultValue\":\"uigdtopbobjog\",\"source\":\"e\"}],\"provisioningState\":\"Succeeded\"},\"id\":\"a\",\"name\":\"hrzayvvtpgvdf\",\"type\":\"iotkftutqxl\"},{\"properties\":{\"description\":\"lefgugnxk\",\"dataType\":\"Numeric\",\"allowedValues\":\"mi\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"rvqdra\",\"defaultValue\":\"jybige\",\"source\":\"qfbow\"},{\"role\":\"Worker\",\"value\":\"anyktzlcuiywg\",\"defaultValue\":\"wgndrvynhzgpp\",\"source\":\"cgyncocpecf\"}],\"provisioningState\":\"Succeeded\"},\"id\":\"oo\",\"name\":\"sxlzevgbmqj\",\"type\":\"abcypmivk\"}],\"nextLink\":\"zuvccfwnfnbacfio\"}")
             .toObject(ClusterConfigurationListResult.class);
-        Assertions.assertEquals(true, model.value().get(0).requiresRestart());
-        Assertions.assertEquals(ServerRole.COORDINATOR,
-            model.value().get(0).serverRoleGroupConfigurations().get(0).role());
-        Assertions.assertEquals("cbkbfkg", model.value().get(0).serverRoleGroupConfigurations().get(0).value());
+        Assertions.assertEquals(false, model.value().get(0).requiresRestart());
+        Assertions.assertEquals(ServerRole.WORKER, model.value().get(0).serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("zloc", model.value().get(0).serverRoleGroupConfigurations().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,29 +29,29 @@ public final class ClusterConfigurationListResultTests {
             = new ClusterConfigurationListResult()
                 .withValue(
                     Arrays.asList(
-                        new ConfigurationInner().withRequiresRestart(true)
+                        new ConfigurationInner()
+                            .withRequiresRestart(false)
                             .withServerRoleGroupConfigurations(Arrays.asList(
-                                new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR)
-                                    .withValue("cbkbfkg"),
-                                new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("jpgd"))),
+                                new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("zloc"))),
                         new ConfigurationInner().withRequiresRestart(false)
                             .withServerRoleGroupConfigurations(Arrays.asList(
-                                new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR).withValue("e"))),
-                        new ConfigurationInner().withRequiresRestart(false)
-                            .withServerRoleGroupConfigurations(Arrays.asList(new ServerRoleGroupConfiguration()
-                                .withRole(ServerRole.COORDINATOR).withValue("igeho"))),
-                        new ConfigurationInner().withRequiresRestart(false)
-                            .withServerRoleGroupConfigurations(Arrays.asList(
-                                new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("qabcypm"),
-                                new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("x"),
-                                new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR)
-                                    .withValue("lnwsubisn"),
                                 new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER)
-                                    .withValue("rxnjeaseipheofl")))));
+                                    .withValue("zrlovmclwhijcoej"),
+                                new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR).withValue("fmxa"))),
+                        new ConfigurationInner().withRequiresRestart(false)
+                            .withServerRoleGroupConfigurations(Arrays.asList(
+                                new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("yd"),
+                                new ServerRoleGroupConfiguration()
+                                    .withRole(ServerRole.COORDINATOR)
+                                    .withValue("iwqvhkh"))),
+                        new ConfigurationInner().withRequiresRestart(false)
+                            .withServerRoleGroupConfigurations(Arrays.asList(
+                                new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR).withValue("rvqdra"),
+                                new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER)
+                                    .withValue("anyktzlcuiywg")))));
         model = BinaryData.fromObject(model).toObject(ClusterConfigurationListResult.class);
-        Assertions.assertEquals(true, model.value().get(0).requiresRestart());
-        Assertions.assertEquals(ServerRole.COORDINATOR,
-            model.value().get(0).serverRoleGroupConfigurations().get(0).role());
-        Assertions.assertEquals("cbkbfkg", model.value().get(0).serverRoleGroupConfigurations().get(0).value());
+        Assertions.assertEquals(false, model.value().get(0).requiresRestart());
+        Assertions.assertEquals(ServerRole.WORKER, model.value().get(0).serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("zloc", model.value().get(0).serverRoleGroupConfigurations().get(0).value());
     }
 }

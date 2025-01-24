@@ -17,9 +17,9 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeNodeIpA
 public interface IntegrationRuntimeNodeIpAddressOperationsClient {
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -31,18 +31,14 @@ public interface IntegrationRuntimeNodeIpAddressOperationsClient {
      * @return the IP address of an integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeNodeIpAddressInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context);
+    Response<IntegrationRuntimeNodeIpAddressInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName, Context context);
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -53,6 +49,6 @@ public interface IntegrationRuntimeNodeIpAddressOperationsClient {
      * @return the IP address of an integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeNodeIpAddressInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName);
+    IntegrationRuntimeNodeIpAddressInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName);
 }

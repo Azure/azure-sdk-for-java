@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for ApiManagementService ListByResourceGroup. */
+/**
+ * Samples for ApiManagementService ListByResourceGroup.
+ */
 public final class ApiManagementServiceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListServiceBySubscriptionAndResourceGroup.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementListServiceBySubscriptionAndResourceGroup.json
      */
     /**
      * Sample code: ApiManagementListServiceBySubscriptionAndResourceGroup.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementListServiceBySubscriptionAndResourceGroup(

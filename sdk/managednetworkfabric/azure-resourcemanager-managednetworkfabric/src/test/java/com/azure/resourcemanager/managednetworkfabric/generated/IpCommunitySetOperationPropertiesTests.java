@@ -13,19 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class IpCommunitySetOperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpCommunitySetOperationProperties model =
-            BinaryData
-                .fromString("{\"set\":{\"ipCommunityIds\":[\"ap\",\"bcqpfusekij\",\"minenkbivpy\"]}}")
+        IpCommunitySetOperationProperties model
+            = BinaryData.fromString("{\"set\":{\"ipCommunityIds\":[\"feoo\",\"ftpvevtarp\",\"klqlii\"]}}")
                 .toObject(IpCommunitySetOperationProperties.class);
-        Assertions.assertEquals("ap", model.set().ipCommunityIds().get(0));
+        Assertions.assertEquals("feoo", model.set().ipCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpCommunitySetOperationProperties model =
-            new IpCommunitySetOperationProperties()
-                .withSet(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("ap", "bcqpfusekij", "minenkbivpy")));
+        IpCommunitySetOperationProperties model = new IpCommunitySetOperationProperties()
+            .withSet(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("feoo", "ftpvevtarp", "klqlii")));
         model = BinaryData.fromObject(model).toObject(IpCommunitySetOperationProperties.class);
-        Assertions.assertEquals("ap", model.set().ipCommunityIds().get(0));
+        Assertions.assertEquals("feoo", model.set().ipCommunityIds().get(0));
     }
 }

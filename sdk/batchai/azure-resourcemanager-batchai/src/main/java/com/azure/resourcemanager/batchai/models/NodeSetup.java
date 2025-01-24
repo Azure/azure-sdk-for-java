@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Node setup settings. */
 @Fluent
 public final class NodeSetup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodeSetup.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NodeSetup.class);
 
     /*
      * Setup task to run on cluster nodes when nodes got created or rebooted.

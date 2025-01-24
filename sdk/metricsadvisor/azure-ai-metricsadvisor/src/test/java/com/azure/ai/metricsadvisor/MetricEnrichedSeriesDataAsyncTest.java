@@ -20,14 +20,13 @@ public class MetricEnrichedSeriesDataAsyncTest extends MetricEnrichedSeriesDataT
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Disabled
     public void getEnrichedSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
+        MetricsAdvisorAsyncClient client
+            = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         PagedFlux<MetricEnrichedSeriesData> enrichedDataFlux
-            = client.listMetricEnrichedSeriesData(
-            GetEnrichedSeriesDataInput.INSTANCE.detectionConfigurationId,
-            GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
-            GetEnrichedSeriesDataInput.INSTANCE.startTime,
-            GetEnrichedSeriesDataInput.INSTANCE.endTime);
+            = client.listMetricEnrichedSeriesData(GetEnrichedSeriesDataInput.INSTANCE.detectionConfigurationId,
+                GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(), GetEnrichedSeriesDataInput.INSTANCE.startTime,
+                GetEnrichedSeriesDataInput.INSTANCE.endTime);
 
         Assertions.assertNotNull(enrichedDataFlux);
 

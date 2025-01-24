@@ -21,7 +21,7 @@ public final class SlicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":1082836943,\"sd\":\"xcxscvslxlh\"},\"description\":\"vkrmukmyjmkx\"},\"location\":\"tcsloj\",\"tags\":{\"qtoqxjhqxcsq\":\"id\"},\"id\":\"tkbtnqlrngl\",\"name\":\"mbiipsnawwlqk\",\"type\":\"nxhhl\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"snssai\":{\"sst\":438306218,\"sd\":\"deani\"},\"description\":\"llbvgwzsfftedous\"},\"location\":\"tjtgravaqogfkb\",\"tags\":{\"f\":\"uzlqbtxxw\",\"pzkg\":\"njzudr\",\"gqbedygi\":\"eboywhczzqrhm\"},\"id\":\"rzwnyk\",\"name\":\"id\",\"type\":\"chl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class SlicesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Slice response = manager.slices()
-            .getWithResponse("mwynefxexlfciatx", "jrr", "kmdskjhhxd", com.azure.core.util.Context.NONE)
+            .getWithResponse("beivdlhydwbdbfg", "lpu", "ytjlkesmmpath", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tcsloj", response.location());
-        Assertions.assertEquals("id", response.tags().get("qtoqxjhqxcsq"));
-        Assertions.assertEquals(1082836943, response.snssai().sst());
-        Assertions.assertEquals("xcxscvslxlh", response.snssai().sd());
-        Assertions.assertEquals("vkrmukmyjmkx", response.description());
+        Assertions.assertEquals("tjtgravaqogfkb", response.location());
+        Assertions.assertEquals("uzlqbtxxw", response.tags().get("f"));
+        Assertions.assertEquals(438306218, response.snssai().sst());
+        Assertions.assertEquals("deani", response.snssai().sd());
+        Assertions.assertEquals("llbvgwzsfftedous", response.description());
     }
 }

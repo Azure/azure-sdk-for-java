@@ -9,36 +9,61 @@ import com.azure.resourcemanager.machinelearning.fluent.models.WorkspaceConnecti
 import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.ValueFormat;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPropertiesV2;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class WorkspaceConnectionPropertiesV2BasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceConnectionPropertiesV2BasicResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"ContainerRegistry\",\"target\":\"wiydmcwyhzdxssad\",\"value\":\"mnvdfzn\",\"valueFormat\":\"JSON\"},\"id\":\"dvxzbncblylpst\",\"name\":\"bhhxsrzdzuc\",\"type\":\"rsc\"}")
-                .toObject(WorkspaceConnectionPropertiesV2BasicResourceInner.class);
-        Assertions.assertEquals(ConnectionCategory.CONTAINER_REGISTRY, model.properties().category());
-        Assertions.assertEquals("wiydmcwyhzdxssad", model.properties().target());
-        Assertions.assertEquals("mnvdfzn", model.properties().value());
+        WorkspaceConnectionPropertiesV2BasicResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"AzureDatabricksDeltaLake\",\"createdByWorkspaceArmId\":\"afcnih\",\"expiryTime\":\"2021-09-16T02:36:36Z\",\"group\":\"GenericProtocol\",\"isSharedToAll\":true,\"target\":\"gfbcvkcv\",\"metadata\":{\"tbobz\":\"keqdcvdrhvoods\",\"d\":\"opcjwvnhd\",\"twuoegrpkhjwni\":\"mgxcxrslpm\",\"ggkzzlvmbmpa\":\"qsluicp\"},\"sharedUserList\":[\"dfvue\",\"yw\",\"bpfvm\"],\"value\":\"hrfou\",\"valueFormat\":\"JSON\"},\"id\":\"akcp\",\"name\":\"iyzvqtmnub\",\"type\":\"xkp\"}")
+            .toObject(WorkspaceConnectionPropertiesV2BasicResourceInner.class);
+        Assertions.assertEquals(ConnectionCategory.AZURE_DATABRICKS_DELTA_LAKE, model.properties().category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T02:36:36Z"), model.properties().expiryTime());
+        Assertions.assertEquals(true, model.properties().isSharedToAll());
+        Assertions.assertEquals("gfbcvkcv", model.properties().target());
+        Assertions.assertEquals("keqdcvdrhvoods", model.properties().metadata().get("tbobz"));
+        Assertions.assertEquals("dfvue", model.properties().sharedUserList().get(0));
+        Assertions.assertEquals("hrfou", model.properties().value());
         Assertions.assertEquals(ValueFormat.JSON, model.properties().valueFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceConnectionPropertiesV2BasicResourceInner model =
-            new WorkspaceConnectionPropertiesV2BasicResourceInner()
-                .withProperties(
-                    new WorkspaceConnectionPropertiesV2()
-                        .withCategory(ConnectionCategory.CONTAINER_REGISTRY)
-                        .withTarget("wiydmcwyhzdxssad")
-                        .withValue("mnvdfzn")
-                        .withValueFormat(ValueFormat.JSON));
+        WorkspaceConnectionPropertiesV2BasicResourceInner model
+            = new WorkspaceConnectionPropertiesV2BasicResourceInner().withProperties(
+                new WorkspaceConnectionPropertiesV2().withCategory(ConnectionCategory.AZURE_DATABRICKS_DELTA_LAKE)
+                    .withExpiryTime(OffsetDateTime.parse("2021-09-16T02:36:36Z"))
+                    .withIsSharedToAll(true)
+                    .withTarget("gfbcvkcv")
+                    .withMetadata(mapOf("tbobz", "keqdcvdrhvoods", "d", "opcjwvnhd", "twuoegrpkhjwni", "mgxcxrslpm",
+                        "ggkzzlvmbmpa", "qsluicp"))
+                    .withSharedUserList(Arrays.asList("dfvue", "yw", "bpfvm"))
+                    .withValue("hrfou")
+                    .withValueFormat(ValueFormat.JSON));
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionPropertiesV2BasicResourceInner.class);
-        Assertions.assertEquals(ConnectionCategory.CONTAINER_REGISTRY, model.properties().category());
-        Assertions.assertEquals("wiydmcwyhzdxssad", model.properties().target());
-        Assertions.assertEquals("mnvdfzn", model.properties().value());
+        Assertions.assertEquals(ConnectionCategory.AZURE_DATABRICKS_DELTA_LAKE, model.properties().category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T02:36:36Z"), model.properties().expiryTime());
+        Assertions.assertEquals(true, model.properties().isSharedToAll());
+        Assertions.assertEquals("gfbcvkcv", model.properties().target());
+        Assertions.assertEquals("keqdcvdrhvoods", model.properties().metadata().get("tbobz"));
+        Assertions.assertEquals("dfvue", model.properties().sharedUserList().get(0));
+        Assertions.assertEquals("hrfou", model.properties().value());
         Assertions.assertEquals(ValueFormat.JSON, model.properties().valueFormat());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

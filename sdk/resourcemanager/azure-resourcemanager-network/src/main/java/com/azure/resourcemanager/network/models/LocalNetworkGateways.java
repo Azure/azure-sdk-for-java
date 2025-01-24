@@ -15,13 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to local network gateways management API in Azure. */
 @Fluent
-public interface LocalNetworkGateways
-    extends SupportsCreating<LocalNetworkGateway.DefinitionStages.Blank>,
-        SupportsListing<LocalNetworkGateway>,
-        SupportsListingByResourceGroup<LocalNetworkGateway>,
-        SupportsGettingByResourceGroup<LocalNetworkGateway>,
-        SupportsGettingById<LocalNetworkGateway>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        HasManager<NetworkManager> {
+public interface LocalNetworkGateways extends SupportsCreating<LocalNetworkGateway.DefinitionStages.Blank>,
+    SupportsListing<LocalNetworkGateway>, SupportsListingByResourceGroup<LocalNetworkGateway>,
+    SupportsGettingByResourceGroup<LocalNetworkGateway>, SupportsGettingById<LocalNetworkGateway>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, HasManager<NetworkManager> {
 }

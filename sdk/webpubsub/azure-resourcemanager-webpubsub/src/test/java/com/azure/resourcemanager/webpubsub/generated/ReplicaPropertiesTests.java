@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicaProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Updating\",\"regionEndpointEnabled\":\"hrnxrxc\",\"resourceStopped\":\"uisavokq\"}")
-                .toObject(ReplicaProperties.class);
-        Assertions.assertEquals("hrnxrxc", model.regionEndpointEnabled());
-        Assertions.assertEquals("uisavokq", model.resourceStopped());
+        ReplicaProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Updating\",\"regionEndpointEnabled\":\"kkudzp\",\"resourceStopped\":\"wjplma\"}")
+            .toObject(ReplicaProperties.class);
+        Assertions.assertEquals("kkudzp", model.regionEndpointEnabled());
+        Assertions.assertEquals("wjplma", model.resourceStopped());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaProperties model =
-            new ReplicaProperties().withRegionEndpointEnabled("hrnxrxc").withResourceStopped("uisavokq");
+        ReplicaProperties model
+            = new ReplicaProperties().withRegionEndpointEnabled("kkudzp").withResourceStopped("wjplma");
         model = BinaryData.fromObject(model).toObject(ReplicaProperties.class);
-        Assertions.assertEquals("hrnxrxc", model.regionEndpointEnabled());
-        Assertions.assertEquals("uisavokq", model.resourceStopped());
+        Assertions.assertEquals("kkudzp", model.regionEndpointEnabled());
+        Assertions.assertEquals("wjplma", model.resourceStopped());
     }
 }

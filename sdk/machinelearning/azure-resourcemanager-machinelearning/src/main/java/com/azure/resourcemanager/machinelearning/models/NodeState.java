@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of the compute node. Values are idle, running, preparing, unusable, leaving and preempted. */
+/**
+ * State of the compute node. Values are idle, running, preparing, unusable, leaving and preempted.
+ */
 public final class NodeState extends ExpandableStringEnum<NodeState> {
-    /** Static value idle for NodeState. */
+    /**
+     * Static value idle for NodeState.
+     */
     public static final NodeState IDLE = fromString("idle");
 
-    /** Static value running for NodeState. */
+    /**
+     * Static value running for NodeState.
+     */
     public static final NodeState RUNNING = fromString("running");
 
-    /** Static value preparing for NodeState. */
+    /**
+     * Static value preparing for NodeState.
+     */
     public static final NodeState PREPARING = fromString("preparing");
 
-    /** Static value unusable for NodeState. */
+    /**
+     * Static value unusable for NodeState.
+     */
     public static final NodeState UNUSABLE = fromString("unusable");
 
-    /** Static value leaving for NodeState. */
+    /**
+     * Static value leaving for NodeState.
+     */
     public static final NodeState LEAVING = fromString("leaving");
 
-    /** Static value preempted for NodeState. */
+    /**
+     * Static value preempted for NodeState.
+     */
     public static final NodeState PREEMPTED = fromString("preempted");
 
     /**
      * Creates a new instance of NodeState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class NodeState extends ExpandableStringEnum<NodeState> {
 
     /**
      * Creates or finds a NodeState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NodeState.
      */
-    @JsonCreator
     public static NodeState fromString(String name) {
         return fromString(name, NodeState.class);
     }
 
     /**
      * Gets known NodeState values.
-     *
+     * 
      * @return known NodeState values.
      */
     public static Collection<NodeState> values() {

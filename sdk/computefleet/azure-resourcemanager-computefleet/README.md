@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-computefleet</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -70,6 +70,132 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+Network network = networkManager.networks()
+    .define(vnetName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withAddressSpace("172.16.0.0/16")
+    .defineSubnet("default")
+    .withAddressPrefix("172.16.0.0/24")
+    .attach()
+    .create();
+
+LoadBalancer loadBalancer = networkManager.loadBalancers()
+    .define(loadBalancerName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .defineLoadBalancingRule(loadBalancerName + "-lbrule")
+    .withProtocol(TransportProtocol.TCP)
+    .fromExistingSubnet(network, "default")
+    .fromFrontendPort(80)
+    .toBackend(loadBalancerName + "-backend")
+    .toBackendPort(80)
+    .attach()
+    .withSku(LoadBalancerSkuType.STANDARD)
+    .create();
+
+fleet = computeFleetManager.fleets()
+    .define(fleetName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withProperties(
+        new FleetProperties()
+            .withSpotPriorityProfile(
+                new SpotPriorityProfile()
+                    .withMaintain(false)
+                    .withCapacity(1)
+                    .withEvictionPolicy(EvictionPolicy.DELETE)
+                    .withAllocationStrategy(SpotAllocationStrategy.LOWEST_PRICE)
+            )
+            .withVmSizesProfile(
+                Arrays.asList(
+                    new VmSizeProfile().withName("Standard_D4s_v3")
+                )
+            )
+            .withComputeProfile(
+                new ComputeProfile()
+                    .withBaseVirtualMachineProfile(
+                        new BaseVirtualMachineProfile()
+                            .withStorageProfile(
+                                new VirtualMachineScaleSetStorageProfile()
+                                    .withImageReference(
+                                        new ImageReference()
+                                            .withPublisher("canonical")
+                                            .withOffer("ubuntu-24_04-lts")
+                                            .withSku("server")
+                                            .withVersion("latest")
+                                    )
+                                    .withOsDisk(
+                                        new VirtualMachineScaleSetOSDisk()
+                                            .withManagedDisk(
+                                                new VirtualMachineScaleSetManagedDiskParameters()
+                                                    .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS)
+                                            )
+                                            .withOsType(OperatingSystemTypes.LINUX)
+                                            .withDiskSizeGB(30)
+                                            .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                            .withDeleteOption(DiskDeleteOptionTypes.DELETE)
+                                            .withCaching(CachingTypes.READ_WRITE)
+                                    )
+                                    .withDiskControllerType(DiskControllerTypes.SCSI)
+                            )
+                            .withOsProfile(
+                                new VirtualMachineScaleSetOSProfile()
+                                    .withComputerNamePrefix(randomPadding())
+                                    .withAdminUsername(adminUser)
+                                    .withAdminPassword(adminPwd)
+                                    .withLinuxConfiguration(
+                                        new LinuxConfiguration().withDisablePasswordAuthentication(false)
+                                    )
+                            )
+                            .withNetworkProfile(
+                                new VirtualMachineScaleSetNetworkProfile()
+                                    .withNetworkInterfaceConfigurations(
+                                        Arrays.asList(
+                                            new VirtualMachineScaleSetNetworkConfiguration()
+                                                .withName(vmName)
+                                                .withProperties(
+                                                    new VirtualMachineScaleSetNetworkConfigurationProperties()
+                                                        .withPrimary(true)
+                                                        .withEnableAcceleratedNetworking(false)
+                                                        .withDeleteOption(DeleteOptions.DELETE)
+                                                        .withIpConfigurations(
+                                                            Arrays.asList(
+                                                                new VirtualMachineScaleSetIPConfiguration()
+                                                                    .withName(vmName)
+                                                                    .withProperties(
+                                                                        new VirtualMachineScaleSetIPConfigurationProperties()
+                                                                            .withPrimary(true)
+                                                                            .withSubnet(
+                                                                                new ApiEntityReference()
+                                                                                    .withId(network.subnets().get("default").id())
+                                                                            )
+                                                                            .withLoadBalancerBackendAddressPools(
+                                                                                loadBalancer.loadBalancingRules()
+                                                                                    .get(loadBalancerName + "-lbrule")
+                                                                                    .innerModel().backendAddressPools()
+                                                                            )
+                                                                    )
+                                                            )
+                                                        )
+                                                )
+                                        )
+                                    )
+                                    .withNetworkApiVersion(NetworkApiVersion.fromString("2024-03-01"))
+                            )
+                    )
+                    .withComputeApiVersion("2024-03-01")
+                    .withPlatformFaultDomainCount(1)
+            )
+            .withRegularPriorityProfile(new RegularPriorityProfile()
+                .withAllocationStrategy(RegularPriorityAllocationStrategy.LOWEST_PRICE)
+                .withMinCapacity(1)
+                .withCapacity(2)
+            )
+    )
+    .create();
+```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/computefleet/azure-resourcemanager-computefleet/SAMPLE.md)
 
 

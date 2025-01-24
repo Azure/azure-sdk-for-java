@@ -13,34 +13,50 @@ import com.azure.resourcemanager.automation.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.automation.models.ScheduleCreateOrUpdateParameters;
 import com.azure.resourcemanager.automation.models.ScheduleUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in SchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SchedulesClient.
+ */
 public interface SchedulesClient {
     /**
      * Create a schedule.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
      * @param parameters The parameters supplied to the create or update schedule operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
+     * @return definition of the schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String scheduleName,
-        ScheduleCreateOrUpdateParameters parameters);
+    Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String scheduleName, ScheduleCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create a schedule.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
      * @param parameters The parameters supplied to the create or update schedule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the schedule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScheduleInner createOrUpdate(String resourceGroupName, String automationAccountName, String scheduleName,
+        ScheduleCreateOrUpdateParameters parameters);
+
+    /**
+     * Update the schedule identified by schedule name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param scheduleName The schedule name.
+     * @param parameters The parameters supplied to the update schedule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,16 +64,12 @@ public interface SchedulesClient {
      * @return definition of the schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String scheduleName,
-        ScheduleCreateOrUpdateParameters parameters,
-        Context context);
+    Response<ScheduleInner> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String scheduleName, ScheduleUpdateParameters parameters, Context context);
 
     /**
      * Update the schedule identified by schedule name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
@@ -68,19 +80,15 @@ public interface SchedulesClient {
      * @return definition of the schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String scheduleName,
+    ScheduleInner update(String resourceGroupName, String automationAccountName, String scheduleName,
         ScheduleUpdateParameters parameters);
 
     /**
-     * Update the schedule identified by schedule name.
-     *
+     * Retrieve the schedule identified by schedule name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
-     * @param parameters The parameters supplied to the update schedule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,16 +96,12 @@ public interface SchedulesClient {
      * @return definition of the schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String scheduleName,
-        ScheduleUpdateParameters parameters,
+    Response<ScheduleInner> getWithResponse(String resourceGroupName, String automationAccountName, String scheduleName,
         Context context);
 
     /**
      * Retrieve the schedule identified by schedule name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
@@ -110,8 +114,8 @@ public interface SchedulesClient {
     ScheduleInner get(String resourceGroupName, String automationAccountName, String scheduleName);
 
     /**
-     * Retrieve the schedule identified by schedule name.
-     *
+     * Delete the schedule identified by schedule name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
@@ -119,15 +123,15 @@ public interface SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule along with {@link Response}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String scheduleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String scheduleName,
+        Context context);
 
     /**
      * Delete the schedule identified by schedule name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param scheduleName The schedule name.
@@ -139,24 +143,8 @@ public interface SchedulesClient {
     void delete(String resourceGroupName, String automationAccountName, String scheduleName);
 
     /**
-     * Delete the schedule identified by schedule name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param scheduleName The schedule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String scheduleName, Context context);
-
-    /**
      * Retrieve a list of schedules.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +157,7 @@ public interface SchedulesClient {
 
     /**
      * Retrieve a list of schedules.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -179,6 +167,6 @@ public interface SchedulesClient {
      * @return the response model for the list schedule operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduleInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<ScheduleInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context);
 }

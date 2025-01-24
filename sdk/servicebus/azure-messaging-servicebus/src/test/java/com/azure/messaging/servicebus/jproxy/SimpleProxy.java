@@ -51,9 +51,7 @@ public class SimpleProxy implements ProxyServer {
             throw new IllegalStateException("ProxyServer is already running.");
         }
 
-        onErrorHandler = onError != null
-            ? onError
-            : error -> LOGGER.error("Error occurred when running proxy.", error);
+        onErrorHandler = onError != null ? onError : error -> LOGGER.error("Error occurred when running proxy.", error);
 
         LOGGER.info("Opening proxy server on: '{}'", host);
 
@@ -81,8 +79,8 @@ public class SimpleProxy implements ProxyServer {
     /**
      * Handler invoked when a client connects to the proxy server.
      */
-    private class ClientConnectedHandler implements
-        CompletionHandler<AsynchronousSocketChannel, AsynchronousServerSocketChannel> {
+    private class ClientConnectedHandler
+        implements CompletionHandler<AsynchronousSocketChannel, AsynchronousServerSocketChannel> {
 
         /**
          * When a client has successfully connected to the proxy server.
@@ -124,14 +122,13 @@ public class SimpleProxy implements ProxyServer {
     private static class ProxyNegotiationHandler implements Closeable {
         private final ConnectionProperties connection;
 
-        ProxyNegotiationHandler(AsynchronousSocketChannel clientSocket)
-            throws IOException {
+        ProxyNegotiationHandler(AsynchronousSocketChannel clientSocket) throws IOException {
             Objects.requireNonNull(clientSocket);
 
             final AsynchronousSocketChannel serviceSocket = AsynchronousSocketChannel.open();
             connection = new ConnectionProperties(ProxyConnectionState.PROXY_NOT_STARTED, clientSocket, serviceSocket);
-            final ReadWriteState state = new ReadWriteState(ReadWriteState.Target.SERVICE,
-                ByteBuffer.allocate(PROXY_BUFFER_SIZE), true);
+            final ReadWriteState state
+                = new ReadWriteState(ReadWriteState.Target.SERVICE, ByteBuffer.allocate(PROXY_BUFFER_SIZE), true);
 
             clientSocket.read(state.getBuffer(), state, new ReadWriteHandler(connection));
         }

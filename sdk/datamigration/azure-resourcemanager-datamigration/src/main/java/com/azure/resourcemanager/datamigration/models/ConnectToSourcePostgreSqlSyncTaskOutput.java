@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Output for the task that validates connection to PostgreSQL and source server requirements. */
+/**
+ * Output for the task that validates connection to PostgreSQL and source server requirements.
+ */
 @Immutable
-public final class ConnectToSourcePostgreSqlSyncTaskOutput {
+public final class ConnectToSourcePostgreSqlSyncTaskOutput
+    implements JsonSerializable<ConnectToSourcePostgreSqlSyncTaskOutput> {
     /*
      * Result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Version of the source server
      */
-    @JsonProperty(value = "sourceServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceServerVersion;
 
     /*
      * List of databases on source server
      */
-    @JsonProperty(value = "databases", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> databases;
 
     /*
      * Source server brand version
      */
-    @JsonProperty(value = "sourceServerBrandVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceServerBrandVersion;
 
     /*
      * Validation errors associated with the task
      */
-    @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> validationErrors;
 
-    /** Creates an instance of ConnectToSourcePostgreSqlSyncTaskOutput class. */
+    /**
+     * Creates an instance of ConnectToSourcePostgreSqlSyncTaskOutput class.
+     */
     public ConnectToSourcePostgreSqlSyncTaskOutput() {
     }
 
     /**
      * Get the id property: Result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +60,7 @@ public final class ConnectToSourcePostgreSqlSyncTaskOutput {
 
     /**
      * Get the sourceServerVersion property: Version of the source server.
-     *
+     * 
      * @return the sourceServerVersion value.
      */
     public String sourceServerVersion() {
@@ -65,7 +69,7 @@ public final class ConnectToSourcePostgreSqlSyncTaskOutput {
 
     /**
      * Get the databases property: List of databases on source server.
-     *
+     * 
      * @return the databases value.
      */
     public List<String> databases() {
@@ -74,7 +78,7 @@ public final class ConnectToSourcePostgreSqlSyncTaskOutput {
 
     /**
      * Get the sourceServerBrandVersion property: Source server brand version.
-     *
+     * 
      * @return the sourceServerBrandVersion value.
      */
     public String sourceServerBrandVersion() {
@@ -83,7 +87,7 @@ public final class ConnectToSourcePostgreSqlSyncTaskOutput {
 
     /**
      * Get the validationErrors property: Validation errors associated with the task.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<ReportableException> validationErrors() {
@@ -92,12 +96,59 @@ public final class ConnectToSourcePostgreSqlSyncTaskOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validationErrors() != null) {
             validationErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToSourcePostgreSqlSyncTaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToSourcePostgreSqlSyncTaskOutput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToSourcePostgreSqlSyncTaskOutput.
+     */
+    public static ConnectToSourcePostgreSqlSyncTaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToSourcePostgreSqlSyncTaskOutput deserializedConnectToSourcePostgreSqlSyncTaskOutput
+                = new ConnectToSourcePostgreSqlSyncTaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectToSourcePostgreSqlSyncTaskOutput.id = reader.getString();
+                } else if ("sourceServerVersion".equals(fieldName)) {
+                    deserializedConnectToSourcePostgreSqlSyncTaskOutput.sourceServerVersion = reader.getString();
+                } else if ("databases".equals(fieldName)) {
+                    List<String> databases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectToSourcePostgreSqlSyncTaskOutput.databases = databases;
+                } else if ("sourceServerBrandVersion".equals(fieldName)) {
+                    deserializedConnectToSourcePostgreSqlSyncTaskOutput.sourceServerBrandVersion = reader.getString();
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<ReportableException> validationErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedConnectToSourcePostgreSqlSyncTaskOutput.validationErrors = validationErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToSourcePostgreSqlSyncTaskOutput;
+        });
     }
 }

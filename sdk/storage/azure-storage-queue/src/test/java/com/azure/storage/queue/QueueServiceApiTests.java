@@ -54,18 +54,20 @@ public class QueueServiceApiTests extends QueueTestBase {
 
     @Test
     public void createQueue() {
-        Response<QueueClient> response =
-            primaryQueueServiceClient.createQueueWithResponse(getRandomName(60), null, null, null);
+        Response<QueueClient> response
+            = primaryQueueServiceClient.createQueueWithResponse(getRandomName(60), null, null, null);
         assertEquals(201, response.getStatusCode());
-        assertEquals(201, response.getValue().sendMessageWithResponse("Testing service client creating a queue", null,
-            null, null, null).getStatusCode());
+        assertEquals(201,
+            response.getValue()
+                .sendMessageWithResponse("Testing service client creating a queue", null, null, null, null)
+                .getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("createQueueWithInvalidNameSupplier")
     public void createQueueWithInvalidName(String queueName, int statusCode, QueueErrorCode errMessage) {
-        QueueStorageException exception = assertThrows(QueueStorageException.class,
-            () -> primaryQueueServiceClient.createQueue(queueName));
+        QueueStorageException exception
+            = assertThrows(QueueStorageException.class, () -> primaryQueueServiceClient.createQueue(queueName));
         QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, statusCode, errMessage);
     }
 
@@ -74,14 +76,12 @@ public class QueueServiceApiTests extends QueueTestBase {
         for (int i = 0; i < 3; i++) {
             veryLong += veryLong;
         }
-        return Stream.of(
-            Arguments.of("a_b", 400, QueueErrorCode.INVALID_RESOURCE_NAME),
+        return Stream.of(Arguments.of("a_b", 400, QueueErrorCode.INVALID_RESOURCE_NAME),
             Arguments.of("-ab", 400, QueueErrorCode.INVALID_RESOURCE_NAME),
             Arguments.of("a--b", 400, QueueErrorCode.INVALID_RESOURCE_NAME),
             Arguments.of("Abc", 400, QueueErrorCode.INVALID_RESOURCE_NAME),
             Arguments.of("ab", 400, QueueErrorCode.OUT_OF_RANGE_INPUT),
-            Arguments.of(veryLong, 400, QueueErrorCode.OUT_OF_RANGE_INPUT)
-        );
+            Arguments.of(veryLong, 400, QueueErrorCode.OUT_OF_RANGE_INPUT));
     }
 
     @Test
@@ -92,11 +92,13 @@ public class QueueServiceApiTests extends QueueTestBase {
     @ParameterizedTest
     @MethodSource("createQueueMaxOverloadSupplier")
     public void createQueueMaxOverload(Map<String, String> metadata) {
-        Response<QueueClient> response = primaryQueueServiceClient.createQueueWithResponse(getRandomName(60), metadata,
-            null, null);
+        Response<QueueClient> response
+            = primaryQueueServiceClient.createQueueWithResponse(getRandomName(60), metadata, null, null);
         assertEquals(201, response.getStatusCode());
-        assertEquals(201, response.getValue().sendMessageWithResponse("Testing service client creating a queue", null,
-            null, null, null).getStatusCode());
+        assertEquals(201,
+            response.getValue()
+                .sendMessageWithResponse("Testing service client creating a queue", null, null, null, null)
+                .getStatusCode());
     }
 
     public static Stream<Map<String, String>> createQueueMaxOverloadSupplier() {
@@ -144,8 +146,8 @@ public class QueueServiceApiTests extends QueueTestBase {
             primaryQueueServiceClient.createQueueWithResponse(queue.getName(), queue.getMetadata(), null, null);
         }
 
-        PagedIterable<QueueItem> queueListIter = primaryQueueServiceClient.listQueues(options.setPrefix(prefix), null,
-            null);
+        PagedIterable<QueueItem> queueListIter
+            = primaryQueueServiceClient.listQueues(options.setPrefix(prefix), null, null);
 
         queueListIter.forEach(it -> {
             QueueTestHelper.assertQueuesAreEqual(testQueues.pop(), it);
@@ -168,8 +170,8 @@ public class QueueServiceApiTests extends QueueTestBase {
             primaryQueueServiceClient.createQueueWithResponse(queueName + i, null, null, null);
         }
 
-        Iterable<PagedResponse<QueueItem>> queueListIter = primaryQueueServiceClient.listQueues(options, null, null)
-            .iterableByPage(2);
+        Iterable<PagedResponse<QueueItem>> queueListIter
+            = primaryQueueServiceClient.listQueues(options, null, null).iterableByPage(2);
 
         for (PagedResponse<QueueItem> page : queueListIter) {
             assertTrue(page.getValue().size() <= 2, "Expected page size to be less than or equal to 2.");
@@ -180,7 +182,8 @@ public class QueueServiceApiTests extends QueueTestBase {
     public void listEmptyQueues() {
         // Queue was never made with the prefix, should expect no queues to be listed.
         assertFalse(primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(prefix), null, null)
-            .iterator().hasNext());
+            .iterator()
+            .hasNext());
     }
 
     @ResourceLock("ServiceProperties")
@@ -202,20 +205,19 @@ public class QueueServiceApiTests extends QueueTestBase {
             .setCors(new ArrayList<>());
 
         assertQueueServicePropertiesAreEqual(originalProperties, primaryQueueServiceClient.getProperties());
-        assertEquals(202, primaryQueueServiceClient.setPropertiesWithResponse(updatedProperties, null, null)
-            .getStatusCode());
+        assertEquals(202,
+            primaryQueueServiceClient.setPropertiesWithResponse(updatedProperties, null, null).getStatusCode());
         assertQueueServicePropertiesAreEqual(updatedProperties, primaryQueueServiceClient.getProperties());
         primaryQueueServiceClient.setProperties(originalProperties);
     }
-
 
     @Test
     public void builderBearerTokenValidation() throws MalformedURLException {
         URL url = new URL(primaryQueueServiceClient.getQueueServiceUrl());
         String endpoint = new URL("http", url.getHost(), url.getPort(), url.getFile()).toString();
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint);
+        QueueServiceClientBuilder builder
+            = new QueueServiceClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(endpoint);
 
         assertThrows(IllegalArgumentException.class, builder::buildClient);
     }
@@ -223,17 +225,16 @@ public class QueueServiceApiTests extends QueueTestBase {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     @Test
     public void perCallPolicy() {
-        QueueServiceClient serviceClient = queueServiceBuilderHelper()
-            .addPolicy(getPerCallVersionPolicy()).buildClient();
+        QueueServiceClient serviceClient
+            = queueServiceBuilderHelper().addPolicy(getPerCallVersionPolicy()).buildClient();
 
-        assertEquals("2017-11-09", serviceClient.getPropertiesWithResponse(null, null).getHeaders()
-            .getValue("x-ms-version"));
+        assertEquals("2017-11-09",
+            serviceClient.getPropertiesWithResponse(null, null).getHeaders().getValue("x-ms-version"));
     }
 
     @Test
     public void defaultAudience() {
-        QueueServiceClient aadService = getOAuthServiceClientBuilder()
-            .audience(null) // should default to "https://storage.azure.com/"
+        QueueServiceClient aadService = getOAuthServiceClientBuilder().audience(null) // should default to "https://storage.azure.com/"
             .buildClient();
 
         assertNotNull(aadService.getProperties());
@@ -255,9 +256,9 @@ public class QueueServiceApiTests extends QueueTestBase {
     the default audience, and the request gets retried with this default audience, making the call function as expected.
      */
     public void audienceErrorBearerChallengeRetry() {
-        QueueServiceClient aadService = getOAuthServiceClientBuilder()
-            .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
-            .buildClient();
+        QueueServiceClient aadService
+            = getOAuthServiceClientBuilder().audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
+                .buildClient();
 
         assertNotNull(aadService.getProperties());
     }
@@ -267,9 +268,7 @@ public class QueueServiceApiTests extends QueueTestBase {
         String url = String.format("https://%s.queue.core.windows.net/", primaryQueueServiceClient.getAccountName());
         QueueAudience audience = QueueAudience.fromString(url);
 
-        QueueServiceClient aadService = getOAuthServiceClientBuilder()
-            .audience(audience)
-            .buildClient();
+        QueueServiceClient aadService = getOAuthServiceClientBuilder().audience(audience).buildClient();
 
         assertNotNull(aadService.getProperties());
     }

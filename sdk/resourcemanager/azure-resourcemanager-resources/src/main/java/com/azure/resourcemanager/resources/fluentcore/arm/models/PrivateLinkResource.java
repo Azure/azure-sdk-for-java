@@ -8,12 +8,21 @@ import java.util.List;
 /** An interface representing a private link resource. */
 public interface PrivateLinkResource {
 
-    /** @return The group ID of Private link resource. */
+    /**
+     * Gets the group ID of Private link resource.
+     *
+     * @return The group ID of Private link resource. */
     String groupId();
 
-    /** @return The collection of required member names of Private link resource. */
+    /**
+     * Gets the collection of required member names of Private link resource.
+     *
+     * @return The collection of required member names of Private link resource. */
     List<String> requiredMemberNames();
 
-    /** @return The collection of DNS zone names of Private link resource. */
+    /**
+     * Gets the collection of DNS zone names of Private link resource.
+     *
+     * @return The collection of DNS zone names of Private link resource. */
     List<String> requiredDnsZoneNames();
 }

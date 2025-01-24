@@ -17,71 +17,52 @@ import org.junit.jupiter.api.Assertions;
 public final class InternetGatewayRulesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternetGatewayRulesListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"ugdrftbc\",\"exreu\",\"uowtljvfwhrea\",\"khyxvrqtvbcz\"]},\"provisioningState\":\"Failed\",\"internetGatewayIds\":[\"gglmepjpfsey\",\"g\",\"angpszngafpgyl\"],\"annotation\":\"ecjujcng\"},\"location\":\"dyedmzrgjfo\",\"tags\":{\"kpztrgd\":\"bnoit\"},\"id\":\"x\",\"name\":\"coqra\",\"type\":\"wugyx\"},{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"tweialwvskbuhzac\",\"qtyltcoqcujp\",\"sxzakuejkm\",\"bizt\"]},\"provisioningState\":\"Failed\",\"internetGatewayIds\":[\"vovjufycsjmlbe\",\"yeji\",\"iuxegth\"],\"annotation\":\"tudaw\"},\"location\":\"jfel\",\"tags\":{\"ialwc\":\"pptcbgqnzmnhii\",\"ccgzpraoxnyu\":\"gckbb\",\"sgftipwc\":\"fa\",\"hza\":\"byubhiqdxyurnpn\"},\"id\":\"ccnuhiig\",\"name\":\"yl\",\"type\":\"ui\"},{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"vatvcrkd\",\"b\"]},\"provisioningState\":\"Deleting\",\"internetGatewayIds\":[\"h\"],\"annotation\":\"yhzlwxaeaovurexd\"},\"location\":\"sbdweaderzmwnt\",\"tags\":{\"jz\":\"gttmvmmagoaqyl\",\"mxitpfinzcpd\":\"jiuazjc\"},\"id\":\"tkrlgjmtbd\",\"name\":\"vcqguefzh\",\"type\":\"mpheqdur\"}],\"nextLink\":\"yujlfyoumpckyecl\"}")
-                .toObject(InternetGatewayRulesListResult.class);
-        Assertions.assertEquals("dyedmzrgjfo", model.value().get(0).location());
-        Assertions.assertEquals("bnoit", model.value().get(0).tags().get("kpztrgd"));
+        InternetGatewayRulesListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"v\",\"hlaiwd\",\"xsmlz\",\"hzdtxetlgydlh\"]},\"provisioningState\":\"Succeeded\",\"internetGatewayIds\":[\"pxy\",\"afiqgeaarbgjekg\",\"klbyulidwcw\"],\"annotation\":\"zegjonfhjirwgdn\"},\"location\":\"brfkspz\",\"tags\":{\"jcitdigsxcdglj\":\"tk\",\"tomflrytswfpf\":\"lkeuac\",\"lurlpshhkvp\":\"dgycxnmskwhqjjy\",\"skondcbrwimu\":\"dwqslsrhmpqvw\"},\"id\":\"qejo\",\"name\":\"ovyrrleaesinu\",\"type\":\"tljqobbpih\"},{\"properties\":{\"ruleProperties\":{\"action\":\"Deny\",\"addressList\":[\"ecybmrqbrj\",\"bmpxdlvykfrexc\",\"s\",\"qwjksghudgz\"]},\"provisioningState\":\"Deleting\",\"internetGatewayIds\":[\"ggsvoujkxibdaf\",\"rkmdyom\"],\"annotation\":\"fbvfbhdy\"},\"location\":\"hpwpgddeimawzovg\",\"tags\":{\"sqowxwc\":\"muikjcjcaztbws\"},\"id\":\"mlikytw\",\"name\":\"czcswka\",\"type\":\"ve\"},{\"properties\":{\"ruleProperties\":{\"action\":\"Deny\",\"addressList\":[\"dvlvhbwrnfxtgdd\"]},\"provisioningState\":\"Accepted\",\"internetGatewayIds\":[\"hn\",\"naoyank\",\"oe\",\"swankltytmh\"],\"annotation\":\"oznnhdrlktgj\"},\"location\":\"gguxhemlwyw\",\"tags\":{\"bukklels\":\"czg\",\"srlsmd\":\"xblycsxzuj\"},\"id\":\"sqplpvmjcd\",\"name\":\"ewbidyvteowxv\",\"type\":\"piudeugfsxzecpa\"},{\"properties\":{\"ruleProperties\":{\"action\":\"Deny\",\"addressList\":[\"ufykhvuhxepmru\",\"znabaobns\"]},\"provisioningState\":\"Accepted\",\"internetGatewayIds\":[\"ltymkmvguihywart\",\"pphkixkykxds\",\"j\",\"emmucfxh\"],\"annotation\":\"kflrmymy\"},\"location\":\"cqlh\",\"tags\":{\"uugqk\":\"wslmiiiovgqcg\"},\"id\":\"totiowlxteqdptjg\",\"name\":\"dtguk\",\"type\":\"anblwphqlkccu\"}],\"nextLink\":\"ygqwahoiu\"}")
+            .toObject(InternetGatewayRulesListResult.class);
+        Assertions.assertEquals("brfkspz", model.value().get(0).location());
+        Assertions.assertEquals("tk", model.value().get(0).tags().get("jcitdigsxcdglj"));
         Assertions.assertEquals(Action.ALLOW, model.value().get(0).ruleProperties().action());
-        Assertions.assertEquals("ugdrftbc", model.value().get(0).ruleProperties().addressList().get(0));
-        Assertions.assertEquals("ecjujcng", model.value().get(0).annotation());
-        Assertions.assertEquals("yujlfyoumpckyecl", model.nextLink());
+        Assertions.assertEquals("v", model.value().get(0).ruleProperties().addressList().get(0));
+        Assertions.assertEquals("zegjonfhjirwgdn", model.value().get(0).annotation());
+        Assertions.assertEquals("ygqwahoiu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayRulesListResult model =
-            new InternetGatewayRulesListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new InternetGatewayRuleInner()
-                                .withLocation("dyedmzrgjfo")
-                                .withTags(mapOf("kpztrgd", "bnoit"))
-                                .withRuleProperties(
-                                    new RuleProperties()
-                                        .withAction(Action.ALLOW)
-                                        .withAddressList(
-                                            Arrays.asList("ugdrftbc", "exreu", "uowtljvfwhrea", "khyxvrqtvbcz")))
-                                .withAnnotation("ecjujcng"),
-                            new InternetGatewayRuleInner()
-                                .withLocation("jfel")
-                                .withTags(
-                                    mapOf(
-                                        "ialwc",
-                                        "pptcbgqnzmnhii",
-                                        "ccgzpraoxnyu",
-                                        "gckbb",
-                                        "sgftipwc",
-                                        "fa",
-                                        "hza",
-                                        "byubhiqdxyurnpn"))
-                                .withRuleProperties(
-                                    new RuleProperties()
-                                        .withAction(Action.ALLOW)
-                                        .withAddressList(
-                                            Arrays.asList("tweialwvskbuhzac", "qtyltcoqcujp", "sxzakuejkm", "bizt")))
-                                .withAnnotation("tudaw"),
-                            new InternetGatewayRuleInner()
-                                .withLocation("sbdweaderzmwnt")
-                                .withTags(mapOf("jz", "gttmvmmagoaqyl", "mxitpfinzcpd", "jiuazjc"))
-                                .withRuleProperties(
-                                    new RuleProperties()
-                                        .withAction(Action.ALLOW)
-                                        .withAddressList(Arrays.asList("vatvcrkd", "b")))
-                                .withAnnotation("yhzlwxaeaovurexd")))
-                .withNextLink("yujlfyoumpckyecl");
+        InternetGatewayRulesListResult model = new InternetGatewayRulesListResult().withValue(Arrays.asList(
+            new InternetGatewayRuleInner().withLocation("brfkspz")
+                .withTags(mapOf("jcitdigsxcdglj", "tk", "tomflrytswfpf", "lkeuac", "lurlpshhkvp", "dgycxnmskwhqjjy",
+                    "skondcbrwimu", "dwqslsrhmpqvw"))
+                .withRuleProperties(new RuleProperties().withAction(Action.ALLOW)
+                    .withAddressList(Arrays.asList("v", "hlaiwd", "xsmlz", "hzdtxetlgydlh")))
+                .withAnnotation("zegjonfhjirwgdn"),
+            new InternetGatewayRuleInner().withLocation("hpwpgddeimawzovg")
+                .withTags(mapOf("sqowxwc", "muikjcjcaztbws"))
+                .withRuleProperties(new RuleProperties().withAction(Action.DENY)
+                    .withAddressList(Arrays.asList("ecybmrqbrj", "bmpxdlvykfrexc", "s", "qwjksghudgz")))
+                .withAnnotation("fbvfbhdy"),
+            new InternetGatewayRuleInner().withLocation("gguxhemlwyw")
+                .withTags(mapOf("bukklels", "czg", "srlsmd", "xblycsxzuj"))
+                .withRuleProperties(
+                    new RuleProperties().withAction(Action.DENY).withAddressList(Arrays.asList("dvlvhbwrnfxtgdd")))
+                .withAnnotation("oznnhdrlktgj"),
+            new InternetGatewayRuleInner().withLocation("cqlh")
+                .withTags(mapOf("uugqk", "wslmiiiovgqcg"))
+                .withRuleProperties(new RuleProperties().withAction(Action.DENY)
+                    .withAddressList(Arrays.asList("ufykhvuhxepmru", "znabaobns")))
+                .withAnnotation("kflrmymy")))
+            .withNextLink("ygqwahoiu");
         model = BinaryData.fromObject(model).toObject(InternetGatewayRulesListResult.class);
-        Assertions.assertEquals("dyedmzrgjfo", model.value().get(0).location());
-        Assertions.assertEquals("bnoit", model.value().get(0).tags().get("kpztrgd"));
+        Assertions.assertEquals("brfkspz", model.value().get(0).location());
+        Assertions.assertEquals("tk", model.value().get(0).tags().get("jcitdigsxcdglj"));
         Assertions.assertEquals(Action.ALLOW, model.value().get(0).ruleProperties().action());
-        Assertions.assertEquals("ugdrftbc", model.value().get(0).ruleProperties().addressList().get(0));
-        Assertions.assertEquals("ecjujcng", model.value().get(0).annotation());
-        Assertions.assertEquals("yujlfyoumpckyecl", model.nextLink());
+        Assertions.assertEquals("v", model.value().get(0).ruleProperties().addressList().get(0));
+        Assertions.assertEquals("zegjonfhjirwgdn", model.value().get(0).annotation());
+        Assertions.assertEquals("ygqwahoiu", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AzureLettucePasswordlessAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withBean(AzureGlobalProperties.class, () -> new AzureGlobalProperties())
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
         .withConfiguration(AutoConfigurations.of(AzureLettucePasswordlessAutoConfiguration.class));
 
     @Test

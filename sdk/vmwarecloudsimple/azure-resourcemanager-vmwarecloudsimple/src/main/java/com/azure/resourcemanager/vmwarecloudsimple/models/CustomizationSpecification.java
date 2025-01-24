@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The specification for Customization Policy. */
+/**
+ * The specification for Customization Policy.
+ */
 @Fluent
-public final class CustomizationSpecification {
+public final class CustomizationSpecification implements JsonSerializable<CustomizationSpecification> {
     /*
      * Customization Identity. It contains data about user and hostname
      */
-    @JsonProperty(value = "identity")
     private CustomizationIdentity identity;
 
     /*
      * Network interface settings
      */
-    @JsonProperty(value = "nicSettings")
     private List<CustomizationNicSetting> nicSettings;
 
-    /** Creates an instance of CustomizationSpecification class. */
+    /**
+     * Creates an instance of CustomizationSpecification class.
+     */
     public CustomizationSpecification() {
     }
 
     /**
      * Get the identity property: Customization Identity. It contains data about user and hostname.
-     *
+     * 
      * @return the identity value.
      */
     public CustomizationIdentity identity() {
@@ -38,7 +44,7 @@ public final class CustomizationSpecification {
 
     /**
      * Set the identity property: Customization Identity. It contains data about user and hostname.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the CustomizationSpecification object itself.
      */
@@ -49,7 +55,7 @@ public final class CustomizationSpecification {
 
     /**
      * Get the nicSettings property: Network interface settings.
-     *
+     * 
      * @return the nicSettings value.
      */
     public List<CustomizationNicSetting> nicSettings() {
@@ -58,7 +64,7 @@ public final class CustomizationSpecification {
 
     /**
      * Set the nicSettings property: Network interface settings.
-     *
+     * 
      * @param nicSettings the nicSettings value to set.
      * @return the CustomizationSpecification object itself.
      */
@@ -69,7 +75,7 @@ public final class CustomizationSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,5 +85,46 @@ public final class CustomizationSpecification {
         if (nicSettings() != null) {
             nicSettings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeArrayField("nicSettings", this.nicSettings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomizationSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomizationSpecification if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomizationSpecification.
+     */
+    public static CustomizationSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomizationSpecification deserializedCustomizationSpecification = new CustomizationSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedCustomizationSpecification.identity = CustomizationIdentity.fromJson(reader);
+                } else if ("nicSettings".equals(fieldName)) {
+                    List<CustomizationNicSetting> nicSettings
+                        = reader.readArray(reader1 -> CustomizationNicSetting.fromJson(reader1));
+                    deserializedCustomizationSpecification.nicSettings = nicSettings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomizationSpecification;
+        });
     }
 }

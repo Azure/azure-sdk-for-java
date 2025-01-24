@@ -3,13 +3,13 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.implementation.ReflectiveInvoker;
+import com.azure.core.implementation.AccessControllerUtils;
 import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 
 import java.lang.reflect.Field;
-import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -45,7 +45,7 @@ final class HeaderCollectionHandler {
         values.put(headerName.substring(prefixLength), headerValue);
     }
 
-    @SuppressWarnings({ "deprecation", "removal" })
+    @SuppressWarnings({ "deprecation" })
     void injectValuesIntoDeclaringField(Object deserializedHeaders, ClientLogger logger) {
         /*
          * First check if the deserialized headers type has a public setter.
@@ -60,7 +60,7 @@ final class HeaderCollectionHandler {
         final boolean declaredFieldAccessibleBackup = declaringField.isAccessible();
         try {
             if (!declaredFieldAccessibleBackup) {
-                java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                AccessControllerUtils.doPrivileged(() -> {
                     declaringField.setAccessible(true);
                     return null;
                 });
@@ -72,7 +72,7 @@ final class HeaderCollectionHandler {
                 ex);
         } finally {
             if (!declaredFieldAccessibleBackup) {
-                java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                AccessControllerUtils.doPrivileged(() -> {
                     declaringField.setAccessible(false);
                     return null;
                 });

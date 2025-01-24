@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of provisioning of the HanaInstance. */
+/**
+ * State of provisioning of the HanaInstance.
+ */
 public final class HanaProvisioningStatesEnum extends ExpandableStringEnum<HanaProvisioningStatesEnum> {
-    /** Static value Accepted for HanaProvisioningStatesEnum. */
+    /**
+     * Static value Accepted for HanaProvisioningStatesEnum.
+     */
     public static final HanaProvisioningStatesEnum ACCEPTED = fromString("Accepted");
 
-    /** Static value Creating for HanaProvisioningStatesEnum. */
+    /**
+     * Static value Creating for HanaProvisioningStatesEnum.
+     */
     public static final HanaProvisioningStatesEnum CREATING = fromString("Creating");
 
-    /** Static value Updating for HanaProvisioningStatesEnum. */
+    /**
+     * Static value Updating for HanaProvisioningStatesEnum.
+     */
     public static final HanaProvisioningStatesEnum UPDATING = fromString("Updating");
 
-    /** Static value Failed for HanaProvisioningStatesEnum. */
+    /**
+     * Static value Failed for HanaProvisioningStatesEnum.
+     */
     public static final HanaProvisioningStatesEnum FAILED = fromString("Failed");
 
-    /** Static value Succeeded for HanaProvisioningStatesEnum. */
+    /**
+     * Static value Succeeded for HanaProvisioningStatesEnum.
+     */
     public static final HanaProvisioningStatesEnum SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Deleting for HanaProvisioningStatesEnum. */
+    /**
+     * Static value Deleting for HanaProvisioningStatesEnum.
+     */
     public static final HanaProvisioningStatesEnum DELETING = fromString("Deleting");
 
-    /** Static value Migrating for HanaProvisioningStatesEnum. */
+    /**
+     * Static value Migrating for HanaProvisioningStatesEnum.
+     */
     public static final HanaProvisioningStatesEnum MIGRATING = fromString("Migrating");
 
     /**
      * Creates a new instance of HanaProvisioningStatesEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class HanaProvisioningStatesEnum extends ExpandableStringEnum<HanaP
 
     /**
      * Creates or finds a HanaProvisioningStatesEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HanaProvisioningStatesEnum.
      */
-    @JsonCreator
     public static HanaProvisioningStatesEnum fromString(String name) {
         return fromString(name, HanaProvisioningStatesEnum.class);
     }
 
     /**
      * Gets known HanaProvisioningStatesEnum values.
-     *
+     * 
      * @return known HanaProvisioningStatesEnum values.
      */
     public static Collection<HanaProvisioningStatesEnum> values() {

@@ -175,14 +175,11 @@ public final class VideoAnalyzerPrivateEndpointConnectionOperationStatusInner {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model"
-                            + " VideoAnalyzerPrivateEndpointConnectionOperationStatusInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model"
+                + " VideoAnalyzerPrivateEndpointConnectionOperationStatusInner"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(VideoAnalyzerPrivateEndpointConnectionOperationStatusInner.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(VideoAnalyzerPrivateEndpointConnectionOperationStatusInner.class);
 }

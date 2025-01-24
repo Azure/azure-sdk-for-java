@@ -6,30 +6,51 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.AssignmentPrincipal;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.ResourceSetDescription;
 import com.azure.resourcemanager.customerinsights.models.RoleTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The Role Assignment resource format. */
+/**
+ * The Role Assignment resource format.
+ */
 @Fluent
 public final class RoleAssignmentResourceFormatInner extends ProxyResource {
     /*
      * The Role Assignment definition.
      */
-    @JsonProperty(value = "properties")
     private RoleAssignment innerProperties;
 
-    /** Creates an instance of RoleAssignmentResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RoleAssignmentResourceFormatInner class.
+     */
     public RoleAssignmentResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: The Role Assignment definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoleAssignment innerProperties() {
@@ -37,8 +58,38 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -47,7 +98,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the assignmentName property: The name of the metadata object.
-     *
+     * 
      * @return the assignmentName value.
      */
     public String assignmentName() {
@@ -56,7 +107,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the displayName property: Localized display names for the metadata.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -65,7 +116,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Localized display names for the metadata.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -79,7 +130,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the description property: Localized description for the metadata.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -88,7 +139,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: Localized description for the metadata.
-     *
+     * 
      * @param description the description value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -102,7 +153,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -111,7 +162,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the role property: Type of roles.
-     *
+     * 
      * @return the role value.
      */
     public RoleTypes role() {
@@ -120,7 +171,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the role property: Type of roles.
-     *
+     * 
      * @param role the role value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -134,7 +185,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the principals property: The principals being assigned to.
-     *
+     * 
      * @return the principals value.
      */
     public List<AssignmentPrincipal> principals() {
@@ -143,7 +194,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the principals property: The principals being assigned to.
-     *
+     * 
      * @param principals the principals value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -157,7 +208,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the profiles property: Profiles set for the assignment.
-     *
+     * 
      * @return the profiles value.
      */
     public ResourceSetDescription profiles() {
@@ -166,7 +217,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the profiles property: Profiles set for the assignment.
-     *
+     * 
      * @param profiles the profiles value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -180,7 +231,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the interactions property: Interactions set for the assignment.
-     *
+     * 
      * @return the interactions value.
      */
     public ResourceSetDescription interactions() {
@@ -189,7 +240,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the interactions property: Interactions set for the assignment.
-     *
+     * 
      * @param interactions the interactions value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -203,7 +254,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the links property: Links set for the assignment.
-     *
+     * 
      * @return the links value.
      */
     public ResourceSetDescription links() {
@@ -212,7 +263,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the links property: Links set for the assignment.
-     *
+     * 
      * @param links the links value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -226,7 +277,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the kpis property: Kpis set for the assignment.
-     *
+     * 
      * @return the kpis value.
      */
     public ResourceSetDescription kpis() {
@@ -235,7 +286,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the kpis property: Kpis set for the assignment.
-     *
+     * 
      * @param kpis the kpis value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -249,7 +300,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the sasPolicies property: Sas Policies set for the assignment.
-     *
+     * 
      * @return the sasPolicies value.
      */
     public ResourceSetDescription sasPolicies() {
@@ -258,7 +309,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the sasPolicies property: Sas Policies set for the assignment.
-     *
+     * 
      * @param sasPolicies the sasPolicies value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -272,7 +323,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the connectors property: Connectors set for the assignment.
-     *
+     * 
      * @return the connectors value.
      */
     public ResourceSetDescription connectors() {
@@ -281,7 +332,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the connectors property: Connectors set for the assignment.
-     *
+     * 
      * @param connectors the connectors value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -295,7 +346,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the views property: Views set for the assignment.
-     *
+     * 
      * @return the views value.
      */
     public ResourceSetDescription views() {
@@ -304,7 +355,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the views property: Views set for the assignment.
-     *
+     * 
      * @param views the views value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -318,7 +369,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the relationshipLinks property: The Role assignments set for the relationship links.
-     *
+     * 
      * @return the relationshipLinks value.
      */
     public ResourceSetDescription relationshipLinks() {
@@ -327,7 +378,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the relationshipLinks property: The Role assignments set for the relationship links.
-     *
+     * 
      * @param relationshipLinks the relationshipLinks value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -341,7 +392,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the relationships property: The Role assignments set for the relationships.
-     *
+     * 
      * @return the relationships value.
      */
     public ResourceSetDescription relationships() {
@@ -350,7 +401,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the relationships property: The Role assignments set for the relationships.
-     *
+     * 
      * @param relationships the relationships value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -364,7 +415,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the widgetTypes property: Widget types set for the assignment.
-     *
+     * 
      * @return the widgetTypes value.
      */
     public ResourceSetDescription widgetTypes() {
@@ -373,7 +424,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the widgetTypes property: Widget types set for the assignment.
-     *
+     * 
      * @param widgetTypes the widgetTypes value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -387,7 +438,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the roleAssignments property: The Role assignments set for the assignment.
-     *
+     * 
      * @return the roleAssignments value.
      */
     public ResourceSetDescription roleAssignments() {
@@ -396,7 +447,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the roleAssignments property: The Role assignments set for the assignment.
-     *
+     * 
      * @param roleAssignments the roleAssignments value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -410,7 +461,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the conflationPolicies property: Widget types set for the assignment.
-     *
+     * 
      * @return the conflationPolicies value.
      */
     public ResourceSetDescription conflationPolicies() {
@@ -419,7 +470,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the conflationPolicies property: Widget types set for the assignment.
-     *
+     * 
      * @param conflationPolicies the conflationPolicies value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -433,7 +484,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Get the segments property: The Role assignments set for the assignment.
-     *
+     * 
      * @return the segments value.
      */
     public ResourceSetDescription segments() {
@@ -442,7 +493,7 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Set the segments property: The Role assignments set for the assignment.
-     *
+     * 
      * @param segments the segments value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
@@ -456,12 +507,56 @@ public final class RoleAssignmentResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentResourceFormatInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleAssignmentResourceFormatInner.
+     */
+    public static RoleAssignmentResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentResourceFormatInner deserializedRoleAssignmentResourceFormatInner
+                = new RoleAssignmentResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleAssignmentResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleAssignmentResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoleAssignmentResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoleAssignmentResourceFormatInner.innerProperties = RoleAssignment.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentResourceFormatInner;
+        });
     }
 }

@@ -5,78 +5,77 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.GuestCredential;
 import com.azure.resourcemanager.connectedvmware.models.HttpProxyConfiguration;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningAction;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a Virtual Machine Guest Agent. */
+/**
+ * Describes the properties of a Virtual Machine Guest Agent.
+ */
 @Fluent
-public final class GuestAgentProperties {
+public final class GuestAgentProperties implements JsonSerializable<GuestAgentProperties> {
     /*
      * Gets or sets a unique identifier for this resource.
      */
-    @JsonProperty(value = "uuid", access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
 
     /*
      * Username / Password Credentials to provision guest agent.
      */
-    @JsonProperty(value = "credentials")
     private GuestCredential credentials;
 
     /*
      * The resource id of the private link scope this machine is assigned to, if any.
      */
-    @JsonProperty(value = "privateLinkScopeResourceId")
     private String privateLinkScopeResourceId;
 
     /*
      * HTTP Proxy configuration for the VM.
      */
-    @JsonProperty(value = "httpProxyConfig")
     private HttpProxyConfiguration httpProxyConfig;
 
     /*
      * Gets or sets the guest agent provisioning action.
      */
-    @JsonProperty(value = "provisioningAction")
     private ProvisioningAction provisioningAction;
 
     /*
      * Gets or sets the guest agent status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
-    @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceStatus> statuses;
 
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of GuestAgentProperties class. */
+    /**
+     * Creates an instance of GuestAgentProperties class.
+     */
     public GuestAgentProperties() {
     }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
-     *
+     * 
      * @return the uuid value.
      */
     public String uuid() {
@@ -85,7 +84,7 @@ public final class GuestAgentProperties {
 
     /**
      * Get the credentials property: Username / Password Credentials to provision guest agent.
-     *
+     * 
      * @return the credentials value.
      */
     public GuestCredential credentials() {
@@ -94,7 +93,7 @@ public final class GuestAgentProperties {
 
     /**
      * Set the credentials property: Username / Password Credentials to provision guest agent.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the GuestAgentProperties object itself.
      */
@@ -106,7 +105,7 @@ public final class GuestAgentProperties {
     /**
      * Get the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @return the privateLinkScopeResourceId value.
      */
     public String privateLinkScopeResourceId() {
@@ -116,7 +115,7 @@ public final class GuestAgentProperties {
     /**
      * Set the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
      * @return the GuestAgentProperties object itself.
      */
@@ -127,7 +126,7 @@ public final class GuestAgentProperties {
 
     /**
      * Get the httpProxyConfig property: HTTP Proxy configuration for the VM.
-     *
+     * 
      * @return the httpProxyConfig value.
      */
     public HttpProxyConfiguration httpProxyConfig() {
@@ -136,7 +135,7 @@ public final class GuestAgentProperties {
 
     /**
      * Set the httpProxyConfig property: HTTP Proxy configuration for the VM.
-     *
+     * 
      * @param httpProxyConfig the httpProxyConfig value to set.
      * @return the GuestAgentProperties object itself.
      */
@@ -147,7 +146,7 @@ public final class GuestAgentProperties {
 
     /**
      * Get the provisioningAction property: Gets or sets the guest agent provisioning action.
-     *
+     * 
      * @return the provisioningAction value.
      */
     public ProvisioningAction provisioningAction() {
@@ -156,7 +155,7 @@ public final class GuestAgentProperties {
 
     /**
      * Set the provisioningAction property: Gets or sets the guest agent provisioning action.
-     *
+     * 
      * @param provisioningAction the provisioningAction value to set.
      * @return the GuestAgentProperties object itself.
      */
@@ -167,7 +166,7 @@ public final class GuestAgentProperties {
 
     /**
      * Get the status property: Gets or sets the guest agent status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -176,7 +175,7 @@ public final class GuestAgentProperties {
 
     /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
-     *
+     * 
      * @return the customResourceName value.
      */
     public String customResourceName() {
@@ -185,7 +184,7 @@ public final class GuestAgentProperties {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -194,7 +193,7 @@ public final class GuestAgentProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -203,7 +202,7 @@ public final class GuestAgentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -216,5 +215,64 @@ public final class GuestAgentProperties {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        jsonWriter.writeStringField("privateLinkScopeResourceId", this.privateLinkScopeResourceId);
+        jsonWriter.writeJsonField("httpProxyConfig", this.httpProxyConfig);
+        jsonWriter.writeStringField("provisioningAction",
+            this.provisioningAction == null ? null : this.provisioningAction.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GuestAgentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GuestAgentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GuestAgentProperties.
+     */
+    public static GuestAgentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GuestAgentProperties deserializedGuestAgentProperties = new GuestAgentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uuid".equals(fieldName)) {
+                    deserializedGuestAgentProperties.uuid = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedGuestAgentProperties.credentials = GuestCredential.fromJson(reader);
+                } else if ("privateLinkScopeResourceId".equals(fieldName)) {
+                    deserializedGuestAgentProperties.privateLinkScopeResourceId = reader.getString();
+                } else if ("httpProxyConfig".equals(fieldName)) {
+                    deserializedGuestAgentProperties.httpProxyConfig = HttpProxyConfiguration.fromJson(reader);
+                } else if ("provisioningAction".equals(fieldName)) {
+                    deserializedGuestAgentProperties.provisioningAction
+                        = ProvisioningAction.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedGuestAgentProperties.status = reader.getString();
+                } else if ("customResourceName".equals(fieldName)) {
+                    deserializedGuestAgentProperties.customResourceName = reader.getString();
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceStatus> statuses = reader.readArray(reader1 -> ResourceStatus.fromJson(reader1));
+                    deserializedGuestAgentProperties.statuses = statuses;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGuestAgentProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGuestAgentProperties;
+        });
     }
 }

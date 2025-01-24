@@ -12,7 +12,7 @@ import com.azure.resourcemanager.servicenetworking.models.Frontend;
 public final class FrontendsInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
      * FrontendPatch.json
      */
     /**
@@ -22,7 +22,8 @@ public final class FrontendsInterfaceUpdateSamples {
      */
     public static void updateFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         Frontend resource = manager.frontendsInterfaces()
-            .getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

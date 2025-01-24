@@ -5,29 +5,75 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Authentication type of the connection target. */
+/**
+ * Authentication type of the connection target.
+ */
 public final class ConnectionAuthType extends ExpandableStringEnum<ConnectionAuthType> {
-    /** Static value PAT for ConnectionAuthType. */
+    /**
+     * Static value PAT for ConnectionAuthType.
+     */
     public static final ConnectionAuthType PAT = fromString("PAT");
 
-    /** Static value ManagedIdentity for ConnectionAuthType. */
+    /**
+     * Static value ManagedIdentity for ConnectionAuthType.
+     */
     public static final ConnectionAuthType MANAGED_IDENTITY = fromString("ManagedIdentity");
 
-    /** Static value UsernamePassword for ConnectionAuthType. */
+    /**
+     * Static value UsernamePassword for ConnectionAuthType.
+     */
     public static final ConnectionAuthType USERNAME_PASSWORD = fromString("UsernamePassword");
 
-    /** Static value None for ConnectionAuthType. */
+    /**
+     * Static value None for ConnectionAuthType.
+     */
     public static final ConnectionAuthType NONE = fromString("None");
 
-    /** Static value SAS for ConnectionAuthType. */
+    /**
+     * Static value SAS for ConnectionAuthType.
+     */
     public static final ConnectionAuthType SAS = fromString("SAS");
 
     /**
+     * Static value AccountKey for ConnectionAuthType.
+     */
+    public static final ConnectionAuthType ACCOUNT_KEY = fromString("AccountKey");
+
+    /**
+     * Static value ServicePrincipal for ConnectionAuthType.
+     */
+    public static final ConnectionAuthType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
+
+    /**
+     * Static value AccessKey for ConnectionAuthType.
+     */
+    public static final ConnectionAuthType ACCESS_KEY = fromString("AccessKey");
+
+    /**
+     * Static value ApiKey for ConnectionAuthType.
+     */
+    public static final ConnectionAuthType API_KEY = fromString("ApiKey");
+
+    /**
+     * Static value CustomKeys for ConnectionAuthType.
+     */
+    public static final ConnectionAuthType CUSTOM_KEYS = fromString("CustomKeys");
+
+    /**
+     * Static value OAuth2 for ConnectionAuthType.
+     */
+    public static final ConnectionAuthType OAUTH2 = fromString("OAuth2");
+
+    /**
+     * Static value AAD for ConnectionAuthType.
+     */
+    public static final ConnectionAuthType AAD = fromString("AAD");
+
+    /**
      * Creates a new instance of ConnectionAuthType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +82,17 @@ public final class ConnectionAuthType extends ExpandableStringEnum<ConnectionAut
 
     /**
      * Creates or finds a ConnectionAuthType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectionAuthType.
      */
-    @JsonCreator
     public static ConnectionAuthType fromString(String name) {
         return fromString(name, ConnectionAuthType.class);
     }
 
     /**
      * Gets known ConnectionAuthType values.
-     *
+     * 
      * @return known ConnectionAuthType values.
      */
     public static Collection<ConnectionAuthType> values() {

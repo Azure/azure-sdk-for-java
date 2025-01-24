@@ -103,7 +103,7 @@ public class SasImplUtils {
             // check if map already contains key
             if (keyValues == null) {
                 // map does not contain this key
-                keyValues = new String[]{value};
+                keyValues = new String[] { value };
             } else {
                 // map contains this key already so append
                 final String[] newValues = new String[keyValues.length + 1];

@@ -5,17 +5,130 @@
 package com.azure.resourcemanager.sphere.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sphere.models.CertificateProperties;
+import com.azure.resourcemanager.sphere.models.CertificateStatus;
+import com.azure.resourcemanager.sphere.models.ProvisioningState;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * Result of the action to generate a proof of possession nonce.
  */
 @Immutable
 public final class ProofOfPossessionNonceResponseInner extends CertificateProperties {
+    /*
+     * The status of the last operation.
+     */
+    private ProvisioningState provisioningState;
+
+    /*
+     * The certificate not before date.
+     */
+    private OffsetDateTime notBeforeUtc;
+
+    /*
+     * The certificate expiry date.
+     */
+    private OffsetDateTime expiryUtc;
+
+    /*
+     * The certificate thumbprint.
+     */
+    private String thumbprint;
+
+    /*
+     * The certificate subject.
+     */
+    private String subject;
+
+    /*
+     * The certificate status.
+     */
+    private CertificateStatus status;
+
+    /*
+     * The certificate as a UTF-8 encoded base 64 string.
+     */
+    private String certificate;
+
     /**
      * Creates an instance of ProofOfPossessionNonceResponseInner class.
      */
     public ProofOfPossessionNonceResponseInner() {
+    }
+
+    /**
+     * Get the provisioningState property: The status of the last operation.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the notBeforeUtc property: The certificate not before date.
+     * 
+     * @return the notBeforeUtc value.
+     */
+    @Override
+    public OffsetDateTime notBeforeUtc() {
+        return this.notBeforeUtc;
+    }
+
+    /**
+     * Get the expiryUtc property: The certificate expiry date.
+     * 
+     * @return the expiryUtc value.
+     */
+    @Override
+    public OffsetDateTime expiryUtc() {
+        return this.expiryUtc;
+    }
+
+    /**
+     * Get the thumbprint property: The certificate thumbprint.
+     * 
+     * @return the thumbprint value.
+     */
+    @Override
+    public String thumbprint() {
+        return this.thumbprint;
+    }
+
+    /**
+     * Get the subject property: The certificate subject.
+     * 
+     * @return the subject value.
+     */
+    @Override
+    public String subject() {
+        return this.subject;
+    }
+
+    /**
+     * Get the status property: The certificate status.
+     * 
+     * @return the status value.
+     */
+    @Override
+    public CertificateStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get the certificate property: The certificate as a UTF-8 encoded base 64 string.
+     * 
+     * @return the certificate value.
+     */
+    @Override
+    public String certificate() {
+        return this.certificate;
     }
 
     /**
@@ -25,6 +138,57 @@ public final class ProofOfPossessionNonceResponseInner extends CertificateProper
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProofOfPossessionNonceResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProofOfPossessionNonceResponseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProofOfPossessionNonceResponseInner.
+     */
+    public static ProofOfPossessionNonceResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProofOfPossessionNonceResponseInner deserializedProofOfPossessionNonceResponseInner
+                = new ProofOfPossessionNonceResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificate".equals(fieldName)) {
+                    deserializedProofOfPossessionNonceResponseInner.certificate = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedProofOfPossessionNonceResponseInner.status
+                        = CertificateStatus.fromString(reader.getString());
+                } else if ("subject".equals(fieldName)) {
+                    deserializedProofOfPossessionNonceResponseInner.subject = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedProofOfPossessionNonceResponseInner.thumbprint = reader.getString();
+                } else if ("expiryUtc".equals(fieldName)) {
+                    deserializedProofOfPossessionNonceResponseInner.expiryUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("notBeforeUtc".equals(fieldName)) {
+                    deserializedProofOfPossessionNonceResponseInner.notBeforeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProofOfPossessionNonceResponseInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProofOfPossessionNonceResponseInner;
+        });
     }
 }

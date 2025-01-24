@@ -5,7 +5,10 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,28 +22,24 @@ public final class FhirR4Coding extends FhirR4Element {
      * Identity of the terminology system
      */
     @Generated
-    @JsonProperty(value = "system")
     private String system;
 
     /*
      * Version of the system - if relevant
      */
     @Generated
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Symbol in syntax defined by the system
      */
     @Generated
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Representation defined by the system
      */
     @Generated
-    @JsonProperty(value = "display")
     private String display;
 
     /**
@@ -156,5 +155,57 @@ public final class FhirR4Coding extends FhirR4Element {
     public FhirR4Coding setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("system", this.system);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("display", this.display);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Coding from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Coding if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FhirR4Coding.
+     */
+    @Generated
+    public static FhirR4Coding fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirR4Coding deserializedFhirR4Coding = new FhirR4Coding();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedFhirR4Coding.setId(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    List<FhirR4Extension> extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                    deserializedFhirR4Coding.setExtension(extension);
+                } else if ("system".equals(fieldName)) {
+                    deserializedFhirR4Coding.system = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedFhirR4Coding.version = reader.getString();
+                } else if ("code".equals(fieldName)) {
+                    deserializedFhirR4Coding.code = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedFhirR4Coding.display = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedFhirR4Coding;
+        });
     }
 }

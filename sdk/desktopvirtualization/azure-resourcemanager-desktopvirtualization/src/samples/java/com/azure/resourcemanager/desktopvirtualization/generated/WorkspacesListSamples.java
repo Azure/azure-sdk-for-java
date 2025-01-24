@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-/** Samples for Workspaces List. */
+/**
+ * Samples for Workspaces List.
+ */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/Workspace_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * Workspace_ListBySubscription.json
      */
     /**
      * Sample code: Workspace_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
     public static void workspaceListBySubscription(

@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.LoggerContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged Logger list representation. */
+/**
+ * Paged Logger list representation.
+ */
 @Fluent
-public final class LoggerCollection {
+public final class LoggerCollection implements JsonSerializable<LoggerCollection> {
     /*
      * Logger values.
      */
-    @JsonProperty(value = "value")
     private List<LoggerContractInner> value;
 
     /*
      * Total record count number across all pages.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * Next page link if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LoggerCollection class. */
+    /**
+     * Creates an instance of LoggerCollection class.
+     */
     public LoggerCollection() {
     }
 
     /**
      * Get the value property: Logger values.
-     *
+     * 
      * @return the value value.
      */
     public List<LoggerContractInner> value() {
@@ -45,7 +50,7 @@ public final class LoggerCollection {
 
     /**
      * Set the value property: Logger values.
-     *
+     * 
      * @param value the value value to set.
      * @return the LoggerCollection object itself.
      */
@@ -56,7 +61,7 @@ public final class LoggerCollection {
 
     /**
      * Get the count property: Total record count number across all pages.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -65,7 +70,7 @@ public final class LoggerCollection {
 
     /**
      * Set the count property: Total record count number across all pages.
-     *
+     * 
      * @param count the count value to set.
      * @return the LoggerCollection object itself.
      */
@@ -76,7 +81,7 @@ public final class LoggerCollection {
 
     /**
      * Get the nextLink property: Next page link if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -85,7 +90,7 @@ public final class LoggerCollection {
 
     /**
      * Set the nextLink property: Next page link if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LoggerCollection object itself.
      */
@@ -96,12 +101,56 @@ public final class LoggerCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoggerCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoggerCollection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoggerCollection.
+     */
+    public static LoggerCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoggerCollection deserializedLoggerCollection = new LoggerCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LoggerContractInner> value
+                        = reader.readArray(reader1 -> LoggerContractInner.fromJson(reader1));
+                    deserializedLoggerCollection.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedLoggerCollection.count = reader.getNullable(JsonReader::getLong);
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLoggerCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoggerCollection;
+        });
     }
 }

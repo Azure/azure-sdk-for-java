@@ -15,7 +15,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationUpdatePrope
 public final class AssociationsInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
      * AssociationPatch.json
      */
     /**
@@ -25,10 +25,12 @@ public final class AssociationsInterfaceUpdateSamples {
      */
     public static void updateAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         Association resource = manager.associationsInterfaces()
-            .getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
-            .withSubnet(new AssociationSubnetUpdate().withId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet")))
+            .getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
+                .withSubnet(new AssociationSubnetUpdate().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet")))
             .apply();
     }
 }

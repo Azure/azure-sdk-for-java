@@ -21,36 +21,32 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
 
     private final com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager;
 
-    public StorageAccountCredentialsImpl(
-        StorageAccountCredentialsClient innerClient,
+    public StorageAccountCredentialsImpl(StorageAccountCredentialsClient innerClient,
         com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<StorageAccountCredential> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName) {
-        PagedIterable<StorageAccountCredentialInner> inner =
-            this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new StorageAccountCredentialImpl(inner1, this.manager()));
+    public PagedIterable<StorageAccountCredential> listByDataBoxEdgeDevice(String deviceName,
+        String resourceGroupName) {
+        PagedIterable<StorageAccountCredentialInner> inner
+            = this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageAccountCredentialImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageAccountCredential> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, Context context) {
-        PagedIterable<StorageAccountCredentialInner> inner =
-            this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new StorageAccountCredentialImpl(inner1, this.manager()));
+    public PagedIterable<StorageAccountCredential> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName,
+        Context context) {
+        PagedIterable<StorageAccountCredentialInner> inner
+            = this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageAccountCredentialImpl(inner1, this.manager()));
     }
 
-    public Response<StorageAccountCredential> getWithResponse(
-        String deviceName, String name, String resourceGroupName, Context context) {
-        Response<StorageAccountCredentialInner> inner =
-            this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
+    public Response<StorageAccountCredential> getWithResponse(String deviceName, String name, String resourceGroupName,
+        Context context) {
+        Response<StorageAccountCredentialInner> inner
+            = this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StorageAccountCredentialImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -75,125 +71,77 @@ public final class StorageAccountCredentialsImpl implements StorageAccountCreden
     }
 
     public StorageAccountCredential getById(String id) {
-        String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
+        String deviceName = ResourceManagerUtils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "storageAccountCredentials");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "storageAccountCredentials");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'storageAccountCredentials'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'storageAccountCredentials'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         return this.getWithResponse(deviceName, name, resourceGroupName, Context.NONE).getValue();
     }
 
     public Response<StorageAccountCredential> getByIdWithResponse(String id, Context context) {
-        String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
+        String deviceName = ResourceManagerUtils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "storageAccountCredentials");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "storageAccountCredentials");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'storageAccountCredentials'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'storageAccountCredentials'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         return this.getWithResponse(deviceName, name, resourceGroupName, context);
     }
 
     public void deleteById(String id) {
-        String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
+        String deviceName = ResourceManagerUtils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "storageAccountCredentials");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "storageAccountCredentials");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'storageAccountCredentials'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'storageAccountCredentials'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         this.delete(deviceName, name, resourceGroupName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
+        String deviceName = ResourceManagerUtils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dataBoxEdgeDevices'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "storageAccountCredentials");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "storageAccountCredentials");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'storageAccountCredentials'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'storageAccountCredentials'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         this.delete(deviceName, name, resourceGroupName, context);
     }

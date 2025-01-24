@@ -26,11 +26,11 @@ public final class AlertCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertCollection model
-            = new AlertCollection().withValue(Arrays.asList(new AlertInner()
-                .withProperties(new AlertProperties().withSendToOwners("n")
-                    .withCustomEmailAddresses(Arrays.asList("ybrk")).withLocale("dumjgrtfwvuk"))
-                .withLocation("audccsnhs"))).withNextLink("oxzjnchgejspod");
+        AlertCollection model = new AlertCollection()
+            .withValue(Arrays.asList(new AlertInner().withProperties(new AlertProperties().withSendToOwners("n")
+                .withCustomEmailAddresses(Arrays.asList("ybrk"))
+                .withLocale("dumjgrtfwvuk")).withLocation("audccsnhs")))
+            .withNextLink("oxzjnchgejspod");
         model = BinaryData.fromObject(model).toObject(AlertCollection.class);
         Assertions.assertEquals("n", model.value().get(0).properties().sendToOwners());
         Assertions.assertEquals("ybrk", model.value().get(0).properties().customEmailAddresses().get(0));

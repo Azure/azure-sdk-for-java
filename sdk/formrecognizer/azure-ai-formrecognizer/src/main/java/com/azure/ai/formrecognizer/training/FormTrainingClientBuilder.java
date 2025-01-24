@@ -86,13 +86,10 @@ import static com.azure.ai.formrecognizer.implementation.Utility.buildHttpPipeli
  * @see FormTrainingAsyncClient
  * @see FormTrainingClient
  */
-@ServiceClientBuilder(serviceClients = {FormTrainingAsyncClient.class, FormTrainingClient.class})
-public final class FormTrainingClientBuilder implements
-    AzureKeyCredentialTrait<FormTrainingClientBuilder>,
-    ConfigurationTrait<FormTrainingClientBuilder>,
-    EndpointTrait<FormTrainingClientBuilder>,
-    HttpTrait<FormTrainingClientBuilder>,
-    TokenCredentialTrait<FormTrainingClientBuilder> {
+@ServiceClientBuilder(serviceClients = { FormTrainingAsyncClient.class, FormTrainingClient.class })
+public final class FormTrainingClientBuilder implements AzureKeyCredentialTrait<FormTrainingClientBuilder>,
+    ConfigurationTrait<FormTrainingClientBuilder>, EndpointTrait<FormTrainingClientBuilder>,
+    HttpTrait<FormTrainingClientBuilder>, TokenCredentialTrait<FormTrainingClientBuilder> {
 
     /**
      * Constructs a {@link FormTrainingClientBuilder} object.
@@ -137,7 +134,28 @@ public final class FormTrainingClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public FormTrainingClient buildClient() {
-        return new FormTrainingClient(buildAsyncClient());
+        // Endpoint cannot be null, which is required in request authentication
+        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+        if (audience == null) {
+            audience = FormRecognizerAudience.AZURE_PUBLIC_CLOUD;
+        }
+        // Global Env configuration store
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        // Service Version
+        final FormRecognizerServiceVersion serviceVersion
+            = version != null ? version : FormRecognizerServiceVersion.getLatest();
+
+        HttpPipeline pipeline = httpPipeline;
+        // Create a default Pipeline if it is not given
+        if (pipeline == null) {
+            pipeline = buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration, retryPolicy, retryOptions,
+                azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient);
+        }
+
+        return new FormTrainingClient(new FormRecognizerClientImpl(pipeline, endpoint, serviceVersion.getVersion()),
+            serviceVersion);
     }
 
     /**
@@ -166,32 +184,22 @@ public final class FormTrainingClientBuilder implements
             audience = FormRecognizerAudience.AZURE_PUBLIC_CLOUD;
         }
         // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Service Version
-        final FormRecognizerServiceVersion serviceVersion =
-            version != null ? version : FormRecognizerServiceVersion.getLatest();
+        final FormRecognizerServiceVersion serviceVersion
+            = version != null ? version : FormRecognizerServiceVersion.getLatest();
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = buildHttpPipeline(
-                clientOptions,
-                httpLogOptions,
-                buildConfiguration,
-                retryPolicy,
-                retryOptions,
-                azureKeyCredential,
-                tokenCredential,
-                audience,
-                perCallPolicies,
-                perRetryPolicies,
-                httpClient);
+            pipeline = buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration, retryPolicy, retryOptions,
+                azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient);
         }
 
-        return new FormTrainingAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
-            serviceVersion.getVersion()), serviceVersion);
+        return new FormTrainingAsyncClient(
+            new FormRecognizerClientImpl(pipeline, endpoint, serviceVersion.getVersion()), serviceVersion);
     }
 
     /**

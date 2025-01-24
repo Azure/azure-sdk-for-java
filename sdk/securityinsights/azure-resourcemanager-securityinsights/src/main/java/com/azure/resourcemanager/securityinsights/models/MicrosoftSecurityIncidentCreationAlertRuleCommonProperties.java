@@ -6,39 +6,48 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** MicrosoftSecurityIncidentCreation rule common property bag. */
+/**
+ * MicrosoftSecurityIncidentCreation rule common property bag.
+ */
 @Fluent
-public class MicrosoftSecurityIncidentCreationAlertRuleCommonProperties {
+public class MicrosoftSecurityIncidentCreationAlertRuleCommonProperties
+    implements JsonSerializable<MicrosoftSecurityIncidentCreationAlertRuleCommonProperties> {
     /*
      * the alerts' displayNames on which the cases will be generated
      */
-    @JsonProperty(value = "displayNamesFilter")
     private List<String> displayNamesFilter;
 
     /*
      * the alerts' displayNames on which the cases will not be generated
      */
-    @JsonProperty(value = "displayNamesExcludeFilter")
     private List<String> displayNamesExcludeFilter;
 
     /*
      * The alerts' productName on which the cases will be generated
      */
-    @JsonProperty(value = "productFilter", required = true)
     private MicrosoftSecurityProductName productFilter;
 
     /*
      * the alerts' severities on which the cases will be generated
      */
-    @JsonProperty(value = "severitiesFilter")
     private List<AlertSeverity> severitiesFilter;
 
     /**
+     * Creates an instance of MicrosoftSecurityIncidentCreationAlertRuleCommonProperties class.
+     */
+    public MicrosoftSecurityIncidentCreationAlertRuleCommonProperties() {
+    }
+
+    /**
      * Get the displayNamesFilter property: the alerts' displayNames on which the cases will be generated.
-     *
+     * 
      * @return the displayNamesFilter value.
      */
     public List<String> displayNamesFilter() {
@@ -47,19 +56,19 @@ public class MicrosoftSecurityIncidentCreationAlertRuleCommonProperties {
 
     /**
      * Set the displayNamesFilter property: the alerts' displayNames on which the cases will be generated.
-     *
+     * 
      * @param displayNamesFilter the displayNamesFilter value to set.
      * @return the MicrosoftSecurityIncidentCreationAlertRuleCommonProperties object itself.
      */
-    public MicrosoftSecurityIncidentCreationAlertRuleCommonProperties withDisplayNamesFilter(
-        List<String> displayNamesFilter) {
+    public MicrosoftSecurityIncidentCreationAlertRuleCommonProperties
+        withDisplayNamesFilter(List<String> displayNamesFilter) {
         this.displayNamesFilter = displayNamesFilter;
         return this;
     }
 
     /**
      * Get the displayNamesExcludeFilter property: the alerts' displayNames on which the cases will not be generated.
-     *
+     * 
      * @return the displayNamesExcludeFilter value.
      */
     public List<String> displayNamesExcludeFilter() {
@@ -68,19 +77,19 @@ public class MicrosoftSecurityIncidentCreationAlertRuleCommonProperties {
 
     /**
      * Set the displayNamesExcludeFilter property: the alerts' displayNames on which the cases will not be generated.
-     *
+     * 
      * @param displayNamesExcludeFilter the displayNamesExcludeFilter value to set.
      * @return the MicrosoftSecurityIncidentCreationAlertRuleCommonProperties object itself.
      */
-    public MicrosoftSecurityIncidentCreationAlertRuleCommonProperties withDisplayNamesExcludeFilter(
-        List<String> displayNamesExcludeFilter) {
+    public MicrosoftSecurityIncidentCreationAlertRuleCommonProperties
+        withDisplayNamesExcludeFilter(List<String> displayNamesExcludeFilter) {
         this.displayNamesExcludeFilter = displayNamesExcludeFilter;
         return this;
     }
 
     /**
      * Get the productFilter property: The alerts' productName on which the cases will be generated.
-     *
+     * 
      * @return the productFilter value.
      */
     public MicrosoftSecurityProductName productFilter() {
@@ -89,19 +98,19 @@ public class MicrosoftSecurityIncidentCreationAlertRuleCommonProperties {
 
     /**
      * Set the productFilter property: The alerts' productName on which the cases will be generated.
-     *
+     * 
      * @param productFilter the productFilter value to set.
      * @return the MicrosoftSecurityIncidentCreationAlertRuleCommonProperties object itself.
      */
-    public MicrosoftSecurityIncidentCreationAlertRuleCommonProperties withProductFilter(
-        MicrosoftSecurityProductName productFilter) {
+    public MicrosoftSecurityIncidentCreationAlertRuleCommonProperties
+        withProductFilter(MicrosoftSecurityProductName productFilter) {
         this.productFilter = productFilter;
         return this;
     }
 
     /**
      * Get the severitiesFilter property: the alerts' severities on which the cases will be generated.
-     *
+     * 
      * @return the severitiesFilter value.
      */
     public List<AlertSeverity> severitiesFilter() {
@@ -110,31 +119,89 @@ public class MicrosoftSecurityIncidentCreationAlertRuleCommonProperties {
 
     /**
      * Set the severitiesFilter property: the alerts' severities on which the cases will be generated.
-     *
+     * 
      * @param severitiesFilter the severitiesFilter value to set.
      * @return the MicrosoftSecurityIncidentCreationAlertRuleCommonProperties object itself.
      */
-    public MicrosoftSecurityIncidentCreationAlertRuleCommonProperties withSeveritiesFilter(
-        List<AlertSeverity> severitiesFilter) {
+    public MicrosoftSecurityIncidentCreationAlertRuleCommonProperties
+        withSeveritiesFilter(List<AlertSeverity> severitiesFilter) {
         this.severitiesFilter = severitiesFilter;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (productFilter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property productFilter in model"
-                            + " MicrosoftSecurityIncidentCreationAlertRuleCommonProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property productFilter in model MicrosoftSecurityIncidentCreationAlertRuleCommonProperties"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(MicrosoftSecurityIncidentCreationAlertRuleCommonProperties.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(MicrosoftSecurityIncidentCreationAlertRuleCommonProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("productFilter", this.productFilter == null ? null : this.productFilter.toString());
+        jsonWriter.writeArrayField("displayNamesFilter", this.displayNamesFilter,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("displayNamesExcludeFilter", this.displayNamesExcludeFilter,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("severitiesFilter", this.severitiesFilter,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftSecurityIncidentCreationAlertRuleCommonProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftSecurityIncidentCreationAlertRuleCommonProperties if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the
+     * MicrosoftSecurityIncidentCreationAlertRuleCommonProperties.
+     */
+    public static MicrosoftSecurityIncidentCreationAlertRuleCommonProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftSecurityIncidentCreationAlertRuleCommonProperties deserializedMicrosoftSecurityIncidentCreationAlertRuleCommonProperties
+                = new MicrosoftSecurityIncidentCreationAlertRuleCommonProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("productFilter".equals(fieldName)) {
+                    deserializedMicrosoftSecurityIncidentCreationAlertRuleCommonProperties.productFilter
+                        = MicrosoftSecurityProductName.fromString(reader.getString());
+                } else if ("displayNamesFilter".equals(fieldName)) {
+                    List<String> displayNamesFilter = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftSecurityIncidentCreationAlertRuleCommonProperties.displayNamesFilter
+                        = displayNamesFilter;
+                } else if ("displayNamesExcludeFilter".equals(fieldName)) {
+                    List<String> displayNamesExcludeFilter = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftSecurityIncidentCreationAlertRuleCommonProperties.displayNamesExcludeFilter
+                        = displayNamesExcludeFilter;
+                } else if ("severitiesFilter".equals(fieldName)) {
+                    List<AlertSeverity> severitiesFilter
+                        = reader.readArray(reader1 -> AlertSeverity.fromString(reader1.getString()));
+                    deserializedMicrosoftSecurityIncidentCreationAlertRuleCommonProperties.severitiesFilter
+                        = severitiesFilter;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMicrosoftSecurityIncidentCreationAlertRuleCommonProperties;
+        });
+    }
 }

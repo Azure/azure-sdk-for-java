@@ -6,48 +6,62 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request to validate sku availability. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "validationType")
-@JsonTypeName("ValidateSkuAvailability")
+/**
+ * Request to validate sku availability.
+ */
 @Fluent
 public final class SkuAvailabilityValidationRequest extends ValidationInputRequest {
     /*
+     * Identifies the type of validation request.
+     */
+    private ValidationInputDiscriminator validationType = ValidationInputDiscriminator.VALIDATE_SKU_AVAILABILITY;
+
+    /*
      * Device type to be used for the job.
      */
-    @JsonProperty(value = "deviceType", required = true)
     private SkuName deviceType;
 
     /*
      * Type of the transfer.
      */
-    @JsonProperty(value = "transferType", required = true)
     private TransferType transferType;
 
     /*
      * ISO country code. Country for hardware shipment. For codes check:
      * https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
      */
-    @JsonProperty(value = "country", required = true)
     private String country;
 
     /*
      * Location for data transfer. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
-    /** Creates an instance of SkuAvailabilityValidationRequest class. */
+    /**
+     * Creates an instance of SkuAvailabilityValidationRequest class.
+     */
     public SkuAvailabilityValidationRequest() {
     }
 
     /**
+     * Get the validationType property: Identifies the type of validation request.
+     * 
+     * @return the validationType value.
+     */
+    @Override
+    public ValidationInputDiscriminator validationType() {
+        return this.validationType;
+    }
+
+    /**
      * Get the deviceType property: Device type to be used for the job.
-     *
+     * 
      * @return the deviceType value.
      */
     public SkuName deviceType() {
@@ -56,7 +70,7 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
 
     /**
      * Set the deviceType property: Device type to be used for the job.
-     *
+     * 
      * @param deviceType the deviceType value to set.
      * @return the SkuAvailabilityValidationRequest object itself.
      */
@@ -67,7 +81,7 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
 
     /**
      * Get the transferType property: Type of the transfer.
-     *
+     * 
      * @return the transferType value.
      */
     public TransferType transferType() {
@@ -76,7 +90,7 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
 
     /**
      * Set the transferType property: Type of the transfer.
-     *
+     * 
      * @param transferType the transferType value to set.
      * @return the SkuAvailabilityValidationRequest object itself.
      */
@@ -88,7 +102,7 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
     /**
      * Get the country property: ISO country code. Country for hardware shipment. For codes check:
      * https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -98,7 +112,7 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
     /**
      * Set the country property: ISO country code. Country for hardware shipment. For codes check:
      * https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements.
-     *
+     * 
      * @param country the country value to set.
      * @return the SkuAvailabilityValidationRequest object itself.
      */
@@ -110,7 +124,7 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
     /**
      * Get the location property: Location for data transfer. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -120,7 +134,7 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
     /**
      * Set the location property: Location for data transfer. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
-     *
+     * 
      * @param location the location value to set.
      * @return the SkuAvailabilityValidationRequest object itself.
      */
@@ -131,37 +145,85 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (deviceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deviceType in model SkuAvailabilityValidationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property deviceType in model SkuAvailabilityValidationRequest"));
         }
         if (transferType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property transferType in model SkuAvailabilityValidationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property transferType in model SkuAvailabilityValidationRequest"));
         }
         if (country() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property country in model SkuAvailabilityValidationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property country in model SkuAvailabilityValidationRequest"));
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model SkuAvailabilityValidationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model SkuAvailabilityValidationRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SkuAvailabilityValidationRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceType", this.deviceType == null ? null : this.deviceType.toString());
+        jsonWriter.writeStringField("transferType", this.transferType == null ? null : this.transferType.toString());
+        jsonWriter.writeStringField("country", this.country);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuAvailabilityValidationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuAvailabilityValidationRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuAvailabilityValidationRequest.
+     */
+    public static SkuAvailabilityValidationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuAvailabilityValidationRequest deserializedSkuAvailabilityValidationRequest
+                = new SkuAvailabilityValidationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceType".equals(fieldName)) {
+                    deserializedSkuAvailabilityValidationRequest.deviceType = SkuName.fromString(reader.getString());
+                } else if ("transferType".equals(fieldName)) {
+                    deserializedSkuAvailabilityValidationRequest.transferType
+                        = TransferType.fromString(reader.getString());
+                } else if ("country".equals(fieldName)) {
+                    deserializedSkuAvailabilityValidationRequest.country = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSkuAvailabilityValidationRequest.location = reader.getString();
+                } else if ("validationType".equals(fieldName)) {
+                    deserializedSkuAvailabilityValidationRequest.validationType
+                        = ValidationInputDiscriminator.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuAvailabilityValidationRequest;
+        });
+    }
 }

@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Database file specific information. */
+/**
+ * Database file specific information.
+ */
 @Fluent
-public final class DatabaseFileInfo {
+public final class DatabaseFileInfo implements JsonSerializable<DatabaseFileInfo> {
     /*
      * Name of the database
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * Unique identifier for database file
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Logical name of the file
      */
-    @JsonProperty(value = "logicalName")
     private String logicalName;
 
     /*
      * Operating-system full path of the file
      */
-    @JsonProperty(value = "physicalFullName")
     private String physicalFullName;
 
     /*
      * Suggested full path of the file for restoring
      */
-    @JsonProperty(value = "restoreFullName")
     private String restoreFullName;
 
     /*
      * Database file type
      */
-    @JsonProperty(value = "fileType")
     private DatabaseFileType fileType;
 
     /*
      * Size of the file in megabytes
      */
-    @JsonProperty(value = "sizeMB")
     private Double sizeMB;
 
-    /** Creates an instance of DatabaseFileInfo class. */
+    /**
+     * Creates an instance of DatabaseFileInfo class.
+     */
     public DatabaseFileInfo() {
     }
 
     /**
      * Get the databaseName property: Name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -67,7 +68,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Set the databaseName property: Name of the database.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the DatabaseFileInfo object itself.
      */
@@ -78,7 +79,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Get the id property: Unique identifier for database file.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -87,7 +88,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Set the id property: Unique identifier for database file.
-     *
+     * 
      * @param id the id value to set.
      * @return the DatabaseFileInfo object itself.
      */
@@ -98,7 +99,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Get the logicalName property: Logical name of the file.
-     *
+     * 
      * @return the logicalName value.
      */
     public String logicalName() {
@@ -107,7 +108,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Set the logicalName property: Logical name of the file.
-     *
+     * 
      * @param logicalName the logicalName value to set.
      * @return the DatabaseFileInfo object itself.
      */
@@ -118,7 +119,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Get the physicalFullName property: Operating-system full path of the file.
-     *
+     * 
      * @return the physicalFullName value.
      */
     public String physicalFullName() {
@@ -127,7 +128,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Set the physicalFullName property: Operating-system full path of the file.
-     *
+     * 
      * @param physicalFullName the physicalFullName value to set.
      * @return the DatabaseFileInfo object itself.
      */
@@ -138,7 +139,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Get the restoreFullName property: Suggested full path of the file for restoring.
-     *
+     * 
      * @return the restoreFullName value.
      */
     public String restoreFullName() {
@@ -147,7 +148,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Set the restoreFullName property: Suggested full path of the file for restoring.
-     *
+     * 
      * @param restoreFullName the restoreFullName value to set.
      * @return the DatabaseFileInfo object itself.
      */
@@ -158,7 +159,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Get the fileType property: Database file type.
-     *
+     * 
      * @return the fileType value.
      */
     public DatabaseFileType fileType() {
@@ -167,7 +168,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Set the fileType property: Database file type.
-     *
+     * 
      * @param fileType the fileType value to set.
      * @return the DatabaseFileInfo object itself.
      */
@@ -178,7 +179,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Get the sizeMB property: Size of the file in megabytes.
-     *
+     * 
      * @return the sizeMB value.
      */
     public Double sizeMB() {
@@ -187,7 +188,7 @@ public final class DatabaseFileInfo {
 
     /**
      * Set the sizeMB property: Size of the file in megabytes.
-     *
+     * 
      * @param sizeMB the sizeMB value to set.
      * @return the DatabaseFileInfo object itself.
      */
@@ -198,9 +199,63 @@ public final class DatabaseFileInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("logicalName", this.logicalName);
+        jsonWriter.writeStringField("physicalFullName", this.physicalFullName);
+        jsonWriter.writeStringField("restoreFullName", this.restoreFullName);
+        jsonWriter.writeStringField("fileType", this.fileType == null ? null : this.fileType.toString());
+        jsonWriter.writeNumberField("sizeMB", this.sizeMB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseFileInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseFileInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseFileInfo.
+     */
+    public static DatabaseFileInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseFileInfo deserializedDatabaseFileInfo = new DatabaseFileInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedDatabaseFileInfo.databaseName = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedDatabaseFileInfo.id = reader.getString();
+                } else if ("logicalName".equals(fieldName)) {
+                    deserializedDatabaseFileInfo.logicalName = reader.getString();
+                } else if ("physicalFullName".equals(fieldName)) {
+                    deserializedDatabaseFileInfo.physicalFullName = reader.getString();
+                } else if ("restoreFullName".equals(fieldName)) {
+                    deserializedDatabaseFileInfo.restoreFullName = reader.getString();
+                } else if ("fileType".equals(fieldName)) {
+                    deserializedDatabaseFileInfo.fileType = DatabaseFileType.fromString(reader.getString());
+                } else if ("sizeMB".equals(fieldName)) {
+                    deserializedDatabaseFileInfo.sizeMB = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseFileInfo;
+        });
     }
 }

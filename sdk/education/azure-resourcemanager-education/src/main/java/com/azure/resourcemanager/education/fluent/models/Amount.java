@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.education.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The amount. */
+/**
+ * The amount.
+ */
 @Fluent
-public final class Amount {
+public final class Amount implements JsonSerializable<Amount> {
     /*
      * The type of currency being used for the value.
      */
-    @JsonProperty(value = "currency")
     private String currency;
 
     /*
      * Amount value.
      */
-    @JsonProperty(value = "value")
     private Float value;
 
-    /** Creates an instance of Amount class. */
+    /**
+     * Creates an instance of Amount class.
+     */
     public Amount() {
     }
 
     /**
      * Get the currency property: The type of currency being used for the value.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -37,7 +43,7 @@ public final class Amount {
 
     /**
      * Set the currency property: The type of currency being used for the value.
-     *
+     * 
      * @param currency the currency value to set.
      * @return the Amount object itself.
      */
@@ -48,7 +54,7 @@ public final class Amount {
 
     /**
      * Get the value property: Amount value.
-     *
+     * 
      * @return the value value.
      */
     public Float value() {
@@ -57,7 +63,7 @@ public final class Amount {
 
     /**
      * Set the value property: Amount value.
-     *
+     * 
      * @param value the value value to set.
      * @return the Amount object itself.
      */
@@ -68,9 +74,48 @@ public final class Amount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("currency", this.currency);
+        jsonWriter.writeNumberField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Amount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Amount if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Amount.
+     */
+    public static Amount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Amount deserializedAmount = new Amount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currency".equals(fieldName)) {
+                    deserializedAmount.currency = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedAmount.value = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmount;
+        });
     }
 }

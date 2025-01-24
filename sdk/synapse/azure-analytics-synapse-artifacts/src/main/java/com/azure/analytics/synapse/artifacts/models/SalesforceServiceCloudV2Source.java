@@ -28,12 +28,14 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     private Object soqlQuery;
 
     /*
-     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or Expression with resultType boolean).
+     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     private Object includeDeletedObjects;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     private Object additionalColumns;
 

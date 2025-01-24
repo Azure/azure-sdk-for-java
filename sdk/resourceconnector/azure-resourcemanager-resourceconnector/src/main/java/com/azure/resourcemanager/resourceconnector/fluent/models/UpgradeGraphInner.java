@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.resourceconnector.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourceconnector.models.UpgradeGraphProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The Upgrade Graph for appliance. */
+/**
+ * The Upgrade Graph for appliance.
+ */
 @Fluent
-public final class UpgradeGraphInner {
+public final class UpgradeGraphInner implements JsonSerializable<UpgradeGraphInner> {
     /*
      * The appliance resource path
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The release train name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The properties of supported version
      */
-    @JsonProperty(value = "properties")
     private UpgradeGraphProperties properties;
 
-    /** Creates an instance of UpgradeGraphInner class. */
+    /**
+     * Creates an instance of UpgradeGraphInner class.
+     */
     public UpgradeGraphInner() {
     }
 
     /**
      * Get the id property: The appliance resource path.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +49,7 @@ public final class UpgradeGraphInner {
 
     /**
      * Get the name property: The release train name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -53,7 +58,7 @@ public final class UpgradeGraphInner {
 
     /**
      * Get the properties property: The properties of supported version.
-     *
+     * 
      * @return the properties value.
      */
     public UpgradeGraphProperties properties() {
@@ -62,7 +67,7 @@ public final class UpgradeGraphInner {
 
     /**
      * Set the properties property: The properties of supported version.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpgradeGraphInner object itself.
      */
@@ -73,12 +78,52 @@ public final class UpgradeGraphInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpgradeGraphInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpgradeGraphInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpgradeGraphInner.
+     */
+    public static UpgradeGraphInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpgradeGraphInner deserializedUpgradeGraphInner = new UpgradeGraphInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUpgradeGraphInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUpgradeGraphInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpgradeGraphInner.properties = UpgradeGraphProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpgradeGraphInner;
+        });
     }
 }

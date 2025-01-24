@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -166,14 +167,53 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetPropertiesResource withVectorEmbeddingPolicy(VectorEmbeddingPolicy vectorEmbeddingPolicy) {
+        super.withVectorEmbeddingPolicy(vectorEmbeddingPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model SqlContainerGetPropertiesResource"));
+        }
+        if (indexingPolicy() != null) {
+            indexingPolicy().validate();
+        }
+        if (partitionKey() != null) {
+            partitionKey().validate();
+        }
+        if (uniqueKeyPolicy() != null) {
+            uniqueKeyPolicy().validate();
+        }
+        if (conflictResolutionPolicy() != null) {
+            conflictResolutionPolicy().validate();
+        }
+        if (clientEncryptionPolicy() != null) {
+            clientEncryptionPolicy().validate();
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
+        }
+        if (computedProperties() != null) {
+            computedProperties().forEach(e -> e.validate());
+        }
+        if (vectorEmbeddingPolicy() != null) {
+            vectorEmbeddingPolicy().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlContainerGetPropertiesResource.class);
 
     /**
      * {@inheritDoc}
@@ -193,6 +233,7 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
         jsonWriter.writeArrayField("computedProperties", computedProperties(),
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("vectorEmbeddingPolicy", vectorEmbeddingPolicy());
         return jsonWriter.writeEndObject();
     }
 
@@ -244,6 +285,9 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
                     List<ComputedProperty> computedProperties
                         = reader.readArray(reader1 -> ComputedProperty.fromJson(reader1));
                     deserializedSqlContainerGetPropertiesResource.withComputedProperties(computedProperties);
+                } else if ("vectorEmbeddingPolicy".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withVectorEmbeddingPolicy(VectorEmbeddingPolicy.fromJson(reader));
                 } else if ("_rid".equals(fieldName)) {
                     deserializedSqlContainerGetPropertiesResource.rid = reader.getString();
                 } else if ("_ts".equals(fieldName)) {

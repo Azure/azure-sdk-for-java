@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databox.models.DatacenterAddressLocationRespons
 public final class DatacenterAddressLocationResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatacenterAddressLocationResponse model =
-            BinaryData
-                .fromString(
-                    "{\"datacenterAddressType\":\"DatacenterAddressLocation\",\"contactPersonName\":\"dlxyjrxs\",\"company\":\"afcnih\",\"street1\":\"qapnedgfbcv\",\"street2\":\"vq\",\"street3\":\"keqdcvdrhvoods\",\"city\":\"bobzdopcjwvnhd\",\"state\":\"wmgxcxrsl\",\"zip\":\"utwu\",\"country\":\"grpkhjwniyqs\",\"phone\":\"i\",\"phoneExtension\":\"dggkzzlvmbmpa\",\"addressType\":\"odfvuefywsbp\",\"additionalShippingInformation\":\"mwyhr\",\"supportedCarriersForReturnShipment\":[\"yftaakcpw\",\"yzvqt\"],\"dataCenterAzureLocation\":\"ubex\"}")
-                .toObject(DatacenterAddressLocationResponse.class);
+        DatacenterAddressLocationResponse model = BinaryData.fromString(
+            "{\"datacenterAddressType\":\"DatacenterAddressLocation\",\"contactPersonName\":\"i\",\"company\":\"blxgwimf\",\"street1\":\"hfjx\",\"street2\":\"szkkfoqre\",\"street3\":\"kzikfjawneaivxwc\",\"city\":\"lpcirelsf\",\"state\":\"enwabfatk\",\"zip\":\"dxbjhwuaanozj\",\"country\":\"ph\",\"phone\":\"ulpjr\",\"phoneExtension\":\"ag\",\"addressType\":\"vimjwos\",\"additionalShippingInformation\":\"xitc\",\"supportedCarriersForReturnShipment\":[\"cktqumiekkezzi\",\"hlyfjhdgqgg\",\"bdunygaeqid\"],\"dataCenterAzureLocation\":\"fatpxllrxcyjmoa\"}")
+            .toObject(DatacenterAddressLocationResponse.class);
     }
 
     @org.junit.jupiter.api.Test

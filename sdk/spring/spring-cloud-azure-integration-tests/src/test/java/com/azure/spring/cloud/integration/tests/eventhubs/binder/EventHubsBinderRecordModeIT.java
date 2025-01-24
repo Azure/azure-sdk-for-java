@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
+import com.azure.spring.cloud.integration.tests.eventhubs.TestEventHubsClientConfiguration;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -26,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "record" })
+@Import(TestEventHubsClientConfiguration.class)
 class EventHubsBinderRecordModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderRecordModeIT.class);
@@ -70,10 +73,11 @@ class EventHubsBinderRecordModeIT {
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderRecordModeIT begin.");
-        EventHubsBinderRecordModeIT.LATCH.await(15, TimeUnit.SECONDS);
+        // Wait for eventhub initialization to complete
+        Thread.sleep(20000);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsBinderRecordModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubsBinderRecordModeIT.LATCH.await(40, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderRecordModeIT end.");
     }
 }

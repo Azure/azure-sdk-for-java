@@ -7,7 +7,6 @@ package com.azure.resourcemanager.healthdataaiservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -166,13 +165,7 @@ public final class DeidServiceInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property location in model DeidServiceInner"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DeidServiceInner.class);
 
     /**
      * {@inheritDoc}

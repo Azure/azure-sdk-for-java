@@ -53,7 +53,8 @@ public final class ServiceBusWithClaimBasedAuthorization {
             //============================================================
             // Create a namespace.
 
-            System.out.println("Creating name space " + namespaceName + " along with a queue " + queueName + " and a topic " +  topicName + " in resource group " + rgName + "...");
+            System.out.println("Creating name space " + namespaceName + " along with a queue " + queueName
+                + " and a topic " + topicName + " in resource group " + rgName + "...");
 
             ServiceBusNamespace serviceBusNamespace = azureResourceManager.serviceBusNamespaces()
                 .define(namespaceName)
@@ -80,7 +81,8 @@ public final class ServiceBusWithClaimBasedAuthorization {
 
             ServiceBusSubscription subscription1 = topic.subscriptions().getByName(subscription1Name);
 
-            System.out.println("Creating another subscription in the topic using direct create method for subscription");
+            System.out
+                .println("Creating another subscription in the topic using direct create method for subscription");
             ServiceBusSubscription subscription2 = topic.subscriptions().define(subscription2Name).create();
 
             Utils.print(subscription1);
@@ -89,7 +91,8 @@ public final class ServiceBusWithClaimBasedAuthorization {
             //=============================================================
             // Create new authorization rule for queue to send message.
             System.out.println("Create authorization rule for queue ...");
-            NamespaceAuthorizationRule sendQueueAuthorizationRule = serviceBusNamespace.authorizationRules().define("SendRule").withSendingEnabled().create();
+            NamespaceAuthorizationRule sendQueueAuthorizationRule
+                = serviceBusNamespace.authorizationRules().define("SendRule").withSendingEnabled().create();
             Utils.print(sendQueueAuthorizationRule);
 
             System.out.println("Getting keys for authorization rule ...");
@@ -98,19 +101,17 @@ public final class ServiceBusWithClaimBasedAuthorization {
 
             //=============================================================
             // Send a message to queue.
-            ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-                .connectionString(keys.primaryConnectionString())
-                .sender()
-                .queueName(queueName)
-                .buildClient();
+            ServiceBusSenderClient sender
+                = new ServiceBusClientBuilder().connectionString(keys.primaryConnectionString())
+                    .sender()
+                    .queueName(queueName)
+                    .buildClient();
             sender.sendMessage(new ServiceBusMessage("Hello").setMessageId("1"));
             sender.close();
 
-
             //=============================================================
             // Send a message to topic.
-            sender = new ServiceBusClientBuilder()
-                .connectionString(keys.primaryConnectionString())
+            sender = new ServiceBusClientBuilder().connectionString(keys.primaryConnectionString())
                 .sender()
                 .topicName(topicName)
                 .buildClient();
@@ -119,7 +120,8 @@ public final class ServiceBusWithClaimBasedAuthorization {
 
             //=============================================================
             // Delete a namespace
-            System.out.println("Deleting namespace " + namespaceName + " [topic, queues and subscription will delete along with that]...");
+            System.out.println("Deleting namespace " + namespaceName
+                + " [topic, queues and subscription will delete along with that]...");
             // This will delete the namespace and queue within it.
             azureResourceManager.serviceBusNamespaces().deleteById(serviceBusNamespace.id());
             System.out.println("Deleted namespace " + namespaceName + "...");
@@ -150,8 +152,7 @@ public final class ServiceBusWithClaimBasedAuthorization {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

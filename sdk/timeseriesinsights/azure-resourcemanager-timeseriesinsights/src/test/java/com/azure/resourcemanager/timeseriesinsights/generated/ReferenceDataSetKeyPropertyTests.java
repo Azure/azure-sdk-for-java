@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ReferenceDataSetKeyPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReferenceDataSetKeyProperty model =
-            BinaryData.fromString("{\"name\":\"vo\",\"type\":\"Bool\"}").toObject(ReferenceDataSetKeyProperty.class);
-        Assertions.assertEquals("vo", model.name());
-        Assertions.assertEquals(ReferenceDataKeyPropertyType.BOOL, model.type());
+        ReferenceDataSetKeyProperty model = BinaryData.fromString("{\"name\":\"iw\",\"type\":\"DateTime\"}")
+            .toObject(ReferenceDataSetKeyProperty.class);
+        Assertions.assertEquals("iw", model.name());
+        Assertions.assertEquals(ReferenceDataKeyPropertyType.DATE_TIME, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReferenceDataSetKeyProperty model =
-            new ReferenceDataSetKeyProperty().withName("vo").withType(ReferenceDataKeyPropertyType.BOOL);
+        ReferenceDataSetKeyProperty model
+            = new ReferenceDataSetKeyProperty().withName("iw").withType(ReferenceDataKeyPropertyType.DATE_TIME);
         model = BinaryData.fromObject(model).toObject(ReferenceDataSetKeyProperty.class);
-        Assertions.assertEquals("vo", model.name());
-        Assertions.assertEquals(ReferenceDataKeyPropertyType.BOOL, model.type());
+        Assertions.assertEquals("iw", model.name());
+        Assertions.assertEquals(ReferenceDataKeyPropertyType.DATE_TIME, model.type());
     }
 }

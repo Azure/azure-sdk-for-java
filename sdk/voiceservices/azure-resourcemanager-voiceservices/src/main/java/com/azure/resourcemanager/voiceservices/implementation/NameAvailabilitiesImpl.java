@@ -21,22 +21,18 @@ public final class NameAvailabilitiesImpl implements NameAvailabilities {
 
     private final com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager;
 
-    public NameAvailabilitiesImpl(
-        NameAvailabilitiesClient innerClient,
+    public NameAvailabilitiesImpl(NameAvailabilitiesClient innerClient,
         com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityResponse> checkLocalWithResponse(
-        String location, CheckNameAvailabilityRequest body, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkLocalWithResponse(location, body, context);
+    public Response<CheckNameAvailabilityResponse> checkLocalWithResponse(String location,
+        CheckNameAvailabilityRequest body, Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner
+            = this.serviceClient().checkLocalWithResponse(location, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

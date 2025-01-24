@@ -30,8 +30,7 @@ public final class ManagementGroupsImpl implements ManagementGroups {
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    public ManagementGroupsImpl(
-        ManagementGroupsClient innerClient,
+    public ManagementGroupsImpl(ManagementGroupsClient innerClient,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -39,28 +38,20 @@ public final class ManagementGroupsImpl implements ManagementGroups {
 
     public PagedIterable<ManagementGroupInfo> list() {
         PagedIterable<ManagementGroupInfoInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ManagementGroupInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagementGroupInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ManagementGroupInfo> list(String cacheControl, String skiptoken, Context context) {
         PagedIterable<ManagementGroupInfoInner> inner = this.serviceClient().list(cacheControl, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new ManagementGroupInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagementGroupInfoImpl(inner1, this.manager()));
     }
 
-    public Response<ManagementGroup> getWithResponse(
-        String groupId,
-        ManagementGroupExpandType expand,
-        Boolean recurse,
-        String filter,
-        String cacheControl,
-        Context context) {
-        Response<ManagementGroupInner> inner =
-            this.serviceClient().getWithResponse(groupId, expand, recurse, filter, cacheControl, context);
+    public Response<ManagementGroup> getWithResponse(String groupId, ManagementGroupExpandType expand, Boolean recurse,
+        String filter, String cacheControl, Context context) {
+        Response<ManagementGroupInner> inner
+            = this.serviceClient().getWithResponse(groupId, expand, recurse, filter, cacheControl, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagementGroupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -85,13 +76,10 @@ public final class ManagementGroupsImpl implements ManagementGroups {
         }
     }
 
-    public ManagementGroup createOrUpdate(
-        String groupId,
-        CreateManagementGroupRequest createManagementGroupRequest,
-        String cacheControl,
-        Context context) {
-        ManagementGroupInner inner =
-            this.serviceClient().createOrUpdate(groupId, createManagementGroupRequest, cacheControl, context);
+    public ManagementGroup createOrUpdate(String groupId, CreateManagementGroupRequest createManagementGroupRequest,
+        String cacheControl, Context context) {
+        ManagementGroupInner inner
+            = this.serviceClient().createOrUpdate(groupId, createManagementGroupRequest, cacheControl, context);
         if (inner != null) {
             return new ManagementGroupImpl(inner, this.manager());
         } else {
@@ -99,15 +87,12 @@ public final class ManagementGroupsImpl implements ManagementGroups {
         }
     }
 
-    public Response<ManagementGroup> updateWithResponse(
-        String groupId, PatchManagementGroupRequest patchGroupRequest, String cacheControl, Context context) {
-        Response<ManagementGroupInner> inner =
-            this.serviceClient().updateWithResponse(groupId, patchGroupRequest, cacheControl, context);
+    public Response<ManagementGroup> updateWithResponse(String groupId, PatchManagementGroupRequest patchGroupRequest,
+        String cacheControl, Context context) {
+        Response<ManagementGroupInner> inner
+            = this.serviceClient().updateWithResponse(groupId, patchGroupRequest, cacheControl, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagementGroupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -143,14 +128,14 @@ public final class ManagementGroupsImpl implements ManagementGroups {
 
     public PagedIterable<DescendantInfo> getDescendants(String groupId) {
         PagedIterable<DescendantInfoInner> inner = this.serviceClient().getDescendants(groupId);
-        return Utils.mapPage(inner, inner1 -> new DescendantInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DescendantInfoImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DescendantInfo> getDescendants(
-        String groupId, String skiptoken, Integer top, Context context) {
-        PagedIterable<DescendantInfoInner> inner =
-            this.serviceClient().getDescendants(groupId, skiptoken, top, context);
-        return Utils.mapPage(inner, inner1 -> new DescendantInfoImpl(inner1, this.manager()));
+    public PagedIterable<DescendantInfo> getDescendants(String groupId, String skiptoken, Integer top,
+        Context context) {
+        PagedIterable<DescendantInfoInner> inner
+            = this.serviceClient().getDescendants(groupId, skiptoken, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DescendantInfoImpl(inner1, this.manager()));
     }
 
     private ManagementGroupsClient serviceClient() {

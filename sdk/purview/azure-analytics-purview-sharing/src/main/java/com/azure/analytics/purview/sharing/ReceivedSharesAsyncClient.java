@@ -20,14 +20,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewShareClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewShareClient type.
+ */
 @ServiceClient(builder = ReceivedSharesClientBuilder.class, isAsync = true)
 public final class ReceivedSharesAsyncClient {
-    @Generated private final ReceivedSharesImpl serviceClient;
+    @Generated
+    private final ReceivedSharesImpl serviceClient;
 
     /**
      * Initializes an instance of ReceivedSharesAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -37,18 +40,20 @@ public final class ReceivedSharesAsyncClient {
 
     /**
      * Get a received share by unique id.
-     *
-     * <p>Get a received share.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Get a received share.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     shareKind: String(InPlace) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param receivedShareId Id of the received share.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -59,34 +64,39 @@ public final class ReceivedSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getReceivedShareWithResponse(
-            String receivedShareId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getReceivedShareWithResponse(String receivedShareId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getReceivedShareWithResponseAsync(receivedShareId, requestOptions);
     }
 
     /**
      * Create or replace a received share.
-     *
-     * <p>Update changes to a received share.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Update changes to a received share.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     shareKind: String(InPlace) (Required)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     shareKind: String(InPlace) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param receivedShareId Id of the received share.
      * @param receivedShare The received share to create or replace.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -98,20 +108,20 @@ public final class ReceivedSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceReceivedShare(
-            String receivedShareId, BinaryData receivedShare, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateOrReplaceReceivedShareAsync(
-                receivedShareId, receivedShare, requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceReceivedShare(String receivedShareId,
+        BinaryData receivedShare, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateOrReplaceReceivedShareAsync(receivedShareId, receivedShare,
+            requestOptions);
     }
 
     /**
      * Deletes a received share
-     *
-     * <p>Delete a received share.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Delete a received share.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     endTime: OffsetDateTime (Optional)
      *     error (Optional): {
@@ -126,8 +136,9 @@ public final class ReceivedSharesAsyncClient {
      *     startTime: OffsetDateTime (Optional)
      *     status: String(Running/TransientFailure/Succeeded/Failed/NotStarted) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param receivedShareId Id of the received share.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -138,36 +149,35 @@ public final class ReceivedSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, Void> beginDeleteReceivedShare(
-            String receivedShareId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, Void> beginDeleteReceivedShare(String receivedShareId,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginDeleteReceivedShareAsync(receivedShareId, requestOptions);
     }
 
     /**
      * Get a list of attached received shares.
-     *
-     * <p>List attached received shares.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * 
+     * List attached received shares.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     shareKind: String(InPlace) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param referenceName A name that references a data store.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -184,29 +194,28 @@ public final class ReceivedSharesAsyncClient {
 
     /**
      * Get a list of detached received shares.
-     *
-     * <p>List detached received shares.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * 
+     * List detached received shares.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
+     *     shareKind: String(InPlace) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -222,12 +231,19 @@ public final class ReceivedSharesAsyncClient {
 
     /**
      * Activates the tenant and email combination using the activation code received.
-     *
-     * <p>Activates the email registration for current tenant.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Activates the email registration for current tenant.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
@@ -240,11 +256,13 @@ public final class ReceivedSharesAsyncClient {
      *         tenantId: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
@@ -257,8 +275,9 @@ public final class ReceivedSharesAsyncClient {
      *         tenantId: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param tenantEmailRegistration The tenant email registration payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -266,24 +285,31 @@ public final class ReceivedSharesAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a tenant email registration data transfer object along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> activateTenantEmailRegistrationWithResponse(
-            BinaryData tenantEmailRegistration, RequestOptions requestOptions) {
-        return this.serviceClient.activateTenantEmailRegistrationWithResponseAsync(
-                tenantEmailRegistration, requestOptions);
+    public Mono<Response<BinaryData>> activateTenantEmailRegistrationWithResponse(BinaryData tenantEmailRegistration,
+        RequestOptions requestOptions) {
+        return this.serviceClient.activateTenantEmailRegistrationWithResponseAsync(tenantEmailRegistration,
+            requestOptions);
     }
 
     /**
      * Registers the tenant and email combination for activation.
-     *
-     * <p>Register an email for the current tenant.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * 
+     * Register an email for the current tenant.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
@@ -296,15 +322,16 @@ public final class ReceivedSharesAsyncClient {
      *         tenantId: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a tenant email registration data transfer object along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

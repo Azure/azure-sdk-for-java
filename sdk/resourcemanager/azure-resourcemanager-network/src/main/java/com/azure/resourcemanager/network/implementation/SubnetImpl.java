@@ -2,7 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResultInner;
+import com.azure.resourcemanager.network.fluent.models.IpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.Delegation;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
@@ -12,12 +21,6 @@ import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResultInner;
-import com.azure.resourcemanager.network.fluent.models.IpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
-import com.azure.resourcemanager.network.fluent.models.SubnetInner;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -31,16 +34,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 /** Implementation for Subnet and its create and update interfaces. */
 class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
-    implements Subnet,
-        Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
-        Subnet.UpdateDefinition<Network.Update>,
-        Subnet.Update {
+    implements Subnet, Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
+    Subnet.UpdateDefinition<Network.Update>, Subnet.Update {
+
+    private static final ClientLogger LOGGER = new ClientLogger(SubnetImpl.class);
 
     SubnetImpl(SubnetInner inner, NetworkImpl parent) {
         super(inner, parent);
@@ -60,6 +64,14 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     @Override
     public String addressPrefix() {
         return this.innerModel().addressPrefix();
+    }
+
+    @Override
+    public List<String> addressPrefixes() {
+        if (CoreUtils.isNullOrEmpty(this.innerModel().addressPrefixes())) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(this.innerModel().addressPrefixes());
     }
 
     @Override
@@ -157,6 +169,15 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     @Override
     public SubnetImpl withAddressPrefix(String cidr) {
         this.innerModel().withAddressPrefix(cidr);
+        this.innerModel().withAddressPrefixes(null);
+        return this;
+    }
+
+    @Override
+    public SubnetImpl withAddressPrefixes(Collection<String> addressPrefixes) {
+        Objects.requireNonNull(addressPrefixes);
+        this.innerModel().withAddressPrefixes(new ArrayList<>(addressPrefixes));
+        this.innerModel().withAddressPrefix(null);
         return this;
     }
 
@@ -173,13 +194,10 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             }
         }
         if (!found) {
-            this
-                .innerModel()
+            this.innerModel()
                 .serviceEndpoints()
-                .add(
-                    new ServiceEndpointPropertiesFormat()
-                        .withService(service.toString())
-                        .withLocations(new ArrayList<String>()));
+                .add(new ServiceEndpointPropertiesFormat().withService(service.toString())
+                    .withLocations(new ArrayList<String>()));
         }
         return this;
     }
@@ -239,7 +257,20 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             NetworkInterface nic = nics.get(nicID);
             if (nic == null) {
                 //  NIC not previously found, so ask Azure for it
-                nic = this.parent().manager().networkInterfaces().getById(nicID);
+                String resourceType = ResourceUtils.resourceTypeFromResourceId(nicID);
+                if ("networkInterfaces".equalsIgnoreCase(resourceType)) {
+                    // skip other resource types like "bastionHosts"
+                    try {
+                        nic = this.parent().manager().networkInterfaces().getById(nicID);
+                    } catch (ManagementException e) {
+                        if (e.getResponse().getStatusCode() == 404) {
+                            // NIC not found, ignore this ipConfigRef
+                            LOGGER.warning("Network interface not found '{}'", nicID);
+                        } else {
+                            throw LOGGER.logExceptionAsError(e);
+                        }
+                    }
+                }
             }
 
             if (nic == null) {
@@ -265,27 +296,21 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public Set<String> listAvailablePrivateIPAddresses() {
-        Set<String> ipAddresses = new TreeSet<>();
-
-        String cidr = this.addressPrefix();
-        if (cidr == null) {
-            return ipAddresses; // Should never happen, but just in case
+        Set<String> result = Collections.emptySet();
+        if (!CoreUtils.isNullOrEmpty(this.addressPrefixes())) {
+            for (String cidr : this.addressPrefixes()) {
+                // According to our test, when doing "checkIpAddressAvailability", backend knows about which subnet the "startIp"
+                // belongs to, thus we only need to use one of the address prefixes.
+                Set<String> availableIps = listAvailablePrivateIPAddresses(cidr);
+                if (!CoreUtils.isNullOrEmpty(availableIps)) {
+                    result = availableIps;
+                    break;
+                }
+            }
+        } else {
+            result = listAvailablePrivateIPAddresses(this.addressPrefix());
         }
-        String takenIPAddress = cidr.split("/")[0];
-
-        IpAddressAvailabilityResultInner result =
-            this
-                .parent()
-                .manager()
-                .serviceClient()
-                .getVirtualNetworks()
-                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
-        if (result == null || result.availableIpAddresses() == null) {
-            return ipAddresses;
-        }
-
-        ipAddresses.addAll(result.availableIpAddresses());
-        return ipAddresses;
+        return result;
     }
 
     @Override
@@ -343,5 +368,27 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             this.innerModel().withNatGateway(new SubResource().withId(resourceId));
         }
         return this;
+    }
+
+    private Set<String> listAvailablePrivateIPAddresses(String cidr) {
+        Set<String> ipAddresses = new TreeSet<>();
+        if (cidr == null) {
+            return ipAddresses;
+        }
+        String takenIPAddress = cidr.split("/")[0];
+
+        IpAddressAvailabilityResultInner result = this.parent()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
+        if (result == null
+            // there's a case when user doesn't have the permission to query, result.availableIpAddresses() will be null
+            || result.availableIpAddresses() == null) {
+            return ipAddresses;
+        }
+
+        ipAddresses.addAll(result.availableIpAddresses());
+        return ipAddresses;
     }
 }

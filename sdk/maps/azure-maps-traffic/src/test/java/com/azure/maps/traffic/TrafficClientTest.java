@@ -120,11 +120,11 @@ public class TrafficClientTest extends TrafficClientTestBase {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficFlowSegmentOptions trafficFlowSegmentOptions
             = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
-            .setOpenLr(false)
-            .setZoom(-1000)
-            .setCoordinates(new GeoPosition(45, 45))
-            .setThickness(2)
-            .setUnit(SpeedUnit.MPH);
+                .setOpenLr(false)
+                .setZoom(-1000)
+                .setCoordinates(new GeoPosition(45, 45))
+                .setThickness(2)
+                .setUnit(SpeedUnit.MPH);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTrafficFlowSegmentWithResponse(trafficFlowSegmentOptions, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -164,11 +164,11 @@ public class TrafficClientTest extends TrafficClientTestBase {
     public void testInvalidGetTrafficIncidentTileWithResponse(HttpClient httpClient,
         TrafficServiceVersion serviceVersion) {
         client = getTrafficClient(httpClient, serviceVersion);
-        TrafficIncidentTileOptions trafficIncidentTileOptions = new TrafficIncidentTileOptions().setFormat(
-                TileFormat.PNG)
-            .setTrafficIncidentTileStyle(TrafficIncidentTileStyle.NIGHT)
-            .setTileIndex(new TileIndex().setX(175).setY(408))
-            .setZoom(-1000);
+        TrafficIncidentTileOptions trafficIncidentTileOptions
+            = new TrafficIncidentTileOptions().setFormat(TileFormat.PNG)
+                .setTrafficIncidentTileStyle(TrafficIncidentTileStyle.NIGHT)
+                .setTileIndex(new TileIndex().setX(175).setY(408))
+                .setZoom(-1000);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTrafficIncidentTileWithResponse(trafficIncidentTileOptions, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -222,14 +222,14 @@ public class TrafficClientTest extends TrafficClientTestBase {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentDetailOptions trafficIncidentDetailOptions
             = new TrafficIncidentDetailOptions().setIncidentDetailStyle(IncidentDetailStyle.S3)
-            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(-1000)
-            .setTrafficmodelId("1335294634919")
-            .setExpandCluster(false)
-            .setOriginalPosition(false)
-            .setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
-            .setLanguage("en")
-            .setProjectionStandard(ProjectionStandard.EPSG900913);
+                .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+                .setBoundingZoom(-1000)
+                .setTrafficmodelId("1335294634919")
+                .setExpandCluster(false)
+                .setOriginalPosition(false)
+                .setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
+                .setLanguage("en")
+                .setProjectionStandard(ProjectionStandard.EPSG900913);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -276,10 +276,10 @@ public class TrafficClientTest extends TrafficClientTestBase {
         client = getTrafficClient(httpClient, serviceVersion);
         TrafficIncidentViewportOptions trafficIncidentViewportOptions
             = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(-1000)
-            .setOverviewZoom(2)
-            .setCopyright(true);
+                .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+                .setBoundingZoom(-1000)
+                .setOverviewZoom(2)
+                .setCopyright(true);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTrafficIncidentViewportWithResponse(trafficIncidentViewportOptions, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());

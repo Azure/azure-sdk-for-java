@@ -55,7 +55,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
     private WinRMConfiguration winRM;
 
     /*
-     * Indicates whether VMAgent Platform Updates is enabled for the Windows virtual machine. Default value is false.
+     * Indicates whether VMAgent Platform Updates are enabled for the Windows Virtual Machine.
      */
     private Boolean enableVMAgentPlatformUpdates;
 
@@ -207,25 +207,13 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
     }
 
     /**
-     * Get the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
-     * Windows virtual machine. Default value is false.
+     * Get the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates are enabled for the
+     * Windows Virtual Machine.
      * 
      * @return the enableVMAgentPlatformUpdates value.
      */
     public Boolean enableVMAgentPlatformUpdates() {
         return this.enableVMAgentPlatformUpdates;
-    }
-
-    /**
-     * Set the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
-     * Windows virtual machine. Default value is false.
-     * 
-     * @param enableVMAgentPlatformUpdates the enableVMAgentPlatformUpdates value to set.
-     * @return the WindowsConfiguration object itself.
-     */
-    public WindowsConfiguration withEnableVMAgentPlatformUpdates(Boolean enableVMAgentPlatformUpdates) {
-        this.enableVMAgentPlatformUpdates = enableVMAgentPlatformUpdates;
-        return this;
     }
 
     /**
@@ -258,7 +246,6 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("patchSettings", this.patchSettings);
         jsonWriter.writeJsonField("winRM", this.winRM);
-        jsonWriter.writeBooleanField("enableVMAgentPlatformUpdates", this.enableVMAgentPlatformUpdates);
         return jsonWriter.writeEndObject();
     }
 

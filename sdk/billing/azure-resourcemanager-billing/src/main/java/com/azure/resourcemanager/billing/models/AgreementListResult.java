@@ -5,41 +5,38 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billing.fluent.models.AgreementInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of listing agreements. */
+/**
+ * A container for a list of resources.
+ */
 @Immutable
-public final class AgreementListResult {
-    /*
-     * The list of agreements.
-     */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<AgreementInner> value;
-
+public final class AgreementListResult implements JsonSerializable<AgreementListResult> {
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AgreementListResult class. */
+    /*
+     * The list of resources.
+     */
+    private List<AgreementInner> value;
+
+    /**
+     * Creates an instance of AgreementListResult class.
+     */
     public AgreementListResult() {
     }
 
     /**
-     * Get the value property: The list of agreements.
-     *
-     * @return the value value.
-     */
-    public List<AgreementInner> value() {
-        return this.value;
-    }
-
-    /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,13 +44,60 @@ public final class AgreementListResult {
     }
 
     /**
+     * Get the value property: The list of resources.
+     * 
+     * @return the value value.
+     */
+    public List<AgreementInner> value() {
+        return this.value;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgreementListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgreementListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgreementListResult.
+     */
+    public static AgreementListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgreementListResult deserializedAgreementListResult = new AgreementListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedAgreementListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<AgreementInner> value = reader.readArray(reader1 -> AgreementInner.fromJson(reader1));
+                    deserializedAgreementListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgreementListResult;
+        });
     }
 }

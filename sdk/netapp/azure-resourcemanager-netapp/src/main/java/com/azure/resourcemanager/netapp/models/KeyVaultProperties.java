@@ -140,11 +140,6 @@ public final class KeyVaultProperties implements JsonSerializable<KeyVaultProper
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property keyName in model KeyVaultProperties"));
         }
-        if (keyVaultResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property keyVaultResourceId in model KeyVaultProperties"));
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultProperties.class);
@@ -181,10 +176,10 @@ public final class KeyVaultProperties implements JsonSerializable<KeyVaultProper
                     deserializedKeyVaultProperties.keyVaultUri = reader.getString();
                 } else if ("keyName".equals(fieldName)) {
                     deserializedKeyVaultProperties.keyName = reader.getString();
-                } else if ("keyVaultResourceId".equals(fieldName)) {
-                    deserializedKeyVaultProperties.keyVaultResourceId = reader.getString();
                 } else if ("keyVaultId".equals(fieldName)) {
                     deserializedKeyVaultProperties.keyVaultId = reader.getString();
+                } else if ("keyVaultResourceId".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyVaultResourceId = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     deserializedKeyVaultProperties.status = KeyVaultStatus.fromString(reader.getString());
                 } else {

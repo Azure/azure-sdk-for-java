@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.datamigration.generated;
 
-/** Samples for Usages List. */
+/**
+ * Samples for Usages List.
+ */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Usages_List.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Usages_List.json
      */
     /**
      * Sample code: Services_Usages.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesUsages(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {

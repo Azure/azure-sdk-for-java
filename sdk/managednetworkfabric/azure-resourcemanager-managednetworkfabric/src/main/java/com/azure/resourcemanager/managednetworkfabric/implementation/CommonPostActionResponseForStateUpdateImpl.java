@@ -14,8 +14,7 @@ public final class CommonPostActionResponseForStateUpdateImpl implements CommonP
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    CommonPostActionResponseForStateUpdateImpl(
-        CommonPostActionResponseForStateUpdateInner innerObject,
+    CommonPostActionResponseForStateUpdateImpl(CommonPostActionResponseForStateUpdateInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -147,22 +147,18 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Workflow create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workflow create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -177,49 +173,41 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Workflow apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workflow apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .createOrUpdateWithResponse(resourceGroupName, workflowName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
     WorkflowImpl(WorkflowInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workflowName = Utils.getValueFromIdByName(innerObject.id(), "workflows");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workflowName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workflows");
     }
 
     public Workflow refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .getByResourceGroupWithResponse(resourceGroupName, workflowName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .getByResourceGroupWithResponse(resourceGroupName, workflowName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workflow refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkflows()
-                .getByResourceGroupWithResponse(resourceGroupName, workflowName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkflows()
+            .getByResourceGroupWithResponse(resourceGroupName, workflowName, context)
+            .getValue();
         return this;
     }
 
@@ -239,10 +227,9 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
         serviceManager.workflows().enable(resourceGroupName, workflowName);
     }
 
-    public Response<Object> generateUpgradedDefinitionWithResponse(
-        GenerateUpgradedDefinitionParameters parameters, Context context) {
-        return serviceManager
-            .workflows()
+    public Response<Object> generateUpgradedDefinitionWithResponse(GenerateUpgradedDefinitionParameters parameters,
+        Context context) {
+        return serviceManager.workflows()
             .generateUpgradedDefinitionWithResponse(resourceGroupName, workflowName, parameters, context);
     }
 
@@ -250,10 +237,9 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
         return serviceManager.workflows().generateUpgradedDefinition(resourceGroupName, workflowName, parameters);
     }
 
-    public Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(
-        GetCallbackUrlParameters listCallbackUrl, Context context) {
-        return serviceManager
-            .workflows()
+    public Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(GetCallbackUrlParameters listCallbackUrl,
+        Context context) {
+        return serviceManager.workflows()
             .listCallbackUrlWithResponse(resourceGroupName, workflowName, listCallbackUrl, context);
     }
 
@@ -278,8 +264,7 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Response<Void> regenerateAccessKeyWithResponse(RegenerateActionParameter keyType, Context context) {
-        return serviceManager
-            .workflows()
+        return serviceManager.workflows()
             .regenerateAccessKeyWithResponse(resourceGroupName, workflowName, keyType, context);
     }
 
@@ -288,8 +273,7 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     }
 
     public Response<Void> validateByResourceGroupWithResponse(WorkflowInner validate, Context context) {
-        return serviceManager
-            .workflows()
+        return serviceManager.workflows()
             .validateByResourceGroupWithResponse(resourceGroupName, workflowName, validate, context);
     }
 

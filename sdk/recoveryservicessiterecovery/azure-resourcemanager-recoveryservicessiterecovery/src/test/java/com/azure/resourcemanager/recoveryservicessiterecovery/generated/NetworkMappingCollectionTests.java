@@ -34,12 +34,15 @@ public final class NetworkMappingCollectionTests {
     public void testSerialize() throws Exception {
         NetworkMappingCollection model
             = new NetworkMappingCollection().withValue(Arrays.asList(new NetworkMappingInner()
-                .withProperties(
-                    new NetworkMappingProperties().withState("yiuokktwh").withPrimaryNetworkFriendlyName("xw")
-                        .withPrimaryNetworkId("wqsmbsur").withPrimaryFabricFriendlyName("imoryocfsfksym")
-                        .withRecoveryNetworkFriendlyName("ys").withRecoveryNetworkId("i")
-                        .withRecoveryFabricArmId("xhqyudxorrqnb").withRecoveryFabricFriendlyName("czvyifq")
-                        .withFabricSpecificSettings(new NetworkMappingFabricSpecificSettings()))
+                .withProperties(new NetworkMappingProperties().withState("yiuokktwh")
+                    .withPrimaryNetworkFriendlyName("xw")
+                    .withPrimaryNetworkId("wqsmbsur")
+                    .withPrimaryFabricFriendlyName("imoryocfsfksym")
+                    .withRecoveryNetworkFriendlyName("ys")
+                    .withRecoveryNetworkId("i")
+                    .withRecoveryFabricArmId("xhqyudxorrqnb")
+                    .withRecoveryFabricFriendlyName("czvyifq")
+                    .withFabricSpecificSettings(new NetworkMappingFabricSpecificSettings()))
                 .withLocation("dvjsllrmvvdf"))).withNextLink("sovmyokacspkwl");
         model = BinaryData.fromObject(model).toObject(NetworkMappingCollection.class);
         Assertions.assertEquals("yiuokktwh", model.value().get(0).properties().state());

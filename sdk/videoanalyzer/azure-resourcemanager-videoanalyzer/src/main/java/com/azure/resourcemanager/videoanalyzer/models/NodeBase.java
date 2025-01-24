@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.SourceNodeBase", value = SourceNodeBase.class),
     @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.ProcessorNodeBase", value = ProcessorNodeBase.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.SinkNodeBase", value = SinkNodeBase.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.SinkNodeBase", value = SinkNodeBase.class) })
 @Fluent
 public class NodeBase {
     /*

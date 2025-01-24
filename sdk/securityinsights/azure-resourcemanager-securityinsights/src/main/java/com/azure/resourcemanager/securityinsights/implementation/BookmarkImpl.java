@@ -7,9 +7,7 @@ package com.azure.resourcemanager.securityinsights.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.BookmarkInner;
-import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.Bookmark;
-import com.azure.resourcemanager.securityinsights.models.BookmarkEntityMappings;
 import com.azure.resourcemanager.securityinsights.models.IncidentInfo;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
 import java.time.OffsetDateTime;
@@ -98,33 +96,6 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
         return this.innerModel().incidentInfo();
     }
 
-    public List<BookmarkEntityMappings> entityMappings() {
-        List<BookmarkEntityMappings> inner = this.innerModel().entityMappings();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<AttackTactic> tactics() {
-        List<AttackTactic> inner = this.innerModel().tactics();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<String> techniques() {
-        List<String> inner = this.innerModel().techniques();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -150,23 +121,18 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
     }
 
     public Bookmark create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Bookmark create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -181,52 +147,43 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
     }
 
     public Bookmark apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Bookmark apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    BookmarkImpl(
-        BookmarkInner innerObject, com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
+    BookmarkImpl(BookmarkInner innerObject,
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.bookmarkId = Utils.getValueFromIdByName(innerObject.id(), "bookmarks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.bookmarkId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bookmarks");
     }
 
     public Bookmark refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .getWithResponse(resourceGroupName, workspaceName, bookmarkId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .getWithResponse(resourceGroupName, workspaceName, bookmarkId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Bookmark refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .getWithResponse(resourceGroupName, workspaceName, bookmarkId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .getWithResponse(resourceGroupName, workspaceName, bookmarkId, context)
+            .getValue();
         return this;
     }
 
@@ -297,21 +254,6 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
 
     public BookmarkImpl withIncidentInfo(IncidentInfo incidentInfo) {
         this.innerModel().withIncidentInfo(incidentInfo);
-        return this;
-    }
-
-    public BookmarkImpl withEntityMappings(List<BookmarkEntityMappings> entityMappings) {
-        this.innerModel().withEntityMappings(entityMappings);
-        return this;
-    }
-
-    public BookmarkImpl withTactics(List<AttackTactic> tactics) {
-        this.innerModel().withTactics(tactics);
-        return this;
-    }
-
-    public BookmarkImpl withTechniques(List<String> techniques) {
-        this.innerModel().withTechniques(techniques);
         return this;
     }
 }

@@ -6,17 +6,21 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters supplied to the RegenerateKey operation.
  */
 @Fluent
-public final class BatchAccountRegenerateKeyParameters {
+public final class BatchAccountRegenerateKeyParameters
+    implements JsonSerializable<BatchAccountRegenerateKeyParameters> {
     /*
      * The type of account key to regenerate.
      */
-    @JsonProperty(value = "keyName", required = true)
     private AccountKeyType keyName;
 
     /**
@@ -52,10 +56,50 @@ public final class BatchAccountRegenerateKeyParameters {
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property keyName in model BatchAccountRegenerateKeyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyName in model BatchAccountRegenerateKeyParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BatchAccountRegenerateKeyParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyName", this.keyName == null ? null : this.keyName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchAccountRegenerateKeyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchAccountRegenerateKeyParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchAccountRegenerateKeyParameters.
+     */
+    public static BatchAccountRegenerateKeyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchAccountRegenerateKeyParameters deserializedBatchAccountRegenerateKeyParameters
+                = new BatchAccountRegenerateKeyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyName".equals(fieldName)) {
+                    deserializedBatchAccountRegenerateKeyParameters.keyName
+                        = AccountKeyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchAccountRegenerateKeyParameters;
+        });
+    }
 }

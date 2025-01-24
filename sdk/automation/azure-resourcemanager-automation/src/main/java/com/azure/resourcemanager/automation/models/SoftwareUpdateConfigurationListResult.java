@@ -7,11 +7,13 @@ package com.azure.resourcemanager.automation.models;
 import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of SoftwareUpdateConfigurationListResult. */
+/**
+ * An immutable client-side representation of SoftwareUpdateConfigurationListResult.
+ */
 public interface SoftwareUpdateConfigurationListResult {
     /**
      * Gets the value property: outer object returned when listing all software update configurations.
-     *
+     * 
      * @return the value value.
      */
     List<SoftwareUpdateConfigurationCollectionItem> value();
@@ -19,7 +21,7 @@ public interface SoftwareUpdateConfigurationListResult {
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationListResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     SoftwareUpdateConfigurationListResultInner innerModel();

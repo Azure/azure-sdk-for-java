@@ -27,10 +27,13 @@ public final class OrganizationsListResponseTests {
     public void testSerialize() throws Exception {
         OrganizationsListResponse model = new OrganizationsListResponse().withValue(Arrays.asList(
             new OrganizationResourceInner().withOrganizationId("nqpjwnzlljfmpp")
-                .withOrganizationName("bvmgxsabkyqduuji").withBillingSource(BillingSource.NEWRELIC),
-            new OrganizationResourceInner().withOrganizationId("tmrldhugjzzdatq").withOrganizationName("oc")
+                .withOrganizationName("bvmgxsabkyqduuji")
+                .withBillingSource(BillingSource.NEWRELIC),
+            new OrganizationResourceInner().withOrganizationId("tmrldhugjzzdatq")
+                .withOrganizationName("oc")
                 .withBillingSource(BillingSource.AZURE),
-            new OrganizationResourceInner().withOrganizationId("xolniwpwcukjfk").withOrganizationName("awxklr")
+            new OrganizationResourceInner().withOrganizationId("xolniwpwcukjfk")
+                .withOrganizationName("awxklr")
                 .withBillingSource(BillingSource.NEWRELIC)))
             .withNextLink("ndlik");
         model = BinaryData.fromObject(model).toObject(OrganizationsListResponse.class);

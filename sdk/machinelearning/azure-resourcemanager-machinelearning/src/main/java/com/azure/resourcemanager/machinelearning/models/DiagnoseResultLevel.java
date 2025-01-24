@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Level of workspace setup error. */
+/**
+ * Level of workspace setup error.
+ */
 public final class DiagnoseResultLevel extends ExpandableStringEnum<DiagnoseResultLevel> {
-    /** Static value Warning for DiagnoseResultLevel. */
+    /**
+     * Static value Warning for DiagnoseResultLevel.
+     */
     public static final DiagnoseResultLevel WARNING = fromString("Warning");
 
-    /** Static value Error for DiagnoseResultLevel. */
+    /**
+     * Static value Error for DiagnoseResultLevel.
+     */
     public static final DiagnoseResultLevel ERROR = fromString("Error");
 
-    /** Static value Information for DiagnoseResultLevel. */
+    /**
+     * Static value Information for DiagnoseResultLevel.
+     */
     public static final DiagnoseResultLevel INFORMATION = fromString("Information");
 
     /**
      * Creates a new instance of DiagnoseResultLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class DiagnoseResultLevel extends ExpandableStringEnum<DiagnoseResu
 
     /**
      * Creates or finds a DiagnoseResultLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiagnoseResultLevel.
      */
-    @JsonCreator
     public static DiagnoseResultLevel fromString(String name) {
         return fromString(name, DiagnoseResultLevel.class);
     }
 
     /**
      * Gets known DiagnoseResultLevel values.
-     *
+     * 
      * @return known DiagnoseResultLevel values.
      */
     public static Collection<DiagnoseResultLevel> values() {

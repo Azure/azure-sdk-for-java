@@ -7,60 +7,62 @@ package com.azure.resourcemanager.deviceprovisioningservices.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for IotDpsClient class. */
+/**
+ * The interface for IotDpsClient class.
+ */
 public interface IotDpsClient {
     /**
      * Gets The subscription identifier.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the DpsCertificatesClient object to access its operations.
-     *
+     * 
      * @return the DpsCertificatesClient object.
      */
     DpsCertificatesClient getDpsCertificates();
 
     /**
      * Gets the IotDpsResourcesClient object to access its operations.
-     *
+     * 
      * @return the IotDpsResourcesClient object.
      */
     IotDpsResourcesClient getIotDpsResources();

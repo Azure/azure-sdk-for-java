@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.resourcemanager.resources.fluentcore.arm.collection;
-
 
 import reactor.core.publisher.Mono;
 
@@ -22,7 +20,6 @@ public interface SupportsGettingByName<T> {
      * @return An immutable representation of the resource
      */
     T getByName(String name);
-
 
     /**
      * Gets the information about a resource based on the resource name ithin the current resource group.

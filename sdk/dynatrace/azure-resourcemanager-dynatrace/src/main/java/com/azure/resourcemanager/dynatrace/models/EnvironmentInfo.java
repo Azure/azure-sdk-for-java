@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Dynatrace Environment Information. */
+/**
+ * Dynatrace Environment Information.
+ */
 @Fluent
-public final class EnvironmentInfo {
+public final class EnvironmentInfo implements JsonSerializable<EnvironmentInfo> {
     /*
      * Id of the environment created
      */
-    @JsonProperty(value = "environmentId")
     private String environmentId;
 
     /*
      * Ingestion key of the environment
      */
-    @JsonProperty(value = "ingestionKey")
     private String ingestionKey;
 
     /*
      * Ingestion endpoint used for sending logs
      */
-    @JsonProperty(value = "logsIngestionEndpoint")
     private String logsIngestionEndpoint;
 
     /*
      * Landing URL for Dynatrace environment
      */
-    @JsonProperty(value = "landingURL")
     private String landingUrl;
 
-    /** Creates an instance of EnvironmentInfo class. */
+    /**
+     * Creates an instance of EnvironmentInfo class.
+     */
     public EnvironmentInfo() {
     }
 
     /**
      * Get the environmentId property: Id of the environment created.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -49,7 +53,7 @@ public final class EnvironmentInfo {
 
     /**
      * Set the environmentId property: Id of the environment created.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the EnvironmentInfo object itself.
      */
@@ -60,7 +64,7 @@ public final class EnvironmentInfo {
 
     /**
      * Get the ingestionKey property: Ingestion key of the environment.
-     *
+     * 
      * @return the ingestionKey value.
      */
     public String ingestionKey() {
@@ -69,7 +73,7 @@ public final class EnvironmentInfo {
 
     /**
      * Set the ingestionKey property: Ingestion key of the environment.
-     *
+     * 
      * @param ingestionKey the ingestionKey value to set.
      * @return the EnvironmentInfo object itself.
      */
@@ -80,7 +84,7 @@ public final class EnvironmentInfo {
 
     /**
      * Get the logsIngestionEndpoint property: Ingestion endpoint used for sending logs.
-     *
+     * 
      * @return the logsIngestionEndpoint value.
      */
     public String logsIngestionEndpoint() {
@@ -89,7 +93,7 @@ public final class EnvironmentInfo {
 
     /**
      * Set the logsIngestionEndpoint property: Ingestion endpoint used for sending logs.
-     *
+     * 
      * @param logsIngestionEndpoint the logsIngestionEndpoint value to set.
      * @return the EnvironmentInfo object itself.
      */
@@ -100,7 +104,7 @@ public final class EnvironmentInfo {
 
     /**
      * Get the landingUrl property: Landing URL for Dynatrace environment.
-     *
+     * 
      * @return the landingUrl value.
      */
     public String landingUrl() {
@@ -109,7 +113,7 @@ public final class EnvironmentInfo {
 
     /**
      * Set the landingUrl property: Landing URL for Dynatrace environment.
-     *
+     * 
      * @param landingUrl the landingUrl value to set.
      * @return the EnvironmentInfo object itself.
      */
@@ -120,9 +124,54 @@ public final class EnvironmentInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentId", this.environmentId);
+        jsonWriter.writeStringField("ingestionKey", this.ingestionKey);
+        jsonWriter.writeStringField("logsIngestionEndpoint", this.logsIngestionEndpoint);
+        jsonWriter.writeStringField("landingURL", this.landingUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentInfo.
+     */
+    public static EnvironmentInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentInfo deserializedEnvironmentInfo = new EnvironmentInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentId".equals(fieldName)) {
+                    deserializedEnvironmentInfo.environmentId = reader.getString();
+                } else if ("ingestionKey".equals(fieldName)) {
+                    deserializedEnvironmentInfo.ingestionKey = reader.getString();
+                } else if ("logsIngestionEndpoint".equals(fieldName)) {
+                    deserializedEnvironmentInfo.logsIngestionEndpoint = reader.getString();
+                } else if ("landingURL".equals(fieldName)) {
+                    deserializedEnvironmentInfo.landingUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentInfo;
+        });
     }
 }

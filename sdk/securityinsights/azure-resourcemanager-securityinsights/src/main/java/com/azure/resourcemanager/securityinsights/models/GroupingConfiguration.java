@@ -5,62 +5,68 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** Grouping configuration property bag. */
+/**
+ * Grouping configuration property bag.
+ */
 @Fluent
-public final class GroupingConfiguration {
+public final class GroupingConfiguration implements JsonSerializable<GroupingConfiguration> {
     /*
      * Grouping enabled
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * Re-open closed matching incidents
      */
-    @JsonProperty(value = "reopenClosedIncident", required = true)
     private boolean reopenClosedIncident;
 
     /*
      * Limit the group to alerts created within the lookback duration (in ISO 8601 duration format)
      */
-    @JsonProperty(value = "lookbackDuration", required = true)
     private Duration lookbackDuration;
 
     /*
      * Grouping matching method. When method is Selected at least one of groupByEntities, groupByAlertDetails,
      * groupByCustomDetails must be provided and not empty.
      */
-    @JsonProperty(value = "matchingMethod", required = true)
     private MatchingMethod matchingMethod;
 
     /*
      * A list of entity types to group by (when matchingMethod is Selected). Only entities defined in the current alert
      * rule may be used.
      */
-    @JsonProperty(value = "groupByEntities")
     private List<EntityMappingType> groupByEntities;
 
     /*
      * A list of alert details to group by (when matchingMethod is Selected)
      */
-    @JsonProperty(value = "groupByAlertDetails")
     private List<AlertDetail> groupByAlertDetails;
 
     /*
      * A list of custom details keys to group by (when matchingMethod is Selected). Only keys defined in the current
      * alert rule may be used.
      */
-    @JsonProperty(value = "groupByCustomDetails")
     private List<String> groupByCustomDetails;
 
     /**
+     * Creates an instance of GroupingConfiguration class.
+     */
+    public GroupingConfiguration() {
+    }
+
+    /**
      * Get the enabled property: Grouping enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -69,7 +75,7 @@ public final class GroupingConfiguration {
 
     /**
      * Set the enabled property: Grouping enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the GroupingConfiguration object itself.
      */
@@ -80,7 +86,7 @@ public final class GroupingConfiguration {
 
     /**
      * Get the reopenClosedIncident property: Re-open closed matching incidents.
-     *
+     * 
      * @return the reopenClosedIncident value.
      */
     public boolean reopenClosedIncident() {
@@ -89,7 +95,7 @@ public final class GroupingConfiguration {
 
     /**
      * Set the reopenClosedIncident property: Re-open closed matching incidents.
-     *
+     * 
      * @param reopenClosedIncident the reopenClosedIncident value to set.
      * @return the GroupingConfiguration object itself.
      */
@@ -101,7 +107,7 @@ public final class GroupingConfiguration {
     /**
      * Get the lookbackDuration property: Limit the group to alerts created within the lookback duration (in ISO 8601
      * duration format).
-     *
+     * 
      * @return the lookbackDuration value.
      */
     public Duration lookbackDuration() {
@@ -111,7 +117,7 @@ public final class GroupingConfiguration {
     /**
      * Set the lookbackDuration property: Limit the group to alerts created within the lookback duration (in ISO 8601
      * duration format).
-     *
+     * 
      * @param lookbackDuration the lookbackDuration value to set.
      * @return the GroupingConfiguration object itself.
      */
@@ -123,7 +129,7 @@ public final class GroupingConfiguration {
     /**
      * Get the matchingMethod property: Grouping matching method. When method is Selected at least one of
      * groupByEntities, groupByAlertDetails, groupByCustomDetails must be provided and not empty.
-     *
+     * 
      * @return the matchingMethod value.
      */
     public MatchingMethod matchingMethod() {
@@ -133,7 +139,7 @@ public final class GroupingConfiguration {
     /**
      * Set the matchingMethod property: Grouping matching method. When method is Selected at least one of
      * groupByEntities, groupByAlertDetails, groupByCustomDetails must be provided and not empty.
-     *
+     * 
      * @param matchingMethod the matchingMethod value to set.
      * @return the GroupingConfiguration object itself.
      */
@@ -145,7 +151,7 @@ public final class GroupingConfiguration {
     /**
      * Get the groupByEntities property: A list of entity types to group by (when matchingMethod is Selected). Only
      * entities defined in the current alert rule may be used.
-     *
+     * 
      * @return the groupByEntities value.
      */
     public List<EntityMappingType> groupByEntities() {
@@ -155,7 +161,7 @@ public final class GroupingConfiguration {
     /**
      * Set the groupByEntities property: A list of entity types to group by (when matchingMethod is Selected). Only
      * entities defined in the current alert rule may be used.
-     *
+     * 
      * @param groupByEntities the groupByEntities value to set.
      * @return the GroupingConfiguration object itself.
      */
@@ -166,7 +172,7 @@ public final class GroupingConfiguration {
 
     /**
      * Get the groupByAlertDetails property: A list of alert details to group by (when matchingMethod is Selected).
-     *
+     * 
      * @return the groupByAlertDetails value.
      */
     public List<AlertDetail> groupByAlertDetails() {
@@ -175,7 +181,7 @@ public final class GroupingConfiguration {
 
     /**
      * Set the groupByAlertDetails property: A list of alert details to group by (when matchingMethod is Selected).
-     *
+     * 
      * @param groupByAlertDetails the groupByAlertDetails value to set.
      * @return the GroupingConfiguration object itself.
      */
@@ -187,7 +193,7 @@ public final class GroupingConfiguration {
     /**
      * Get the groupByCustomDetails property: A list of custom details keys to group by (when matchingMethod is
      * Selected). Only keys defined in the current alert rule may be used.
-     *
+     * 
      * @return the groupByCustomDetails value.
      */
     public List<String> groupByCustomDetails() {
@@ -197,7 +203,7 @@ public final class GroupingConfiguration {
     /**
      * Set the groupByCustomDetails property: A list of custom details keys to group by (when matchingMethod is
      * Selected). Only keys defined in the current alert rule may be used.
-     *
+     * 
      * @param groupByCustomDetails the groupByCustomDetails value to set.
      * @return the GroupingConfiguration object itself.
      */
@@ -208,23 +214,86 @@ public final class GroupingConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (lookbackDuration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lookbackDuration in model GroupingConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lookbackDuration in model GroupingConfiguration"));
         }
         if (matchingMethod() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property matchingMethod in model GroupingConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property matchingMethod in model GroupingConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GroupingConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeBooleanField("reopenClosedIncident", this.reopenClosedIncident);
+        jsonWriter.writeStringField("lookbackDuration", CoreUtils.durationToStringWithDays(this.lookbackDuration));
+        jsonWriter.writeStringField("matchingMethod",
+            this.matchingMethod == null ? null : this.matchingMethod.toString());
+        jsonWriter.writeArrayField("groupByEntities", this.groupByEntities,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("groupByAlertDetails", this.groupByAlertDetails,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("groupByCustomDetails", this.groupByCustomDetails,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupingConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupingConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GroupingConfiguration.
+     */
+    public static GroupingConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupingConfiguration deserializedGroupingConfiguration = new GroupingConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedGroupingConfiguration.enabled = reader.getBoolean();
+                } else if ("reopenClosedIncident".equals(fieldName)) {
+                    deserializedGroupingConfiguration.reopenClosedIncident = reader.getBoolean();
+                } else if ("lookbackDuration".equals(fieldName)) {
+                    deserializedGroupingConfiguration.lookbackDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("matchingMethod".equals(fieldName)) {
+                    deserializedGroupingConfiguration.matchingMethod = MatchingMethod.fromString(reader.getString());
+                } else if ("groupByEntities".equals(fieldName)) {
+                    List<EntityMappingType> groupByEntities
+                        = reader.readArray(reader1 -> EntityMappingType.fromString(reader1.getString()));
+                    deserializedGroupingConfiguration.groupByEntities = groupByEntities;
+                } else if ("groupByAlertDetails".equals(fieldName)) {
+                    List<AlertDetail> groupByAlertDetails
+                        = reader.readArray(reader1 -> AlertDetail.fromString(reader1.getString()));
+                    deserializedGroupingConfiguration.groupByAlertDetails = groupByAlertDetails;
+                } else if ("groupByCustomDetails".equals(fieldName)) {
+                    List<String> groupByCustomDetails = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGroupingConfiguration.groupByCustomDetails = groupByCustomDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupingConfiguration;
+        });
+    }
 }

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceConfigurationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceConfigurationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"sprozvcput\",\"port\":7394887039726775075,\"provisioningState\":\"Creating\"},\"id\":\"datscmd\",\"name\":\"pjhulsuuvmkj\",\"type\":\"zkrwfn\"},{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"jpslwejd\",\"port\":2711659806667039097,\"provisioningState\":\"Succeeded\"},\"id\":\"psoacctazakljl\",\"name\":\"hbcryffdfdosyge\",\"type\":\"paojakhmsbzjh\"},{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"vdphlxaolthqtr\",\"port\":2607282935918519139,\"provisioningState\":\"Failed\"},\"id\":\"fsinzgvfcjrwzoxx\",\"name\":\"tfell\",\"type\":\"wfzitonpeqfpjk\"}],\"nextLink\":\"xofpdvhpfxxypi\"}")
-                .toObject(ServiceConfigurationList.class);
+        ServiceConfigurationList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"sprozvcput\",\"port\":7394887039726775075,\"provisioningState\":\"Creating\"},\"id\":\"datscmd\",\"name\":\"pjhulsuuvmkj\",\"type\":\"zkrwfn\"},{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"jpslwejd\",\"port\":2711659806667039097,\"provisioningState\":\"Succeeded\"},\"id\":\"psoacctazakljl\",\"name\":\"hbcryffdfdosyge\",\"type\":\"paojakhmsbzjh\"},{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"vdphlxaolthqtr\",\"port\":2607282935918519139,\"provisioningState\":\"Failed\"},\"id\":\"fsinzgvfcjrwzoxx\",\"name\":\"tfell\",\"type\":\"wfzitonpeqfpjk\"}],\"nextLink\":\"xofpdvhpfxxypi\"}")
+            .toObject(ServiceConfigurationList.class);
         Assertions.assertEquals(ServiceName.SSH, model.value().get(0).serviceName());
         Assertions.assertEquals("sprozvcput", model.value().get(0).resourceId());
         Assertions.assertEquals(7394887039726775075L, model.value().get(0).port());
@@ -27,24 +25,17 @@ public final class ServiceConfigurationListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceConfigurationList model =
-            new ServiceConfigurationList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ServiceConfigurationResourceInner()
-                                .withServiceName(ServiceName.SSH)
-                                .withResourceId("sprozvcput")
-                                .withPort(7394887039726775075L),
-                            new ServiceConfigurationResourceInner()
-                                .withServiceName(ServiceName.WAC)
-                                .withResourceId("jpslwejd")
-                                .withPort(2711659806667039097L),
-                            new ServiceConfigurationResourceInner()
-                                .withServiceName(ServiceName.SSH)
-                                .withResourceId("vdphlxaolthqtr")
-                                .withPort(2607282935918519139L)))
-                .withNextLink("xofpdvhpfxxypi");
+        ServiceConfigurationList model = new ServiceConfigurationList().withValue(Arrays.asList(
+            new ServiceConfigurationResourceInner().withServiceName(ServiceName.SSH)
+                .withResourceId("sprozvcput")
+                .withPort(7394887039726775075L),
+            new ServiceConfigurationResourceInner().withServiceName(ServiceName.WAC)
+                .withResourceId("jpslwejd")
+                .withPort(2711659806667039097L),
+            new ServiceConfigurationResourceInner().withServiceName(ServiceName.SSH)
+                .withResourceId("vdphlxaolthqtr")
+                .withPort(2607282935918519139L)))
+            .withNextLink("xofpdvhpfxxypi");
         model = BinaryData.fromObject(model).toObject(ServiceConfigurationList.class);
         Assertions.assertEquals(ServiceName.SSH, model.value().get(0).serviceName());
         Assertions.assertEquals("sprozvcput", model.value().get(0).resourceId());

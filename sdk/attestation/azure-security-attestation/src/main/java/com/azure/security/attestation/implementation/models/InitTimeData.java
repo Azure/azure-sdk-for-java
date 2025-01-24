@@ -24,8 +24,7 @@ public final class InitTimeData implements JsonSerializable<InitTimeData> {
     /*
      * Initialization time data are passed into the Trusted Execution Environment (TEE) when it is created. For an
      * Icelake SGX quote, the SHA256 hash of the InitTimeData must match the lower 32 bytes of the quote's "config id"
-     * attribute. For a SEV-SNP quote, the SHA256 hash of the InitTimeData must match the quote's "host data"
-     * attribute.
+     * attribute. For a SEV-SNP quote, the SHA256 hash of the InitTimeData must match the quote's "host data" attribute.
      */
     private Base64Url data;
 
@@ -101,6 +100,9 @@ public final class InitTimeData implements JsonSerializable<InitTimeData> {
     public void validate() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

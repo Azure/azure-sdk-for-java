@@ -6,50 +6,53 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.EventModelProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.EventModelSystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Event model. */
+/**
+ * Event model.
+ */
 @Fluent
-public final class EventModelInner {
+public final class EventModelInner implements JsonSerializable<EventModelInner> {
     /*
      * Event model properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private EventModelProperties properties;
 
     /*
      * Gets or sets the Id of the resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Gets or sets the name of the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Gets or sets the type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The systemData property.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private EventModelSystemData systemData;
 
-    /** Creates an instance of EventModelInner class. */
+    /**
+     * Creates an instance of EventModelInner class.
+     */
     public EventModelInner() {
     }
 
     /**
      * Get the properties property: Event model properties.
-     *
+     * 
      * @return the properties value.
      */
     public EventModelProperties properties() {
@@ -58,7 +61,7 @@ public final class EventModelInner {
 
     /**
      * Set the properties property: Event model properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the EventModelInner object itself.
      */
@@ -69,7 +72,7 @@ public final class EventModelInner {
 
     /**
      * Get the id property: Gets or sets the Id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -78,7 +81,7 @@ public final class EventModelInner {
 
     /**
      * Get the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -87,7 +90,7 @@ public final class EventModelInner {
 
     /**
      * Get the type property: Gets or sets the type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -96,7 +99,7 @@ public final class EventModelInner {
 
     /**
      * Get the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     public EventModelSystemData systemData() {
@@ -105,14 +108,13 @@ public final class EventModelInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model EventModelInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model EventModelInner"));
         } else {
             properties().validate();
         }
@@ -122,4 +124,49 @@ public final class EventModelInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventModelInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventModelInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventModelInner.
+     */
+    public static EventModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventModelInner deserializedEventModelInner = new EventModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedEventModelInner.properties = EventModelProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedEventModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEventModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEventModelInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEventModelInner.systemData = EventModelSystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventModelInner;
+        });
+    }
 }

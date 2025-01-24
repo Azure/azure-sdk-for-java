@@ -8,24 +8,23 @@ import com.azure.resourcemanager.maps.models.AccountSasParameters;
 import com.azure.resourcemanager.maps.models.SigningKey;
 import java.util.Arrays;
 
-/** Samples for Accounts ListSas. */
+/**
+ * Samples for Accounts ListSas.
+ */
 public final class AccountsListSasSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/AccountListSAS.json
+     * x-ms-original-file:
+     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/AccountListSAS.json
      */
     /**
      * Sample code: List Account Sas.
-     *
+     * 
      * @param manager Entry point to AzureMapsManager.
      */
     public static void listAccountSas(com.azure.resourcemanager.maps.AzureMapsManager manager) {
-        manager
-            .accounts()
-            .listSasWithResponse(
-                "myResourceGroup",
-                "myMapsAccount",
-                new AccountSasParameters()
-                    .withSigningKey(SigningKey.PRIMARY_KEY)
+        manager.accounts()
+            .listSasWithResponse("myResourceGroup", "myMapsAccount",
+                new AccountSasParameters().withSigningKey(SigningKey.PRIMARY_KEY)
                     .withPrincipalId("e917f87b-324d-4728-98ed-e31d311a7d65")
                     .withRegions(Arrays.asList("eastus"))
                     .withMaxRatePerSecond(500)

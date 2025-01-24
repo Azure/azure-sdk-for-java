@@ -7,7 +7,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
-import com.azure.health.deidentification.models.*;
+import com.azure.health.deidentification.models.DeidentificationJob;
+import com.azure.health.deidentification.models.DocumentDataType;
+import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.SourceStorageLocation;
+import com.azure.health.deidentification.models.TargetStorageLocation;
 
 import java.time.Instant;
 import java.util.ArrayList;

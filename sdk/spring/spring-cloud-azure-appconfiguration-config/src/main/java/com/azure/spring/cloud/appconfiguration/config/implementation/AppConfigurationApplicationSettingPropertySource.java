@@ -60,7 +60,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> keyPrefixTrimValues) throws InvalidConfigurationPropertyValueException {
+    public void initProperties(List<String> keyPrefixTrimValues, boolean isRefresh) throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
         // Reverse labels so they have the right priority order.
@@ -70,7 +70,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*").setLabelFilter(label);
 
             // * for wildcard match
-            processConfigurationSettings(replicaClient.listSettings(settingSelector), settingSelector.getKeyFilter(),
+            processConfigurationSettings(replicaClient.listSettings(settingSelector, isRefresh), settingSelector.getKeyFilter(),
                 keyPrefixTrimValues);
         }
     }
@@ -107,7 +107,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @return Key Vault Secret Value
      * @throws InvalidConfigurationPropertyValueException
      */
-    protected void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
+    private void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
         throws InvalidConfigurationPropertyValueException {
         // Parsing Key Vault Reference for URI
         try {
@@ -129,7 +129,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         handleJson(setting, trimStrings);
     }
 
-    void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
+    private void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
         throws InvalidConfigurationPropertyValueException {
         Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
         for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
@@ -138,7 +138,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         }
     }
 
-    protected String trimKey(String key, List<String> trimStrings) {
+    private String trimKey(String key, List<String> trimStrings) {
         key = key.trim();
         if (trimStrings != null) {
             for (String trim : trimStrings) {

@@ -17,16 +17,13 @@ import java.util.Set;
 import reactor.core.publisher.Mono;
 
 /** Implementation for LocalNetworkGateway and its create and update interfaces. */
-class LocalNetworkGatewayImpl
-    extends GroupableResourceImpl<
-        LocalNetworkGateway, LocalNetworkGatewayInner, LocalNetworkGatewayImpl, NetworkManager>
-    implements LocalNetworkGateway,
-        LocalNetworkGateway.Definition,
-        LocalNetworkGateway.Update,
-        AppliableWithTags<LocalNetworkGateway> {
+class LocalNetworkGatewayImpl extends
+    GroupableResourceImpl<LocalNetworkGateway, LocalNetworkGatewayInner, LocalNetworkGatewayImpl, NetworkManager>
+    implements LocalNetworkGateway, LocalNetworkGateway.Definition, LocalNetworkGateway.Update,
+    AppliableWithTags<LocalNetworkGateway> {
 
-    LocalNetworkGatewayImpl(
-        String name, final LocalNetworkGatewayInner innerModel, final NetworkManager networkManager) {
+    LocalNetworkGatewayImpl(String name, final LocalNetworkGatewayInner innerModel,
+        final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
@@ -98,8 +95,7 @@ class LocalNetworkGatewayImpl
 
     @Override
     protected Mono<LocalNetworkGatewayInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getLocalNetworkGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -107,8 +103,7 @@ class LocalNetworkGatewayImpl
 
     @Override
     public Mono<LocalNetworkGateway> createResourceAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getLocalNetworkGateways()
             .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
@@ -134,15 +129,13 @@ class LocalNetworkGatewayImpl
 
     @Override
     public Mono<LocalNetworkGateway> applyTagsAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getLocalNetworkGateways()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()))
-            .flatMap(
-                inner -> {
-                    setInner(inner);
-                    return Mono.just((LocalNetworkGateway) LocalNetworkGatewayImpl.this);
-                });
+            .flatMap(inner -> {
+                setInner(inner);
+                return Mono.just((LocalNetworkGateway) LocalNetworkGatewayImpl.this);
+            });
     }
 }

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/OperationList.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/OperationList.
+     * json
      */
     /**
      * Sample code: OperationList.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void operationList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {

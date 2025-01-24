@@ -13,30 +13,18 @@ import java.util.Map;
 public final class ExecutionStatisticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecutionStatistics model =
-            BinaryData
-                .fromString(
-                    "{\"executionCount\":8797893448307273762,\"cpuTimeMs\":80.684784,\"elapsedTimeMs\":89.05603,\"waitStats\":{\"krsgsgb\":{\"waitType\":\"ijf\",\"waitTimeMs\":15.637827,\"waitCount\":1131525087104993997},\"h\":{\"waitType\":\"uzqgnjdgkynsc\",\"waitTimeMs\":66.948456,\"waitCount\":6628803404275129574},\"ihfrbbcevqa\":{\"waitType\":\"komtkubotppn\",\"waitTimeMs\":8.019334,\"waitCount\":8531774854785485311},\"jpykvgtrdcnifmzz\":{\"waitType\":\"ltd\",\"waitTimeMs\":39.743866,\"waitCount\":5464382079076792981}},\"hasErrors\":true,\"sqlErrors\":[\"rnysux\"]}")
-                .toObject(ExecutionStatistics.class);
+        ExecutionStatistics model = BinaryData.fromString(
+            "{\"executionCount\":3484334770603775387,\"cpuTimeMs\":25.938547,\"elapsedTimeMs\":70.32886,\"waitStats\":{\"vzflbq\":{\"waitType\":\"hoxgsgbpf\",\"waitTimeMs\":58.59819,\"waitCount\":2174616740952150366}},\"hasErrors\":true,\"sqlErrors\":[\"lgafcqusrdve\"]}")
+            .toObject(ExecutionStatistics.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecutionStatistics model =
-            new ExecutionStatistics()
-                .withWaitStats(
-                    mapOf(
-                        "krsgsgb",
-                        new WaitStatistics(),
-                        "h",
-                        new WaitStatistics(),
-                        "ihfrbbcevqa",
-                        new WaitStatistics(),
-                        "jpykvgtrdcnifmzz",
-                        new WaitStatistics()));
+        ExecutionStatistics model = new ExecutionStatistics().withWaitStats(mapOf("vzflbq", new WaitStatistics()));
         model = BinaryData.fromObject(model).toObject(ExecutionStatistics.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

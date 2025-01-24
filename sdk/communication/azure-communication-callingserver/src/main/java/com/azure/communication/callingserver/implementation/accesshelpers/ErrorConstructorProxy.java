@@ -6,13 +6,16 @@ package com.azure.communication.callingserver.implementation.accesshelpers;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.core.exception.HttpResponseException;
 
+import java.io.IOException;
+
 /**
  * Helper class to access private values of {@link CallingServerErrorException} across package boundaries.
  */
 public final class ErrorConstructorProxy {
     private static ErrorConstructorProxy.ErrorConstructorAccessor accessor;
 
-    private ErrorConstructorProxy() { }
+    private ErrorConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link CallConnectionPropertiesConstructorProxy.CallConnectionPropertiesConstructorAccessor}
@@ -26,7 +29,7 @@ public final class ErrorConstructorProxy {
          * @param internalResponse The internal response.
          * @return A new instance of {@link CallingServerErrorException}.
          */
-        CallingServerErrorException create(HttpResponseException internalResponse);
+        CallingServerErrorException create(HttpResponseException internalResponse) throws IOException;
     }
 
     /**
@@ -47,20 +50,16 @@ public final class ErrorConstructorProxy {
      */
     public static CallingServerErrorException create(HttpResponseException internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
-        // application accesses CallingServerErrorException which triggers the accessor to be configured. So, if the accessor
-        // is null this effectively pokes the class to set up the accessor.
+        // application accesses CallingServerErrorException which triggers the accessor to be configured. So, if the
+        // accessor is null this effectively pokes the class to set up the accessor.
         try {
             if (accessor == null) {
-                throw new CallingServerErrorException();
+                new CallingServerErrorException();
             }
 
             return accessor.create(internalResponse);
-        } catch (CallingServerErrorException e) {
-            try {
-                return create(internalResponse);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

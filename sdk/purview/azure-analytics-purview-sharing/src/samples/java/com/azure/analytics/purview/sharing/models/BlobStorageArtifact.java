@@ -4,33 +4,27 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.util.List;
-
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Blob storage account artifact.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "storeKind")
-@JsonTypeName("BlobAccount")
-@JsonFlatten
 @Fluent
-public class BlobStorageArtifact extends Artifact {
+public final class BlobStorageArtifact extends Artifact {
     /*
-     * Location of the storage account.
+     * The types of asset.
      */
-    @JsonProperty(value = "properties.location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
+    private StoreKind storeKind = StoreKind.BLOB_STORAGE_ACCOUNT_STORE_KIND;
 
     /*
-     * A list of blob storage account paths.
+     * Properties for blob storage account.
      */
-    @JsonProperty(value = "properties.paths", required = true)
-    private List<StorageAccountPath> paths;
+    private BlobStorageArtifactProperties properties;
 
     /**
      * Creates an instance of BlobStorageArtifact class.
@@ -39,31 +33,32 @@ public class BlobStorageArtifact extends Artifact {
     }
 
     /**
-     * Get the location property: Location of the storage account.
-     * 
-     * @return the location value.
+     * Get the storeKind property: The types of asset.
+     *
+     * @return the storeKind value.
      */
-    public String getLocation() {
-        return this.location;
+    @Override
+    public StoreKind getStoreKind() {
+        return this.storeKind;
     }
 
     /**
-     * Get the paths property: A list of blob storage account paths.
-     * 
-     * @return the paths value.
+     * Get the properties property: Properties for blob storage account.
+     *
+     * @return the properties value.
      */
-    public List<StorageAccountPath> getPaths() {
-        return this.paths;
+    public BlobStorageArtifactProperties getProperties() {
+        return this.properties;
     }
 
     /**
-     * Set the paths property: A list of blob storage account paths.
-     * 
-     * @param paths the paths value to set.
+     * Set the properties property: Properties for blob storage account.
+     *
+     * @param properties the properties value to set.
      * @return the BlobStorageArtifact object itself.
      */
-    public BlobStorageArtifact setPaths(List<StorageAccountPath> paths) {
-        this.paths = paths;
+    public BlobStorageArtifact setProperties(BlobStorageArtifactProperties properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -74,5 +69,48 @@ public class BlobStorageArtifact extends Artifact {
     public BlobStorageArtifact setStoreReference(StoreReference storeReference) {
         super.setStoreReference(storeReference);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storeReference", getStoreReference());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("storeKind", this.storeKind == null ? null : this.storeKind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobStorageArtifact from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobStorageArtifact if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobStorageArtifact.
+     */
+    public static BlobStorageArtifact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobStorageArtifact deserializedBlobStorageArtifact = new BlobStorageArtifact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storeReference".equals(fieldName)) {
+                    deserializedBlobStorageArtifact.setStoreReference(StoreReference.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBlobStorageArtifact.properties = BlobStorageArtifactProperties.fromJson(reader);
+                } else if ("storeKind".equals(fieldName)) {
+                    deserializedBlobStorageArtifact.storeKind = StoreKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobStorageArtifact;
+        });
     }
 }

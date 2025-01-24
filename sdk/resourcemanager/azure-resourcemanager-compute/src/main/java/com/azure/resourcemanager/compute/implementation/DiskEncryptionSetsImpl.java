@@ -10,13 +10,8 @@ import com.azure.resourcemanager.compute.models.DiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSets;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-public class DiskEncryptionSetsImpl
-    extends TopLevelModifiableResourcesImpl<
-        DiskEncryptionSet,
-        DiskEncryptionSetImpl,
-        DiskEncryptionSetInner,
-        DiskEncryptionSetsClient,
-        ComputeManager>
+public class DiskEncryptionSetsImpl extends
+    TopLevelModifiableResourcesImpl<DiskEncryptionSet, DiskEncryptionSetImpl, DiskEncryptionSetInner, DiskEncryptionSetsClient, ComputeManager>
     implements DiskEncryptionSets {
     public DiskEncryptionSetsImpl(ComputeManager manager) {
         super(manager.serviceClient().getDiskEncryptionSets(), manager);

@@ -15,8 +15,7 @@ public final class OperationCollectionImpl implements OperationCollection {
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    OperationCollectionImpl(
-        OperationCollectionInner innerObject,
+    OperationCollectionImpl(OperationCollectionInner innerObject,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

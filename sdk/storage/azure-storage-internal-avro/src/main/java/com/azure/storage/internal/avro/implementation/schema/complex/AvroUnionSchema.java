@@ -44,10 +44,7 @@ public class AvroUnionSchema extends AvroCompositeSchema {
         this.state.pushToStack(this);
 
         /* Read the index, call onIndex. */
-        AvroIntegerSchema indexSchema = new AvroIntegerSchema(
-            this.state,
-            this::onIndex
-        );
+        AvroIntegerSchema indexSchema = new AvroIntegerSchema(this.state, this::onIndex);
         indexSchema.pushToStack();
     }
 
@@ -66,11 +63,7 @@ public class AvroUnionSchema extends AvroCompositeSchema {
         AvroType type = this.types.get(i);
 
         /* Read the type, call onType. */
-        AvroSchema typeSchema = getSchema(
-            type,
-            this.state,
-            this::onType
-        );
+        AvroSchema typeSchema = getSchema(type, this.state, this::onType);
         typeSchema.pushToStack();
     }
 

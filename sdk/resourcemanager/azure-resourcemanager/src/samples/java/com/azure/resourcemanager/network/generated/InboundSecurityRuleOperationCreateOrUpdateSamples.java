@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.InboundSecurityRuleInner;
+import com.azure.resourcemanager.network.models.InboundSecurityRuleType;
 import com.azure.resourcemanager.network.models.InboundSecurityRules;
 import com.azure.resourcemanager.network.models.InboundSecurityRulesProtocol;
-import com.azure.resourcemanager.network.models.InboundSecurityRuleType;
 import java.util.Arrays;
 
 /**
@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class InboundSecurityRuleOperationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/InboundSecurityRulePut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/InboundSecurityRulePut.json
      */
     /**
      * Sample code: Create Network Virtual Appliance Inbound Security Rules.

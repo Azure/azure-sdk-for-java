@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the identity properties. */
+/**
+ * Specifies the identity properties.
+ */
 @Fluent
-public final class IdentityDetails {
+public final class IdentityDetails implements JsonSerializable<IdentityDetails> {
     /*
      * The type of identity
      */
-    @JsonProperty(value = "type")
     private IdentityType type;
 
     /*
      * Specifies the principal id for the identity for the job.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * Specifies the tenant id for the identity for the job.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of IdentityDetails class. */
+    /**
+     * Creates an instance of IdentityDetails class.
+     */
     public IdentityDetails() {
     }
 
     /**
      * Get the type property: The type of identity.
-     *
+     * 
      * @return the type value.
      */
     public IdentityType type() {
@@ -43,7 +48,7 @@ public final class IdentityDetails {
 
     /**
      * Set the type property: The type of identity.
-     *
+     * 
      * @param type the type value to set.
      * @return the IdentityDetails object itself.
      */
@@ -54,7 +59,7 @@ public final class IdentityDetails {
 
     /**
      * Get the principalId property: Specifies the principal id for the identity for the job.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -63,7 +68,7 @@ public final class IdentityDetails {
 
     /**
      * Get the tenantId property: Specifies the tenant id for the identity for the job.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -72,9 +77,49 @@ public final class IdentityDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityDetails.
+     */
+    public static IdentityDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityDetails deserializedIdentityDetails = new IdentityDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIdentityDetails.type = IdentityType.fromString(reader.getString());
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedIdentityDetails.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedIdentityDetails.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityDetails;
+        });
     }
 }

@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.perf;
 
-
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
@@ -43,7 +42,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
-                ServiceBusMessage message =  new ServiceBusMessage(messageContent);
+                ServiceBusMessage message = new ServiceBusMessage(messageContent);
                 message.setMessageId(UUID.randomUUID().toString());
                 messages.add(message);
             }
@@ -53,8 +52,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public void run() {
-        IterableStream<ServiceBusReceivedMessage> messages = receiver
-            .receiveMessages(options.getMessagesToReceive());
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(options.getMessagesToReceive());
 
         int count = 0;
         for (ServiceBusReceivedMessage message : messages) {
@@ -69,19 +67,11 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.using(
-            receiverBuilder::buildAsyncClient,
-            receiverAsyncClient -> {
-                return receiverAsyncClient
-                    .receiveMessages()
-                    .take(options.getMessagesToReceive())
-                    .flatMap(message -> {
-                        receiverAsyncClient.complete(message);
-                        return Mono.just(message);
-                    }, 1).then();
-            },
-            ServiceBusReceiverAsyncClient::close,
-            false
-        );
+        return Mono.using(receiverBuilder::buildAsyncClient, receiverAsyncClient -> {
+            return receiverAsyncClient.receiveMessages().take(options.getMessagesToReceive()).flatMap(message -> {
+                receiverAsyncClient.complete(message);
+                return Mono.just(message);
+            }, 1).then();
+        }, ServiceBusReceiverAsyncClient::close, false);
     }
 }

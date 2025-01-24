@@ -12,17 +12,17 @@ import java.util.Collection;
  */
 public final class AzureDevOpsPermissionType extends ExpandableStringEnum<AzureDevOpsPermissionType> {
     /**
-     * Static value Inherit for AzureDevOpsPermissionType.
+     * Pool will inherit permissions from the project or organization.
      */
     public static final AzureDevOpsPermissionType INHERIT = fromString("Inherit");
 
     /**
-     * Static value CreatorOnly for AzureDevOpsPermissionType.
+     * Only the pool creator will be an admin of the pool.
      */
     public static final AzureDevOpsPermissionType CREATOR_ONLY = fromString("CreatorOnly");
 
     /**
-     * Static value SpecificAccounts for AzureDevOpsPermissionType.
+     * Only the specified accounts will be admins of the pool.
      */
     public static final AzureDevOpsPermissionType SPECIFIC_ACCOUNTS = fromString("SpecificAccounts");
 

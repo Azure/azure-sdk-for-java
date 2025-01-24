@@ -5,35 +5,52 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for the task that validates MySQL database connection. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
-@JsonTypeName("ConnectToSource.MySql")
+/**
+ * Properties for the task that validates MySQL database connection.
+ */
 @Fluent
 public final class ConnectToSourceMySqlTaskProperties extends ProjectTaskProperties {
     /*
+     * Task type.
+     */
+    private String taskType = "ConnectToSource.MySql";
+
+    /*
      * Task input
      */
-    @JsonProperty(value = "input")
     private ConnectToSourceMySqlTaskInput input;
 
     /*
      * Task output. This is ignored if submitted.
      */
-    @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectToSourceNonSqlTaskOutput> output;
 
-    /** Creates an instance of ConnectToSourceMySqlTaskProperties class. */
+    /**
+     * Creates an instance of ConnectToSourceMySqlTaskProperties class.
+     */
     public ConnectToSourceMySqlTaskProperties() {
     }
 
     /**
+     * Get the taskType property: Task type.
+     * 
+     * @return the taskType value.
+     */
+    @Override
+    public String taskType() {
+        return this.taskType;
+    }
+
+    /**
      * Get the input property: Task input.
-     *
+     * 
      * @return the input value.
      */
     public ConnectToSourceMySqlTaskInput input() {
@@ -42,7 +59,7 @@ public final class ConnectToSourceMySqlTaskProperties extends ProjectTaskPropert
 
     /**
      * Set the input property: Task input.
-     *
+     * 
      * @param input the input value to set.
      * @return the ConnectToSourceMySqlTaskProperties object itself.
      */
@@ -53,7 +70,7 @@ public final class ConnectToSourceMySqlTaskProperties extends ProjectTaskPropert
 
     /**
      * Get the output property: Task output. This is ignored if submitted.
-     *
+     * 
      * @return the output value.
      */
     public List<ConnectToSourceNonSqlTaskOutput> output() {
@@ -62,17 +79,72 @@ public final class ConnectToSourceMySqlTaskProperties extends ProjectTaskPropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (input() != null) {
             input().validate();
         }
         if (output() != null) {
             output().forEach(e -> e.validate());
         }
+        if (commands() != null) {
+            commands().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeJsonField("input", this.input);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToSourceMySqlTaskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToSourceMySqlTaskProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToSourceMySqlTaskProperties.
+     */
+    public static ConnectToSourceMySqlTaskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToSourceMySqlTaskProperties deserializedConnectToSourceMySqlTaskProperties
+                = new ConnectToSourceMySqlTaskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errors".equals(fieldName)) {
+                    List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
+                    deserializedConnectToSourceMySqlTaskProperties.withErrors(errors);
+                } else if ("state".equals(fieldName)) {
+                    deserializedConnectToSourceMySqlTaskProperties.withState(TaskState.fromString(reader.getString()));
+                } else if ("commands".equals(fieldName)) {
+                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    deserializedConnectToSourceMySqlTaskProperties.withCommands(commands);
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedConnectToSourceMySqlTaskProperties.taskType = reader.getString();
+                } else if ("input".equals(fieldName)) {
+                    deserializedConnectToSourceMySqlTaskProperties.input
+                        = ConnectToSourceMySqlTaskInput.fromJson(reader);
+                } else if ("output".equals(fieldName)) {
+                    List<ConnectToSourceNonSqlTaskOutput> output
+                        = reader.readArray(reader1 -> ConnectToSourceNonSqlTaskOutput.fromJson(reader1));
+                    deserializedConnectToSourceMySqlTaskProperties.output = output;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToSourceMySqlTaskProperties;
+        });
     }
 }

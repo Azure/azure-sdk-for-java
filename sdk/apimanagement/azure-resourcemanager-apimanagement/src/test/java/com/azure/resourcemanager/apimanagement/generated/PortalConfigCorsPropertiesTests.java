@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PortalConfigCorsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortalConfigCorsProperties model =
-            BinaryData
-                .fromString("{\"allowedOrigins\":[\"wz\",\"ntogffjwajnrt\",\"zvaqkifmxawost\",\"zkn\"]}")
+        PortalConfigCorsProperties model
+            = BinaryData.fromString("{\"allowedOrigins\":[\"wz\",\"ntogffjwajnrt\",\"zvaqkifmxawost\",\"zkn\"]}")
                 .toObject(PortalConfigCorsProperties.class);
         Assertions.assertEquals("wz", model.allowedOrigins().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortalConfigCorsProperties model =
-            new PortalConfigCorsProperties()
-                .withAllowedOrigins(Arrays.asList("wz", "ntogffjwajnrt", "zvaqkifmxawost", "zkn"));
+        PortalConfigCorsProperties model = new PortalConfigCorsProperties()
+            .withAllowedOrigins(Arrays.asList("wz", "ntogffjwajnrt", "zvaqkifmxawost", "zkn"));
         model = BinaryData.fromObject(model).toObject(PortalConfigCorsProperties.class);
         Assertions.assertEquals("wz", model.allowedOrigins().get(0));
     }

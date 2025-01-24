@@ -7,13 +7,15 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationRuntimeConnectionInfos. */
+/**
+ * Resource collection API of IntegrationRuntimeConnectionInfos.
+ */
 public interface IntegrationRuntimeConnectionInfos {
     /**
      * Get integration runtime connection info
-     *
-     * <p>Get connection info for an integration runtime.
-     *
+     * 
+     * Get connection info for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -23,14 +25,14 @@ public interface IntegrationRuntimeConnectionInfos {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return connection info for an integration runtime along with {@link Response}.
      */
-    Response<IntegrationRuntimeConnectionInfo> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeConnectionInfo> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Get integration runtime connection info
-     *
-     * <p>Get connection info for an integration runtime.
-     *
+     * 
+     * Get connection info for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

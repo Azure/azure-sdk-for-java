@@ -54,22 +54,35 @@ public final class SCClusterRecordInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SCClusterRecordInner model
-            = new SCClusterRecordInner().withKind("mnguxawqaldsyu").withId("imerqfobwyznk").withName("bhshfwpracstwity")
-                .withMetadata(new SCMetadataEntity().withSelf("t").withResourceName("fhpagmhrskdsnf")
-                    .withCreatedTimestamp("doakgtdlmkkzevdl").withUpdatedTimestamp("wpusdsttwvogv")
-                    .withDeletedTimestamp("ejdcngqqmoakuf"))
-                .withSpec(new SCClusterSpecEntity().withName("zr").withAvailability("dgrtwaenuuzkopbm")
-                    .withCloud("rfdwoyu").withZone("ziuiefozbhdm").withRegion("l")
-                    .withKafkaBootstrapEndpoint("qhoftrmaequiah").withHttpEndpoint("cslfaoqzpiyylha")
-                    .withApiEndpoint("swhccsphk").withConfig(new ClusterConfigEntity().withKind("witqscywuggwoluh"))
-                    .withEnvironment(new SCClusterNetworkEnvironmentEntity().withId("wem").withEnvironment("i")
-                        .withRelated("brgz").withResourceName("msweypqwdxggicc"))
-                    .withNetwork(new SCClusterNetworkEnvironmentEntity().withId("qhuexm").withEnvironment("tlstvlzywem")
-                        .withRelated("rncsdtclu").withResourceName("ypbsfgytguslfead"))
-                    .withByok(new SCClusterByokEntity().withId("qukyhejhzi").withRelated("gfpelolppvksrpqv")
-                        .withResourceName("zraehtwd")))
-                .withStatus(new ClusterStatusEntity().withPhase("tswiby").withCku(403427600));
+        SCClusterRecordInner model = new SCClusterRecordInner().withKind("mnguxawqaldsyu")
+            .withId("imerqfobwyznk")
+            .withName("bhshfwpracstwity")
+            .withMetadata(new SCMetadataEntity().withSelf("t")
+                .withResourceName("fhpagmhrskdsnf")
+                .withCreatedTimestamp("doakgtdlmkkzevdl")
+                .withUpdatedTimestamp("wpusdsttwvogv")
+                .withDeletedTimestamp("ejdcngqqmoakuf"))
+            .withSpec(new SCClusterSpecEntity().withName("zr")
+                .withAvailability("dgrtwaenuuzkopbm")
+                .withCloud("rfdwoyu")
+                .withZone("ziuiefozbhdm")
+                .withRegion("l")
+                .withKafkaBootstrapEndpoint("qhoftrmaequiah")
+                .withHttpEndpoint("cslfaoqzpiyylha")
+                .withApiEndpoint("swhccsphk")
+                .withConfig(new ClusterConfigEntity().withKind("witqscywuggwoluh"))
+                .withEnvironment(new SCClusterNetworkEnvironmentEntity().withId("wem")
+                    .withEnvironment("i")
+                    .withRelated("brgz")
+                    .withResourceName("msweypqwdxggicc"))
+                .withNetwork(new SCClusterNetworkEnvironmentEntity().withId("qhuexm")
+                    .withEnvironment("tlstvlzywem")
+                    .withRelated("rncsdtclu")
+                    .withResourceName("ypbsfgytguslfead"))
+                .withByok(new SCClusterByokEntity().withId("qukyhejhzi")
+                    .withRelated("gfpelolppvksrpqv")
+                    .withResourceName("zraehtwd")))
+            .withStatus(new ClusterStatusEntity().withPhase("tswiby").withCku(403427600));
         model = BinaryData.fromObject(model).toObject(SCClusterRecordInner.class);
         Assertions.assertEquals("mnguxawqaldsyu", model.kind());
         Assertions.assertEquals("imerqfobwyznk", model.id());

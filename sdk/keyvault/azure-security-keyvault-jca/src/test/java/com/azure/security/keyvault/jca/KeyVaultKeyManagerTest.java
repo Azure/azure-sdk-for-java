@@ -22,8 +22,8 @@ public class KeyVaultKeyManagerTest {
     private static String certificateName;
 
     @BeforeAll
-    public static void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
-        CertificateException {
+    public static void setEnvironmentProperty()
+        throws KeyStoreException, NoSuchAlgorithmException, IOException, CertificateException {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
@@ -35,7 +35,6 @@ public class KeyVaultKeyManagerTest {
     public void testPrivateKey() {
         assertNotNull(manager.getPrivateKey(certificateName));
     }
-
 
     @Test
     public void testGetCertificateChain() {

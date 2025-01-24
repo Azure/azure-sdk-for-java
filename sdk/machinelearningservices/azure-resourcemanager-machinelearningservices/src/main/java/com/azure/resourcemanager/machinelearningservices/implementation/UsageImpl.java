@@ -14,8 +14,7 @@ public final class UsageImpl implements Usage {
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    UsageImpl(
-        UsageInner innerObject,
+    UsageImpl(UsageInner innerObject,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

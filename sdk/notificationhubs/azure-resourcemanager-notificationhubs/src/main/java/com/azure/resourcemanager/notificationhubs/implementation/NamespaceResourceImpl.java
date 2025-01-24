@@ -4,31 +4,17 @@
 
 package com.azure.resourcemanager.notificationhubs.implementation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceResourceInner;
-import com.azure.resourcemanager.notificationhubs.fluent.models.PnsCredentials;
-import com.azure.resourcemanager.notificationhubs.fluent.models.PrivateEndpointConnectionResourceInner;
+import com.azure.resourcemanager.notificationhubs.models.NamespaceCreateOrUpdateParameters;
 import com.azure.resourcemanager.notificationhubs.models.NamespacePatchParameters;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceResource;
-import com.azure.resourcemanager.notificationhubs.models.NamespaceStatus;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceType;
-import com.azure.resourcemanager.notificationhubs.models.NetworkAcls;
-import com.azure.resourcemanager.notificationhubs.models.OperationProvisioningState;
-import com.azure.resourcemanager.notificationhubs.models.PnsCredentialsResource;
-import com.azure.resourcemanager.notificationhubs.models.PrivateEndpointConnectionResource;
-import com.azure.resourcemanager.notificationhubs.models.PublicNetworkAccess;
-import com.azure.resourcemanager.notificationhubs.models.ReplicationRegion;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.azure.resourcemanager.notificationhubs.models.ZoneRedundancyPreference;
 import java.time.OffsetDateTime;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public final class NamespaceResourceImpl
     implements NamespaceResource, NamespaceResource.Definition, NamespaceResource.Update {
@@ -65,32 +51,12 @@ public final class NamespaceResourceImpl
         return this.innerModel().sku();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String namePropertiesName() {
         return this.innerModel().namePropertiesName();
     }
 
-    public OperationProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerModel().provisioningState();
-    }
-
-    public NamespaceStatus status() {
-        return this.innerModel().status();
-    }
-
-    public Boolean enabled() {
-        return this.innerModel().enabled();
-    }
-
-    public Boolean critical() {
-        return this.innerModel().critical();
-    }
-
-    public String subscriptionId() {
-        return this.innerModel().subscriptionId();
     }
 
     public String region() {
@@ -101,6 +67,10 @@ public final class NamespaceResourceImpl
         return this.innerModel().metricId();
     }
 
+    public String status() {
+        return this.innerModel().status();
+    }
+
     public OffsetDateTime createdAt() {
         return this.innerModel().createdAt();
     }
@@ -109,51 +79,32 @@ public final class NamespaceResourceImpl
         return this.innerModel().updatedAt();
     }
 
-    public NamespaceType namespaceType() {
-        return this.innerModel().namespaceType();
-    }
-
-    public ReplicationRegion replicationRegion() {
-        return this.innerModel().replicationRegion();
-    }
-
-    public ZoneRedundancyPreference zoneRedundancy() {
-        return this.innerModel().zoneRedundancy();
-    }
-
-    public NetworkAcls networkAcls() {
-        return this.innerModel().networkAcls();
-    }
-
-    public PnsCredentials pnsCredentials() {
-        return this.innerModel().pnsCredentials();
-    }
-
     public String serviceBusEndpoint() {
         return this.innerModel().serviceBusEndpoint();
     }
 
-    public List<PrivateEndpointConnectionResource> privateEndpointConnections() {
-        List<PrivateEndpointConnectionResourceInner> inner = this.innerModel().privateEndpointConnections();
-        if (inner != null) {
-            return Collections.unmodifiableList(
-                inner.stream().map(inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()))
-                    .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
     }
 
     public String scaleUnit() {
         return this.innerModel().scaleUnit();
     }
 
+    public Boolean enabled() {
+        return this.innerModel().enabled();
+    }
+
+    public Boolean critical() {
+        return this.innerModel().critical();
+    }
+
     public String dataCenter() {
         return this.innerModel().dataCenter();
     }
 
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerModel().publicNetworkAccess();
+    public NamespaceType namespaceType() {
+        return this.innerModel().namespaceType();
     }
 
     public String resourceGroupName() {
@@ -172,6 +123,8 @@ public final class NamespaceResourceImpl
 
     private String namespaceName;
 
+    private NamespaceCreateOrUpdateParameters createParameters;
+
     private NamespacePatchParameters updateParameters;
 
     public NamespaceResourceImpl withExistingResourceGroup(String resourceGroupName) {
@@ -180,14 +133,18 @@ public final class NamespaceResourceImpl
     }
 
     public NamespaceResource create() {
-        this.innerObject = serviceManager.serviceClient().getNamespaces().createOrUpdate(resourceGroupName,
-            namespaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, createParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NamespaceResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNamespaces().createOrUpdate(resourceGroupName,
-            namespaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, createParameters, context)
+            .getValue();
         return this;
     }
 
@@ -196,6 +153,7 @@ public final class NamespaceResourceImpl
         this.innerObject = new NamespaceResourceInner();
         this.serviceManager = serviceManager;
         this.namespaceName = name;
+        this.createParameters = new NamespaceCreateOrUpdateParameters();
     }
 
     public NamespaceResourceImpl update() {
@@ -204,14 +162,18 @@ public final class NamespaceResourceImpl
     }
 
     public NamespaceResource apply() {
-        this.innerObject = serviceManager.serviceClient().getNamespaces()
-            .updateWithResponse(resourceGroupName, namespaceName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .patchWithResponse(resourceGroupName, namespaceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NamespaceResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNamespaces()
-            .updateWithResponse(resourceGroupName, namespaceName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .patchWithResponse(resourceGroupName, namespaceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -224,48 +186,34 @@ public final class NamespaceResourceImpl
     }
 
     public NamespaceResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getNamespaces()
-            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NamespaceResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNamespaces()
-            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, context)
+            .getValue();
         return this;
     }
 
-    public Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context) {
-        return serviceManager.namespaces().getPnsCredentialsWithResponse(resourceGroupName, namespaceName, context);
-    }
-
-    public PnsCredentialsResource getPnsCredentials() {
-        return serviceManager.namespaces().getPnsCredentials(resourceGroupName, namespaceName);
-    }
-
-    public NamespaceResourceImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
+    public NamespaceResourceImpl withLocation(Region location) {
+        this.createParameters.withLocation(location.toString());
         return this;
     }
 
-    public NamespaceResourceImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
+    public NamespaceResourceImpl withLocation(String location) {
+        this.createParameters.withLocation(location);
         return this;
-    }
-
-    public NamespaceResourceImpl withSku(Sku sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateParameters.withSku(sku);
-            return this;
-        }
     }
 
     public NamespaceResourceImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
+            this.createParameters.withTags(tags);
             return this;
         } else {
             this.updateParameters.withTags(tags);
@@ -273,58 +221,78 @@ public final class NamespaceResourceImpl
         }
     }
 
-    public NamespaceResourceImpl withProvisioningState(OperationProvisioningState provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
+    public NamespaceResourceImpl withSku(Sku sku) {
+        if (isInCreateMode()) {
+            this.createParameters.withSku(sku);
+            return this;
+        } else {
+            this.updateParameters.withSku(sku);
+            return this;
+        }
+    }
+
+    public NamespaceResourceImpl withNamePropertiesName(String namePropertiesName) {
+        this.createParameters.withNamePropertiesName(namePropertiesName);
         return this;
     }
 
-    public NamespaceResourceImpl withStatus(NamespaceStatus status) {
-        this.innerModel().withStatus(status);
+    public NamespaceResourceImpl withProvisioningState(String provisioningState) {
+        this.createParameters.withProvisioningState(provisioningState);
         return this;
     }
 
-    public NamespaceResourceImpl withNamespaceType(NamespaceType namespaceType) {
-        this.innerModel().withNamespaceType(namespaceType);
+    public NamespaceResourceImpl withRegion(String region) {
+        this.createParameters.withRegion(region);
         return this;
     }
 
-    public NamespaceResourceImpl withReplicationRegion(ReplicationRegion replicationRegion) {
-        this.innerModel().withReplicationRegion(replicationRegion);
+    public NamespaceResourceImpl withStatus(String status) {
+        this.createParameters.withStatus(status);
         return this;
     }
 
-    public NamespaceResourceImpl withZoneRedundancy(ZoneRedundancyPreference zoneRedundancy) {
-        this.innerModel().withZoneRedundancy(zoneRedundancy);
+    public NamespaceResourceImpl withCreatedAt(OffsetDateTime createdAt) {
+        this.createParameters.withCreatedAt(createdAt);
         return this;
     }
 
-    public NamespaceResourceImpl withNetworkAcls(NetworkAcls networkAcls) {
-        this.innerModel().withNetworkAcls(networkAcls);
+    public NamespaceResourceImpl withUpdatedAt(OffsetDateTime updatedAt) {
+        this.createParameters.withUpdatedAt(updatedAt);
         return this;
     }
 
-    public NamespaceResourceImpl withPnsCredentials(PnsCredentials pnsCredentials) {
-        this.innerModel().withPnsCredentials(pnsCredentials);
+    public NamespaceResourceImpl withServiceBusEndpoint(String serviceBusEndpoint) {
+        this.createParameters.withServiceBusEndpoint(serviceBusEndpoint);
+        return this;
+    }
+
+    public NamespaceResourceImpl withSubscriptionId(String subscriptionId) {
+        this.createParameters.withSubscriptionId(subscriptionId);
         return this;
     }
 
     public NamespaceResourceImpl withScaleUnit(String scaleUnit) {
-        this.innerModel().withScaleUnit(scaleUnit);
+        this.createParameters.withScaleUnit(scaleUnit);
+        return this;
+    }
+
+    public NamespaceResourceImpl withEnabled(Boolean enabled) {
+        this.createParameters.withEnabled(enabled);
+        return this;
+    }
+
+    public NamespaceResourceImpl withCritical(Boolean critical) {
+        this.createParameters.withCritical(critical);
         return this;
     }
 
     public NamespaceResourceImpl withDataCenter(String dataCenter) {
-        this.innerModel().withDataCenter(dataCenter);
+        this.createParameters.withDataCenter(dataCenter);
         return this;
     }
 
-    public NamespaceResourceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
-        return this;
-    }
-
-    public NamespaceResourceImpl withProperties(NamespaceProperties properties) {
-        this.updateParameters.withProperties(properties);
+    public NamespaceResourceImpl withNamespaceType(NamespaceType namespaceType) {
+        this.createParameters.withNamespaceType(namespaceType);
         return this;
     }
 

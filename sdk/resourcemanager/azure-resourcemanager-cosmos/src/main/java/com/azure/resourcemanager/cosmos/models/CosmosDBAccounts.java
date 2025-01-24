@@ -19,16 +19,10 @@ import java.util.List;
 
 /** Entry point to Cosmos DB management API. */
 @Fluent
-public interface CosmosDBAccounts
-    extends SupportsCreating<CosmosDBAccount.DefinitionStages.Blank>,
-        HasManager<CosmosManager>,
-        SupportsBatchCreation<CosmosDBAccount>,
-        SupportsGettingById<CosmosDBAccount>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsListing<CosmosDBAccount>,
-        SupportsListingByResourceGroup<CosmosDBAccount>,
-        SupportsGettingByResourceGroup<CosmosDBAccount> {
+public interface CosmosDBAccounts extends SupportsCreating<CosmosDBAccount.DefinitionStages.Blank>,
+    HasManager<CosmosManager>, SupportsBatchCreation<CosmosDBAccount>, SupportsGettingById<CosmosDBAccount>,
+    SupportsDeletingById, SupportsDeletingByResourceGroup, SupportsListing<CosmosDBAccount>,
+    SupportsListingByResourceGroup<CosmosDBAccount>, SupportsGettingByResourceGroup<CosmosDBAccount> {
 
     /**
      * Changes the failover priority for the Azure CosmosDB database account. A failover priority of 0 indicates a write

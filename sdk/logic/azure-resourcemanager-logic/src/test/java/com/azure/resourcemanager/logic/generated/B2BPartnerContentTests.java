@@ -13,27 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class B2BPartnerContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        B2BPartnerContent model =
-            BinaryData
-                .fromString(
-                    "{\"businessIdentities\":[{\"qualifier\":\"xmrhu\",\"value\":\"lw\"},{\"qualifier\":\"cesutrgjupauut\",\"value\":\"woqhihe\"},{\"qualifier\":\"qg\",\"value\":\"zpnfqntcypsxj\"}]}")
-                .toObject(B2BPartnerContent.class);
-        Assertions.assertEquals("xmrhu", model.businessIdentities().get(0).qualifier());
-        Assertions.assertEquals("lw", model.businessIdentities().get(0).value());
+        B2BPartnerContent model = BinaryData
+            .fromString("{\"businessIdentities\":[{\"qualifier\":\"rcgegydcwboxjum\",\"value\":\"qqoli\"}]}")
+            .toObject(B2BPartnerContent.class);
+        Assertions.assertEquals("rcgegydcwboxjum", model.businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("qqoli", model.businessIdentities().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        B2BPartnerContent model =
-            new B2BPartnerContent()
-                .withBusinessIdentities(
-                    Arrays
-                        .asList(
-                            new BusinessIdentity().withQualifier("xmrhu").withValue("lw"),
-                            new BusinessIdentity().withQualifier("cesutrgjupauut").withValue("woqhihe"),
-                            new BusinessIdentity().withQualifier("qg").withValue("zpnfqntcypsxj")));
+        B2BPartnerContent model = new B2BPartnerContent().withBusinessIdentities(
+            Arrays.asList(new BusinessIdentity().withQualifier("rcgegydcwboxjum").withValue("qqoli")));
         model = BinaryData.fromObject(model).toObject(B2BPartnerContent.class);
-        Assertions.assertEquals("xmrhu", model.businessIdentities().get(0).qualifier());
-        Assertions.assertEquals("lw", model.businessIdentities().get(0).value());
+        Assertions.assertEquals("rcgegydcwboxjum", model.businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("qqoli", model.businessIdentities().get(0).value());
     }
 }

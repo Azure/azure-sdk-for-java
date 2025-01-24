@@ -5,10 +5,10 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,83 +16,196 @@ import java.util.List;
  * analysis module to be deployed alongside the Video Analyzer module, please see https://aka.ms/ava-spatial-analysis
  * for more information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-@JsonTypeName("#Microsoft.VideoAnalyzer.SpatialAnalysisPersonLineCrossingOperation")
 @Fluent
 public final class SpatialAnalysisPersonLineCrossingOperation extends SpatialAnalysisTypedOperationBase {
     /*
+     * The Type discriminator for the derived types.
+     */
+    private String type = "#Microsoft.VideoAnalyzer.SpatialAnalysisPersonLineCrossingOperation";
+
+    /*
      * The list of lines with optional events.
      */
-    @JsonProperty(value = "lines", required = true)
-    private List<SpatialAnalysisPersonLineCrossingLineEvents> lines;
+    private final List<SpatialAnalysisPersonLineCrossingLineEvents> lines;
 
     /**
      * Creates an instance of SpatialAnalysisPersonLineCrossingOperation class.
-     *
+     * 
      * @param lines the lines value to set.
      */
-    @JsonCreator
-    public SpatialAnalysisPersonLineCrossingOperation(
-            @JsonProperty(value = "lines", required = true) List<SpatialAnalysisPersonLineCrossingLineEvents> lines) {
+    public SpatialAnalysisPersonLineCrossingOperation(List<SpatialAnalysisPersonLineCrossingLineEvents> lines) {
         this.lines = lines;
     }
 
     /**
+     * Get the type property: The Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Get the lines property: The list of lines with optional events.
-     *
+     * 
      * @return the lines value.
      */
     public List<SpatialAnalysisPersonLineCrossingLineEvents> getLines() {
         return this.lines;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonLineCrossingOperation setDebug(String debug) {
         super.setDebug(debug);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonLineCrossingOperation setCalibrationConfiguration(String calibrationConfiguration) {
         super.setCalibrationConfiguration(calibrationConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonLineCrossingOperation setCameraConfiguration(String cameraConfiguration) {
         super.setCameraConfiguration(cameraConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public SpatialAnalysisPersonLineCrossingOperation setCameraCalibratorNodeConfiguration(
-            String cameraCalibratorNodeConfiguration) {
+    public SpatialAnalysisPersonLineCrossingOperation
+        setCameraCalibratorNodeConfiguration(String cameraCalibratorNodeConfiguration) {
         super.setCameraCalibratorNodeConfiguration(cameraCalibratorNodeConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonLineCrossingOperation setDetectorNodeConfiguration(String detectorNodeConfiguration) {
         super.setDetectorNodeConfiguration(detectorNodeConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonLineCrossingOperation setTrackerNodeConfiguration(String trackerNodeConfiguration) {
         super.setTrackerNodeConfiguration(trackerNodeConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonLineCrossingOperation setEnableFaceMaskClassifier(String enableFaceMaskClassifier) {
         super.setEnableFaceMaskClassifier(enableFaceMaskClassifier);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("debug", getDebug());
+        jsonWriter.writeStringField("calibrationConfiguration", getCalibrationConfiguration());
+        jsonWriter.writeStringField("cameraConfiguration", getCameraConfiguration());
+        jsonWriter.writeStringField("cameraCalibratorNodeConfiguration", getCameraCalibratorNodeConfiguration());
+        jsonWriter.writeStringField("detectorNodeConfiguration", getDetectorNodeConfiguration());
+        jsonWriter.writeStringField("trackerNodeConfiguration", getTrackerNodeConfiguration());
+        jsonWriter.writeStringField("enableFaceMaskClassifier", getEnableFaceMaskClassifier());
+        jsonWriter.writeArrayField("lines", this.lines, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialAnalysisPersonLineCrossingOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialAnalysisPersonLineCrossingOperation if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SpatialAnalysisPersonLineCrossingOperation.
+     */
+    public static SpatialAnalysisPersonLineCrossingOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String debug = null;
+            String calibrationConfiguration = null;
+            String cameraConfiguration = null;
+            String cameraCalibratorNodeConfiguration = null;
+            String detectorNodeConfiguration = null;
+            String trackerNodeConfiguration = null;
+            String enableFaceMaskClassifier = null;
+            boolean linesFound = false;
+            List<SpatialAnalysisPersonLineCrossingLineEvents> lines = null;
+            String type = "#Microsoft.VideoAnalyzer.SpatialAnalysisPersonLineCrossingOperation";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("debug".equals(fieldName)) {
+                    debug = reader.getString();
+                } else if ("calibrationConfiguration".equals(fieldName)) {
+                    calibrationConfiguration = reader.getString();
+                } else if ("cameraConfiguration".equals(fieldName)) {
+                    cameraConfiguration = reader.getString();
+                } else if ("cameraCalibratorNodeConfiguration".equals(fieldName)) {
+                    cameraCalibratorNodeConfiguration = reader.getString();
+                } else if ("detectorNodeConfiguration".equals(fieldName)) {
+                    detectorNodeConfiguration = reader.getString();
+                } else if ("trackerNodeConfiguration".equals(fieldName)) {
+                    trackerNodeConfiguration = reader.getString();
+                } else if ("enableFaceMaskClassifier".equals(fieldName)) {
+                    enableFaceMaskClassifier = reader.getString();
+                } else if ("lines".equals(fieldName)) {
+                    lines = reader.readArray(reader1 -> SpatialAnalysisPersonLineCrossingLineEvents.fromJson(reader1));
+                    linesFound = true;
+                } else if ("@type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (linesFound) {
+                SpatialAnalysisPersonLineCrossingOperation deserializedSpatialAnalysisPersonLineCrossingOperation
+                    = new SpatialAnalysisPersonLineCrossingOperation(lines);
+                deserializedSpatialAnalysisPersonLineCrossingOperation.setDebug(debug);
+                deserializedSpatialAnalysisPersonLineCrossingOperation
+                    .setCalibrationConfiguration(calibrationConfiguration);
+                deserializedSpatialAnalysisPersonLineCrossingOperation.setCameraConfiguration(cameraConfiguration);
+                deserializedSpatialAnalysisPersonLineCrossingOperation
+                    .setCameraCalibratorNodeConfiguration(cameraCalibratorNodeConfiguration);
+                deserializedSpatialAnalysisPersonLineCrossingOperation
+                    .setDetectorNodeConfiguration(detectorNodeConfiguration);
+                deserializedSpatialAnalysisPersonLineCrossingOperation
+                    .setTrackerNodeConfiguration(trackerNodeConfiguration);
+                deserializedSpatialAnalysisPersonLineCrossingOperation
+                    .setEnableFaceMaskClassifier(enableFaceMaskClassifier);
+                deserializedSpatialAnalysisPersonLineCrossingOperation.type = type;
+
+                return deserializedSpatialAnalysisPersonLineCrossingOperation;
+            }
+            throw new IllegalStateException("Missing required property: lines");
+        });
     }
 }

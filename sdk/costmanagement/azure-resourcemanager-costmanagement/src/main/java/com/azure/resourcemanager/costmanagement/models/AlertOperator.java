@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** operator used to compare currentSpend with amount. */
+/**
+ * operator used to compare currentSpend with amount.
+ */
 public final class AlertOperator extends ExpandableStringEnum<AlertOperator> {
-    /** Static value None for AlertOperator. */
+    /**
+     * Static value None for AlertOperator.
+     */
     public static final AlertOperator NONE = fromString("None");
 
-    /** Static value EqualTo for AlertOperator. */
+    /**
+     * Static value EqualTo for AlertOperator.
+     */
     public static final AlertOperator EQUAL_TO = fromString("EqualTo");
 
-    /** Static value GreaterThan for AlertOperator. */
+    /**
+     * Static value GreaterThan for AlertOperator.
+     */
     public static final AlertOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value GreaterThanOrEqualTo for AlertOperator. */
+    /**
+     * Static value GreaterThanOrEqualTo for AlertOperator.
+     */
     public static final AlertOperator GREATER_THAN_OR_EQUAL_TO = fromString("GreaterThanOrEqualTo");
 
-    /** Static value LessThan for AlertOperator. */
+    /**
+     * Static value LessThan for AlertOperator.
+     */
     public static final AlertOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value LessThanOrEqualTo for AlertOperator. */
+    /**
+     * Static value LessThanOrEqualTo for AlertOperator.
+     */
     public static final AlertOperator LESS_THAN_OR_EQUAL_TO = fromString("LessThanOrEqualTo");
 
     /**
      * Creates a new instance of AlertOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class AlertOperator extends ExpandableStringEnum<AlertOperator> {
 
     /**
      * Creates or finds a AlertOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertOperator.
      */
-    @JsonCreator
     public static AlertOperator fromString(String name) {
         return fromString(name, AlertOperator.class);
     }
 
     /**
      * Gets known AlertOperator values.
-     *
+     * 
      * @return known AlertOperator values.
      */
     public static Collection<AlertOperator> values() {

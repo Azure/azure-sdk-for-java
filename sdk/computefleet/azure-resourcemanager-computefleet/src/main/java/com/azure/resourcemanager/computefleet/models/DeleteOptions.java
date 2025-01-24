@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class DeleteOptions extends ExpandableStringEnum<DeleteOptions> {
     /**
-     * Static value Delete for DeleteOptions.
+     * Delete Option.
      */
     public static final DeleteOptions DELETE = fromString("Delete");
 
     /**
-     * Static value Detach for DeleteOptions.
+     * Detach Option.
      */
     public static final DeleteOptions DETACH = fromString("Detach");
 

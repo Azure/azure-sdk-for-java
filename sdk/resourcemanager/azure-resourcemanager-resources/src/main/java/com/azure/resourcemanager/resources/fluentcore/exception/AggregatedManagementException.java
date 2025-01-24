@@ -20,9 +20,9 @@ public final class AggregatedManagementException extends ManagementException {
      * @param firstManagementException the first ManagementException in suppressed.
      */
     private AggregatedManagementException(RuntimeException aggregatedException,
-                                          ManagementException firstManagementException) {
-        super(aggregatedException.getMessage(),
-            firstManagementException.getResponse(), firstManagementException.getValue());
+        ManagementException firstManagementException) {
+        super(aggregatedException.getMessage(), firstManagementException.getResponse(),
+            firstManagementException.getValue());
         for (Throwable exception : aggregatedException.getSuppressed()) {
             this.addSuppressed(exception);
         }

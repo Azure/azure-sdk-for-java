@@ -17,14 +17,14 @@ import com.azure.resourcemanager.machinelearningservices.models.Notebooks;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NotebooksImpl implements Notebooks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebooksImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NotebooksImpl.class);
 
     private final NotebooksClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public NotebooksImpl(
-        NotebooksClient innerClient,
+    public NotebooksImpl(NotebooksClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -57,15 +57,12 @@ public final class NotebooksImpl implements Notebooks {
         }
     }
 
-    public Response<ListNotebookKeysResult> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<ListNotebookKeysResultInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, workspaceName, context);
+    public Response<ListNotebookKeysResult> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
+        Response<ListNotebookKeysResultInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ListNotebookKeysResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

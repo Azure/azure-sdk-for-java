@@ -7,25 +7,24 @@ package com.azure.resourcemanager.policyinsights.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.CheckRestrictionsResourceDetails;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckRestrictionsResourceDetailsTests {
-    @Test
-    public void testDeserialize() {
-        CheckRestrictionsResourceDetails model =
-            BinaryData
-                .fromString("{\"apiVersion\":\"qreyfkzi\",\"scope\":\"jawneaiv\"}")
-                .toObject(CheckRestrictionsResourceDetails.class);
-        Assertions.assertEquals("qreyfkzi", model.apiVersion());
-        Assertions.assertEquals("jawneaiv", model.scope());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CheckRestrictionsResourceDetails model = BinaryData
+            .fromString("{\"resourceContent\":\"datacu\",\"apiVersion\":\"hxgsrboldfor\",\"scope\":\"wjlvizbfhfov\"}")
+            .toObject(CheckRestrictionsResourceDetails.class);
+        Assertions.assertEquals("hxgsrboldfor", model.apiVersion());
+        Assertions.assertEquals("wjlvizbfhfov", model.scope());
     }
 
-    @Test
-    public void testSerialize() {
-        CheckRestrictionsResourceDetails model =
-            new CheckRestrictionsResourceDetails().withApiVersion("qreyfkzi").withScope("jawneaiv");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CheckRestrictionsResourceDetails model = new CheckRestrictionsResourceDetails().withResourceContent("datacu")
+            .withApiVersion("hxgsrboldfor")
+            .withScope("wjlvizbfhfov");
         model = BinaryData.fromObject(model).toObject(CheckRestrictionsResourceDetails.class);
-        Assertions.assertEquals("qreyfkzi", model.apiVersion());
-        Assertions.assertEquals("jawneaiv", model.scope());
+        Assertions.assertEquals("hxgsrboldfor", model.apiVersion());
+        Assertions.assertEquals("wjlvizbfhfov", model.scope());
     }
 }

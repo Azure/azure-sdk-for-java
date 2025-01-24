@@ -1,4 +1,13 @@
 steps:
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: $(Java2docfxJavaVersion)
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+    displayName: Install Java $(Java2docfxJavaVersion)
+  - script: |
+      java -version
+    displayName: Print Java Version
   # Create a java2docfx subdirectory in the $(Build.BinariesDirectory) and install the java2docfx there
   # This way, the jar file is in its own subdirectory and isolated.
   - pwsh: |

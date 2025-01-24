@@ -13,7 +13,8 @@ import java.time.OffsetDateTime;
 /** The properties for input to get wait statistics. */
 @Fluent
 public final class WaitStatisticsInputProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticsInputProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WaitStatisticsInputProperties.class);
 
     /*
      * Observation start time.
@@ -100,22 +101,16 @@ public final class WaitStatisticsInputProperties {
      */
     public void validate() {
         if (observationStartTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property observationStartTime in model WaitStatisticsInputProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property observationStartTime in model WaitStatisticsInputProperties"));
         }
         if (observationEndTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property observationEndTime in model WaitStatisticsInputProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property observationEndTime in model WaitStatisticsInputProperties"));
         }
         if (aggregationWindow() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aggregationWindow in model WaitStatisticsInputProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property aggregationWindow in model WaitStatisticsInputProperties"));
         }
     }
 }

@@ -11,19 +11,19 @@ public final class PostgreSqlV2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PostgreSqlV2Source model = BinaryData.fromString(
-            "{\"type\":\"PostgreSqlV2Source\",\"query\":\"datatoqtui\",\"queryTimeout\":\"datapbfsxps\",\"additionalColumns\":\"dataevz\",\"sourceRetryCount\":\"dataydnokkkgiec\",\"sourceRetryWait\":\"dataftsneftzetjclaq\",\"maxConcurrentConnections\":\"datab\",\"disableMetricsCollection\":\"datamagpdsuyywnaqgoo\",\"\":{\"hufsgc\":\"datahvgddfzcnylzw\",\"gtdeg\":\"datawr\",\"otjj\":\"datahofoptbiuik\",\"snr\":\"dataecxvkqjpovjvvx\"}}")
+            "{\"type\":\"PostgreSqlV2Source\",\"query\":\"dataopqtegkrjolbaegh\",\"queryTimeout\":\"datasscismrnneklfi\",\"additionalColumns\":\"dataysfclxtf\",\"sourceRetryCount\":\"datadwqzbiukzmfyfvy\",\"sourceRetryWait\":\"dataofaiwlnfvexiuuqa\",\"maxConcurrentConnections\":\"datalseyxpgkmlnj\",\"disableMetricsCollection\":\"dataaywgc\",\"\":{\"wv\":\"datafafpyglnfwjs\"}}")
             .toObject(PostgreSqlV2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PostgreSqlV2Source model = new PostgreSqlV2Source().withSourceRetryCount("dataydnokkkgiec")
-            .withSourceRetryWait("dataftsneftzetjclaq")
-            .withMaxConcurrentConnections("datab")
-            .withDisableMetricsCollection("datamagpdsuyywnaqgoo")
-            .withQueryTimeout("datapbfsxps")
-            .withAdditionalColumns("dataevz")
-            .withQuery("datatoqtui");
+        PostgreSqlV2Source model = new PostgreSqlV2Source().withSourceRetryCount("datadwqzbiukzmfyfvy")
+            .withSourceRetryWait("dataofaiwlnfvexiuuqa")
+            .withMaxConcurrentConnections("datalseyxpgkmlnj")
+            .withDisableMetricsCollection("dataaywgc")
+            .withQueryTimeout("datasscismrnneklfi")
+            .withAdditionalColumns("dataysfclxtf")
+            .withQuery("dataopqtegkrjolbaegh");
         model = BinaryData.fromObject(model).toObject(PostgreSqlV2Source.class);
     }
 }

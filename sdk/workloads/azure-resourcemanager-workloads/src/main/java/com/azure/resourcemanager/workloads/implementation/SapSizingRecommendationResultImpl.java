@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloads.implementation;
 
 import com.azure.resourcemanager.workloads.fluent.models.SapSizingRecommendationResultInner;
+import com.azure.resourcemanager.workloads.models.SapDeploymentType;
 import com.azure.resourcemanager.workloads.models.SapSizingRecommendationResult;
 
 public final class SapSizingRecommendationResultImpl implements SapSizingRecommendationResult {
@@ -12,11 +13,14 @@ public final class SapSizingRecommendationResultImpl implements SapSizingRecomme
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    SapSizingRecommendationResultImpl(
-        SapSizingRecommendationResultInner innerObject,
+    SapSizingRecommendationResultImpl(SapSizingRecommendationResultInner innerObject,
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public SapDeploymentType deploymentType() {
+        return this.innerModel().deploymentType();
     }
 
     public SapSizingRecommendationResultInner innerModel() {

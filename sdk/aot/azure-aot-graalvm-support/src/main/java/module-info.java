@@ -5,4 +5,3 @@ module com.azure.aot.graalvm.support {
     requires transitive org.graalvm.sdk;
     requires transitive svm;
 }
-

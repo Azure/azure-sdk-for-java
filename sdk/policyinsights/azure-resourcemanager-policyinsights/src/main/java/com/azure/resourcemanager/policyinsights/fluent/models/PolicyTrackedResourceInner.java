@@ -5,51 +5,55 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.models.PolicyDetails;
 import com.azure.resourcemanager.policyinsights.models.TrackedResourceModificationDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Policy tracked resource record. */
+/**
+ * Policy tracked resource record.
+ */
 @Immutable
-public final class PolicyTrackedResourceInner {
+public final class PolicyTrackedResourceInner implements JsonSerializable<PolicyTrackedResourceInner> {
     /*
      * The ID of the policy tracked resource.
      */
-    @JsonProperty(value = "trackedResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String trackedResourceId;
 
     /*
      * The details of the policy that require the tracked resource.
      */
-    @JsonProperty(value = "policyDetails", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyDetails policyDetails;
 
     /*
      * The details of the policy triggered deployment that created the tracked resource.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private TrackedResourceModificationDetails createdBy;
 
     /*
      * The details of the policy triggered deployment that modified the tracked resource.
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private TrackedResourceModificationDetails lastModifiedBy;
 
     /*
      * Timestamp of the last update to the tracked resource.
      */
-    @JsonProperty(value = "lastUpdateUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdateUtc;
 
-    /** Creates an instance of PolicyTrackedResourceInner class. */
+    /**
+     * Creates an instance of PolicyTrackedResourceInner class.
+     */
     public PolicyTrackedResourceInner() {
     }
 
     /**
      * Get the trackedResourceId property: The ID of the policy tracked resource.
-     *
+     * 
      * @return the trackedResourceId value.
      */
     public String trackedResourceId() {
@@ -58,7 +62,7 @@ public final class PolicyTrackedResourceInner {
 
     /**
      * Get the policyDetails property: The details of the policy that require the tracked resource.
-     *
+     * 
      * @return the policyDetails value.
      */
     public PolicyDetails policyDetails() {
@@ -67,7 +71,7 @@ public final class PolicyTrackedResourceInner {
 
     /**
      * Get the createdBy property: The details of the policy triggered deployment that created the tracked resource.
-     *
+     * 
      * @return the createdBy value.
      */
     public TrackedResourceModificationDetails createdBy() {
@@ -77,7 +81,7 @@ public final class PolicyTrackedResourceInner {
     /**
      * Get the lastModifiedBy property: The details of the policy triggered deployment that modified the tracked
      * resource.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public TrackedResourceModificationDetails lastModifiedBy() {
@@ -86,7 +90,7 @@ public final class PolicyTrackedResourceInner {
 
     /**
      * Get the lastUpdateUtc property: Timestamp of the last update to the tracked resource.
-     *
+     * 
      * @return the lastUpdateUtc value.
      */
     public OffsetDateTime lastUpdateUtc() {
@@ -95,7 +99,7 @@ public final class PolicyTrackedResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -108,5 +112,51 @@ public final class PolicyTrackedResourceInner {
         if (lastModifiedBy() != null) {
             lastModifiedBy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyTrackedResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyTrackedResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyTrackedResourceInner.
+     */
+    public static PolicyTrackedResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyTrackedResourceInner deserializedPolicyTrackedResourceInner = new PolicyTrackedResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trackedResourceId".equals(fieldName)) {
+                    deserializedPolicyTrackedResourceInner.trackedResourceId = reader.getString();
+                } else if ("policyDetails".equals(fieldName)) {
+                    deserializedPolicyTrackedResourceInner.policyDetails = PolicyDetails.fromJson(reader);
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedPolicyTrackedResourceInner.createdBy
+                        = TrackedResourceModificationDetails.fromJson(reader);
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedPolicyTrackedResourceInner.lastModifiedBy
+                        = TrackedResourceModificationDetails.fromJson(reader);
+                } else if ("lastUpdateUtc".equals(fieldName)) {
+                    deserializedPolicyTrackedResourceInner.lastUpdateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyTrackedResourceInner;
+        });
     }
 }

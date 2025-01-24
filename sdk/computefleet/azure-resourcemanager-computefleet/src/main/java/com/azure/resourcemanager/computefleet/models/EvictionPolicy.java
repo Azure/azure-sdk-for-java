@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
     /**
-     * Static value Delete for EvictionPolicy.
+     * When evicted, the Spot VM will be deleted and the corresponding capacity will be updated to reflect this.
      */
     public static final EvictionPolicy DELETE = fromString("Delete");
 
     /**
-     * Static value Deallocate for EvictionPolicy.
+     * When evicted, the Spot VM will be deallocated/stopped.
      */
     public static final EvictionPolicy DEALLOCATE = fromString("Deallocate");
 

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The swagger custom dynamic tree. */
+/**
+ * The swagger custom dynamic tree.
+ */
 @Fluent
-public final class SwaggerCustomDynamicTree {
+public final class SwaggerCustomDynamicTree implements JsonSerializable<SwaggerCustomDynamicTree> {
     /*
      * The tree settings
      */
-    @JsonProperty(value = "settings")
     private SwaggerCustomDynamicTreeSettings settings;
 
     /*
      * The tree on-open configuration
      */
-    @JsonProperty(value = "open")
     private SwaggerCustomDynamicTreeCommand open;
 
     /*
      * The tree on-browse configuration
      */
-    @JsonProperty(value = "browse")
     private SwaggerCustomDynamicTreeCommand browse;
 
-    /** Creates an instance of SwaggerCustomDynamicTree class. */
+    /**
+     * Creates an instance of SwaggerCustomDynamicTree class.
+     */
     public SwaggerCustomDynamicTree() {
     }
 
     /**
      * Get the settings property: The tree settings.
-     *
+     * 
      * @return the settings value.
      */
     public SwaggerCustomDynamicTreeSettings settings() {
@@ -43,7 +48,7 @@ public final class SwaggerCustomDynamicTree {
 
     /**
      * Set the settings property: The tree settings.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the SwaggerCustomDynamicTree object itself.
      */
@@ -54,7 +59,7 @@ public final class SwaggerCustomDynamicTree {
 
     /**
      * Get the open property: The tree on-open configuration.
-     *
+     * 
      * @return the open value.
      */
     public SwaggerCustomDynamicTreeCommand open() {
@@ -63,7 +68,7 @@ public final class SwaggerCustomDynamicTree {
 
     /**
      * Set the open property: The tree on-open configuration.
-     *
+     * 
      * @param open the open value to set.
      * @return the SwaggerCustomDynamicTree object itself.
      */
@@ -74,7 +79,7 @@ public final class SwaggerCustomDynamicTree {
 
     /**
      * Get the browse property: The tree on-browse configuration.
-     *
+     * 
      * @return the browse value.
      */
     public SwaggerCustomDynamicTreeCommand browse() {
@@ -83,7 +88,7 @@ public final class SwaggerCustomDynamicTree {
 
     /**
      * Set the browse property: The tree on-browse configuration.
-     *
+     * 
      * @param browse the browse value to set.
      * @return the SwaggerCustomDynamicTree object itself.
      */
@@ -94,7 +99,7 @@ public final class SwaggerCustomDynamicTree {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +112,47 @@ public final class SwaggerCustomDynamicTree {
         if (browse() != null) {
             browse().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("settings", this.settings);
+        jsonWriter.writeJsonField("open", this.open);
+        jsonWriter.writeJsonField("browse", this.browse);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerCustomDynamicTree from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerCustomDynamicTree if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerCustomDynamicTree.
+     */
+    public static SwaggerCustomDynamicTree fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerCustomDynamicTree deserializedSwaggerCustomDynamicTree = new SwaggerCustomDynamicTree();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("settings".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTree.settings = SwaggerCustomDynamicTreeSettings.fromJson(reader);
+                } else if ("open".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTree.open = SwaggerCustomDynamicTreeCommand.fromJson(reader);
+                } else if ("browse".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTree.browse = SwaggerCustomDynamicTreeCommand.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerCustomDynamicTree;
+        });
     }
 }

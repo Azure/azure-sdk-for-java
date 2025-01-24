@@ -15,8 +15,7 @@ public final class OutboundEnvironmentEndpointImpl implements OutboundEnvironmen
 
     private final com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager;
 
-    OutboundEnvironmentEndpointImpl(
-        OutboundEnvironmentEndpointInner innerObject,
+    OutboundEnvironmentEndpointImpl(OutboundEnvironmentEndpointInner innerObject,
         com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

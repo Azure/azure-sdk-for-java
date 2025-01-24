@@ -16,13 +16,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
-import com.fasterxml.jackson.databind.util.RawValue;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
@@ -141,12 +139,12 @@ public final class EventGridPublisherClient<T> {
     private final EventGridPublisherClientImpl impl;
     private final String hostname;
     private final Class<T> eventClass;
+
     EventGridPublisherClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
-                             Class<T> eventClass) {
+        Class<T> eventClass) {
         this.hostname = hostname;
         this.eventClass = eventClass;
-        this.impl = new EventGridPublisherClientImplBuilder()
-            .pipeline(pipeline)
+        this.impl = new EventGridPublisherClientImplBuilder().pipeline(pipeline)
             .apiVersion(serviceVersion.getVersion())
             .buildClient();
     }
@@ -209,9 +207,9 @@ public final class EventGridPublisherClient<T> {
         if (events == null) {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
-        List<Object> objectEvents = StreamSupport.stream(events.spliterator(), false)
-            .map(event -> (Object) new RawValue(event.toString()))
-            .collect(Collectors.toList());
+
+        List<Object> objectEvents = new ArrayList<>();
+        events.forEach(objectEvents::add);
         this.impl.publishCustomEventEvents(this.hostname, objectEvents);
     }
 
@@ -219,9 +217,8 @@ public final class EventGridPublisherClient<T> {
         if (events == null) {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
-        List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> eventGridEvents = StreamSupport.stream(events.spliterator(), false)
-            .map(EventGridEvent::toImpl)
-            .collect(Collectors.toList());
+        List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> eventGridEvents = new ArrayList<>();
+        events.forEach(event -> eventGridEvents.add(event.toImpl()));
         this.impl.publishEventGridEvents(this.hostname, eventGridEvents);
     }
 
@@ -229,8 +226,8 @@ public final class EventGridPublisherClient<T> {
         if (events == null) {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
-        List<CloudEvent> cloudEvents = StreamSupport.stream(events.spliterator(), false)
-            .collect(Collectors.toList());
+        List<CloudEvent> cloudEvents = new ArrayList<>();
+        events.forEach(cloudEvents::add);
         this.impl.publishCloudEventEvents(this.hostname, cloudEvents, null);
 
     }
@@ -247,7 +244,6 @@ public final class EventGridPublisherClient<T> {
     public Response<Void> sendEventsWithResponse(Iterable<T> events, Context context) {
         return this.sendEventsWithResponse(events, null, context);
     }
-
 
     /**
      * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
@@ -276,9 +272,8 @@ public final class EventGridPublisherClient<T> {
         if (events == null) {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
-        List<Object> objectEvents = StreamSupport.stream(events.spliterator(), false)
-            .map(event -> (Object) new RawValue(event.toString()))
-            .collect(Collectors.toList());
+        List<Object> objectEvents = new ArrayList<>();
+        events.forEach(objectEvents::add);
         return this.impl.publishCustomEventEventsWithResponse(this.hostname, objectEvents, context);
     }
 
@@ -287,19 +282,19 @@ public final class EventGridPublisherClient<T> {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
 
-        List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> eventGridEvents = StreamSupport.stream(events.spliterator(), false)
-            .map(EventGridEvent::toImpl)
-            .collect(Collectors.toList());
+        List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> eventGridEvents = new ArrayList<>();
+        events.forEach(event -> eventGridEvents.add(event.toImpl()));
         return this.impl.publishEventGridEventsWithResponse(this.hostname, eventGridEvents, context);
     }
 
-    private Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, String channelName, Context context) {
+    private Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, String channelName,
+        Context context) {
         if (events == null) {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
 
-        List<CloudEvent> cloudEvents = StreamSupport.stream(events.spliterator(), false)
-            .collect(Collectors.toList());
+        List<CloudEvent> cloudEvents = new ArrayList<>();
+        events.forEach(cloudEvents::add);
         return this.impl.publishCloudEventEventsWithResponse(this.hostname, cloudEvents, channelName, context);
     }
 

@@ -13,11 +13,13 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.NotificationChannelIn
 import com.azure.resourcemanager.devtestlabs.models.NotificationChannelFragment;
 import com.azure.resourcemanager.devtestlabs.models.NotifyParameters;
 
-/** An instance of this class provides access to all the operations defined in NotificationChannelsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NotificationChannelsClient.
+ */
 public interface NotificationChannelsClient {
     /**
      * List notification channels in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface NotificationChannelsClient {
 
     /**
      * List notification channels in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=webHookUrl)'.
@@ -44,18 +46,12 @@ public interface NotificationChannelsClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NotificationChannelInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<NotificationChannelInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -67,12 +63,12 @@ public interface NotificationChannelsClient {
      * @return notification channel along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationChannelInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<NotificationChannelInner> getWithResponse(String resourceGroupName, String labName, String name,
+        String expand, Context context);
 
     /**
      * Get notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -86,7 +82,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Create or replace an existing notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -98,16 +94,12 @@ public interface NotificationChannelsClient {
      * @return a notification along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationChannelInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        NotificationChannelInner notificationChannel,
-        Context context);
+    Response<NotificationChannelInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
+        NotificationChannelInner notificationChannel, Context context);
 
     /**
      * Create or replace an existing notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -118,12 +110,12 @@ public interface NotificationChannelsClient {
      * @return a notification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationChannelInner createOrUpdate(
-        String resourceGroupName, String labName, String name, NotificationChannelInner notificationChannel);
+    NotificationChannelInner createOrUpdate(String resourceGroupName, String labName, String name,
+        NotificationChannelInner notificationChannel);
 
     /**
      * Delete notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -138,7 +130,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Delete notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -151,7 +143,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Allows modifying tags of notification channels. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -163,16 +155,12 @@ public interface NotificationChannelsClient {
      * @return a notification along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationChannelInner> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        NotificationChannelFragment notificationChannel,
-        Context context);
+    Response<NotificationChannelInner> updateWithResponse(String resourceGroupName, String labName, String name,
+        NotificationChannelFragment notificationChannel, Context context);
 
     /**
      * Allows modifying tags of notification channels. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -183,12 +171,12 @@ public interface NotificationChannelsClient {
      * @return a notification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationChannelInner update(
-        String resourceGroupName, String labName, String name, NotificationChannelFragment notificationChannel);
+    NotificationChannelInner update(String resourceGroupName, String labName, String name,
+        NotificationChannelFragment notificationChannel);
 
     /**
      * Send notification to provided channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -200,12 +188,12 @@ public interface NotificationChannelsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> notifyWithResponse(
-        String resourceGroupName, String labName, String name, NotifyParameters notifyParameters, Context context);
+    Response<Void> notifyWithResponse(String resourceGroupName, String labName, String name,
+        NotifyParameters notifyParameters, Context context);
 
     /**
      * Send notification to provided channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.

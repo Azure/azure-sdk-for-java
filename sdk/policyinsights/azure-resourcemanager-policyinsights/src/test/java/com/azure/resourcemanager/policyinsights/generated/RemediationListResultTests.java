@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.RemediationListResult;
-import org.junit.jupiter.api.Test;
 
 public final class RemediationListResultTests {
-    @Test
-    public void testDeserialize() {
-        RemediationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"lfp\",\"policyDefinitionReferenceId\":\"s\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"qux\",\"createdOn\":\"2021-08-27T02:48:22Z\",\"lastUpdatedOn\":\"2021-10-09T04:02:02Z\",\"statusMessage\":\"aoyfhrtxilnerkuj\",\"correlationId\":\"vlejuvfqa\",\"resourceCount\":1479576759,\"parallelDeployments\":1242969129},\"id\":\"kcprbnw\",\"name\":\"xgjvtbv\",\"type\":\"ysszdnrujqguh\"},{\"properties\":{\"policyAssignmentId\":\"uqfprwzw\",\"policyDefinitionReferenceId\":\"g\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"wu\",\"createdOn\":\"2021-10-03T15:35:19Z\",\"lastUpdatedOn\":\"2021-02-12T15:23:48Z\",\"statusMessage\":\"izuckyfihrfidfvz\",\"correlationId\":\"zuhtymwisdkfthwx\",\"resourceCount\":61317803,\"parallelDeployments\":6933169},\"id\":\"opvkmijcm\",\"name\":\"xdcu\",\"type\":\"uf\"}],\"nextLink\":\"pymzidnsezcxtbzs\"}")
-                .toObject(RemediationListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        RemediationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"policyAssignmentId\":\"bzhfepgzgqexz\",\"policyDefinitionReferenceId\":\"c\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"aierhhb\",\"createdOn\":\"2021-09-21T03:23:52Z\",\"lastUpdatedOn\":\"2021-06-03T06:29:13Z\",\"filters\":{\"locations\":[\"jtjaodxobnbdxkq\"]},\"deploymentStatus\":{\"totalDeployments\":54322845,\"successfulDeployments\":1844276281,\"failedDeployments\":920119244},\"statusMessage\":\"pimexgstxgcpodg\",\"correlationId\":\"ajrmvdjwzrlovmc\",\"resourceCount\":1130287748,\"parallelDeployments\":137439916,\"failureThreshold\":{\"percentage\":85.44888}},\"id\":\"ctbzaq\",\"name\":\"qsycbkbfkgu\",\"type\":\"dkexxppofm\"},{\"properties\":{\"policyAssignmentId\":\"c\",\"policyDefinitionReferenceId\":\"pg\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"c\",\"createdOn\":\"2021-11-04T00:29:51Z\",\"lastUpdatedOn\":\"2021-01-25T11:02:33Z\",\"filters\":{\"locations\":[\"uexhdzx\"]},\"deploymentStatus\":{\"totalDeployments\":996013729,\"successfulDeployments\":1074421821,\"failedDeployments\":954835443},\"statusMessage\":\"bzv\",\"correlationId\":\"ntwndeicbtwnpzao\",\"resourceCount\":1330155911,\"parallelDeployments\":114023042,\"failureThreshold\":{\"percentage\":2.6833415}},\"id\":\"cyddglmjthjqk\",\"name\":\"pyeicxm\",\"type\":\"ciwqvhk\"}],\"nextLink\":\"xuigdtopbobj\"}")
+            .toObject(RemediationListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RemediationListResult model = new RemediationListResult();
         model = BinaryData.fromObject(model).toObject(RemediationListResult.class);
     }

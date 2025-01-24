@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current state of dnc controller resource. */
+/**
+ * The current state of dnc controller resource.
+ */
 public final class ControllerState extends ExpandableStringEnum<ControllerState> {
-    /** Static value Deleting for ControllerState. */
+    /**
+     * Static value Deleting for ControllerState.
+     */
     public static final ControllerState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for ControllerState. */
+    /**
+     * Static value Succeeded for ControllerState.
+     */
     public static final ControllerState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ControllerState. */
+    /**
+     * Static value Failed for ControllerState.
+     */
     public static final ControllerState FAILED = fromString("Failed");
 
-    /** Static value Provisioning for ControllerState. */
+    /**
+     * Static value Provisioning for ControllerState.
+     */
     public static final ControllerState PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of ControllerState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ControllerState extends ExpandableStringEnum<ControllerState>
 
     /**
      * Creates or finds a ControllerState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ControllerState.
      */
-    @JsonCreator
     public static ControllerState fromString(String name) {
         return fromString(name, ControllerState.class);
     }
 
     /**
      * Gets known ControllerState values.
-     *
+     * 
      * @return known ControllerState values.
      */
     public static Collection<ControllerState> values() {

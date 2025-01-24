@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The Relationship Cardinality. */
+/**
+ * The Relationship Cardinality.
+ */
 public enum CardinalityTypes {
-    /** Enum value OneToOne. */
+    /**
+     * Enum value OneToOne.
+     */
     ONE_TO_ONE("OneToOne"),
 
-    /** Enum value OneToMany. */
+    /**
+     * Enum value OneToMany.
+     */
     ONE_TO_MANY("OneToMany"),
 
-    /** Enum value ManyToMany. */
+    /**
+     * Enum value ManyToMany.
+     */
     MANY_TO_MANY("ManyToMany");
 
-    /** The actual serialized value for a CardinalityTypes instance. */
+    /**
+     * The actual serialized value for a CardinalityTypes instance.
+     */
     private final String value;
 
     CardinalityTypes(String value) {
@@ -27,11 +34,10 @@ public enum CardinalityTypes {
 
     /**
      * Parses a serialized value to a CardinalityTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CardinalityTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static CardinalityTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum CardinalityTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

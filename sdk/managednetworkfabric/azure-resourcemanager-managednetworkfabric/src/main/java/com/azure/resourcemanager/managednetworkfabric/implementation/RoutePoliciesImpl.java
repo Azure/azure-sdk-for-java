@@ -28,22 +28,18 @@ public final class RoutePoliciesImpl implements RoutePolicies {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public RoutePoliciesImpl(
-        RoutePoliciesClient innerClient,
+    public RoutePoliciesImpl(RoutePoliciesClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<RoutePolicy> getByResourceGroupWithResponse(
-        String resourceGroupName, String routePolicyName, Context context) {
-        Response<RoutePolicyInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, routePolicyName, context);
+    public Response<RoutePolicy> getByResourceGroupWithResponse(String resourceGroupName, String routePolicyName,
+        Context context) {
+        Response<RoutePolicyInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, routePolicyName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RoutePolicyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -69,28 +65,28 @@ public final class RoutePoliciesImpl implements RoutePolicies {
 
     public PagedIterable<RoutePolicy> listByResourceGroup(String resourceGroupName) {
         PagedIterable<RoutePolicyInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RoutePolicy> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<RoutePolicyInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RoutePolicy> list() {
         PagedIterable<RoutePolicyInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RoutePolicy> list(Context context) {
         PagedIterable<RoutePolicyInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
     }
 
-    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body) {
-        CommonPostActionResponseForDeviceUpdateInner inner =
-            this.serviceClient().updateAdministrativeState(resourceGroupName, routePolicyName, body);
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String routePolicyName, UpdateAdministrativeState body) {
+        CommonPostActionResponseForDeviceUpdateInner inner
+            = this.serviceClient().updateAdministrativeState(resourceGroupName, routePolicyName, body);
         if (inner != null) {
             return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
         } else {
@@ -98,10 +94,10 @@ public final class RoutePoliciesImpl implements RoutePolicies {
         }
     }
 
-    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context) {
-        CommonPostActionResponseForDeviceUpdateInner inner =
-            this.serviceClient().updateAdministrativeState(resourceGroupName, routePolicyName, body, context);
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String routePolicyName, UpdateAdministrativeState body, Context context) {
+        CommonPostActionResponseForDeviceUpdateInner inner
+            = this.serviceClient().updateAdministrativeState(resourceGroupName, routePolicyName, body, context);
         if (inner != null) {
             return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
         } else {
@@ -110,8 +106,8 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName) {
-        ValidateConfigurationResponseInner inner =
-            this.serviceClient().validateConfiguration(resourceGroupName, routePolicyName);
+        ValidateConfigurationResponseInner inner
+            = this.serviceClient().validateConfiguration(resourceGroupName, routePolicyName);
         if (inner != null) {
             return new ValidateConfigurationResponseImpl(inner, this.manager());
         } else {
@@ -119,10 +115,10 @@ public final class RoutePoliciesImpl implements RoutePolicies {
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String routePolicyName, Context context) {
-        ValidateConfigurationResponseInner inner =
-            this.serviceClient().validateConfiguration(resourceGroupName, routePolicyName, context);
+    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName,
+        Context context) {
+        ValidateConfigurationResponseInner inner
+            = this.serviceClient().validateConfiguration(resourceGroupName, routePolicyName, context);
         if (inner != null) {
             return new ValidateConfigurationResponseImpl(inner, this.manager());
         } else {
@@ -130,10 +126,10 @@ public final class RoutePoliciesImpl implements RoutePolicies {
         }
     }
 
-    public CommonPostActionResponseForStateUpdate commitConfiguration(
-        String resourceGroupName, String routePolicyName) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this.serviceClient().commitConfiguration(resourceGroupName, routePolicyName);
+    public CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName,
+        String routePolicyName) {
+        CommonPostActionResponseForStateUpdateInner inner
+            = this.serviceClient().commitConfiguration(resourceGroupName, routePolicyName);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -141,10 +137,10 @@ public final class RoutePoliciesImpl implements RoutePolicies {
         }
     }
 
-    public CommonPostActionResponseForStateUpdate commitConfiguration(
-        String resourceGroupName, String routePolicyName, Context context) {
-        CommonPostActionResponseForStateUpdateInner inner =
-            this.serviceClient().commitConfiguration(resourceGroupName, routePolicyName, context);
+    public CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String routePolicyName,
+        Context context) {
+        CommonPostActionResponseForStateUpdateInner inner
+            = this.serviceClient().commitConfiguration(resourceGroupName, routePolicyName, context);
         if (inner != null) {
             return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
         } else {
@@ -153,77 +149,57 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public RoutePolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String routePolicyName = Utils.getValueFromIdByName(id, "routePolicies");
+        String routePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "routePolicies");
         if (routePolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, routePolicyName, Context.NONE).getValue();
     }
 
     public Response<RoutePolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String routePolicyName = Utils.getValueFromIdByName(id, "routePolicies");
+        String routePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "routePolicies");
         if (routePolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, routePolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String routePolicyName = Utils.getValueFromIdByName(id, "routePolicies");
+        String routePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "routePolicies");
         if (routePolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
         }
         this.delete(resourceGroupName, routePolicyName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String routePolicyName = Utils.getValueFromIdByName(id, "routePolicies");
+        String routePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "routePolicies");
         if (routePolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
         }
         this.delete(resourceGroupName, routePolicyName, context);
     }

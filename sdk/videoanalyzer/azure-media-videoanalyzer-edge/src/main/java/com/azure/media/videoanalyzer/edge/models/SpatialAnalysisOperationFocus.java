@@ -5,32 +5,51 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SpatialAnalysisOperationFocus. */
+/**
+ * The operation focus type.
+ */
 public final class SpatialAnalysisOperationFocus extends ExpandableStringEnum<SpatialAnalysisOperationFocus> {
-    /** Static value center for SpatialAnalysisOperationFocus. */
+    /**
+     * The center of the object.
+     */
     public static final SpatialAnalysisOperationFocus CENTER = fromString("center");
 
-    /** Static value bottomCenter for SpatialAnalysisOperationFocus. */
+    /**
+     * The bottom center of the object.
+     */
     public static final SpatialAnalysisOperationFocus BOTTOM_CENTER = fromString("bottomCenter");
 
-    /** Static value footprint for SpatialAnalysisOperationFocus. */
+    /**
+     * The footprint.
+     */
     public static final SpatialAnalysisOperationFocus FOOTPRINT = fromString("footprint");
 
     /**
+     * Creates a new instance of SpatialAnalysisOperationFocus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SpatialAnalysisOperationFocus() {
+    }
+
+    /**
      * Creates or finds a SpatialAnalysisOperationFocus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SpatialAnalysisOperationFocus.
      */
-    @JsonCreator
     public static SpatialAnalysisOperationFocus fromString(String name) {
         return fromString(name, SpatialAnalysisOperationFocus.class);
     }
 
-    /** @return known SpatialAnalysisOperationFocus values. */
+    /**
+     * Gets known SpatialAnalysisOperationFocus values.
+     * 
+     * @return known SpatialAnalysisOperationFocus values.
+     */
     public static Collection<SpatialAnalysisOperationFocus> values() {
         return values(SpatialAnalysisOperationFocus.class);
     }

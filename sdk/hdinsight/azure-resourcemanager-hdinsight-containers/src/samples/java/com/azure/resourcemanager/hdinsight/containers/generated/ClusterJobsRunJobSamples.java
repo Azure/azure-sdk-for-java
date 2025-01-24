@@ -16,7 +16,7 @@ import java.util.Map;
 public final class ClusterJobsRunJobSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * RunClusterJob.json
      */
     /**
@@ -32,7 +32,8 @@ public final class ClusterJobsRunJobSamples {
                     .withProperties(new FlinkJobProperties().withJobName("flink-job-name")
                         .withJobJarDirectory("abfs://flinkjob@hilosa.dfs.core.windows.net/jars")
                         .withJarName("flink-sleep-job-0.0.1-SNAPSHOT.jar")
-                        .withEntryClass("com.microsoft.hilo.flink.job.streaming.SleepJob").withAction(Action.START)
+                        .withEntryClass("com.microsoft.hilo.flink.job.streaming.SleepJob")
+                        .withAction(Action.START)
                         .withFlinkConfiguration(mapOf("parallelism", "1", "savepoint.directory",
                             "abfs://flinkjob@hilosa.dfs.core.windows.net/savepoint"))),
                 com.azure.core.util.Context.NONE);

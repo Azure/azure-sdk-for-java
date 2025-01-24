@@ -6,25 +6,27 @@ package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.ManagedProxyResourceInner;
 
-/** An immutable client-side representation of ManagedProxyResource. */
+/**
+ * An immutable client-side representation of ManagedProxyResource.
+ */
 public interface ManagedProxyResource {
     /**
      * Gets the proxy property: The short lived proxy name.
-     *
+     * 
      * @return the proxy value.
      */
     String proxy();
 
     /**
      * Gets the expiresOn property: The expiration time of short lived proxy name in unix epoch.
-     *
+     * 
      * @return the expiresOn value.
      */
     long expiresOn();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridconnectivity.fluent.models.ManagedProxyResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     ManagedProxyResourceInner innerModel();

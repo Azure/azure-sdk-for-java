@@ -18,12 +18,14 @@ import com.azure.resourcemanager.datalakestore.models.CheckNameAvailabilityParam
 import com.azure.resourcemanager.datalakestore.models.CreateDataLakeStoreAccountParameters;
 import com.azure.resourcemanager.datalakestore.models.UpdateDataLakeStoreAccountParameters;
 
-/** An instance of this class provides access to all the operations defined in AccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountsClient.
+ */
 public interface AccountsClient {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
@@ -34,17 +36,16 @@ public interface AccountsClient {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,13 +53,13 @@ public interface AccountsClient {
      * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataLakeStoreAccountBasicInner> list(
-        String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context);
+    PagedIterable<DataLakeStoreAccountBasicInner> list(String filter, Integer top, Integer skip, String select,
+        String orderby, Boolean count, Context context);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,18 +72,17 @@ public interface AccountsClient {
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,19 +90,12 @@ public interface AccountsClient {
      * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataLakeStoreAccountBasicInner> listByResourceGroup(
-        String resourceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count,
-        Context context);
+    PagedIterable<DataLakeStoreAccountBasicInner> listByResourceGroup(String resourceGroupName, String filter,
+        Integer top, Integer skip, String select, String orderby, Boolean count, Context context);
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -112,12 +105,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreate(
-        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters);
+    SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreate(String resourceGroupName,
+        String accountName, CreateDataLakeStoreAccountParameters parameters);
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -128,12 +121,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreate(
-        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters, Context context);
+    SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreate(String resourceGroupName,
+        String accountName, CreateDataLakeStoreAccountParameters parameters, Context context);
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -143,12 +136,12 @@ public interface AccountsClient {
      * @return data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataLakeStoreAccountInner create(
-        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters);
+    DataLakeStoreAccountInner create(String resourceGroupName, String accountName,
+        CreateDataLakeStoreAccountParameters parameters);
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -159,12 +152,12 @@ public interface AccountsClient {
      * @return data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataLakeStoreAccountInner create(
-        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters, Context context);
+    DataLakeStoreAccountInner create(String resourceGroupName, String accountName,
+        CreateDataLakeStoreAccountParameters parameters, Context context);
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -174,12 +167,12 @@ public interface AccountsClient {
      * @return the specified Data Lake Store account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataLakeStoreAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<DataLakeStoreAccountInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +185,7 @@ public interface AccountsClient {
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -202,12 +195,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdate(
-        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters);
+    SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdate(String resourceGroupName,
+        String accountName, UpdateDataLakeStoreAccountParameters parameters);
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -218,12 +211,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdate(
-        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters, Context context);
+    SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdate(String resourceGroupName,
+        String accountName, UpdateDataLakeStoreAccountParameters parameters, Context context);
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -233,12 +226,12 @@ public interface AccountsClient {
      * @return data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataLakeStoreAccountInner update(
-        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters);
+    DataLakeStoreAccountInner update(String resourceGroupName, String accountName,
+        UpdateDataLakeStoreAccountParameters parameters);
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -249,12 +242,12 @@ public interface AccountsClient {
      * @return data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataLakeStoreAccountInner update(
-        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters, Context context);
+    DataLakeStoreAccountInner update(String resourceGroupName, String accountName,
+        UpdateDataLakeStoreAccountParameters parameters, Context context);
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,7 +260,7 @@ public interface AccountsClient {
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -281,7 +274,7 @@ public interface AccountsClient {
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,7 +286,7 @@ public interface AccountsClient {
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -306,7 +299,7 @@ public interface AccountsClient {
 
     /**
      * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -320,7 +313,7 @@ public interface AccountsClient {
 
     /**
      * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,7 +325,7 @@ public interface AccountsClient {
 
     /**
      * Checks whether the specified account name is available or taken.
-     *
+     * 
      * @param location The resource location without whitespace.
      * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @param context The context to associate with this operation.
@@ -342,12 +335,12 @@ public interface AccountsClient {
      * @return data Lake Store account name availability result information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityInformationInner> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityParameters parameters, Context context);
+    Response<NameAvailabilityInformationInner> checkNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityParameters parameters, Context context);
 
     /**
      * Checks whether the specified account name is available or taken.
-     *
+     * 
      * @param location The resource location without whitespace.
      * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

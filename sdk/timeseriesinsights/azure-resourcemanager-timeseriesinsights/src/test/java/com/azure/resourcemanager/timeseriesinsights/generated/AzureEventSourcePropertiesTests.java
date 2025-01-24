@@ -15,37 +15,31 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureEventSourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureEventSourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"eventSourceResourceId\":\"kyzxuutk\",\"timestampPropertyName\":\"ws\",\"localTimestamp\":{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"otogtwrupqs\"}},\"ingressStartAt\":{\"type\":\"EventSourceCreationTime\",\"time\":\"cykvceo\"},\"provisioningState\":\"Failed\",\"creationTime\":\"2021-05-12T18:53:43Z\"}")
-                .toObject(AzureEventSourceProperties.class);
-        Assertions.assertEquals("ws", model.timestampPropertyName());
+        AzureEventSourceProperties model = BinaryData.fromString(
+            "{\"eventSourceResourceId\":\"wroyqbexrmcq\",\"timestampPropertyName\":\"ycnojvknmefqsg\",\"localTimestamp\":{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"jyzhpvgq\"}},\"ingressStartAt\":{\"type\":\"EventSourceCreationTime\",\"time\":\"xdjzlmwlxk\"},\"provisioningState\":\"Failed\",\"creationTime\":\"2021-11-07T19:38:17Z\"}")
+            .toObject(AzureEventSourceProperties.class);
+        Assertions.assertEquals("ycnojvknmefqsg", model.timestampPropertyName());
         Assertions.assertEquals(LocalTimestampFormat.EMBEDDED, model.localTimestamp().format());
-        Assertions.assertEquals("otogtwrupqs", model.localTimestamp().timeZoneOffset().propertyName());
+        Assertions.assertEquals("jyzhpvgq", model.localTimestamp().timeZoneOffset().propertyName());
         Assertions.assertEquals(IngressStartAtType.EVENT_SOURCE_CREATION_TIME, model.type());
-        Assertions.assertEquals("cykvceo", model.time());
-        Assertions.assertEquals("kyzxuutk", model.eventSourceResourceId());
+        Assertions.assertEquals("xdjzlmwlxk", model.time());
+        Assertions.assertEquals("wroyqbexrmcq", model.eventSourceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureEventSourceProperties model =
-            new AzureEventSourceProperties()
-                .withTimestampPropertyName("ws")
-                .withLocalTimestamp(
-                    new LocalTimestamp()
-                        .withFormat(LocalTimestampFormat.EMBEDDED)
-                        .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("otogtwrupqs")))
-                .withType(IngressStartAtType.EVENT_SOURCE_CREATION_TIME)
-                .withTime("cykvceo")
-                .withEventSourceResourceId("kyzxuutk");
+        AzureEventSourceProperties model = new AzureEventSourceProperties().withTimestampPropertyName("ycnojvknmefqsg")
+            .withLocalTimestamp(new LocalTimestamp().withFormat(LocalTimestampFormat.EMBEDDED)
+                .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("jyzhpvgq")))
+            .withType(IngressStartAtType.EVENT_SOURCE_CREATION_TIME)
+            .withTime("xdjzlmwlxk")
+            .withEventSourceResourceId("wroyqbexrmcq");
         model = BinaryData.fromObject(model).toObject(AzureEventSourceProperties.class);
-        Assertions.assertEquals("ws", model.timestampPropertyName());
+        Assertions.assertEquals("ycnojvknmefqsg", model.timestampPropertyName());
         Assertions.assertEquals(LocalTimestampFormat.EMBEDDED, model.localTimestamp().format());
-        Assertions.assertEquals("otogtwrupqs", model.localTimestamp().timeZoneOffset().propertyName());
+        Assertions.assertEquals("jyzhpvgq", model.localTimestamp().timeZoneOffset().propertyName());
         Assertions.assertEquals(IngressStartAtType.EVENT_SOURCE_CREATION_TIME, model.type());
-        Assertions.assertEquals("cykvceo", model.time());
-        Assertions.assertEquals("kyzxuutk", model.eventSourceResourceId());
+        Assertions.assertEquals("xdjzlmwlxk", model.time());
+        Assertions.assertEquals("wroyqbexrmcq", model.eventSourceResourceId());
     }
 }

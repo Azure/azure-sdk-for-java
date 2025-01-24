@@ -10,11 +10,9 @@ import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerProperties;
 public final class WorkflowTriggerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowTriggerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Moving\",\"createdTime\":\"2021-03-22T00:42:17Z\",\"changedTime\":\"2021-05-26T08:28:18Z\",\"state\":\"Completed\",\"status\":\"TimedOut\",\"lastExecutionTime\":\"2021-02-15T23:58:49Z\",\"nextExecutionTime\":\"2021-10-21T07:58:39Z\",\"recurrence\":{\"frequency\":\"Hour\",\"interval\":215474399,\"startTime\":\"hmpvecx\",\"endTime\":\"debfqkkrbmpukgri\",\"timeZone\":\"lzlfbxzpuz\",\"schedule\":{\"minutes\":[650318692,1593715454,315992042],\"hours\":[64383308,1202809910],\"weekDays\":[\"Sunday\",\"Sunday\",\"Friday\",\"Wednesday\"],\"monthDays\":[1035885378,380689806],\"monthlyOccurrences\":[]}},\"workflow\":{\"id\":\"qkpikadrgvtqagnb\",\"name\":\"nhijggmebfsi\",\"type\":\"butr\"}}")
-                .toObject(WorkflowTriggerProperties.class);
+        WorkflowTriggerProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Updating\",\"createdTime\":\"2021-12-04T00:03:51Z\",\"changedTime\":\"2021-10-15T00:40:10Z\",\"state\":\"Enabled\",\"status\":\"TimedOut\",\"lastExecutionTime\":\"2021-12-09T13:59:50Z\",\"nextExecutionTime\":\"2021-10-28T16:34:35Z\",\"recurrence\":{\"frequency\":\"Hour\",\"interval\":1225956555,\"startTime\":\"ujhemmsbvdkcrodt\",\"endTime\":\"nfwjlfltkacjvefk\",\"timeZone\":\"foakgg\",\"schedule\":{\"minutes\":[2109908244,488745932,1709159088,577549105],\"hours\":[597345805,1784212142,593695187,1177485669],\"weekDays\":[\"Sunday\",\"Wednesday\",\"Friday\"],\"monthDays\":[592325028],\"monthlyOccurrences\":[{\"day\":\"Sunday\",\"occurrence\":264589788}]}},\"workflow\":{\"id\":\"iagxsdszuempsbz\",\"name\":\"z\",\"type\":\"yvpnqicvinvkjj\"}}")
+            .toObject(WorkflowTriggerProperties.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -31,37 +31,27 @@ public final class RolloutsListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "[{\"identity\":{\"type\":\"jhwuaanozjos\",\"identityIds\":[\"youlp\",\"rvxaglrvimjwosy\"]},\"properties\":{\"status\":\"tcs\",\"totalRetryAttempts\":1365275067,\"services\":[],\"buildVersion\":\"umiekkezzi\",\"artifactSourceId\":\"ly\",\"targetServiceTopologyId\":\"jhdgqggebdunyga\",\"stepGroups\":[]},\"location\":\"idb\",\"tags\":{\"xllrxcyjm\":\"t\",\"su\":\"a\"},\"id\":\"arm\",\"name\":\"wdmjsjqbjhhyx\",\"type\":\"rw\"},{\"identity\":{\"type\":\"co\",\"identityIds\":[\"hp\",\"xkgymareqnajxqu\",\"jhkycub\"]},\"properties\":{\"status\":\"gssofwq\",\"totalRetryAttempts\":761384571,\"services\":[],\"buildVersion\":\"rmnjijpx\",\"artifactSourceId\":\"q\",\"targetServiceTopologyId\":\"udfnbyxba\",\"stepGroups\":[]},\"location\":\"bjyvay\",\"tags\":{\"zrtuzq\":\"m\",\"fdnw\":\"gsexne\",\"euzsoi\":\"wmewzsyy\"},\"id\":\"judpfrxt\",\"name\":\"thzvaytdwkqbrqu\",\"type\":\"paxh\"},{\"identity\":{\"type\":\"iilivpdtiirqtd\",\"identityIds\":[\"axoruzfgsquy\",\"xrxxlep\",\"ramxjezwlwnw\"]},\"properties\":{\"status\":\"lcvydy\",\"totalRetryAttempts\":1772856853,\"services\":[],\"buildVersion\":\"aojkniodk\",\"artifactSourceId\":\"ebwnujhe\",\"targetServiceTopologyId\":\"msbvdkcrodtjinf\",\"stepGroups\":[]},\"location\":\"lfltka\",\"tags\":{\"akggkfpag\":\"efkdlf\",\"lyls\":\"owpulpq\",\"agxsdszuemps\":\"xkqjnsjervt\",\"nqicvinvkjjxdxrb\":\"zkfzbeyv\"},\"id\":\"ukzclewyhmlwpaz\",\"name\":\"zpof\",\"type\":\"cckwyfzqwhxxbu\"},{\"identity\":{\"type\":\"a\",\"identityIds\":[\"feqztppriol\",\"or\",\"altol\"]},\"properties\":{\"status\":\"wsobqwcsdbn\",\"totalRetryAttempts\":297328779,\"services\":[],\"buildVersion\":\"cqdpfuv\",\"artifactSourceId\":\"sbjjc\",\"targetServiceTopologyId\":\"nvxbvt\",\"stepGroups\":[]},\"location\":\"dut\",\"tags\":{\"dflvkg\":\"rmrlxqtvcof\",\"gdknnqv\":\"u\",\"sgsahmkycgr\":\"aznqntoru\",\"s\":\"uwjuetaeburuvdmo\"},\"id\":\"zlxwabmqoefkifr\",\"name\":\"tpuqujmq\",\"type\":\"gkfbtndoaong\"}]";
+        String responseStr
+            = "[{\"identity\":{\"type\":\"jhwuaanozjos\",\"identityIds\":[\"youlp\",\"rvxaglrvimjwosy\"]},\"properties\":{\"status\":\"tcs\",\"totalRetryAttempts\":1365275067,\"services\":[],\"buildVersion\":\"umiekkezzi\",\"artifactSourceId\":\"ly\",\"targetServiceTopologyId\":\"jhdgqggebdunyga\",\"stepGroups\":[]},\"location\":\"idb\",\"tags\":{\"xllrxcyjm\":\"t\",\"su\":\"a\"},\"id\":\"arm\",\"name\":\"wdmjsjqbjhhyx\",\"type\":\"rw\"},{\"identity\":{\"type\":\"co\",\"identityIds\":[\"hp\",\"xkgymareqnajxqu\",\"jhkycub\"]},\"properties\":{\"status\":\"gssofwq\",\"totalRetryAttempts\":761384571,\"services\":[],\"buildVersion\":\"rmnjijpx\",\"artifactSourceId\":\"q\",\"targetServiceTopologyId\":\"udfnbyxba\",\"stepGroups\":[]},\"location\":\"bjyvay\",\"tags\":{\"zrtuzq\":\"m\",\"fdnw\":\"gsexne\",\"euzsoi\":\"wmewzsyy\"},\"id\":\"judpfrxt\",\"name\":\"thzvaytdwkqbrqu\",\"type\":\"paxh\"},{\"identity\":{\"type\":\"iilivpdtiirqtd\",\"identityIds\":[\"axoruzfgsquy\",\"xrxxlep\",\"ramxjezwlwnw\"]},\"properties\":{\"status\":\"lcvydy\",\"totalRetryAttempts\":1772856853,\"services\":[],\"buildVersion\":\"aojkniodk\",\"artifactSourceId\":\"ebwnujhe\",\"targetServiceTopologyId\":\"msbvdkcrodtjinf\",\"stepGroups\":[]},\"location\":\"lfltka\",\"tags\":{\"akggkfpag\":\"efkdlf\",\"lyls\":\"owpulpq\",\"agxsdszuemps\":\"xkqjnsjervt\",\"nqicvinvkjjxdxrb\":\"zkfzbeyv\"},\"id\":\"ukzclewyhmlwpaz\",\"name\":\"zpof\",\"type\":\"cckwyfzqwhxxbu\"},{\"identity\":{\"type\":\"a\",\"identityIds\":[\"feqztppriol\",\"or\",\"altol\"]},\"properties\":{\"status\":\"wsobqwcsdbn\",\"totalRetryAttempts\":297328779,\"services\":[],\"buildVersion\":\"cqdpfuv\",\"artifactSourceId\":\"sbjjc\",\"targetServiceTopologyId\":\"nvxbvt\",\"stepGroups\":[]},\"location\":\"dut\",\"tags\":{\"dflvkg\":\"rmrlxqtvcof\",\"gdknnqv\":\"u\",\"sgsahmkycgr\":\"aznqntoru\",\"s\":\"uwjuetaeburuvdmo\"},\"id\":\"zlxwabmqoefkifr\",\"name\":\"tpuqujmq\",\"type\":\"gkfbtndoaong\"}]";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DeploymentManager manager =
-            DeploymentManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeploymentManager manager = DeploymentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        List<Rollout> response =
-            manager.rollouts().listWithResponse("fatkld", com.azure.core.util.Context.NONE).getValue();
+        List<Rollout> response
+            = manager.rollouts().listWithResponse("fatkld", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals("idb", response.get(0).location());
         Assertions.assertEquals("t", response.get(0).tags().get("xllrxcyjm"));

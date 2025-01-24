@@ -31,11 +31,9 @@ import java.util.regex.Pattern;
  * @param <FluentImplT> the fluent implementation of the parent web app
  */
 class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
-    extends IndexableWrapperImpl<HostnameBindingInner>
-    implements Creatable<HostnameBinding>,
-    HostnameBinding,
-        HostnameBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
-        HostnameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
+    extends IndexableWrapperImpl<HostnameBindingInner> implements Creatable<HostnameBinding>, HostnameBinding,
+    HostnameBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
+    HostnameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
@@ -114,8 +112,8 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     }
 
     @Override
-    public HostnameBindingImpl<FluentT, FluentImplT> withDnsRecordType(
-        CustomHostnameDnsRecordType hostnameDnsRecordType) {
+    public HostnameBindingImpl<FluentT, FluentImplT>
+        withDnsRecordType(CustomHostnameDnsRecordType hostnameDnsRecordType) {
         Pattern pattern = Pattern.compile("([.\\w-]+|\\*)\\.([\\w-]+\\.\\w+)");
         Matcher matcher = pattern.matcher(name);
         if (hostnameDnsRecordType == CustomHostnameDnsRecordType.CNAME && !matcher.matches()) {
@@ -138,33 +136,24 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
         Mono<HostnameBindingInner> observable = null;
 
         if (parent instanceof DeploymentSlot) {
-            observable =
-                this
-                    .parent()
-                    .manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .getHostnameBindingSlotAsync(
-                        parent().resourceGroupName(),
-                        ((DeploymentSlot) parent).parent().name(),
-                        parent().name(),
-                        name());
+            observable = this.parent()
+                .manager()
+                .serviceClient()
+                .getWebApps()
+                .getHostnameBindingSlotAsync(parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(),
+                    parent().name(), name());
         } else {
-            observable =
-                this
-                    .parent()
-                    .manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .getHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name());
+            observable = this.parent()
+                .manager()
+                .serviceClient()
+                .getWebApps()
+                .getHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name());
         }
 
-        return observable
-            .map(
-                hostnameBindingInner -> {
-                    self.setInner(hostnameBindingInner);
-                    return self;
-                });
+        return observable.map(hostnameBindingInner -> {
+            self.setInner(hostnameBindingInner);
+            return self;
+        });
     }
 
     @Override
@@ -185,39 +174,29 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     @Override
     public Mono<HostnameBinding> createAsync(Context context) {
         final HostnameBinding self = this;
-        Function<HostnameBindingInner, HostnameBinding> mapper =
-            hostnameBindingInner -> {
-                setInner(hostnameBindingInner);
-                return self;
-            };
+        Function<HostnameBindingInner, HostnameBinding> mapper = hostnameBindingInner -> {
+            setInner(hostnameBindingInner);
+            return self;
+        };
 
         Mono<HostnameBinding> hostnameBindingObservable;
         if (parent instanceof DeploymentSlot) {
-            hostnameBindingObservable =
-                this
-                    .parent()
-                    .manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .createOrUpdateHostnameBindingSlotAsync(
-                        parent().resourceGroupName(),
-                        ((DeploymentSlot) parent).parent().name(),
-                        name,
-                        parent().name(),
-                        innerModel())
-                    .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
-                    .map(mapper);
+            hostnameBindingObservable = this.parent()
+                .manager()
+                .serviceClient()
+                .getWebApps()
+                .createOrUpdateHostnameBindingSlotAsync(parent().resourceGroupName(),
+                    ((DeploymentSlot) parent).parent().name(), name, parent().name(), innerModel())
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
+                .map(mapper);
         } else {
-            hostnameBindingObservable =
-                this
-                    .parent()
-                    .manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .createOrUpdateHostnameBindingAsync(
-                        parent().resourceGroupName(), parent().name(), name, innerModel())
-                    .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
-                    .map(mapper);
+            hostnameBindingObservable = this.parent()
+                .manager()
+                .serviceClient()
+                .getWebApps()
+                .createOrUpdateHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name, innerModel())
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
+                .map(mapper);
         }
 
         return hostnameBindingObservable;

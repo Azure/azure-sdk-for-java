@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Node status, indicates is private cloud set up on this node or not. */
+/**
+ * Node status, indicates is private cloud set up on this node or not.
+ */
 public enum NodeStatus {
-    /** Enum value unused. */
+    /**
+     * Enum value unused.
+     */
     UNUSED("unused"),
 
-    /** Enum value used. */
+    /**
+     * Enum value used.
+     */
     USED("used");
 
-    /** The actual serialized value for a NodeStatus instance. */
+    /**
+     * The actual serialized value for a NodeStatus instance.
+     */
     private final String value;
 
     NodeStatus(String value) {
@@ -24,11 +29,10 @@ public enum NodeStatus {
 
     /**
      * Parses a serialized value to a NodeStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed NodeStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static NodeStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum NodeStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

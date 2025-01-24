@@ -6,6 +6,8 @@ package com.azure.resourcemanager.storagepool.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagepool.fluent.models.IscsiTargetInner;
+import com.azure.resourcemanager.storagepool.models.Acl;
+import com.azure.resourcemanager.storagepool.models.IscsiLun;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetList;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
@@ -15,60 +17,70 @@ import org.junit.jupiter.api.Assertions;
 public final class IscsiTargetListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IscsiTargetList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"aclMode\":\"Static\",\"staticAcls\":[],\"luns\":[],\"targetIqn\":\"cxgod\",\"provisioningState\":\"Failed\",\"status\":\"Healthy\",\"endpoints\":[],\"port\":898595537,\"sessions\":[]},\"systemData\":{\"createdBy\":\"pukgriwflzlfb\",\"createdByType\":\"User\",\"createdAt\":\"2021-01-25T03:22:02Z\",\"lastModifiedBy\":\"cispnqzahmgkbr\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-09-12T06:35:13Z\"},\"managedBy\":\"bnuqqkpik\",\"managedByExtended\":[\"gvtqagnbuynh\",\"jggmebfsiarbu\"],\"id\":\"rcvpnazzmhjrunmp\",\"name\":\"ttdbhrbnl\",\"type\":\"nkxmyskpbhenbtk\"},{\"properties\":{\"aclMode\":\"Static\",\"staticAcls\":[],\"luns\":[],\"targetIqn\":\"ny\",\"provisioningState\":\"Succeeded\",\"status\":\"Unknown\",\"endpoints\":[],\"port\":815551540,\"sessions\":[]},\"systemData\":{\"createdBy\":\"dybyxczfclhaa\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-10-14T00:40:36Z\",\"lastModifiedBy\":\"hlwrqlfkts\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-11-18T02:17:24Z\"},\"managedBy\":\"cmnyyazttb\",\"managedByExtended\":[\"rq\",\"uedck\"],\"id\":\"ywbiexzfeyueax\",\"name\":\"bxu\",\"type\":\"wbhqwal\"},{\"properties\":{\"aclMode\":\"Dynamic\",\"staticAcls\":[],\"luns\":[],\"targetIqn\":\"oxaepd\",\"provisioningState\":\"Canceled\",\"status\":\"Healthy\",\"endpoints\":[],\"port\":539118010,\"sessions\":[]},\"systemData\":{\"createdBy\":\"hdwbavxbniwdjs\",\"createdByType\":\"Application\",\"createdAt\":\"2021-10-04T13:18:18Z\",\"lastModifiedBy\":\"pgn\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-01-12T15:14:05Z\"},\"managedBy\":\"zxbzpfzabglc\",\"managedByExtended\":[\"wtctyqi\",\"lbbovplw\",\"bhvgy\",\"gu\"],\"id\":\"svmkfssxquk\",\"name\":\"fpl\",\"type\":\"mg\"},{\"properties\":{\"aclMode\":\"Static\",\"staticAcls\":[],\"luns\":[],\"targetIqn\":\"jzkdeslpvlopwi\",\"provisioningState\":\"Failed\",\"status\":\"Unhealthy\",\"endpoints\":[],\"port\":2017228559,\"sessions\":[]},\"systemData\":{\"createdBy\":\"zb\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-05-16T00:27:54Z\",\"lastModifiedBy\":\"a\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-03-15T03:03:20Z\"},\"managedBy\":\"ped\",\"managedByExtended\":[\"nabckhsmtx\"],\"id\":\"siebtfhvpesapskr\",\"name\":\"qmhjjdhtld\",\"type\":\"kyzxuutk\"}],\"nextLink\":\"ws\"}")
-                .toObject(IscsiTargetList.class);
+        IscsiTargetList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"aclMode\":\"Static\",\"staticAcls\":[{\"initiatorIqn\":\"j\",\"mappedLuns\":[\"wpucwwfvovbv\",\"euecivyhzceuoj\",\"jrwjueiotwm\",\"dytdxwitx\"]}],\"luns\":[{\"name\":\"awgqwgxhni\",\"managedDiskAzureResourceId\":\"kxfbkpycgklwndn\",\"lun\":1205583230},{\"name\":\"auwhvylwzbtdhx\",\"managedDiskAzureResourceId\":\"jznb\",\"lun\":284483918}],\"targetIqn\":\"wuwprzqlv\",\"provisioningState\":\"Pending\",\"status\":\"Healthy\",\"endpoints\":[\"pjmkhfxobbc\"],\"port\":198742016,\"sessions\":[\"jriplrbpbewtghf\",\"blcg\"]},\"systemData\":{\"createdBy\":\"vlvqhjkbegi\",\"createdByType\":\"Key\",\"createdAt\":\"2021-02-11T17:20:18Z\",\"lastModifiedBy\":\"ebwwaloayqc\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-06-14T10:56:53Z\"},\"managedBy\":\"uzgwyzmhtx\",\"managedByExtended\":[\"mtsavjcbpwxqp\",\"rknftguvriuhprwm\",\"yvxqtayriwwroy\",\"bexrmcq\"],\"id\":\"bycnojvkn\",\"name\":\"e\",\"type\":\"qsgzvahapj\"},{\"properties\":{\"aclMode\":\"Static\",\"staticAcls\":[{\"initiatorIqn\":\"vgqzcjrvxd\",\"mappedLuns\":[\"lmwlxkvugfhzo\",\"awjvzunluthnnp\",\"nxipeil\",\"jzuaejxdultskzbb\"]},{\"initiatorIqn\":\"dzumveekg\",\"mappedLuns\":[\"ozuhkfp\",\"sjyofdx\"]},{\"initiatorIqn\":\"uusdttouwa\",\"mappedLuns\":[\"ekqvkeln\",\"mvb\"]},{\"initiatorIqn\":\"wyjsflhhcaalnjix\",\"mappedLuns\":[\"xyawj\",\"yaqcslyjpkiidz\",\"exznelixhnr\"]}],\"luns\":[{\"name\":\"o\",\"managedDiskAzureResourceId\":\"hb\",\"lun\":297001975},{\"name\":\"nalaulppg\",\"managedDiskAzureResourceId\":\"dtpnapnyiropuhp\",\"lun\":1439573293},{\"name\":\"pgylg\",\"managedDiskAzureResourceId\":\"git\",\"lun\":613009021}],\"targetIqn\":\"djvcsl\",\"provisioningState\":\"Invalid\",\"status\":\"Healthy\",\"endpoints\":[\"ncw\",\"zhxgktrmgucn\",\"pkteo\",\"llwptfdy\"],\"port\":622690283,\"sessions\":[\"uaceopzfqrhhu\"]},\"systemData\":{\"createdBy\":\"ppcqeqxolz\",\"createdByType\":\"Application\",\"createdAt\":\"2021-04-25T14:15:21Z\",\"lastModifiedBy\":\"t\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-01-31T22:22:25Z\"},\"managedBy\":\"moizpos\",\"managedByExtended\":[\"rcfbunrm\",\"qjhhkxbpv\"],\"id\":\"ymjhxxjyngudivkr\",\"name\":\"swbxqz\",\"type\":\"szjfauvjfdxxivet\"},{\"properties\":{\"aclMode\":\"Dynamic\",\"staticAcls\":[{\"initiatorIqn\":\"aqtdoqmcbx\",\"mappedLuns\":[\"vxysl\",\"bhsfxob\"]},{\"initiatorIqn\":\"ytkblmpew\",\"mappedLuns\":[\"fbkrvrnsvs\",\"q\",\"ohxcrsbfova\"]},{\"initiatorIqn\":\"rruvwbhsq\",\"mappedLuns\":[\"ubcgjbirxb\"]},{\"initiatorIqn\":\"ybsrfbjfdtwss\",\"mappedLuns\":[\"ftpvjzbexil\"]}],\"luns\":[{\"name\":\"fqqnvwpmqtaruo\",\"managedDiskAzureResourceId\":\"jmkcjhwqytj\",\"lun\":778428037},{\"name\":\"n\",\"managedDiskAzureResourceId\":\"jewgdrjerv\",\"lun\":662265241}],\"targetIqn\":\"nqpeh\",\"provisioningState\":\"Deleting\",\"status\":\"Unknown\",\"endpoints\":[\"gmifthnzd\"],\"port\":294736838,\"sessions\":[\"nayqi\",\"ynduha\",\"hqlkthumaqo\"]},\"systemData\":{\"createdBy\":\"ycduier\",\"createdByType\":\"Key\",\"createdAt\":\"2021-11-08T10:44:08Z\",\"lastModifiedBy\":\"vaolpsslqlf\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-07-12T23:59:17Z\"},\"managedBy\":\"glzpswiydm\",\"managedByExtended\":[\"hzdxssadbzm\"],\"id\":\"vdfznudaodvxzb\",\"name\":\"cblylpstdbhhxsr\",\"type\":\"dzu\"}],\"nextLink\":\"rsc\"}")
+            .toObject(IscsiTargetList.class);
         Assertions.assertEquals(IscsiTargetAclMode.STATIC, model.value().get(0).aclMode());
-        Assertions.assertEquals("cxgod", model.value().get(0).targetIqn());
+        Assertions.assertEquals("j", model.value().get(0).staticAcls().get(0).initiatorIqn());
+        Assertions.assertEquals("wpucwwfvovbv", model.value().get(0).staticAcls().get(0).mappedLuns().get(0));
+        Assertions.assertEquals("awgqwgxhni", model.value().get(0).luns().get(0).name());
+        Assertions.assertEquals("kxfbkpycgklwndn", model.value().get(0).luns().get(0).managedDiskAzureResourceId());
+        Assertions.assertEquals("wuwprzqlv", model.value().get(0).targetIqn());
         Assertions.assertEquals(OperationalStatus.HEALTHY, model.value().get(0).status());
-        Assertions.assertEquals(898595537, model.value().get(0).port());
+        Assertions.assertEquals("pjmkhfxobbc", model.value().get(0).endpoints().get(0));
+        Assertions.assertEquals(198742016, model.value().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IscsiTargetList model =
-            new IscsiTargetList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new IscsiTargetInner()
-                                .withAclMode(IscsiTargetAclMode.STATIC)
-                                .withStaticAcls(Arrays.asList())
-                                .withLuns(Arrays.asList())
-                                .withTargetIqn("cxgod")
-                                .withStatus(OperationalStatus.HEALTHY)
-                                .withEndpoints(Arrays.asList())
-                                .withPort(898595537),
-                            new IscsiTargetInner()
-                                .withAclMode(IscsiTargetAclMode.STATIC)
-                                .withStaticAcls(Arrays.asList())
-                                .withLuns(Arrays.asList())
-                                .withTargetIqn("ny")
-                                .withStatus(OperationalStatus.UNKNOWN)
-                                .withEndpoints(Arrays.asList())
-                                .withPort(815551540),
-                            new IscsiTargetInner()
-                                .withAclMode(IscsiTargetAclMode.DYNAMIC)
-                                .withStaticAcls(Arrays.asList())
-                                .withLuns(Arrays.asList())
-                                .withTargetIqn("oxaepd")
-                                .withStatus(OperationalStatus.HEALTHY)
-                                .withEndpoints(Arrays.asList())
-                                .withPort(539118010),
-                            new IscsiTargetInner()
-                                .withAclMode(IscsiTargetAclMode.STATIC)
-                                .withStaticAcls(Arrays.asList())
-                                .withLuns(Arrays.asList())
-                                .withTargetIqn("jzkdeslpvlopwi")
-                                .withStatus(OperationalStatus.UNHEALTHY)
-                                .withEndpoints(Arrays.asList())
-                                .withPort(2017228559)));
+        IscsiTargetList model = new IscsiTargetList().withValue(Arrays.asList(
+            new IscsiTargetInner().withAclMode(IscsiTargetAclMode.STATIC)
+                .withStaticAcls(Arrays.asList(new Acl().withInitiatorIqn("j")
+                    .withMappedLuns(Arrays.asList("wpucwwfvovbv", "euecivyhzceuoj", "jrwjueiotwm", "dytdxwitx"))))
+                .withLuns(Arrays.asList(
+                    new IscsiLun().withName("awgqwgxhni").withManagedDiskAzureResourceId("kxfbkpycgklwndn"),
+                    new IscsiLun().withName("auwhvylwzbtdhx").withManagedDiskAzureResourceId("jznb")))
+                .withTargetIqn("wuwprzqlv")
+                .withStatus(OperationalStatus.HEALTHY)
+                .withEndpoints(Arrays.asList("pjmkhfxobbc"))
+                .withPort(198742016),
+            new IscsiTargetInner().withAclMode(IscsiTargetAclMode.STATIC)
+                .withStaticAcls(Arrays.asList(new Acl().withInitiatorIqn("vgqzcjrvxd")
+                    .withMappedLuns(Arrays.asList("lmwlxkvugfhzo", "awjvzunluthnnp", "nxipeil", "jzuaejxdultskzbb")),
+                    new Acl().withInitiatorIqn("dzumveekg").withMappedLuns(Arrays.asList("ozuhkfp", "sjyofdx")),
+                    new Acl().withInitiatorIqn("uusdttouwa").withMappedLuns(Arrays.asList("ekqvkeln", "mvb")),
+                    new Acl().withInitiatorIqn("wyjsflhhcaalnjix")
+                        .withMappedLuns(Arrays.asList("xyawj", "yaqcslyjpkiidz", "exznelixhnr"))))
+                .withLuns(Arrays.asList(new IscsiLun().withName("o").withManagedDiskAzureResourceId("hb"),
+                    new IscsiLun().withName("nalaulppg").withManagedDiskAzureResourceId("dtpnapnyiropuhp"),
+                    new IscsiLun().withName("pgylg").withManagedDiskAzureResourceId("git")))
+                .withTargetIqn("djvcsl")
+                .withStatus(OperationalStatus.HEALTHY)
+                .withEndpoints(Arrays.asList("ncw", "zhxgktrmgucn", "pkteo", "llwptfdy"))
+                .withPort(622690283),
+            new IscsiTargetInner().withAclMode(IscsiTargetAclMode.DYNAMIC)
+                .withStaticAcls(Arrays.asList(
+                    new Acl().withInitiatorIqn("aqtdoqmcbx").withMappedLuns(Arrays.asList("vxysl", "bhsfxob")),
+                    new Acl().withInitiatorIqn("ytkblmpew")
+                        .withMappedLuns(Arrays.asList("fbkrvrnsvs", "q", "ohxcrsbfova")),
+                    new Acl().withInitiatorIqn("rruvwbhsq").withMappedLuns(Arrays.asList("ubcgjbirxb")),
+                    new Acl().withInitiatorIqn("ybsrfbjfdtwss").withMappedLuns(Arrays.asList("ftpvjzbexil"))))
+                .withLuns(Arrays.asList(
+                    new IscsiLun().withName("fqqnvwpmqtaruo").withManagedDiskAzureResourceId("jmkcjhwqytj"),
+                    new IscsiLun().withName("n").withManagedDiskAzureResourceId("jewgdrjerv")))
+                .withTargetIqn("nqpeh")
+                .withStatus(OperationalStatus.UNKNOWN)
+                .withEndpoints(Arrays.asList("gmifthnzd"))
+                .withPort(294736838)));
         model = BinaryData.fromObject(model).toObject(IscsiTargetList.class);
         Assertions.assertEquals(IscsiTargetAclMode.STATIC, model.value().get(0).aclMode());
-        Assertions.assertEquals("cxgod", model.value().get(0).targetIqn());
+        Assertions.assertEquals("j", model.value().get(0).staticAcls().get(0).initiatorIqn());
+        Assertions.assertEquals("wpucwwfvovbv", model.value().get(0).staticAcls().get(0).mappedLuns().get(0));
+        Assertions.assertEquals("awgqwgxhni", model.value().get(0).luns().get(0).name());
+        Assertions.assertEquals("kxfbkpycgklwndn", model.value().get(0).luns().get(0).managedDiskAzureResourceId());
+        Assertions.assertEquals("wuwprzqlv", model.value().get(0).targetIqn());
         Assertions.assertEquals(OperationalStatus.HEALTHY, model.value().get(0).status());
-        Assertions.assertEquals(898595537, model.value().get(0).port());
+        Assertions.assertEquals("pjmkhfxobbc", model.value().get(0).endpoints().get(0));
+        Assertions.assertEquals(198742016, model.value().get(0).port());
     }
 }

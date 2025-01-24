@@ -14,9 +14,8 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsOrgPropertiesTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsOrgProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Failed\",\"autoDiscovery\":\"Disabled\"}")
+        AzureDevOpsOrgProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"Failed\",\"autoDiscovery\":\"Disabled\"}")
                 .toObject(AzureDevOpsOrgProperties.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
         Assertions.assertEquals(AutoDiscovery.DISABLED, model.autoDiscovery());
@@ -24,10 +23,8 @@ public final class AzureDevOpsOrgPropertiesTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsOrgProperties model =
-            new AzureDevOpsOrgProperties()
-                .withProvisioningState(ProvisioningState.FAILED)
-                .withAutoDiscovery(AutoDiscovery.DISABLED);
+        AzureDevOpsOrgProperties model = new AzureDevOpsOrgProperties().withProvisioningState(ProvisioningState.FAILED)
+            .withAutoDiscovery(AutoDiscovery.DISABLED);
         model = BinaryData.fromObject(model).toObject(AzureDevOpsOrgProperties.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
         Assertions.assertEquals(AutoDiscovery.DISABLED, model.autoDiscovery());

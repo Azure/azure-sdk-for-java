@@ -16,14 +16,15 @@ import com.azure.resourcemanager.batchai.models.Experiments;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExperimentsImpl implements Experiments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExperimentsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExperimentsImpl.class);
 
     private final ExperimentsClient innerClient;
 
     private final com.azure.resourcemanager.batchai.BatchAIManager serviceManager;
 
-    public ExperimentsImpl(
-        ExperimentsClient innerClient, com.azure.resourcemanager.batchai.BatchAIManager serviceManager) {
+    public ExperimentsImpl(ExperimentsClient innerClient,
+        com.azure.resourcemanager.batchai.BatchAIManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,10 +34,10 @@ public final class ExperimentsImpl implements Experiments {
         return Utils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Experiment> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context) {
-        PagedIterable<ExperimentInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, maxResults, context);
+    public PagedIterable<Experiment> listByWorkspace(String resourceGroupName, String workspaceName, Integer maxResults,
+        Context context) {
+        PagedIterable<ExperimentInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, maxResults, context);
         return Utils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
     }
 
@@ -75,15 +76,12 @@ public final class ExperimentsImpl implements Experiments {
         }
     }
 
-    public Response<Experiment> getWithResponse(
-        String resourceGroupName, String workspaceName, String experimentName, Context context) {
-        Response<ExperimentInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, experimentName, context);
+    public Response<Experiment> getWithResponse(String resourceGroupName, String workspaceName, String experimentName,
+        Context context) {
+        Response<ExperimentInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, experimentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExperimentImpl(inner.getValue(), this.manager()));
         } else {
             return null;

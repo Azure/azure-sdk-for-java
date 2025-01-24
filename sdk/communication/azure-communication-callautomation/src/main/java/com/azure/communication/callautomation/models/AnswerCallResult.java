@@ -26,7 +26,8 @@ public final class AnswerCallResult extends CallResult {
      * @param callConnection The callConnection
      * @param callConnectionAsync The callConnectionAsync
      */
-    public AnswerCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
+    public AnswerCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection,
+        CallConnectionAsync callConnectionAsync) {
         super(callConnectionProperties, callConnection, callConnectionAsync);
     }
 
@@ -69,12 +70,19 @@ public final class AnswerCallResult extends CallResult {
             return Mono.empty();
         }
 
-        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class || event.getClass() == AnswerFailed.class))
-            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class || event.getClass() == AnswerFailed.class), timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
+        return (timeout == null
+            ? eventProcessor
+                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == CallConnected.class || event.getClass() == AnswerFailed.class))
+            : eventProcessor
+                .waitForEventProcessorAsync(
+                    event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                        && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                            || operationContextFromRequest == null)
+                        && (event.getClass() == CallConnected.class || event.getClass() == AnswerFailed.class),
+                    timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
     /**

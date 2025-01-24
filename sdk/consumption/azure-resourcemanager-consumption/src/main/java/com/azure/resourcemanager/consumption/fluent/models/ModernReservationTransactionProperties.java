@@ -5,145 +5,133 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The properties of a modern reservation transaction. */
+/**
+ * The properties of a modern reservation transaction.
+ */
 @Immutable
-public final class ModernReservationTransactionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernReservationTransactionProperties.class);
-
+public final class ModernReservationTransactionProperties
+    implements JsonSerializable<ModernReservationTransactionProperties> {
     /*
      * The charge of the transaction.
      */
-    @JsonProperty(value = "amount", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal amount;
 
     /*
-     * This is the ARM Sku name. It can be used to join with the serviceType
-     * field in additional info in usage records.
+     * This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
      */
-    @JsonProperty(value = "armSkuName", access = JsonProperty.Access.WRITE_ONLY)
     private String armSkuName;
 
     /*
      * The billing frequency, which can be either one-time or recurring.
      */
-    @JsonProperty(value = "billingFrequency", access = JsonProperty.Access.WRITE_ONLY)
     private String billingFrequency;
 
     /*
      * Billing profile Id.
      */
-    @JsonProperty(value = "billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileId;
 
     /*
      * Billing profile name.
      */
-    @JsonProperty(value = "billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileName;
 
     /*
      * The ISO currency in which the transaction is charged, for example, USD.
      */
-    @JsonProperty(value = "currency", access = JsonProperty.Access.WRITE_ONLY)
     private String currency;
 
     /*
      * The description of the transaction.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The date of the transaction
      */
-    @JsonProperty(value = "eventDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime eventDate;
 
     /*
-     * The type of the transaction (Purchase, Cancel, etc.)
+     * The type of the transaction (Purchase, Cancel or Refund).
      */
-    @JsonProperty(value = "eventType", access = JsonProperty.Access.WRITE_ONLY)
     private String eventType;
 
     /*
      * Invoice Number
      */
-    @JsonProperty(value = "invoice", access = JsonProperty.Access.WRITE_ONLY)
     private String invoice;
 
     /*
      * Invoice Id as on the invoice where the specific transaction appears.
      */
-    @JsonProperty(value = "invoiceId", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceId;
 
     /*
      * Invoice Section Id
      */
-    @JsonProperty(value = "invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceSectionId;
 
     /*
      * Invoice Section Name.
      */
-    @JsonProperty(value = "invoiceSectionName", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceSectionName;
 
     /*
      * The subscription guid that makes the transaction.
      */
-    @JsonProperty(value = "purchasingSubscriptionGuid", access = JsonProperty.Access.WRITE_ONLY)
     private UUID purchasingSubscriptionGuid;
 
     /*
      * The subscription name that makes the transaction.
      */
-    @JsonProperty(value = "purchasingSubscriptionName", access = JsonProperty.Access.WRITE_ONLY)
     private String purchasingSubscriptionName;
 
     /*
      * The quantity of the transaction.
      */
-    @JsonProperty(value = "quantity", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal quantity;
 
     /*
      * The region of the transaction.
      */
-    @JsonProperty(value = "region", access = JsonProperty.Access.WRITE_ONLY)
     private String region;
 
     /*
-     * The reservation order ID is the identifier for a reservation purchase.
-     * Each reservation order ID represents a single purchase transaction. A
-     * reservation order contains reservations. The reservation order specifies
-     * the VM size and region for the reservations.
+     * The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a
+     * single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM
+     * size and region for the reservations.
      */
-    @JsonProperty(value = "reservationOrderId", access = JsonProperty.Access.WRITE_ONLY)
     private String reservationOrderId;
 
     /*
      * The name of the reservation order.
      */
-    @JsonProperty(value = "reservationOrderName", access = JsonProperty.Access.WRITE_ONLY)
     private String reservationOrderName;
 
     /*
      * This is the term of the transaction.
      */
-    @JsonProperty(value = "term", access = JsonProperty.Access.WRITE_ONLY)
     private String term;
 
     /**
+     * Creates an instance of ModernReservationTransactionProperties class.
+     */
+    public ModernReservationTransactionProperties() {
+    }
+
+    /**
      * Get the amount property: The charge of the transaction.
-     *
+     * 
      * @return the amount value.
      */
     public BigDecimal amount() {
@@ -153,7 +141,7 @@ public final class ModernReservationTransactionProperties {
     /**
      * Get the armSkuName property: This is the ARM Sku name. It can be used to join with the serviceType field in
      * additional info in usage records.
-     *
+     * 
      * @return the armSkuName value.
      */
     public String armSkuName() {
@@ -162,7 +150,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the billingFrequency property: The billing frequency, which can be either one-time or recurring.
-     *
+     * 
      * @return the billingFrequency value.
      */
     public String billingFrequency() {
@@ -171,7 +159,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the billingProfileId property: Billing profile Id.
-     *
+     * 
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
@@ -180,7 +168,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the billingProfileName property: Billing profile name.
-     *
+     * 
      * @return the billingProfileName value.
      */
     public String billingProfileName() {
@@ -189,7 +177,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the currency property: The ISO currency in which the transaction is charged, for example, USD.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -198,7 +186,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the description property: The description of the transaction.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -207,7 +195,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the eventDate property: The date of the transaction.
-     *
+     * 
      * @return the eventDate value.
      */
     public OffsetDateTime eventDate() {
@@ -215,8 +203,8 @@ public final class ModernReservationTransactionProperties {
     }
 
     /**
-     * Get the eventType property: The type of the transaction (Purchase, Cancel, etc.).
-     *
+     * Get the eventType property: The type of the transaction (Purchase, Cancel or Refund).
+     * 
      * @return the eventType value.
      */
     public String eventType() {
@@ -225,7 +213,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the invoice property: Invoice Number.
-     *
+     * 
      * @return the invoice value.
      */
     public String invoice() {
@@ -234,7 +222,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the invoiceId property: Invoice Id as on the invoice where the specific transaction appears.
-     *
+     * 
      * @return the invoiceId value.
      */
     public String invoiceId() {
@@ -243,7 +231,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the invoiceSectionId property: Invoice Section Id.
-     *
+     * 
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
@@ -252,7 +240,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the invoiceSectionName property: Invoice Section Name.
-     *
+     * 
      * @return the invoiceSectionName value.
      */
     public String invoiceSectionName() {
@@ -261,7 +249,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the purchasingSubscriptionGuid property: The subscription guid that makes the transaction.
-     *
+     * 
      * @return the purchasingSubscriptionGuid value.
      */
     public UUID purchasingSubscriptionGuid() {
@@ -270,7 +258,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the purchasingSubscriptionName property: The subscription name that makes the transaction.
-     *
+     * 
      * @return the purchasingSubscriptionName value.
      */
     public String purchasingSubscriptionName() {
@@ -279,7 +267,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the quantity property: The quantity of the transaction.
-     *
+     * 
      * @return the quantity value.
      */
     public BigDecimal quantity() {
@@ -288,7 +276,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the region property: The region of the transaction.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -299,7 +287,7 @@ public final class ModernReservationTransactionProperties {
      * Get the reservationOrderId property: The reservation order ID is the identifier for a reservation purchase. Each
      * reservation order ID represents a single purchase transaction. A reservation order contains reservations. The
      * reservation order specifies the VM size and region for the reservations.
-     *
+     * 
      * @return the reservationOrderId value.
      */
     public String reservationOrderId() {
@@ -308,7 +296,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the reservationOrderName property: The name of the reservation order.
-     *
+     * 
      * @return the reservationOrderName value.
      */
     public String reservationOrderName() {
@@ -317,7 +305,7 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Get the term property: This is the term of the transaction.
-     *
+     * 
      * @return the term value.
      */
     public String term() {
@@ -326,9 +314,87 @@ public final class ModernReservationTransactionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ModernReservationTransactionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ModernReservationTransactionProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ModernReservationTransactionProperties.
+     */
+    public static ModernReservationTransactionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ModernReservationTransactionProperties deserializedModernReservationTransactionProperties
+                = new ModernReservationTransactionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("amount".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.amount
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("armSkuName".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.armSkuName = reader.getString();
+                } else if ("billingFrequency".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.billingFrequency = reader.getString();
+                } else if ("billingProfileId".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.billingProfileId = reader.getString();
+                } else if ("billingProfileName".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.billingProfileName = reader.getString();
+                } else if ("currency".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.currency = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.description = reader.getString();
+                } else if ("eventDate".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.eventDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.eventType = reader.getString();
+                } else if ("invoice".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.invoice = reader.getString();
+                } else if ("invoiceId".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.invoiceId = reader.getString();
+                } else if ("invoiceSectionId".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.invoiceSectionId = reader.getString();
+                } else if ("invoiceSectionName".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.invoiceSectionName = reader.getString();
+                } else if ("purchasingSubscriptionGuid".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.purchasingSubscriptionGuid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("purchasingSubscriptionName".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.purchasingSubscriptionName = reader.getString();
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.quantity
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("region".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.region = reader.getString();
+                } else if ("reservationOrderId".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.reservationOrderId = reader.getString();
+                } else if ("reservationOrderName".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.reservationOrderName = reader.getString();
+                } else if ("term".equals(fieldName)) {
+                    deserializedModernReservationTransactionProperties.term = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedModernReservationTransactionProperties;
+        });
     }
 }

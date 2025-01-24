@@ -42,10 +42,9 @@ public final class AutocompletePagedIterable extends PagedIterableBase<Autocompl
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
     public AutocompletePagedIterable(Supplier<AutocompletePagedResponse> firstPageRetriever,
-                                Function<String, AutocompletePagedResponse> nextPageRetriever) {
-        super(() -> (continuationToken, pageSize) ->
-            continuationToken == null
-                ? firstPageRetriever.get()
-                : nextPageRetriever.apply(continuationToken));
+        Function<String, AutocompletePagedResponse> nextPageRetriever) {
+        super(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.get()
+            : nextPageRetriever.apply(continuationToken));
     }
 }

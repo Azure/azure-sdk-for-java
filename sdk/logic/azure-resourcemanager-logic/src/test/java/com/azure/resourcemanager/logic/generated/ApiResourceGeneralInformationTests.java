@@ -12,35 +12,31 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiResourceGeneralInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiResourceGeneralInformation model =
-            BinaryData
-                .fromString(
-                    "{\"iconUrl\":\"ioovzidsxwaab\",\"displayName\":\"ifrygzn\",\"description\":\"axri\",\"termsOfUseUrl\":\"zob\",\"releaseTag\":\"pxl\",\"tier\":\"Standard\"}")
-                .toObject(ApiResourceGeneralInformation.class);
-        Assertions.assertEquals("ioovzidsxwaab", model.iconUrl());
-        Assertions.assertEquals("ifrygzn", model.displayName());
-        Assertions.assertEquals("axri", model.description());
-        Assertions.assertEquals("zob", model.termsOfUseUrl());
-        Assertions.assertEquals("pxl", model.releaseTag());
+        ApiResourceGeneralInformation model = BinaryData.fromString(
+            "{\"iconUrl\":\"zlwhhmemhooclu\",\"displayName\":\"pqmem\",\"description\":\"jk\",\"termsOfUseUrl\":\"ykyujxsg\",\"releaseTag\":\"srrryejylmbkzu\",\"tier\":\"Standard\"}")
+            .toObject(ApiResourceGeneralInformation.class);
+        Assertions.assertEquals("zlwhhmemhooclu", model.iconUrl());
+        Assertions.assertEquals("pqmem", model.displayName());
+        Assertions.assertEquals("jk", model.description());
+        Assertions.assertEquals("ykyujxsg", model.termsOfUseUrl());
+        Assertions.assertEquals("srrryejylmbkzu", model.releaseTag());
         Assertions.assertEquals(ApiTier.STANDARD, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiResourceGeneralInformation model =
-            new ApiResourceGeneralInformation()
-                .withIconUrl("ioovzidsxwaab")
-                .withDisplayName("ifrygzn")
-                .withDescription("axri")
-                .withTermsOfUseUrl("zob")
-                .withReleaseTag("pxl")
-                .withTier(ApiTier.STANDARD);
+        ApiResourceGeneralInformation model = new ApiResourceGeneralInformation().withIconUrl("zlwhhmemhooclu")
+            .withDisplayName("pqmem")
+            .withDescription("jk")
+            .withTermsOfUseUrl("ykyujxsg")
+            .withReleaseTag("srrryejylmbkzu")
+            .withTier(ApiTier.STANDARD);
         model = BinaryData.fromObject(model).toObject(ApiResourceGeneralInformation.class);
-        Assertions.assertEquals("ioovzidsxwaab", model.iconUrl());
-        Assertions.assertEquals("ifrygzn", model.displayName());
-        Assertions.assertEquals("axri", model.description());
-        Assertions.assertEquals("zob", model.termsOfUseUrl());
-        Assertions.assertEquals("pxl", model.releaseTag());
+        Assertions.assertEquals("zlwhhmemhooclu", model.iconUrl());
+        Assertions.assertEquals("pqmem", model.displayName());
+        Assertions.assertEquals("jk", model.description());
+        Assertions.assertEquals("ykyujxsg", model.termsOfUseUrl());
+        Assertions.assertEquals("srrryejylmbkzu", model.releaseTag());
         Assertions.assertEquals(ApiTier.STANDARD, model.tier());
     }
 }

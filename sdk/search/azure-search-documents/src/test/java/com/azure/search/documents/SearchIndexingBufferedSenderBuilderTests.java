@@ -62,11 +62,11 @@ public class SearchIndexingBufferedSenderBuilderTests {
         assertThrows(IllegalArgumentException.class, () -> options.maxThrottlingDelay(Duration.ofMillis(-1)));
     }
 
-//    @Test
-//    public void invalidPayloadTooLargeScaleDownThrows() {
-//        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
-//        assertThrows(NullPointerException.class, () -> options.setPayloadTooLargeScaleDown(null));
-//    }
+    //    @Test
+    //    public void invalidPayloadTooLargeScaleDownThrows() {
+    //        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+    //        assertThrows(NullPointerException.class, () -> options.setPayloadTooLargeScaleDown(null));
+    //    }
 
     private SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> getBaseOptions() {
         return new SearchClientBuilder().bufferedSender(DOCUMENT_TYPE);

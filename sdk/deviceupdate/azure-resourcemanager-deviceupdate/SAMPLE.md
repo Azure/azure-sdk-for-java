@@ -57,14 +57,15 @@ import com.azure.resourcemanager.deviceupdate.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.deviceupdate.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Samples for Accounts Create.
  */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/Accounts_Create.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/
+     * Accounts_Create.json
      */
     /**
      * Sample code: Creates or updates Account.
@@ -72,7 +73,18 @@ public final class AccountsCreateSamples {
      * @param manager Entry point to DeviceUpdateManager.
      */
     public static void createsOrUpdatesAccount(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.accounts().define("contoso").withRegion("westus2").withExistingResourceGroup("test-rg").withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(mapOf("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1", new UserAssignedIdentity()))).withEncryption(new Encryption().withKeyVaultKeyUri("fakeTokenPlaceholder").withUserAssignedIdentity("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1")).create();
+        manager.accounts()
+            .define("contoso")
+            .withRegion("westus2")
+            .withExistingResourceGroup("test-rg")
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                    new UserAssignedIdentity())))
+            .withEncryption(new Encryption().withKeyVaultKeyUri("fakeTokenPlaceholder")
+                .withUserAssignedIdentity(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
+            .create();
     }
 
     // Use "Map.of" if available
@@ -97,7 +109,9 @@ public final class AccountsCreateSamples {
  */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/Accounts_Delete.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/
+     * Accounts_Delete.json
      */
     /**
      * Sample code: Deletes an account.
@@ -118,7 +132,9 @@ public final class AccountsDeleteSamples {
  */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/Accounts_Get.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/
+     * Accounts_Get.json
      */
     /**
      * Sample code: Gets Account details.
@@ -139,7 +155,9 @@ public final class AccountsGetByResourceGroupSamples {
  */
 public final class AccountsHeadSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/Accounts_Head.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/
+     * Accounts_Head.json
      */
     /**
      * Sample code: Checks whether account exists.
@@ -160,7 +178,9 @@ public final class AccountsHeadSamples {
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/Accounts_List.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/
+     * Accounts_List.json
      */
     /**
      * Sample code: Get list of Accounts.
@@ -181,7 +201,9 @@ public final class AccountsListSamples {
  */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/Accounts_List.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/
+     * Accounts_List.json
      */
     /**
      * Sample code: Gets list of Accounts.
@@ -206,7 +228,9 @@ import java.util.Map;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/Accounts_Update.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/
+     * Accounts_Update.json
      */
     /**
      * Sample code: Updates Account.
@@ -214,7 +238,9 @@ public final class AccountsUpdateSamples {
      * @param manager Entry point to DeviceUpdateManager.
      */
     public static void updatesAccount(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        Account resource = manager.accounts().getByResourceGroupWithResponse("test-rg", "contoso", com.azure.core.util.Context.NONE).getValue();
+        Account resource = manager.accounts()
+            .getByResourceGroupWithResponse("test-rg", "contoso", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagKey", "fakeTokenPlaceholder")).apply();
     }
 
@@ -239,14 +265,15 @@ import com.azure.resourcemanager.deviceupdate.models.AuthenticationType;
 import com.azure.resourcemanager.deviceupdate.models.DiagnosticStorageProperties;
 import com.azure.resourcemanager.deviceupdate.models.IotHubSettings;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * Samples for Instances Create.
  */
 public final class InstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/Instances_Create.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/
+     * Instances_Create.json
      */
     /**
      * Sample code: Creates or updates Instance.
@@ -254,7 +281,19 @@ public final class InstancesCreateSamples {
      * @param manager Entry point to DeviceUpdateManager.
      */
     public static void createsOrUpdatesInstance(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.instances().define("blue").withRegion("westus2").withExistingAccount("test-rg", "contoso").withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Devices/IotHubs/blue-contoso-hub"))).withEnableDiagnostics(false).withDiagnosticStorageProperties(new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED).withConnectionString("string").withResourceId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/adu-resource-group/providers/Microsoft.Storage/storageAccounts/testAccount")).create();
+        manager.instances()
+            .define("blue")
+            .withRegion("westus2")
+            .withExistingAccount("test-rg", "contoso")
+            .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Devices/IotHubs/blue-contoso-hub")))
+            .withEnableDiagnostics(false)
+            .withDiagnosticStorageProperties(new DiagnosticStorageProperties()
+                .withAuthenticationType(AuthenticationType.KEY_BASED)
+                .withConnectionString("string")
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/adu-resource-group/providers/Microsoft.Storage/storageAccounts/testAccount"))
+            .create();
     }
 }
 ```
@@ -267,7 +306,9 @@ public final class InstancesCreateSamples {
  */
 public final class InstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/Instances_Delete.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/
+     * Instances_Delete.json
      */
     /**
      * Sample code: Deletes instance.
@@ -288,7 +329,9 @@ public final class InstancesDeleteSamples {
  */
 public final class InstancesGetSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/Instances_Get.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/
+     * Instances_Get.json
      */
     /**
      * Sample code: Gets list of Instances.
@@ -309,7 +352,9 @@ public final class InstancesGetSamples {
  */
 public final class InstancesHeadSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/Instances_Head.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/
+     * Instances_Head.json
      */
     /**
      * Sample code: Checks whether instance exists.
@@ -330,14 +375,17 @@ public final class InstancesHeadSamples {
  */
 public final class InstancesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/Instances_ListByAccount.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/
+     * Instances_ListByAccount.json
      */
     /**
      * Sample code: Gets list of Instances by Account.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void getsListOfInstancesByAccount(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+    public static void
+        getsListOfInstancesByAccount(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
         manager.instances().listByAccount("test-rg", "contoso", com.azure.core.util.Context.NONE);
     }
 }
@@ -355,7 +403,9 @@ import java.util.Map;
  */
 public final class InstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/Instances_Update.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/
+     * Instances_Update.json
      */
     /**
      * Sample code: Updates Instance.
@@ -363,7 +413,9 @@ public final class InstancesUpdateSamples {
      * @param manager Entry point to DeviceUpdateManager.
      */
     public static void updatesInstance(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        Instance resource = manager.instances().getWithResponse("test-rg", "contoso", "blue", com.azure.core.util.Context.NONE).getValue();
+        Instance resource = manager.instances()
+            .getWithResponse("test-rg", "contoso", "blue", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagKey", "fakeTokenPlaceholder")).apply();
     }
 
@@ -389,7 +441,9 @@ public final class InstancesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Operations_List.
+     * json
      */
     /**
      * Sample code: Gets list of Operations.
@@ -415,15 +469,34 @@ import java.util.Arrays;
  */
 public final class PrivateEndpointConnectionProxiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyCreateOrUpdate.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionProxyCreateOrUpdate(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().define("peexample01").withExistingAccount("test-rg", "contoso").withRemotePrivateEndpoint(new RemotePrivateEndpoint().withId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}").withLocation("westus2").withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000").withImmutableResourceId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}").withManualPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection().withName("{privateEndpointConnectionProxyId}").withGroupIds(Arrays.asList("DeviceUpdate")).withRequestMessage("Please approve my connection, thanks."))).withPrivateLinkServiceProxies(Arrays.asList(new PrivateLinkServiceProxy().withId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}/privateLinkServiceProxies/{privateEndpointConnectionProxyId}").withGroupConnectivityInformation(Arrays.asList())))).create();
+    public static void privateEndpointConnectionProxyCreateOrUpdate(
+        com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.privateEndpointConnectionProxies()
+            .define("peexample01")
+            .withExistingAccount("test-rg", "contoso")
+            .withRemotePrivateEndpoint(new RemotePrivateEndpoint().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
+                .withLocation("westus2")
+                .withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000")
+                .withImmutableResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
+                .withManualPrivateLinkServiceConnections(
+                    Arrays.asList(new PrivateLinkServiceConnection().withName("{privateEndpointConnectionProxyId}")
+                        .withGroupIds(Arrays.asList("DeviceUpdate"))
+                        .withRequestMessage("Please approve my connection, thanks.")))
+                .withPrivateLinkServiceProxies(Arrays.asList(new PrivateLinkServiceProxy().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}/privateLinkServiceProxies/{privateEndpointConnectionProxyId}")
+                    .withGroupConnectivityInformation(Arrays.asList()))))
+            .create();
     }
 }
 ```
@@ -436,15 +509,19 @@ public final class PrivateEndpointConnectionProxiesCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionProxiesDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Delete.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Delete.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyDelete.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionProxyDelete(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().delete("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
+    public static void
+        privateEndpointConnectionProxyDelete(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.privateEndpointConnectionProxies()
+            .delete("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -457,15 +534,19 @@ public final class PrivateEndpointConnectionProxiesDeleteSamples {
  */
 public final class PrivateEndpointConnectionProxiesGetSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Get.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Get.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyGet.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionProxyGet(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().getWithResponse("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
+    public static void
+        privateEndpointConnectionProxyGet(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.privateEndpointConnectionProxies()
+            .getWithResponse("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -478,15 +559,19 @@ public final class PrivateEndpointConnectionProxiesGetSamples {
  */
 public final class PrivateEndpointConnectionProxiesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_ListByAccount.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_ListByAccount.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyList.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionProxyList(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().listByAccount("test-rg", "contoso", com.azure.core.util.Context.NONE);
+    public static void
+        privateEndpointConnectionProxyList(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.privateEndpointConnectionProxies()
+            .listByAccount("test-rg", "contoso", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -501,15 +586,27 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointUpdate;
  */
 public final class PrivateEndpointConnectionProxiesUpdatePrivateEndpointPropertiesSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_PrivateEndpointUpdate.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_PrivateEndpointUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyPrivateEndpointUpdate.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionProxyPrivateEndpointUpdate(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().updatePrivateEndpointPropertiesWithResponse("test-rg", "contoso", "peexample01", new PrivateEndpointUpdate().withId("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}").withLocation("westus2").withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000").withImmutableResourceId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}").withVnetTrafficTag("12345678"), com.azure.core.util.Context.NONE);
+    public static void privateEndpointConnectionProxyPrivateEndpointUpdate(
+        com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.privateEndpointConnectionProxies()
+            .updatePrivateEndpointPropertiesWithResponse("test-rg", "contoso", "peexample01",
+                new PrivateEndpointUpdate().withId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
+                    .withLocation("westus2")
+                    .withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000")
+                    .withImmutableResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
+                    .withVnetTrafficTag("12345678"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -528,15 +625,33 @@ import java.util.Arrays;
  */
 public final class PrivateEndpointConnectionProxiesValidateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Validate.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_Validate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyValidate.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionProxyValidate(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().validateWithResponse("test-rg", "contoso", "peexample01", new PrivateEndpointConnectionProxyInner().withRemotePrivateEndpoint(new RemotePrivateEndpoint().withId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}").withLocation("westus2").withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000").withImmutableResourceId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}").withManualPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection().withName("{privateEndpointConnectionProxyId}").withGroupIds(Arrays.asList("DeviceUpdate")).withRequestMessage("Please approve my connection, thanks."))).withPrivateLinkServiceProxies(Arrays.asList(new PrivateLinkServiceProxy().withId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}/privateLinkServiceProxies/{privateEndpointConnectionProxyId}").withGroupConnectivityInformation(Arrays.asList())))), com.azure.core.util.Context.NONE);
+    public static void
+        privateEndpointConnectionProxyValidate(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.privateEndpointConnectionProxies()
+            .validateWithResponse("test-rg", "contoso", "peexample01",
+                new PrivateEndpointConnectionProxyInner().withRemotePrivateEndpoint(new RemotePrivateEndpoint().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}")
+                    .withLocation("westus2")
+                    .withImmutableSubscriptionId("00000000-0000-0000-0000-000000000000")
+                    .withImmutableResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{peName}")
+                    .withManualPrivateLinkServiceConnections(
+                        Arrays.asList(new PrivateLinkServiceConnection().withName("{privateEndpointConnectionProxyId}")
+                            .withGroupIds(Arrays.asList("DeviceUpdate"))
+                            .withRequestMessage("Please approve my connection, thanks.")))
+                    .withPrivateLinkServiceProxies(Arrays.asList(new PrivateLinkServiceProxy().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Network/privateEndpoints/{privateEndpointConnectionProxyId}/privateLinkServiceProxies/{privateEndpointConnectionProxyId}")
+                        .withGroupConnectivityInformation(Arrays.asList())))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -546,22 +661,30 @@ public final class PrivateEndpointConnectionProxiesValidateSamples {
 ```java
 import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceConnectionState;
-import java.util.stream.Collectors;
 
 /**
  * Samples for PrivateEndpointConnections CreateOrUpdate.
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnections/PrivateEndpointConnection_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnections/PrivateEndpointConnection_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionCreateOrUpdate.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionCreateOrUpdate(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnections().define("peexample01").withExistingAccount("test-rg", "contoso").withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("Auto-Approved")).create();
+    public static void
+        privateEndpointConnectionCreateOrUpdate(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.privateEndpointConnections()
+            .define("peexample01")
+            .withExistingAccount("test-rg", "contoso")
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    .withDescription("Auto-Approved"))
+            .create();
     }
 }
 ```
@@ -574,15 +697,19 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnections/PrivateEndpointConnection_Delete.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnections/PrivateEndpointConnection_Delete.json
      */
     /**
      * Sample code: PrivateEndpointConnectionDelete.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionDelete(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnections().delete("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
+    public static void
+        privateEndpointConnectionDelete(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.privateEndpointConnections()
+            .delete("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -595,15 +722,19 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnections/PrivateEndpointConnection_Get.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnections/PrivateEndpointConnection_Get.json
      */
     /**
      * Sample code: PrivateEndpointConnectionGet.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionGet(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnections().getWithResponse("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
+    public static void
+        privateEndpointConnectionGet(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.privateEndpointConnections()
+            .getWithResponse("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -616,14 +747,17 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListByAccountSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateEndpointConnections/PrivateEndpointConnection_ListByAccount.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateEndpointConnections/PrivateEndpointConnection_ListByAccount.json
      */
     /**
      * Sample code: PrivateEndpointConnectionList.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void privateEndpointConnectionList(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+    public static void
+        privateEndpointConnectionList(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
         manager.privateEndpointConnections().listByAccount("test-rg", "contoso", com.azure.core.util.Context.NONE);
     }
 }
@@ -637,7 +771,9 @@ public final class PrivateEndpointConnectionsListByAccountSamples {
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateLinkResources/PrivateLinkResources_Get.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateLinkResources/PrivateLinkResources_Get.json
      */
     /**
      * Sample code: PrivateLinkResourcesGet.
@@ -658,7 +794,9 @@ public final class PrivateLinkResourcesGetSamples {
  */
 public final class PrivateLinkResourcesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/PrivateLinkResources/PrivateLinkResources_ListByAccount.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * PrivateLinkResources/PrivateLinkResources_ListByAccount.json
      */
     /**
      * Sample code: PrivateLinkResourcesList.
@@ -681,27 +819,39 @@ import com.azure.resourcemanager.deviceupdate.models.CheckNameAvailabilityReques
  */
 public final class ResourceProviderCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/CheckNameAvailability_AlreadyExists.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * CheckNameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: CheckNameAvailability_AlreadyExists.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void checkNameAvailabilityAlreadyExists(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.resourceProviders().checkNameAvailabilityWithResponse(new CheckNameAvailabilityRequest().withName("contoso").withType("Microsoft.DeviceUpdate/accounts"), com.azure.core.util.Context.NONE);
+    public static void
+        checkNameAvailabilityAlreadyExists(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.resourceProviders()
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailabilityRequest().withName("contoso").withType("Microsoft.DeviceUpdate/accounts"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/CheckNameAvailability_Available.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/
+     * CheckNameAvailability_Available.json
      */
     /**
      * Sample code: CheckNameAvailability_Available.
      * 
      * @param manager Entry point to DeviceUpdateManager.
      */
-    public static void checkNameAvailabilityAvailable(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.resourceProviders().checkNameAvailabilityWithResponse(new CheckNameAvailabilityRequest().withName("contoso").withType("Microsoft.DeviceUpdate/accounts"), com.azure.core.util.Context.NONE);
+    public static void
+        checkNameAvailabilityAvailable(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
+        manager.resourceProviders()
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailabilityRequest().withName("contoso").withType("Microsoft.DeviceUpdate/accounts"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

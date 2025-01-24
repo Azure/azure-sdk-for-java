@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -74,7 +73,6 @@ public final class ProvisionState extends ExpandableStringEnum<ProvisionState> {
      * @param name a name to look for.
      * @return the corresponding ProvisionState.
      */
-    @JsonCreator
     public static ProvisionState fromString(String name) {
         return fromString(name, ProvisionState.class);
     }

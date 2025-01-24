@@ -20,55 +20,30 @@ public final class ConfigurationProfileHciAssignmentsImpl implements Configurati
 
     private final com.azure.resourcemanager.automanage.AutomanageManager serviceManager;
 
-    public ConfigurationProfileHciAssignmentsImpl(
-        ConfigurationProfileHciAssignmentsClient innerClient,
+    public ConfigurationProfileHciAssignmentsImpl(ConfigurationProfileHciAssignmentsClient innerClient,
         com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ConfigurationProfileAssignment createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String configurationProfileAssignmentName,
-        ConfigurationProfileAssignmentInner parameters) {
-        ConfigurationProfileAssignmentInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, clusterName, configurationProfileAssignmentName, parameters);
-        if (inner != null) {
-            return new ConfigurationProfileAssignmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ConfigurationProfileAssignment> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String configurationProfileAssignmentName,
-        ConfigurationProfileAssignmentInner parameters,
+    public Response<ConfigurationProfileAssignment> createOrUpdateWithResponse(String resourceGroupName,
+        String clusterName, String configurationProfileAssignmentName, ConfigurationProfileAssignmentInner parameters,
         Context context) {
-        Response<ConfigurationProfileAssignmentInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, clusterName, configurationProfileAssignmentName, parameters, context);
+        Response<ConfigurationProfileAssignmentInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, configurationProfileAssignmentName, parameters,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConfigurationProfileAssignmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ConfigurationProfileAssignment get(
-        String resourceGroupName, String clusterName, String configurationProfileAssignmentName) {
-        ConfigurationProfileAssignmentInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, configurationProfileAssignmentName);
+    public ConfigurationProfileAssignment createOrUpdate(String resourceGroupName, String clusterName,
+        String configurationProfileAssignmentName, ConfigurationProfileAssignmentInner parameters) {
+        ConfigurationProfileAssignmentInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, clusterName, configurationProfileAssignmentName, parameters);
         if (inner != null) {
             return new ConfigurationProfileAssignmentImpl(inner, this.manager());
         } else {
@@ -76,32 +51,37 @@ public final class ConfigurationProfileHciAssignmentsImpl implements Configurati
         }
     }
 
-    public Response<ConfigurationProfileAssignment> getWithResponse(
-        String resourceGroupName, String clusterName, String configurationProfileAssignmentName, Context context) {
-        Response<ConfigurationProfileAssignmentInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, clusterName, configurationProfileAssignmentName, context);
+    public Response<ConfigurationProfileAssignment> getWithResponse(String resourceGroupName, String clusterName,
+        String configurationProfileAssignmentName, Context context) {
+        Response<ConfigurationProfileAssignmentInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, clusterName, configurationProfileAssignmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConfigurationProfileAssignmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
+    }
+
+    public ConfigurationProfileAssignment get(String resourceGroupName, String clusterName,
+        String configurationProfileAssignmentName) {
+        ConfigurationProfileAssignmentInner inner
+            = this.serviceClient().get(resourceGroupName, clusterName, configurationProfileAssignmentName);
+        if (inner != null) {
+            return new ConfigurationProfileAssignmentImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String clusterName,
+        String configurationProfileAssignmentName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, clusterName, configurationProfileAssignmentName, context);
     }
 
     public void delete(String resourceGroupName, String clusterName, String configurationProfileAssignmentName) {
         this.serviceClient().delete(resourceGroupName, clusterName, configurationProfileAssignmentName);
-    }
-
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String clusterName, String configurationProfileAssignmentName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, clusterName, configurationProfileAssignmentName, context);
     }
 
     private ConfigurationProfileHciAssignmentsClient serviceClient() {

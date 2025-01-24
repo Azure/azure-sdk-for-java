@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ReturnShippingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReturnShipping model =
-            BinaryData
-                .fromString("{\"carrierName\":\"ymwisdkft\",\"carrierAccountNumber\":\"wxmnteiwao\"}")
+        ReturnShipping model
+            = BinaryData.fromString("{\"carrierName\":\"jpslwejd\",\"carrierAccountNumber\":\"vwryoqpso\"}")
                 .toObject(ReturnShipping.class);
-        Assertions.assertEquals("ymwisdkft", model.carrierName());
-        Assertions.assertEquals("wxmnteiwao", model.carrierAccountNumber());
+        Assertions.assertEquals("jpslwejd", model.carrierName());
+        Assertions.assertEquals("vwryoqpso", model.carrierAccountNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReturnShipping model = new ReturnShipping().withCarrierName("ymwisdkft").withCarrierAccountNumber("wxmnteiwao");
+        ReturnShipping model = new ReturnShipping().withCarrierName("jpslwejd").withCarrierAccountNumber("vwryoqpso");
         model = BinaryData.fromObject(model).toObject(ReturnShipping.class);
-        Assertions.assertEquals("ymwisdkft", model.carrierName());
-        Assertions.assertEquals("wxmnteiwao", model.carrierAccountNumber());
+        Assertions.assertEquals("jpslwejd", model.carrierName());
+        Assertions.assertEquals("vwryoqpso", model.carrierAccountNumber());
     }
 }

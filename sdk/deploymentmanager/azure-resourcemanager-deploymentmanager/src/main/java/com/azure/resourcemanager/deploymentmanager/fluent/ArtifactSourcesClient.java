@@ -29,8 +29,8 @@ public interface ArtifactSourcesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArtifactSourceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo, Context context);
+    Response<ArtifactSourceInner> createOrUpdateWithResponse(String resourceGroupName, String artifactSourceName,
+        ArtifactSourceInner artifactSourceInfo, Context context);
 
     /**
      * Creates or updates an artifact source.
@@ -59,8 +59,8 @@ public interface ArtifactSourcesClient {
      * @return an artifact source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArtifactSourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String artifactSourceName, Context context);
+    Response<ArtifactSourceInner> getByResourceGroupWithResponse(String resourceGroupName, String artifactSourceName,
+        Context context);
 
     /**
      * Gets an artifact source.

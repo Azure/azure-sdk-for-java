@@ -5,52 +5,55 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.models.PrivateIpAllocationMethod;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkConfigurationProvisioningState;
 import com.azure.resourcemanager.hdinsight.models.ResourceId;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The private link ip configuration properties. */
+/**
+ * The private link ip configuration properties.
+ */
 @Fluent
-public final class IpConfigurationProperties {
+public final class IpConfigurationProperties implements JsonSerializable<IpConfigurationProperties> {
     /*
      * The private link configuration provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateLinkConfigurationProvisioningState provisioningState;
 
     /*
      * Indicates whether this IP configuration is primary for the corresponding NIC.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * The IP address.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /*
      * The method that private IP address is allocated.
      */
-    @JsonProperty(value = "privateIPAllocationMethod")
     private PrivateIpAllocationMethod privateIpAllocationMethod;
 
     /*
      * The subnet resource id.
      */
-    @JsonProperty(value = "subnet")
     private ResourceId subnet;
 
-    /** Creates an instance of IpConfigurationProperties class. */
+    /**
+     * Creates an instance of IpConfigurationProperties class.
+     */
     public IpConfigurationProperties() {
     }
 
     /**
      * Get the provisioningState property: The private link configuration provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PrivateLinkConfigurationProvisioningState provisioningState() {
@@ -59,7 +62,7 @@ public final class IpConfigurationProperties {
 
     /**
      * Get the primary property: Indicates whether this IP configuration is primary for the corresponding NIC.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -68,7 +71,7 @@ public final class IpConfigurationProperties {
 
     /**
      * Set the primary property: Indicates whether this IP configuration is primary for the corresponding NIC.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the IpConfigurationProperties object itself.
      */
@@ -79,7 +82,7 @@ public final class IpConfigurationProperties {
 
     /**
      * Get the privateIpAddress property: The IP address.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -88,7 +91,7 @@ public final class IpConfigurationProperties {
 
     /**
      * Set the privateIpAddress property: The IP address.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the IpConfigurationProperties object itself.
      */
@@ -99,7 +102,7 @@ public final class IpConfigurationProperties {
 
     /**
      * Get the privateIpAllocationMethod property: The method that private IP address is allocated.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public PrivateIpAllocationMethod privateIpAllocationMethod() {
@@ -108,19 +111,19 @@ public final class IpConfigurationProperties {
 
     /**
      * Set the privateIpAllocationMethod property: The method that private IP address is allocated.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the IpConfigurationProperties object itself.
      */
-    public IpConfigurationProperties withPrivateIpAllocationMethod(
-        PrivateIpAllocationMethod privateIpAllocationMethod) {
+    public IpConfigurationProperties
+        withPrivateIpAllocationMethod(PrivateIpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Get the subnet property: The subnet resource id.
-     *
+     * 
      * @return the subnet value.
      */
     public ResourceId subnet() {
@@ -129,7 +132,7 @@ public final class IpConfigurationProperties {
 
     /**
      * Set the subnet property: The subnet resource id.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the IpConfigurationProperties object itself.
      */
@@ -140,12 +143,62 @@ public final class IpConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnet() != null) {
             subnet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("privateIPAllocationMethod",
+            this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpConfigurationProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpConfigurationProperties.
+     */
+    public static IpConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpConfigurationProperties deserializedIpConfigurationProperties = new IpConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedIpConfigurationProperties.provisioningState
+                        = PrivateLinkConfigurationProvisioningState.fromString(reader.getString());
+                } else if ("primary".equals(fieldName)) {
+                    deserializedIpConfigurationProperties.primary = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privateIPAddress".equals(fieldName)) {
+                    deserializedIpConfigurationProperties.privateIpAddress = reader.getString();
+                } else if ("privateIPAllocationMethod".equals(fieldName)) {
+                    deserializedIpConfigurationProperties.privateIpAllocationMethod
+                        = PrivateIpAllocationMethod.fromString(reader.getString());
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedIpConfigurationProperties.subnet = ResourceId.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpConfigurationProperties;
+        });
     }
 }

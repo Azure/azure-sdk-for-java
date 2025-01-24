@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The firewall rule properties. */
+/**
+ * The firewall rule properties.
+ */
 @Immutable
-public final class FirewallRuleProperties {
+public final class FirewallRuleProperties implements JsonSerializable<FirewallRuleProperties> {
     /*
      * The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
      * protocol.
      */
-    @JsonProperty(value = "startIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String startIpAddress;
 
     /*
      * The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
      * protocol.
      */
-    @JsonProperty(value = "endIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String endIpAddress;
 
-    /** Creates an instance of FirewallRuleProperties class. */
+    /**
+     * Creates an instance of FirewallRuleProperties class.
+     */
     public FirewallRuleProperties() {
     }
 
     /**
      * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -41,7 +47,7 @@ public final class FirewallRuleProperties {
     /**
      * Get the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
      * and End should be in the same protocol.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -50,9 +56,46 @@ public final class FirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallRuleProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallRuleProperties.
+     */
+    public static FirewallRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallRuleProperties deserializedFirewallRuleProperties = new FirewallRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startIpAddress".equals(fieldName)) {
+                    deserializedFirewallRuleProperties.startIpAddress = reader.getString();
+                } else if ("endIpAddress".equals(fieldName)) {
+                    deserializedFirewallRuleProperties.endIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallRuleProperties;
+        });
     }
 }

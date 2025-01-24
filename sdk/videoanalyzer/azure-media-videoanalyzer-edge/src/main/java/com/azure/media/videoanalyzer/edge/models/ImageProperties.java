@@ -5,26 +5,36 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Image transformations and formatting options to be applied to the video frame(s). */
+/**
+ * Image transformations and formatting options to be applied to the video frame(s).
+ */
 @Fluent
-public final class ImageProperties {
+public final class ImageProperties implements JsonSerializable<ImageProperties> {
     /*
      * Image scaling mode.
      */
-    @JsonProperty(value = "scale")
     private ImageScale scale;
 
     /*
      * Base class for image formatting properties.
      */
-    @JsonProperty(value = "format")
     private ImageFormatProperties format;
 
     /**
+     * Creates an instance of ImageProperties class.
+     */
+    public ImageProperties() {
+    }
+
+    /**
      * Get the scale property: Image scaling mode.
-     *
+     * 
      * @return the scale value.
      */
     public ImageScale getScale() {
@@ -33,7 +43,7 @@ public final class ImageProperties {
 
     /**
      * Set the scale property: Image scaling mode.
-     *
+     * 
      * @param scale the scale value to set.
      * @return the ImageProperties object itself.
      */
@@ -44,7 +54,7 @@ public final class ImageProperties {
 
     /**
      * Get the format property: Base class for image formatting properties.
-     *
+     * 
      * @return the format value.
      */
     public ImageFormatProperties getFormat() {
@@ -53,12 +63,51 @@ public final class ImageProperties {
 
     /**
      * Set the format property: Base class for image formatting properties.
-     *
+     * 
      * @param format the format value to set.
      * @return the ImageProperties object itself.
      */
     public ImageProperties setFormat(ImageFormatProperties format) {
         this.format = format;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("scale", this.scale);
+        jsonWriter.writeJsonField("format", this.format);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageProperties.
+     */
+    public static ImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageProperties deserializedImageProperties = new ImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scale".equals(fieldName)) {
+                    deserializedImageProperties.scale = ImageScale.fromJson(reader);
+                } else if ("format".equals(fieldName)) {
+                    deserializedImageProperties.format = ImageFormatProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageProperties;
+        });
     }
 }

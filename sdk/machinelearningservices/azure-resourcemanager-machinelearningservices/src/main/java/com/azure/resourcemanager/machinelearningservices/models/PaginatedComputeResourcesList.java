@@ -14,7 +14,8 @@ import java.util.List;
 /** Paginated list of Machine Learning compute objects wrapped in ARM resource envelope. */
 @Fluent
 public final class PaginatedComputeResourcesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PaginatedComputeResourcesList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PaginatedComputeResourcesList.class);
 
     /*
      * An array of Machine Learning compute objects wrapped in ARM resource

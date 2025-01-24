@@ -13,21 +13,20 @@ import java.util.Map;
 public final class MigrateSqlServerSqlDbTaskOutputValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSqlServerSqlDbTaskOutputValidationResult model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"MigrationValidationOutput\",\"migrationId\":\"ivfomiloxgg\",\"summaryResults\":{\"qvci\":{\"id\":\"q\",\"migrationId\":\"ieuzaofjchvcyyy\",\"sourceDatabaseName\":\"gdotcubiipuipwo\",\"targetDatabaseName\":\"nmacj\",\"startedOn\":\"2021-08-08T02:00:14Z\",\"endedOn\":\"2021-11-17T10:08:40Z\",\"status\":\"Stopped\"}},\"status\":\"Default\",\"id\":\"fgmblrrilbywdxsm\"}")
-                .toObject(MigrateSqlServerSqlDbTaskOutputValidationResult.class);
+        MigrateSqlServerSqlDbTaskOutputValidationResult model = BinaryData.fromString(
+            "{\"resultType\":\"MigrationValidationOutput\",\"migrationId\":\"sgeivsiy\",\"summaryResults\":{\"yfm\":{\"id\":\"ncj\",\"migrationId\":\"onbzoggculapzwy\",\"sourceDatabaseName\":\"gogtqxepnylbf\",\"targetDatabaseName\":\"jlyjtlvofq\",\"startedOn\":\"2021-01-24T09:56:19Z\",\"endedOn\":\"2021-09-29T20:16:05Z\",\"status\":\"Completed\"},\"vuqeqvldspast\":{\"id\":\"uxrkjp\",\"migrationId\":\"w\",\"sourceDatabaseName\":\"zwiivwzjbhyzs\",\"targetDatabaseName\":\"rkambt\",\"startedOn\":\"2021-03-11T10:38:35Z\",\"endedOn\":\"2021-03-06T04:34:10Z\",\"status\":\"CompletedWithIssues\"}},\"status\":\"Initialized\",\"id\":\"dmflv\"}")
+            .toObject(MigrateSqlServerSqlDbTaskOutputValidationResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateSqlServerSqlDbTaskOutputValidationResult model =
-            new MigrateSqlServerSqlDbTaskOutputValidationResult()
-                .withSummaryResults(mapOf("qvci", new MigrationValidationDatabaseSummaryResult()));
+        MigrateSqlServerSqlDbTaskOutputValidationResult model = new MigrateSqlServerSqlDbTaskOutputValidationResult()
+            .withSummaryResults(mapOf("yfm", new MigrationValidationDatabaseSummaryResult(), "vuqeqvldspast",
+                new MigrationValidationDatabaseSummaryResult()));
         model = BinaryData.fromObject(model).toObject(MigrateSqlServerSqlDbTaskOutputValidationResult.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

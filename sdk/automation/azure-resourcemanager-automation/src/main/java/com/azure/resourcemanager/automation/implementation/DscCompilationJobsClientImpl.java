@@ -40,22 +40,28 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DscCompilationJobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DscCompilationJobsClient.
+ */
 public final class DscCompilationJobsClientImpl implements DscCompilationJobsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DscCompilationJobsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of DscCompilationJobsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DscCompilationJobsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy.create(DscCompilationJobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DscCompilationJobsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,87 +71,62 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientDscC")
-    private interface DscCompilationJobsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/compilationjobs/{compilationJobName}")
-        @ExpectedResponses({201})
+    public interface DscCompilationJobsService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{compilationJobName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @PathParam("compilationJobName") String compilationJobName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DscCompilationJobCreateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/compilationjobs/{compilationJobName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{compilationJobName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscCompilationJobInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DscCompilationJobInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @PathParam("compilationJobName") String compilationJobName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/compilationjobs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscCompilationJobListResult>> listByAutomationAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DscCompilationJobListResult>> listByAutomationAccount(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @QueryParam("$filter") String filter,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/compilationjobs/{jobId}/streams/{jobStreamId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{jobId}/streams/{jobStreamId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStreamInner>> getStream(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobStreamInner>> getStream(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("jobId") UUID jobId,
-            @PathParam("jobStreamId") String jobStreamId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @PathParam("jobId") UUID jobId,
+            @PathParam("jobStreamId") String jobStreamId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DscCompilationJobListResult>> listByAutomationAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -153,20 +134,15 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String compilationJobName, DscCompilationJobCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -181,10 +157,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                 .error(new IllegalArgumentException("Parameter compilationJobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -194,25 +168,14 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            compilationJobName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                compilationJobName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -221,21 +184,16 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String compilationJobName, DscCompilationJobCreateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -250,10 +208,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                 .error(new IllegalArgumentException("Parameter compilationJobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -263,22 +219,13 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                compilationJobName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, automationAccountName, compilationJobName,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -290,25 +237,18 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
+        String resourceGroupName, String automationAccountName, String compilationJobName,
         DscCompilationJobCreateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, automationAccountName, compilationJobName, parameters);
-        return this
-            .client
-            .<DscCompilationJobInner, DscCompilationJobInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DscCompilationJobInner.class,
-                DscCompilationJobInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, automationAccountName, compilationJobName, parameters);
+        return this.client.<DscCompilationJobInner, DscCompilationJobInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DscCompilationJobInner.class, DscCompilationJobInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -321,27 +261,18 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters,
-        Context context) {
+        String resourceGroupName, String automationAccountName, String compilationJobName,
+        DscCompilationJobCreateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, automationAccountName, compilationJobName, parameters, context);
-        return this
-            .client
-            .<DscCompilationJobInner, DscCompilationJobInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DscCompilationJobInner.class,
-                DscCompilationJobInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, automationAccountName,
+            compilationJobName, parameters, context);
+        return this.client.<DscCompilationJobInner, DscCompilationJobInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DscCompilationJobInner.class, DscCompilationJobInner.class, context);
     }
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -352,18 +283,15 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return the {@link SyncPoller} for polling of definition of the Dsc Compilation job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, automationAccountName, compilationJobName, parameters)
+    public SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(String resourceGroupName,
+        String automationAccountName, String compilationJobName, DscCompilationJobCreateParameters parameters) {
+        return this.beginCreateAsync(resourceGroupName, automationAccountName, compilationJobName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -375,19 +303,16 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return the {@link SyncPoller} for polling of definition of the Dsc Compilation job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters,
+    public SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(String resourceGroupName,
+        String automationAccountName, String compilationJobName, DscCompilationJobCreateParameters parameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, automationAccountName, compilationJobName, parameters, context)
+        return this.beginCreateAsync(resourceGroupName, automationAccountName, compilationJobName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -398,19 +323,15 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the Dsc Compilation job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscCompilationJobInner> createAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, automationAccountName, compilationJobName, parameters)
-            .last()
+    private Mono<DscCompilationJobInner> createAsync(String resourceGroupName, String automationAccountName,
+        String compilationJobName, DscCompilationJobCreateParameters parameters) {
+        return beginCreateAsync(resourceGroupName, automationAccountName, compilationJobName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -422,12 +343,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the Dsc Compilation job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscCompilationJobInner> createAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters,
-        Context context) {
+    private Mono<DscCompilationJobInner> createAsync(String resourceGroupName, String automationAccountName,
+        String compilationJobName, DscCompilationJobCreateParameters parameters, Context context) {
         return beginCreateAsync(resourceGroupName, automationAccountName, compilationJobName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -435,7 +352,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -446,17 +363,14 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the Dsc Compilation job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscCompilationJobInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters) {
+    public DscCompilationJobInner create(String resourceGroupName, String automationAccountName,
+        String compilationJobName, DscCompilationJobCreateParameters parameters) {
         return createAsync(resourceGroupName, automationAccountName, compilationJobName, parameters).block();
     }
 
     /**
      * Creates the Dsc compilation job of the configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -468,35 +382,29 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the Dsc Compilation job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscCompilationJobInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String compilationJobName,
-        DscCompilationJobCreateParameters parameters,
-        Context context) {
+    public DscCompilationJobInner create(String resourceGroupName, String automationAccountName,
+        String compilationJobName, DscCompilationJobCreateParameters parameters, Context context) {
         return createAsync(resourceGroupName, automationAccountName, compilationJobName, parameters, context).block();
     }
 
     /**
      * Retrieve the Dsc configuration compilation job identified by job id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscCompilationJobInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String compilationJobName) {
+    private Mono<Response<DscCompilationJobInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String compilationJobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -511,32 +419,20 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                 .error(new IllegalArgumentException("Parameter compilationJobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            compilationJobName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                compilationJobName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the Dsc configuration compilation job identified by job id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -544,17 +440,15 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscCompilationJobInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String compilationJobName, Context context) {
+    private Mono<Response<DscCompilationJobInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String compilationJobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -569,29 +463,19 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                 .error(new IllegalArgumentException("Parameter compilationJobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                compilationJobName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName, compilationJobName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve the Dsc configuration compilation job identified by job id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -601,32 +485,15 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the Dsc Compilation job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscCompilationJobInner> getAsync(
-        String resourceGroupName, String automationAccountName, String compilationJobName) {
+    private Mono<DscCompilationJobInner> getAsync(String resourceGroupName, String automationAccountName,
+        String compilationJobName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, compilationJobName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the Dsc configuration compilation job identified by job id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param compilationJobName The DSC configuration Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscCompilationJobInner get(
-        String resourceGroupName, String automationAccountName, String compilationJobName) {
-        return getAsync(resourceGroupName, automationAccountName, compilationJobName).block();
-    }
-
-    /**
-     * Retrieve the Dsc configuration compilation job identified by job id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -637,14 +504,31 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the Dsc Compilation job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DscCompilationJobInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String compilationJobName, Context context) {
+    public Response<DscCompilationJobInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String compilationJobName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, compilationJobName, context).block();
     }
 
     /**
+     * Retrieve the Dsc configuration compilation job identified by job id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param compilationJobName The DSC configuration Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the Dsc Compilation job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscCompilationJobInner get(String resourceGroupName, String automationAccountName,
+        String compilationJobName) {
+        return getWithResponse(resourceGroupName, automationAccountName, compilationJobName, Context.NONE).getValue();
+    }
+
+    /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -652,16 +536,14 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String filter) {
+    private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -672,41 +554,22 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAutomationAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<DscCompilationJobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAutomationAccount(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, filter, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<DscCompilationJobInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -715,16 +578,14 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -735,38 +596,22 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAutomationAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                filter,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAutomationAccount(this.client.getEndpoint(), resourceGroupName, automationAccountName, filter,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -776,8 +621,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return the response model for the list job operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscCompilationJobInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName, String filter) {
+    private PagedFlux<DscCompilationJobInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName, String filter) {
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
@@ -785,7 +630,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
 
     /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -794,8 +639,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return the response model for the list job operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscCompilationJobInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName) {
+    private PagedFlux<DscCompilationJobInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter),
@@ -804,7 +649,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
 
     /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -815,8 +660,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return the response model for the list job operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscCompilationJobInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    private PagedFlux<DscCompilationJobInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter, context),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink, context));
@@ -824,7 +669,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
 
     /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -833,15 +678,15 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DscCompilationJobInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
+    public PagedIterable<DscCompilationJobInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         return new PagedIterable<>(listByAutomationAccountAsync(resourceGroupName, automationAccountName, filter));
     }
 
     /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -852,15 +697,15 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DscCompilationJobInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    public PagedIterable<DscCompilationJobInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         return new PagedIterable<>(
             listByAutomationAccountAsync(resourceGroupName, automationAccountName, filter, context));
     }
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
@@ -871,13 +716,11 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the job stream along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobStreamInner>> getStreamWithResponseAsync(
-        String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId) {
+    private Mono<Response<JobStreamInner>> getStreamWithResponseAsync(String resourceGroupName,
+        String automationAccountName, UUID jobId, String jobStreamId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -894,33 +737,21 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
             return Mono.error(new IllegalArgumentException("Parameter jobStreamId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getStream(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            jobId,
-                            jobStreamId,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+                context -> service.getStream(this.client.getEndpoint(), resourceGroupName, automationAccountName, jobId,
+                    jobStreamId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
@@ -932,13 +763,11 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the job stream along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobStreamInner>> getStreamWithResponseAsync(
-        String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId, Context context) {
+    private Mono<Response<JobStreamInner>> getStreamWithResponseAsync(String resourceGroupName,
+        String automationAccountName, UUID jobId, String jobStreamId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -955,30 +784,19 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
             return Mono.error(new IllegalArgumentException("Parameter jobStreamId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getStream(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                jobId,
-                jobStreamId,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.getStream(this.client.getEndpoint(), resourceGroupName, automationAccountName, jobId,
+            jobStreamId, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
@@ -989,33 +807,15 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the job stream on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobStreamInner> getStreamAsync(
-        String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId) {
+    private Mono<JobStreamInner> getStreamAsync(String resourceGroupName, String automationAccountName, UUID jobId,
+        String jobStreamId) {
         return getStreamWithResponseAsync(resourceGroupName, automationAccountName, jobId, jobStreamId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobId The job id.
-     * @param jobStreamId The job stream id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStreamInner getStream(
-        String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId) {
-        return getStreamAsync(resourceGroupName, automationAccountName, jobId, jobStreamId).block();
-    }
-
-    /**
-     * Retrieve the job stream identified by job stream id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
@@ -1027,22 +827,40 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @return definition of the job stream along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobStreamInner> getStreamWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId, Context context) {
+    public Response<JobStreamInner> getStreamWithResponse(String resourceGroupName, String automationAccountName,
+        UUID jobId, String jobStreamId, Context context) {
         return getStreamWithResponseAsync(resourceGroupName, automationAccountName, jobId, jobStreamId, context)
             .block();
     }
 
     /**
+     * Retrieve the job stream identified by job stream id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobId The job id.
+     * @param jobStreamId The job stream id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobStreamInner getStream(String resourceGroupName, String automationAccountName, UUID jobId,
+        String jobStreamId) {
+        return getStreamWithResponse(resourceGroupName, automationAccountName, jobId, jobStreamId, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -1050,63 +868,43 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DscCompilationJobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DscCompilationJobInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

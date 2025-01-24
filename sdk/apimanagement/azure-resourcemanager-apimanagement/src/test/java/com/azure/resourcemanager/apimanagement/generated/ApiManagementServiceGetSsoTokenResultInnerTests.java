@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiManagementServiceGetSsoTokenResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementServiceGetSsoTokenResultInner model =
-            BinaryData.fromString("{\"redirectUri\":\"n\"}").toObject(ApiManagementServiceGetSsoTokenResultInner.class);
+        ApiManagementServiceGetSsoTokenResultInner model = BinaryData.fromString("{\"redirectUri\":\"n\"}")
+            .toObject(ApiManagementServiceGetSsoTokenResultInner.class);
         Assertions.assertEquals("n", model.redirectUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiManagementServiceGetSsoTokenResultInner model =
-            new ApiManagementServiceGetSsoTokenResultInner().withRedirectUri("n");
+        ApiManagementServiceGetSsoTokenResultInner model
+            = new ApiManagementServiceGetSsoTokenResultInner().withRedirectUri("n");
         model = BinaryData.fromObject(model).toObject(ApiManagementServiceGetSsoTokenResultInner.class);
         Assertions.assertEquals("n", model.redirectUri());
     }

@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 
-/** An instance of this class provides access to all the operations defined in LibrariesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LibrariesClient.
+ */
 public interface LibrariesClient {
     /**
      * Get library by name.
-     *
-     * <p>Get library by name in a workspace.
-     *
+     * 
+     * Get library by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
      * @param workspaceName The name of the workspace.
@@ -27,14 +29,14 @@ public interface LibrariesClient {
      * @return library by name in a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LibraryResourceInner> getWithResponse(
-        String resourceGroupName, String libraryName, String workspaceName, Context context);
+    Response<LibraryResourceInner> getWithResponse(String resourceGroupName, String libraryName, String workspaceName,
+        Context context);
 
     /**
      * Get library by name.
-     *
-     * <p>Get library by name in a workspace.
-     *
+     * 
+     * Get library by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
      * @param workspaceName The name of the workspace.

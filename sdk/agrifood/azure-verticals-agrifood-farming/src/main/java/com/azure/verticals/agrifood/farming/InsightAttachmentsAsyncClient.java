@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = InsightAttachmentsClientBuilder.class, isAsync = true)
 public final class InsightAttachmentsAsyncClient {
-    @Generated private final InsightAttachmentsImpl serviceClient;
+    @Generated
+    private final InsightAttachmentsImpl serviceClient;
 
     /**
      * Initializes an instance of InsightAttachmentsAsyncClient class.
@@ -96,10 +97,10 @@ public final class InsightAttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByPartyIdModelIdAndResource(
-            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
-        return this.serviceClient.listByPartyIdModelIdAndResourceAsync(
-                partyId, modelId, resourceType, resourceId, requestOptions);
+    public PagedFlux<BinaryData> listByPartyIdModelIdAndResource(String partyId, String modelId, String resourceType,
+        String resourceId, RequestOptions requestOptions) {
+        return this.serviceClient.listByPartyIdModelIdAndResourceAsync(partyId, modelId, resourceType, resourceId,
+            requestOptions);
     }
 
     /**
@@ -161,16 +162,10 @@ public final class InsightAttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightAttachmentId,
-            BinaryData insightId,
-            RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                partyId, modelId, resourceType, resourceId, insightAttachmentId, insightId, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightAttachmentId, BinaryData insightId, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, modelId, resourceType, resourceId,
+            insightAttachmentId, insightId, requestOptions);
     }
 
     /**
@@ -215,15 +210,10 @@ public final class InsightAttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightAttachmentId,
-            RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(
-                partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightAttachmentId, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(partyId, modelId, resourceType, resourceId, insightAttachmentId,
+            requestOptions);
     }
 
     /**
@@ -244,15 +234,10 @@ public final class InsightAttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightAttachmentId,
-            RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(
-                partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions);
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightAttachmentId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(partyId, modelId, resourceType, resourceId,
+            insightAttachmentId, requestOptions);
     }
 
     /**
@@ -279,14 +264,9 @@ public final class InsightAttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightAttachmentId,
-            RequestOptions requestOptions) {
-        return this.serviceClient.downloadWithResponseAsync(
-                partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions);
+    public Mono<Response<BinaryData>> downloadWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightAttachmentId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadWithResponseAsync(partyId, modelId, resourceType, resourceId,
+            insightAttachmentId, requestOptions);
     }
 }

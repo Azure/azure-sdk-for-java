@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class OperationOrigin extends ExpandableStringEnum<OperationOrigin>
      * @param name a name to look for.
      * @return the corresponding OperationOrigin.
      */
-    @JsonCreator
     public static OperationOrigin fromString(String name) {
         return fromString(name, OperationOrigin.class);
     }

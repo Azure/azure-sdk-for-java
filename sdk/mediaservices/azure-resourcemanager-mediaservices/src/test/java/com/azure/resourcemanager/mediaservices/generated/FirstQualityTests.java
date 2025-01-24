@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class FirstQualityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FirstQuality model = BinaryData.fromString("{\"bitrate\":1452273822}").toObject(FirstQuality.class);
-        Assertions.assertEquals(1452273822, model.bitrate());
+        FirstQuality model = BinaryData.fromString("{\"bitrate\":432896608}").toObject(FirstQuality.class);
+        Assertions.assertEquals(432896608, model.bitrate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FirstQuality model = new FirstQuality().withBitrate(1452273822);
+        FirstQuality model = new FirstQuality().withBitrate(432896608);
         model = BinaryData.fromObject(model).toObject(FirstQuality.class);
-        Assertions.assertEquals(1452273822, model.bitrate());
+        Assertions.assertEquals(432896608, model.bitrate());
     }
 }

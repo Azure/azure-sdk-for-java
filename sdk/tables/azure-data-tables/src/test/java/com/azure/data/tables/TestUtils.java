@@ -93,13 +93,13 @@ public final class TestUtils {
     }
 
     public static HttpRequest request(String url) throws MalformedURLException {
-        return new HttpRequest(HttpMethod.HEAD,
-            new URL(url), new HttpHeaders().put("Content-Length", "0"),
+        return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
             Flux.empty());
     }
 
     public static final class FreshDateTestClient implements HttpClient {
         private DateTimeRfc1123 firstDate;
+
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (firstDate == null) {
@@ -112,6 +112,7 @@ public final class TestUtils {
 
             return Mono.just(new MockHttpResponse(request, 200));
         }
+
         private static DateTimeRfc1123 convertToDateObject(String dateHeader) {
             if (CoreUtils.isNullOrEmpty(dateHeader)) {
                 throw new RuntimeException("Failed to set 'Date' header.");
@@ -142,9 +143,7 @@ public final class TestUtils {
         }
     }
 
-
-    static void assertPropertiesEquals(TableServiceProperties expected,
-                                       TableServiceProperties actual) {
+    static void assertPropertiesEquals(TableServiceProperties expected, TableServiceProperties actual) {
         if (expected.getLogging() != null && actual.getLogging() != null) {
             assertEquals(expected.getLogging().isReadLogged(), actual.getLogging().isReadLogged());
             assertEquals(expected.getLogging().isDeleteLogged(), actual.getLogging().isDeleteLogged());
@@ -234,8 +233,8 @@ public final class TestUtils {
         Configuration globalConfiguration = Configuration.getGlobalConfiguration();
 
         return (globalConfiguration.get("TABLES_CONNECTION_STRING") != null
-            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com")) || (
-            globalConfiguration.get("TABLES_ENDPOINT") != null
+            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com"))
+            || (globalConfiguration.get("TABLES_ENDPOINT") != null
                 && globalConfiguration.get("TABLES_ENDPOINT").contains("cosmos.azure.com"));
     }
 
@@ -246,10 +245,13 @@ public final class TestUtils {
         }
 
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-        customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
-        customSanitizers.add(new TestProxySanitizer(".*\\\\?(?<query>.*)", "REDACTED", TestProxySanitizerType.URL).setGroupForReplace("query"));
+        customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED",
+            TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
+        customSanitizers.add(new TestProxySanitizer(".*\\\\?(?<query>.*)", "REDACTED", TestProxySanitizerType.URL)
+            .setGroupForReplace("query"));
         customSanitizers.add(new TestProxySanitizer("Location", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
-        customSanitizers.add(new TestProxySanitizer("DataServiceId", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers
+            .add(new TestProxySanitizer("DataServiceId", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
         interceptorManager.addSanitizers(customSanitizers);
 

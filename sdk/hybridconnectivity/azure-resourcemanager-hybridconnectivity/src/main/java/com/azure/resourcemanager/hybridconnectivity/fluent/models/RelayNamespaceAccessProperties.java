@@ -6,54 +6,56 @@ package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure relay hybrid connection access properties. */
+/**
+ * Azure relay hybrid connection access properties.
+ */
 @Fluent
-public final class RelayNamespaceAccessProperties {
+public final class RelayNamespaceAccessProperties implements JsonSerializable<RelayNamespaceAccessProperties> {
     /*
      * The namespace name.
      */
-    @JsonProperty(value = "namespaceName", required = true)
     private String namespaceName;
 
     /*
      * The suffix domain name of relay namespace.
      */
-    @JsonProperty(value = "namespaceNameSuffix", required = true)
     private String namespaceNameSuffix;
 
     /*
      * Azure Relay hybrid connection name for the resource.
      */
-    @JsonProperty(value = "hybridConnectionName", required = true)
     private String hybridConnectionName;
 
     /*
      * Access key for hybrid connection.
      */
-    @JsonProperty(value = "accessKey", access = JsonProperty.Access.WRITE_ONLY)
     private String accessKey;
 
     /*
      * The expiration of access key in unix time.
      */
-    @JsonProperty(value = "expiresOn")
     private Long expiresOn;
 
     /*
      * The token to access the enabled service.
      */
-    @JsonProperty(value = "serviceConfigurationToken")
     private String serviceConfigurationToken;
 
-    /** Creates an instance of RelayNamespaceAccessProperties class. */
+    /**
+     * Creates an instance of RelayNamespaceAccessProperties class.
+     */
     public RelayNamespaceAccessProperties() {
     }
 
     /**
      * Get the namespaceName property: The namespace name.
-     *
+     * 
      * @return the namespaceName value.
      */
     public String namespaceName() {
@@ -62,7 +64,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Set the namespaceName property: The namespace name.
-     *
+     * 
      * @param namespaceName the namespaceName value to set.
      * @return the RelayNamespaceAccessProperties object itself.
      */
@@ -73,7 +75,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Get the namespaceNameSuffix property: The suffix domain name of relay namespace.
-     *
+     * 
      * @return the namespaceNameSuffix value.
      */
     public String namespaceNameSuffix() {
@@ -82,7 +84,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Set the namespaceNameSuffix property: The suffix domain name of relay namespace.
-     *
+     * 
      * @param namespaceNameSuffix the namespaceNameSuffix value to set.
      * @return the RelayNamespaceAccessProperties object itself.
      */
@@ -93,7 +95,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Get the hybridConnectionName property: Azure Relay hybrid connection name for the resource.
-     *
+     * 
      * @return the hybridConnectionName value.
      */
     public String hybridConnectionName() {
@@ -102,7 +104,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Set the hybridConnectionName property: Azure Relay hybrid connection name for the resource.
-     *
+     * 
      * @param hybridConnectionName the hybridConnectionName value to set.
      * @return the RelayNamespaceAccessProperties object itself.
      */
@@ -113,7 +115,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Get the accessKey property: Access key for hybrid connection.
-     *
+     * 
      * @return the accessKey value.
      */
     public String accessKey() {
@@ -122,7 +124,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Get the expiresOn property: The expiration of access key in unix time.
-     *
+     * 
      * @return the expiresOn value.
      */
     public Long expiresOn() {
@@ -131,7 +133,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Set the expiresOn property: The expiration of access key in unix time.
-     *
+     * 
      * @param expiresOn the expiresOn value to set.
      * @return the RelayNamespaceAccessProperties object itself.
      */
@@ -142,7 +144,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Get the serviceConfigurationToken property: The token to access the enabled service.
-     *
+     * 
      * @return the serviceConfigurationToken value.
      */
     public String serviceConfigurationToken() {
@@ -151,7 +153,7 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Set the serviceConfigurationToken property: The token to access the enabled service.
-     *
+     * 
      * @param serviceConfigurationToken the serviceConfigurationToken value to set.
      * @return the RelayNamespaceAccessProperties object itself.
      */
@@ -162,29 +164,78 @@ public final class RelayNamespaceAccessProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (namespaceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property namespaceName in model RelayNamespaceAccessProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property namespaceName in model RelayNamespaceAccessProperties"));
         }
         if (namespaceNameSuffix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property namespaceNameSuffix in model RelayNamespaceAccessProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property namespaceNameSuffix in model RelayNamespaceAccessProperties"));
         }
         if (hybridConnectionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hybridConnectionName in model RelayNamespaceAccessProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hybridConnectionName in model RelayNamespaceAccessProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RelayNamespaceAccessProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("namespaceName", this.namespaceName);
+        jsonWriter.writeStringField("namespaceNameSuffix", this.namespaceNameSuffix);
+        jsonWriter.writeStringField("hybridConnectionName", this.hybridConnectionName);
+        jsonWriter.writeNumberField("expiresOn", this.expiresOn);
+        jsonWriter.writeStringField("serviceConfigurationToken", this.serviceConfigurationToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelayNamespaceAccessProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelayNamespaceAccessProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelayNamespaceAccessProperties.
+     */
+    public static RelayNamespaceAccessProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelayNamespaceAccessProperties deserializedRelayNamespaceAccessProperties
+                = new RelayNamespaceAccessProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("namespaceName".equals(fieldName)) {
+                    deserializedRelayNamespaceAccessProperties.namespaceName = reader.getString();
+                } else if ("namespaceNameSuffix".equals(fieldName)) {
+                    deserializedRelayNamespaceAccessProperties.namespaceNameSuffix = reader.getString();
+                } else if ("hybridConnectionName".equals(fieldName)) {
+                    deserializedRelayNamespaceAccessProperties.hybridConnectionName = reader.getString();
+                } else if ("accessKey".equals(fieldName)) {
+                    deserializedRelayNamespaceAccessProperties.accessKey = reader.getString();
+                } else if ("expiresOn".equals(fieldName)) {
+                    deserializedRelayNamespaceAccessProperties.expiresOn = reader.getNullable(JsonReader::getLong);
+                } else if ("serviceConfigurationToken".equals(fieldName)) {
+                    deserializedRelayNamespaceAccessProperties.serviceConfigurationToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelayNamespaceAccessProperties;
+        });
+    }
 }

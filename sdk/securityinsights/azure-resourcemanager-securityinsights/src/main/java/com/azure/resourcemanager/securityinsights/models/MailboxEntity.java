@@ -4,29 +4,70 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.MailboxEntityProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-/** Represents a mailbox entity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Mailbox")
-@Fluent
-public final class MailboxEntity extends EntityInner {
+/**
+ * Represents a mailbox entity.
+ */
+@Immutable
+public final class MailboxEntity extends Entity {
+    /*
+     * The kind of the entity.
+     */
+    private EntityKindEnum kind = EntityKindEnum.MAILBOX;
+
     /*
      * Mailbox entity properties
      */
-    @JsonProperty(value = "properties")
     private MailboxEntityProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MailboxEntity class.
+     */
+    public MailboxEntity() {
+    }
+
+    /**
+     * Get the kind property: The kind of the entity.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityKindEnum kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: Mailbox entity properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MailboxEntityProperties innerProperties() {
@@ -34,8 +75,48 @@ public final class MailboxEntity extends EntityInner {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the mailboxPrimaryAddress property: The mailbox's primary address.
-     *
+     * 
      * @return the mailboxPrimaryAddress value.
      */
     public String mailboxPrimaryAddress() {
@@ -44,7 +125,7 @@ public final class MailboxEntity extends EntityInner {
 
     /**
      * Get the displayName property: The mailbox's display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -53,7 +134,7 @@ public final class MailboxEntity extends EntityInner {
 
     /**
      * Get the upn property: The mailbox's UPN.
-     *
+     * 
      * @return the upn value.
      */
     public String upn() {
@@ -63,7 +144,7 @@ public final class MailboxEntity extends EntityInner {
     /**
      * Get the externalDirectoryObjectId property: The AzureAD identifier of mailbox. Similar to AadUserId in account
      * entity but this property is specific to mailbox object on office side.
-     *
+     * 
      * @return the externalDirectoryObjectId value.
      */
     public UUID externalDirectoryObjectId() {
@@ -73,7 +154,7 @@ public final class MailboxEntity extends EntityInner {
     /**
      * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, Object> additionalData() {
@@ -83,7 +164,7 @@ public final class MailboxEntity extends EntityInner {
     /**
      * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
      * graph item instance. This property is optional and might be system generated.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -92,14 +173,61 @@ public final class MailboxEntity extends EntityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MailboxEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MailboxEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MailboxEntity.
+     */
+    public static MailboxEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MailboxEntity deserializedMailboxEntity = new MailboxEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMailboxEntity.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMailboxEntity.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMailboxEntity.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMailboxEntity.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedMailboxEntity.kind = EntityKindEnum.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMailboxEntity.innerProperties = MailboxEntityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMailboxEntity;
+        });
     }
 }

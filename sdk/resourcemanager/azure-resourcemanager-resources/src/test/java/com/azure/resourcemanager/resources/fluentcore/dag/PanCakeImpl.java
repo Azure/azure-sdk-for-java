@@ -18,9 +18,7 @@ import java.util.List;
 /**
  * Implementation of {@link IPancake}
  */
-class PancakeImpl
-        extends CreatableUpdatableImpl<IPancake, PancakeInner, PancakeImpl>
-        implements IPancake {
+class PancakeImpl extends CreatableUpdatableImpl<IPancake, PancakeInner, PancakeImpl> implements IPancake {
     private static final ClientLogger LOGGER = new ClientLogger(PancakeImpl.class);
 
     final List<Creatable<IPancake>> delayedPancakes;
@@ -70,7 +68,8 @@ class PancakeImpl
 
     @Override
     public void beforeGroupCreateOrUpdate() {
-        Assertions.assertFalse(this.prepareCalled, "PancakeImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
+        Assertions.assertFalse(this.prepareCalled,
+            "PancakeImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
         prepareCalled = true;
         int oldCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
         for (Creatable<IPancake> pancake : this.delayedPancakes) {
@@ -86,13 +85,13 @@ class PancakeImpl
         if (this.errorToThrow == null) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Pancake(" + this.name() + ")::createResourceAsync() 'onNext()'");
             return Mono.just(this)
-                    .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
-                    .map(pancake -> pancake);
+                .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
+                .map(pancake -> pancake);
         } else {
             LOGGER.log(LogLevel.VERBOSE, () -> "Pancake(" + this.name() + ")::createResourceAsync() 'onError()'");
             return Mono.just(this)
-                    .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
-                    .flatMap(pancake -> toErrorMono(errorToThrow));
+                .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
+                .flatMap(pancake -> toErrorMono(errorToThrow));
         }
     }
 

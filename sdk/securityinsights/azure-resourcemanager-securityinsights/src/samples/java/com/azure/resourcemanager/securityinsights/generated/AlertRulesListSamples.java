@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AlertRules List. */
+/**
+ * Samples for AlertRules List.
+ */
 public final class AlertRulesListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/GetAllAlertRules.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/alertRules/
+     * GetAllAlertRules.json
      */
     /**
      * Sample code: Get all alert rules.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void getAllAlertRules(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager.alertRules().list("myRg", "myWorkspace", Context.NONE);
+        manager.alertRules().list("myRg", "myWorkspace", com.azure.core.util.Context.NONE);
     }
 }

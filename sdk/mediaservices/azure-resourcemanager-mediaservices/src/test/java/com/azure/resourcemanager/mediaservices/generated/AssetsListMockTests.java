@@ -6,68 +6,37 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.Asset;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AssetsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"assetId\":\"e8b4eba4-3907-4233-82b5-9ab77319ae5b\",\"created\":\"2021-11-23T18:15:25Z\",\"lastModified\":\"2021-06-08T01:40:36Z\",\"alternateId\":\"ecjxe\",\"description\":\"tuhxuicb\",\"container\":\"wmrswnjlxuzrh\",\"storageAccountName\":\"usxjbaqehg\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"zjqatucoig\",\"name\":\"bxncnwfepbnw\",\"type\":\"fmxjg\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"assetId\":\"d9958169-091d-49bf-a7d9-07f59a17e87b\",\"created\":\"2021-11-04T22:14:01Z\",\"lastModified\":\"2021-07-04T23:14:39Z\",\"alternateId\":\"d\",\"description\":\"zmqpnodawopqhewj\",\"container\":\"mcgsbostzelnd\",\"storageAccountName\":\"tutmzl\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"lvfhrbbp\",\"name\":\"eqvcwwyyurmoch\",\"type\":\"prprsnmokay\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Asset> response = manager.assets()
+            .list("jxtxrdc", "tjvidt", "gepuslvyjtc", 1750462834, "wkasiziesf", com.azure.core.util.Context.NONE);
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Asset> response =
-            manager
-                .assets()
-                .list("mygvkzqkj", "eokbze", "ezrxcczurtleipqx", 796775151, "wvz", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("d", response.iterator().next().alternateId());
-        Assertions.assertEquals("zmqpnodawopqhewj", response.iterator().next().description());
-        Assertions.assertEquals("mcgsbostzelnd", response.iterator().next().container());
-        Assertions.assertEquals("tutmzl", response.iterator().next().storageAccountName());
+        Assertions.assertEquals("ecjxe", response.iterator().next().alternateId());
+        Assertions.assertEquals("tuhxuicb", response.iterator().next().description());
+        Assertions.assertEquals("wmrswnjlxuzrh", response.iterator().next().container());
+        Assertions.assertEquals("usxjbaqehg", response.iterator().next().storageAccountName());
     }
 }

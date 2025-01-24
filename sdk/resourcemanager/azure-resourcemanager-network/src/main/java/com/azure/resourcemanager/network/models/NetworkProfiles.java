@@ -14,13 +14,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 
 /** Resource collection API of NetworkProfiles. */
-public interface NetworkProfiles extends
-    SupportsCreating<NetworkProfile.DefinitionStages.Blank>,
-    SupportsListing<NetworkProfile>,
-    SupportsListingByResourceGroup<NetworkProfile>,
-    SupportsGettingByResourceGroup<NetworkProfile>,
-    SupportsGettingById<NetworkProfile>,
-    SupportsDeletingById,
-    SupportsDeletingByResourceGroup,
-    HasManager<NetworkManager> {
+public interface NetworkProfiles extends SupportsCreating<NetworkProfile.DefinitionStages.Blank>,
+    SupportsListing<NetworkProfile>, SupportsListingByResourceGroup<NetworkProfile>,
+    SupportsGettingByResourceGroup<NetworkProfile>, SupportsGettingById<NetworkProfile>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, HasManager<NetworkManager> {
 }

@@ -14,16 +14,16 @@ public final class ExtendedUeInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtendedUeInfoInner model = BinaryData.fromString(
-            "{\"properties\":{\"ratType\":\"ExtendedUeInfoProperties\",\"lastReadAt\":\"2021-11-05T02:36:27Z\"},\"id\":\"heioqa\",\"name\":\"hvseufuqyrx\",\"type\":\"dlcgqlsismjqfr\"}")
+            "{\"properties\":{\"ratType\":\"ExtendedUeInfoProperties\",\"lastReadAt\":\"2021-11-27T16:03:54Z\"},\"id\":\"mygvkzqkj\",\"name\":\"eokbze\",\"type\":\"ezrxcczurtleipqx\"}")
             .toObject(ExtendedUeInfoInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T02:36:27Z"), model.properties().lastReadAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-27T16:03:54Z"), model.properties().lastReadAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExtendedUeInfoInner model = new ExtendedUeInfoInner().withProperties(
-            new ExtendedUeInfoProperties().withLastReadAt(OffsetDateTime.parse("2021-11-05T02:36:27Z")));
+            new ExtendedUeInfoProperties().withLastReadAt(OffsetDateTime.parse("2021-11-27T16:03:54Z")));
         model = BinaryData.fromObject(model).toObject(ExtendedUeInfoInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T02:36:27Z"), model.properties().lastReadAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-27T16:03:54Z"), model.properties().lastReadAt());
     }
 }

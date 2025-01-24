@@ -5,30 +5,40 @@
 package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.billing.fluent.models.BillingPermissionsPropertiesInner;
 import com.azure.resourcemanager.billing.fluent.models.BillingRoleDefinitionInner;
-import java.util.Arrays;
+import com.azure.resourcemanager.billing.models.BillingRoleDefinitionProperties;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class BillingRoleDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BillingRoleDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"afxtsgum\",\"permissions\":[{\"actions\":[],\"notActions\":[]},{\"actions\":[],\"notActions\":[]},{\"actions\":[],\"notActions\":[]}],\"roleName\":\"lo\"},\"id\":\"bq\",\"name\":\"vuzlm\",\"type\":\"felfktg\"}")
-                .toObject(BillingRoleDefinitionInner.class);
+        BillingRoleDefinitionInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"ssxmojms\",\"permissions\":[{\"actions\":[\"rvkwc\",\"zqljyxgtczh\",\"ydbsd\",\"hmkxmaehvbb\"],\"notActions\":[\"iplt\",\"n\"]},{\"actions\":[\"axkgx\"],\"notActions\":[\"ckpyklyhplu\"]}],\"roleName\":\"dpvruud\"},\"tags\":{\"eclze\":\"ibthostgktstvd\"},\"id\":\"bcvhzlhpl\",\"name\":\"dqkdlwwqfbu\",\"type\":\"lkxt\"}")
+            .toObject(BillingRoleDefinitionInner.class);
+        Assertions.assertEquals("ibthostgktstvd", model.tags().get("eclze"));
+        Assertions.assertEquals("dpvruud", model.properties().roleName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingRoleDefinitionInner model =
-            new BillingRoleDefinitionInner()
-                .withPermissions(
-                    Arrays
-                        .asList(
-                            new BillingPermissionsPropertiesInner(),
-                            new BillingPermissionsPropertiesInner(),
-                            new BillingPermissionsPropertiesInner()));
+        BillingRoleDefinitionInner model = new BillingRoleDefinitionInner().withTags(mapOf("eclze", "ibthostgktstvd"))
+            .withProperties(new BillingRoleDefinitionProperties().withRoleName("dpvruud"));
         model = BinaryData.fromObject(model).toObject(BillingRoleDefinitionInner.class);
+        Assertions.assertEquals("ibthostgktstvd", model.tags().get("eclze"));
+        Assertions.assertEquals("dpvruud", model.properties().roleName());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

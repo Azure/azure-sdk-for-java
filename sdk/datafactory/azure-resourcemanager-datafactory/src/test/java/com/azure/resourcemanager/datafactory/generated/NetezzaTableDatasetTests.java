@@ -19,39 +19,39 @@ public final class NetezzaTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetezzaTableDataset model = BinaryData.fromString(
-            "{\"type\":\"NetezzaTable\",\"typeProperties\":{\"tableName\":\"datafvkywzrqeiad\",\"table\":\"datakhuvnl\",\"schema\":\"datacnuti\"},\"description\":\"mizunzbqvioync\",\"structure\":\"dataqhhvvwz\",\"schema\":\"datajaaaiaibtvavly\",\"linkedServiceName\":{\"referenceName\":\"qtlocnwmef\",\"parameters\":{\"bzgy\":\"datauzqcrlkor\",\"nozf\":\"dataenfsfyqncowm\",\"agwaakktbjort\":\"dataywjiaaosla\"}},\"parameters\":{\"zbkd\":{\"type\":\"Bool\",\"defaultValue\":\"dataqhsnsejplislxyl\"},\"rpea\":{\"type\":\"Object\",\"defaultValue\":\"datajwxgvtkjct\"},\"aitrms\":{\"type\":\"Float\",\"defaultValue\":\"datakvfccozvqxspht\"},\"poegyckm\":{\"type\":\"SecureString\",\"defaultValue\":\"datatuytgcptct\"}},\"annotations\":[\"datavrcclclfkfv\",\"dataj\"],\"folder\":{\"name\":\"wrvp\"},\"\":{\"b\":\"datajylxt\",\"aysqwh\":\"datasewfzvv\",\"tcvpvdfmo\":\"datadcyandblkb\",\"sqpffapjpjmsbzz\":\"dataqctfvxu\"}}")
+            "{\"type\":\"NetezzaTable\",\"typeProperties\":{\"tableName\":\"datamblmfcleuov\",\"table\":\"datavspr\",\"schema\":\"datajtez\"},\"description\":\"toudodexwmvs\",\"structure\":\"datajciexuwemtgtgeb\",\"schema\":\"datamcgsks\",\"linkedServiceName\":{\"referenceName\":\"bsxehaxicjojxol\",\"parameters\":{\"mbglmnlbnatln\":\"datahgwakptb\",\"jk\":\"datahzzcdkxortdzzvhb\",\"dzccqtwsrbfbsd\":\"datahophqwo\",\"vexrvnhhmfsnq\":\"dataicdzf\"}},\"parameters\":{\"sdzmhwtsyppwf\":{\"type\":\"String\",\"defaultValue\":\"datahlwvrs\"},\"aypxsazbxs\":{\"type\":\"Object\",\"defaultValue\":\"dataetxizrfwxhflgdun\"},\"tmprvgrandz\":{\"type\":\"Array\",\"defaultValue\":\"dataksznf\"},\"lhsfddkhxvev\":{\"type\":\"Array\",\"defaultValue\":\"dataomlpczlqboomzgmr\"}},\"annotations\":[\"datanbwaxadxgnp\",\"datahtuhalpq\",\"datald\"],\"folder\":{\"name\":\"kexznpnytkqjarl\"},\"\":{\"rmzoujfgt\":\"datatgtzpca\"}}")
             .toObject(NetezzaTableDataset.class);
-        Assertions.assertEquals("mizunzbqvioync", model.description());
-        Assertions.assertEquals("qtlocnwmef", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("zbkd").type());
-        Assertions.assertEquals("wrvp", model.folder().name());
+        Assertions.assertEquals("toudodexwmvs", model.description());
+        Assertions.assertEquals("bsxehaxicjojxol", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("sdzmhwtsyppwf").type());
+        Assertions.assertEquals("kexznpnytkqjarl", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetezzaTableDataset model = new NetezzaTableDataset().withDescription("mizunzbqvioync")
-            .withStructure("dataqhhvvwz")
-            .withSchema("datajaaaiaibtvavly")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("qtlocnwmef")
-                .withParameters(
-                    mapOf("bzgy", "datauzqcrlkor", "nozf", "dataenfsfyqncowm", "agwaakktbjort", "dataywjiaaosla")))
-            .withParameters(mapOf("zbkd",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataqhsnsejplislxyl"),
-                "rpea", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datajwxgvtkjct"),
-                "aitrms",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datakvfccozvqxspht"),
-                "poegyckm",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datatuytgcptct")))
-            .withAnnotations(Arrays.asList("datavrcclclfkfv", "dataj"))
-            .withFolder(new DatasetFolder().withName("wrvp"))
-            .withTableName("datafvkywzrqeiad")
-            .withTable("datakhuvnl")
-            .withSchemaTypePropertiesSchema("datacnuti");
+        NetezzaTableDataset model = new NetezzaTableDataset().withDescription("toudodexwmvs")
+            .withStructure("datajciexuwemtgtgeb")
+            .withSchema("datamcgsks")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bsxehaxicjojxol")
+                .withParameters(mapOf("mbglmnlbnatln", "datahgwakptb", "jk", "datahzzcdkxortdzzvhb", "dzccqtwsrbfbsd",
+                    "datahophqwo", "vexrvnhhmfsnq", "dataicdzf")))
+            .withParameters(mapOf("sdzmhwtsyppwf",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datahlwvrs"),
+                "aypxsazbxs",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataetxizrfwxhflgdun"),
+                "tmprvgrandz", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataksznf"),
+                "lhsfddkhxvev",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataomlpczlqboomzgmr")))
+            .withAnnotations(Arrays.asList("datanbwaxadxgnp", "datahtuhalpq", "datald"))
+            .withFolder(new DatasetFolder().withName("kexznpnytkqjarl"))
+            .withTableName("datamblmfcleuov")
+            .withTable("datavspr")
+            .withSchemaTypePropertiesSchema("datajtez");
         model = BinaryData.fromObject(model).toObject(NetezzaTableDataset.class);
-        Assertions.assertEquals("mizunzbqvioync", model.description());
-        Assertions.assertEquals("qtlocnwmef", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("zbkd").type());
-        Assertions.assertEquals("wrvp", model.folder().name());
+        Assertions.assertEquals("toudodexwmvs", model.description());
+        Assertions.assertEquals("bsxehaxicjojxol", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("sdzmhwtsyppwf").type());
+        Assertions.assertEquals("kexznpnytkqjarl", model.folder().name());
     }
 
     // Use "Map.of" if available

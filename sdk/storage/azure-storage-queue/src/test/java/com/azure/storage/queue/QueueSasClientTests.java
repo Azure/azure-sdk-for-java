@@ -48,14 +48,11 @@ public class QueueSasClientTests extends QueueTestBase {
 
     @Test
     public void queueSasEnqueueWithPerm() {
-        QueueSasPermission permissions = new QueueSasPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setProcessPermission(true);
+        QueueSasPermission permissions
+            = new QueueSasPermission().setReadPermission(true).setAddPermission(true).setProcessPermission(true);
         QueueServiceSasSignatureValues sasValues = generateValues(permissions);
 
-        QueueClient clientPermissions = queueBuilderHelper()
-            .endpoint(sasClient.getQueueUrl())
+        QueueClient clientPermissions = queueBuilderHelper().endpoint(sasClient.getQueueUrl())
             .queueName(sasClient.getQueueName())
             .sasToken(sasClient.generateSas(sasValues))
             .buildClient();
@@ -71,15 +68,13 @@ public class QueueSasClientTests extends QueueTestBase {
 
     @Test
     public void queueSasUpdateWithPerm() {
-        QueueSasPermission permissions = new QueueSasPermission()
-            .setReadPermission(true)
+        QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true)
             .setAddPermission(true)
             .setProcessPermission(true)
             .setUpdatePermission(true);
         QueueServiceSasSignatureValues sasValues = generateValues(permissions);
 
-        QueueClient clientPermissions = queueBuilderHelper()
-            .endpoint(sasClient.getQueueUrl())
+        QueueClient clientPermissions = queueBuilderHelper().endpoint(sasClient.getQueueUrl())
             .queueName(sasClient.getQueueName())
             .sasToken(sasClient.generateSas(sasValues))
             .buildClient();
@@ -95,18 +90,17 @@ public class QueueSasClientTests extends QueueTestBase {
     // NOTE: Serializer for set access policy keeps milliseconds
     @Test
     public void queueSasEnqueueWithId() {
-        QueueSasPermission permissions = new QueueSasPermission()
-            .setReadPermission(true)
+        QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true)
             .setAddPermission(true)
             .setUpdatePermission(true)
             .setProcessPermission(true);
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1).truncatedTo(ChronoUnit.SECONDS);
         OffsetDateTime startTime = testResourceNamer.now().minusDays(1).truncatedTo(ChronoUnit.SECONDS);
 
-        QueueSignedIdentifier identifier = new QueueSignedIdentifier()
-            .setId(testResourceNamer.randomUuid())
+        QueueSignedIdentifier identifier = new QueueSignedIdentifier().setId(testResourceNamer.randomUuid())
             .setAccessPolicy(new QueueAccessPolicy().setPermissions(permissions.toString())
-                .setExpiresOn(expiryTime).setStartsOn(startTime));
+                .setExpiresOn(expiryTime)
+                .setStartsOn(startTime));
         sasClient.setAccessPolicy(Arrays.asList(identifier));
 
         // Wait 30 seconds as it may take time for the access policy to take effect.
@@ -114,8 +108,7 @@ public class QueueSasClientTests extends QueueTestBase {
 
         QueueServiceSasSignatureValues sasValues = new QueueServiceSasSignatureValues(identifier.getId());
 
-        QueueClient clientIdentifier = queueBuilderHelper()
-            .endpoint(sasClient.getQueueUrl())
+        QueueClient clientIdentifier = queueBuilderHelper().endpoint(sasClient.getQueueUrl())
             .queueName(sasClient.getQueueName())
             .sasToken(sasClient.generateSas(sasValues))
             .buildClient();
@@ -129,20 +122,15 @@ public class QueueSasClientTests extends QueueTestBase {
     @Test
     public void accountSasCreateQueue() {
         AccountSasService service = new AccountSasService().setQueueAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
-        AccountSasPermission permissions = new AccountSasPermission()
-            .setReadPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
+        AccountSasPermission permissions
+            = new AccountSasPermission().setReadPermission(true).setCreatePermission(true).setDeletePermission(true);
 
-        AccountSasSignatureValues sasValues = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permissions, service, resourceType);
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service, resourceType);
 
-        QueueServiceClient sc = queueServiceBuilderHelper()
-            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient sc = queueServiceBuilderHelper().endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(primaryQueueServiceClient.generateAccountSas(sasValues))
             .buildClient();
 
@@ -154,16 +142,13 @@ public class QueueSasClientTests extends QueueTestBase {
     @Test
     public void accountSasListQueues() {
         AccountSasService service = new AccountSasService().setQueueAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
         AccountSasPermission permissions = new AccountSasPermission().setListPermission(true);
-        AccountSasSignatureValues sasValues = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permissions, service, resourceType);
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service, resourceType);
 
-        QueueServiceClient sc = queueServiceBuilderHelper()
-            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient sc = queueServiceBuilderHelper().endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(primaryQueueServiceClient.generateAccountSas(sasValues))
             .buildClient();
 
@@ -176,14 +161,14 @@ public class QueueSasClientTests extends QueueTestBase {
      */
     @Test
     public void rememberAboutStringToSignDeprecation() {
-        QueueClient client = queueBuilderHelper().credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .buildClient();
-        QueueServiceSasSignatureValues values = new QueueServiceSasSignatureValues(testResourceNamer.now(),
-            new QueueSasPermission());
+        QueueClient client
+            = queueBuilderHelper().credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildClient();
+        QueueServiceSasSignatureValues values
+            = new QueueServiceSasSignatureValues(testResourceNamer.now(), new QueueSasPermission());
         values.setQueueName(client.getQueueName());
 
-        String deprecatedStringToSign = values.generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount()
-            .getCredential()).encode();
+        String deprecatedStringToSign
+            = values.generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount().getCredential()).encode();
 
         assertEquals(deprecatedStringToSign, client.generateSas(values));
     }

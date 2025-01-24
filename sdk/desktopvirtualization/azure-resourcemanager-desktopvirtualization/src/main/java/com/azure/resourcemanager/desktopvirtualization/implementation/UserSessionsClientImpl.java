@@ -34,22 +34,28 @@ import com.azure.resourcemanager.desktopvirtualization.models.SendMessage;
 import com.azure.resourcemanager.desktopvirtualization.models.UserSessionList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UserSessionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UserSessionsClient.
+ */
 public final class UserSessionsClientImpl implements UserSessionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final UserSessionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DesktopVirtualizationApiClientImpl client;
 
     /**
      * Initializes an instance of UserSessionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     UserSessionsClientImpl(DesktopVirtualizationApiClientImpl client) {
-        this.service =
-            RestProxy.create(UserSessionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(UserSessionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,132 +66,88 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DesktopVirtualizatio")
     public interface UserSessionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/userSessions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/userSessions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserSessionList>> listByHostPool(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<UserSessionList>> listByHostPool(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @QueryParam("$filter") String filter, @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("isDescending") Boolean isDescending, @QueryParam("initialSkip") Integer initialSkip,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<UserSessionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @PathParam("sessionHostName") String sessionHostname, @PathParam("userSessionId") String userSessionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("pageSize") Integer pageSize,
-            @QueryParam("isDescending") Boolean isDescending,
-            @QueryParam("initialSkip") Integer initialSkip,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @PathParam("sessionHostName") String sessionHostname, @PathParam("userSessionId") String userSessionId,
+            @QueryParam("force") Boolean force, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<UserSessionList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @PathParam("sessionHostName") String sessionHostname, @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("isDescending") Boolean isDescending, @QueryParam("initialSkip") Integer initialSkip,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}/disconnect")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> disconnect(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @PathParam("sessionHostName") String sessionHostname, @PathParam("userSessionId") String userSessionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}/sendMessage")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> sendMessage(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @PathParam("sessionHostName") String sessionHostname, @PathParam("userSessionId") String userSessionId,
+            @BodyParam("application/json") SendMessage sendMessage, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserSessionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @PathParam("sessionHostName") String sessionHostname,
-            @PathParam("userSessionId") String userSessionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @PathParam("sessionHostName") String sessionHostname,
-            @PathParam("userSessionId") String userSessionId,
-            @QueryParam("force") Boolean force,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserSessionList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @PathParam("sessionHostName") String sessionHostname,
-            @QueryParam("pageSize") Integer pageSize,
-            @QueryParam("isDescending") Boolean isDescending,
-            @QueryParam("initialSkip") Integer initialSkip,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}/disconnect")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> disconnect(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @PathParam("sessionHostName") String sessionHostname,
-            @PathParam("userSessionId") String userSessionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}/sendMessage")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> sendMessage(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @PathParam("sessionHostName") String sessionHostname,
-            @PathParam("userSessionId") String userSessionId,
-            @BodyParam("application/json") SendMessage sendMessage,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UserSessionList>> listByHostPoolNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserSessionList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<UserSessionList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param filter OData filter expression. Valid properties for filtering are userprincipalname and sessionstate.
@@ -198,24 +160,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UserSessionInner>> listByHostPoolSinglePageAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String filter,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip) {
+    private Mono<PagedResponse<UserSessionInner>> listByHostPoolSinglePageAsync(String resourceGroupName,
+        String hostPoolName, String filter, Integer pageSize, Boolean isDescending, Integer initialSkip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -226,36 +179,17 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByHostPool(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            filter,
-                            pageSize,
-                            isDescending,
-                            initialSkip,
-                            accept,
-                            context))
-            .<PagedResponse<UserSessionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByHostPool(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, filter, pageSize, isDescending,
+                initialSkip, accept, context))
+            .<PagedResponse<UserSessionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param filter OData filter expression. Valid properties for filtering are userprincipalname and sessionstate.
@@ -269,25 +203,16 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UserSessionInner>> listByHostPoolSinglePageAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String filter,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
+    private Mono<PagedResponse<UserSessionInner>> listByHostPoolSinglePageAsync(String resourceGroupName,
+        String hostPoolName, String filter, Integer pageSize, Boolean isDescending, Integer initialSkip,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -299,32 +224,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByHostPool(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                filter,
-                pageSize,
-                isDescending,
-                initialSkip,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByHostPool(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, hostPoolName, filter, pageSize, isDescending, initialSkip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param filter OData filter expression. Valid properties for filtering are userprincipalname and sessionstate.
@@ -337,23 +245,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UserSessionInner> listByHostPoolAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String filter,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip) {
-        return new PagedFlux<>(
-            () ->
-                listByHostPoolSinglePageAsync(
-                    resourceGroupName, hostPoolName, filter, pageSize, isDescending, initialSkip),
-            nextLink -> listByHostPoolNextSinglePageAsync(nextLink));
+    public PagedFlux<UserSessionInner> listByHostPoolAsync(String resourceGroupName, String hostPoolName, String filter,
+        Integer pageSize, Boolean isDescending, Integer initialSkip) {
+        return new PagedFlux<>(() -> listByHostPoolSinglePageAsync(resourceGroupName, hostPoolName, filter, pageSize,
+            isDescending, initialSkip), nextLink -> listByHostPoolNextSinglePageAsync(nextLink));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,16 +267,13 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         final Integer pageSize = null;
         final Boolean isDescending = null;
         final Integer initialSkip = null;
-        return new PagedFlux<>(
-            () ->
-                listByHostPoolSinglePageAsync(
-                    resourceGroupName, hostPoolName, filter, pageSize, isDescending, initialSkip),
-            nextLink -> listByHostPoolNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByHostPoolSinglePageAsync(resourceGroupName, hostPoolName, filter, pageSize,
+            isDescending, initialSkip), nextLink -> listByHostPoolNextSinglePageAsync(nextLink));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param filter OData filter expression. Valid properties for filtering are userprincipalname and sessionstate.
@@ -390,24 +287,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UserSessionInner> listByHostPoolAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String filter,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByHostPoolSinglePageAsync(
-                    resourceGroupName, hostPoolName, filter, pageSize, isDescending, initialSkip, context),
-            nextLink -> listByHostPoolNextSinglePageAsync(nextLink, context));
+    private PagedFlux<UserSessionInner> listByHostPoolAsync(String resourceGroupName, String hostPoolName,
+        String filter, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
+        return new PagedFlux<>(() -> listByHostPoolSinglePageAsync(resourceGroupName, hostPoolName, filter, pageSize,
+            isDescending, initialSkip, context), nextLink -> listByHostPoolNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -427,7 +315,7 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param filter OData filter expression. Valid properties for filtering are userprincipalname and sessionstate.
@@ -441,21 +329,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UserSessionInner> listByHostPool(
-        String resourceGroupName,
-        String hostPoolName,
-        String filter,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
+    public PagedIterable<UserSessionInner> listByHostPool(String resourceGroupName, String hostPoolName, String filter,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
         return new PagedIterable<>(
             listByHostPoolAsync(resourceGroupName, hostPoolName, filter, pageSize, isDescending, initialSkip, context));
     }
 
     /**
      * Get a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -466,19 +348,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return a userSession along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UserSessionInner>> getWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public Mono<Response<UserSessionInner>> getWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, String userSessionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -496,25 +374,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            sessionHostname,
-                            userSessionId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, sessionHostname, userSessionId,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -526,19 +394,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return a userSession along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UserSessionInner>> getWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId, Context context) {
+    private Mono<Response<UserSessionInner>> getWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, String userSessionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,22 +420,13 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                sessionHostname,
-                userSessionId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, hostPoolName, sessionHostname, userSessionId, accept, context);
     }
 
     /**
      * Get a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -582,15 +437,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return a userSession on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UserSessionInner> getAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public Mono<UserSessionInner> getAsync(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
         return getWithResponseAsync(resourceGroupName, hostPoolName, sessionHostname, userSessionId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -602,14 +457,14 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return a userSession along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserSessionInner> getWithResponse(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId, Context context) {
+    public Response<UserSessionInner> getWithResponse(String resourceGroupName, String hostPoolName,
+        String sessionHostname, String userSessionId, Context context) {
         return getWithResponseAsync(resourceGroupName, hostPoolName, sessionHostname, userSessionId, context).block();
     }
 
     /**
      * Get a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -620,15 +475,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return a userSession.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserSessionInner get(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public UserSessionInner get(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
         return getWithResponse(resourceGroupName, hostPoolName, sessionHostname, userSessionId, Context.NONE)
             .getValue();
     }
 
     /**
      * Remove a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -640,19 +495,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId, Boolean force) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, String userSessionId, Boolean force) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -670,26 +521,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            sessionHostname,
-                            userSessionId,
-                            force,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, sessionHostname, userSessionId, force,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -702,24 +542,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        String userSessionId,
-        Boolean force,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, String userSessionId, Boolean force, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -737,23 +568,13 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                sessionHostname,
-                userSessionId,
-                force,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, hostPoolName, sessionHostname, userSessionId, force, accept, context);
     }
 
     /**
      * Remove a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -764,8 +585,8 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
         final Boolean force = null;
         return deleteWithResponseAsync(resourceGroupName, hostPoolName, sessionHostname, userSessionId, force)
             .flatMap(ignored -> Mono.empty());
@@ -773,7 +594,7 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
 
     /**
      * Remove a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -786,20 +607,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        String userSessionId,
-        Boolean force,
-        Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId, Boolean force, Context context) {
         return deleteWithResponseAsync(resourceGroupName, hostPoolName, sessionHostname, userSessionId, force, context)
             .block();
     }
 
     /**
      * Remove a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -816,7 +632,7 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -829,24 +645,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UserSessionInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip) {
+    private Mono<PagedResponse<UserSessionInner>> listSinglePageAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, Integer pageSize, Boolean isDescending, Integer initialSkip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -861,36 +668,17 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            sessionHostname,
-                            pageSize,
-                            isDescending,
-                            initialSkip,
-                            accept,
-                            context))
-            .<PagedResponse<UserSessionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, sessionHostname, pageSize,
+                isDescending, initialSkip, accept, context))
+            .<PagedResponse<UserSessionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -904,25 +692,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UserSessionInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
+    private Mono<PagedResponse<UserSessionInner>> listSinglePageAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -938,32 +716,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                sessionHostname,
-                pageSize,
-                isDescending,
-                initialSkip,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, hostPoolName, sessionHostname, pageSize, isDescending, initialSkip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -976,23 +737,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UserSessionInner> listAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName, hostPoolName, sessionHostname, pageSize, isDescending, initialSkip),
-            nextLink -> listNextSinglePageAsync(nextLink));
+    public PagedFlux<UserSessionInner> listAsync(String resourceGroupName, String hostPoolName, String sessionHostname,
+        Integer pageSize, Boolean isDescending, Integer initialSkip) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, hostPoolName, sessionHostname, pageSize,
+            isDescending, initialSkip), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1002,21 +755,18 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UserSessionInner> listAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname) {
+    public PagedFlux<UserSessionInner> listAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname) {
         final Integer pageSize = null;
         final Boolean isDescending = null;
         final Integer initialSkip = null;
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName, hostPoolName, sessionHostname, pageSize, isDescending, initialSkip),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, hostPoolName, sessionHostname, pageSize,
+            isDescending, initialSkip), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1030,24 +780,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UserSessionInner> listAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName, hostPoolName, sessionHostname, pageSize, isDescending, initialSkip, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<UserSessionInner> listAsync(String resourceGroupName, String hostPoolName, String sessionHostname,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, hostPoolName, sessionHostname, pageSize,
+            isDescending, initialSkip, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1067,7 +808,7 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
 
     /**
      * List userSessions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1081,21 +822,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return userSessionList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UserSessionInner> list(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
+    public PagedIterable<UserSessionInner> list(String resourceGroupName, String hostPoolName, String sessionHostname,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, hostPoolName, sessionHostname, pageSize, isDescending, initialSkip, context));
     }
 
     /**
      * Disconnect a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1106,19 +841,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disconnectWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public Mono<Response<Void>> disconnectWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, String userSessionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1136,25 +867,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disconnect(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            sessionHostname,
-                            userSessionId,
-                            accept,
-                            context))
+            .withContext(context -> service.disconnect(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, sessionHostname, userSessionId,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Disconnect a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1166,19 +887,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disconnectWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId, Context context) {
+    private Mono<Response<Void>> disconnectWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, String userSessionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1196,22 +913,14 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .disconnect(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                sessionHostname,
-                userSessionId,
-                accept,
-                context);
+        return service.disconnect(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, hostPoolName, sessionHostname, userSessionId, accept,
+            context);
     }
 
     /**
      * Disconnect a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1222,15 +931,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disconnectAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public Mono<Void> disconnectAsync(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
         return disconnectWithResponseAsync(resourceGroupName, hostPoolName, sessionHostname, userSessionId)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Disconnect a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1242,15 +951,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disconnectWithResponse(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId, Context context) {
+    public Response<Void> disconnectWithResponse(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId, Context context) {
         return disconnectWithResponseAsync(resourceGroupName, hostPoolName, sessionHostname, userSessionId, context)
             .block();
     }
 
     /**
      * Disconnect a userSession.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1260,14 +969,14 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disconnect(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public void disconnect(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
         disconnectWithResponse(resourceGroupName, hostPoolName, sessionHostname, userSessionId, Context.NONE);
     }
 
     /**
      * Send a message to a user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1279,23 +988,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendMessageWithResponseAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        String userSessionId,
-        SendMessage sendMessage) {
+    public Mono<Response<Void>> sendMessageWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, String userSessionId, SendMessage sendMessage) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1316,26 +1017,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .sendMessage(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            sessionHostname,
-                            userSessionId,
-                            sendMessage,
-                            accept,
-                            context))
+            .withContext(context -> service.sendMessage(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, sessionHostname, userSessionId,
+                sendMessage, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Send a message to a user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1348,24 +1038,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> sendMessageWithResponseAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        String userSessionId,
-        SendMessage sendMessage,
-        Context context) {
+    private Mono<Response<Void>> sendMessageWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String sessionHostname, String userSessionId, SendMessage sendMessage, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1386,23 +1067,14 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .sendMessage(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                sessionHostname,
-                userSessionId,
-                sendMessage,
-                accept,
-                context);
+        return service.sendMessage(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, hostPoolName, sessionHostname, userSessionId,
+            sendMessage, accept, context);
     }
 
     /**
      * Send a message to a user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1413,17 +1085,16 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendMessageAsync(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public Mono<Void> sendMessageAsync(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
         final SendMessage sendMessage = null;
-        return sendMessageWithResponseAsync(
-                resourceGroupName, hostPoolName, sessionHostname, userSessionId, sendMessage)
-            .flatMap(ignored -> Mono.empty());
+        return sendMessageWithResponseAsync(resourceGroupName, hostPoolName, sessionHostname, userSessionId,
+            sendMessage).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Send a message to a user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1436,21 +1107,15 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendMessageWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        String userSessionId,
-        SendMessage sendMessage,
-        Context context) {
-        return sendMessageWithResponseAsync(
-                resourceGroupName, hostPoolName, sessionHostname, userSessionId, sendMessage, context)
-            .block();
+    public Response<Void> sendMessageWithResponse(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId, SendMessage sendMessage, Context context) {
+        return sendMessageWithResponseAsync(resourceGroupName, hostPoolName, sessionHostname, userSessionId,
+            sendMessage, context).block();
     }
 
     /**
      * Send a message to a user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param sessionHostname The name of the session host within the specified host pool.
@@ -1460,18 +1125,17 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendMessage(
-        String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId) {
+    public void sendMessage(String resourceGroupName, String hostPoolName, String sessionHostname,
+        String userSessionId) {
         final SendMessage sendMessage = null;
-        sendMessageWithResponse(
-            resourceGroupName, hostPoolName, sessionHostname, userSessionId, sendMessage, Context.NONE);
+        sendMessageWithResponse(resourceGroupName, hostPoolName, sessionHostname, userSessionId, sendMessage,
+            Context.NONE);
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1483,31 +1147,21 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHostPoolNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<UserSessionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<UserSessionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1520,31 +1174,20 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByHostPoolNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByHostPoolNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1556,31 +1199,20 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<UserSessionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<UserSessionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1593,23 +1225,13 @@ public final class UserSessionsClientImpl implements UserSessionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

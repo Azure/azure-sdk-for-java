@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class RoutingRuleEnabledState extends ExpandableStringEnum<RoutingR
      * @param name a name to look for.
      * @return the corresponding RoutingRuleEnabledState.
      */
-    @JsonCreator
     public static RoutingRuleEnabledState fromString(String name) {
         return fromString(name, RoutingRuleEnabledState.class);
     }

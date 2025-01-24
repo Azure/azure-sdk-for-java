@@ -1,0 +1,15 @@
+trigger: none
+
+pr: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: computefleet
+    Artifacts:
+      - name: azure-resourcemanager-computefleet
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercomputefleet
+    # Only run tests on Windows to save cost.
+    MatrixFilters:
+      - pool=.*(win).*

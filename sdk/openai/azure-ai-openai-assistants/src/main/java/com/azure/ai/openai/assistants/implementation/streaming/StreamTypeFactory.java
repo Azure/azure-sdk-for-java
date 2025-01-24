@@ -62,17 +62,26 @@ public final class StreamTypeFactory {
 
         if (THREAD_CREATED.equals(event)) {
             return new StreamThreadCreation(eventJson.toObject(AssistantThread.class), event);
-        } else if  (THREAD_RUN_CREATED.equals(event) ||  THREAD_RUN_QUEUED.equals(event)
-            || THREAD_RUN_IN_PROGRESS.equals(event) || THREAD_RUN_COMPLETED.equals(event)
-            || THREAD_RUN_CANCELLED.equals(event) || THREAD_RUN_CANCELLING.equals(event)
-            || THREAD_RUN_FAILED.equals(event) || THREAD_RUN_EXPIRED.equals(event)) {
+        } else if (THREAD_RUN_CREATED.equals(event)
+            || THREAD_RUN_QUEUED.equals(event)
+            || THREAD_RUN_IN_PROGRESS.equals(event)
+            || THREAD_RUN_COMPLETED.equals(event)
+            || THREAD_RUN_CANCELLED.equals(event)
+            || THREAD_RUN_CANCELLING.equals(event)
+            || THREAD_RUN_FAILED.equals(event)
+            || THREAD_RUN_EXPIRED.equals(event)) {
             return new StreamThreadRunCreation(eventJson.toObject(ThreadRun.class), event);
-        } else if (THREAD_RUN_STEP_CREATED.equals(event) || THREAD_RUN_STEP_IN_PROGRESS.equals(event)
-            || THREAD_RUN_STEP_COMPLETED.equals(event) || THREAD_RUN_STEP_FAILED.equals(event)
-            || THREAD_RUN_STEP_CANCELLED.equals(event) || THREAD_RUN_STEP_EXPIRED.equals(event)) {
+        } else if (THREAD_RUN_STEP_CREATED.equals(event)
+            || THREAD_RUN_STEP_IN_PROGRESS.equals(event)
+            || THREAD_RUN_STEP_COMPLETED.equals(event)
+            || THREAD_RUN_STEP_FAILED.equals(event)
+            || THREAD_RUN_STEP_CANCELLED.equals(event)
+            || THREAD_RUN_STEP_EXPIRED.equals(event)) {
             return new StreamRunCreation(eventJson.toObject(RunStep.class), event);
-        } else if (THREAD_MESSAGE_CREATED.equals(event) || THREAD_MESSAGE_IN_PROGRESS.equals(event)
-            || THREAD_MESSAGE_COMPLETED.equals(event) || THREAD_MESSAGE_INCOMPLETE.equals(event)) {
+        } else if (THREAD_MESSAGE_CREATED.equals(event)
+            || THREAD_MESSAGE_IN_PROGRESS.equals(event)
+            || THREAD_MESSAGE_COMPLETED.equals(event)
+            || THREAD_MESSAGE_INCOMPLETE.equals(event)) {
             return new StreamMessageCreation(eventJson.toObject(ThreadMessage.class), event);
         } else if (THREAD_MESSAGE_DELTA.equals(event)) {
             return new StreamMessageUpdate(eventJson.toObject(MessageDeltaChunk.class), event);

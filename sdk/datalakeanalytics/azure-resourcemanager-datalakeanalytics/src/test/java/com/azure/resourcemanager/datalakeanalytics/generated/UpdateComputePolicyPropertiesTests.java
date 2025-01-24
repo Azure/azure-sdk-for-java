@@ -13,29 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateComputePolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateComputePolicyProperties model =
-            BinaryData
-                .fromString(
-                    "{\"objectId\":\"57ce7827-18d5-45bd-95ad-b54e5892436f\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":112236140,\"minPriorityPerJob\":743526122}")
-                .toObject(UpdateComputePolicyProperties.class);
-        Assertions.assertEquals(UUID.fromString("57ce7827-18d5-45bd-95ad-b54e5892436f"), model.objectId());
+        UpdateComputePolicyProperties model = BinaryData.fromString(
+            "{\"objectId\":\"d161c37d-3409-4e04-871f-49c51e46ee9a\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":445329815,\"minPriorityPerJob\":668778225}")
+            .toObject(UpdateComputePolicyProperties.class);
+        Assertions.assertEquals(UUID.fromString("d161c37d-3409-4e04-871f-49c51e46ee9a"), model.objectId());
         Assertions.assertEquals(AadObjectType.GROUP, model.objectType());
-        Assertions.assertEquals(112236140, model.maxDegreeOfParallelismPerJob());
-        Assertions.assertEquals(743526122, model.minPriorityPerJob());
+        Assertions.assertEquals(445329815, model.maxDegreeOfParallelismPerJob());
+        Assertions.assertEquals(668778225, model.minPriorityPerJob());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateComputePolicyProperties model =
-            new UpdateComputePolicyProperties()
-                .withObjectId(UUID.fromString("57ce7827-18d5-45bd-95ad-b54e5892436f"))
+        UpdateComputePolicyProperties model
+            = new UpdateComputePolicyProperties().withObjectId(UUID.fromString("d161c37d-3409-4e04-871f-49c51e46ee9a"))
                 .withObjectType(AadObjectType.GROUP)
-                .withMaxDegreeOfParallelismPerJob(112236140)
-                .withMinPriorityPerJob(743526122);
+                .withMaxDegreeOfParallelismPerJob(445329815)
+                .withMinPriorityPerJob(668778225);
         model = BinaryData.fromObject(model).toObject(UpdateComputePolicyProperties.class);
-        Assertions.assertEquals(UUID.fromString("57ce7827-18d5-45bd-95ad-b54e5892436f"), model.objectId());
+        Assertions.assertEquals(UUID.fromString("d161c37d-3409-4e04-871f-49c51e46ee9a"), model.objectId());
         Assertions.assertEquals(AadObjectType.GROUP, model.objectType());
-        Assertions.assertEquals(112236140, model.maxDegreeOfParallelismPerJob());
-        Assertions.assertEquals(743526122, model.minPriorityPerJob());
+        Assertions.assertEquals(445329815, model.maxDegreeOfParallelismPerJob());
+        Assertions.assertEquals(668778225, model.minPriorityPerJob());
     }
 }

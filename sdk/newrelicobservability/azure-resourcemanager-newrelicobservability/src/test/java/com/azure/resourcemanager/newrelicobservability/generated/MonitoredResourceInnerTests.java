@@ -26,8 +26,10 @@ public final class MonitoredResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoredResourceInner model = new MonitoredResourceInner().withId("scxaq")
-            .withSendingMetrics(SendingMetricsStatus.DISABLED).withReasonForMetricsStatus("hcbonqvpkvlr")
-            .withSendingLogs(SendingLogsStatus.ENABLED).withReasonForLogsStatus("ase");
+            .withSendingMetrics(SendingMetricsStatus.DISABLED)
+            .withReasonForMetricsStatus("hcbonqvpkvlr")
+            .withSendingLogs(SendingLogsStatus.ENABLED)
+            .withReasonForLogsStatus("ase");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceInner.class);
         Assertions.assertEquals("scxaq", model.id());
         Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.sendingMetrics());

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.alertsmanagement {
     exports com.azure.resourcemanager.alertsmanagement.fluent.models;
     exports com.azure.resourcemanager.alertsmanagement.models;
 
-    opens com.azure.resourcemanager.alertsmanagement.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.alertsmanagement.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.alertsmanagement.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.alertsmanagement.models to com.azure.core;
 }

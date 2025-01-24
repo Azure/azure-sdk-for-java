@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Azure Storage account properties. */
+/**
+ * The Azure Storage account properties.
+ */
 @Immutable
-public final class StorageAccountInformationProperties {
+public final class StorageAccountInformationProperties
+    implements JsonSerializable<StorageAccountInformationProperties> {
     /*
      * The optional suffix for the storage account.
      */
-    @JsonProperty(value = "suffix", access = JsonProperty.Access.WRITE_ONLY)
     private String suffix;
 
-    /** Creates an instance of StorageAccountInformationProperties class. */
+    /**
+     * Creates an instance of StorageAccountInformationProperties class.
+     */
     public StorageAccountInformationProperties() {
     }
 
     /**
      * Get the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @return the suffix value.
      */
     public String suffix() {
@@ -31,9 +39,45 @@ public final class StorageAccountInformationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountInformationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountInformationProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccountInformationProperties.
+     */
+    public static StorageAccountInformationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountInformationProperties deserializedStorageAccountInformationProperties
+                = new StorageAccountInformationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("suffix".equals(fieldName)) {
+                    deserializedStorageAccountInformationProperties.suffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountInformationProperties;
+        });
     }
 }

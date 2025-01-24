@@ -5,25 +5,34 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Additional delivery info. */
+/**
+ * Additional delivery info.
+ */
 @Fluent
-public final class JobDeliveryInfo {
+public final class JobDeliveryInfo implements JsonSerializable<JobDeliveryInfo> {
     /*
      * Scheduled date time.
      */
-    @JsonProperty(value = "scheduledDateTime")
     private OffsetDateTime scheduledDateTime;
 
-    /** Creates an instance of JobDeliveryInfo class. */
+    /**
+     * Creates an instance of JobDeliveryInfo class.
+     */
     public JobDeliveryInfo() {
     }
 
     /**
      * Get the scheduledDateTime property: Scheduled date time.
-     *
+     * 
      * @return the scheduledDateTime value.
      */
     public OffsetDateTime scheduledDateTime() {
@@ -32,7 +41,7 @@ public final class JobDeliveryInfo {
 
     /**
      * Set the scheduledDateTime property: Scheduled date time.
-     *
+     * 
      * @param scheduledDateTime the scheduledDateTime value to set.
      * @return the JobDeliveryInfo object itself.
      */
@@ -43,9 +52,49 @@ public final class JobDeliveryInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scheduledDateTime",
+            this.scheduledDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledDateTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobDeliveryInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobDeliveryInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobDeliveryInfo.
+     */
+    public static JobDeliveryInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobDeliveryInfo deserializedJobDeliveryInfo = new JobDeliveryInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scheduledDateTime".equals(fieldName)) {
+                    deserializedJobDeliveryInfo.scheduledDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobDeliveryInfo;
+        });
     }
 }

@@ -50,13 +50,14 @@ public final class LineageAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -66,7 +67,7 @@ public final class LineageAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -109,7 +110,7 @@ public final class LineageAsyncClient {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -131,7 +132,8 @@ public final class LineageAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
@@ -162,13 +164,14 @@ public final class LineageAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -178,7 +181,7 @@ public final class LineageAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -221,7 +224,7 @@ public final class LineageAsyncClient {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -243,7 +246,8 @@ public final class LineageAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
@@ -291,13 +295,14 @@ public final class LineageAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -307,7 +312,7 @@ public final class LineageAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -350,7 +355,7 @@ public final class LineageAsyncClient {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -372,7 +377,8 @@ public final class LineageAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",

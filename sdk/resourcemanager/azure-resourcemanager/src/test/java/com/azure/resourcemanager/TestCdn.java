@@ -32,9 +32,13 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
     public CdnProfile createResource(CdnProfiles profiles) throws Exception {
         final Region region = Region.US_EAST;
         final String groupName = profiles.manager().resourceManager().internalContext().randomResourceName("rg", 10);
-        final String cdnProfileName = profiles.manager().resourceManager().internalContext().randomResourceName("cdnProfile", 20);
-        final String cdnEndpointName = profiles.manager().resourceManager().internalContext().randomResourceName("cdnEndpoint", 20);
-        final String cdnOriginHostName = profiles.manager().resourceManager().internalContext().randomResourceName("my", 10) + ".azurewebsites.net";
+        final String cdnProfileName
+            = profiles.manager().resourceManager().internalContext().randomResourceName("cdnProfile", 20);
+        final String cdnEndpointName
+            = profiles.manager().resourceManager().internalContext().randomResourceName("cdnEndpoint", 20);
+        final String cdnOriginHostName
+            = profiles.manager().resourceManager().internalContext().randomResourceName("my", 10)
+                + ".azurewebsites.net";
 
         CdnProfile cdnProfile = profiles.define(cdnProfileName)
             .withRegion(region)
@@ -69,7 +73,8 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
         Assertions.assertNotNull(endpoint.geoFilters());
         Assertions.assertEquals(QueryStringCachingBehavior.BYPASS_CACHING, endpoint.queryStringCachingBehavior());
 
-        Assertions.assertTrue(profiles.listResourceUsage().stream().anyMatch(usage -> usage.resourceType().equals("profile")));
+        Assertions.assertTrue(
+            profiles.listResourceUsage().stream().anyMatch(usage -> usage.resourceType().equals("profile")));
 
         for (EdgeNode node : profiles.listEdgeNodes()) {
             Assertions.assertNotNull(node);
@@ -81,8 +86,7 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
         }
 
         for (CdnEndpoint ep : cdnProfile.endpoints().values()) {
-            Assertions.assertEquals(
-                Arrays.asList("customdomain", "geofilter", "deliveryrule"),
+            Assertions.assertEquals(Arrays.asList("customdomain", "geofilter", "deliveryrule"),
                 ep.listResourceUsage().stream().map(ResourceUsage::resourceType).collect(Collectors.toList()));
         }
         return cdnProfile;
@@ -120,33 +124,54 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
     @Override
     public void print(CdnProfile profile) {
         StringBuilder info = new StringBuilder();
-        info.append("CDN Profile: ").append(profile.id())
-            .append("\n\tName: ").append(profile.name())
-            .append("\n\tResource group: ").append(profile.resourceGroupName())
-            .append("\n\tRegion: ").append(profile.regionName())
-            .append("\n\tSku: ").append(profile.sku().name())
-            .append("\n\tTags: ").append(profile.tags());
+        info.append("CDN Profile: ")
+            .append(profile.id())
+            .append("\n\tName: ")
+            .append(profile.name())
+            .append("\n\tResource group: ")
+            .append(profile.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(profile.regionName())
+            .append("\n\tSku: ")
+            .append(profile.sku().name())
+            .append("\n\tTags: ")
+            .append(profile.tags());
 
         Map<String, CdnEndpoint> cdnEndpoints = profile.endpoints();
         if (!cdnEndpoints.isEmpty()) {
             info.append("\n\tCDN endpoints:");
             int idx = 1;
             for (CdnEndpoint endpoint : cdnEndpoints.values()) {
-                info.append("\n\t\tCDN endpoint: #").append(idx++)
-                    .append("\n\t\t\tId: ").append(endpoint.id())
-                    .append("\n\t\t\tName: ").append(endpoint.name())
-                    .append("\n\t\t\tState: ").append(endpoint.resourceState())
-                    .append("\n\t\t\tHost name: ").append(endpoint.hostname())
-                    .append("\n\t\t\tOrigin host name: ").append(endpoint.originHostName())
-                    .append("\n\t\t\tOrigin host header: ").append(endpoint.originHostHeader())
-                    .append("\n\t\t\tOrigin path: ").append(endpoint.originPath())
-                    .append("\n\t\t\tOptimization type: ").append(endpoint.optimizationType())
-                    .append("\n\t\t\tQuery string caching behavior: ").append(endpoint.queryStringCachingBehavior())
-                    .append("\n\t\t\tHttp allowed: ").append(endpoint.isHttpAllowed())
-                    .append("\t\tHttp port: ").append(endpoint.httpPort())
-                    .append("\n\t\t\tHttps allowed: ").append(endpoint.isHttpsAllowed())
-                    .append("\t\tHttps port: ").append(endpoint.httpsPort())
-                    .append("\n\t\t\tCompression enabled: ").append(endpoint.isCompressionEnabled());
+                info.append("\n\t\tCDN endpoint: #")
+                    .append(idx++)
+                    .append("\n\t\t\tId: ")
+                    .append(endpoint.id())
+                    .append("\n\t\t\tName: ")
+                    .append(endpoint.name())
+                    .append("\n\t\t\tState: ")
+                    .append(endpoint.resourceState())
+                    .append("\n\t\t\tHost name: ")
+                    .append(endpoint.hostname())
+                    .append("\n\t\t\tOrigin host name: ")
+                    .append(endpoint.originHostName())
+                    .append("\n\t\t\tOrigin host header: ")
+                    .append(endpoint.originHostHeader())
+                    .append("\n\t\t\tOrigin path: ")
+                    .append(endpoint.originPath())
+                    .append("\n\t\t\tOptimization type: ")
+                    .append(endpoint.optimizationType())
+                    .append("\n\t\t\tQuery string caching behavior: ")
+                    .append(endpoint.queryStringCachingBehavior())
+                    .append("\n\t\t\tHttp allowed: ")
+                    .append(endpoint.isHttpAllowed())
+                    .append("\t\tHttp port: ")
+                    .append(endpoint.httpPort())
+                    .append("\n\t\t\tHttps allowed: ")
+                    .append(endpoint.isHttpsAllowed())
+                    .append("\t\tHttps port: ")
+                    .append(endpoint.httpsPort())
+                    .append("\n\t\t\tCompression enabled: ")
+                    .append(endpoint.isCompressionEnabled());
 
                 info.append("\n\t\t\tContent types to compress: ");
                 for (String contentTypeToCompress : endpoint.contentTypesToCompress()) {

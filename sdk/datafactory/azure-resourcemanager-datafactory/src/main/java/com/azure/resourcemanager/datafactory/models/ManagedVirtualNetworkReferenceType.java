@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -33,7 +32,6 @@ public final class ManagedVirtualNetworkReferenceType extends ExpandableStringEn
      * @param name a name to look for.
      * @return the corresponding ManagedVirtualNetworkReferenceType.
      */
-    @JsonCreator
     public static ManagedVirtualNetworkReferenceType fromString(String name) {
         return fromString(name, ManagedVirtualNetworkReferenceType.class);
     }

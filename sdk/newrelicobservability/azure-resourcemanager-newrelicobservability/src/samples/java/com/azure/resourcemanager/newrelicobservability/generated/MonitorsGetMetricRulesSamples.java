@@ -21,8 +21,9 @@ public final class MonitorsGetMetricRulesSamples {
      */
     public static void monitorsGetMetricRulesMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +37,8 @@ public final class MonitorsGetMetricRulesSamples {
      */
     public static void monitorsGetMetricRulesMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 }

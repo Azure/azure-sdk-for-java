@@ -5,68 +5,72 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cluster resource patch properties.
  */
 @Fluent
-public final class UpdatableClusterProfile {
+public final class UpdatableClusterProfile implements JsonSerializable<UpdatableClusterProfile> {
     /*
      * The service configs profiles.
      */
-    @JsonProperty(value = "serviceConfigsProfiles")
     private List<ClusterServiceConfigsProfile> serviceConfigsProfiles;
 
     /*
      * Ssh profile for the cluster.
      */
-    @JsonProperty(value = "sshProfile")
     private SshProfile sshProfile;
 
     /*
-     * This is the Autoscale profile for the cluster. This will allow customer to create cluster enabled with
-     * Autoscale.
+     * This is the Autoscale profile for the cluster. This will allow customer to create cluster enabled with Autoscale.
      */
-    @JsonProperty(value = "autoscaleProfile")
     private AutoscaleProfile autoscaleProfile;
 
     /*
      * Authorization profile with details of AAD user Ids and group Ids authorized for data plane access.
      */
-    @JsonProperty(value = "authorizationProfile")
     private AuthorizationProfile authorizationProfile;
 
     /*
      * Cluster log analytics profile to enable or disable OMS agent for cluster.
      */
-    @JsonProperty(value = "logAnalyticsProfile")
     private ClusterLogAnalyticsProfile logAnalyticsProfile;
 
     /*
      * Cluster Prometheus profile.
      */
-    @JsonProperty(value = "prometheusProfile")
     private ClusterPrometheusProfile prometheusProfile;
 
     /*
      * Cluster Ranger plugin profile.
      */
-    @JsonProperty(value = "rangerPluginProfile")
     private ClusterRangerPluginProfile rangerPluginProfile;
 
     /*
      * The ranger cluster profile.
      */
-    @JsonProperty(value = "rangerProfile")
     private RangerProfile rangerProfile;
 
     /*
      * The script action profile list.
      */
-    @JsonProperty(value = "scriptActionProfiles")
     private List<ScriptActionProfile> scriptActionProfiles;
+
+    /*
+     * The cluster secret profile.
+     */
+    private SecretsProfile secretsProfile;
+
+    /*
+     * Trino Cluster profile.
+     */
+    private TrinoProfile trinoProfile;
 
     /**
      * Creates an instance of UpdatableClusterProfile class.
@@ -260,6 +264,46 @@ public final class UpdatableClusterProfile {
     }
 
     /**
+     * Get the secretsProfile property: The cluster secret profile.
+     * 
+     * @return the secretsProfile value.
+     */
+    public SecretsProfile secretsProfile() {
+        return this.secretsProfile;
+    }
+
+    /**
+     * Set the secretsProfile property: The cluster secret profile.
+     * 
+     * @param secretsProfile the secretsProfile value to set.
+     * @return the UpdatableClusterProfile object itself.
+     */
+    public UpdatableClusterProfile withSecretsProfile(SecretsProfile secretsProfile) {
+        this.secretsProfile = secretsProfile;
+        return this;
+    }
+
+    /**
+     * Get the trinoProfile property: Trino Cluster profile.
+     * 
+     * @return the trinoProfile value.
+     */
+    public TrinoProfile trinoProfile() {
+        return this.trinoProfile;
+    }
+
+    /**
+     * Set the trinoProfile property: Trino Cluster profile.
+     * 
+     * @param trinoProfile the trinoProfile value to set.
+     * @return the UpdatableClusterProfile object itself.
+     */
+    public UpdatableClusterProfile withTrinoProfile(TrinoProfile trinoProfile) {
+        this.trinoProfile = trinoProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -292,5 +336,85 @@ public final class UpdatableClusterProfile {
         if (scriptActionProfiles() != null) {
             scriptActionProfiles().forEach(e -> e.validate());
         }
+        if (secretsProfile() != null) {
+            secretsProfile().validate();
+        }
+        if (trinoProfile() != null) {
+            trinoProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("serviceConfigsProfiles", this.serviceConfigsProfiles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sshProfile", this.sshProfile);
+        jsonWriter.writeJsonField("autoscaleProfile", this.autoscaleProfile);
+        jsonWriter.writeJsonField("authorizationProfile", this.authorizationProfile);
+        jsonWriter.writeJsonField("logAnalyticsProfile", this.logAnalyticsProfile);
+        jsonWriter.writeJsonField("prometheusProfile", this.prometheusProfile);
+        jsonWriter.writeJsonField("rangerPluginProfile", this.rangerPluginProfile);
+        jsonWriter.writeJsonField("rangerProfile", this.rangerProfile);
+        jsonWriter.writeArrayField("scriptActionProfiles", this.scriptActionProfiles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("secretsProfile", this.secretsProfile);
+        jsonWriter.writeJsonField("trinoProfile", this.trinoProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdatableClusterProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdatableClusterProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdatableClusterProfile.
+     */
+    public static UpdatableClusterProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdatableClusterProfile deserializedUpdatableClusterProfile = new UpdatableClusterProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceConfigsProfiles".equals(fieldName)) {
+                    List<ClusterServiceConfigsProfile> serviceConfigsProfiles
+                        = reader.readArray(reader1 -> ClusterServiceConfigsProfile.fromJson(reader1));
+                    deserializedUpdatableClusterProfile.serviceConfigsProfiles = serviceConfigsProfiles;
+                } else if ("sshProfile".equals(fieldName)) {
+                    deserializedUpdatableClusterProfile.sshProfile = SshProfile.fromJson(reader);
+                } else if ("autoscaleProfile".equals(fieldName)) {
+                    deserializedUpdatableClusterProfile.autoscaleProfile = AutoscaleProfile.fromJson(reader);
+                } else if ("authorizationProfile".equals(fieldName)) {
+                    deserializedUpdatableClusterProfile.authorizationProfile = AuthorizationProfile.fromJson(reader);
+                } else if ("logAnalyticsProfile".equals(fieldName)) {
+                    deserializedUpdatableClusterProfile.logAnalyticsProfile
+                        = ClusterLogAnalyticsProfile.fromJson(reader);
+                } else if ("prometheusProfile".equals(fieldName)) {
+                    deserializedUpdatableClusterProfile.prometheusProfile = ClusterPrometheusProfile.fromJson(reader);
+                } else if ("rangerPluginProfile".equals(fieldName)) {
+                    deserializedUpdatableClusterProfile.rangerPluginProfile
+                        = ClusterRangerPluginProfile.fromJson(reader);
+                } else if ("rangerProfile".equals(fieldName)) {
+                    deserializedUpdatableClusterProfile.rangerProfile = RangerProfile.fromJson(reader);
+                } else if ("scriptActionProfiles".equals(fieldName)) {
+                    List<ScriptActionProfile> scriptActionProfiles
+                        = reader.readArray(reader1 -> ScriptActionProfile.fromJson(reader1));
+                    deserializedUpdatableClusterProfile.scriptActionProfiles = scriptActionProfiles;
+                } else if ("secretsProfile".equals(fieldName)) {
+                    deserializedUpdatableClusterProfile.secretsProfile = SecretsProfile.fromJson(reader);
+                } else if ("trinoProfile".equals(fieldName)) {
+                    deserializedUpdatableClusterProfile.trinoProfile = TrinoProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdatableClusterProfile;
+        });
     }
 }

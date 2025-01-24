@@ -13,38 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationGroupPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationGroupPatch model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"wakbogqxndl\":\"obdagxtibqdxb\",\"uriplbpodxunkb\":\"zgx\",\"lrb\":\"bxmubyynt\",\"l\":\"tkoievseotgq\"},\"properties\":{\"description\":\"u\",\"friendlyName\":\"auwzizxbmpgc\",\"showInFeed\":true},\"id\":\"u\",\"name\":\"muvp\",\"type\":\"ttdumorppxebmnzb\"}")
-                .toObject(ApplicationGroupPatch.class);
-        Assertions.assertEquals("obdagxtibqdxb", model.tags().get("wakbogqxndl"));
-        Assertions.assertEquals("u", model.description());
-        Assertions.assertEquals("auwzizxbmpgc", model.friendlyName());
+        ApplicationGroupPatch model = BinaryData.fromString(
+            "{\"tags\":{\"modfvuefywsbpfvm\":\"dggkzzlvmbmpa\",\"yzvqt\":\"yhrfouyftaakcpw\",\"zksmondj\":\"nubexk\"},\"properties\":{\"description\":\"xvy\",\"friendlyName\":\"mg\",\"showInFeed\":true},\"id\":\"whojvp\",\"name\":\"jqg\",\"type\":\"ysmocmbqfqvmkcxo\"}")
+            .toObject(ApplicationGroupPatch.class);
+        Assertions.assertEquals("dggkzzlvmbmpa", model.tags().get("modfvuefywsbpfvm"));
+        Assertions.assertEquals("xvy", model.description());
+        Assertions.assertEquals("mg", model.friendlyName());
         Assertions.assertEquals(true, model.showInFeed());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationGroupPatch model =
-            new ApplicationGroupPatch()
-                .withTags(
-                    mapOf(
-                        "wakbogqxndl",
-                        "obdagxtibqdxb",
-                        "uriplbpodxunkb",
-                        "zgx",
-                        "lrb",
-                        "bxmubyynt",
-                        "l",
-                        "tkoievseotgq"))
-                .withDescription("u")
-                .withFriendlyName("auwzizxbmpgc")
-                .withShowInFeed(true);
+        ApplicationGroupPatch model = new ApplicationGroupPatch()
+            .withTags(mapOf("modfvuefywsbpfvm", "dggkzzlvmbmpa", "yzvqt", "yhrfouyftaakcpw", "zksmondj", "nubexk"))
+            .withDescription("xvy")
+            .withFriendlyName("mg")
+            .withShowInFeed(true);
         model = BinaryData.fromObject(model).toObject(ApplicationGroupPatch.class);
-        Assertions.assertEquals("obdagxtibqdxb", model.tags().get("wakbogqxndl"));
-        Assertions.assertEquals("u", model.description());
-        Assertions.assertEquals("auwzizxbmpgc", model.friendlyName());
+        Assertions.assertEquals("dggkzzlvmbmpa", model.tags().get("modfvuefywsbpfvm"));
+        Assertions.assertEquals("xvy", model.description());
+        Assertions.assertEquals("mg", model.friendlyName());
         Assertions.assertEquals(true, model.showInFeed());
     }
 

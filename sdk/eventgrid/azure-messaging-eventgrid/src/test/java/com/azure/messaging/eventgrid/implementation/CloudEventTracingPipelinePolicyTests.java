@@ -30,8 +30,8 @@ public class CloudEventTracingPipelinePolicyTests {
 
         httpRequest.setBody(testBodyString);
         httpRequest.setHeader(Constants.CONTENT_LENGTH, testBodyString);
-        String newBody = CloudEventTracingPipelinePolicy.replaceTracingPlaceHolder(
-            httpRequest, new StringBuilder(testBodyString));
+        String newBody
+            = CloudEventTracingPipelinePolicy.replaceTracingPlaceHolder(httpRequest, new StringBuilder(testBodyString));
         Assertions.assertEquals(expectedNewBody, newBody);
         Assertions.assertEquals(httpRequest.getHeaders().get(Constants.CONTENT_LENGTH).getValue(),
             String.valueOf(newBody.length()));
@@ -44,12 +44,11 @@ public class CloudEventTracingPipelinePolicyTests {
             + "\"type\":\"json\",\"specversion\":\"1.0\",\"tracestate\":\"TS-14b6b15b-74b6-4178-847e-d142aa2727b2\","
             + "\"traceparent\":\"TP-14b6b15b-74b6-4178-847e-d142aa2727b2\"}]";
         String expectedNewBody = "[{\"id\":\"313ac785-2dca-467e-a6a7-623f1baa2890\",\"source\":\"source\","
-            + "\"type\":\"json\",\"specversion\":\"1.0\","
-            + "\"traceparent\":\"aTraceParent\"}]";
+            + "\"type\":\"json\",\"specversion\":\"1.0\"," + "\"traceparent\":\"aTraceParent\"}]";
         httpRequest.setBody(testBodyString);
         httpRequest.setHeader(Constants.CONTENT_LENGTH, testBodyString);
-        String newBody = CloudEventTracingPipelinePolicy.replaceTracingPlaceHolder(
-            httpRequest, new StringBuilder(testBodyString));
+        String newBody
+            = CloudEventTracingPipelinePolicy.replaceTracingPlaceHolder(httpRequest, new StringBuilder(testBodyString));
         Assertions.assertEquals(expectedNewBody, newBody);
         Assertions.assertEquals(httpRequest.getHeaders().get(Constants.CONTENT_LENGTH).getValue(),
             String.valueOf(newBody.length()));
@@ -62,13 +61,12 @@ public class CloudEventTracingPipelinePolicyTests {
             + "\"type\":\"json\",\"specversion\":\"1.0\",\"tracestate\":\"TS-14b6b15b-74b6-4178-847e-d142aa2727b2\","
             + "\"traceparent\":\"TP-14b6b15b-74b6-4178-847e-d142aa2727b2\"}]";
         String expectedNewBody = "[{\"id\":\"313ac785-2dca-467e-a6a7-623f1baa2890\",\"source\":\"source\","
-            + "\"type\":\"json\",\"specversion\":\"1.0\","
-            + "\"tracestate\":\"aTraceState\"}]";
+            + "\"type\":\"json\",\"specversion\":\"1.0\"," + "\"tracestate\":\"aTraceState\"}]";
 
         httpRequest.setBody(testBodyString);
         httpRequest.setHeader(Constants.CONTENT_LENGTH, testBodyString);
-        String newBody = CloudEventTracingPipelinePolicy.replaceTracingPlaceHolder(
-            httpRequest, new StringBuilder(testBodyString));
+        String newBody
+            = CloudEventTracingPipelinePolicy.replaceTracingPlaceHolder(httpRequest, new StringBuilder(testBodyString));
         Assertions.assertEquals(expectedNewBody, newBody);
         Assertions.assertEquals(httpRequest.getHeaders().get(Constants.CONTENT_LENGTH).getValue(),
             String.valueOf(newBody.length()));

@@ -116,8 +116,8 @@ public final class CatalogsImpl implements Catalogs {
 
     public PagedIterable<Deployment> listDeployments(String resourceGroupName, String catalogName, String filter,
         Integer top, Integer skip, Integer maxpagesize, Context context) {
-        PagedIterable<DeploymentInner> inner = this.serviceClient().listDeployments(resourceGroupName, catalogName,
-            filter, top, skip, maxpagesize, context);
+        PagedIterable<DeploymentInner> inner = this.serviceClient()
+            .listDeployments(resourceGroupName, catalogName, filter, top, skip, maxpagesize, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
     }
 
@@ -131,8 +131,9 @@ public final class CatalogsImpl implements Catalogs {
     public PagedIterable<DeviceGroup> listDeviceGroups(String resourceGroupName, String catalogName,
         ListDeviceGroupsRequest listDeviceGroupsRequest, String filter, Integer top, Integer skip, Integer maxpagesize,
         Context context) {
-        PagedIterable<DeviceGroupInner> inner = this.serviceClient().listDeviceGroups(resourceGroupName, catalogName,
-            listDeviceGroupsRequest, filter, top, skip, maxpagesize, context);
+        PagedIterable<DeviceGroupInner> inner = this.serviceClient()
+            .listDeviceGroups(resourceGroupName, catalogName, listDeviceGroupsRequest, filter, top, skip, maxpagesize,
+                context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DeviceGroupImpl(inner1, this.manager()));
     }
 
@@ -144,8 +145,8 @@ public final class CatalogsImpl implements Catalogs {
 
     public PagedIterable<DeviceInsight> listDeviceInsights(String resourceGroupName, String catalogName, String filter,
         Integer top, Integer skip, Integer maxpagesize, Context context) {
-        PagedIterable<DeviceInsightInner> inner = this.serviceClient().listDeviceInsights(resourceGroupName,
-            catalogName, filter, top, skip, maxpagesize, context);
+        PagedIterable<DeviceInsightInner> inner = this.serviceClient()
+            .listDeviceInsights(resourceGroupName, catalogName, filter, top, skip, maxpagesize, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DeviceInsightImpl(inner1, this.manager()));
     }
 

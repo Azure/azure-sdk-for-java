@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of private link resources. */
 @Fluent
 public final class PrivateLinkResourceListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceListResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResourceListResultInner.class);
 
     /*
      * Array of private link resources

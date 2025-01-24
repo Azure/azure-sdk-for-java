@@ -31,17 +31,17 @@ public class PartitionResolverTests {
         final ArrayList<List<String>> arguments = new ArrayList<>();
 
         for (int index = 1; index < 8; ++index) {
-            final List<String> partitions = IntStream.range(0, index).mapToObj(String::valueOf)
-                .collect(Collectors.toList());
+            final List<String> partitions
+                = IntStream.range(0, index).mapToObj(String::valueOf).collect(Collectors.toList());
 
             arguments.add(partitions);
         }
 
         // Build sets for 16, 32, and 2000 partitions for more extreme cases.
 
-        for (int count : new int[]{16, 32, 2000}) {
-            final List<String> partitions = IntStream.range(0, count).mapToObj(String::valueOf)
-                .collect(Collectors.toList());
+        for (int count : new int[] { 16, 32, 2000 }) {
+            final List<String> partitions
+                = IntStream.range(0, count).mapToObj(String::valueOf).collect(Collectors.toList());
 
             arguments.add(partitions);
         }
@@ -58,9 +58,9 @@ public class PartitionResolverTests {
         arguments.add(Arguments.of("7149583486996073602", (short) 12977));
         arguments.add(Arguments.of("FWfAT", (short) -22341));
         arguments.add(Arguments.of("sOdeEAsyQoEuEFPGerWO", (short) -6503));
-        arguments.add(Arguments.of(
-            "FAyAIctPeCgmiwLKbJcyswoHglHVjQdvtBowLACDNORsYvOcLddNJYDmhAVkbyLOrHTKLneMNcbgWVlasVywOByANjs",
-            (short) 5226));
+        arguments.add(
+            Arguments.of("FAyAIctPeCgmiwLKbJcyswoHglHVjQdvtBowLACDNORsYvOcLddNJYDmhAVkbyLOrHTKLneMNcbgWVlasVywOByANjs",
+                (short) 5226));
         arguments.add(Arguments.of("1XYM6!(7(lF5wq4k4m*e$Nc!1ezLJv*1YK1Y-C^*&B$O)lq^iUkG(TNzXG;Zi#z2Og*Qq0#^*k)"
             + ":vXh$3,C7We7%W0meJ;b3,rQCg^J;^twXgs5E$$hWKxqp", (short) 23950));
         arguments.add(Arguments.of("E(x;RRIaQcJs*P;D&jTPau-4K04oqr:lF6Z):ERpo&;"
@@ -121,23 +121,22 @@ public class PartitionResolverTests {
 
         // Assert
         // Wait for them all to complete.
-        StepVerifier.create(Mono.when(activeTasks))
-            .verifyComplete();
+        StepVerifier.create(Mono.when(activeTasks)).verifyComplete();
 
         // Assert
 
         // When grouped, the count of each partition should equal the iteration count for each
         // concurrent invocation.
-        final HashMap<String, Integer> partitionAssignments = assigned.stream().collect(HashMap::new,
-            (map, value) -> map.compute(value, (key, existingValue) -> existingValue == null ? 1 : (existingValue + 1)),
-            (map1, map2) -> {
-                map2.forEach((key, value) -> {
-                    map1.compute(key, (existingKey, existingValue) -> {
-                        // It did not exist in map1, so we use the total from map2. Otherwise, combine the two.
-                        return existingValue == null ? value : (existingValue + value);
+        final HashMap<String, Integer> partitionAssignments = assigned.stream()
+            .collect(HashMap::new, (map, value) -> map.compute(value,
+                (key, existingValue) -> existingValue == null ? 1 : (existingValue + 1)), (map1, map2) -> {
+                    map2.forEach((key, value) -> {
+                        map1.compute(key, (existingKey, existingValue) -> {
+                            // It did not exist in map1, so we use the total from map2. Otherwise, combine the two.
+                            return existingValue == null ? value : (existingValue + value);
+                        });
                     });
                 });
-            });
 
         // Verify that each assignment is for a valid partition and has the expected distribution.
         partitionAssignments.forEach((partitionId, numberAssigned) -> {

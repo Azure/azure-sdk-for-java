@@ -54,7 +54,7 @@ class EncryptedFlux extends Flux<ByteBuffer> {
     private static final int POSITION_TWO = DATA_OFFSET / 2;
     private static final int POSITION_THREE_POSITION = DATA_OFFSET - 1;
     private static final int POSITION_THREE_LIMIT = POSITION_THREE_POSITION + 1;
-    private static final int POSITION_FOUR_POSITION  = DATA_OFFSET;
+    private static final int POSITION_FOUR_POSITION = DATA_OFFSET;
     private static final int POSITION_FOUR_LIMIT = POSITION_FOUR_POSITION + 1;
     private static final int POSITION_FIVE = DATA_OFFSET + (DATA_COUNT / 2);
     private static final int POSITION_SIX_POSITION = DATA_OFFSET + DATA_COUNT - 1;
@@ -83,7 +83,7 @@ class EncryptedFlux extends Flux<ByteBuffer> {
     public static final int CASE_EIGHT = 8; // 1/2; 2/4; 5/8; 8/9
     public static final int CASE_NINE = 9; // 1/2; 2/5; 6/8; 8/9
     public static final int CASE_TEN = 10; // 1/2; 2/6; 7/9
-    public static final int CASE_ELEVEN  = 11; // 1/2; 2/7; 8/9
+    public static final int CASE_ELEVEN = 11; // 1/2; 2/7; 8/9
     public static final int CASE_TWELVE = 12; // 1/2; 2/8; 8/9
     public static final int CASE_THIRTEEN = 13; // 1/2; 2/9
     public static final int CASE_FOURTEEN = 14; // 1/2; 3/4; 5/9
@@ -101,12 +101,12 @@ class EncryptedFlux extends Flux<ByteBuffer> {
         this.plainText = base.getRandomData(DOWNLOAD_SIZE - 2); // This will yield two bytes of padding... for fun.
         String blobName = base.generateBlobName();
 
-        EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(null, "https://random.blob.core.windows.net",
-            BlobServiceVersion.getLatest(), null, null, blobName, null, null, null, key, "keyWrapAlgorithm", null,
-            EncryptionVersion.V1, false)
-            .encryptBlob(just(this.plainText)).block();
-        this.cipherText = FluxUtil.collectBytesInByteBufferStream(encryptedBlob.getCiphertextFlux())
-            .map(ByteBuffer::wrap).block();
+        EncryptedBlob encryptedBlob
+            = new EncryptedBlobAsyncClient(null, "https://random.blob.core.windows.net", BlobServiceVersion.getLatest(),
+                null, null, blobName, null, null, null, key, "keyWrapAlgorithm", null, EncryptionVersion.V1, false,
+                new BlobClientSideEncryptionOptions()).encryptBlob(just(this.plainText)).block();
+        this.cipherText
+            = FluxUtil.collectBytesInByteBufferStream(encryptedBlob.getCiphertextFlux()).map(ByteBuffer::wrap).block();
         this.encryptionData = encryptedBlob.getEncryptionData();
     }
 
@@ -129,10 +129,12 @@ class EncryptedFlux extends Flux<ByteBuffer> {
                 limitArr = Arrays.asList(POSITION_TWO, POSITION_THREE_LIMIT, POSITION_FIVE, POSITION_SIX_LIMIT,
                     POSITION_EIGHT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_ONE:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_FOUR_POSITION, POSITION_SEVEN_POSITION);
                 limitArr = Arrays.asList(POSITION_THREE_LIMIT, POSITION_SIX_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_TWO:
                 /*
                 Note here and in some cases below, without loss of generality, we use FOUR_LIMIT instead of FIVE for the
@@ -143,83 +145,103 @@ class EncryptedFlux extends Flux<ByteBuffer> {
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_FOUR_LIMIT, POSITION_SEVEN_LIMIT);
                 limitArr = Arrays.asList(POSITION_FOUR_LIMIT, POSITION_SEVEN_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_THREE:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_SIX_POSITION, POSITION_SEVEN_LIMIT);
                 limitArr = Arrays.asList(POSITION_SIX_POSITION, POSITION_SEVEN_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_FOUR:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_SEVEN_POSITION);
                 limitArr = Arrays.asList(POSITION_SIX_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_FIVE:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_SEVEN_LIMIT);
                 limitArr = Arrays.asList(POSITION_SEVEN_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_SIX:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_EIGHT);
                 limitArr = Arrays.asList(POSITION_EIGHT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_SEVEN:
                 positionArr = Collections.singletonList(POSITION_ONE);
                 limitArr = Collections.singletonList(POSITION_NINE_LIMIT);
                 break;
+
             case CASE_EIGHT:
             case CASE_THIRTEEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO);
                 limitArr = Arrays.asList(POSITION_TWO, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_NINE:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO, POSITION_SIX_POSITION, POSITION_EIGHT);
                 limitArr = Arrays.asList(POSITION_TWO, POSITION_SIX_POSITION, POSITION_EIGHT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_TEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO, POSITION_SEVEN_POSITION);
                 limitArr = Arrays.asList(POSITION_TWO, POSITION_SIX_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_ELEVEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO, POSITION_SEVEN_LIMIT);
                 limitArr = Arrays.asList(POSITION_TWO, POSITION_SEVEN_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_TWELVE:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO, POSITION_EIGHT);
                 limitArr = Arrays.asList(POSITION_TWO, POSITION_EIGHT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_FOURTEEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_POSITION, POSITION_FOUR_LIMIT);
                 limitArr = Arrays.asList(POSITION_THREE_POSITION, POSITION_FOUR_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_FIFTEEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_POSITION, POSITION_SIX_POSITION);
                 limitArr = Arrays.asList(POSITION_THREE_POSITION, POSITION_SIX_POSITION, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_SIXTEEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_POSITION, POSITION_SEVEN_POSITION);
                 limitArr = Arrays.asList(POSITION_THREE_POSITION, POSITION_SIX_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_SEVENTEEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_POSITION, POSITION_SEVEN_LIMIT);
                 limitArr = Arrays.asList(POSITION_THREE_POSITION, POSITION_SEVEN_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_EIGHTEEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_POSITION, POSITION_EIGHT);
                 limitArr = Arrays.asList(POSITION_THREE_POSITION, POSITION_EIGHT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_NINETEEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_POSITION);
                 limitArr = Arrays.asList(POSITION_THREE_POSITION, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_TWENTY:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_LIMIT, POSITION_SEVEN_LIMIT);
                 limitArr = Arrays.asList(POSITION_THREE_LIMIT, POSITION_SEVEN_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_TWENTY_ONE:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_LIMIT, POSITION_EIGHT);
                 limitArr = Arrays.asList(POSITION_THREE_LIMIT, POSITION_EIGHT, POSITION_NINE_LIMIT);
                 break;
+
             case CASE_TWENTY_TWO:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_LIMIT);
                 limitArr = Arrays.asList(POSITION_THREE_LIMIT, POSITION_NINE_LIMIT);
                 break;
+
             default:
                 throw new IllegalStateException("Unexpected case number");
         }

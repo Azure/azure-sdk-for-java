@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Desktop properties that can be patched. */
+/**
+ * Desktop properties that can be patched.
+ */
 @Fluent
-public final class DesktopPatchProperties {
+public final class DesktopPatchProperties implements JsonSerializable<DesktopPatchProperties> {
     /*
      * Description of Desktop.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Friendly name of Desktop.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
-    /** Creates an instance of DesktopPatchProperties class. */
+    /**
+     * Creates an instance of DesktopPatchProperties class.
+     */
     public DesktopPatchProperties() {
     }
 
     /**
      * Get the description property: Description of Desktop.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -37,7 +43,7 @@ public final class DesktopPatchProperties {
 
     /**
      * Set the description property: Description of Desktop.
-     *
+     * 
      * @param description the description value to set.
      * @return the DesktopPatchProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class DesktopPatchProperties {
 
     /**
      * Get the friendlyName property: Friendly name of Desktop.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -57,7 +63,7 @@ public final class DesktopPatchProperties {
 
     /**
      * Set the friendlyName property: Friendly name of Desktop.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the DesktopPatchProperties object itself.
      */
@@ -68,9 +74,48 @@ public final class DesktopPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DesktopPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DesktopPatchProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DesktopPatchProperties.
+     */
+    public static DesktopPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DesktopPatchProperties deserializedDesktopPatchProperties = new DesktopPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDesktopPatchProperties.description = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedDesktopPatchProperties.friendlyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDesktopPatchProperties;
+        });
     }
 }

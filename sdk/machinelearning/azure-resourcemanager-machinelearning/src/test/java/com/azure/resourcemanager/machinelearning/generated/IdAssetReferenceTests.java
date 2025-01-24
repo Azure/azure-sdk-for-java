@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class IdAssetReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdAssetReference model =
-            BinaryData
-                .fromString("{\"referenceType\":\"Id\",\"assetId\":\"itpkpztrgdg\"}")
-                .toObject(IdAssetReference.class);
-        Assertions.assertEquals("itpkpztrgdg", model.assetId());
+        IdAssetReference model
+            = BinaryData.fromString("{\"referenceType\":\"Id\",\"assetId\":\"jow\"}").toObject(IdAssetReference.class);
+        Assertions.assertEquals("jow", model.assetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdAssetReference model = new IdAssetReference().withAssetId("itpkpztrgdg");
+        IdAssetReference model = new IdAssetReference().withAssetId("jow");
         model = BinaryData.fromObject(model).toObject(IdAssetReference.class);
-        Assertions.assertEquals("itpkpztrgdg", model.assetId());
+        Assertions.assertEquals("jow", model.assetId());
     }
 }

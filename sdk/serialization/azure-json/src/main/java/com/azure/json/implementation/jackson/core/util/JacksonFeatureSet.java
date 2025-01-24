@@ -3,14 +3,14 @@ package com.azure.json.implementation.jackson.core.util;
 
 /**
  * Container similar to {@link java.util.EnumSet} meant for storing sets of
- * {@link JacksonFeature}s (usually {@link java.lang.Enum}s): main
+ * {@link JacksonFeature}s (usually {@link Enum}s): main
  * difference being that these sets are immutable. Also only supports relatively
  * small sets of features: specifically, up to 31 features.
  *
  * @since 2.12
  */
 public final class JacksonFeatureSet<F extends JacksonFeature> {
-    protected int _enabled;
+    private final int _enabled;
 
     /**
      * Constructor for creating instance with specific bitmask, wherein
@@ -19,7 +19,7 @@ public final class JacksonFeatureSet<F extends JacksonFeature> {
      *
      * @param bitmask Bitmask for features that are enabled
      */
-    protected JacksonFeatureSet(int bitmask) {
+    private JacksonFeatureSet(int bitmask) {
         _enabled = bitmask;
     }
 
@@ -48,11 +48,7 @@ public final class JacksonFeatureSet<F extends JacksonFeature> {
                 flags |= f.getMask();
             }
         }
-        return new JacksonFeatureSet<F>(flags);
-    }
-
-    public static <F extends JacksonFeature> JacksonFeatureSet<F> fromBitmask(int bitmask) {
-        return new JacksonFeatureSet<F>(bitmask);
+        return new JacksonFeatureSet<>(flags);
     }
 
     /**
@@ -66,7 +62,7 @@ public final class JacksonFeatureSet<F extends JacksonFeature> {
      */
     public JacksonFeatureSet<F> with(F feature) {
         int newMask = _enabled | feature.getMask();
-        return (newMask == _enabled) ? this : new JacksonFeatureSet<F>(newMask);
+        return (newMask == _enabled) ? this : new JacksonFeatureSet<>(newMask);
     }
 
     /**
@@ -80,7 +76,7 @@ public final class JacksonFeatureSet<F extends JacksonFeature> {
      */
     public JacksonFeatureSet<F> without(F feature) {
         int newMask = _enabled & ~feature.getMask();
-        return (newMask == _enabled) ? this : new JacksonFeatureSet<F>(newMask);
+        return (newMask == _enabled) ? this : new JacksonFeatureSet<>(newMask);
     }
 
     /**
@@ -94,12 +90,4 @@ public final class JacksonFeatureSet<F extends JacksonFeature> {
         return (feature.getMask() & _enabled) != 0;
     }
 
-    /**
-     * Accessor for underlying bitmask
-     * 
-     * @return Bitmask of enabled features
-     */
-    public int asBitmask() {
-        return _enabled;
-    }
 }

@@ -27,8 +27,10 @@ public final class DataProductUpdatePropertiesTests {
     public void testSerialize() throws Exception {
         DataProductUpdateProperties model
             = new DataProductUpdateProperties().withOwners(Arrays.asList("ampmngnz", "c", "aqw", "ochcbonqvpkvl"))
-                .withPurviewAccount("njeaseipheofloke").withPurviewCollection("ienjbdlwtgr")
-                .withPrivateLinksEnabled(ControlState.DISABLED).withCurrentMinorVersion("pj");
+                .withPurviewAccount("njeaseipheofloke")
+                .withPurviewCollection("ienjbdlwtgr")
+                .withPrivateLinksEnabled(ControlState.DISABLED)
+                .withCurrentMinorVersion("pj");
         model = BinaryData.fromObject(model).toObject(DataProductUpdateProperties.class);
         Assertions.assertEquals("ampmngnz", model.owners().get(0));
         Assertions.assertEquals("njeaseipheofloke", model.purviewAccount());

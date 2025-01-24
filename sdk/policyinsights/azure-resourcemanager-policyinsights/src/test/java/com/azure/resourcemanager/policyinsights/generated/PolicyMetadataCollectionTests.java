@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.PolicyMetadataCollection;
-import org.junit.jupiter.api.Test;
 
 public final class PolicyMetadataCollectionTests {
-    @Test
-    public void testDeserialize() {
-        PolicyMetadataCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"metadataId\":\"qxwbpokulpiu\",\"category\":\"aasipqi\",\"title\":\"byuqerpqlp\",\"owner\":\"cciuqgbdbutau\",\"additionalContentUrl\":\"btkuwhh\"},\"id\":\"k\",\"type\":\"oxafn\",\"name\":\"lpichk\"},{\"properties\":{\"metadataId\":\"kcdyhbpk\",\"category\":\"wdreqnovvqfovl\",\"title\":\"ywsuwsy\",\"owner\":\"ndsytgadg\",\"additionalContentUrl\":\"aeaeneqnzarrw\"},\"id\":\"uijfqk\",\"type\":\"e\",\"name\":\"ipfpubji\"},{\"properties\":{\"metadataId\":\"iftohqkvpu\",\"category\":\"sgplsakn\",\"title\":\"fsynljphuop\",\"owner\":\"dlqiyntorzih\",\"additionalContentUrl\":\"osjswsr\"},\"id\":\"yzrpzbchckqqzq\",\"type\":\"xiy\",\"name\":\"iizynkedyatrwyh\"}],\"nextLink\":\"ibzyhwitsmyp\"}")
-                .toObject(PolicyMetadataCollection.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PolicyMetadataCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"metadataId\":\"jzhajoy\",\"category\":\"jlmuoyxprimrsopt\",\"title\":\"cjmeislstvasy\",\"owner\":\"xdza\",\"additionalContentUrl\":\"weoohguufuzboyj\",\"metadata\":\"datahwtzolb\"},\"id\":\"mwmdxmebwjscjpa\",\"type\":\"xveabf\",\"name\":\"nmwmqtibx\"}],\"nextLink\":\"jddtvqct\"}")
+            .toObject(PolicyMetadataCollection.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PolicyMetadataCollection model = new PolicyMetadataCollection();
         model = BinaryData.fromObject(model).toObject(PolicyMetadataCollection.class);
     }

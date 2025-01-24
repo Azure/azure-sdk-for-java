@@ -14,27 +14,27 @@ public final class ServiceDataFlowTemplateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceDataFlowTemplate model = BinaryData.fromString(
-            "{\"templateName\":\"ljyxgtczhe\",\"direction\":\"Downlink\",\"protocol\":[\"sdshmkxmaehvb\",\"xu\",\"iplt\",\"n\"],\"remoteIpList\":[\"baxk\",\"xywr\"],\"ports\":[\"yklyhpluodpvruud\",\"gzibthostgktstv\",\"xeclzedqbcvhzlhp\",\"odqkdlwwqfb\"]}")
+            "{\"templateName\":\"snrbgyefrymsgao\",\"direction\":\"Uplink\",\"protocol\":[\"wncot\"],\"remoteIpList\":[\"fhir\"],\"ports\":[\"moxoftpi\",\"iwyczuh\",\"a\",\"pqjlihhyusps\"]}")
             .toObject(ServiceDataFlowTemplate.class);
-        Assertions.assertEquals("ljyxgtczhe", model.templateName());
-        Assertions.assertEquals(SdfDirection.DOWNLINK, model.direction());
-        Assertions.assertEquals("sdshmkxmaehvb", model.protocol().get(0));
-        Assertions.assertEquals("baxk", model.remoteIpList().get(0));
-        Assertions.assertEquals("yklyhpluodpvruud", model.ports().get(0));
+        Assertions.assertEquals("snrbgyefrymsgao", model.templateName());
+        Assertions.assertEquals(SdfDirection.UPLINK, model.direction());
+        Assertions.assertEquals("wncot", model.protocol().get(0));
+        Assertions.assertEquals("fhir", model.remoteIpList().get(0));
+        Assertions.assertEquals("moxoftpi", model.ports().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceDataFlowTemplate model = new ServiceDataFlowTemplate().withTemplateName("ljyxgtczhe")
-            .withDirection(SdfDirection.DOWNLINK)
-            .withProtocol(Arrays.asList("sdshmkxmaehvb", "xu", "iplt", "n"))
-            .withRemoteIpList(Arrays.asList("baxk", "xywr"))
-            .withPorts(Arrays.asList("yklyhpluodpvruud", "gzibthostgktstv", "xeclzedqbcvhzlhp", "odqkdlwwqfb"));
+        ServiceDataFlowTemplate model = new ServiceDataFlowTemplate().withTemplateName("snrbgyefrymsgao")
+            .withDirection(SdfDirection.UPLINK)
+            .withProtocol(Arrays.asList("wncot"))
+            .withRemoteIpList(Arrays.asList("fhir"))
+            .withPorts(Arrays.asList("moxoftpi", "iwyczuh", "a", "pqjlihhyusps"));
         model = BinaryData.fromObject(model).toObject(ServiceDataFlowTemplate.class);
-        Assertions.assertEquals("ljyxgtczhe", model.templateName());
-        Assertions.assertEquals(SdfDirection.DOWNLINK, model.direction());
-        Assertions.assertEquals("sdshmkxmaehvb", model.protocol().get(0));
-        Assertions.assertEquals("baxk", model.remoteIpList().get(0));
-        Assertions.assertEquals("yklyhpluodpvruud", model.ports().get(0));
+        Assertions.assertEquals("snrbgyefrymsgao", model.templateName());
+        Assertions.assertEquals(SdfDirection.UPLINK, model.direction());
+        Assertions.assertEquals("wncot", model.protocol().get(0));
+        Assertions.assertEquals("fhir", model.remoteIpList().get(0));
+        Assertions.assertEquals("moxoftpi", model.ports().get(0));
     }
 }

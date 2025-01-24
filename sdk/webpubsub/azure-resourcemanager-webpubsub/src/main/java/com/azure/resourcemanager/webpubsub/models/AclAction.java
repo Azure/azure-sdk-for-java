@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Azure Networking ACL Action. */
+/**
+ * Azure Networking ACL Action.
+ */
 public final class AclAction extends ExpandableStringEnum<AclAction> {
-    /** Static value Allow for AclAction. */
+    /**
+     * Static value Allow for AclAction.
+     */
     public static final AclAction ALLOW = fromString("Allow");
 
-    /** Static value Deny for AclAction. */
+    /**
+     * Static value Deny for AclAction.
+     */
     public static final AclAction DENY = fromString("Deny");
 
     /**
      * Creates a new instance of AclAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AclAction extends ExpandableStringEnum<AclAction> {
 
     /**
      * Creates or finds a AclAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AclAction.
      */
-    @JsonCreator
     public static AclAction fromString(String name) {
         return fromString(name, AclAction.class);
     }
 
     /**
      * Gets known AclAction values.
-     *
+     * 
      * @return known AclAction values.
      */
     public static Collection<AclAction> values() {

@@ -6,14 +6,19 @@ package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Upstream template item settings. It defines the Upstream URL of the incoming requests. The template defines the
- * pattern of the event, the hub or the category of the incoming request that matches current URL template.
+ * Upstream template item settings. It defines the Upstream URL of the incoming requests.
+ * The template defines the pattern of the event, the hub or the category of the incoming request that matches current
+ * URL template.
  */
 @Fluent
-public final class UpstreamTemplate {
+public final class UpstreamTemplate implements JsonSerializable<UpstreamTemplate> {
     /*
      * Gets or sets the matching pattern for hub names. If not set, it matches any hub.
      * There are 3 kind of patterns supported:
@@ -21,7 +26,6 @@ public final class UpstreamTemplate {
      * 2. Combine multiple hubs with ",", for example "hub1,hub2", it matches "hub1" and "hub2".
      * 3. The single hub name, for example, "hub1", it matches "hub1".
      */
-    @JsonProperty(value = "hubPattern")
     private String hubPattern;
 
     /*
@@ -32,7 +36,6 @@ public final class UpstreamTemplate {
      * "disconnect".
      * 3. The single event name, for example, "connect", it matches "connect".
      */
-    @JsonProperty(value = "eventPattern")
     private String eventPattern;
 
     /*
@@ -43,7 +46,6 @@ public final class UpstreamTemplate {
      * and "messages".
      * 3. The single category name, for example, "connections", it matches the category "connections".
      */
-    @JsonProperty(value = "categoryPattern")
     private String categoryPattern;
 
     /*
@@ -52,25 +54,26 @@ public final class UpstreamTemplate {
      * For example, if the urlTemplate is `http://example.com/{hub}/api/{event}`, with a client request from hub `chat`
      * connects, it will first POST to this URL: `http://example.com/chat/api/connect`.
      */
-    @JsonProperty(value = "urlTemplate", required = true)
     private String urlTemplate;
 
     /*
      * Upstream auth settings. If not set, no auth is used for upstream messages.
      */
-    @JsonProperty(value = "auth")
     private UpstreamAuthSettings auth;
 
-    /** Creates an instance of UpstreamTemplate class. */
+    /**
+     * Creates an instance of UpstreamTemplate class.
+     */
     public UpstreamTemplate() {
     }
 
     /**
      * Get the hubPattern property: Gets or sets the matching pattern for hub names. If not set, it matches any hub.
-     * There are 3 kind of patterns supported: 1. "*", it to matches any hub name. 2. Combine multiple hubs with ",",
-     * for example "hub1,hub2", it matches "hub1" and "hub2". 3. The single hub name, for example, "hub1", it matches
-     * "hub1".
-     *
+     * There are 3 kind of patterns supported:
+     * 1. "*", it to matches any hub name.
+     * 2. Combine multiple hubs with ",", for example "hub1,hub2", it matches "hub1" and "hub2".
+     * 3. The single hub name, for example, "hub1", it matches "hub1".
+     * 
      * @return the hubPattern value.
      */
     public String hubPattern() {
@@ -79,10 +82,11 @@ public final class UpstreamTemplate {
 
     /**
      * Set the hubPattern property: Gets or sets the matching pattern for hub names. If not set, it matches any hub.
-     * There are 3 kind of patterns supported: 1. "*", it to matches any hub name. 2. Combine multiple hubs with ",",
-     * for example "hub1,hub2", it matches "hub1" and "hub2". 3. The single hub name, for example, "hub1", it matches
-     * "hub1".
-     *
+     * There are 3 kind of patterns supported:
+     * 1. "*", it to matches any hub name.
+     * 2. Combine multiple hubs with ",", for example "hub1,hub2", it matches "hub1" and "hub2".
+     * 3. The single hub name, for example, "hub1", it matches "hub1".
+     * 
      * @param hubPattern the hubPattern value to set.
      * @return the UpstreamTemplate object itself.
      */
@@ -93,10 +97,13 @@ public final class UpstreamTemplate {
 
     /**
      * Get the eventPattern property: Gets or sets the matching pattern for event names. If not set, it matches any
-     * event. There are 3 kind of patterns supported: 1. "*", it to matches any event name. 2. Combine multiple events
-     * with ",", for example "connect,disconnect", it matches event "connect" and "disconnect". 3. The single event
-     * name, for example, "connect", it matches "connect".
-     *
+     * event.
+     * There are 3 kind of patterns supported:
+     * 1. "*", it to matches any event name.
+     * 2. Combine multiple events with ",", for example "connect,disconnect", it matches event "connect" and
+     * "disconnect".
+     * 3. The single event name, for example, "connect", it matches "connect".
+     * 
      * @return the eventPattern value.
      */
     public String eventPattern() {
@@ -105,10 +112,13 @@ public final class UpstreamTemplate {
 
     /**
      * Set the eventPattern property: Gets or sets the matching pattern for event names. If not set, it matches any
-     * event. There are 3 kind of patterns supported: 1. "*", it to matches any event name. 2. Combine multiple events
-     * with ",", for example "connect,disconnect", it matches event "connect" and "disconnect". 3. The single event
-     * name, for example, "connect", it matches "connect".
-     *
+     * event.
+     * There are 3 kind of patterns supported:
+     * 1. "*", it to matches any event name.
+     * 2. Combine multiple events with ",", for example "connect,disconnect", it matches event "connect" and
+     * "disconnect".
+     * 3. The single event name, for example, "connect", it matches "connect".
+     * 
      * @param eventPattern the eventPattern value to set.
      * @return the UpstreamTemplate object itself.
      */
@@ -119,10 +129,13 @@ public final class UpstreamTemplate {
 
     /**
      * Get the categoryPattern property: Gets or sets the matching pattern for category names. If not set, it matches
-     * any category. There are 3 kind of patterns supported: 1. "*", it to matches any category name. 2. Combine
-     * multiple categories with ",", for example "connections,messages", it matches category "connections" and
-     * "messages". 3. The single category name, for example, "connections", it matches the category "connections".
-     *
+     * any category.
+     * There are 3 kind of patterns supported:
+     * 1. "*", it to matches any category name.
+     * 2. Combine multiple categories with ",", for example "connections,messages", it matches category "connections"
+     * and "messages".
+     * 3. The single category name, for example, "connections", it matches the category "connections".
+     * 
      * @return the categoryPattern value.
      */
     public String categoryPattern() {
@@ -131,10 +144,13 @@ public final class UpstreamTemplate {
 
     /**
      * Set the categoryPattern property: Gets or sets the matching pattern for category names. If not set, it matches
-     * any category. There are 3 kind of patterns supported: 1. "*", it to matches any category name. 2. Combine
-     * multiple categories with ",", for example "connections,messages", it matches category "connections" and
-     * "messages". 3. The single category name, for example, "connections", it matches the category "connections".
-     *
+     * any category.
+     * There are 3 kind of patterns supported:
+     * 1. "*", it to matches any category name.
+     * 2. Combine multiple categories with ",", for example "connections,messages", it matches category "connections"
+     * and "messages".
+     * 3. The single category name, for example, "connections", it matches the category "connections".
+     * 
      * @param categoryPattern the categoryPattern value to set.
      * @return the UpstreamTemplate object itself.
      */
@@ -146,9 +162,10 @@ public final class UpstreamTemplate {
     /**
      * Get the urlTemplate property: Gets or sets the Upstream URL template. You can use 3 predefined parameters {hub},
      * {category} {event} inside the template, the value of the Upstream URL is dynamically calculated when the client
-     * request comes in. For example, if the urlTemplate is `http://example.com/{hub}/api/{event}`, with a client
-     * request from hub `chat` connects, it will first POST to this URL: `http://example.com/chat/api/connect`.
-     *
+     * request comes in.
+     * For example, if the urlTemplate is `http://example.com/{hub}/api/{event}`, with a client request from hub `chat`
+     * connects, it will first POST to this URL: `http://example.com/chat/api/connect`.
+     * 
      * @return the urlTemplate value.
      */
     public String urlTemplate() {
@@ -158,9 +175,10 @@ public final class UpstreamTemplate {
     /**
      * Set the urlTemplate property: Gets or sets the Upstream URL template. You can use 3 predefined parameters {hub},
      * {category} {event} inside the template, the value of the Upstream URL is dynamically calculated when the client
-     * request comes in. For example, if the urlTemplate is `http://example.com/{hub}/api/{event}`, with a client
-     * request from hub `chat` connects, it will first POST to this URL: `http://example.com/chat/api/connect`.
-     *
+     * request comes in.
+     * For example, if the urlTemplate is `http://example.com/{hub}/api/{event}`, with a client request from hub `chat`
+     * connects, it will first POST to this URL: `http://example.com/chat/api/connect`.
+     * 
      * @param urlTemplate the urlTemplate value to set.
      * @return the UpstreamTemplate object itself.
      */
@@ -171,7 +189,7 @@ public final class UpstreamTemplate {
 
     /**
      * Get the auth property: Upstream auth settings. If not set, no auth is used for upstream messages.
-     *
+     * 
      * @return the auth value.
      */
     public UpstreamAuthSettings auth() {
@@ -180,7 +198,7 @@ public final class UpstreamTemplate {
 
     /**
      * Set the auth property: Upstream auth settings. If not set, no auth is used for upstream messages.
-     *
+     * 
      * @param auth the auth value to set.
      * @return the UpstreamTemplate object itself.
      */
@@ -191,14 +209,13 @@ public final class UpstreamTemplate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (urlTemplate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property urlTemplate in model UpstreamTemplate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property urlTemplate in model UpstreamTemplate"));
         }
         if (auth() != null) {
             auth().validate();
@@ -206,4 +223,53 @@ public final class UpstreamTemplate {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpstreamTemplate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("urlTemplate", this.urlTemplate);
+        jsonWriter.writeStringField("hubPattern", this.hubPattern);
+        jsonWriter.writeStringField("eventPattern", this.eventPattern);
+        jsonWriter.writeStringField("categoryPattern", this.categoryPattern);
+        jsonWriter.writeJsonField("auth", this.auth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpstreamTemplate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpstreamTemplate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpstreamTemplate.
+     */
+    public static UpstreamTemplate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpstreamTemplate deserializedUpstreamTemplate = new UpstreamTemplate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("urlTemplate".equals(fieldName)) {
+                    deserializedUpstreamTemplate.urlTemplate = reader.getString();
+                } else if ("hubPattern".equals(fieldName)) {
+                    deserializedUpstreamTemplate.hubPattern = reader.getString();
+                } else if ("eventPattern".equals(fieldName)) {
+                    deserializedUpstreamTemplate.eventPattern = reader.getString();
+                } else if ("categoryPattern".equals(fieldName)) {
+                    deserializedUpstreamTemplate.categoryPattern = reader.getString();
+                } else if ("auth".equals(fieldName)) {
+                    deserializedUpstreamTemplate.auth = UpstreamAuthSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpstreamTemplate;
+        });
+    }
 }

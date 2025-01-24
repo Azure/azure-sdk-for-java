@@ -10,9 +10,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum MapsRenderServiceVersion implements ServiceVersion {
     /**
-    * Service version {@code 2.1}.
+    * Service version {@code 2024-01-01}.
     */
-    V2_1("2.1");
+    V2024_04_01("2024-04-01");
 
     private final String version;
 
@@ -31,7 +31,7 @@ public enum MapsRenderServiceVersion implements ServiceVersion {
      * @return the latest {@link MapsRenderServiceVersion}
      */
     public static MapsRenderServiceVersion getLatest() {
-        return V2_1;
+        return V2024_04_01;
     }
 
     /**

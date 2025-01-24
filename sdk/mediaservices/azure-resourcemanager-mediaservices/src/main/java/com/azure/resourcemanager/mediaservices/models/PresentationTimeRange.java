@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The presentation time range, this is asset related and not recommended for Account Filter. */
+/**
+ * The presentation time range, this is asset related and not recommended for Account Filter.
+ */
 @Fluent
-public final class PresentationTimeRange {
+public final class PresentationTimeRange implements JsonSerializable<PresentationTimeRange> {
     /*
      * The absolute start time boundary.
      */
-    @JsonProperty(value = "startTimestamp")
     private Long startTimestamp;
 
     /*
      * The absolute end time boundary.
      */
-    @JsonProperty(value = "endTimestamp")
     private Long endTimestamp;
 
     /*
      * The relative to end sliding window.
      */
-    @JsonProperty(value = "presentationWindowDuration")
     private Long presentationWindowDuration;
 
     /*
      * The relative to end right edge.
      */
-    @JsonProperty(value = "liveBackoffDuration")
     private Long liveBackoffDuration;
 
     /*
      * The time scale of time stamps.
      */
-    @JsonProperty(value = "timescale")
     private Long timescale;
 
     /*
      * The indicator of forcing existing of end time stamp.
      */
-    @JsonProperty(value = "forceEndTimestamp")
     private Boolean forceEndTimestamp;
 
-    /** Creates an instance of PresentationTimeRange class. */
+    /**
+     * Creates an instance of PresentationTimeRange class.
+     */
     public PresentationTimeRange() {
     }
 
     /**
      * Get the startTimestamp property: The absolute start time boundary.
-     *
+     * 
      * @return the startTimestamp value.
      */
     public Long startTimestamp() {
@@ -61,7 +63,7 @@ public final class PresentationTimeRange {
 
     /**
      * Set the startTimestamp property: The absolute start time boundary.
-     *
+     * 
      * @param startTimestamp the startTimestamp value to set.
      * @return the PresentationTimeRange object itself.
      */
@@ -72,7 +74,7 @@ public final class PresentationTimeRange {
 
     /**
      * Get the endTimestamp property: The absolute end time boundary.
-     *
+     * 
      * @return the endTimestamp value.
      */
     public Long endTimestamp() {
@@ -81,7 +83,7 @@ public final class PresentationTimeRange {
 
     /**
      * Set the endTimestamp property: The absolute end time boundary.
-     *
+     * 
      * @param endTimestamp the endTimestamp value to set.
      * @return the PresentationTimeRange object itself.
      */
@@ -92,7 +94,7 @@ public final class PresentationTimeRange {
 
     /**
      * Get the presentationWindowDuration property: The relative to end sliding window.
-     *
+     * 
      * @return the presentationWindowDuration value.
      */
     public Long presentationWindowDuration() {
@@ -101,7 +103,7 @@ public final class PresentationTimeRange {
 
     /**
      * Set the presentationWindowDuration property: The relative to end sliding window.
-     *
+     * 
      * @param presentationWindowDuration the presentationWindowDuration value to set.
      * @return the PresentationTimeRange object itself.
      */
@@ -112,7 +114,7 @@ public final class PresentationTimeRange {
 
     /**
      * Get the liveBackoffDuration property: The relative to end right edge.
-     *
+     * 
      * @return the liveBackoffDuration value.
      */
     public Long liveBackoffDuration() {
@@ -121,7 +123,7 @@ public final class PresentationTimeRange {
 
     /**
      * Set the liveBackoffDuration property: The relative to end right edge.
-     *
+     * 
      * @param liveBackoffDuration the liveBackoffDuration value to set.
      * @return the PresentationTimeRange object itself.
      */
@@ -132,7 +134,7 @@ public final class PresentationTimeRange {
 
     /**
      * Get the timescale property: The time scale of time stamps.
-     *
+     * 
      * @return the timescale value.
      */
     public Long timescale() {
@@ -141,7 +143,7 @@ public final class PresentationTimeRange {
 
     /**
      * Set the timescale property: The time scale of time stamps.
-     *
+     * 
      * @param timescale the timescale value to set.
      * @return the PresentationTimeRange object itself.
      */
@@ -152,7 +154,7 @@ public final class PresentationTimeRange {
 
     /**
      * Get the forceEndTimestamp property: The indicator of forcing existing of end time stamp.
-     *
+     * 
      * @return the forceEndTimestamp value.
      */
     public Boolean forceEndTimestamp() {
@@ -161,7 +163,7 @@ public final class PresentationTimeRange {
 
     /**
      * Set the forceEndTimestamp property: The indicator of forcing existing of end time stamp.
-     *
+     * 
      * @param forceEndTimestamp the forceEndTimestamp value to set.
      * @return the PresentationTimeRange object itself.
      */
@@ -172,9 +174,61 @@ public final class PresentationTimeRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("startTimestamp", this.startTimestamp);
+        jsonWriter.writeNumberField("endTimestamp", this.endTimestamp);
+        jsonWriter.writeNumberField("presentationWindowDuration", this.presentationWindowDuration);
+        jsonWriter.writeNumberField("liveBackoffDuration", this.liveBackoffDuration);
+        jsonWriter.writeNumberField("timescale", this.timescale);
+        jsonWriter.writeBooleanField("forceEndTimestamp", this.forceEndTimestamp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PresentationTimeRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PresentationTimeRange if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PresentationTimeRange.
+     */
+    public static PresentationTimeRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PresentationTimeRange deserializedPresentationTimeRange = new PresentationTimeRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTimestamp".equals(fieldName)) {
+                    deserializedPresentationTimeRange.startTimestamp = reader.getNullable(JsonReader::getLong);
+                } else if ("endTimestamp".equals(fieldName)) {
+                    deserializedPresentationTimeRange.endTimestamp = reader.getNullable(JsonReader::getLong);
+                } else if ("presentationWindowDuration".equals(fieldName)) {
+                    deserializedPresentationTimeRange.presentationWindowDuration
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("liveBackoffDuration".equals(fieldName)) {
+                    deserializedPresentationTimeRange.liveBackoffDuration = reader.getNullable(JsonReader::getLong);
+                } else if ("timescale".equals(fieldName)) {
+                    deserializedPresentationTimeRange.timescale = reader.getNullable(JsonReader::getLong);
+                } else if ("forceEndTimestamp".equals(fieldName)) {
+                    deserializedPresentationTimeRange.forceEndTimestamp = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPresentationTimeRange;
+        });
     }
 }

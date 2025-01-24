@@ -1,0 +1,21 @@
+{
+  "matrix": {
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+    },
+    "EmulatorConfig": {
+      "Emulator VNext Integration Tests On Insecure Connection - Java 8": {
+        "ProfileFlag": "-Pemulator-vnext",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.8",
+        "AdditionalArgs": "-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
+      },
+      "Emulator VNext Integration Tests On Insecure connection - Java 17": {
+        "ProfileFlag": "-Pemulator-vnext",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.17",
+        "AdditionalArgs": "-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
+      }
+    }
+  }
+}

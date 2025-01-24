@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Storage Profile properties of a server. */
+/**
+ * Storage Profile properties of a server.
+ */
 @Fluent
-public final class StorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageProfile.class);
-
+public final class StorageProfile implements JsonSerializable<StorageProfile> {
     /*
      * Backup retention days for the server.
      */
-    @JsonProperty(value = "backupRetentionDays")
     private Integer backupRetentionDays;
 
     /*
      * Enable Geo-redundant or not for server backup.
      */
-    @JsonProperty(value = "geoRedundantBackup")
     private GeoRedundantBackup geoRedundantBackup;
 
     /*
      * Max storage allowed for a server.
      */
-    @JsonProperty(value = "storageMB")
     private Integer storageMB;
 
     /*
      * Enable Storage Auto Grow.
      */
-    @JsonProperty(value = "storageAutogrow")
     private StorageAutogrow storageAutogrow;
 
     /**
+     * Creates an instance of StorageProfile class.
+     */
+    public StorageProfile() {
+    }
+
+    /**
      * Get the backupRetentionDays property: Backup retention days for the server.
-     *
+     * 
      * @return the backupRetentionDays value.
      */
     public Integer backupRetentionDays() {
@@ -49,7 +53,7 @@ public final class StorageProfile {
 
     /**
      * Set the backupRetentionDays property: Backup retention days for the server.
-     *
+     * 
      * @param backupRetentionDays the backupRetentionDays value to set.
      * @return the StorageProfile object itself.
      */
@@ -60,7 +64,7 @@ public final class StorageProfile {
 
     /**
      * Get the geoRedundantBackup property: Enable Geo-redundant or not for server backup.
-     *
+     * 
      * @return the geoRedundantBackup value.
      */
     public GeoRedundantBackup geoRedundantBackup() {
@@ -69,7 +73,7 @@ public final class StorageProfile {
 
     /**
      * Set the geoRedundantBackup property: Enable Geo-redundant or not for server backup.
-     *
+     * 
      * @param geoRedundantBackup the geoRedundantBackup value to set.
      * @return the StorageProfile object itself.
      */
@@ -80,7 +84,7 @@ public final class StorageProfile {
 
     /**
      * Get the storageMB property: Max storage allowed for a server.
-     *
+     * 
      * @return the storageMB value.
      */
     public Integer storageMB() {
@@ -89,7 +93,7 @@ public final class StorageProfile {
 
     /**
      * Set the storageMB property: Max storage allowed for a server.
-     *
+     * 
      * @param storageMB the storageMB value to set.
      * @return the StorageProfile object itself.
      */
@@ -100,7 +104,7 @@ public final class StorageProfile {
 
     /**
      * Get the storageAutogrow property: Enable Storage Auto Grow.
-     *
+     * 
      * @return the storageAutogrow value.
      */
     public StorageAutogrow storageAutogrow() {
@@ -109,7 +113,7 @@ public final class StorageProfile {
 
     /**
      * Set the storageAutogrow property: Enable Storage Auto Grow.
-     *
+     * 
      * @param storageAutogrow the storageAutogrow value to set.
      * @return the StorageProfile object itself.
      */
@@ -120,9 +124,56 @@ public final class StorageProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("backupRetentionDays", this.backupRetentionDays);
+        jsonWriter.writeStringField("geoRedundantBackup",
+            this.geoRedundantBackup == null ? null : this.geoRedundantBackup.toString());
+        jsonWriter.writeNumberField("storageMB", this.storageMB);
+        jsonWriter.writeStringField("storageAutogrow",
+            this.storageAutogrow == null ? null : this.storageAutogrow.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageProfile.
+     */
+    public static StorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageProfile deserializedStorageProfile = new StorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupRetentionDays".equals(fieldName)) {
+                    deserializedStorageProfile.backupRetentionDays = reader.getNullable(JsonReader::getInt);
+                } else if ("geoRedundantBackup".equals(fieldName)) {
+                    deserializedStorageProfile.geoRedundantBackup = GeoRedundantBackup.fromString(reader.getString());
+                } else if ("storageMB".equals(fieldName)) {
+                    deserializedStorageProfile.storageMB = reader.getNullable(JsonReader::getInt);
+                } else if ("storageAutogrow".equals(fieldName)) {
+                    deserializedStorageProfile.storageAutogrow = StorageAutogrow.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageProfile;
+        });
     }
 }

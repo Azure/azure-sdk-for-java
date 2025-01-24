@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The connectivity properties. */
+/**
+ * The connectivity properties.
+ */
 @Fluent
-public final class ConnectivityEndpoint {
+public final class ConnectivityEndpoint implements JsonSerializable<ConnectivityEndpoint> {
     /*
      * The name of the endpoint.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The protocol of the endpoint.
      */
-    @JsonProperty(value = "protocol")
     private String protocol;
 
     /*
      * The location of the endpoint.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The port to connect to.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The private ip address of the endpoint.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
-    /** Creates an instance of ConnectivityEndpoint class. */
+    /**
+     * Creates an instance of ConnectivityEndpoint class.
+     */
     public ConnectivityEndpoint() {
     }
 
     /**
      * Get the name property: The name of the endpoint.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +58,7 @@ public final class ConnectivityEndpoint {
 
     /**
      * Set the name property: The name of the endpoint.
-     *
+     * 
      * @param name the name value to set.
      * @return the ConnectivityEndpoint object itself.
      */
@@ -66,7 +69,7 @@ public final class ConnectivityEndpoint {
 
     /**
      * Get the protocol property: The protocol of the endpoint.
-     *
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -75,7 +78,7 @@ public final class ConnectivityEndpoint {
 
     /**
      * Set the protocol property: The protocol of the endpoint.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ConnectivityEndpoint object itself.
      */
@@ -86,7 +89,7 @@ public final class ConnectivityEndpoint {
 
     /**
      * Get the location property: The location of the endpoint.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -95,7 +98,7 @@ public final class ConnectivityEndpoint {
 
     /**
      * Set the location property: The location of the endpoint.
-     *
+     * 
      * @param location the location value to set.
      * @return the ConnectivityEndpoint object itself.
      */
@@ -106,7 +109,7 @@ public final class ConnectivityEndpoint {
 
     /**
      * Get the port property: The port to connect to.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -115,7 +118,7 @@ public final class ConnectivityEndpoint {
 
     /**
      * Set the port property: The port to connect to.
-     *
+     * 
      * @param port the port value to set.
      * @return the ConnectivityEndpoint object itself.
      */
@@ -126,7 +129,7 @@ public final class ConnectivityEndpoint {
 
     /**
      * Get the privateIpAddress property: The private ip address of the endpoint.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -135,7 +138,7 @@ public final class ConnectivityEndpoint {
 
     /**
      * Set the privateIpAddress property: The private ip address of the endpoint.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the ConnectivityEndpoint object itself.
      */
@@ -146,9 +149,57 @@ public final class ConnectivityEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("protocol", this.protocol);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityEndpoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectivityEndpoint.
+     */
+    public static ConnectivityEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityEndpoint deserializedConnectivityEndpoint = new ConnectivityEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConnectivityEndpoint.name = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedConnectivityEndpoint.protocol = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedConnectivityEndpoint.location = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedConnectivityEndpoint.port = reader.getNullable(JsonReader::getInt);
+                } else if ("privateIPAddress".equals(fieldName)) {
+                    deserializedConnectivityEndpoint.privateIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityEndpoint;
+        });
     }
 }

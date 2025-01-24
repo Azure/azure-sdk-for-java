@@ -3,16 +3,16 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
-import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
-import com.azure.ai.documentintelligence.models.ContentFormat;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
+import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
+import com.azure.ai.documentintelligence.models.DocumentContentFormat;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTable;
@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -79,36 +80,32 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
     // Analyze Custom Form
 
     /**
-     * Code snippet for {@link DocumentIntelligenceClient#beginAnalyzeDocument(String, String, String, StringIndexType, List, List, ContentFormat, AnalyzeDocumentRequest)}
+     * Code snippet for {@link DocumentIntelligenceClient#beginAnalyzeDocument(String, AnalyzeDocumentOptions)}
      */
     public void beginAnalyzeDocumentFromUrl() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-String-String-StringIndexType-List-List-ContentFormat-AnalyzeDocumentRequest
+        // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-AnalyzeDocumentOptions
         String documentUrl = "{document_url}";
         String modelId = "{custom_trained_model_id}";
 
         documentIntelligenceClient.beginAnalyzeDocument(modelId,
-                "1",
-            "en-US",
-            StringIndexType.TEXT_ELEMENTS,
-            Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-            null,
-            ContentFormat.TEXT,
-                null,
-            new AnalyzeDocumentRequest().setUrlSource(documentUrl)).getFinalResult()
+            new AnalyzeDocumentOptions(documentUrl).setPages(Arrays.asList("1"))
+                .setLocale("en-US").setStringIndexType(StringIndexType.TEXT_ELEMENTS)
+                .setDocumentAnalysisFeatures(Collections.singletonList(DocumentAnalysisFeature.LANGUAGES))
+                .setOutputContentFormat(DocumentContentFormat.TEXT)).getFinalResult()
             .getDocuments().stream()
-            .map(Document::getFields)
+            .map(AnalyzedDocument::getFields)
             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                 System.out.printf("Field text: %s%n", key);
                 System.out.printf("Field value data content: %s%n", documentField.getContent());
                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
             }));
 
-        // END: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-String-String-StringIndexType-List-List-ContentFormat-AnalyzeDocumentRequest
+        // END: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-AnalyzeDocumentOptions
     }
 
     /**
      * Code snippet for
-     * {@link DocumentIntelligenceClient#beginClassifyDocument(String, ClassifyDocumentRequest)}
+     * {@link DocumentIntelligenceClient#beginClassifyDocument(String, ClassifyDocumentOptions)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
@@ -117,10 +114,10 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         File document = new File("{local/file_path/fileName.jpg}");
         String classifierId = "{custom_trained_classifier_id}";
 
-        documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
+        documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentOptions(Files.readAllBytes(document.toPath())))
             .getFinalResult()
             .getDocuments()
-            .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
+            .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocumentType()));
         // END: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData-Context
     }
 
@@ -132,7 +129,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         // Build custom document analysis model
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
             documentModelAdminClient.beginBuildDocumentModel(
-                new BuildDocumentModelRequest("modelId", DocumentBuildMode.TEMPLATE)
+                new BuildDocumentModelOptions("modelId", DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
         DocumentModelDetails customBuildModel = buildOperationPoller.getFinalResult();
@@ -140,29 +137,22 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         // analyze using custom-built model
         String modelId = customBuildModel.getModelId();
         String documentUrl = "documentUrl";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller =
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeDocumentPoller =
             documentIntelligenceClient.beginAnalyzeDocument(modelId,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentRequest().setUrlSource(documentUrl));
+                new AnalyzeDocumentOptions(documentUrl));
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
-            final Document analyzedDocument = analyzeResult.getDocuments().get(i);
+            final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
             System.out.printf("----------- Analyzing custom document %d -----------%n", i);
             System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
-                analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+                analyzedDocument.getDocumentType(), analyzedDocument.getConfidence());
             analyzedDocument.getFields().forEach((key, documentField) -> {
-                System.out.printf("Document Field content: %s%n", documentField.getContent());
-                System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
-                System.out.printf("Document Field Type: %s%n", documentField.getType());
-                System.out.printf("Document Field found within bounding region: %s%n",
+                System.out.printf("AnalyzedDocument Field content: %s%n", documentField.getContent());
+                System.out.printf("AnalyzedDocument Field confidence: %.2f%n", documentField.getConfidence());
+                System.out.printf("AnalyzedDocument Field Type: %s%n", documentField.getType());
+                System.out.printf("AnalyzedDocument Field found within bounding region: %s%n",
                     documentField.getBoundingRegions().toString());
             });
         }

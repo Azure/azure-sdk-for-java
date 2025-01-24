@@ -5,30 +5,67 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billing.models.Amount;
-import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
+import com.azure.resourcemanager.billing.models.AutoRenew;
+import com.azure.resourcemanager.billing.models.Beneficiary;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionOperationStatus;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionStatus;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusDetails;
+import com.azure.resourcemanager.billing.models.NextBillingCycleDetails;
+import com.azure.resourcemanager.billing.models.ProvisioningState;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import com.azure.resourcemanager.billing.models.RenewalTermDetails;
 import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.billing.models.SubscriptionEnrollmentAccountStatus;
+import com.azure.resourcemanager.billing.models.SystemOverrides;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
-/** A billing subscription. */
+/**
+ * The billing properties of a subscription.
+ */
 @Fluent
-public final class BillingSubscriptionInner extends ProxyResource {
+public final class BillingSubscriptionInner extends ProxyResourceWithTags {
     /*
-     * The billing properties of a subscription.
+     * The properties of a(n) BillingSubscription
      */
-    @JsonProperty(value = "properties")
     private BillingSubscriptionProperties innerProperties;
 
-    /** Creates an instance of BillingSubscriptionInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BillingSubscriptionInner class.
+     */
     public BillingSubscriptionInner() {
     }
 
     /**
-     * Get the innerProperties property: The billing properties of a subscription.
-     *
+     * Get the innerProperties property: The properties of a(n) BillingSubscription.
+     * 
      * @return the innerProperties value.
      */
     private BillingSubscriptionProperties innerProperties() {
@@ -36,68 +73,151 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the displayName property: The name of the subscription.
-     *
-     * @return the displayName value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String displayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the subscriptionId property: The ID of the subscription.
-     *
-     * @return the subscriptionId value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public UUID subscriptionId() {
-        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the subscriptionBillingStatus property: The current billing status of the subscription.
-     *
-     * @return the subscriptionBillingStatus value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public BillingSubscriptionStatusType subscriptionBillingStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().subscriptionBillingStatus();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the subscriptionBillingStatus property: The current billing status of the subscription.
-     *
-     * @param subscriptionBillingStatus the subscriptionBillingStatus value to set.
-     * @return the BillingSubscriptionInner object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public BillingSubscriptionInner withSubscriptionBillingStatus(
-        BillingSubscriptionStatusType subscriptionBillingStatus) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingSubscriptionProperties();
-        }
-        this.innerProperties().withSubscriptionBillingStatus(subscriptionBillingStatus);
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BillingSubscriptionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
     /**
-     * Get the lastMonthCharges property: The last month charges.
-     *
-     * @return the lastMonthCharges value.
+     * Get the autoRenew property: Indicates whether auto renewal is turned on or off for a product.
+     * 
+     * @return the autoRenew value.
      */
-    public Amount lastMonthCharges() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastMonthCharges();
+    public AutoRenew autoRenew() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoRenew();
     }
 
     /**
-     * Get the monthToDateCharges property: The current month to date charges.
-     *
-     * @return the monthToDateCharges value.
+     * Set the autoRenew property: Indicates whether auto renewal is turned on or off for a product.
+     * 
+     * @param autoRenew the autoRenew value to set.
+     * @return the BillingSubscriptionInner object itself.
      */
-    public Amount monthToDateCharges() {
-        return this.innerProperties() == null ? null : this.innerProperties().monthToDateCharges();
+    public BillingSubscriptionInner withAutoRenew(AutoRenew autoRenew) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withAutoRenew(autoRenew);
+        return this;
     }
 
     /**
-     * Get the billingProfileId property: The ID of the billing profile to which the subscription is billed.
-     *
+     * Get the beneficiaryTenantId property: The provisioning tenant of the subscription.
+     * 
+     * @return the beneficiaryTenantId value.
+     */
+    public String beneficiaryTenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().beneficiaryTenantId();
+    }
+
+    /**
+     * Set the beneficiaryTenantId property: The provisioning tenant of the subscription.
+     * 
+     * @param beneficiaryTenantId the beneficiaryTenantId value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withBeneficiaryTenantId(String beneficiaryTenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withBeneficiaryTenantId(beneficiaryTenantId);
+        return this;
+    }
+
+    /**
+     * Get the beneficiary property: The beneficiary of the billing subscription.
+     * 
+     * @return the beneficiary value.
+     */
+    public Beneficiary beneficiary() {
+        return this.innerProperties() == null ? null : this.innerProperties().beneficiary();
+    }
+
+    /**
+     * Set the beneficiary property: The beneficiary of the billing subscription.
+     * 
+     * @param beneficiary the beneficiary value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withBeneficiary(Beneficiary beneficiary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withBeneficiary(beneficiary);
+        return this;
+    }
+
+    /**
+     * Get the billingFrequency property: The billing frequency in ISO8601 format of product in the subscription.
+     * Example: P1M, P3M, P1Y.
+     * 
+     * @return the billingFrequency value.
+     */
+    public String billingFrequency() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingFrequency();
+    }
+
+    /**
+     * Set the billingFrequency property: The billing frequency in ISO8601 format of product in the subscription.
+     * Example: P1M, P3M, P1Y.
+     * 
+     * @param billingFrequency the billingFrequency value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withBillingFrequency(String billingFrequency) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withBillingFrequency(billingFrequency);
+        return this;
+    }
+
+    /**
+     * Get the billingProfileId property: The fully qualified ID that uniquely identifies a billing profile.
+     * 
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
@@ -105,8 +225,31 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the billingProfileDisplayName property: The name of the billing profile to which the subscription is billed.
-     *
+     * Set the billingProfileId property: The fully qualified ID that uniquely identifies a billing profile.
+     * 
+     * @param billingProfileId the billingProfileId value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withBillingProfileId(String billingProfileId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withBillingProfileId(billingProfileId);
+        return this;
+    }
+
+    /**
+     * Get the billingPolicies property: Dictionary of billing policies associated with the subscription.
+     * 
+     * @return the billingPolicies value.
+     */
+    public Map<String, String> billingPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingPolicies();
+    }
+
+    /**
+     * Get the billingProfileDisplayName property: The name of the billing profile.
+     * 
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
@@ -114,32 +257,42 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the costCenter property: The cost center applied to the subscription.
-     *
-     * @return the costCenter value.
+     * Get the billingProfileName property: The ID that uniquely identifies a billing profile.
+     * 
+     * @return the billingProfileName value.
      */
-    public String costCenter() {
-        return this.innerProperties() == null ? null : this.innerProperties().costCenter();
+    public String billingProfileName() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileName();
     }
 
     /**
-     * Set the costCenter property: The cost center applied to the subscription.
-     *
-     * @param costCenter the costCenter value to set.
+     * Get the consumptionCostCenter property: The cost center applied to the subscription. This field is only available
+     * for consumption subscriptions of Microsoft Customer Agreement or Enterprise Agreement Type billing accounts.
+     * 
+     * @return the consumptionCostCenter value.
+     */
+    public String consumptionCostCenter() {
+        return this.innerProperties() == null ? null : this.innerProperties().consumptionCostCenter();
+    }
+
+    /**
+     * Set the consumptionCostCenter property: The cost center applied to the subscription. This field is only available
+     * for consumption subscriptions of Microsoft Customer Agreement or Enterprise Agreement Type billing accounts.
+     * 
+     * @param consumptionCostCenter the consumptionCostCenter value to set.
      * @return the BillingSubscriptionInner object itself.
      */
-    public BillingSubscriptionInner withCostCenter(String costCenter) {
+    public BillingSubscriptionInner withConsumptionCostCenter(String consumptionCostCenter) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BillingSubscriptionProperties();
         }
-        this.innerProperties().withCostCenter(costCenter);
+        this.innerProperties().withConsumptionCostCenter(consumptionCostCenter);
         return this;
     }
 
     /**
-     * Get the customerId property: The ID of the customer for whom the subscription was created. The field is
-     * applicable only for Microsoft Partner Agreement billing account.
-     *
+     * Get the customerId property: The fully qualified ID that uniquely identifies a customer.
+     * 
      * @return the customerId value.
      */
     public String customerId() {
@@ -147,9 +300,22 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the customerDisplayName property: The name of the customer for whom the subscription was created. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
-     *
+     * Set the customerId property: The fully qualified ID that uniquely identifies a customer.
+     * 
+     * @param customerId the customerId value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withCustomerId(String customerId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withCustomerId(customerId);
+        return this;
+    }
+
+    /**
+     * Get the customerDisplayName property: The name of the customer.
+     * 
      * @return the customerDisplayName value.
      */
     public String customerDisplayName() {
@@ -157,8 +323,60 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the invoiceSectionId property: The ID of the invoice section to which the subscription is billed.
-     *
+     * Get the customerName property: The ID that uniquely identifies a customer.
+     * 
+     * @return the customerName value.
+     */
+    public String customerName() {
+        return this.innerProperties() == null ? null : this.innerProperties().customerName();
+    }
+
+    /**
+     * Get the displayName property: The name of the billing subscription.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The name of the billing subscription.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
+     * Get the enrollmentAccountId property: The enrollment Account ID associated with the subscription. This field is
+     * available only for the Enterprise Agreement Type billing accounts.
+     * 
+     * @return the enrollmentAccountId value.
+     */
+    public String enrollmentAccountId() {
+        return this.innerProperties() == null ? null : this.innerProperties().enrollmentAccountId();
+    }
+
+    /**
+     * Get the enrollmentAccountDisplayName property: The enrollment Account name associated with the subscription. This
+     * field is available only for the Enterprise Agreement Type billing accounts.
+     * 
+     * @return the enrollmentAccountDisplayName value.
+     */
+    public String enrollmentAccountDisplayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().enrollmentAccountDisplayName();
+    }
+
+    /**
+     * Get the invoiceSectionId property: The fully qualified ID that uniquely identifies an invoice section.
+     * 
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
@@ -166,8 +384,22 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the invoiceSectionDisplayName property: The name of the invoice section to which the subscription is billed.
-     *
+     * Set the invoiceSectionId property: The fully qualified ID that uniquely identifies an invoice section.
+     * 
+     * @param invoiceSectionId the invoiceSectionId value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withInvoiceSectionId(String invoiceSectionId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withInvoiceSectionId(invoiceSectionId);
+        return this;
+    }
+
+    /**
+     * Get the invoiceSectionDisplayName property: The name of the invoice section.
+     * 
      * @return the invoiceSectionDisplayName value.
      */
     public String invoiceSectionDisplayName() {
@@ -175,8 +407,131 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the reseller property: Reseller for this subscription.
-     *
+     * Get the invoiceSectionName property: The ID that uniquely identifies an invoice section.
+     * 
+     * @return the invoiceSectionName value.
+     */
+    public String invoiceSectionName() {
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionName();
+    }
+
+    /**
+     * Get the lastMonthCharges property: The last month's charges. This field is only available for usage based
+     * subscriptions of Microsoft Customer Agreement billing accounts.
+     * 
+     * @return the lastMonthCharges value.
+     */
+    public Amount lastMonthCharges() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastMonthCharges();
+    }
+
+    /**
+     * Get the monthToDateCharges property: The current month to date charges. This field is only available for usage
+     * based subscriptions of Microsoft Customer Agreement billing accounts.
+     * 
+     * @return the monthToDateCharges value.
+     */
+    public Amount monthToDateCharges() {
+        return this.innerProperties() == null ? null : this.innerProperties().monthToDateCharges();
+    }
+
+    /**
+     * Get the nextBillingCycleDetails property: Next billing cycle details of the subscription.
+     * 
+     * @return the nextBillingCycleDetails value.
+     */
+    public NextBillingCycleDetails nextBillingCycleDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextBillingCycleDetails();
+    }
+
+    /**
+     * Get the offerId property: The offer ID for the subscription. This field is only available for the Microsoft
+     * Online Services Program billing accounts.
+     * 
+     * @return the offerId value.
+     */
+    public String offerId() {
+        return this.innerProperties() == null ? null : this.innerProperties().offerId();
+    }
+
+    /**
+     * Get the productCategory property: The category of the product for which the subscription is purchased. Possible
+     * values include: AzureSupport, Hardware, ReservationOrder, SaaS, SavingsPlanOrder, Software, UsageBased, Other.
+     * 
+     * @return the productCategory value.
+     */
+    public String productCategory() {
+        return this.innerProperties() == null ? null : this.innerProperties().productCategory();
+    }
+
+    /**
+     * Get the productType property: Type of the product for which the subscription is purchased.
+     * 
+     * @return the productType value.
+     */
+    public String productType() {
+        return this.innerProperties() == null ? null : this.innerProperties().productType();
+    }
+
+    /**
+     * Get the productTypeId property: Id of the product for which the subscription is purchased.
+     * 
+     * @return the productTypeId value.
+     */
+    public String productTypeId() {
+        return this.innerProperties() == null ? null : this.innerProperties().productTypeId();
+    }
+
+    /**
+     * Set the productTypeId property: Id of the product for which the subscription is purchased.
+     * 
+     * @param productTypeId the productTypeId value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withProductTypeId(String productTypeId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withProductTypeId(productTypeId);
+        return this;
+    }
+
+    /**
+     * Get the purchaseDate property: Purchase date of the product in UTC time.
+     * 
+     * @return the purchaseDate value.
+     */
+    public OffsetDateTime purchaseDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().purchaseDate();
+    }
+
+    /**
+     * Get the quantity property: The quantity of licenses or fulfillment units for the subscription.
+     * 
+     * @return the quantity value.
+     */
+    public Long quantity() {
+        return this.innerProperties() == null ? null : this.innerProperties().quantity();
+    }
+
+    /**
+     * Set the quantity property: The quantity of licenses or fulfillment units for the subscription.
+     * 
+     * @param quantity the quantity value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withQuantity(Long quantity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withQuantity(quantity);
+        return this;
+    }
+
+    /**
+     * Get the reseller property: Reseller for this subscription. The fields is not available for Microsoft Partner
+     * Agreement billing accounts.
+     * 
      * @return the reseller value.
      */
     public Reseller reseller() {
@@ -184,8 +539,18 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the skuId property: The sku ID of the Azure plan for the subscription.
-     *
+     * Get the renewalTermDetails property: Details for the next renewal term of a subscription.
+     * 
+     * @return the renewalTermDetails value.
+     */
+    public RenewalTermDetails renewalTermDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().renewalTermDetails();
+    }
+
+    /**
+     * Get the skuId property: The SKU ID of the product for which the subscription is purchased. This field is is only
+     * available for Microsoft Customer Agreement billing accounts.
+     * 
      * @return the skuId value.
      */
     public String skuId() {
@@ -193,8 +558,9 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Set the skuId property: The sku ID of the Azure plan for the subscription.
-     *
+     * Set the skuId property: The SKU ID of the product for which the subscription is purchased. This field is is only
+     * available for Microsoft Customer Agreement billing accounts.
+     * 
      * @param skuId the skuId value to set.
      * @return the BillingSubscriptionInner object itself.
      */
@@ -207,8 +573,10 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the skuDescription property: The sku description of the Azure plan for the subscription.
-     *
+     * Get the skuDescription property: The SKU description of the product for which the subscription is purchased. This
+     * field is is only available for billing accounts with agreement type Microsoft Customer Agreement and Microsoft
+     * Partner Agreement.
+     * 
      * @return the skuDescription value.
      */
     public String skuDescription() {
@@ -216,9 +584,146 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the suspensionReasons property: The suspension reason for a subscription. Applies only to subscriptions in
-     * Microsoft Online Services Program billing accounts.
-     *
+     * Get the systemOverrides property: System imposed policies that regulate behavior of the subscription.
+     * 
+     * @return the systemOverrides value.
+     */
+    public SystemOverrides systemOverrides() {
+        return this.innerProperties() == null ? null : this.innerProperties().systemOverrides();
+    }
+
+    /**
+     * Set the systemOverrides property: System imposed policies that regulate behavior of the subscription.
+     * 
+     * @param systemOverrides the systemOverrides value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withSystemOverrides(SystemOverrides systemOverrides) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withSystemOverrides(systemOverrides);
+        return this;
+    }
+
+    /**
+     * Get the resourceUri property: Unique identifier of the linked resource.
+     * 
+     * @return the resourceUri value.
+     */
+    public String resourceUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceUri();
+    }
+
+    /**
+     * Get the termDuration property: The duration in ISO8601 format for which you can use the subscription. Example:
+     * P1M, P3M, P1Y.
+     * 
+     * @return the termDuration value.
+     */
+    public String termDuration() {
+        return this.innerProperties() == null ? null : this.innerProperties().termDuration();
+    }
+
+    /**
+     * Set the termDuration property: The duration in ISO8601 format for which you can use the subscription. Example:
+     * P1M, P3M, P1Y.
+     * 
+     * @param termDuration the termDuration value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withTermDuration(String termDuration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withTermDuration(termDuration);
+        return this;
+    }
+
+    /**
+     * Get the termStartDate property: Start date of the term in UTC time.
+     * 
+     * @return the termStartDate value.
+     */
+    public OffsetDateTime termStartDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().termStartDate();
+    }
+
+    /**
+     * Get the termEndDate property: End date of the term in UTC time.
+     * 
+     * @return the termEndDate value.
+     */
+    public OffsetDateTime termEndDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().termEndDate();
+    }
+
+    /**
+     * Get the provisioningTenantId property: The tenant in which the subscription is provisioned.
+     * 
+     * @return the provisioningTenantId value.
+     */
+    public String provisioningTenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningTenantId();
+    }
+
+    /**
+     * Set the provisioningTenantId property: The tenant in which the subscription is provisioned.
+     * 
+     * @param provisioningTenantId the provisioningTenantId value to set.
+     * @return the BillingSubscriptionInner object itself.
+     */
+    public BillingSubscriptionInner withProvisioningTenantId(String provisioningTenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withProvisioningTenantId(provisioningTenantId);
+        return this;
+    }
+
+    /**
+     * Get the status property: The status of the subscription. This field is not available for Enterprise Agreement
+     * billing accounts.
+     * 
+     * @return the status value.
+     */
+    public BillingSubscriptionStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the operationStatus property: The status of an operation on the subscription. When None, there is no ongoing
+     * operation. When LockedForUpdate, write operations will be blocked on the Billing Subscription. Other is the
+     * default value and you may need to refer to the latest API version for more details.
+     * 
+     * @return the operationStatus value.
+     */
+    public BillingSubscriptionOperationStatus operationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationStatus();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource during a long-running operation.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the subscriptionId property: The ID of the subscription.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String subscriptionId() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
+    }
+
+    /**
+     * Get the suspensionReasons property: The suspension reason for a subscription. This field is not available for
+     * Enterprise Agreement billing accounts.
+     * 
      * @return the suspensionReasons value.
      */
     public List<String> suspensionReasons() {
@@ -226,13 +731,94 @@ public final class BillingSubscriptionInner extends ProxyResource {
     }
 
     /**
+     * Get the suspensionReasonDetails property: The suspension details for a subscription. This field is not available
+     * for Enterprise Agreement billing accounts.
+     * 
+     * @return the suspensionReasonDetails value.
+     */
+    public List<BillingSubscriptionStatusDetails> suspensionReasonDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().suspensionReasonDetails();
+    }
+
+    /**
+     * Get the enrollmentAccountStartDate property: The enrollment Account and the subscription association start date.
+     * This field is available only for the Enterprise Agreement Type.
+     * 
+     * @return the enrollmentAccountStartDate value.
+     */
+    public OffsetDateTime enrollmentAccountStartDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().enrollmentAccountStartDate();
+    }
+
+    /**
+     * Get the subscriptionEnrollmentAccountStatus property: The current enrollment account status of the subscription.
+     * This field is available only for the Enterprise Agreement Type.
+     * 
+     * @return the subscriptionEnrollmentAccountStatus value.
+     */
+    public SubscriptionEnrollmentAccountStatus subscriptionEnrollmentAccountStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionEnrollmentAccountStatus();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingSubscriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingSubscriptionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BillingSubscriptionInner.
+     */
+    public static BillingSubscriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingSubscriptionInner deserializedBillingSubscriptionInner = new BillingSubscriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBillingSubscriptionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBillingSubscriptionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBillingSubscriptionInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBillingSubscriptionInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBillingSubscriptionInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBillingSubscriptionInner.innerProperties
+                        = BillingSubscriptionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingSubscriptionInner;
+        });
     }
 }

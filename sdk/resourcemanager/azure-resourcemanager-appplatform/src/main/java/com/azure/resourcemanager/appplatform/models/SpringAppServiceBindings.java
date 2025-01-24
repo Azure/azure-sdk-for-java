@@ -15,12 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Spring App Service Bindings API. */
 @Fluent
-public interface SpringAppServiceBindings
-    extends HasManager<AppPlatformManager>,
-    HasParent<SpringApp>,
-    SupportsGettingById<SpringAppServiceBinding>,
-    SupportsGettingByName<SpringAppServiceBinding>,
-    SupportsListing<SpringAppServiceBinding>,
-    SupportsDeletingById,
-    SupportsDeletingByName {
+public interface SpringAppServiceBindings extends HasManager<AppPlatformManager>, HasParent<SpringApp>,
+    SupportsGettingById<SpringAppServiceBinding>, SupportsGettingByName<SpringAppServiceBinding>,
+    SupportsListing<SpringAppServiceBinding>, SupportsDeletingById, SupportsDeletingByName {
 }

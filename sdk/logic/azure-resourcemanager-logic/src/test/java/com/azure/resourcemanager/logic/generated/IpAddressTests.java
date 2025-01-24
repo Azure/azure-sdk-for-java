@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class IpAddressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpAddress model = BinaryData.fromString("{\"address\":\"isdkfthwxmnteiw\"}").toObject(IpAddress.class);
-        Assertions.assertEquals("isdkfthwxmnteiw", model.address());
+        IpAddress model = BinaryData.fromString("{\"address\":\"unmpxttd\"}").toObject(IpAddress.class);
+        Assertions.assertEquals("unmpxttd", model.address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpAddress model = new IpAddress().withAddress("isdkfthwxmnteiw");
+        IpAddress model = new IpAddress().withAddress("unmpxttd");
         model = BinaryData.fromObject(model).toObject(IpAddress.class);
-        Assertions.assertEquals("isdkfthwxmnteiw", model.address());
+        Assertions.assertEquals("unmpxttd", model.address());
     }
 }

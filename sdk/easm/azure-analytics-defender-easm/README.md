@@ -81,7 +81,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 These code samples show common scenario operations with the Azure Anomaly Detector library. More samples can be found under the [samples][samples] directory.
 
 For more extensive documentation on Microsoft Defender External Attack Surface Management, see the [Defender EASM][product_documentation]: https://azure.microsoft.com/services/
-on docs.microsoft.com.
+on learn.microsoft.com.
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
@@ -95,14 +95,14 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [product_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [discovery_runs_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoveryRunsSample.java
 [disco_template_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoTemplateSample.java
 [saved_filter_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/SavedFilterSample.java
 [external_ids_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/ManagingExternalIdsSample.java
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/samples
 [assets_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/understanding-inventory-assets
 [discovery_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/what-is-discovery

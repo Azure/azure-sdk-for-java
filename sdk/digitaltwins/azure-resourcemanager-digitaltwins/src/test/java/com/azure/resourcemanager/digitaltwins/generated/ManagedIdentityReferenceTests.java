@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentityReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentityReference model =
-            BinaryData
-                .fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"hwxmnteiwa\"}")
+        ManagedIdentityReference model
+            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"fiyipjxsqwpgrj\"}")
                 .toObject(ManagedIdentityReference.class);
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("hwxmnteiwa", model.userAssignedIdentity());
+        Assertions.assertEquals("fiyipjxsqwpgrj", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentityReference model =
-            new ManagedIdentityReference().withType(IdentityType.USER_ASSIGNED).withUserAssignedIdentity("hwxmnteiwa");
+        ManagedIdentityReference model = new ManagedIdentityReference().withType(IdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentity("fiyipjxsqwpgrj");
         model = BinaryData.fromObject(model).toObject(ManagedIdentityReference.class);
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("hwxmnteiwa", model.userAssignedIdentity());
+        Assertions.assertEquals("fiyipjxsqwpgrj", model.userAssignedIdentity());
     }
 }

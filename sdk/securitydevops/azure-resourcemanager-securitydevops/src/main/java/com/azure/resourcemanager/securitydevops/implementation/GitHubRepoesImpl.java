@@ -21,64 +21,55 @@ public final class GitHubRepoesImpl implements GitHubRepoes {
 
     private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
-    public GitHubRepoesImpl(
-        GitHubRepoesClient innerClient, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
+    public GitHubRepoesImpl(GitHubRepoesClient innerClient,
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<GitHubRepo> listByConnector(String resourceGroupName, String gitHubConnectorName) {
-        PagedIterable<GitHubRepoInner> inner =
-            this.serviceClient().listByConnector(resourceGroupName, gitHubConnectorName);
+        PagedIterable<GitHubRepoInner> inner
+            = this.serviceClient().listByConnector(resourceGroupName, gitHubConnectorName);
         return Utils.mapPage(inner, inner1 -> new GitHubRepoImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<GitHubRepo> listByConnector(
-        String resourceGroupName, String gitHubConnectorName, Context context) {
-        PagedIterable<GitHubRepoInner> inner =
-            this.serviceClient().listByConnector(resourceGroupName, gitHubConnectorName, context);
-        return Utils.mapPage(inner, inner1 -> new GitHubRepoImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<GitHubRepo> list(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName) {
-        PagedIterable<GitHubRepoInner> inner =
-            this.serviceClient().list(resourceGroupName, gitHubConnectorName, gitHubOwnerName);
-        return Utils.mapPage(inner, inner1 -> new GitHubRepoImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<GitHubRepo> list(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, Context context) {
-        PagedIterable<GitHubRepoInner> inner =
-            this.serviceClient().list(resourceGroupName, gitHubConnectorName, gitHubOwnerName, context);
-        return Utils.mapPage(inner, inner1 -> new GitHubRepoImpl(inner1, this.manager()));
-    }
-
-    public Response<GitHubRepo> getWithResponse(
-        String resourceGroupName,
-        String gitHubConnectorName,
-        String gitHubOwnerName,
-        String gitHubRepoName,
+    public PagedIterable<GitHubRepo> listByConnector(String resourceGroupName, String gitHubConnectorName,
         Context context) {
-        Response<GitHubRepoInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, context);
+        PagedIterable<GitHubRepoInner> inner
+            = this.serviceClient().listByConnector(resourceGroupName, gitHubConnectorName, context);
+        return Utils.mapPage(inner, inner1 -> new GitHubRepoImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<GitHubRepo> list(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName) {
+        PagedIterable<GitHubRepoInner> inner
+            = this.serviceClient().list(resourceGroupName, gitHubConnectorName, gitHubOwnerName);
+        return Utils.mapPage(inner, inner1 -> new GitHubRepoImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<GitHubRepo> list(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        Context context) {
+        PagedIterable<GitHubRepoInner> inner
+            = this.serviceClient().list(resourceGroupName, gitHubConnectorName, gitHubOwnerName, context);
+        return Utils.mapPage(inner, inner1 -> new GitHubRepoImpl(inner1, this.manager()));
+    }
+
+    public Response<GitHubRepo> getWithResponse(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName, String gitHubRepoName, Context context) {
+        Response<GitHubRepoInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GitHubRepoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public GitHubRepo get(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName, String gitHubRepoName) {
-        GitHubRepoInner inner =
-            this.serviceClient().get(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName);
+    public GitHubRepo get(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName,
+        String gitHubRepoName) {
+        GitHubRepoInner inner
+            = this.serviceClient().get(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName);
         if (inner != null) {
             return new GitHubRepoImpl(inner, this.manager());
         } else {
@@ -89,34 +80,23 @@ public final class GitHubRepoesImpl implements GitHubRepoes {
     public GitHubRepo getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String gitHubConnectorName = Utils.getValueFromIdByName(id, "gitHubConnectors");
         if (gitHubConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
         }
         String gitHubOwnerName = Utils.getValueFromIdByName(id, "owners");
         if (gitHubOwnerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'owners'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'owners'.", id)));
         }
         String gitHubRepoName = Utils.getValueFromIdByName(id, "repos");
         if (gitHubRepoName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'repos'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'repos'.", id)));
         }
         return this
             .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, Context.NONE)
@@ -126,34 +106,23 @@ public final class GitHubRepoesImpl implements GitHubRepoes {
     public Response<GitHubRepo> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String gitHubConnectorName = Utils.getValueFromIdByName(id, "gitHubConnectors");
         if (gitHubConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
         }
         String gitHubOwnerName = Utils.getValueFromIdByName(id, "owners");
         if (gitHubOwnerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'owners'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'owners'.", id)));
         }
         String gitHubRepoName = Utils.getValueFromIdByName(id, "repos");
         if (gitHubRepoName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'repos'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'repos'.", id)));
         }
         return this.getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, context);
     }

@@ -36,15 +36,14 @@ public class CertificateReference {
      * The location of the Certificate store on the Compute Node into which to
      * install the Certificate.
      * The default value is currentuser. This property is applicable only for
-     * Pools configured with Windows Compute Nodes (that is, created with
-     * cloudServiceConfiguration, or with virtualMachineConfiguration using a
-     * Windows Image reference). For Linux Compute Nodes, the Certificates are
-     * stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
-     * to query for this location. For Certificates with visibility of
-     * 'remoteUser', a 'certs' directory is created in the user's home
-     * directory (e.g., /home/{user-name}/certs) and Certificates are placed in
-     * that directory. Possible values include: 'currentUser', 'localMachine'.
+     * Pools configured with Windows Compute Nodes. For Linux Compute Nodes,
+     * the Certificates are stored in a directory inside the Task working
+     * directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is
+     * supplied to the Task to query for this location. For Certificates with
+     * visibility of 'remoteUser', a 'certs' directory is created in the user's
+     * home directory (e.g., /home/{user-name}/certs) and Certificates are
+     * placed in that directory. Possible values include: 'currentUser',
+     * 'localMachine'.
      */
     @JsonProperty(value = "storeLocation")
     private CertificateStoreLocation storeLocation;
@@ -53,11 +52,9 @@ public class CertificateReference {
      * The name of the Certificate store on the Compute Node into which to
      * install the Certificate.
      * This property is applicable only for Pools configured with Windows
-     * Compute Nodes (that is, created with cloudServiceConfiguration, or with
-     * virtualMachineConfiguration using a Windows Image reference). Common
-     * store names include: My, Root, CA, Trust, Disallowed, TrustedPeople,
-     * TrustedPublisher, AuthRoot, AddressBook, but any custom store name can
-     * also be used. The default value is My.
+     * Compute Nodes. Common store names include: My, Root, CA, Trust,
+     * Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but
+     * any custom store name can also be used. The default value is My.
      */
     @JsonProperty(value = "storeName")
     private String storeName;
@@ -112,7 +109,7 @@ public class CertificateReference {
     }
 
     /**
-     * Get the default value is currentuser. This property is applicable only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows Image reference). For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Possible values include: 'currentUser', 'localMachine'.
+     * Get the default value is currentuser. This property is applicable only for Pools configured with Windows Compute Nodes. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Possible values include: 'currentUser', 'localMachine'.
      *
      * @return the storeLocation value
      */
@@ -121,7 +118,7 @@ public class CertificateReference {
     }
 
     /**
-     * Set the default value is currentuser. This property is applicable only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows Image reference). For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Possible values include: 'currentUser', 'localMachine'.
+     * Set the default value is currentuser. This property is applicable only for Pools configured with Windows Compute Nodes. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Possible values include: 'currentUser', 'localMachine'.
      *
      * @param storeLocation the storeLocation value to set
      * @return the CertificateReference object itself.
@@ -132,7 +129,7 @@ public class CertificateReference {
     }
 
     /**
-     * Get this property is applicable only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows Image reference). Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any custom store name can also be used. The default value is My.
+     * Get this property is applicable only for Pools configured with Windows Compute Nodes. Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any custom store name can also be used. The default value is My.
      *
      * @return the storeName value
      */
@@ -141,7 +138,7 @@ public class CertificateReference {
     }
 
     /**
-     * Set this property is applicable only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows Image reference). Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any custom store name can also be used. The default value is My.
+     * Set this property is applicable only for Pools configured with Windows Compute Nodes. Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any custom store name can also be used. The default value is My.
      *
      * @param storeName the storeName value to set
      * @return the CertificateReference object itself.

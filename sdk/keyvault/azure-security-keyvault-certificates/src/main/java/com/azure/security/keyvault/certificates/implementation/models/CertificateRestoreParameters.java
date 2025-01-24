@@ -14,7 +14,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-/** The certificate restore parameters. */
+/**
+ * The certificate restore parameters.
+ */
 @Fluent
 public final class CertificateRestoreParameters implements JsonSerializable<CertificateRestoreParameters> {
     /*
@@ -22,12 +24,15 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
      */
     private Base64Url certificateBundleBackup;
 
-    /** Creates an instance of CertificateRestoreParameters class. */
-    public CertificateRestoreParameters() {}
+    /**
+     * Creates an instance of CertificateRestoreParameters class.
+     */
+    public CertificateRestoreParameters() {
+    }
 
     /**
      * Get the certificateBundleBackup property: The backup blob associated with a certificate bundle.
-     *
+     * 
      * @return the certificateBundleBackup value.
      */
     public byte[] getCertificateBundleBackup() {
@@ -39,7 +44,7 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
 
     /**
      * Set the certificateBundleBackup property: The backup blob associated with a certificate bundle.
-     *
+     * 
      * @param certificateBundleBackup the certificateBundleBackup value to set.
      * @return the CertificateRestoreParameters object itself.
      */
@@ -52,6 +57,9 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -61,31 +69,29 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
 
     /**
      * Reads an instance of CertificateRestoreParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateRestoreParameters if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CertificateRestoreParameters.
      */
     public static CertificateRestoreParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateRestoreParameters deserializedCertificateRestoreParameters =
-                            new CertificateRestoreParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateRestoreParameters deserializedCertificateRestoreParameters = new CertificateRestoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedCertificateRestoreParameters.certificateBundleBackup =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedCertificateRestoreParameters.certificateBundleBackup
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateRestoreParameters;
-                });
+            return deserializedCertificateRestoreParameters;
+        });
     }
 }

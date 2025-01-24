@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,33 +12,49 @@ import java.util.Collection;
  * audio tracks.
  */
 public final class ChannelMapping extends ExpandableStringEnum<ChannelMapping> {
-    /** Static value FrontLeft for ChannelMapping. */
+    /**
+     * Static value FrontLeft for ChannelMapping.
+     */
     public static final ChannelMapping FRONT_LEFT = fromString("FrontLeft");
 
-    /** Static value FrontRight for ChannelMapping. */
+    /**
+     * Static value FrontRight for ChannelMapping.
+     */
     public static final ChannelMapping FRONT_RIGHT = fromString("FrontRight");
 
-    /** Static value Center for ChannelMapping. */
+    /**
+     * Static value Center for ChannelMapping.
+     */
     public static final ChannelMapping CENTER = fromString("Center");
 
-    /** Static value LowFrequencyEffects for ChannelMapping. */
+    /**
+     * Static value LowFrequencyEffects for ChannelMapping.
+     */
     public static final ChannelMapping LOW_FREQUENCY_EFFECTS = fromString("LowFrequencyEffects");
 
-    /** Static value BackLeft for ChannelMapping. */
+    /**
+     * Static value BackLeft for ChannelMapping.
+     */
     public static final ChannelMapping BACK_LEFT = fromString("BackLeft");
 
-    /** Static value BackRight for ChannelMapping. */
+    /**
+     * Static value BackRight for ChannelMapping.
+     */
     public static final ChannelMapping BACK_RIGHT = fromString("BackRight");
 
-    /** Static value StereoLeft for ChannelMapping. */
+    /**
+     * Static value StereoLeft for ChannelMapping.
+     */
     public static final ChannelMapping STEREO_LEFT = fromString("StereoLeft");
 
-    /** Static value StereoRight for ChannelMapping. */
+    /**
+     * Static value StereoRight for ChannelMapping.
+     */
     public static final ChannelMapping STEREO_RIGHT = fromString("StereoRight");
 
     /**
      * Creates a new instance of ChannelMapping value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,18 +63,17 @@ public final class ChannelMapping extends ExpandableStringEnum<ChannelMapping> {
 
     /**
      * Creates or finds a ChannelMapping from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ChannelMapping.
      */
-    @JsonCreator
     public static ChannelMapping fromString(String name) {
         return fromString(name, ChannelMapping.class);
     }
 
     /**
      * Gets known ChannelMapping values.
-     *
+     * 
      * @return known ChannelMapping values.
      */
     public static Collection<ChannelMapping> values() {

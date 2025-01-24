@@ -23,9 +23,8 @@ import java.util.TreeMap;
 import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachineScaleSetNetworkInterface. */
-class VirtualMachineScaleSetNetworkInterfaceImpl
-    extends ResourceImpl<
-        VirtualMachineScaleSetNetworkInterface, NetworkInterfaceInner, VirtualMachineScaleSetNetworkInterfaceImpl>
+class VirtualMachineScaleSetNetworkInterfaceImpl extends
+    ResourceImpl<VirtualMachineScaleSetNetworkInterface, NetworkInterfaceInner, VirtualMachineScaleSetNetworkInterfaceImpl>
     implements VirtualMachineScaleSetNetworkInterface {
     /** the network client. */
     private final NetworkManager networkManager;
@@ -36,12 +35,8 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    VirtualMachineScaleSetNetworkInterfaceImpl(
-        String name,
-        String scaleSetName,
-        String resourceGroupName,
-        NetworkInterfaceInner innerObject,
-        NetworkManager networkManager) {
+    VirtualMachineScaleSetNetworkInterfaceImpl(String name, String scaleSetName, String resourceGroupName,
+        NetworkInterfaceInner innerObject, NetworkManager networkManager) {
         super(name, innerObject);
         this.scaleSetName = scaleSetName;
         this.resourceGroupName = resourceGroupName;
@@ -125,8 +120,8 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         }
         Map<String, VirtualMachineScaleSetNicIpConfiguration> nicIPConfigurations = new TreeMap<>();
         for (NetworkInterfaceIpConfigurationInner inner : inners) {
-            VirtualMachineScaleSetNicIpConfigurationImpl nicIPConfiguration =
-                new VirtualMachineScaleSetNicIpConfigurationImpl(inner, this, this.networkManager);
+            VirtualMachineScaleSetNicIpConfigurationImpl nicIPConfiguration
+                = new VirtualMachineScaleSetNicIpConfigurationImpl(inner, this, this.networkManager);
             nicIPConfigurations.put(nicIPConfiguration.name(), nicIPConfiguration);
         }
         return Collections.unmodifiableMap(nicIPConfigurations);
@@ -156,8 +151,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         if (nsgId == null) {
             return null;
         }
-        return this
-            .manager()
+        return this.manager()
             .networkSecurityGroups()
             .getByResourceGroup(ResourceUtils.groupFromResourceId(nsgId), ResourceUtils.nameFromResourceId(nsgId));
     }
@@ -178,15 +172,11 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     protected Mono<NetworkInterfaceInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkInterfaces()
-            .getVirtualMachineScaleSetNetworkInterfaceAsync(
-                this.resourceGroupName,
-                this.scaleSetName,
-                ResourceUtils.nameFromResourceId(this.virtualMachineId()),
-                this.name());
+            .getVirtualMachineScaleSetNetworkInterfaceAsync(this.resourceGroupName, this.scaleSetName,
+                ResourceUtils.nameFromResourceId(this.virtualMachineId()), this.name());
     }
 
     @Override

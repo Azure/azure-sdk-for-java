@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleCreationParameterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleCreationParameterProperties model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Disabled\",\"taskType\":\"vtylbfpncu\",\"weeklyRecurrence\":{\"weekdays\":[\"wiithtywub\"],\"time\":\"bihwqknfdnt\"},\"dailyRecurrence\":{\"time\":\"hrdgoihxumwcto\"},\"hourlyRecurrence\":{\"minute\":498677295},\"timeZoneId\":\"uu\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":292953068,\"webhookUrl\":\"ytsbwtovv\",\"emailRecipient\":\"seinqfiuf\",\"notificationLocale\":\"knpirgnepttwq\"},\"targetResourceId\":\"niffcdmqnroj\"}")
-                .toObject(ScheduleCreationParameterProperties.class);
+        ScheduleCreationParameterProperties model = BinaryData.fromString(
+            "{\"status\":\"Disabled\",\"taskType\":\"vtylbfpncu\",\"weeklyRecurrence\":{\"weekdays\":[\"wiithtywub\"],\"time\":\"bihwqknfdnt\"},\"dailyRecurrence\":{\"time\":\"hrdgoihxumwcto\"},\"hourlyRecurrence\":{\"minute\":498677295},\"timeZoneId\":\"uu\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":292953068,\"webhookUrl\":\"ytsbwtovv\",\"emailRecipient\":\"seinqfiuf\",\"notificationLocale\":\"knpirgnepttwq\"},\"targetResourceId\":\"niffcdmqnroj\"}")
+            .toObject(ScheduleCreationParameterProperties.class);
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
         Assertions.assertEquals("vtylbfpncu", model.taskType());
         Assertions.assertEquals("wiithtywub", model.weeklyRecurrence().weekdays().get(0));
@@ -39,23 +37,19 @@ public final class ScheduleCreationParameterPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleCreationParameterProperties model =
-            new ScheduleCreationParameterProperties()
-                .withStatus(EnableStatus.DISABLED)
-                .withTaskType("vtylbfpncu")
-                .withWeeklyRecurrence(
-                    new WeekDetails().withWeekdays(Arrays.asList("wiithtywub")).withTime("bihwqknfdnt"))
-                .withDailyRecurrence(new DayDetails().withTime("hrdgoihxumwcto"))
-                .withHourlyRecurrence(new HourDetails().withMinute(498677295))
-                .withTimeZoneId("uu")
-                .withNotificationSettings(
-                    new NotificationSettings()
-                        .withStatus(EnableStatus.ENABLED)
-                        .withTimeInMinutes(292953068)
-                        .withWebhookUrl("ytsbwtovv")
-                        .withEmailRecipient("seinqfiuf")
-                        .withNotificationLocale("knpirgnepttwq"))
-                .withTargetResourceId("niffcdmqnroj");
+        ScheduleCreationParameterProperties model = new ScheduleCreationParameterProperties()
+            .withStatus(EnableStatus.DISABLED)
+            .withTaskType("vtylbfpncu")
+            .withWeeklyRecurrence(new WeekDetails().withWeekdays(Arrays.asList("wiithtywub")).withTime("bihwqknfdnt"))
+            .withDailyRecurrence(new DayDetails().withTime("hrdgoihxumwcto"))
+            .withHourlyRecurrence(new HourDetails().withMinute(498677295))
+            .withTimeZoneId("uu")
+            .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.ENABLED)
+                .withTimeInMinutes(292953068)
+                .withWebhookUrl("ytsbwtovv")
+                .withEmailRecipient("seinqfiuf")
+                .withNotificationLocale("knpirgnepttwq"))
+            .withTargetResourceId("niffcdmqnroj");
         model = BinaryData.fromObject(model).toObject(ScheduleCreationParameterProperties.class);
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
         Assertions.assertEquals("vtylbfpncu", model.taskType());

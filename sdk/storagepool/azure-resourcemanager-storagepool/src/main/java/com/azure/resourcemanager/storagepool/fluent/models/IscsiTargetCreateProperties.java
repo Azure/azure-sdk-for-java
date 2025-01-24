@@ -6,46 +6,50 @@ package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.models.Acl;
 import com.azure.resourcemanager.storagepool.models.IscsiLun;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for iSCSI Target create or update request. */
+/**
+ * Properties for iSCSI Target create or update request.
+ */
 @Fluent
-public final class IscsiTargetCreateProperties {
+public final class IscsiTargetCreateProperties implements JsonSerializable<IscsiTargetCreateProperties> {
     /*
      * Mode for Target connectivity.
      */
-    @JsonProperty(value = "aclMode", required = true)
     private IscsiTargetAclMode aclMode;
 
     /*
      * iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
      */
-    @JsonProperty(value = "targetIqn")
     private String targetIqn;
 
     /*
      * Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
      */
-    @JsonProperty(value = "staticAcls")
     private List<Acl> staticAcls;
 
     /*
      * List of LUNs to be exposed through iSCSI Target.
      */
-    @JsonProperty(value = "luns")
     private List<IscsiLun> luns;
 
-    /** Creates an instance of IscsiTargetCreateProperties class. */
+    /**
+     * Creates an instance of IscsiTargetCreateProperties class.
+     */
     public IscsiTargetCreateProperties() {
     }
 
     /**
      * Get the aclMode property: Mode for Target connectivity.
-     *
+     * 
      * @return the aclMode value.
      */
     public IscsiTargetAclMode aclMode() {
@@ -54,7 +58,7 @@ public final class IscsiTargetCreateProperties {
 
     /**
      * Set the aclMode property: Mode for Target connectivity.
-     *
+     * 
      * @param aclMode the aclMode value to set.
      * @return the IscsiTargetCreateProperties object itself.
      */
@@ -65,7 +69,7 @@ public final class IscsiTargetCreateProperties {
 
     /**
      * Get the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @return the targetIqn value.
      */
     public String targetIqn() {
@@ -74,7 +78,7 @@ public final class IscsiTargetCreateProperties {
 
     /**
      * Set the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @param targetIqn the targetIqn value to set.
      * @return the IscsiTargetCreateProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class IscsiTargetCreateProperties {
 
     /**
      * Get the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @return the staticAcls value.
      */
     public List<Acl> staticAcls() {
@@ -94,7 +98,7 @@ public final class IscsiTargetCreateProperties {
 
     /**
      * Set the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @param staticAcls the staticAcls value to set.
      * @return the IscsiTargetCreateProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class IscsiTargetCreateProperties {
 
     /**
      * Get the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @return the luns value.
      */
     public List<IscsiLun> luns() {
@@ -114,7 +118,7 @@ public final class IscsiTargetCreateProperties {
 
     /**
      * Set the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @param luns the luns value to set.
      * @return the IscsiTargetCreateProperties object itself.
      */
@@ -125,15 +129,14 @@ public final class IscsiTargetCreateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (aclMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aclMode in model IscsiTargetCreateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property aclMode in model IscsiTargetCreateProperties"));
         }
         if (staticAcls() != null) {
             staticAcls().forEach(e -> e.validate());
@@ -144,4 +147,52 @@ public final class IscsiTargetCreateProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetCreateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aclMode", this.aclMode == null ? null : this.aclMode.toString());
+        jsonWriter.writeStringField("targetIqn", this.targetIqn);
+        jsonWriter.writeArrayField("staticAcls", this.staticAcls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("luns", this.luns, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IscsiTargetCreateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IscsiTargetCreateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IscsiTargetCreateProperties.
+     */
+    public static IscsiTargetCreateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IscsiTargetCreateProperties deserializedIscsiTargetCreateProperties = new IscsiTargetCreateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aclMode".equals(fieldName)) {
+                    deserializedIscsiTargetCreateProperties.aclMode = IscsiTargetAclMode.fromString(reader.getString());
+                } else if ("targetIqn".equals(fieldName)) {
+                    deserializedIscsiTargetCreateProperties.targetIqn = reader.getString();
+                } else if ("staticAcls".equals(fieldName)) {
+                    List<Acl> staticAcls = reader.readArray(reader1 -> Acl.fromJson(reader1));
+                    deserializedIscsiTargetCreateProperties.staticAcls = staticAcls;
+                } else if ("luns".equals(fieldName)) {
+                    List<IscsiLun> luns = reader.readArray(reader1 -> IscsiLun.fromJson(reader1));
+                    deserializedIscsiTargetCreateProperties.luns = luns;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIscsiTargetCreateProperties;
+        });
+    }
 }

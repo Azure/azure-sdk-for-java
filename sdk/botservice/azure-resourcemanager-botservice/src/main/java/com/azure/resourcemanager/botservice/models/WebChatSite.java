@@ -6,150 +6,321 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** A site for the Webchat channel. */
+/**
+ * A site for the Webchat channel.
+ */
 @Fluent
-public class WebChatSite {
+public final class WebChatSite extends Site {
     /*
-     * Site Id
+     * Whether this site is token enabled for channel
      */
-    @JsonProperty(value = "siteId", access = JsonProperty.Access.WRITE_ONLY)
-    private String siteId;
+    private Boolean isTokenEnabled;
 
     /*
-     * Site name
+     * Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "siteName", required = true)
-    private String siteName;
-
-    /*
-     * Primary key. Value only returned through POST to the action Channel List
-     * API, otherwise empty.
-     */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
-    private String key;
-
-    /*
-     * Secondary key. Value only returned through POST to the action Channel
-     * List API, otherwise empty.
-     */
-    @JsonProperty(value = "key2", access = JsonProperty.Access.WRITE_ONLY)
     private String key2;
 
     /*
-     * Whether this site is enabled for DirectLine channel
+     * Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "isEnabled", required = true)
-    private boolean isEnabled;
+    private String key;
 
     /*
-     * Whether this site is enabled for preview versions of Webchat
+     * Site Id
      */
-    @JsonProperty(value = "isWebchatPreviewEnabled", required = true)
-    private boolean isWebchatPreviewEnabled;
+    private String siteId;
 
     /**
-     * Get the siteId property: Site Id.
-     *
-     * @return the siteId value.
+     * Creates an instance of WebChatSite class.
      */
-    public String siteId() {
-        return this.siteId;
+    public WebChatSite() {
     }
 
     /**
-     * Get the siteName property: Site name.
-     *
-     * @return the siteName value.
+     * Get the isTokenEnabled property: Whether this site is token enabled for channel.
+     * 
+     * @return the isTokenEnabled value.
      */
-    public String siteName() {
-        return this.siteName;
-    }
-
-    /**
-     * Set the siteName property: Site name.
-     *
-     * @param siteName the siteName value to set.
-     * @return the WebChatSite object itself.
-     */
-    public WebChatSite withSiteName(String siteName) {
-        this.siteName = siteName;
-        return this;
-    }
-
-    /**
-     * Get the key property: Primary key. Value only returned through POST to the action Channel List API, otherwise
-     * empty.
-     *
-     * @return the key value.
-     */
-    public String key() {
-        return this.key;
+    @Override
+    public Boolean isTokenEnabled() {
+        return this.isTokenEnabled;
     }
 
     /**
      * Get the key2 property: Secondary key. Value only returned through POST to the action Channel List API, otherwise
      * empty.
-     *
+     * 
      * @return the key2 value.
      */
+    @Override
     public String key2() {
         return this.key2;
     }
 
     /**
-     * Get the isEnabled property: Whether this site is enabled for DirectLine channel.
-     *
-     * @return the isEnabled value.
+     * Get the key property: Primary key. Value only returned through POST to the action Channel List API, otherwise
+     * empty.
+     * 
+     * @return the key value.
      */
-    public boolean isEnabled() {
-        return this.isEnabled;
+    @Override
+    public String key() {
+        return this.key;
     }
 
     /**
-     * Set the isEnabled property: Whether this site is enabled for DirectLine channel.
-     *
-     * @param isEnabled the isEnabled value to set.
-     * @return the WebChatSite object itself.
+     * Get the siteId property: Site Id.
+     * 
+     * @return the siteId value.
      */
-    public WebChatSite withIsEnabled(boolean isEnabled) {
-        this.isEnabled = isEnabled;
+    @Override
+    public String siteId() {
+        return this.siteId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withTenantId(String tenantId) {
+        super.withTenantId(tenantId);
         return this;
     }
 
     /**
-     * Get the isWebchatPreviewEnabled property: Whether this site is enabled for preview versions of Webchat.
-     *
-     * @return the isWebchatPreviewEnabled value.
+     * {@inheritDoc}
      */
-    public boolean isWebchatPreviewEnabled() {
-        return this.isWebchatPreviewEnabled;
+    @Override
+    public WebChatSite withSiteName(String siteName) {
+        super.withSiteName(siteName);
+        return this;
     }
 
     /**
-     * Set the isWebchatPreviewEnabled property: Whether this site is enabled for preview versions of Webchat.
-     *
-     * @param isWebchatPreviewEnabled the isWebchatPreviewEnabled value to set.
-     * @return the WebChatSite object itself.
+     * {@inheritDoc}
      */
-    public WebChatSite withIsWebchatPreviewEnabled(boolean isWebchatPreviewEnabled) {
-        this.isWebchatPreviewEnabled = isWebchatPreviewEnabled;
+    @Override
+    public WebChatSite withIsEnabled(boolean isEnabled) {
+        super.withIsEnabled(isEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withIsEndpointParametersEnabled(Boolean isEndpointParametersEnabled) {
+        super.withIsEndpointParametersEnabled(isEndpointParametersEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withIsDetailedLoggingEnabled(Boolean isDetailedLoggingEnabled) {
+        super.withIsDetailedLoggingEnabled(isDetailedLoggingEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withIsBlockUserUploadEnabled(Boolean isBlockUserUploadEnabled) {
+        super.withIsBlockUserUploadEnabled(isBlockUserUploadEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withIsNoStorageEnabled(Boolean isNoStorageEnabled) {
+        super.withIsNoStorageEnabled(isNoStorageEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withAppId(String appId) {
+        super.withAppId(appId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withIsV1Enabled(Boolean isV1Enabled) {
+        super.withIsV1Enabled(isV1Enabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withIsV3Enabled(Boolean isV3Enabled) {
+        super.withIsV3Enabled(isV3Enabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withIsSecureSiteEnabled(Boolean isSecureSiteEnabled) {
+        super.withIsSecureSiteEnabled(isSecureSiteEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withTrustedOrigins(List<String> trustedOrigins) {
+        super.withTrustedOrigins(trustedOrigins);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withIsWebChatSpeechEnabled(Boolean isWebChatSpeechEnabled) {
+        super.withIsWebChatSpeechEnabled(isWebChatSpeechEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebChatSite withIsWebchatPreviewEnabled(Boolean isWebchatPreviewEnabled) {
+        super.withIsWebchatPreviewEnabled(isWebchatPreviewEnabled);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (siteName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property siteName in model WebChatSite"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property siteName in model WebChatSite"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebChatSite.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("siteName", siteName());
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeStringField("tenantId", tenantId());
+        jsonWriter.writeBooleanField("isEndpointParametersEnabled", isEndpointParametersEnabled());
+        jsonWriter.writeBooleanField("isDetailedLoggingEnabled", isDetailedLoggingEnabled());
+        jsonWriter.writeBooleanField("isBlockUserUploadEnabled", isBlockUserUploadEnabled());
+        jsonWriter.writeBooleanField("isNoStorageEnabled", isNoStorageEnabled());
+        jsonWriter.writeStringField("eTag", etag());
+        jsonWriter.writeStringField("appId", appId());
+        jsonWriter.writeBooleanField("isV1Enabled", isV1Enabled());
+        jsonWriter.writeBooleanField("isV3Enabled", isV3Enabled());
+        jsonWriter.writeBooleanField("isSecureSiteEnabled", isSecureSiteEnabled());
+        jsonWriter.writeArrayField("trustedOrigins", trustedOrigins(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isWebChatSpeechEnabled", isWebChatSpeechEnabled());
+        jsonWriter.writeBooleanField("isWebchatPreviewEnabled", isWebchatPreviewEnabled());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebChatSite from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebChatSite if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebChatSite.
+     */
+    public static WebChatSite fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebChatSite deserializedWebChatSite = new WebChatSite();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("siteName".equals(fieldName)) {
+                    deserializedWebChatSite.withSiteName(reader.getString());
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsEnabled(reader.getBoolean());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedWebChatSite.withTenantId(reader.getString());
+                } else if ("siteId".equals(fieldName)) {
+                    deserializedWebChatSite.siteId = reader.getString();
+                } else if ("key".equals(fieldName)) {
+                    deserializedWebChatSite.key = reader.getString();
+                } else if ("key2".equals(fieldName)) {
+                    deserializedWebChatSite.key2 = reader.getString();
+                } else if ("isTokenEnabled".equals(fieldName)) {
+                    deserializedWebChatSite.isTokenEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isEndpointParametersEnabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsEndpointParametersEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isDetailedLoggingEnabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsDetailedLoggingEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isBlockUserUploadEnabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsBlockUserUploadEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isNoStorageEnabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsNoStorageEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedWebChatSite.withEtag(reader.getString());
+                } else if ("appId".equals(fieldName)) {
+                    deserializedWebChatSite.withAppId(reader.getString());
+                } else if ("isV1Enabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsV1Enabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isV3Enabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsV3Enabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isSecureSiteEnabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsSecureSiteEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("trustedOrigins".equals(fieldName)) {
+                    List<String> trustedOrigins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWebChatSite.withTrustedOrigins(trustedOrigins);
+                } else if ("isWebChatSpeechEnabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsWebChatSpeechEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isWebchatPreviewEnabled".equals(fieldName)) {
+                    deserializedWebChatSite.withIsWebchatPreviewEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebChatSite;
+        });
+    }
 }

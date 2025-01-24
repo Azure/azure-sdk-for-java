@@ -6,59 +6,58 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a profile type participating in an interaction. */
+/**
+ * Describes a profile type participating in an interaction.
+ */
 @Fluent
-public final class Participant {
+public final class Participant implements JsonSerializable<Participant> {
     /*
      * Profile type name.
      */
-    @JsonProperty(value = "profileTypeName", required = true)
     private String profileTypeName;
 
     /*
      * The property references.
      */
-    @JsonProperty(value = "participantPropertyReferences", required = true)
     private List<ParticipantPropertyReference> participantPropertyReferences;
 
     /*
      * Participant name.
      */
-    @JsonProperty(value = "participantName", required = true)
     private String participantName;
 
     /*
      * Localized display name.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Localized descriptions.
      */
-    @JsonProperty(value = "description")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
      * The role that the participant is playing in the interaction.
      */
-    @JsonProperty(value = "role")
     private String role;
 
-    /** Creates an instance of Participant class. */
+    /**
+     * Creates an instance of Participant class.
+     */
     public Participant() {
     }
 
     /**
      * Get the profileTypeName property: Profile type name.
-     *
+     * 
      * @return the profileTypeName value.
      */
     public String profileTypeName() {
@@ -67,7 +66,7 @@ public final class Participant {
 
     /**
      * Set the profileTypeName property: Profile type name.
-     *
+     * 
      * @param profileTypeName the profileTypeName value to set.
      * @return the Participant object itself.
      */
@@ -78,7 +77,7 @@ public final class Participant {
 
     /**
      * Get the participantPropertyReferences property: The property references.
-     *
+     * 
      * @return the participantPropertyReferences value.
      */
     public List<ParticipantPropertyReference> participantPropertyReferences() {
@@ -87,19 +86,19 @@ public final class Participant {
 
     /**
      * Set the participantPropertyReferences property: The property references.
-     *
+     * 
      * @param participantPropertyReferences the participantPropertyReferences value to set.
      * @return the Participant object itself.
      */
-    public Participant withParticipantPropertyReferences(
-        List<ParticipantPropertyReference> participantPropertyReferences) {
+    public Participant
+        withParticipantPropertyReferences(List<ParticipantPropertyReference> participantPropertyReferences) {
         this.participantPropertyReferences = participantPropertyReferences;
         return this;
     }
 
     /**
      * Get the participantName property: Participant name.
-     *
+     * 
      * @return the participantName value.
      */
     public String participantName() {
@@ -108,7 +107,7 @@ public final class Participant {
 
     /**
      * Set the participantName property: Participant name.
-     *
+     * 
      * @param participantName the participantName value to set.
      * @return the Participant object itself.
      */
@@ -119,7 +118,7 @@ public final class Participant {
 
     /**
      * Get the displayName property: Localized display name.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -128,7 +127,7 @@ public final class Participant {
 
     /**
      * Set the displayName property: Localized display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the Participant object itself.
      */
@@ -139,7 +138,7 @@ public final class Participant {
 
     /**
      * Get the description property: Localized descriptions.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -148,7 +147,7 @@ public final class Participant {
 
     /**
      * Set the description property: Localized descriptions.
-     *
+     * 
      * @param description the description value to set.
      * @return the Participant object itself.
      */
@@ -159,7 +158,7 @@ public final class Participant {
 
     /**
      * Get the role property: The role that the participant is playing in the interaction.
-     *
+     * 
      * @return the role value.
      */
     public String role() {
@@ -168,7 +167,7 @@ public final class Participant {
 
     /**
      * Set the role property: The role that the participant is playing in the interaction.
-     *
+     * 
      * @param role the role value to set.
      * @return the Participant object itself.
      */
@@ -179,29 +178,83 @@ public final class Participant {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (profileTypeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property profileTypeName in model Participant"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property profileTypeName in model Participant"));
         }
         if (participantPropertyReferences() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property participantPropertyReferences in model Participant"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property participantPropertyReferences in model Participant"));
         } else {
             participantPropertyReferences().forEach(e -> e.validate());
         }
         if (participantName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property participantName in model Participant"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property participantName in model Participant"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Participant.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("profileTypeName", this.profileTypeName);
+        jsonWriter.writeArrayField("participantPropertyReferences", this.participantPropertyReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("participantName", this.participantName);
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("description", this.description, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("role", this.role);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Participant from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Participant if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Participant.
+     */
+    public static Participant fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Participant deserializedParticipant = new Participant();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profileTypeName".equals(fieldName)) {
+                    deserializedParticipant.profileTypeName = reader.getString();
+                } else if ("participantPropertyReferences".equals(fieldName)) {
+                    List<ParticipantPropertyReference> participantPropertyReferences
+                        = reader.readArray(reader1 -> ParticipantPropertyReference.fromJson(reader1));
+                    deserializedParticipant.participantPropertyReferences = participantPropertyReferences;
+                } else if ("participantName".equals(fieldName)) {
+                    deserializedParticipant.participantName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedParticipant.displayName = displayName;
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedParticipant.description = description;
+                } else if ("role".equals(fieldName)) {
+                    deserializedParticipant.role = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParticipant;
+        });
+    }
 }

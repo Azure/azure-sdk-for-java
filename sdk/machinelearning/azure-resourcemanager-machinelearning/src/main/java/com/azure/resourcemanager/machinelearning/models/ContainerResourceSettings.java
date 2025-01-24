@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ContainerResourceSettings model. */
+/**
+ * The ContainerResourceSettings model.
+ */
 @Fluent
-public final class ContainerResourceSettings {
+public final class ContainerResourceSettings implements JsonSerializable<ContainerResourceSettings> {
     /*
      * Number of vCPUs request/limit for container. More info:
      * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
      */
-    @JsonProperty(value = "cpu")
     private String cpu;
-
-    /*
-     * Number of Nvidia GPU cards request/limit for container. More info:
-     * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
-     */
-    @JsonProperty(value = "gpu")
-    private String gpu;
 
     /*
      * Memory size request/limit for container. More info:
      * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
      */
-    @JsonProperty(value = "memory")
     private String memory;
 
-    /** Creates an instance of ContainerResourceSettings class. */
+    /*
+     * Number of Nvidia GPU cards request/limit for container. More info:
+     * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+     */
+    private String gpu;
+
+    /**
+     * Creates an instance of ContainerResourceSettings class.
+     */
     public ContainerResourceSettings() {
     }
 
     /**
      * Get the cpu property: Number of vCPUs request/limit for container. More info:
      * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/.
-     *
+     * 
      * @return the cpu value.
      */
     public String cpu() {
@@ -48,7 +53,7 @@ public final class ContainerResourceSettings {
     /**
      * Set the cpu property: Number of vCPUs request/limit for container. More info:
      * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/.
-     *
+     * 
      * @param cpu the cpu value to set.
      * @return the ContainerResourceSettings object itself.
      */
@@ -58,31 +63,9 @@ public final class ContainerResourceSettings {
     }
 
     /**
-     * Get the gpu property: Number of Nvidia GPU cards request/limit for container. More info:
-     * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/.
-     *
-     * @return the gpu value.
-     */
-    public String gpu() {
-        return this.gpu;
-    }
-
-    /**
-     * Set the gpu property: Number of Nvidia GPU cards request/limit for container. More info:
-     * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/.
-     *
-     * @param gpu the gpu value to set.
-     * @return the ContainerResourceSettings object itself.
-     */
-    public ContainerResourceSettings withGpu(String gpu) {
-        this.gpu = gpu;
-        return this;
-    }
-
-    /**
      * Get the memory property: Memory size request/limit for container. More info:
      * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/.
-     *
+     * 
      * @return the memory value.
      */
     public String memory() {
@@ -92,7 +75,7 @@ public final class ContainerResourceSettings {
     /**
      * Set the memory property: Memory size request/limit for container. More info:
      * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/.
-     *
+     * 
      * @param memory the memory value to set.
      * @return the ContainerResourceSettings object itself.
      */
@@ -102,10 +85,74 @@ public final class ContainerResourceSettings {
     }
 
     /**
+     * Get the gpu property: Number of Nvidia GPU cards request/limit for container. More info:
+     * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/.
+     * 
+     * @return the gpu value.
+     */
+    public String gpu() {
+        return this.gpu;
+    }
+
+    /**
+     * Set the gpu property: Number of Nvidia GPU cards request/limit for container. More info:
+     * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/.
+     * 
+     * @param gpu the gpu value to set.
+     * @return the ContainerResourceSettings object itself.
+     */
+    public ContainerResourceSettings withGpu(String gpu) {
+        this.gpu = gpu;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cpu", this.cpu);
+        jsonWriter.writeStringField("memory", this.memory);
+        jsonWriter.writeStringField("gpu", this.gpu);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerResourceSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerResourceSettings.
+     */
+    public static ContainerResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerResourceSettings deserializedContainerResourceSettings = new ContainerResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpu".equals(fieldName)) {
+                    deserializedContainerResourceSettings.cpu = reader.getString();
+                } else if ("memory".equals(fieldName)) {
+                    deserializedContainerResourceSettings.memory = reader.getString();
+                } else if ("gpu".equals(fieldName)) {
+                    deserializedContainerResourceSettings.gpu = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerResourceSettings;
+        });
     }
 }

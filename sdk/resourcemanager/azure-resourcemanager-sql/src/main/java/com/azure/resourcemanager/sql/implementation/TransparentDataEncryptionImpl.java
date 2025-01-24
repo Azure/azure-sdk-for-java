@@ -21,11 +21,8 @@ class TransparentDataEncryptionImpl
     private final SqlServerManager sqlServerManager;
     private final ResourceId resourceId;
 
-    protected TransparentDataEncryptionImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        LogicalDatabaseTransparentDataEncryptionInner innerObject,
-        SqlServerManager sqlServerManager) {
+    protected TransparentDataEncryptionImpl(String resourceGroupName, String sqlServerName,
+        LogicalDatabaseTransparentDataEncryptionInner innerObject, SqlServerManager sqlServerManager) {
         super(innerObject);
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
@@ -65,14 +62,9 @@ class TransparentDataEncryptionImpl
 
     @Override
     public TransparentDataEncryption updateStatus(TransparentDataEncryptionState transparentDataEncryptionState) {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getTransparentDataEncryptions()
-            .createOrUpdate(
-                this.resourceGroupName,
-                this.sqlServerName,
-                this.databaseName(),
+            .createOrUpdate(this.resourceGroupName, this.sqlServerName, this.databaseName(),
                 TransparentDataEncryptionName.CURRENT,
                 new LogicalDatabaseTransparentDataEncryptionInner().withState(transparentDataEncryptionState));
         this.refresh();
@@ -81,17 +73,12 @@ class TransparentDataEncryptionImpl
     }
 
     @Override
-    public Mono<TransparentDataEncryption> updateStatusAsync(
-        TransparentDataEncryptionState transparentDataEncryptionState) {
+    public Mono<TransparentDataEncryption>
+        updateStatusAsync(TransparentDataEncryptionState transparentDataEncryptionState) {
         final TransparentDataEncryptionImpl self = this;
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getTransparentDataEncryptions()
-            .createOrUpdateAsync(
-                self.resourceGroupName,
-                self.sqlServerName,
-                self.databaseName(),
+            .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.databaseName(),
                 TransparentDataEncryptionName.CURRENT,
                 new LogicalDatabaseTransparentDataEncryptionInner().withState(transparentDataEncryptionState))
             .then(refreshAsync());
@@ -99,11 +86,9 @@ class TransparentDataEncryptionImpl
 
     @Override
     protected Mono<LogicalDatabaseTransparentDataEncryptionInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getTransparentDataEncryptions()
-            .getAsync(
-                this.resourceGroupName, this.sqlServerName, this.databaseName(), TransparentDataEncryptionName.CURRENT);
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(),
+                TransparentDataEncryptionName.CURRENT);
     }
 }

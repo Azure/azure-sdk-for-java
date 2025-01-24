@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryAggregationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryAggregation model =
-            BinaryData.fromString("{\"name\":\"tddckcb\",\"function\":\"Sum\"}").toObject(QueryAggregation.class);
-        Assertions.assertEquals("tddckcb", model.name());
+        QueryAggregation model = BinaryData.fromString("{\"name\":\"xpaglqivbgkc\",\"function\":\"Sum\"}")
+            .toObject(QueryAggregation.class);
+        Assertions.assertEquals("xpaglqivbgkc", model.name());
         Assertions.assertEquals(FunctionType.SUM, model.function());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryAggregation model = new QueryAggregation().withName("tddckcb").withFunction(FunctionType.SUM);
+        QueryAggregation model = new QueryAggregation().withName("xpaglqivbgkc").withFunction(FunctionType.SUM);
         model = BinaryData.fromObject(model).toObject(QueryAggregation.class);
-        Assertions.assertEquals("tddckcb", model.name());
+        Assertions.assertEquals("xpaglqivbgkc", model.name());
         Assertions.assertEquals(FunctionType.SUM, model.function());
     }
 }

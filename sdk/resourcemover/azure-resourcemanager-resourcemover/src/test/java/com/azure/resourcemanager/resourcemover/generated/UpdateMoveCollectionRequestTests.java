@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateMoveCollectionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateMoveCollectionRequest model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"qs\":\"ygjofjdd\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ewnwreitjzyfl\",\"tenantId\":\"arhmofcqhsmy\"}}")
-                .toObject(UpdateMoveCollectionRequest.class);
+        UpdateMoveCollectionRequest model = BinaryData.fromString(
+            "{\"tags\":{\"qs\":\"ygjofjdd\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ewnwreitjzyfl\",\"tenantId\":\"arhmofcqhsmy\"}}")
+            .toObject(UpdateMoveCollectionRequest.class);
         Assertions.assertEquals("ygjofjdd", model.tags().get("qs"));
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("ewnwreitjzyfl", model.identity().principalId());
@@ -28,14 +26,10 @@ public final class UpdateMoveCollectionRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateMoveCollectionRequest model =
-            new UpdateMoveCollectionRequest()
-                .withTags(mapOf("qs", "ygjofjdd"))
-                .withIdentity(
-                    new Identity()
-                        .withType(ResourceIdentityType.USER_ASSIGNED)
-                        .withPrincipalId("ewnwreitjzyfl")
-                        .withTenantId("arhmofcqhsmy"));
+        UpdateMoveCollectionRequest model = new UpdateMoveCollectionRequest().withTags(mapOf("qs", "ygjofjdd"))
+            .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withPrincipalId("ewnwreitjzyfl")
+                .withTenantId("arhmofcqhsmy"));
         model = BinaryData.fromObject(model).toObject(UpdateMoveCollectionRequest.class);
         Assertions.assertEquals("ygjofjdd", model.tags().get("qs"));
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());

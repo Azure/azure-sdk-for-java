@@ -13,38 +13,35 @@ import org.junit.jupiter.api.Assertions;
 public final class L2IsolationDomainInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L2IsolationDomainInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"networkFabricId\":\"h\",\"vlanId\":1761587011,\"mtu\":765927655,\"configurationState\":\"Rejected\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"RMA\",\"annotation\":\"exlfciatxtjrrl\"},\"location\":\"dskjhhxdlaj\",\"tags\":{\"a\":\"cxscvslxlh\",\"slojfkqidnqt\":\"krmukmyjmkxett\",\"rngl\":\"qxjhqxcsqhtkbtnq\"},\"id\":\"mbiipsnawwlqk\",\"name\":\"nxhhl\",\"type\":\"xricctkwmuqq\"}")
-                .toObject(L2IsolationDomainInner.class);
-        Assertions.assertEquals("dskjhhxdlaj", model.location());
-        Assertions.assertEquals("cxscvslxlh", model.tags().get("a"));
-        Assertions.assertEquals("h", model.networkFabricId());
-        Assertions.assertEquals(1761587011, model.vlanId());
-        Assertions.assertEquals(765927655, model.mtu());
-        Assertions.assertEquals("exlfciatxtjrrl", model.annotation());
+        L2IsolationDomainInner model = BinaryData.fromString(
+            "{\"properties\":{\"networkFabricId\":\"e\",\"vlanId\":76777618,\"mtu\":246722999,\"configurationState\":\"Accepted\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Disabled\",\"annotation\":\"bzkkd\"},\"location\":\"hqsycljselp\",\"tags\":{\"by\":\"afvafh\",\"rsofpltdbmairrh\":\"ccbevxrhyzdf\",\"npq\":\"hfnrac\",\"uuj\":\"g\"},\"id\":\"ouhdawsigrb\",\"name\":\"bxsjybvitvqkj\",\"type\":\"az\"}")
+            .toObject(L2IsolationDomainInner.class);
+        Assertions.assertEquals("hqsycljselp", model.location());
+        Assertions.assertEquals("afvafh", model.tags().get("by"));
+        Assertions.assertEquals("e", model.networkFabricId());
+        Assertions.assertEquals(76777618, model.vlanId());
+        Assertions.assertEquals(246722999, model.mtu());
+        Assertions.assertEquals("bzkkd", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2IsolationDomainInner model =
-            new L2IsolationDomainInner()
-                .withLocation("dskjhhxdlaj")
-                .withTags(mapOf("a", "cxscvslxlh", "slojfkqidnqt", "krmukmyjmkxett", "rngl", "qxjhqxcsqhtkbtnq"))
-                .withNetworkFabricId("h")
-                .withVlanId(1761587011)
-                .withMtu(765927655)
-                .withAnnotation("exlfciatxtjrrl");
+        L2IsolationDomainInner model = new L2IsolationDomainInner().withLocation("hqsycljselp")
+            .withTags(mapOf("by", "afvafh", "rsofpltdbmairrh", "ccbevxrhyzdf", "npq", "hfnrac", "uuj", "g"))
+            .withNetworkFabricId("e")
+            .withVlanId(76777618)
+            .withMtu(246722999)
+            .withAnnotation("bzkkd");
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainInner.class);
-        Assertions.assertEquals("dskjhhxdlaj", model.location());
-        Assertions.assertEquals("cxscvslxlh", model.tags().get("a"));
-        Assertions.assertEquals("h", model.networkFabricId());
-        Assertions.assertEquals(1761587011, model.vlanId());
-        Assertions.assertEquals(765927655, model.mtu());
-        Assertions.assertEquals("exlfciatxtjrrl", model.annotation());
+        Assertions.assertEquals("hqsycljselp", model.location());
+        Assertions.assertEquals("afvafh", model.tags().get("by"));
+        Assertions.assertEquals("e", model.networkFabricId());
+        Assertions.assertEquals(76777618, model.vlanId());
+        Assertions.assertEquals(246722999, model.mtu());
+        Assertions.assertEquals("bzkkd", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

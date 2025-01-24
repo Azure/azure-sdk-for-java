@@ -21,57 +21,42 @@ public final class StudentsImpl implements Students {
 
     private final com.azure.resourcemanager.education.EducationManager serviceManager;
 
-    public StudentsImpl(
-        StudentsClient innerClient, com.azure.resourcemanager.education.EducationManager serviceManager) {
+    public StudentsImpl(StudentsClient innerClient,
+        com.azure.resourcemanager.education.EducationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<StudentDetails> list(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        PagedIterable<StudentDetailsInner> inner =
-            this.serviceClient().list(billingAccountName, billingProfileName, invoiceSectionName);
-        return Utils.mapPage(inner, inner1 -> new StudentDetailsImpl(inner1, this.manager()));
+    public PagedIterable<StudentDetails> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
+        PagedIterable<StudentDetailsInner> inner
+            = this.serviceClient().list(billingAccountName, billingProfileName, invoiceSectionName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StudentDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StudentDetails> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDeleted,
-        Context context) {
-        PagedIterable<StudentDetailsInner> inner =
-            this
-                .serviceClient()
-                .list(billingAccountName, billingProfileName, invoiceSectionName, includeDeleted, context);
-        return Utils.mapPage(inner, inner1 -> new StudentDetailsImpl(inner1, this.manager()));
+    public PagedIterable<StudentDetails> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDeleted, Context context) {
+        PagedIterable<StudentDetailsInner> inner = this.serviceClient()
+            .list(billingAccountName, billingProfileName, invoiceSectionName, includeDeleted, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StudentDetailsImpl(inner1, this.manager()));
     }
 
-    public Response<StudentDetails> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        Context context) {
-        Response<StudentDetailsInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, context);
+    public Response<StudentDetails> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, Context context) {
+        Response<StudentDetailsInner> inner = this.serviceClient()
+            .getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StudentDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public StudentDetails get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
-        StudentDetailsInner inner =
-            this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName, studentAlias);
+    public StudentDetails get(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String studentAlias) {
+        StudentDetailsInner inner
+            = this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName, studentAlias);
         if (inner != null) {
             return new StudentDetailsImpl(inner, this.manager());
         } else {
@@ -79,55 +64,34 @@ public final class StudentsImpl implements Students {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, context);
     }
 
-    public void delete(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+    public void delete(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String studentAlias) {
         this.serviceClient().delete(billingAccountName, billingProfileName, invoiceSectionName, studentAlias);
     }
 
-    public Response<StudentDetails> createOrUpdateWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters,
-        Context context) {
-        Response<StudentDetailsInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters, context);
+    public Response<StudentDetails> createOrUpdateWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, StudentDetailsInner parameters, Context context) {
+        Response<StudentDetailsInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias,
+                parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StudentDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public StudentDetails createOrUpdate(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters) {
-        StudentDetailsInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters);
+    public StudentDetails createOrUpdate(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, StudentDetailsInner parameters) {
+        StudentDetailsInner inner = this.serviceClient()
+            .createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters);
         if (inner != null) {
             return new StudentDetailsImpl(inner, this.manager());
         } else {

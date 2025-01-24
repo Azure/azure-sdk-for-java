@@ -25,8 +25,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
     private RemoteRenderingAsyncClient getClient(HttpClient httpClient) {
-        return new RemoteRenderingClientBuilder()
-            .accountId(super.getAccountId())
+        return new RemoteRenderingClientBuilder().accountId(super.getAccountId())
             .accountDomain(super.getAccountDomain())
             .credential(super.getAccountKey())
             .endpoint(super.getServiceEndpoint())
@@ -39,47 +38,46 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     public void conversionTest(HttpClient httpClient) {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
-        AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .setInputStorageContainerUrl(getStorageUrl())
-            .setInputRelativeAssetPath("testBox.fbx")
-            .setInputBlobPrefix("Input")
-            .setInputStorageContainerReadListSas(getBlobContainerSasToken())
-            .setOutputStorageContainerUrl(getStorageUrl())
-            .setOutputBlobPrefix("Output")
-            .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
+        AssetConversionOptions conversionOptions
+            = new AssetConversionOptions().setInputStorageContainerUrl(getStorageUrl())
+                .setInputRelativeAssetPath("testBox.fbx")
+                .setInputBlobPrefix("Input")
+                .setInputStorageContainerReadListSas(getBlobContainerSasToken())
+                .setOutputStorageContainerUrl(getStorageUrl())
+                .setOutputBlobPrefix("Output")
+                .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
 
         String conversionId = getRandomId("asyncConversionTest");
 
-        PollerFlux<AssetConversion, AssetConversion> poller = setPollerFluxPollInterval(client
-            .beginConversion(conversionId, conversionOptions));
+        PollerFlux<AssetConversion, AssetConversion> poller
+            = setPollerFluxPollInterval(client.beginConversion(conversionId, conversionOptions));
 
         Flux<AsyncPollResponse<AssetConversion, AssetConversion>> terminalPoller = poller.map(response -> {
             AssetConversion conversion = response.getValue();
             assertEquals(conversionId, conversion.getId());
-            assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion.getOptions().getInputRelativeAssetPath());
+            assertEquals(conversionOptions.getInputRelativeAssetPath(),
+                conversion.getOptions().getInputRelativeAssetPath());
             assertNotEquals(AssetConversionStatus.FAILED, conversion.getStatus());
             return response;
-        }).filter(response -> ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
-                              && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS)));
+        })
+            .filter(response -> ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
+                && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS)));
 
-        StepVerifier.create(terminalPoller)
-            .assertNext(response -> {
-                assertEquals(response.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        StepVerifier.create(terminalPoller).assertNext(response -> {
+            assertEquals(response.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-                AssetConversion conversion = response.getValue();
-                assertEquals(conversion.getStatus(), AssetConversionStatus.SUCCEEDED);
-                assertTrue(conversion.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
-            })
-            .verifyComplete();
+            AssetConversion conversion = response.getValue();
+            assertEquals(conversion.getStatus(), AssetConversionStatus.SUCCEEDED);
+            assertTrue(conversion.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
+        }).verifyComplete();
 
-        StepVerifier.create(client.getConversion(conversionId))
-            .assertNext(conversion -> {
-                assertEquals(conversion.getStatus(), AssetConversionStatus.SUCCEEDED);
-                assertTrue(conversion.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
-            })
-            .verifyComplete();
+        StepVerifier.create(client.getConversion(conversionId)).assertNext(conversion -> {
+            assertEquals(conversion.getStatus(), AssetConversionStatus.SUCCEEDED);
+            assertTrue(conversion.getOutputAssetUrl().endsWith("Output/testBox.arrAsset"));
+        }).verifyComplete();
 
-        Boolean foundConversion = client.listConversions().any(conversion -> conversion.getId().equals(conversionId)).block();
+        Boolean foundConversion
+            = client.listConversions().any(conversion -> conversion.getId().equals(conversionId)).block();
         assertNotNull(foundConversion);
         assertTrue(foundConversion);
     }
@@ -90,17 +88,17 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
         // Don't provide SAS tokens.
-        AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .setInputStorageContainerUrl(getStorageUrl())
-            .setInputRelativeAssetPath("testBox.fbx")
-            .setInputBlobPrefix("Input")
-            .setOutputStorageContainerUrl(getStorageUrl())
-            .setOutputBlobPrefix("Output");
+        AssetConversionOptions conversionOptions
+            = new AssetConversionOptions().setInputStorageContainerUrl(getStorageUrl())
+                .setInputRelativeAssetPath("testBox.fbx")
+                .setInputBlobPrefix("Input")
+                .setOutputStorageContainerUrl(getStorageUrl())
+                .setOutputBlobPrefix("Output");
 
         String conversionId = getRandomId("failedConversionNoAccessAsync");
 
-        PollerFlux<AssetConversion, AssetConversion> poller = setPollerFluxPollInterval(client
-            .beginConversion(conversionId, conversionOptions));
+        PollerFlux<AssetConversion, AssetConversion> poller
+            = setPollerFluxPollInterval(client.beginConversion(conversionId, conversionOptions));
 
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
@@ -116,43 +114,46 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     public void failedConversionMissingAssetTest(HttpClient httpClient) {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
-        AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .setInputStorageContainerUrl(getStorageUrl())
-            .setInputRelativeAssetPath("boxWhichDoesNotExist.fbx")
-            .setInputBlobPrefix("Input")
-            .setInputStorageContainerReadListSas(getBlobContainerSasToken())
-            .setOutputStorageContainerUrl(getStorageUrl())
-            .setOutputBlobPrefix("Output")
-            .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
+        AssetConversionOptions conversionOptions
+            = new AssetConversionOptions().setInputStorageContainerUrl(getStorageUrl())
+                .setInputRelativeAssetPath("boxWhichDoesNotExist.fbx")
+                .setInputBlobPrefix("Input")
+                .setInputStorageContainerReadListSas(getBlobContainerSasToken())
+                .setOutputStorageContainerUrl(getStorageUrl())
+                .setOutputBlobPrefix("Output")
+                .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
 
         String conversionId = getRandomId("failedConversionMissingAssetAsync");
 
-        PollerFlux<AssetConversion, AssetConversion> poller = setPollerFluxPollInterval(client
-            .beginConversion(conversionId, conversionOptions));
+        PollerFlux<AssetConversion, AssetConversion> poller
+            = setPollerFluxPollInterval(client.beginConversion(conversionId, conversionOptions));
 
         Flux<AsyncPollResponse<AssetConversion, AssetConversion>> terminalPoller = poller.map(response -> {
             AssetConversion conversion = response.getValue();
             assertEquals(conversionId, conversion.getId());
-            assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion.getOptions().getInputRelativeAssetPath());
+            assertEquals(conversionOptions.getInputRelativeAssetPath(),
+                conversion.getOptions().getInputRelativeAssetPath());
             assertNotEquals(AssetConversionStatus.SUCCEEDED, conversion.getStatus());
             return response;
-        }).filter(response -> ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
-            && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS)));
+        })
+            .filter(response -> ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
+                && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS)));
 
-        StepVerifier.create(terminalPoller)
-            .assertNext(response -> {
-                assertEquals(response.getStatus(), LongRunningOperationStatus.FAILED);
+        StepVerifier.create(terminalPoller).assertNext(response -> {
+            assertEquals(response.getStatus(), LongRunningOperationStatus.FAILED);
 
-                AssetConversion conversion = response.getValue();
+            AssetConversion conversion = response.getValue();
 
-                assertEquals(AssetConversionStatus.FAILED, conversion.getStatus());
-                assertNotNull(conversion.getError());
-                assertEquals(conversion.getError().getCode(), "InputContainerError");
-                // Message: "Could not find the asset file in the storage account. Please make sure all paths and names are correct and the file is uploaded to storage."
-                assertNotNull(conversion.getError().getMessage());
-                assertTrue(conversion.getError().getMessage().toLowerCase(Locale.ROOT).contains("could not find the asset file in the storage account"));
-            })
-            .verifyComplete();
+            assertEquals(AssetConversionStatus.FAILED, conversion.getStatus());
+            assertNotNull(conversion.getError());
+            assertEquals(conversion.getError().getCode(), "InputContainerError");
+            // Message: "Could not find the asset file in the storage account. Please make sure all paths and names are correct and the file is uploaded to storage."
+            assertNotNull(conversion.getError().getMessage());
+            assertTrue(conversion.getError()
+                .getMessage()
+                .toLowerCase(Locale.ROOT)
+                .contains("could not find the asset file in the storage account"));
+        }).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -164,48 +165,47 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
-        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(firstExpectedLeaseTimeMinutes)).setSize(RenderingSessionSize.STANDARD);
+        BeginSessionOptions options
+            = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(firstExpectedLeaseTimeMinutes))
+                .setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("asyncSessionTest2");
 
-        PollerFlux<RenderingSession, RenderingSession> sessionPoller = setPollerFluxPollInterval(client
-            .beginSession(sessionId, options));
+        PollerFlux<RenderingSession, RenderingSession> sessionPoller
+            = setPollerFluxPollInterval(client.beginSession(sessionId, options));
 
         Flux<AsyncPollResponse<RenderingSession, RenderingSession>> terminalPoller = sessionPoller.map(response -> {
             RenderingSession session = response.getValue();
             assertEquals(sessionId, session.getId());
             assertNotEquals(RenderingSessionStatus.ERROR, session.getStatus());
             return response;
-        }).filter(response -> ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
-            && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS)));
+        })
+            .filter(response -> ((response.getStatus() != LongRunningOperationStatus.NOT_STARTED)
+                && (response.getStatus() != LongRunningOperationStatus.IN_PROGRESS)));
 
-        StepVerifier.create(terminalPoller)
-            .assertNext(response -> {
-                assertEquals(response.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        StepVerifier.create(terminalPoller).assertNext(response -> {
+            assertEquals(response.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
-                RenderingSession readyRenderingSession = response.getValue();
-                assertEquals(readyRenderingSession.getStatus(), RenderingSessionStatus.READY);
+            RenderingSession readyRenderingSession = response.getValue();
+            assertEquals(readyRenderingSession.getStatus(), RenderingSessionStatus.READY);
 
-                assertEquals(firstExpectedLeaseTimeMinutes, readyRenderingSession.getMaxLeaseTime().toMinutes());
-                assertNotNull(readyRenderingSession.getHostname());
-                assertNotEquals(readyRenderingSession.getArrInspectorPort(), 0);
-                assertEquals(readyRenderingSession.getSize(), options.getSize());
-            })
-            .verifyComplete();
+            assertEquals(firstExpectedLeaseTimeMinutes, readyRenderingSession.getMaxLeaseTime().toMinutes());
+            assertNotNull(readyRenderingSession.getHostname());
+            assertNotEquals(readyRenderingSession.getArrInspectorPort(), 0);
+        }).verifyComplete();
 
-        StepVerifier.create(client.getSession(sessionId))
-            .assertNext(session -> {
-                assertEquals(session.getStatus(), RenderingSessionStatus.READY);
-                assertNotNull(session.getHostname());
-                assertNotEquals(session.getArrInspectorPort(), 0);
-                assertEquals(session.getSize(), options.getSize());
-            })
-            .verifyComplete();
+        StepVerifier.create(client.getSession(sessionId)).assertNext(session -> {
+            assertEquals(session.getStatus(), RenderingSessionStatus.READY);
+            assertNotNull(session.getHostname());
+            assertNotEquals(session.getArrInspectorPort(), 0);
+        }).verifyComplete();
 
-        UpdateSessionOptions updateOptions = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(secondExpectedLeaseTimeMinutes));
+        UpdateSessionOptions updateOptions
+            = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(secondExpectedLeaseTimeMinutes));
 
         StepVerifier.create(client.updateSession(sessionId, updateOptions))
-            .assertNext(session -> assertEquals(secondExpectedLeaseTimeMinutes, session.getMaxLeaseTime().toMinutes())).verifyComplete();
+            .assertNext(session -> assertEquals(secondExpectedLeaseTimeMinutes, session.getMaxLeaseTime().toMinutes()))
+            .verifyComplete();
 
         Boolean foundSession = client.listSessions().any(session -> session.getId().equals(sessionId)).block();
         assertNotNull(foundSession);
@@ -218,12 +218,13 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     @MethodSource("getHttpClients")
     public void failedSessionTest(HttpClient httpClient) {
         RemoteRenderingAsyncClient client = getClient(httpClient);
-        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);
+        BeginSessionOptions options
+            = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("failedSessionTestAsync");
 
-        PollerFlux<RenderingSession, RenderingSession> poller = setPollerFluxPollInterval(client
-            .beginSession(sessionId, options));
+        PollerFlux<RenderingSession, RenderingSession> poller
+            = setPollerFluxPollInterval(client.beginSession(sessionId, options));
 
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // The maxLeaseTimeMinutes value cannot be negative

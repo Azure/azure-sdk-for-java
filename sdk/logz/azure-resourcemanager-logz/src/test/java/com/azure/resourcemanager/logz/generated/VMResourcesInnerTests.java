@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class VMResourcesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMResourcesInner model =
-            BinaryData
-                .fromString("{\"id\":\"bdlwtgrhpdjpj\",\"agentVersion\":\"asxazjpqyegualhb\"}")
-                .toObject(VMResourcesInner.class);
-        Assertions.assertEquals("bdlwtgrhpdjpj", model.id());
-        Assertions.assertEquals("asxazjpqyegualhb", model.agentVersion());
+        VMResourcesInner model = BinaryData.fromString("{\"id\":\"vyifqrvkdvjsl\",\"agentVersion\":\"mvvd\"}")
+            .toObject(VMResourcesInner.class);
+        Assertions.assertEquals("vyifqrvkdvjsl", model.id());
+        Assertions.assertEquals("mvvd", model.agentVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMResourcesInner model = new VMResourcesInner().withId("bdlwtgrhpdjpj").withAgentVersion("asxazjpqyegualhb");
+        VMResourcesInner model = new VMResourcesInner().withId("vyifqrvkdvjsl").withAgentVersion("mvvd");
         model = BinaryData.fromObject(model).toObject(VMResourcesInner.class);
-        Assertions.assertEquals("bdlwtgrhpdjpj", model.id());
-        Assertions.assertEquals("asxazjpqyegualhb", model.agentVersion());
+        Assertions.assertEquals("vyifqrvkdvjsl", model.id());
+        Assertions.assertEquals("mvvd", model.agentVersion());
     }
 }

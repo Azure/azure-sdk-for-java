@@ -17,10 +17,25 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobOutputErroredEventData extends MediaJobOutputStateChangeEventData {
+    /*
+     * The previous state of the Job.
+     */
+    private MediaJobState previousState;
+
     /**
      * Creates an instance of MediaJobOutputErroredEventData class.
      */
     public MediaJobOutputErroredEventData() {
+    }
+
+    /**
+     * Get the previousState property: The previous state of the Job.
+     * 
+     * @return the previousState value.
+     */
+    @Override
+    public MediaJobState getPreviousState() {
+        return this.previousState;
     }
 
     /**
@@ -41,6 +56,9 @@ public final class MediaJobOutputErroredEventData extends MediaJobOutputStateCha
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,8 +85,8 @@ public final class MediaJobOutputErroredEventData extends MediaJobOutputStateCha
                 reader.nextToken();
 
                 if ("previousState".equals(fieldName)) {
-                    deserializedMediaJobOutputErroredEventData
-                        .setPreviousState(MediaJobState.fromString(reader.getString()));
+                    deserializedMediaJobOutputErroredEventData.previousState
+                        = MediaJobState.fromString(reader.getString());
                 } else if ("output".equals(fieldName)) {
                     deserializedMediaJobOutputErroredEventData.setOutput(MediaJobOutput.fromJson(reader));
                 } else if ("jobCorrelationData".equals(fieldName)) {

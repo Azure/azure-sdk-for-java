@@ -11,28 +11,40 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryClient;
+import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetEndpointProfilesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetsImpl;
-import com.azure.resourcemanager.deviceregistry.implementation.DeviceRegistryClientBuilder;
-import com.azure.resourcemanager.deviceregistry.implementation.OperationsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.BillingContainersImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.DeviceRegistryManagementClientBuilder;
+import com.azure.resourcemanager.deviceregistry.implementation.DiscoveredAssetEndpointProfilesImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.DiscoveredAssetsImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationStatusImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.OperationsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.SchemaRegistriesImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.SchemaVersionsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.SchemasImpl;
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfiles;
 import com.azure.resourcemanager.deviceregistry.models.Assets;
-import com.azure.resourcemanager.deviceregistry.models.Operations;
+import com.azure.resourcemanager.deviceregistry.models.BillingContainers;
+import com.azure.resourcemanager.deviceregistry.models.DiscoveredAssetEndpointProfiles;
+import com.azure.resourcemanager.deviceregistry.models.DiscoveredAssets;
 import com.azure.resourcemanager.deviceregistry.models.OperationStatus;
+import com.azure.resourcemanager.deviceregistry.models.Operations;
+import com.azure.resourcemanager.deviceregistry.models.SchemaRegistries;
+import com.azure.resourcemanager.deviceregistry.models.SchemaVersions;
+import com.azure.resourcemanager.deviceregistry.models.Schemas;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -53,12 +65,24 @@ public final class DeviceRegistryManager {
 
     private AssetEndpointProfiles assetEndpointProfiles;
 
-    private final DeviceRegistryClient clientObject;
+    private BillingContainers billingContainers;
+
+    private DiscoveredAssets discoveredAssets;
+
+    private DiscoveredAssetEndpointProfiles discoveredAssetEndpointProfiles;
+
+    private SchemaRegistries schemaRegistries;
+
+    private Schemas schemas;
+
+    private SchemaVersions schemaVersions;
+
+    private final DeviceRegistryManagementClient clientObject;
 
     private DeviceRegistryManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new DeviceRegistryClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new DeviceRegistryManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -250,7 +274,7 @@ public final class DeviceRegistryManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -312,12 +336,85 @@ public final class DeviceRegistryManager {
     }
 
     /**
-     * Gets wrapped service client DeviceRegistryClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets the resource collection API of BillingContainers.
      * 
-     * @return Wrapped service client DeviceRegistryClient.
+     * @return Resource collection API of BillingContainers.
      */
-    public DeviceRegistryClient serviceClient() {
+    public BillingContainers billingContainers() {
+        if (this.billingContainers == null) {
+            this.billingContainers = new BillingContainersImpl(clientObject.getBillingContainers(), this);
+        }
+        return billingContainers;
+    }
+
+    /**
+     * Gets the resource collection API of DiscoveredAssets. It manages DiscoveredAsset.
+     * 
+     * @return Resource collection API of DiscoveredAssets.
+     */
+    public DiscoveredAssets discoveredAssets() {
+        if (this.discoveredAssets == null) {
+            this.discoveredAssets = new DiscoveredAssetsImpl(clientObject.getDiscoveredAssets(), this);
+        }
+        return discoveredAssets;
+    }
+
+    /**
+     * Gets the resource collection API of DiscoveredAssetEndpointProfiles. It manages DiscoveredAssetEndpointProfile.
+     * 
+     * @return Resource collection API of DiscoveredAssetEndpointProfiles.
+     */
+    public DiscoveredAssetEndpointProfiles discoveredAssetEndpointProfiles() {
+        if (this.discoveredAssetEndpointProfiles == null) {
+            this.discoveredAssetEndpointProfiles
+                = new DiscoveredAssetEndpointProfilesImpl(clientObject.getDiscoveredAssetEndpointProfiles(), this);
+        }
+        return discoveredAssetEndpointProfiles;
+    }
+
+    /**
+     * Gets the resource collection API of SchemaRegistries. It manages SchemaRegistry.
+     * 
+     * @return Resource collection API of SchemaRegistries.
+     */
+    public SchemaRegistries schemaRegistries() {
+        if (this.schemaRegistries == null) {
+            this.schemaRegistries = new SchemaRegistriesImpl(clientObject.getSchemaRegistries(), this);
+        }
+        return schemaRegistries;
+    }
+
+    /**
+     * Gets the resource collection API of Schemas. It manages Schema.
+     * 
+     * @return Resource collection API of Schemas.
+     */
+    public Schemas schemas() {
+        if (this.schemas == null) {
+            this.schemas = new SchemasImpl(clientObject.getSchemas(), this);
+        }
+        return schemas;
+    }
+
+    /**
+     * Gets the resource collection API of SchemaVersions. It manages SchemaVersion.
+     * 
+     * @return Resource collection API of SchemaVersions.
+     */
+    public SchemaVersions schemaVersions() {
+        if (this.schemaVersions == null) {
+            this.schemaVersions = new SchemaVersionsImpl(clientObject.getSchemaVersions(), this);
+        }
+        return schemaVersions;
+    }
+
+    /**
+     * Gets wrapped service client DeviceRegistryManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client DeviceRegistryManagementClient.
+     */
+    public DeviceRegistryManagementClient serviceClient() {
         return this.clientObject;
     }
 }

@@ -82,6 +82,9 @@ public final class DocumentKeyValueElement implements JsonSerializable<DocumentK
         return this.spans;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = AttachmentsClientBuilder.class, isAsync = true)
 public final class AttachmentsAsyncClient {
-    @Generated private final AttachmentsImpl serviceClient;
+    @Generated
+    private final AttachmentsImpl serviceClient;
 
     /**
      * Initializes an instance of AttachmentsAsyncClient class.
@@ -133,8 +134,8 @@ public final class AttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId, String attachmentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String attachmentId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(partyId, attachmentId, requestOptions);
     }
 
@@ -189,8 +190,8 @@ public final class AttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String attachmentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String attachmentId,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(partyId, attachmentId, requestOptions);
     }
 
@@ -232,8 +233,8 @@ public final class AttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadWithResponse(
-            String partyId, String attachmentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> downloadWithResponse(String partyId, String attachmentId,
+        RequestOptions requestOptions) {
         return this.serviceClient.downloadWithResponseAsync(partyId, attachmentId, requestOptions);
     }
 }

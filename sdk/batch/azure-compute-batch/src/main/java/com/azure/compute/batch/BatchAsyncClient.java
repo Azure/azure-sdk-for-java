@@ -4,21 +4,28 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
+import com.azure.compute.batch.implementation.task.TaskManager;
+import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
+import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateContent;
 import com.azure.compute.batch.models.BatchJobDisableContent;
 import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatus;
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleCreateContent;
+import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
 import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
 import com.azure.compute.batch.models.BatchJobTerminateContent;
 import com.azure.compute.batch.models.BatchJobUpdateContent;
 import com.azure.compute.batch.models.BatchNode;
+import com.azure.compute.batch.models.BatchNodeDeallocateContent;
 import com.azure.compute.batch.models.BatchNodeDisableSchedulingContent;
 import com.azure.compute.batch.models.BatchNodeFile;
 import com.azure.compute.batch.models.BatchNodeRebootContent;
+import com.azure.compute.batch.models.BatchNodeReimageContent;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettings;
 import com.azure.compute.batch.models.BatchNodeRemoveContent;
 import com.azure.compute.batch.models.BatchNodeUserCreateContent;
@@ -28,6 +35,7 @@ import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateContent;
 import com.azure.compute.batch.models.BatchPoolEnableAutoScaleContent;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleContent;
+import com.azure.compute.batch.models.BatchPoolExistsOptions;
 import com.azure.compute.batch.models.BatchPoolNodeCounts;
 import com.azure.compute.batch.models.BatchPoolReplaceContent;
 import com.azure.compute.batch.models.BatchPoolResizeContent;
@@ -40,45 +48,13 @@ import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
 import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskGroup;
-import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
-import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
-import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.RequestConditions;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.FluxUtil;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
-import com.azure.compute.batch.implementation.task.TaskManager;
-import com.azure.compute.batch.implementation.task.TaskSubmitter;
-import com.azure.compute.batch.models.BatchClientParallelOptions;
-import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
-import com.azure.compute.batch.models.BatchPoolExistsOptions;
 import com.azure.compute.batch.models.CreateBatchJobOptions;
 import com.azure.compute.batch.models.CreateBatchJobScheduleOptions;
 import com.azure.compute.batch.models.CreateBatchNodeUserOptions;
 import com.azure.compute.batch.models.CreateBatchPoolOptions;
 import com.azure.compute.batch.models.CreateBatchTaskCollectionOptions;
 import com.azure.compute.batch.models.CreateBatchTaskOptions;
+import com.azure.compute.batch.models.DeallocateBatchNodeOptions;
 import com.azure.compute.batch.models.DeleteBatchJobOptions;
 import com.azure.compute.batch.models.DeleteBatchJobScheduleOptions;
 import com.azure.compute.batch.models.DeleteBatchNodeFileOptions;
@@ -126,6 +102,7 @@ import com.azure.compute.batch.models.ListBatchTasksOptions;
 import com.azure.compute.batch.models.ListSupportedBatchImagesOptions;
 import com.azure.compute.batch.models.ReactivateBatchTaskOptions;
 import com.azure.compute.batch.models.RebootBatchNodeOptions;
+import com.azure.compute.batch.models.ReimageBatchNodeOptions;
 import com.azure.compute.batch.models.RemoveBatchNodesOptions;
 import com.azure.compute.batch.models.ReplaceBatchJobOptions;
 import com.azure.compute.batch.models.ReplaceBatchJobScheduleOptions;
@@ -133,6 +110,7 @@ import com.azure.compute.batch.models.ReplaceBatchNodeUserOptions;
 import com.azure.compute.batch.models.ReplaceBatchPoolPropertiesOptions;
 import com.azure.compute.batch.models.ReplaceBatchTaskOptions;
 import com.azure.compute.batch.models.ResizeBatchPoolOptions;
+import com.azure.compute.batch.models.StartBatchNodeOptions;
 import com.azure.compute.batch.models.StopBatchPoolResizeOptions;
 import com.azure.compute.batch.models.TerminateBatchJobOptions;
 import com.azure.compute.batch.models.TerminateBatchJobScheduleOptions;
@@ -141,6 +119,33 @@ import com.azure.compute.batch.models.UpdateBatchJobOptions;
 import com.azure.compute.batch.models.UpdateBatchJobScheduleOptions;
 import com.azure.compute.batch.models.UpdateBatchPoolOptions;
 import com.azure.compute.batch.models.UploadBatchNodeLogsOptions;
+import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
+import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.FluxUtil;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous BatchClient type.
@@ -996,7 +1001,8 @@ public final class BatchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteJob(String jobId, DeleteBatchJobOptions options) {
-        return deleteJobInternal(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
+        return deleteJobInternal(jobId, options.getTimeOutInSeconds(), options.getForce(),
+            options.getRequestConditions());
     }
 
     /**
@@ -1276,7 +1282,8 @@ public final class BatchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateJob(String jobId, TerminateBatchJobOptions options, BatchJobTerminateContent body) {
-        return terminateJobInternal(jobId, options.getTimeOutInSeconds(), body, options.getRequestConditions());
+        return terminateJobInternal(jobId, options.getTimeOutInSeconds(), options.getForce(), body,
+            options.getRequestConditions());
     }
 
     /**
@@ -1578,7 +1585,8 @@ public final class BatchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteJobSchedule(String jobScheduleId, DeleteBatchJobScheduleOptions options) {
-        return deleteJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
+        return deleteJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getForce(),
+            options.getRequestConditions());
     }
 
     /**
@@ -1834,7 +1842,7 @@ public final class BatchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateJobSchedule(String jobScheduleId, TerminateBatchJobScheduleOptions options) {
-        return terminateJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(),
+        return terminateJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getForce(),
             options.getRequestConditions());
     }
 
@@ -3264,7 +3272,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -3272,7 +3281,8 @@ public final class BatchAsyncClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3327,7 +3337,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -3335,7 +3346,8 @@ public final class BatchAsyncClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3369,7 +3381,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -3377,7 +3390,8 @@ public final class BatchAsyncClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3385,8 +3399,11 @@ public final class BatchAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return contains information about an application in an Azure Batch Account along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return information about the specified Application.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3427,7 +3444,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -3435,7 +3453,8 @@ public final class BatchAsyncClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3481,12 +3500,13 @@ public final class BatchAsyncClient {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -3494,7 +3514,8 @@ public final class BatchAsyncClient {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3573,7 +3594,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -3581,7 +3603,8 @@ public final class BatchAsyncClient {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3612,7 +3635,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -3625,6 +3649,8 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -3689,13 +3715,16 @@ public final class BatchAsyncClient {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -3754,6 +3783,12 @@ public final class BatchAsyncClient {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -3865,7 +3900,8 @@ public final class BatchAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3913,7 +3949,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -4135,7 +4172,8 @@ public final class BatchAsyncClient {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4151,7 +4189,7 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4164,7 +4202,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -4173,7 +4211,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -4194,6 +4233,8 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -4258,13 +4299,16 @@ public final class BatchAsyncClient {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -4348,6 +4392,12 @@ public final class BatchAsyncClient {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -4495,7 +4545,8 @@ public final class BatchAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4562,7 +4613,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -4884,7 +4936,8 @@ public final class BatchAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5089,9 +5142,11 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5181,9 +5236,11 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5236,7 +5293,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -5257,6 +5315,8 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -5321,13 +5381,16 @@ public final class BatchAsyncClient {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -5411,6 +5474,12 @@ public final class BatchAsyncClient {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -5558,7 +5627,8 @@ public final class BatchAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5662,7 +5732,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -5953,7 +6024,8 @@ public final class BatchAsyncClient {
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6008,8 +6080,12 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
+     *     displayName: String (Optional)
+     *     vmSize: String (Optional)
+     *     enableInterNodeCommunication: Boolean (Optional)
      *     startTask (Optional): {
      *         commandLine: String (Required)
      *         containerSettings (Optional): {
@@ -6024,6 +6100,12 @@ public final class BatchAsyncClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -6064,9 +6146,200 @@ public final class BatchAsyncClient {
      *             value: String (Required)
      *         }
      *     ]
+     *     virtualMachineConfiguration (Optional): {
+     *         imageReference (Required): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
+     *         }
+     *         nodeAgentSKUId: String (Required)
+     *         windowsConfiguration (Optional): {
+     *             enableAutomaticUpdates: Boolean (Optional)
+     *         }
+     *         dataDisks (Optional): [
+     *              (Optional){
+     *                 lun: int (Required)
+     *                 caching: String(none/readonly/readwrite) (Optional)
+     *                 diskSizeGB: int (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *             }
+     *         ]
+     *         licenseType: String (Optional)
+     *         containerConfiguration (Optional): {
+     *             type: String(dockerCompatible/criCompatible) (Required)
+     *             containerImageNames (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             containerRegistries (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         diskEncryptionConfiguration (Optional): {
+     *             targets (Optional): [
+     *                 String(osdisk/temporarydisk) (Optional)
+     *             ]
+     *         }
+     *         nodePlacementConfiguration (Optional): {
+     *             policy: String(regional/zonal) (Optional)
+     *         }
+     *         extensions (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 publisher: String (Required)
+     *                 type: String (Required)
+     *                 typeHandlerVersion: String (Optional)
+     *                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                 enableAutomaticUpgrade: Boolean (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 provisionAfterExtensions (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         osDisk (Optional): {
+     *             ephemeralOSDiskSettings (Optional): {
+     *                 placement: String(cachedisk) (Optional)
+     *             }
+     *             caching: String(none/readonly/readwrite) (Optional)
+     *             diskSizeGB: Integer (Optional)
+     *             managedDisk (Optional): {
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
+     *             }
+     *             writeAcceleratorEnabled: Boolean (Optional)
+     *         }
+     *         securityProfile (Optional): {
+     *             encryptionAtHost: boolean (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
+     *             uefiSettings (Required): {
+     *                 secureBootEnabled: Boolean (Optional)
+     *                 vTpmEnabled: Boolean (Optional)
+     *             }
+     *         }
+     *         serviceArtifactReference (Optional): {
+     *             id: String (Required)
+     *         }
+     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     taskSlotsPerNode: Integer (Optional)
+     *     taskSchedulingPolicy (Optional): {
+     *         nodeFillType: String(spread/pack) (Required)
+     *     }
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Optional)
+     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *         endpointConfiguration (Optional): {
+     *             inboundNATPools (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     protocol: String(tcp/udp) (Required)
+     *                     backendPort: int (Required)
+     *                     frontendPortRangeStart: int (Required)
+     *                     frontendPortRangeEnd: int (Required)
+     *                     networkSecurityGroupRules (Optional): [
+     *                          (Optional){
+     *                             priority: int (Required)
+     *                             access: String(allow/deny) (Required)
+     *                             sourceAddressPrefix: String (Required)
+     *                             sourcePortRanges (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }
+     *         publicIPAddressConfiguration (Optional): {
+     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipAddressIds (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         enableAcceleratedNetworking: Boolean (Optional)
+     *     }
+     *     resourceTags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     userAccounts (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             password: String (Required)
+     *             elevationLevel: String(nonadmin/admin) (Optional)
+     *             linuxUserConfiguration (Optional): {
+     *                 uid: Integer (Optional)
+     *                 gid: Integer (Optional)
+     *                 sshPrivateKey: String (Optional)
+     *             }
+     *             windowsUserConfiguration (Optional): {
+     *                 loginMode: String(batch/interactive) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     mountConfiguration (Optional): [
+     *          (Optional){
+     *             azureBlobFileSystemConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 containerName: String (Required)
+     *                 accountKey: String (Optional)
+     *                 sasKey: String (Optional)
+     *                 blobfuseOptions: String (Optional)
+     *                 relativeMountPath: String (Required)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *             nfsMountConfiguration (Optional): {
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *             cifsMountConfiguration (Optional): {
+     *                 username: String (Required)
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *                 password: String (Required)
+     *             }
+     *             azureFileShareConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 azureFileUrl: String (Required)
+     *                 accountKey: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *         }
+     *     ]
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOSUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
@@ -6163,7 +6436,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -6221,7 +6495,8 @@ public final class BatchAsyncClient {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
@@ -6343,12 +6618,14 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Optional)
      *     autoScaleEvaluationInterval: Duration (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for enabling automatic scaling.
@@ -6447,12 +6724,14 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Optional)
      *     autoScaleEvaluationInterval: Duration (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
@@ -6486,15 +6765,18 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     timestamp: OffsetDateTime (Required)
      *     results: String (Optional)
@@ -6509,7 +6791,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param content The options to use for evaluating the automatic scaling formula.
@@ -6518,8 +6801,11 @@ public final class BatchAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the results and errors from an execution of a Pool autoscale formula along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6560,16 +6846,19 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     timestamp: OffsetDateTime (Required)
      *     results: String (Optional)
@@ -6584,7 +6873,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
@@ -6645,14 +6935,16 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for resizing the pool.
@@ -6752,14 +7044,16 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
@@ -6941,7 +7235,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -6957,6 +7252,12 @@ public final class BatchAsyncClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -6999,7 +7300,8 @@ public final class BatchAsyncClient {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
@@ -7050,7 +7352,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -7108,7 +7411,8 @@ public final class BatchAsyncClient {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
@@ -7164,7 +7468,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeList (Required): [
      *         String (Required)
@@ -7172,7 +7477,8 @@ public final class BatchAsyncClient {
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for removing the node.
@@ -7269,7 +7575,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeList (Required): [
      *         String (Required)
@@ -7277,7 +7584,8 @@ public final class BatchAsyncClient {
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
@@ -7308,12 +7616,13 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -7323,6 +7632,8 @@ public final class BatchAsyncClient {
      *         version: String (Optional)
      *         virtualMachineImageId: String (Optional)
      *         exactVersion: String (Optional)
+     *         sharedGalleryImageId: String (Optional)
+     *         communityGalleryImageId: String (Optional)
      *     }
      *     osType: String(linux/windows) (Required)
      *     capabilities (Optional): [
@@ -7331,7 +7642,8 @@ public final class BatchAsyncClient {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7386,7 +7698,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -7404,7 +7717,8 @@ public final class BatchAsyncClient {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7434,12 +7748,13 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -7456,12 +7771,15 @@ public final class BatchAsyncClient {
      *         unknown: int (Required)
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
      *         total: int (Required)
      *         upgradingOS: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7518,7 +7836,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -7540,7 +7859,8 @@ public final class BatchAsyncClient {
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7572,6 +7892,8 @@ public final class BatchAsyncClient {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
+     * corresponding nodes have not fully processed the deletion. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -7743,7 +8065,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -7779,6 +8102,12 @@ public final class BatchAsyncClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -7895,6 +8224,8 @@ public final class BatchAsyncClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -7952,13 +8283,16 @@ public final class BatchAsyncClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -8107,6 +8441,7 @@ public final class BatchAsyncClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -8145,7 +8480,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -8248,7 +8584,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -8621,7 +8958,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -8675,7 +9013,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
@@ -8701,6 +9040,8 @@ public final class BatchAsyncClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -8765,13 +9106,16 @@ public final class BatchAsyncClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -8832,6 +9176,12 @@ public final class BatchAsyncClient {
      *                         imageName: String (Required)
      *                         registry (Optional): (recursive schema, see registry above)
      *                         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                         containerHostBatchBindMounts (Optional): [
+     *                              (Optional){
+     *                                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                                 isReadOnly: Boolean (Optional)
+     *                             }
+     *                         ]
      *                     }
      *                     resourceFiles (Optional): [
      *                          (Optional){
@@ -8945,8 +9295,13 @@ public final class BatchAsyncClient {
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
+     *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -9042,7 +9397,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
@@ -9284,7 +9640,8 @@ public final class BatchAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -9339,7 +9696,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -9375,6 +9733,12 @@ public final class BatchAsyncClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -9491,6 +9855,8 @@ public final class BatchAsyncClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -9548,13 +9914,16 @@ public final class BatchAsyncClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -9703,6 +10072,7 @@ public final class BatchAsyncClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -9741,7 +10111,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
@@ -9838,7 +10209,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -10211,7 +10583,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
@@ -10271,11 +10644,13 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     disableTasks: String(requeue/terminate/wait) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to disable.
      * @param content The options to use for disabling the Job.
@@ -10376,11 +10751,13 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     disableTasks: String(requeue/terminate/wait) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
@@ -10566,7 +10943,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -10594,6 +10972,12 @@ public final class BatchAsyncClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -10710,6 +11094,8 @@ public final class BatchAsyncClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -10767,13 +11153,16 @@ public final class BatchAsyncClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -10922,12 +11311,14 @@ public final class BatchAsyncClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10979,7 +11370,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -11311,7 +11703,8 @@ public final class BatchAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -11340,7 +11733,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -11349,7 +11742,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -11385,6 +11779,12 @@ public final class BatchAsyncClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -11501,6 +11901,8 @@ public final class BatchAsyncClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -11558,13 +11960,16 @@ public final class BatchAsyncClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -11713,6 +12118,7 @@ public final class BatchAsyncClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -11751,7 +12157,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11818,7 +12225,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -12220,7 +12628,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12248,7 +12657,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -12257,7 +12666,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -12293,6 +12703,12 @@ public final class BatchAsyncClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -12409,6 +12825,8 @@ public final class BatchAsyncClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -12466,13 +12884,16 @@ public final class BatchAsyncClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -12621,6 +13042,7 @@ public final class BatchAsyncClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -12659,7 +13081,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -12727,7 +13150,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -13129,7 +13553,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13166,14 +13591,15 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -13217,7 +13643,8 @@ public final class BatchAsyncClient {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13288,7 +13715,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -13332,7 +13760,8 @@ public final class BatchAsyncClient {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13366,7 +13795,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     taskCounts (Required): {
      *         active: int (Required)
@@ -13383,7 +13813,8 @@ public final class BatchAsyncClient {
      *         failed: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13391,7 +13822,10 @@ public final class BatchAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Task and TaskSlot counts for a Job along with {@link Response} on successful completion of
+     * @return the Task counts for the specified Job.
+     *
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @Generated
@@ -13433,7 +13867,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     taskCounts (Required): {
      *         active: int (Required)
@@ -13450,7 +13885,8 @@ public final class BatchAsyncClient {
      *         failed: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13501,9 +13937,11 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13593,9 +14031,11 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13624,6 +14064,8 @@ public final class BatchAsyncClient {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
+     * corresponding nodes have not fully processed the deletion. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -13793,7 +14235,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -13821,6 +14264,7 @@ public final class BatchAsyncClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -13842,6 +14286,12 @@ public final class BatchAsyncClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -13958,6 +14408,8 @@ public final class BatchAsyncClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -14015,13 +14467,16 @@ public final class BatchAsyncClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -14198,7 +14653,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -14302,7 +14758,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -14678,7 +15135,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -14735,7 +15193,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     schedule (Optional): {
      *         doNotRunUntil: OffsetDateTime (Optional)
@@ -14753,6 +15212,7 @@ public final class BatchAsyncClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -14774,6 +15234,12 @@ public final class BatchAsyncClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -14890,6 +15356,8 @@ public final class BatchAsyncClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -14947,13 +15415,16 @@ public final class BatchAsyncClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -15106,7 +15577,8 @@ public final class BatchAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -15206,7 +15678,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     schedule (Optional): {
      *         doNotRunUntil: OffsetDateTime (Optional)
@@ -15548,7 +16021,8 @@ public final class BatchAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -15606,7 +16080,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -15634,6 +16109,7 @@ public final class BatchAsyncClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -15655,6 +16131,12 @@ public final class BatchAsyncClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -15771,6 +16253,8 @@ public final class BatchAsyncClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -15828,13 +16312,16 @@ public final class BatchAsyncClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -16011,7 +16498,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
@@ -16111,7 +16599,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -16487,7 +16976,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
@@ -16784,6 +17274,8 @@ public final class BatchAsyncClient {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
+     * corresponding nodes have not fully processed the termination. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -16921,7 +17413,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -16941,6 +17434,7 @@ public final class BatchAsyncClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -16962,6 +17456,12 @@ public final class BatchAsyncClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -17078,6 +17578,8 @@ public final class BatchAsyncClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -17135,13 +17637,16 @@ public final class BatchAsyncClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -17294,7 +17799,8 @@ public final class BatchAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -17338,7 +17844,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -17682,7 +18189,8 @@ public final class BatchAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -17711,7 +18219,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -17720,7 +18228,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -17748,6 +18257,7 @@ public final class BatchAsyncClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -17769,6 +18279,12 @@ public final class BatchAsyncClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -17885,6 +18401,8 @@ public final class BatchAsyncClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -17942,13 +18460,16 @@ public final class BatchAsyncClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -18125,7 +18646,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -18192,7 +18714,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -18597,7 +19120,8 @@ public final class BatchAsyncClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -18628,7 +19152,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -18666,6 +19191,12 @@ public final class BatchAsyncClient {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -18751,7 +19282,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
@@ -18800,7 +19332,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -18923,7 +19456,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
@@ -18957,7 +19491,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -18966,7 +19500,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -19012,6 +19547,12 @@ public final class BatchAsyncClient {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -19144,7 +19685,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19216,7 +19758,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -19394,7 +19937,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19437,7 +19981,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -19477,6 +20022,12 @@ public final class BatchAsyncClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -19564,11 +20115,13 @@ public final class BatchAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -19593,7 +20146,8 @@ public final class BatchAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
@@ -19652,7 +20206,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -19779,12 +20334,14 @@ public final class BatchAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -19809,7 +20366,8 @@ public final class BatchAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
@@ -20016,7 +20574,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20062,6 +20621,12 @@ public final class BatchAsyncClient {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -20194,7 +20759,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
@@ -20203,11 +20769,10 @@ public final class BatchAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node.
-     * Examples of recovery operations include (but are not limited to) when an
-     * unhealthy Node is rebooted or a Compute Node disappeared due to host failure.
-     * Retries due to recovery operations are independent of and are not counted
-     * against the maxTaskRetryCount along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about the specified Task.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -20306,7 +20871,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20484,7 +21050,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
@@ -20538,7 +21105,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20584,6 +21152,12 @@ public final class BatchAsyncClient {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -20716,7 +21290,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
@@ -20810,7 +21385,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20988,7 +21564,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
@@ -21416,9 +21993,11 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -21503,9 +22082,11 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -21655,7 +22236,7 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -21663,7 +22244,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -21671,12 +22253,13 @@ public final class BatchAsyncClient {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
@@ -21741,7 +22324,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -21754,7 +22338,8 @@ public final class BatchAsyncClient {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
@@ -21787,7 +22372,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     isAdmin: Boolean (Optional)
@@ -21795,7 +22381,8 @@ public final class BatchAsyncClient {
      *     password: String (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -21845,7 +22432,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     isAdmin: Boolean (Optional)
@@ -21853,7 +22441,8 @@ public final class BatchAsyncClient {
      *     password: String (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -21965,13 +22554,15 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     password: String (Optional)
      *     expiryTime: OffsetDateTime (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
@@ -22025,13 +22616,15 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     password: String (Optional)
      *     expiryTime: OffsetDateTime (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
@@ -22065,11 +22658,12 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -22130,6 +22724,12 @@ public final class BatchAsyncClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -22203,11 +22803,14 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
@@ -22260,7 +22863,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -22401,7 +23005,8 @@ public final class BatchAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
@@ -22495,9 +23100,8 @@ public final class BatchAsyncClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node. This API can be
-     * invoked only on Pools created with the virtual machine configuration property.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -22509,12 +23113,14 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -22523,7 +23129,10 @@ public final class BatchAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the remote login settings for a Compute Node along with {@link Response} on successful completion of
+     * @return the settings required for remote login to a Compute Node.
+     *
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @Generated
@@ -22566,12 +23175,14 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -22608,7 +23219,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     containerUrl: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -22617,16 +23229,19 @@ public final class BatchAsyncClient {
      *         resourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     virtualDirectoryName: String (Required)
      *     numberOfFilesUploaded: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
@@ -22680,7 +23295,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     containerUrl: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -22689,17 +23305,20 @@ public final class BatchAsyncClient {
      *         resourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     virtualDirectoryName: String (Required)
      *     numberOfFilesUploaded: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
@@ -22732,18 +23351,19 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -22804,6 +23424,12 @@ public final class BatchAsyncClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -22877,11 +23503,14 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -22943,7 +23572,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -23085,7 +23715,8 @@ public final class BatchAsyncClient {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -23115,7 +23746,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -23151,7 +23783,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
@@ -23206,7 +23839,8 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -23242,7 +23876,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
@@ -23279,7 +23914,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -23315,7 +23951,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
@@ -23371,7 +24008,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -23407,7 +24045,8 @@ public final class BatchAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
@@ -23537,9 +24176,11 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -23624,9 +24265,11 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * byte[]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
@@ -23776,13 +24419,14 @@ public final class BatchAsyncClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -23790,12 +24434,13 @@ public final class BatchAsyncClient {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
@@ -23859,7 +24504,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -23872,7 +24518,8 @@ public final class BatchAsyncClient {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
@@ -23944,8 +24591,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in an Azure Batch Account on successful completion of
-     * {@link Mono}.
+     * @return information about the specified Application.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -23975,8 +24624,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in an Azure Batch Account on successful completion of
-     * {@link Mono}.
+     * @return information about the specified Application.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -24027,7 +24678,7 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -24493,59 +25144,6 @@ public final class BatchAsyncClient {
      * that the Job is being deleted.
      *
      * @param jobId The ID of the Job to delete.
-     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
-     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteJobInternal(String jobId, Integer timeOutInSeconds, RequestConditions requestConditions) {
-        // Generated convenience method for deleteJobInternalWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteJobInternalWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Job.
-     *
-     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
-     * statistics. This also overrides the retention period for Task data; that is, if
-     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
-     * services deletes those Tasks' working directories and all their contents. When
-     * a Delete Job request is received, the Batch service sets the Job to the
-     * deleting state. All update operations on a Job that is in deleting state will
-     * fail with status code 409 (Conflict), with additional information indicating
-     * that the Job is being deleted.
-     *
-     * @param jobId The ID of the Job to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -24921,7 +25519,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Task and TaskSlot counts for a Job on successful completion of {@link Mono}.
+     * @return the Task counts for the specified Job.
+     *
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -24950,7 +25551,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Task and TaskSlot counts for a Job on successful completion of {@link Mono}.
+     * @return the Task counts for the specified Job.
+     *
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -25022,57 +25626,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for jobScheduleExistsInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return jobScheduleExistsInternalWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Job Schedule from the specified Account.
-     *
-     * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
-     * schedule. When Tasks are deleted, all the files in their working directories on
-     * the Compute Nodes are also deleted (the retention period is ignored). The Job
-     * Schedule statistics are no longer accessible once the Job Schedule is deleted,
-     * though they are still counted towards Account lifetime statistics.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to delete.
-     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
-     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteJobScheduleInternal(String jobScheduleId, Integer timeOutInSeconds,
-        RequestConditions requestConditions) {
-        // Generated convenience method for deleteJobScheduleInternalWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteJobScheduleInternalWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -25403,51 +25956,6 @@ public final class BatchAsyncClient {
      * Terminates a Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
-     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
-     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> terminateJobScheduleInternal(String jobScheduleId, Integer timeOutInSeconds,
-        RequestConditions requestConditions) {
-        // Generated convenience method for terminateJobScheduleInternalWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return terminateJobScheduleInternalWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Terminates a Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -25629,11 +26137,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node.
-     * Examples of recovery operations include (but are not limited to) when an
-     * unhealthy Node is rebooted or a Compute Node disappeared due to host failure.
-     * Retries due to recovery operations are independent of and are not counted
-     * against the maxTaskRetryCount on successful completion of {@link Mono}.
+     * @return information about the specified Task.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -25695,11 +26202,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node.
-     * Examples of recovery operations include (but are not limited to) when an
-     * unhealthy Node is rebooted or a Compute Node disappeared due to host failure.
-     * Retries due to recovery operations are independent of and are not counted
-     * against the maxTaskRetryCount on successful completion of {@link Mono}.
+     * @return information about the specified Task.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26421,9 +26927,8 @@ public final class BatchAsyncClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node. This API can be
-     * invoked only on Pools created with the virtual machine configuration property.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -26435,7 +26940,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
+     * @return the settings required for remote login to a Compute Node.
+     *
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26453,9 +26961,8 @@ public final class BatchAsyncClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node. This API can be
-     * invoked only on Pools created with the virtual machine configuration property.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -26465,7 +26972,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
+     * @return the settings required for remote login to a Compute Node.
+     *
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26846,12 +27356,16 @@ public final class BatchAsyncClient {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
+     * corresponding nodes have not fully processed the termination. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
      * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
@@ -26872,11 +27386,13 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     terminateReason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26974,11 +27490,13 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     terminateReason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27006,13 +27524,23 @@ public final class BatchAsyncClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeRebootOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -27060,11 +27588,13 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeRebootOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -27094,13 +27624,23 @@ public final class BatchAsyncClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeDisableSchedulingOption: String(requeue/terminate/taskcompletion) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
@@ -27149,11 +27689,13 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeDisableSchedulingOption: String(requeue/terminate/taskcompletion) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
@@ -27262,7 +27804,8 @@ public final class BatchAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -27298,7 +27841,8 @@ public final class BatchAsyncClient {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
@@ -27350,7 +27894,8 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -27386,7 +27931,8 @@ public final class BatchAsyncClient {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
@@ -27458,14 +28004,14 @@ public final class BatchAsyncClient {
      *
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param starttime The earliest time from which to include metrics. This must be at least two and
+     * @param startTime The earliest time from which to include metrics. This must be at least two and
      * a half hours before the current time. If not specified this defaults to the
      * start time of the last aggregation interval currently available.
      * @param endtime The latest time from which to include metrics. This must be at least two hours
      * before the current time. If not specified this defaults to the end time of the
      * last aggregation interval currently available.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27476,15 +28022,15 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetricsInternal(Integer timeOutInSeconds, OffsetDateTime starttime,
+    PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetricsInternal(Integer timeOutInSeconds, OffsetDateTime startTime,
         OffsetDateTime endtime, String filter) {
         // Generated convenience method for listPoolUsageMetricsInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
-        if (starttime != null) {
-            requestOptions.addQueryParam("startTime", String.valueOf(starttime), false);
+        if (startTime != null) {
+            requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
         }
         if (endtime != null) {
             requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
@@ -27509,12 +28055,12 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27572,7 +28118,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27616,7 +28162,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27658,7 +28204,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27717,7 +28263,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27784,7 +28330,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -27836,7 +28382,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27899,7 +28445,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27959,7 +28505,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.
      * @param recursive Whether to list children of the Task directory. This parameter can be used in
      * combination with the filter parameter to list specific type of files.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28008,7 +28554,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -28108,7 +28654,7 @@ public final class BatchAsyncClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      * @param recursive Whether to list children of a directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -28379,8 +28925,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results and errors from an execution of a Pool autoscale formula on successful completion of
-     * {@link Mono}.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28411,8 +28959,10 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results and errors from an execution of a Pool autoscale formula on successful completion of
-     * {@link Mono}.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -28805,62 +29355,6 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return disableJobInternalWithResponse(jobId, BinaryData.fromObject(content), requestOptions)
             .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Terminates the specified Job, marking it as completed.
-     *
-     * When a Terminate Job request is received, the Batch service sets the Job to the
-     * terminating state. The Batch service then terminates any running Tasks
-     * associated with the Job and runs any required Job release Tasks. Then the Job
-     * moves into the completed state. If there are any Tasks in the Job in the active
-     * state, they will remain in the active state. Once a Job is terminated, new
-     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
-     *
-     * @param jobId The ID of the Job to terminate.
-     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
-     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param parameters The options to use for terminating the Job.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> terminateJobInternal(String jobId, Integer timeOutInSeconds, BatchJobTerminateContent parameters,
-        RequestConditions requestConditions) {
-        // Generated convenience method for terminateJobInternalWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return terminateJobInternalWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -29464,5 +29958,817 @@ public final class BatchAsyncClient {
     @Generated
     BatchAsyncClient(BatchClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * <p>
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Sets the maximum time that the server can spend processing the request, in seconds. The default is 30
+     * seconds.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.startNodeInternalWithResponse(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> startNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.serviceClient.startNodeInternalWithResponseAsync(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Sets the maximum time that the server can spend processing the request, in seconds. The default is 30
+     * seconds.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}.
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to reimage.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.reimageNodeInternalWithResponse(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> reimageNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.serviceClient.reimageNodeInternalWithResponseAsync(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * <p>
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Sets the maximum time that the server can spend processing the request, in seconds. The default is 30
+     * seconds.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}.
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     nodeDeallocateOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId,
+        RequestOptions requestOptions) {
+        return this.deallocateNodeInternalWithResponse(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeDeallocateOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deallocateNodeInternalWithResponse(String poolId, String nodeId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deallocateNodeInternalWithResponseAsync(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Deletes a Job.
+     *
+     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
+     * statistics. This also overrides the retention period for Task data; that is, if
+     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
+     * services deletes those Tasks' working directories and all their contents. When
+     * a Delete Job request is received, the Batch service sets the Job to the
+     * deleting state. All update operations on a Job that is in deleting state will
+     * fail with status code 409 (Conflict), with additional information indicating
+     * that the Job is being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param force If true, the server will delete the Job even if the corresponding nodes have not fully processed the
+     * deletion. The default value is false.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteJobInternal(String jobId, Integer timeOutInSeconds, Boolean force,
+        RequestConditions requestConditions) {
+        // Generated convenience method for deleteJobInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteJobInternalWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Terminates the specified Job, marking it as completed.
+     *
+     * When a Terminate Job request is received, the Batch service sets the Job to the
+     * terminating state. The Batch service then terminates any running Tasks
+     * associated with the Job and runs any required Job release Tasks. Then the Job
+     * moves into the completed state. If there are any Tasks in the Job in the active
+     * state, they will remain in the active state. Once a Job is terminated, new
+     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param force If true, the server will terminate the Job even if the corresponding nodes have not fully processed
+     * the termination. The default value is false.
+     * @param parameters The options to use for terminating the Job.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> terminateJobInternal(String jobId, Integer timeOutInSeconds, Boolean force,
+        BatchJobTerminateContent parameters, RequestConditions requestConditions) {
+        // Generated convenience method for terminateJobInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return terminateJobInternalWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a Job Schedule from the specified Account.
+     *
+     * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
+     * schedule. When Tasks are deleted, all the files in their working directories on
+     * the Compute Nodes are also deleted (the retention period is ignored). The Job
+     * Schedule statistics are no longer accessible once the Job Schedule is deleted,
+     * though they are still counted towards Account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to delete.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param force If true, the server will delete the JobSchedule even if the corresponding nodes have not fully
+     * processed the deletion. The default value is false.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteJobScheduleInternal(String jobScheduleId, Integer timeOutInSeconds, Boolean force,
+        RequestConditions requestConditions) {
+        // Generated convenience method for deleteJobScheduleInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteJobScheduleInternalWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Terminates a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to terminates.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param force If true, the server will terminate the JobSchedule even if the corresponding nodes have not fully
+     * processed the termination. The default value is false.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> terminateJobScheduleInternal(String jobScheduleId, Integer timeOutInSeconds, Boolean force,
+        RequestConditions requestConditions) {
+        // Generated convenience method for terminateJobScheduleInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return terminateJobScheduleInternalWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * <p>
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @param options A group containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startNode(String poolId, String nodeId, StartBatchNodeOptions options) {
+        return startNodeInternal(poolId, nodeId, options.getTimeOutInSeconds());
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> startNodeInternal(String poolId, String nodeId, Integer timeOutInSeconds) {
+        // Generated convenience method for startNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return startNodeInternalWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * <p>
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startNode(String poolId, String nodeId) {
+        return startNodeInternal(poolId, nodeId);
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> startNodeInternal(String poolId, String nodeId) {
+        // Generated convenience method for startNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return startNodeInternalWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to reimage.
+     * @param options A group containing optional parameters like timeOutInSeconds.
+     * @param body The options to use for reimaging the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> reimageNode(String poolId, String nodeId, ReimageBatchNodeOptions options,
+        BatchNodeReimageContent body) {
+        return reimageNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param parameters The options to use for reimaging the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> reimageNodeInternal(String poolId, String nodeId, Integer timeOutInSeconds,
+        BatchNodeReimageContent parameters) {
+        // Generated convenience method for reimageNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        return reimageNodeInternalWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to reimage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> reimageNode(String poolId, String nodeId) {
+        return reimageNodeInternal(poolId, nodeId);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> reimageNodeInternal(String poolId, String nodeId) {
+        // Generated convenience method for reimageNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return reimageNodeInternalWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * <p>
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @param options A group containing optional parameters like timeOutInSeconds.
+     * @param body The options to use for deallocating the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deallocateNode(String poolId, String nodeId, DeallocateBatchNodeOptions options,
+        BatchNodeDeallocateContent body) {
+        return deallocateNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param parameters The options to use for deallocating the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deallocateNodeInternal(String poolId, String nodeId, Integer timeOutInSeconds,
+        BatchNodeDeallocateContent parameters) {
+        // Generated convenience method for deallocateNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        return deallocateNodeInternalWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * <p>
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deallocateNode(String poolId, String nodeId) {
+        return deallocateNodeInternal(poolId, nodeId);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deallocateNodeInternal(String poolId, String nodeId) {
+        // Generated convenience method for deallocateNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deallocateNodeInternalWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

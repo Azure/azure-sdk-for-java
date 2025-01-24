@@ -13,17 +13,20 @@ import com.azure.security.keyvault.jca.implementation.model.SignResult;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
+import org.bouncycastle.pkcs.PKCSException;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
@@ -41,6 +44,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import static com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.getLoginUri;
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.getCertificateNameFromCertificateItemId;
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadCertificatesFromSecretBundleValue;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_VERSION_POSTFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.HTTPS_PREFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
@@ -93,7 +98,6 @@ public class KeyVaultClient {
      * Stores a flag indicating if challenge resource verification shall be disabled.
      */
     private final boolean disableChallengeResourceVerification;
-
 
     /**
      * Constructor for authentication with user-assigned managed identity.
@@ -152,8 +156,8 @@ public class KeyVaultClient {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        boolean disableChallengeResourceVerification =
-            Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
+        boolean disableChallengeResourceVerification
+            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
 
         return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
             disableChallengeResourceVerification);
@@ -194,13 +198,13 @@ public class KeyVaultClient {
             if (tenantId != null && clientId != null && clientSecret != null) {
                 String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
                     disableChallengeResourceVerification);
-                accessToken =
-                    AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
+                accessToken
+                    = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
             } else {
                 accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             }
-        } catch (Throwable t) {
-            LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", t);
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);
         }
 
         LOGGER.exiting("KeyVaultClient", "getAccessTokenByHttpRequest", accessToken);
@@ -214,6 +218,8 @@ public class KeyVaultClient {
      * @return The list of aliases.
      */
     public List<String> getAliases() {
+        LOGGER.entering("KeyVaultClient", "getAliases");
+
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
 
@@ -226,23 +232,26 @@ public class KeyVaultClient {
             CertificateListResult certificateListResult = null;
 
             if (response != null) {
-                certificateListResult =
-                    (CertificateListResult) JsonConverterUtil.fromJson(response, CertificateListResult.class);
+                try {
+                    certificateListResult = JsonConverterUtil.fromJson(CertificateListResult::fromJson, response);
+                } catch (IOException e) {
+                    LOGGER.log(WARNING, "Failed to parse certificate list response", e);
+                }
             }
 
             if (certificateListResult != null) {
                 uri = certificateListResult.getNextLink();
-
                 for (CertificateItem certificateItem : certificateListResult.getValue()) {
                     String id = certificateItem.getId();
-                    String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
-
+                    String alias = getCertificateNameFromCertificateItemId(id);
                     result.add(alias);
                 }
             } else {
                 uri = null;
             }
         }
+
+        LOGGER.exiting("KeyVaultClient", "getAliases", result);
 
         return result;
     }
@@ -254,6 +263,8 @@ public class KeyVaultClient {
      * @return The certificate bundle.
      */
     private CertificateBundle getCertificateBundle(String alias) {
+        LOGGER.entering("KeyVaultClient", "getCertificateBundle", alias);
+
         CertificateBundle result = null;
         HashMap<String, String> headers = new HashMap<>();
 
@@ -263,8 +274,14 @@ public class KeyVaultClient {
         String response = HttpUtil.get(uri, headers);
 
         if (response != null) {
-            result = (CertificateBundle) JsonConverterUtil.fromJson(response, CertificateBundle.class);
+            try {
+                result = JsonConverterUtil.fromJson(CertificateBundle::fromJson, response);
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Failed to parse certificate bundle response", e);
+            }
         }
+
+        LOGGER.exiting("KeyVaultClient", "getCertificateBundle", result);
 
         return result;
     }
@@ -289,8 +306,8 @@ public class KeyVaultClient {
             if (certificateString != null) {
                 try {
                     CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                    certificate = (X509Certificate) cf.generateCertificate(
-                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateString)));
+                    certificate = (X509Certificate) cf
+                        .generateCertificate(new ByteArrayInputStream(Base64.getDecoder().decode(certificateString)));
                 } catch (CertificateException ce) {
                     LOGGER.log(WARNING, "Certificate error", ce);
                 }
@@ -300,6 +317,50 @@ public class KeyVaultClient {
         LOGGER.exiting("KeyVaultClient", "getCertificate", certificate);
 
         return certificate;
+    }
+
+    /**
+     * Get the certificate chain.
+     *
+     * @param alias The alias.
+     *
+     * @return The certificate chain, or null if not found.
+     */
+    public Certificate[] getCertificateChain(String alias) {
+        LOGGER.entering("KeyVaultClient", "getCertificateChain", alias);
+        LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
+
+        HashMap<String, String> headers = new HashMap<>();
+
+        headers.put("Authorization", "Bearer " + getAccessToken());
+
+        String uri = keyVaultUri + "secrets/" + alias + API_VERSION_POSTFIX;
+        String response = HttpUtil.get(uri, headers);
+
+        if (response == null) {
+            throw new NullPointerException();
+        }
+
+        SecretBundle secretBundle = null;
+
+        try {
+            secretBundle = JsonConverterUtil.fromJson(SecretBundle::fromJson, response);
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to parse secret bundle response", e);
+        }
+
+        Certificate[] certificates = new Certificate[0];
+
+        try {
+            certificates = loadCertificatesFromSecretBundleValue(secretBundle.getValue());
+        } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException
+            | NoSuchProviderException | PKCSException e) {
+            LOGGER.log(WARNING, "Unable to decode certificate chain", e);
+        }
+
+        LOGGER.exiting("KeyVaultClient", "getCertificate", alias);
+
+        return certificates;
     }
 
     /**
@@ -330,14 +391,16 @@ public class KeyVaultClient {
             // Return KeyVaultPrivateKey if certificate is not exportable because if the service needs to obtain the
             // private key for authentication, and we can't access private key(which is not exportable), we will use
             // the Azure Key Vault Secrets API to obtain the private key (keyless).
-            LOGGER.exiting("KeyVaultClient", "getKey", null);
-
             String keyType2 = keyType.contains("-HSM") ? keyType.substring(0, keyType.indexOf("-HSM")) : keyType;
 
-            return Optional.ofNullable(certificateBundle)
+            KeyVaultPrivateKey key = Optional.ofNullable(certificateBundle)
                 .map(CertificateBundle::getKid)
                 .map(kid -> new KeyVaultPrivateKey(keyType2, kid, this))
                 .orElse(null);
+
+            LOGGER.exiting("KeyVaultClient", "getKey", key);
+
+            return key;
         }
 
         String certificateSecretUri = certificateBundle.getSid();
@@ -362,15 +425,22 @@ public class KeyVaultClient {
         // If the certificate is exportable the private key is available, so we'll store the private key for
         // authentication instead of obtaining a digital signature through the API (without keyless).
         Key key = null;
-        SecretBundle secretBundle = (SecretBundle) JsonConverterUtil.fromJson(body, SecretBundle.class);
-        String contentType = secretBundle.getContentType();
+        SecretBundle secretBundle = null;
+        String contentType = null;
+
+        try {
+            secretBundle = JsonConverterUtil.fromJson(SecretBundle::fromJson, body);
+            contentType = secretBundle.getContentType();
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to parse secret bundle response.", e);
+        }
 
         if ("application/x-pkcs12".equals(contentType)) {
             try {
                 KeyStore keyStore = KeyStore.getInstance("PKCS12");
 
-                keyStore.load(
-                    new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())), "".toCharArray());
+                keyStore.load(new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
+                    "".toCharArray());
 
                 alias = keyStore.aliases().nextElement();
                 key = keyStore.getKey(alias, "".toCharArray());
@@ -382,14 +452,13 @@ public class KeyVaultClient {
         } else if ("application/x-pem-file".equals(contentType)) {
             try {
                 key = createPrivateKeyFromPem(secretBundle.getValue(), keyType);
-            } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException ex) {
-                LOGGER.log(WARNING, "Unable to decode key", ex);
+            } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException e) {
+                LOGGER.log(WARNING, "Unable to decode key", e);
             }
         }
 
-        // If the private key is not available the certificate cannot be
-        // used for server side certificates or mTLS. Then we do not know
-        // the intent of the usage at this stage we skip this key.
+        // If the private key is not available the certificate cannot be used for server side certificates or mTLS.
+        // Then we do not know the intent of the usage at this stage we skip this key.
         LOGGER.exiting("KeyVaultClient", "getKey", key);
 
         return key;
@@ -405,6 +474,8 @@ public class KeyVaultClient {
      * @return Signature.
      */
     public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String keyId) {
+        LOGGER.entering("KeyVaultClient", "getSignedWithPrivateKey", new Object[] { digestName, digestValue, keyId });
+
         SignResult result = null;
         String bodyString = String.format("{\"alg\": \"" + digestName + "\", \"value\": \"%s\"}", digestValue);
         Map<String, String> headers = new HashMap<>();
@@ -415,14 +486,28 @@ public class KeyVaultClient {
         String response = HttpUtil.post(uri, headers, bodyString, "application/json");
 
         if (response != null) {
-            result = (SignResult) JsonConverterUtil.fromJson(response, SignResult.class);
+            try {
+                result = JsonConverterUtil.fromJson(SignResult::fromJson, response);
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Failed to parse sign result response.", e);
+            }
+        } else {
+            LOGGER.log(WARNING,
+                "Can not get signature. It can be caused by missing 'sign' permission. To know how to add 'sign' permission, "
+                    + "see https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#key-less-certificates.");
         }
+
+        byte[] signature;
 
         if (result != null) {
-            return Base64.getUrlDecoder().decode(result.getValue());
+            signature = Base64.getUrlDecoder().decode(result.getValue());
+        } else {
+            signature = new byte[0];
         }
 
-        return new byte[0];
+        LOGGER.exiting("KeyVaultClient", "getSignedWithPrivateKey", signature);
+
+        return signature;
     }
 
     /**
@@ -439,6 +524,8 @@ public class KeyVaultClient {
      */
     private PrivateKey createPrivateKeyFromPem(String pemString, String keyType)
         throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+
+        LOGGER.entering("KeyVaultClient", "createPrivateKeyFromPem", new Object[] { pemString, keyType });
 
         StringBuilder builder = new StringBuilder();
 
@@ -464,7 +551,10 @@ public class KeyVaultClient {
         byte[] bytes = Base64.getDecoder().decode(builder.toString());
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance(keyType);
+        PrivateKey privateKey = factory.generatePrivate(spec);
 
-        return factory.generatePrivate(spec);
+        LOGGER.exiting("KeyVaultClient", "createPrivateKeyFromPem", privateKey);
+
+        return privateKey;
     }
 }

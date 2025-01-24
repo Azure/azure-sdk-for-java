@@ -12,8 +12,8 @@ public final class DeleteWorkflowResponseImpl implements DeleteWorkflowResponse 
 
     private final com.azure.resourcemanager.devhub.DevHubManager serviceManager;
 
-    DeleteWorkflowResponseImpl(
-        DeleteWorkflowResponseInner innerObject, com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
+    DeleteWorkflowResponseImpl(DeleteWorkflowResponseInner innerObject,
+        com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

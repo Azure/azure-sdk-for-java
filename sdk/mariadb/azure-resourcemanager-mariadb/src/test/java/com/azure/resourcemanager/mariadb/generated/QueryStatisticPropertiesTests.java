@@ -13,47 +13,43 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryStatisticPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryStatisticProperties model =
-            BinaryData
-                .fromString(
-                    "{\"queryId\":\"xrhdwbavxbniwdjs\",\"startTime\":\"2021-12-07T05:36:29Z\",\"endTime\":\"2021-10-04T13:18:18Z\",\"aggregationFunction\":\"pgn\",\"databaseNames\":[\"x\"],\"queryExecutionCount\":4293273925570498826,\"metricName\":\"zpfzabglc\",\"metricDisplayName\":\"xwtctyqiklbbovpl\",\"metricValue\":29.60792586574493,\"metricValueUnit\":\"gy\"}")
-                .toObject(QueryStatisticProperties.class);
-        Assertions.assertEquals("xrhdwbavxbniwdjs", model.queryId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T05:36:29Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T13:18:18Z"), model.endTime());
-        Assertions.assertEquals("pgn", model.aggregationFunction());
-        Assertions.assertEquals("x", model.databaseNames().get(0));
-        Assertions.assertEquals(4293273925570498826L, model.queryExecutionCount());
-        Assertions.assertEquals("zpfzabglc", model.metricName());
-        Assertions.assertEquals("xwtctyqiklbbovpl", model.metricDisplayName());
-        Assertions.assertEquals(29.60792586574493D, model.metricValue());
-        Assertions.assertEquals("gy", model.metricValueUnit());
+        QueryStatisticProperties model = BinaryData.fromString(
+            "{\"queryId\":\"ywn\",\"startTime\":\"2021-09-02T16:16:29Z\",\"endTime\":\"2021-03-03T06:00:33Z\",\"aggregationFunction\":\"nlqidybyxczf\",\"databaseNames\":[\"aaxdbabphlwrq\",\"fkts\",\"hsucoc\"],\"queryExecutionCount\":8773922705393803928,\"metricName\":\"zt\",\"metricDisplayName\":\"twwrqp\",\"metricValue\":64.95738011898911,\"metricValueUnit\":\"zywbiex\"}")
+            .toObject(QueryStatisticProperties.class);
+        Assertions.assertEquals("ywn", model.queryId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T16:16:29Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T06:00:33Z"), model.endTime());
+        Assertions.assertEquals("nlqidybyxczf", model.aggregationFunction());
+        Assertions.assertEquals("aaxdbabphlwrq", model.databaseNames().get(0));
+        Assertions.assertEquals(8773922705393803928L, model.queryExecutionCount());
+        Assertions.assertEquals("zt", model.metricName());
+        Assertions.assertEquals("twwrqp", model.metricDisplayName());
+        Assertions.assertEquals(64.95738011898911D, model.metricValue());
+        Assertions.assertEquals("zywbiex", model.metricValueUnit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryStatisticProperties model =
-            new QueryStatisticProperties()
-                .withQueryId("xrhdwbavxbniwdjs")
-                .withStartTime(OffsetDateTime.parse("2021-12-07T05:36:29Z"))
-                .withEndTime(OffsetDateTime.parse("2021-10-04T13:18:18Z"))
-                .withAggregationFunction("pgn")
-                .withDatabaseNames(Arrays.asList("x"))
-                .withQueryExecutionCount(4293273925570498826L)
-                .withMetricName("zpfzabglc")
-                .withMetricDisplayName("xwtctyqiklbbovpl")
-                .withMetricValue(29.60792586574493D)
-                .withMetricValueUnit("gy");
+        QueryStatisticProperties model = new QueryStatisticProperties().withQueryId("ywn")
+            .withStartTime(OffsetDateTime.parse("2021-09-02T16:16:29Z"))
+            .withEndTime(OffsetDateTime.parse("2021-03-03T06:00:33Z"))
+            .withAggregationFunction("nlqidybyxczf")
+            .withDatabaseNames(Arrays.asList("aaxdbabphlwrq", "fkts", "hsucoc"))
+            .withQueryExecutionCount(8773922705393803928L)
+            .withMetricName("zt")
+            .withMetricDisplayName("twwrqp")
+            .withMetricValue(64.95738011898911D)
+            .withMetricValueUnit("zywbiex");
         model = BinaryData.fromObject(model).toObject(QueryStatisticProperties.class);
-        Assertions.assertEquals("xrhdwbavxbniwdjs", model.queryId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T05:36:29Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T13:18:18Z"), model.endTime());
-        Assertions.assertEquals("pgn", model.aggregationFunction());
-        Assertions.assertEquals("x", model.databaseNames().get(0));
-        Assertions.assertEquals(4293273925570498826L, model.queryExecutionCount());
-        Assertions.assertEquals("zpfzabglc", model.metricName());
-        Assertions.assertEquals("xwtctyqiklbbovpl", model.metricDisplayName());
-        Assertions.assertEquals(29.60792586574493D, model.metricValue());
-        Assertions.assertEquals("gy", model.metricValueUnit());
+        Assertions.assertEquals("ywn", model.queryId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T16:16:29Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T06:00:33Z"), model.endTime());
+        Assertions.assertEquals("nlqidybyxczf", model.aggregationFunction());
+        Assertions.assertEquals("aaxdbabphlwrq", model.databaseNames().get(0));
+        Assertions.assertEquals(8773922705393803928L, model.queryExecutionCount());
+        Assertions.assertEquals("zt", model.metricName());
+        Assertions.assertEquals("twwrqp", model.metricDisplayName());
+        Assertions.assertEquals(64.95738011898911D, model.metricValue());
+        Assertions.assertEquals("zywbiex", model.metricValueUnit());
     }
 }

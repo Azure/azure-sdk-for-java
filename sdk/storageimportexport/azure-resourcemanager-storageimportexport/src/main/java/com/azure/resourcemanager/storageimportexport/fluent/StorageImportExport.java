@@ -7,74 +7,76 @@ package com.azure.resourcemanager.storageimportexport.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for StorageImportExport class. */
+/**
+ * The interface for StorageImportExport class.
+ */
 public interface StorageImportExport {
     /**
      * Gets The subscription ID for the Azure user.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets Specifies the preferred language for the response.
-     *
+     * 
      * @return the acceptLanguage value.
      */
     String getAcceptLanguage();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the LocationsClient object to access its operations.
-     *
+     * 
      * @return the LocationsClient object.
      */
     LocationsClient getLocations();
 
     /**
      * Gets the JobsClient object to access its operations.
-     *
+     * 
      * @return the JobsClient object.
      */
     JobsClient getJobs();
 
     /**
      * Gets the BitLockerKeysClient object to access its operations.
-     *
+     * 
      * @return the BitLockerKeysClient object.
      */
     BitLockerKeysClient getBitLockerKeys();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();

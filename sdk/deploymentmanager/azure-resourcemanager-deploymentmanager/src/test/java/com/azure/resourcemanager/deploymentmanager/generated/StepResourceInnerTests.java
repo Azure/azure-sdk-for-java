@@ -14,22 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class StepResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StepResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"stepType\":\"StepProperties\"},\"location\":\"jozkrwfndiod\",\"tags\":{\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"}")
-                .toObject(StepResourceInner.class);
+        StepResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"stepType\":\"StepProperties\"},\"location\":\"jozkrwfndiod\",\"tags\":{\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"}")
+            .toObject(StepResourceInner.class);
         Assertions.assertEquals("jozkrwfndiod", model.location());
         Assertions.assertEquals("lwejdpv", model.tags().get("ryo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StepResourceInner model =
-            new StepResourceInner()
-                .withLocation("jozkrwfndiod")
-                .withTags(mapOf("ryo", "lwejdpv", "hbcryffdfdosyge", "psoacctazakljl", "rzevdphlxaol", "paojakhmsbzjh"))
-                .withProperties(new StepProperties());
+        StepResourceInner model = new StepResourceInner().withLocation("jozkrwfndiod")
+            .withTags(mapOf("ryo", "lwejdpv", "hbcryffdfdosyge", "psoacctazakljl", "rzevdphlxaol", "paojakhmsbzjh"))
+            .withProperties(new StepProperties());
         model = BinaryData.fromObject(model).toObject(StepResourceInner.class);
         Assertions.assertEquals("jozkrwfndiod", model.location());
         Assertions.assertEquals("lwejdpv", model.tags().get("ryo"));

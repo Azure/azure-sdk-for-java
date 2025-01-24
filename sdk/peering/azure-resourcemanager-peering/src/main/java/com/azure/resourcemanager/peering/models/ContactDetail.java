@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The contact detail class. */
+/**
+ * The contact detail class.
+ */
 @Fluent
-public final class ContactDetail {
+public final class ContactDetail implements JsonSerializable<ContactDetail> {
     /*
      * The role of the contact.
      */
-    @JsonProperty(value = "role")
     private Role role;
 
     /*
      * The e-mail address of the contact.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * The phone number of the contact.
      */
-    @JsonProperty(value = "phone")
     private String phone;
 
-    /** Creates an instance of ContactDetail class. */
+    /**
+     * Creates an instance of ContactDetail class.
+     */
     public ContactDetail() {
     }
 
     /**
      * Get the role property: The role of the contact.
-     *
+     * 
      * @return the role value.
      */
     public Role role() {
@@ -43,7 +48,7 @@ public final class ContactDetail {
 
     /**
      * Set the role property: The role of the contact.
-     *
+     * 
      * @param role the role value to set.
      * @return the ContactDetail object itself.
      */
@@ -54,7 +59,7 @@ public final class ContactDetail {
 
     /**
      * Get the email property: The e-mail address of the contact.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -63,7 +68,7 @@ public final class ContactDetail {
 
     /**
      * Set the email property: The e-mail address of the contact.
-     *
+     * 
      * @param email the email value to set.
      * @return the ContactDetail object itself.
      */
@@ -74,7 +79,7 @@ public final class ContactDetail {
 
     /**
      * Get the phone property: The phone number of the contact.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -83,7 +88,7 @@ public final class ContactDetail {
 
     /**
      * Set the phone property: The phone number of the contact.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the ContactDetail object itself.
      */
@@ -94,9 +99,51 @@ public final class ContactDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("phone", this.phone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContactDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContactDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContactDetail.
+     */
+    public static ContactDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContactDetail deserializedContactDetail = new ContactDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("role".equals(fieldName)) {
+                    deserializedContactDetail.role = Role.fromString(reader.getString());
+                } else if ("email".equals(fieldName)) {
+                    deserializedContactDetail.email = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedContactDetail.phone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContactDetail;
+        });
     }
 }

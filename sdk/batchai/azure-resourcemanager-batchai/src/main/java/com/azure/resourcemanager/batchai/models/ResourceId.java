@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Represents a resource ID. For example, for a subnet, it is the resource URL for the subnet. */
 @Fluent
 public final class ResourceId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceId.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceId.class);
 
     /*
      * The ID of the resource

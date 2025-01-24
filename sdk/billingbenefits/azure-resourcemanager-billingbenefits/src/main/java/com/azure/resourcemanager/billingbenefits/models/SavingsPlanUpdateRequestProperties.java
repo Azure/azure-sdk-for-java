@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Savings plan patch request. */
+/**
+ * Savings plan patch request.
+ */
 @Fluent
-public final class SavingsPlanUpdateRequestProperties {
+public final class SavingsPlanUpdateRequestProperties implements JsonSerializable<SavingsPlanUpdateRequestProperties> {
     /*
      * Display name
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Type of the Applied Scope.
      */
-    @JsonProperty(value = "appliedScopeType")
     private AppliedScopeType appliedScopeType;
 
     /*
      * Properties specific to applied scope type. Not required if not applicable.
      */
-    @JsonProperty(value = "appliedScopeProperties")
     private AppliedScopeProperties appliedScopeProperties;
 
     /*
      * Setting this to true will automatically purchase a new benefit on the expiration date time.
      */
-    @JsonProperty(value = "renew")
     private Boolean renew;
 
     /*
      * The renewProperties property.
      */
-    @JsonProperty(value = "renewProperties")
     private RenewProperties renewProperties;
 
-    /** Creates an instance of SavingsPlanUpdateRequestProperties class. */
+    /**
+     * Creates an instance of SavingsPlanUpdateRequestProperties class.
+     */
     public SavingsPlanUpdateRequestProperties() {
     }
 
     /**
      * Get the displayName property: Display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -55,7 +58,7 @@ public final class SavingsPlanUpdateRequestProperties {
 
     /**
      * Set the displayName property: Display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SavingsPlanUpdateRequestProperties object itself.
      */
@@ -66,7 +69,7 @@ public final class SavingsPlanUpdateRequestProperties {
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -75,7 +78,7 @@ public final class SavingsPlanUpdateRequestProperties {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the SavingsPlanUpdateRequestProperties object itself.
      */
@@ -87,7 +90,7 @@ public final class SavingsPlanUpdateRequestProperties {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -97,12 +100,12 @@ public final class SavingsPlanUpdateRequestProperties {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the SavingsPlanUpdateRequestProperties object itself.
      */
-    public SavingsPlanUpdateRequestProperties withAppliedScopeProperties(
-        AppliedScopeProperties appliedScopeProperties) {
+    public SavingsPlanUpdateRequestProperties
+        withAppliedScopeProperties(AppliedScopeProperties appliedScopeProperties) {
         this.appliedScopeProperties = appliedScopeProperties;
         return this;
     }
@@ -110,7 +113,7 @@ public final class SavingsPlanUpdateRequestProperties {
     /**
      * Get the renew property: Setting this to true will automatically purchase a new benefit on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     public Boolean renew() {
@@ -120,7 +123,7 @@ public final class SavingsPlanUpdateRequestProperties {
     /**
      * Set the renew property: Setting this to true will automatically purchase a new benefit on the expiration date
      * time.
-     *
+     * 
      * @param renew the renew value to set.
      * @return the SavingsPlanUpdateRequestProperties object itself.
      */
@@ -131,7 +134,7 @@ public final class SavingsPlanUpdateRequestProperties {
 
     /**
      * Get the renewProperties property: The renewProperties property.
-     *
+     * 
      * @return the renewProperties value.
      */
     public RenewProperties renewProperties() {
@@ -140,7 +143,7 @@ public final class SavingsPlanUpdateRequestProperties {
 
     /**
      * Set the renewProperties property: The renewProperties property.
-     *
+     * 
      * @param renewProperties the renewProperties value to set.
      * @return the SavingsPlanUpdateRequestProperties object itself.
      */
@@ -151,7 +154,7 @@ public final class SavingsPlanUpdateRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -161,5 +164,57 @@ public final class SavingsPlanUpdateRequestProperties {
         if (renewProperties() != null) {
             renewProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("appliedScopeType",
+            this.appliedScopeType == null ? null : this.appliedScopeType.toString());
+        jsonWriter.writeJsonField("appliedScopeProperties", this.appliedScopeProperties);
+        jsonWriter.writeBooleanField("renew", this.renew);
+        jsonWriter.writeJsonField("renewProperties", this.renewProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanUpdateRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanUpdateRequestProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanUpdateRequestProperties.
+     */
+    public static SavingsPlanUpdateRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanUpdateRequestProperties deserializedSavingsPlanUpdateRequestProperties
+                = new SavingsPlanUpdateRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedSavingsPlanUpdateRequestProperties.displayName = reader.getString();
+                } else if ("appliedScopeType".equals(fieldName)) {
+                    deserializedSavingsPlanUpdateRequestProperties.appliedScopeType
+                        = AppliedScopeType.fromString(reader.getString());
+                } else if ("appliedScopeProperties".equals(fieldName)) {
+                    deserializedSavingsPlanUpdateRequestProperties.appliedScopeProperties
+                        = AppliedScopeProperties.fromJson(reader);
+                } else if ("renew".equals(fieldName)) {
+                    deserializedSavingsPlanUpdateRequestProperties.renew = reader.getNullable(JsonReader::getBoolean);
+                } else if ("renewProperties".equals(fieldName)) {
+                    deserializedSavingsPlanUpdateRequestProperties.renewProperties = RenewProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanUpdateRequestProperties;
+        });
     }
 }

@@ -5,11 +5,11 @@
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.monitor.query.implementation.metricsdefinitions.implementation.CoreToCodegenBridgeUtils;
 import java.io.IOException;
 import java.time.Duration;
 
@@ -80,11 +80,14 @@ public final class MetricAvailability implements JsonSerializable<MetricAvailabi
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("timeGrain", CoreToCodegenBridgeUtils.durationToStringWithDays(this.timeGrain));
-        jsonWriter.writeStringField("retention", CoreToCodegenBridgeUtils.durationToStringWithDays(this.retention));
+        jsonWriter.writeStringField("timeGrain", CoreUtils.durationToStringWithDays(this.timeGrain));
+        jsonWriter.writeStringField("retention", CoreUtils.durationToStringWithDays(this.retention));
         return jsonWriter.writeEndObject();
     }
 

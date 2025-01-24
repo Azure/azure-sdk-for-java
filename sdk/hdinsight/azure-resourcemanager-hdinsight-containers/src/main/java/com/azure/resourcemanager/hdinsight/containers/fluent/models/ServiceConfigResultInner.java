@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.hdinsight.containers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.containers.models.ServiceConfigResultProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Cluster instance service config.
  */
 @Fluent
-public final class ServiceConfigResultInner {
+public final class ServiceConfigResultInner implements JsonSerializable<ServiceConfigResultInner> {
     /*
      * Cluster instance service config properties.
      */
-    @JsonProperty(value = "properties")
     private ServiceConfigResultProperties properties;
 
     /**
@@ -54,5 +57,41 @@ public final class ServiceConfigResultInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceConfigResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceConfigResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceConfigResultInner.
+     */
+    public static ServiceConfigResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceConfigResultInner deserializedServiceConfigResultInner = new ServiceConfigResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedServiceConfigResultInner.properties = ServiceConfigResultProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceConfigResultInner;
+        });
     }
 }

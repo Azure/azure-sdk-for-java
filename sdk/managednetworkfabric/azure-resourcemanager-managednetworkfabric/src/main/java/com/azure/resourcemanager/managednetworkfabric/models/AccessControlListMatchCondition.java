@@ -5,55 +5,56 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the match condition that is supported to filter the traffic. */
+/**
+ * Defines the match condition that is supported to filter the traffic.
+ */
 @Fluent
 public final class AccessControlListMatchCondition extends CommonMatchConditions {
     /*
-     * List of ether type values that needs to be matched.
+     * List of ether type values that need to be matched.
      */
-    @JsonProperty(value = "etherTypes")
     private List<String> etherTypes;
 
     /*
-     * List of IP fragment packets that needs to be matched.
+     * List of IP fragment packets that need to be matched.
      */
-    @JsonProperty(value = "fragments")
     private List<String> fragments;
 
     /*
-     * List of IP Lengths that needs to be matched.
+     * List of IP Lengths that need to be matched.
      */
-    @JsonProperty(value = "ipLengths")
     private List<String> ipLengths;
 
     /*
-     * List of TTL [Time To Live] values that needs to be matched.
+     * List of TTL [Time To Live] values that need to be matched.
      */
-    @JsonProperty(value = "ttlValues")
     private List<String> ttlValues;
 
     /*
-     * List of DSCP Markings that needs to be matched.
+     * List of DSCP Markings that need to be matched.
      */
-    @JsonProperty(value = "dscpMarkings")
     private List<String> dscpMarkings;
 
     /*
      * Defines the port condition that needs to be matched.
      */
-    @JsonProperty(value = "portCondition")
     private AccessControlListPortCondition portCondition;
 
-    /** Creates an instance of AccessControlListMatchCondition class. */
+    /**
+     * Creates an instance of AccessControlListMatchCondition class.
+     */
     public AccessControlListMatchCondition() {
     }
 
     /**
-     * Get the etherTypes property: List of ether type values that needs to be matched.
-     *
+     * Get the etherTypes property: List of ether type values that need to be matched.
+     * 
      * @return the etherTypes value.
      */
     public List<String> etherTypes() {
@@ -61,8 +62,8 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
     }
 
     /**
-     * Set the etherTypes property: List of ether type values that needs to be matched.
-     *
+     * Set the etherTypes property: List of ether type values that need to be matched.
+     * 
      * @param etherTypes the etherTypes value to set.
      * @return the AccessControlListMatchCondition object itself.
      */
@@ -72,8 +73,8 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
     }
 
     /**
-     * Get the fragments property: List of IP fragment packets that needs to be matched.
-     *
+     * Get the fragments property: List of IP fragment packets that need to be matched.
+     * 
      * @return the fragments value.
      */
     public List<String> fragments() {
@@ -81,8 +82,8 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
     }
 
     /**
-     * Set the fragments property: List of IP fragment packets that needs to be matched.
-     *
+     * Set the fragments property: List of IP fragment packets that need to be matched.
+     * 
      * @param fragments the fragments value to set.
      * @return the AccessControlListMatchCondition object itself.
      */
@@ -92,8 +93,8 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
     }
 
     /**
-     * Get the ipLengths property: List of IP Lengths that needs to be matched.
-     *
+     * Get the ipLengths property: List of IP Lengths that need to be matched.
+     * 
      * @return the ipLengths value.
      */
     public List<String> ipLengths() {
@@ -101,8 +102,8 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
     }
 
     /**
-     * Set the ipLengths property: List of IP Lengths that needs to be matched.
-     *
+     * Set the ipLengths property: List of IP Lengths that need to be matched.
+     * 
      * @param ipLengths the ipLengths value to set.
      * @return the AccessControlListMatchCondition object itself.
      */
@@ -112,8 +113,8 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
     }
 
     /**
-     * Get the ttlValues property: List of TTL [Time To Live] values that needs to be matched.
-     *
+     * Get the ttlValues property: List of TTL [Time To Live] values that need to be matched.
+     * 
      * @return the ttlValues value.
      */
     public List<String> ttlValues() {
@@ -121,8 +122,8 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
     }
 
     /**
-     * Set the ttlValues property: List of TTL [Time To Live] values that needs to be matched.
-     *
+     * Set the ttlValues property: List of TTL [Time To Live] values that need to be matched.
+     * 
      * @param ttlValues the ttlValues value to set.
      * @return the AccessControlListMatchCondition object itself.
      */
@@ -132,8 +133,8 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
     }
 
     /**
-     * Get the dscpMarkings property: List of DSCP Markings that needs to be matched.
-     *
+     * Get the dscpMarkings property: List of DSCP Markings that need to be matched.
+     * 
      * @return the dscpMarkings value.
      */
     public List<String> dscpMarkings() {
@@ -141,8 +142,8 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
     }
 
     /**
-     * Set the dscpMarkings property: List of DSCP Markings that needs to be matched.
-     *
+     * Set the dscpMarkings property: List of DSCP Markings that need to be matched.
+     * 
      * @param dscpMarkings the dscpMarkings value to set.
      * @return the AccessControlListMatchCondition object itself.
      */
@@ -153,7 +154,7 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
 
     /**
      * Get the portCondition property: Defines the port condition that needs to be matched.
-     *
+     * 
      * @return the portCondition value.
      */
     public AccessControlListPortCondition portCondition() {
@@ -162,7 +163,7 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
 
     /**
      * Set the portCondition property: Defines the port condition that needs to be matched.
-     *
+     * 
      * @param portCondition the portCondition value to set.
      * @return the AccessControlListMatchCondition object itself.
      */
@@ -171,21 +172,27 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListMatchCondition withProtocolTypes(List<String> protocolTypes) {
         super.withProtocolTypes(protocolTypes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListMatchCondition withVlanMatchCondition(VlanMatchCondition vlanMatchCondition) {
         super.withVlanMatchCondition(vlanMatchCondition);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListMatchCondition withIpCondition(IpMatchCondition ipCondition) {
         super.withIpCondition(ipCondition);
@@ -194,14 +201,88 @@ public final class AccessControlListMatchCondition extends CommonMatchConditions
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (portCondition() != null) {
             portCondition().validate();
         }
+        if (vlanMatchCondition() != null) {
+            vlanMatchCondition().validate();
+        }
+        if (ipCondition() != null) {
+            ipCondition().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("protocolTypes", protocolTypes(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("vlanMatchCondition", vlanMatchCondition());
+        jsonWriter.writeJsonField("ipCondition", ipCondition());
+        jsonWriter.writeArrayField("etherTypes", this.etherTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("fragments", this.fragments, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ipLengths", this.ipLengths, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ttlValues", this.ttlValues, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("dscpMarkings", this.dscpMarkings, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("portCondition", this.portCondition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessControlListMatchCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessControlListMatchCondition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessControlListMatchCondition.
+     */
+    public static AccessControlListMatchCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessControlListMatchCondition deserializedAccessControlListMatchCondition
+                = new AccessControlListMatchCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocolTypes".equals(fieldName)) {
+                    List<String> protocolTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccessControlListMatchCondition.withProtocolTypes(protocolTypes);
+                } else if ("vlanMatchCondition".equals(fieldName)) {
+                    deserializedAccessControlListMatchCondition
+                        .withVlanMatchCondition(VlanMatchCondition.fromJson(reader));
+                } else if ("ipCondition".equals(fieldName)) {
+                    deserializedAccessControlListMatchCondition.withIpCondition(IpMatchCondition.fromJson(reader));
+                } else if ("etherTypes".equals(fieldName)) {
+                    List<String> etherTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccessControlListMatchCondition.etherTypes = etherTypes;
+                } else if ("fragments".equals(fieldName)) {
+                    List<String> fragments = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccessControlListMatchCondition.fragments = fragments;
+                } else if ("ipLengths".equals(fieldName)) {
+                    List<String> ipLengths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccessControlListMatchCondition.ipLengths = ipLengths;
+                } else if ("ttlValues".equals(fieldName)) {
+                    List<String> ttlValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccessControlListMatchCondition.ttlValues = ttlValues;
+                } else if ("dscpMarkings".equals(fieldName)) {
+                    List<String> dscpMarkings = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccessControlListMatchCondition.dscpMarkings = dscpMarkings;
+                } else if ("portCondition".equals(fieldName)) {
+                    deserializedAccessControlListMatchCondition.portCondition
+                        = AccessControlListPortCondition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessControlListMatchCondition;
+        });
     }
 }

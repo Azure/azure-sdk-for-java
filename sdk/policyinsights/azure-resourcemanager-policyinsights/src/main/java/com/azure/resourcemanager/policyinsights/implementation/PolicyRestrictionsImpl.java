@@ -22,22 +22,18 @@ public final class PolicyRestrictionsImpl implements PolicyRestrictions {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    public PolicyRestrictionsImpl(
-        PolicyRestrictionsClient innerClient,
+    public PolicyRestrictionsImpl(PolicyRestrictionsClient innerClient,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckRestrictionsResult> checkAtSubscriptionScopeWithResponse(
-        CheckRestrictionsRequest parameters, Context context) {
-        Response<CheckRestrictionsResultInner> inner =
-            this.serviceClient().checkAtSubscriptionScopeWithResponse(parameters, context);
+    public Response<CheckRestrictionsResult> checkAtSubscriptionScopeWithResponse(CheckRestrictionsRequest parameters,
+        Context context) {
+        Response<CheckRestrictionsResultInner> inner
+            = this.serviceClient().checkAtSubscriptionScopeWithResponse(parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckRestrictionsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,25 +49,22 @@ public final class PolicyRestrictionsImpl implements PolicyRestrictions {
         }
     }
 
-    public Response<CheckRestrictionsResult> checkAtResourceGroupScopeWithResponse(
-        String resourceGroupName, CheckRestrictionsRequest parameters, Context context) {
-        Response<CheckRestrictionsResultInner> inner =
-            this.serviceClient().checkAtResourceGroupScopeWithResponse(resourceGroupName, parameters, context);
+    public Response<CheckRestrictionsResult> checkAtResourceGroupScopeWithResponse(String resourceGroupName,
+        CheckRestrictionsRequest parameters, Context context) {
+        Response<CheckRestrictionsResultInner> inner
+            = this.serviceClient().checkAtResourceGroupScopeWithResponse(resourceGroupName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckRestrictionsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckRestrictionsResult checkAtResourceGroupScope(
-        String resourceGroupName, CheckRestrictionsRequest parameters) {
-        CheckRestrictionsResultInner inner =
-            this.serviceClient().checkAtResourceGroupScope(resourceGroupName, parameters);
+    public CheckRestrictionsResult checkAtResourceGroupScope(String resourceGroupName,
+        CheckRestrictionsRequest parameters) {
+        CheckRestrictionsResultInner inner
+            = this.serviceClient().checkAtResourceGroupScope(resourceGroupName, parameters);
         if (inner != null) {
             return new CheckRestrictionsResultImpl(inner, this.manager());
         } else {
@@ -79,25 +72,22 @@ public final class PolicyRestrictionsImpl implements PolicyRestrictions {
         }
     }
 
-    public Response<CheckRestrictionsResult> checkAtManagementGroupScopeWithResponse(
-        String managementGroupId, CheckManagementGroupRestrictionsRequest parameters, Context context) {
-        Response<CheckRestrictionsResultInner> inner =
-            this.serviceClient().checkAtManagementGroupScopeWithResponse(managementGroupId, parameters, context);
+    public Response<CheckRestrictionsResult> checkAtManagementGroupScopeWithResponse(String managementGroupId,
+        CheckManagementGroupRestrictionsRequest parameters, Context context) {
+        Response<CheckRestrictionsResultInner> inner
+            = this.serviceClient().checkAtManagementGroupScopeWithResponse(managementGroupId, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckRestrictionsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckRestrictionsResult checkAtManagementGroupScope(
-        String managementGroupId, CheckManagementGroupRestrictionsRequest parameters) {
-        CheckRestrictionsResultInner inner =
-            this.serviceClient().checkAtManagementGroupScope(managementGroupId, parameters);
+    public CheckRestrictionsResult checkAtManagementGroupScope(String managementGroupId,
+        CheckManagementGroupRestrictionsRequest parameters) {
+        CheckRestrictionsResultInner inner
+            = this.serviceClient().checkAtManagementGroupScope(managementGroupId, parameters);
         if (inner != null) {
             return new CheckRestrictionsResultImpl(inner, this.manager());
         } else {

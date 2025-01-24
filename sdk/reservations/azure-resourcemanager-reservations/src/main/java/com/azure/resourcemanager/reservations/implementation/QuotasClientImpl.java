@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in QuotasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in QuotasClient.
+ */
 public final class QuotasClientImpl implements QuotasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final QuotasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of QuotasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     QuotasClientImpl(AzureReservationApiImpl client) {
@@ -65,100 +71,74 @@ public final class QuotasClientImpl implements QuotasClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiQ")
     public interface QuotasService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<QuotasGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerId") String providerId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<QuotasGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("providerId") String providerId,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerId") String providerId,
-            @PathParam("location") String location,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("providerId") String providerId,
+            @PathParam("location") String location, @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CurrentQuotaLimitBaseInner createQuotaRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits/{resourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerId") String providerId,
-            @PathParam("location") String location,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("providerId") String providerId,
+            @PathParam("location") String location, @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CurrentQuotaLimitBaseInner createQuotaRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimits")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<QuotasListResponse> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerId") String providerId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<QuotasListResponse> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("providerId") String providerId,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<QuotasListNextResponse> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<QuotasListNextResponse> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to
      * submit quota update request.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current quota (service limit) and usage of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QuotasGetResponse> getWithResponseAsync(
-        String subscriptionId, String providerId, String location, String resourceName) {
+    private Mono<QuotasGetResponse> getWithResponseAsync(String subscriptionId, String providerId, String location,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -175,30 +155,20 @@ public final class QuotasClientImpl implements QuotasClient {
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            subscriptionId,
-                            providerId,
-                            location,
-                            apiVersion,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), subscriptionId, providerId, location,
+                apiVersion, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to
      * submit quota update request.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -206,13 +176,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return the current quota (service limit) and usage of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QuotasGetResponse> getWithResponseAsync(
-        String subscriptionId, String providerId, String location, String resourceName, Context context) {
+    private Mono<QuotasGetResponse> getWithResponseAsync(String subscriptionId, String providerId, String location,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -229,35 +197,27 @@ public final class QuotasClientImpl implements QuotasClient {
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                subscriptionId,
-                providerId,
-                location,
-                apiVersion,
-                resourceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), subscriptionId, providerId, location, apiVersion, resourceName,
+            accept, context);
     }
 
     /**
      * Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to
      * submit quota update request.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current quota (service limit) and usage of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CurrentQuotaLimitBaseInner> getAsync(
-        String subscriptionId, String providerId, String location, String resourceName) {
+    private Mono<CurrentQuotaLimitBaseInner> getAsync(String subscriptionId, String providerId, String location,
+        String resourceName) {
         return getWithResponseAsync(subscriptionId, providerId, location, resourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -265,12 +225,12 @@ public final class QuotasClientImpl implements QuotasClient {
     /**
      * Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to
      * submit quota update request.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -278,42 +238,44 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return the current quota (service limit) and usage of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QuotasGetResponse getWithResponse(
-        String subscriptionId, String providerId, String location, String resourceName, Context context) {
+    public QuotasGetResponse getWithResponse(String subscriptionId, String providerId, String location,
+        String resourceName, Context context) {
         return getWithResponseAsync(subscriptionId, providerId, location, resourceName, context).block();
     }
 
     /**
      * Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to
      * submit quota update request.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current quota (service limit) and usage of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner get(
-        String subscriptionId, String providerId, String location, String resourceName) {
+    public CurrentQuotaLimitBaseInner get(String subscriptionId, String providerId, String location,
+        String resourceName) {
         return getWithResponse(subscriptionId, providerId, location, resourceName, Context.NONE).getValue();
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -321,17 +283,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String subscriptionId, String providerId,
+        String location, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -354,33 +310,24 @@ public final class QuotasClientImpl implements QuotasClient {
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            subscriptionId,
-                            providerId,
-                            location,
-                            resourceName,
-                            apiVersion,
-                            createQuotaRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), subscriptionId, providerId,
+                location, resourceName, apiVersion, createQuotaRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,18 +336,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String subscriptionId, String providerId,
+        String location, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -423,30 +363,23 @@ public final class QuotasClientImpl implements QuotasClient {
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                subscriptionId,
-                providerId,
-                location,
-                resourceName,
-                apiVersion,
-                createQuotaRequest,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), subscriptionId, providerId, location, resourceName,
+            apiVersion, createQuotaRequest, accept, context);
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,34 +388,28 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdateAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
+        String subscriptionId, String providerId, String location, String resourceName,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest);
-        return this
-            .client
-            .<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CurrentQuotaLimitBaseInner.class,
-                CurrentQuotaLimitBaseInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest);
+        return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,37 +419,28 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdateAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
+        String subscriptionId, String providerId, String location, String resourceName,
+        CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                subscriptionId, providerId, location, resourceName, createQuotaRequest, context);
-        return this
-            .client
-            .<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CurrentQuotaLimitBaseInner.class,
-                CurrentQuotaLimitBaseInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(subscriptionId, providerId, location,
+            resourceName, createQuotaRequest, context);
+        return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class, context);
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -531,27 +449,25 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
+        String subscriptionId, String providerId, String location, String resourceName,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return this
-            .beginCreateOrUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest)
+        return this.beginCreateOrUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest)
             .getSyncPoller();
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -561,28 +477,26 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
+        String subscriptionId, String providerId, String location, String resourceName,
+        CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         return this
             .beginCreateOrUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context)
             .getSyncPoller();
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -590,28 +504,25 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CurrentQuotaLimitBaseInner> createOrUpdateAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginCreateOrUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest)
-            .last()
+    private Mono<CurrentQuotaLimitBaseInner> createOrUpdateAsync(String subscriptionId, String providerId,
+        String location, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
+        return beginCreateOrUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -620,29 +531,26 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CurrentQuotaLimitBaseInner> createOrUpdateAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
+    private Mono<CurrentQuotaLimitBaseInner> createOrUpdateAsync(String subscriptionId, String providerId,
+        String location, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         return beginCreateOrUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -650,26 +558,24 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner createOrUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest) {
+    public CurrentQuotaLimitBaseInner createOrUpdate(String subscriptionId, String providerId, String location,
+        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
         return createOrUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest).block();
     }
 
     /**
-     * Create or update the quota (service limits) of a resource to the requested value. Steps: 1. Make the Get request
-     * to get the quota information for specific resource. 2. To increase the quota, update the limit field in the
-     * response from Get request to new value. 3. Submit the JSON to the quota request API to update the quota. The
-     * Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
-     *
+     * Create or update the quota (service limits) of a resource to the requested value.
+     * Steps:
+     * 1. Make the Get request to get the quota information for specific resource.
+     * 2. To increase the quota, update the limit field in the response from Get request to new value.
+     * 3. Submit the JSON to the quota request API to update the quota.
+     * The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Quota requests payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -678,28 +584,24 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner createOrUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
+    public CurrentQuotaLimitBaseInner createOrUpdate(String subscriptionId, String providerId, String location,
+        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         return createOrUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context)
             .block();
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -707,17 +609,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String subscriptionId, String providerId,
+        String location, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -740,33 +636,23 @@ public final class QuotasClientImpl implements QuotasClient {
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            subscriptionId,
-                            providerId,
-                            location,
-                            resourceName,
-                            apiVersion,
-                            createQuotaRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), subscriptionId, providerId, location,
+                resourceName, apiVersion, createQuotaRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -775,18 +661,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String subscriptionId, String providerId,
+        String location, String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -809,30 +688,22 @@ public final class QuotasClientImpl implements QuotasClient {
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                subscriptionId,
-                providerId,
-                location,
-                resourceName,
-                apiVersion,
-                createQuotaRequest,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), subscriptionId, providerId, location, resourceName, apiVersion,
+            createQuotaRequest, accept, context);
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -841,34 +712,27 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdateAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
+        String subscriptionId, String providerId, String location, String resourceName,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest);
-        return this
-            .client
-            .<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CurrentQuotaLimitBaseInner.class,
-                CurrentQuotaLimitBaseInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest);
+        return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -878,36 +742,27 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdateAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
+        String subscriptionId, String providerId, String location, String resourceName,
+        CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context);
-        return this
-            .client
-            .<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CurrentQuotaLimitBaseInner.class,
-                CurrentQuotaLimitBaseInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context);
+        return this.client.<CurrentQuotaLimitBaseInner, CurrentQuotaLimitBaseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CurrentQuotaLimitBaseInner.class, CurrentQuotaLimitBaseInner.class, context);
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -916,27 +771,24 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
+        String subscriptionId, String providerId, String location, String resourceName,
         CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return this
-            .beginUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest)
+        return this.beginUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest)
             .getSyncPoller();
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -946,28 +798,24 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
-        return this
-            .beginUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context)
+        String subscriptionId, String providerId, String location, String resourceName,
+        CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
+        return this.beginUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context)
             .getSyncPoller();
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -975,28 +823,24 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CurrentQuotaLimitBaseInner> updateAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest)
-            .last()
+    private Mono<CurrentQuotaLimitBaseInner> updateAsync(String subscriptionId, String providerId, String location,
+        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
+        return beginUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1005,29 +849,24 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CurrentQuotaLimitBaseInner> updateAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
-        return beginUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context)
-            .last()
+    private Mono<CurrentQuotaLimitBaseInner> updateAsync(String subscriptionId, String providerId, String location,
+        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
+        return beginUpdateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1035,26 +874,23 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner update(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest) {
+    public CurrentQuotaLimitBaseInner update(String subscriptionId, String providerId, String location,
+        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest) {
         return updateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest).block();
     }
 
     /**
-     * Update the quota (service limits) of this resource to the requested value. • To get the quota information for
-     * specific resource, send a GET request. • To increase the quota, update the limit field from the GET response to a
-     * new value. • To update the quota value, submit the JSON response to the quota request API to update the quota. •
-     * To update the quota. use the PATCH operation.
-     *
+     * Update the quota (service limits) of this resource to the requested value.
+     * • To get the quota information for specific resource, send a GET request.
+     * • To increase the quota, update the limit field from the GET response to a new value.
+     * • To update the quota value, submit the JSON response to the quota request API to update the quota.
+     * • To update the quota. use the PATCH operation.
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @param resourceName The resource name for a resource provider, such as SKU name for Microsoft.Compute, Sku or
-     *     TotalLowPriorityCores for Microsoft.MachineLearningServices.
+     * TotalLowPriorityCores for Microsoft.MachineLearningServices.
      * @param createQuotaRequest Payload for the quota request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1063,20 +899,15 @@ public final class QuotasClientImpl implements QuotasClient {
      * @return quota properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner update(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String resourceName,
-        CurrentQuotaLimitBaseInner createQuotaRequest,
-        Context context) {
+    public CurrentQuotaLimitBaseInner update(String subscriptionId, String providerId, String location,
+        String resourceName, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         return updateAsync(subscriptionId, providerId, location, resourceName, createQuotaRequest, context).block();
     }
 
     /**
      * Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota
      * operation can be leveraged to request quota updates.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -1084,16 +915,14 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of current quotas (service limits) and usage for all resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listSinglePageAsync(
-        String subscriptionId, String providerId, String location) {
+    private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listSinglePageAsync(String subscriptionId,
+        String providerId, String location) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -1107,33 +936,18 @@ public final class QuotasClientImpl implements QuotasClient {
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            subscriptionId,
-                            providerId,
-                            location,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), subscriptionId, providerId, location,
+                apiVersion, accept, context))
             .<PagedResponse<CurrentQuotaLimitBaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        res.getDeserializedHeaders()))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), res.getDeserializedHeaders()))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota
      * operation can be leveraged to request quota updates.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -1142,16 +956,14 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of current quotas (service limits) and usage for all resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listSinglePageAsync(
-        String subscriptionId, String providerId, String location, Context context) {
+    private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listSinglePageAsync(String subscriptionId,
+        String providerId, String location, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -1167,41 +979,33 @@ public final class QuotasClientImpl implements QuotasClient {
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), subscriptionId, providerId, location, apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        res.getDeserializedHeaders()));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota
      * operation can be leveraged to request quota updates.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quotas (service limits) and usage for all resources as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of current quotas (service limits) and usage for all resources as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CurrentQuotaLimitBaseInner> listAsync(String subscriptionId, String providerId, String location) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(subscriptionId, providerId, location),
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, providerId, location),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota
      * operation can be leveraged to request quota updates.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -1209,29 +1013,28 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quotas (service limits) and usage for all resources as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of current quotas (service limits) and usage for all resources as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CurrentQuotaLimitBaseInner> listAsync(
-        String subscriptionId, String providerId, String location, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(subscriptionId, providerId, location, context),
+    private PagedFlux<CurrentQuotaLimitBaseInner> listAsync(String subscriptionId, String providerId, String location,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, providerId, location, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota
      * operation can be leveraged to request quota updates.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quotas (service limits) and usage for all resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of current quotas (service limits) and usage for all resources as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CurrentQuotaLimitBaseInner> list(String subscriptionId, String providerId, String location) {
@@ -1241,7 +1044,7 @@ public final class QuotasClientImpl implements QuotasClient {
     /**
      * Gets a list of current quotas (service limits) and usage for all resources. The response from the list quota
      * operation can be leveraged to request quota updates.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -1249,20 +1052,19 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quotas (service limits) and usage for all resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of current quotas (service limits) and usage for all resources as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CurrentQuotaLimitBaseInner> list(
-        String subscriptionId, String providerId, String location, Context context) {
+    public PagedIterable<CurrentQuotaLimitBaseInner> list(String subscriptionId, String providerId, String location,
+        Context context) {
         return new PagedIterable<>(listAsync(subscriptionId, providerId, location, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1274,31 +1076,21 @@ public final class QuotasClientImpl implements QuotasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CurrentQuotaLimitBaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        res.getDeserializedHeaders()))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), res.getDeserializedHeaders()))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1311,23 +1103,13 @@ public final class QuotasClientImpl implements QuotasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        res.getDeserializedHeaders()));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), res.getDeserializedHeaders()));
     }
 }

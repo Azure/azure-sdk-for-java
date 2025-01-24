@@ -5,42 +5,48 @@
 package com.azure.resourcemanager.fluidrelay.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.fluidrelay.fluent.models.FluidRelayServerUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The updatable properties of a Fluid Relay server. */
+/**
+ * The updatable properties of a Fluid Relay server.
+ */
 @Fluent
-public final class FluidRelayServerUpdate {
+public final class FluidRelayServerUpdate implements JsonSerializable<FluidRelayServerUpdate> {
     /*
      * The resource-specific properties that can be updated for this resource.
      */
-    @JsonProperty(value = "properties")
     private FluidRelayServerUpdateProperties innerProperties;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The type of identity used for the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /**
+     * Creates an instance of FluidRelayServerUpdate class.
+     */
+    public FluidRelayServerUpdate() {
+    }
+
+    /**
      * Get the innerProperties property: The resource-specific properties that can be updated for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FluidRelayServerUpdateProperties innerProperties() {
@@ -49,7 +55,7 @@ public final class FluidRelayServerUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -58,7 +64,7 @@ public final class FluidRelayServerUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FluidRelayServerUpdate object itself.
      */
@@ -69,7 +75,7 @@ public final class FluidRelayServerUpdate {
 
     /**
      * Get the identity property: The type of identity used for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -78,7 +84,7 @@ public final class FluidRelayServerUpdate {
 
     /**
      * Set the identity property: The type of identity used for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FluidRelayServerUpdate object itself.
      */
@@ -89,7 +95,7 @@ public final class FluidRelayServerUpdate {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -98,7 +104,7 @@ public final class FluidRelayServerUpdate {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the FluidRelayServerUpdate object itself.
      */
@@ -109,7 +115,7 @@ public final class FluidRelayServerUpdate {
 
     /**
      * Get the encryption property: All encryption configuration for a resource.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -118,7 +124,7 @@ public final class FluidRelayServerUpdate {
 
     /**
      * Set the encryption property: All encryption configuration for a resource.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the FluidRelayServerUpdate object itself.
      */
@@ -132,7 +138,7 @@ public final class FluidRelayServerUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -142,5 +148,52 @@ public final class FluidRelayServerUpdate {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayServerUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayServerUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FluidRelayServerUpdate.
+     */
+    public static FluidRelayServerUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayServerUpdate deserializedFluidRelayServerUpdate = new FluidRelayServerUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedFluidRelayServerUpdate.innerProperties
+                        = FluidRelayServerUpdateProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFluidRelayServerUpdate.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedFluidRelayServerUpdate.identity = Identity.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedFluidRelayServerUpdate.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayServerUpdate;
+        });
     }
 }

@@ -11,6 +11,13 @@ import com.azure.resourcemanager.devopsinfrastructure.fluent.models.QuotaInner;
  */
 public interface Quota {
     /**
+     * Gets the name property: The name of the quota.
+     * 
+     * @return the name value.
+     */
+    QuotaName name();
+
+    /**
      * Gets the id property: Fully qualified ARM resource id.
      * 
      * @return the id value.

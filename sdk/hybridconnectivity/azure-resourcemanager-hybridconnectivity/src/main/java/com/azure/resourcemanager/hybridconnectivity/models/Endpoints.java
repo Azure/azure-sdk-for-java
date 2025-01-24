@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Endpoints. */
+/**
+ * Resource collection API of Endpoints.
+ */
 public interface Endpoints {
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,7 +25,7 @@ public interface Endpoints {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface Endpoints {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -48,7 +50,7 @@ public interface Endpoints {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,7 +62,7 @@ public interface Endpoints {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -73,7 +75,7 @@ public interface Endpoints {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,7 +86,7 @@ public interface Endpoints {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -95,16 +97,12 @@ public interface Endpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the endpoint access credentials to the resource along with {@link Response}.
      */
-    Response<EndpointAccessResource> listCredentialsWithResponse(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListCredentialsRequest listCredentialsRequest,
-        Context context);
+    Response<EndpointAccessResource> listCredentialsWithResponse(String resourceUri, String endpointName,
+        Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context);
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +114,7 @@ public interface Endpoints {
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -127,16 +125,12 @@ public interface Endpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ingress gateway endpoint credentials along with {@link Response}.
      */
-    Response<IngressGatewayResource> listIngressGatewayCredentialsWithResponse(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
-        Context context);
+    Response<IngressGatewayResource> listIngressGatewayCredentialsWithResponse(String resourceUri, String endpointName,
+        Long expiresin, ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest, Context context);
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +142,7 @@ public interface Endpoints {
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -158,12 +152,12 @@ public interface Endpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Proxy along with {@link Response}.
      */
-    Response<ManagedProxyResource> listManagedProxyDetailsWithResponse(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest, Context context);
+    Response<ManagedProxyResource> listManagedProxyDetailsWithResponse(String resourceUri, String endpointName,
+        ManagedProxyRequest managedProxyRequest, Context context);
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -172,12 +166,12 @@ public interface Endpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Proxy.
      */
-    ManagedProxyResource listManagedProxyDetails(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest);
+    ManagedProxyResource listManagedProxyDetails(String resourceUri, String endpointName,
+        ManagedProxyRequest managedProxyRequest);
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,7 +182,7 @@ public interface Endpoints {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,7 +194,7 @@ public interface Endpoints {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -210,7 +204,7 @@ public interface Endpoints {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +216,7 @@ public interface Endpoints {
 
     /**
      * Begins definition for a new EndpointResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new EndpointResource definition.
      */

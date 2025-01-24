@@ -20,12 +20,8 @@ public final class MachineLearningComputesDeleteResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public MachineLearningComputesDeleteResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        MachineLearningComputesDeleteHeaders headers) {
+    public MachineLearningComputesDeleteResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, MachineLearningComputesDeleteHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

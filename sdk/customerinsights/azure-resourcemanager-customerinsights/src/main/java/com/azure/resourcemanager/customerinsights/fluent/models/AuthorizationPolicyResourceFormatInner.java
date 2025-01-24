@@ -6,26 +6,47 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.PermissionTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The authorization policy resource format. */
+/**
+ * The authorization policy resource format.
+ */
 @Fluent
 public final class AuthorizationPolicyResourceFormatInner extends ProxyResource {
     /*
      * The authorization policy.
      */
-    @JsonProperty(value = "properties")
     private AuthorizationPolicyInner innerProperties;
 
-    /** Creates an instance of AuthorizationPolicyResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AuthorizationPolicyResourceFormatInner class.
+     */
     public AuthorizationPolicyResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: The authorization policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AuthorizationPolicyInner innerProperties() {
@@ -33,8 +54,38 @@ public final class AuthorizationPolicyResourceFormatInner extends ProxyResource 
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the policyName property: Name of the policy.
-     *
+     * 
      * @return the policyName value.
      */
     public String policyName() {
@@ -43,7 +94,7 @@ public final class AuthorizationPolicyResourceFormatInner extends ProxyResource 
 
     /**
      * Get the permissions property: The permissions associated with the policy.
-     *
+     * 
      * @return the permissions value.
      */
     public List<PermissionTypes> permissions() {
@@ -52,7 +103,7 @@ public final class AuthorizationPolicyResourceFormatInner extends ProxyResource 
 
     /**
      * Set the permissions property: The permissions associated with the policy.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the AuthorizationPolicyResourceFormatInner object itself.
      */
@@ -66,7 +117,7 @@ public final class AuthorizationPolicyResourceFormatInner extends ProxyResource 
 
     /**
      * Get the primaryKey property: Primary key associated with the policy.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -75,7 +126,7 @@ public final class AuthorizationPolicyResourceFormatInner extends ProxyResource 
 
     /**
      * Set the primaryKey property: Primary key associated with the policy.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the AuthorizationPolicyResourceFormatInner object itself.
      */
@@ -89,7 +140,7 @@ public final class AuthorizationPolicyResourceFormatInner extends ProxyResource 
 
     /**
      * Get the secondaryKey property: Secondary key associated with the policy.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -98,7 +149,7 @@ public final class AuthorizationPolicyResourceFormatInner extends ProxyResource 
 
     /**
      * Set the secondaryKey property: Secondary key associated with the policy.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the AuthorizationPolicyResourceFormatInner object itself.
      */
@@ -112,12 +163,57 @@ public final class AuthorizationPolicyResourceFormatInner extends ProxyResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationPolicyResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationPolicyResourceFormatInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthorizationPolicyResourceFormatInner.
+     */
+    public static AuthorizationPolicyResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationPolicyResourceFormatInner deserializedAuthorizationPolicyResourceFormatInner
+                = new AuthorizationPolicyResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAuthorizationPolicyResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAuthorizationPolicyResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAuthorizationPolicyResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAuthorizationPolicyResourceFormatInner.innerProperties
+                        = AuthorizationPolicyInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationPolicyResourceFormatInner;
+        });
     }
 }

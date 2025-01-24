@@ -6,37 +6,37 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.BigDataPoolParametrizationReference;
 import com.azure.resourcemanager.datafactory.models.ConfigurationType;
 import com.azure.resourcemanager.datafactory.models.NotebookParameter;
 import com.azure.resourcemanager.datafactory.models.SparkConfigurationParametrizationReference;
 import com.azure.resourcemanager.datafactory.models.SynapseNotebookReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Execute Synapse notebook activity properties.
  */
 @Fluent
-public final class SynapseNotebookActivityTypeProperties {
+public final class SynapseNotebookActivityTypeProperties
+    implements JsonSerializable<SynapseNotebookActivityTypeProperties> {
     /*
      * Synapse notebook reference.
      */
-    @JsonProperty(value = "notebook", required = true)
     private SynapseNotebookReference notebook;
 
     /*
      * The name of the big data pool which will be used to execute the notebook.
      */
-    @JsonProperty(value = "sparkPool")
     private BigDataPoolParametrizationReference sparkPool;
 
     /*
      * Notebook parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, NotebookParameter> parameters;
 
     /*
@@ -44,13 +44,11 @@ public final class SynapseNotebookActivityTypeProperties {
      * will be used for overriding 'executorCores' and 'executorMemory' of the notebook you provide. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "executorSize")
     private Object executorSize;
 
     /*
      * Spark configuration properties, which will override the 'conf' of the notebook you provide.
      */
-    @JsonProperty(value = "conf")
     private Object conf;
 
     /*
@@ -58,33 +56,27 @@ public final class SynapseNotebookActivityTypeProperties {
      * be used for overriding 'driverCores' and 'driverMemory' of the notebook you provide. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "driverSize")
     private Object driverSize;
 
     /*
      * Number of executors to launch for this session, which will override the 'numExecutors' of the notebook you
      * provide. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "numExecutors")
     private Object numExecutors;
 
     /*
      * The type of the spark config.
      */
-    @JsonProperty(value = "configurationType")
     private ConfigurationType configurationType;
 
     /*
      * The spark configuration of the spark job.
      */
-    @JsonProperty(value = "targetSparkConfiguration")
     private SparkConfigurationParametrizationReference targetSparkConfiguration;
 
     /*
      * Spark configuration property.
      */
-    @JsonProperty(value = "sparkConfig")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> sparkConfig;
 
     /**
@@ -335,4 +327,77 @@ public final class SynapseNotebookActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SynapseNotebookActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("notebook", this.notebook);
+        jsonWriter.writeJsonField("sparkPool", this.sparkPool);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("executorSize", this.executorSize);
+        jsonWriter.writeUntypedField("conf", this.conf);
+        jsonWriter.writeUntypedField("driverSize", this.driverSize);
+        jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        jsonWriter.writeJsonField("targetSparkConfiguration", this.targetSparkConfiguration);
+        jsonWriter.writeMapField("sparkConfig", this.sparkConfig, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SynapseNotebookActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SynapseNotebookActivityTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SynapseNotebookActivityTypeProperties.
+     */
+    public static SynapseNotebookActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SynapseNotebookActivityTypeProperties deserializedSynapseNotebookActivityTypeProperties
+                = new SynapseNotebookActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notebook".equals(fieldName)) {
+                    deserializedSynapseNotebookActivityTypeProperties.notebook
+                        = SynapseNotebookReference.fromJson(reader);
+                } else if ("sparkPool".equals(fieldName)) {
+                    deserializedSynapseNotebookActivityTypeProperties.sparkPool
+                        = BigDataPoolParametrizationReference.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, NotebookParameter> parameters
+                        = reader.readMap(reader1 -> NotebookParameter.fromJson(reader1));
+                    deserializedSynapseNotebookActivityTypeProperties.parameters = parameters;
+                } else if ("executorSize".equals(fieldName)) {
+                    deserializedSynapseNotebookActivityTypeProperties.executorSize = reader.readUntyped();
+                } else if ("conf".equals(fieldName)) {
+                    deserializedSynapseNotebookActivityTypeProperties.conf = reader.readUntyped();
+                } else if ("driverSize".equals(fieldName)) {
+                    deserializedSynapseNotebookActivityTypeProperties.driverSize = reader.readUntyped();
+                } else if ("numExecutors".equals(fieldName)) {
+                    deserializedSynapseNotebookActivityTypeProperties.numExecutors = reader.readUntyped();
+                } else if ("configurationType".equals(fieldName)) {
+                    deserializedSynapseNotebookActivityTypeProperties.configurationType
+                        = ConfigurationType.fromString(reader.getString());
+                } else if ("targetSparkConfiguration".equals(fieldName)) {
+                    deserializedSynapseNotebookActivityTypeProperties.targetSparkConfiguration
+                        = SparkConfigurationParametrizationReference.fromJson(reader);
+                } else if ("sparkConfig".equals(fieldName)) {
+                    Map<String, Object> sparkConfig = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedSynapseNotebookActivityTypeProperties.sparkConfig = sparkConfig;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSynapseNotebookActivityTypeProperties;
+        });
+    }
 }

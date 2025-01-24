@@ -8,13 +8,16 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.Identity;
 import com.azure.resourcemanager.labservices.models.LabPlanNetworkProfile;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.SupportInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,24 +30,42 @@ public final class LabPlanInner extends Resource {
     /*
      * Metadata pertaining to creation and last modification of the lab plan.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Lab plan resource properties
      */
-    @JsonProperty(value = "properties", required = true)
     private LabPlanProperties innerProperties = new LabPlanProperties();
 
     /*
      * Managed Identity Information
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LabPlanInner class.
+     */
+    public LabPlanInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the lab plan.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -53,7 +74,7 @@ public final class LabPlanInner extends Resource {
 
     /**
      * Get the innerProperties property: Lab plan resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LabPlanProperties innerProperties() {
@@ -62,7 +83,7 @@ public final class LabPlanInner extends Resource {
 
     /**
      * Get the identity property: Managed Identity Information.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -71,7 +92,7 @@ public final class LabPlanInner extends Resource {
 
     /**
      * Set the identity property: Managed Identity Information.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the LabPlanInner object itself.
      */
@@ -80,14 +101,48 @@ public final class LabPlanInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabPlanInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabPlanInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -96,7 +151,7 @@ public final class LabPlanInner extends Resource {
 
     /**
      * Get the provisioningState property: Current provisioning state of the lab plan.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -106,7 +161,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Get the defaultConnectionProfile property: The default lab connection profile. This can be changed on a lab
      * resource and only provides a default profile.
-     *
+     * 
      * @return the defaultConnectionProfile value.
      */
     public ConnectionProfile defaultConnectionProfile() {
@@ -116,7 +171,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Set the defaultConnectionProfile property: The default lab connection profile. This can be changed on a lab
      * resource and only provides a default profile.
-     *
+     * 
      * @param defaultConnectionProfile the defaultConnectionProfile value to set.
      * @return the LabPlanInner object itself.
      */
@@ -131,7 +186,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Get the defaultAutoShutdownProfile property: The default lab shutdown profile. This can be changed on a lab
      * resource and only provides a default profile.
-     *
+     * 
      * @return the defaultAutoShutdownProfile value.
      */
     public AutoShutdownProfile defaultAutoShutdownProfile() {
@@ -141,7 +196,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Set the defaultAutoShutdownProfile property: The default lab shutdown profile. This can be changed on a lab
      * resource and only provides a default profile.
-     *
+     * 
      * @param defaultAutoShutdownProfile the defaultAutoShutdownProfile value to set.
      * @return the LabPlanInner object itself.
      */
@@ -156,7 +211,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Get the defaultNetworkProfile property: The lab plan network profile. To enforce lab network policies they must
      * be defined here and cannot be changed when there are existing labs associated with this lab plan.
-     *
+     * 
      * @return the defaultNetworkProfile value.
      */
     public LabPlanNetworkProfile defaultNetworkProfile() {
@@ -166,7 +221,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Set the defaultNetworkProfile property: The lab plan network profile. To enforce lab network policies they must
      * be defined here and cannot be changed when there are existing labs associated with this lab plan.
-     *
+     * 
      * @param defaultNetworkProfile the defaultNetworkProfile value to set.
      * @return the LabPlanInner object itself.
      */
@@ -181,7 +236,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Get the allowedRegions property: The allowed regions for the lab creator to use when creating labs using this lab
      * plan.
-     *
+     * 
      * @return the allowedRegions value.
      */
     public List<String> allowedRegions() {
@@ -191,7 +246,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Set the allowedRegions property: The allowed regions for the lab creator to use when creating labs using this lab
      * plan.
-     *
+     * 
      * @param allowedRegions the allowedRegions value to set.
      * @return the LabPlanInner object itself.
      */
@@ -207,7 +262,7 @@ public final class LabPlanInner extends Resource {
      * Get the sharedGalleryId property: Resource ID of the Shared Image Gallery attached to this lab plan. When saving
      * a lab template virtual machine image it will be persisted in this gallery. Shared images from the gallery can be
      * made available to use when creating new labs.
-     *
+     * 
      * @return the sharedGalleryId value.
      */
     public String sharedGalleryId() {
@@ -218,7 +273,7 @@ public final class LabPlanInner extends Resource {
      * Set the sharedGalleryId property: Resource ID of the Shared Image Gallery attached to this lab plan. When saving
      * a lab template virtual machine image it will be persisted in this gallery. Shared images from the gallery can be
      * made available to use when creating new labs.
-     *
+     * 
      * @param sharedGalleryId the sharedGalleryId value to set.
      * @return the LabPlanInner object itself.
      */
@@ -233,7 +288,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Get the supportInfo property: Support contact information and instructions for users of the lab plan. This
      * information is displayed to lab owners and virtual machine users for all labs in the lab plan.
-     *
+     * 
      * @return the supportInfo value.
      */
     public SupportInfo supportInfo() {
@@ -243,7 +298,7 @@ public final class LabPlanInner extends Resource {
     /**
      * Set the supportInfo property: Support contact information and instructions for users of the lab plan. This
      * information is displayed to lab owners and virtual machine users for all labs in the lab plan.
-     *
+     * 
      * @param supportInfo the supportInfo value to set.
      * @return the LabPlanInner object itself.
      */
@@ -257,7 +312,7 @@ public final class LabPlanInner extends Resource {
 
     /**
      * Get the linkedLmsInstance property: Base Url of the lms instance this lab plan can link lab rosters against.
-     *
+     * 
      * @return the linkedLmsInstance value.
      */
     public String linkedLmsInstance() {
@@ -266,7 +321,7 @@ public final class LabPlanInner extends Resource {
 
     /**
      * Set the linkedLmsInstance property: Base Url of the lms instance this lab plan can link lab rosters against.
-     *
+     * 
      * @param linkedLmsInstance the linkedLmsInstance value to set.
      * @return the LabPlanInner object itself.
      */
@@ -280,14 +335,13 @@ public final class LabPlanInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model LabPlanInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model LabPlanInner"));
         } else {
             innerProperties().validate();
         }
@@ -297,4 +351,59 @@ public final class LabPlanInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LabPlanInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabPlanInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabPlanInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LabPlanInner.
+     */
+    public static LabPlanInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabPlanInner deserializedLabPlanInner = new LabPlanInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLabPlanInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLabPlanInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLabPlanInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedLabPlanInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLabPlanInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLabPlanInner.innerProperties = LabPlanProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedLabPlanInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedLabPlanInner.identity = Identity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabPlanInner;
+        });
+    }
 }

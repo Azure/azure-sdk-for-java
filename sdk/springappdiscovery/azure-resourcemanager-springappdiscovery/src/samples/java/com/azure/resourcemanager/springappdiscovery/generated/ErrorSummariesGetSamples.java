@@ -20,8 +20,9 @@ public final class ErrorSummariesGetSamples {
      */
     public static void
         errorSummariesGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.errorSummaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
-            "K2lv", com.azure.core.util.Context.NONE);
+        manager.errorSummaries()
+            .getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "K2lv",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +37,8 @@ public final class ErrorSummariesGetSamples {
      */
     public static void
         errorSummariesGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.errorSummaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
-            "K2lv", com.azure.core.util.Context.NONE);
+        manager.errorSummaries()
+            .getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "K2lv",
+                com.azure.core.util.Context.NONE);
     }
 }

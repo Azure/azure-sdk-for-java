@@ -34,8 +34,8 @@ public class SqlEncryptionProtectorImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlEncryptionProtectorImpl(
-        SqlServerImpl parent, EncryptionProtectorInner innerObject, SqlServerManager sqlServerManager) {
+    SqlEncryptionProtectorImpl(SqlServerImpl parent, EncryptionProtectorInner innerObject,
+        SqlServerManager sqlServerManager) {
         super("", parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -56,10 +56,7 @@ public class SqlEncryptionProtectorImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlEncryptionProtectorImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        EncryptionProtectorInner innerObject,
+    SqlEncryptionProtectorImpl(String resourceGroupName, String sqlServerName, EncryptionProtectorInner innerObject,
         SqlServerManager sqlServerManager) {
         super("", null, innerObject);
         Objects.requireNonNull(sqlServerManager);
@@ -161,17 +158,14 @@ public class SqlEncryptionProtectorImpl
     @Override
     public Mono<SqlEncryptionProtector> createResourceAsync() {
         final SqlEncryptionProtectorImpl self = this;
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getEncryptionProtectors()
-            .createOrUpdateAsync(
-                this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT, this.innerModel())
-            .map(
-                encryptionProtectorInner -> {
-                    self.setInner(encryptionProtectorInner);
-                    return self;
-                });
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT,
+                this.innerModel())
+            .map(encryptionProtectorInner -> {
+                self.setInner(encryptionProtectorInner);
+                return self;
+            });
     }
 
     @Override
@@ -191,9 +185,7 @@ public class SqlEncryptionProtectorImpl
 
     @Override
     protected Mono<EncryptionProtectorInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getEncryptionProtectors()
             .getAsync(this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT);
     }

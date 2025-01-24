@@ -24,33 +24,11 @@ public class RequestPayload implements java.io.Serializable // just in case, eve
     // Charset if the request payload is set in bytes
     protected String _charset;
 
-    public RequestPayload(byte[] bytes, String charset) {
-        if (bytes == null) {
-            throw new IllegalArgumentException();
-        }
-        _payloadAsBytes = bytes;
-        _charset = (charset == null || charset.isEmpty()) ? "UTF-8" : charset;
-    }
-
     public RequestPayload(CharSequence str) {
         if (str == null) {
             throw new IllegalArgumentException();
         }
         _payloadAsText = str;
-    }
-
-    /**
-     * Returns the raw request payload object i.e, either byte[] or String
-     * 
-     * @return Object which is a raw request payload i.e, either byte[] or
-     *         String
-     */
-    public Object getRawPayload() {
-        if (_payloadAsBytes != null) {
-            return _payloadAsBytes;
-        }
-
-        return _payloadAsText;
     }
 
     @Override

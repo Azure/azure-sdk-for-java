@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.fluent.models.HealthCheckStatusDetailsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result of the network health check list operation.
  */
 @Immutable
-public final class HealthCheckStatusDetailsListResult {
+public final class HealthCheckStatusDetailsListResult implements JsonSerializable<HealthCheckStatusDetailsListResult> {
     /*
      * Current page of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthCheckStatusDetailsInner> value;
 
     /*
      * URL to get the next set of results if there are any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -59,5 +61,45 @@ public final class HealthCheckStatusDetailsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthCheckStatusDetailsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthCheckStatusDetailsListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthCheckStatusDetailsListResult.
+     */
+    public static HealthCheckStatusDetailsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthCheckStatusDetailsListResult deserializedHealthCheckStatusDetailsListResult
+                = new HealthCheckStatusDetailsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<HealthCheckStatusDetailsInner> value
+                        = reader.readArray(reader1 -> HealthCheckStatusDetailsInner.fromJson(reader1));
+                    deserializedHealthCheckStatusDetailsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedHealthCheckStatusDetailsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthCheckStatusDetailsListResult;
+        });
     }
 }

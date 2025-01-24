@@ -44,12 +44,11 @@ class BlobChunkedDownloader {
     }
 
     public Flux<ByteBuffer> download() {
-        ParallelTransferOptions options = new ParallelTransferOptions()
-            .setBlockSizeLong(blockSize);
+        ParallelTransferOptions options = new ParallelTransferOptions().setBlockSizeLong(blockSize);
         BlobRequestConditions requestConditions = new BlobRequestConditions();
 
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (range, conditions)
-            -> client.downloadWithResponse(range, null, conditions, false);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
+            = (range, conditions) -> client.downloadWithResponse(range, null, conditions, false);
 
         /* We don't etag lock since the Changefeed can append to the blob while we are reading it. */
         return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc, false)
@@ -64,8 +63,8 @@ class BlobChunkedDownloader {
 
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 return Flux.range(0, numChunks)
-                    .concatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
-                        range, options, finalConditions, newCount, downloadFunc, BlobDownloadAsyncResponse::getValue));
+                    .concatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse, range, options,
+                        finalConditions, newCount, downloadFunc, BlobDownloadAsyncResponse::getValue));
             });
     }
 

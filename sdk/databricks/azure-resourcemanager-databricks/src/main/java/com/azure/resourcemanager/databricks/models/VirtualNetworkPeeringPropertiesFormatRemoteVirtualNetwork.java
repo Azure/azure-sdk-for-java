@@ -5,27 +5,33 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The remote virtual network should be in the same region. See here to learn more
  * (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
  */
 @Fluent
-public final class VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork {
+public final class VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork
+    implements JsonSerializable<VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork> {
     /*
      * The Id of the remote virtual network.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork class. */
+    /**
+     * Creates an instance of VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork class.
+     */
     public VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork() {
     }
 
     /**
      * Get the id property: The Id of the remote virtual network.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -34,7 +40,7 @@ public final class VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork {
 
     /**
      * Set the id property: The Id of the remote virtual network.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork object itself.
      */
@@ -45,9 +51,48 @@ public final class VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork.
+     */
+    public static VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork deserializedVirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork
+                = new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork;
+        });
     }
 }

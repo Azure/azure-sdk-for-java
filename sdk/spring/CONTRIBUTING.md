@@ -69,6 +69,13 @@ Developing version naming convention is like `0.1.2-beta.1`. Release version nam
 Contribution is welcome. Please follow
 [this instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) to contribute code.
 
+## Pipeline Support
+- **java - spring - ci**: This pipeline is primarily used for the Continuous Integration (CI). It automatically builds and runs the unit tests for the Spring Cloud Azure libraries to ensure code correctness after each commit.
+- **java - spring - tests**: This pipeline focuses on integration tests for the Spring Cloud Azure libraries, covering Spring Boot versions from 3.0.13 to the latest. It must be triggered manually using the command: `/azp run java - spring - tests`.
+- **java - spring - cosmos - ci**: This pipeline handles Continuous Integration for Spring Data Cosmos. It automatically builds, runs the unit tests, and executes emulator integration tests whenever `azure-spring-data-cosmos` changes.
+- **java - spring - compatibility-tests**: This pipeline automatically runs unit tests to perform a quick compatibility check for Spring Boot versions from 3.1.12 to the latest.
+- **java - spring - tests - weekly**: This pipeline is similar to the 'java - spring - tests' pipeline but runs automatically once a week, with additional testing in both the UsGov and China clouds.
+
 <!-- Links -->
 [maven]: https://maven.apache.org/
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

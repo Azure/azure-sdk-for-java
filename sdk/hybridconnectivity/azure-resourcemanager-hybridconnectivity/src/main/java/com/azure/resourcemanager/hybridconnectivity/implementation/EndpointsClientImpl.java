@@ -41,22 +41,28 @@ import com.azure.resourcemanager.hybridconnectivity.models.ListIngressGatewayCre
 import com.azure.resourcemanager.hybridconnectivity.models.ManagedProxyRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EndpointsClient.
+ */
 public final class EndpointsClientImpl implements EndpointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EndpointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HybridConnectivityManagementApiImpl client;
 
     /**
      * Initializes an instance of EndpointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EndpointsClientImpl(HybridConnectivityManagementApiImpl client) {
-        this.service =
-            RestProxy.create(EndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,123 +73,102 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @Host("{$host}")
     @ServiceInterface(name = "HybridConnectivityMa")
     public interface EndpointsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointsList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EndpointsList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @HeaderParam("Accept") String accept,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EndpointResourceInner>> get(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EndpointResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
-            @BodyParam("application/json") EndpointResourceInner endpointResource,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EndpointResourceInner endpointResource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointResourceInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EndpointResourceInner>> update(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
-            @BodyParam("application/json") EndpointResourceInner endpointResource,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EndpointResourceInner endpointResource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listCredentials")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointAccessResourceInner>> listCredentials(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EndpointAccessResourceInner>> listCredentials(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
             @QueryParam("expiresin") Long expiresin,
             @BodyParam("application/json") ListCredentialsRequest listCredentialsRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listIngressGatewayCredentials")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listIngressGatewayCredentials")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IngressGatewayResourceInner>> listIngressGatewayCredentials(
-            @HostParam("$host") String endpoint,
+        Mono<Response<IngressGatewayResourceInner>> listIngressGatewayCredentials(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
             @QueryParam("expiresin") Long expiresin,
             @BodyParam("application/json") ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listManagedProxyDetails")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedProxyResourceInner>> listManagedProxyDetails(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedProxyResourceInner>> listManagedProxyDetails(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam(value = "endpointName", encoded = true) String endpointName,
             @BodyParam("application/json") ManagedProxyRequest managedProxyRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EndpointsList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EndpointsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -193,34 +178,24 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EndpointResourceInner>> listSinglePageAsync(String resourceUri) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context))
-            .<PagedResponse<EndpointResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+                accept, context))
+            .<PagedResponse<EndpointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,32 +206,22 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EndpointResourceInner>> listSinglePageAsync(String resourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -270,7 +235,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,13 +245,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EndpointResourceInner> listAsync(String resourceUri, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -300,7 +265,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +280,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -326,10 +291,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointResourceInner>> getWithResponseAsync(String resourceUri, String endpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -339,22 +302,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceUri,
-                            endpointName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+                endpointName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -364,13 +319,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the endpoint to the resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointResourceInner>> getWithResponseAsync(
-        String resourceUri, String endpointName, Context context) {
+    private Mono<Response<EndpointResourceInner>> getWithResponseAsync(String resourceUri, String endpointName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -380,13 +333,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName, accept,
+            context);
     }
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,7 +354,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -417,7 +370,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,24 +385,22 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the endpoint for the target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource) {
+    private Mono<Response<EndpointResourceInner>> createOrUpdateWithResponseAsync(String resourceUri,
+        String endpointName, EndpointResourceInner endpointResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -465,23 +416,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceUri,
-                            endpointName,
-                            endpointResource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceUri, endpointName, endpointResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -489,17 +431,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the endpoint for the target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource, Context context) {
+    private Mono<Response<EndpointResourceInner>> createOrUpdateWithResponseAsync(String resourceUri,
+        String endpointName, EndpointResourceInner endpointResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -515,20 +455,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceUri,
-                endpointName,
-                endpointResource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
+            endpointResource, accept, context);
     }
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -538,15 +471,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the endpoint for the target resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EndpointResourceInner> createOrUpdateAsync(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource) {
+    private Mono<EndpointResourceInner> createOrUpdateAsync(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource) {
         return createOrUpdateWithResponseAsync(resourceUri, endpointName, endpointResource)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -557,14 +490,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the endpoint for the target resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointResourceInner> createOrUpdateWithResponse(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource, Context context) {
+    public Response<EndpointResourceInner> createOrUpdateWithResponse(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource, Context context) {
         return createOrUpdateWithResponseAsync(resourceUri, endpointName, endpointResource, context).block();
     }
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -574,31 +507,29 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the endpoint for the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointResourceInner createOrUpdate(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource) {
+    public EndpointResourceInner createOrUpdate(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource) {
         return createOrUpdateWithResponse(resourceUri, endpointName, endpointResource, Context.NONE).getValue();
     }
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the endpoint for the target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointResourceInner>> updateWithResponseAsync(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource) {
+    private Mono<Response<EndpointResourceInner>> updateWithResponseAsync(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -614,23 +545,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceUri,
-                            endpointName,
-                            endpointResource,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+                endpointName, endpointResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -638,17 +560,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the endpoint for the target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointResourceInner>> updateWithResponseAsync(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource, Context context) {
+    private Mono<Response<EndpointResourceInner>> updateWithResponseAsync(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -664,20 +584,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceUri,
-                endpointName,
-                endpointResource,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName,
+            endpointResource, accept, context);
     }
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -687,15 +600,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the endpoint for the target resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EndpointResourceInner> updateAsync(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource) {
+    private Mono<EndpointResourceInner> updateAsync(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource) {
         return updateWithResponseAsync(resourceUri, endpointName, endpointResource)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -706,14 +619,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the endpoint for the target resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointResourceInner> updateWithResponse(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource, Context context) {
+    public Response<EndpointResourceInner> updateWithResponse(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource, Context context) {
         return updateWithResponseAsync(resourceUri, endpointName, endpointResource, context).block();
     }
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -723,14 +636,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the endpoint for the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointResourceInner update(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource) {
+    public EndpointResourceInner update(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource) {
         return updateWithResponse(resourceUri, endpointName, endpointResource, Context.NONE).getValue();
     }
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -741,10 +654,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String endpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -754,22 +665,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceUri,
-                            endpointName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+                endpointName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -781,10 +684,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String endpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -794,13 +695,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, endpointName, accept,
+            context);
     }
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -815,7 +716,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -831,7 +732,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -845,7 +746,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -854,16 +755,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the endpoint access credentials to the resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointAccessResourceInner>> listCredentialsWithResponseAsync(
-        String resourceUri, String endpointName, Long expiresin, ListCredentialsRequest listCredentialsRequest) {
+    private Mono<Response<EndpointAccessResourceInner>> listCredentialsWithResponseAsync(String resourceUri,
+        String endpointName, Long expiresin, ListCredentialsRequest listCredentialsRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -876,24 +775,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCredentials(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceUri,
-                            endpointName,
-                            expiresin,
-                            listCredentialsRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.listCredentials(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceUri, endpointName, expiresin, listCredentialsRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -903,20 +792,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the endpoint access credentials to the resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EndpointAccessResourceInner>> listCredentialsWithResponseAsync(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListCredentialsRequest listCredentialsRequest,
-        Context context) {
+    private Mono<Response<EndpointAccessResourceInner>> listCredentialsWithResponseAsync(String resourceUri,
+        String endpointName, Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -929,21 +812,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listCredentials(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceUri,
-                endpointName,
-                expiresin,
-                listCredentialsRequest,
-                accept,
-                context);
+        return service.listCredentials(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            endpointName, expiresin, listCredentialsRequest, accept, context);
     }
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -961,7 +836,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -973,19 +848,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the endpoint access credentials to the resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EndpointAccessResourceInner> listCredentialsWithResponse(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListCredentialsRequest listCredentialsRequest,
-        Context context) {
+    public Response<EndpointAccessResourceInner> listCredentialsWithResponse(String resourceUri, String endpointName,
+        Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context) {
         return listCredentialsWithResponseAsync(resourceUri, endpointName, expiresin, listCredentialsRequest, context)
             .block();
     }
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1003,7 +874,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -1011,20 +882,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ingress gateway endpoint credentials along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the ingress gateway endpoint credentials along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngressGatewayResourceInner>> listIngressGatewayCredentialsWithResponseAsync(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
+        String resourceUri, String endpointName, Long expiresin,
         ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -1038,23 +905,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listIngressGatewayCredentials(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceUri,
-                            endpointName,
-                            expiresin,
-                            listIngressGatewayCredentialsRequest,
-                            accept,
-                            context))
+                context -> service.listIngressGatewayCredentials(this.client.getEndpoint(), this.client.getApiVersion(),
+                    resourceUri, endpointName, expiresin, listIngressGatewayCredentialsRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -1063,21 +921,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ingress gateway endpoint credentials along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the ingress gateway endpoint credentials along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngressGatewayResourceInner>> listIngressGatewayCredentialsWithResponseAsync(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
-        Context context) {
+        String resourceUri, String endpointName, Long expiresin,
+        ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -1090,21 +943,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listIngressGatewayCredentials(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceUri,
-                endpointName,
-                expiresin,
-                listIngressGatewayCredentialsRequest,
-                accept,
-                context);
+        return service.listIngressGatewayCredentials(this.client.getEndpoint(), this.client.getApiVersion(),
+            resourceUri, endpointName, expiresin, listIngressGatewayCredentialsRequest, accept, context);
     }
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1113,18 +958,17 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the ingress gateway endpoint credentials on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IngressGatewayResourceInner> listIngressGatewayCredentialsAsync(
-        String resourceUri, String endpointName) {
+    private Mono<IngressGatewayResourceInner> listIngressGatewayCredentialsAsync(String resourceUri,
+        String endpointName) {
         final Long expiresin = null;
         final ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest = null;
-        return listIngressGatewayCredentialsWithResponseAsync(
-                resourceUri, endpointName, expiresin, listIngressGatewayCredentialsRequest)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return listIngressGatewayCredentialsWithResponseAsync(resourceUri, endpointName, expiresin,
+            listIngressGatewayCredentialsRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -1136,20 +980,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return the ingress gateway endpoint credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IngressGatewayResourceInner> listIngressGatewayCredentialsWithResponse(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
+    public Response<IngressGatewayResourceInner> listIngressGatewayCredentialsWithResponse(String resourceUri,
+        String endpointName, Long expiresin, ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
         Context context) {
-        return listIngressGatewayCredentialsWithResponseAsync(
-                resourceUri, endpointName, expiresin, listIngressGatewayCredentialsRequest, context)
-            .block();
+        return listIngressGatewayCredentialsWithResponseAsync(resourceUri, endpointName, expiresin,
+            listIngressGatewayCredentialsRequest, context).block();
     }
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1161,14 +1001,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public IngressGatewayResourceInner listIngressGatewayCredentials(String resourceUri, String endpointName) {
         final Long expiresin = null;
         final ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest = null;
-        return listIngressGatewayCredentialsWithResponse(
-                resourceUri, endpointName, expiresin, listIngressGatewayCredentialsRequest, Context.NONE)
-            .getValue();
+        return listIngressGatewayCredentialsWithResponse(resourceUri, endpointName, expiresin,
+            listIngressGatewayCredentialsRequest, Context.NONE).getValue();
     }
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1178,13 +1017,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return managed Proxy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedProxyResourceInner>> listManagedProxyDetailsWithResponseAsync(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest) {
+    private Mono<Response<ManagedProxyResourceInner>> listManagedProxyDetailsWithResponseAsync(String resourceUri,
+        String endpointName, ManagedProxyRequest managedProxyRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -1200,23 +1037,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listManagedProxyDetails(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceUri,
-                            endpointName,
-                            managedProxyRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.listManagedProxyDetails(this.client.getEndpoint(),
+                this.client.getApiVersion(), resourceUri, endpointName, managedProxyRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1227,13 +1055,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return managed Proxy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedProxyResourceInner>> listManagedProxyDetailsWithResponseAsync(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest, Context context) {
+    private Mono<Response<ManagedProxyResourceInner>> listManagedProxyDetailsWithResponseAsync(String resourceUri,
+        String endpointName, ManagedProxyRequest managedProxyRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -1249,20 +1075,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listManagedProxyDetails(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceUri,
-                endpointName,
-                managedProxyRequest,
-                accept,
-                context);
+        return service.listManagedProxyDetails(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            endpointName, managedProxyRequest, accept, context);
     }
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1272,15 +1091,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return managed Proxy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedProxyResourceInner> listManagedProxyDetailsAsync(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest) {
+    private Mono<ManagedProxyResourceInner> listManagedProxyDetailsAsync(String resourceUri, String endpointName,
+        ManagedProxyRequest managedProxyRequest) {
         return listManagedProxyDetailsWithResponseAsync(resourceUri, endpointName, managedProxyRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1291,15 +1110,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return managed Proxy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedProxyResourceInner> listManagedProxyDetailsWithResponse(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest, Context context) {
+    public Response<ManagedProxyResourceInner> listManagedProxyDetailsWithResponse(String resourceUri,
+        String endpointName, ManagedProxyRequest managedProxyRequest, Context context) {
         return listManagedProxyDetailsWithResponseAsync(resourceUri, endpointName, managedProxyRequest, context)
             .block();
     }
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1309,17 +1128,16 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return managed Proxy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedProxyResourceInner listManagedProxyDetails(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest) {
+    public ManagedProxyResourceInner listManagedProxyDetails(String resourceUri, String endpointName,
+        ManagedProxyRequest managedProxyRequest) {
         return listManagedProxyDetailsWithResponse(resourceUri, endpointName, managedProxyRequest, Context.NONE)
             .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1331,31 +1149,20 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EndpointResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EndpointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1368,23 +1175,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

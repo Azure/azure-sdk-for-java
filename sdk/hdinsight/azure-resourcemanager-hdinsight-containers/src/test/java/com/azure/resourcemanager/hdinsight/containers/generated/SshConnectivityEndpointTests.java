@@ -12,18 +12,18 @@ public final class SshConnectivityEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SshConnectivityEndpoint model
-            = BinaryData.fromString("{\"endpoint\":\"frzpwvlqdqgb\",\"privateSshEndpoint\":\"ylihkaetckt\"}")
+            = BinaryData.fromString("{\"endpoint\":\"ppcqeqxolz\",\"privateSshEndpoint\":\"hzxct\"}")
                 .toObject(SshConnectivityEndpoint.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.endpoint());
-        Assertions.assertEquals("ylihkaetckt", model.privateSshEndpoint());
+        Assertions.assertEquals("ppcqeqxolz", model.endpoint());
+        Assertions.assertEquals("hzxct", model.privateSshEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SshConnectivityEndpoint model
-            = new SshConnectivityEndpoint().withEndpoint("frzpwvlqdqgb").withPrivateSshEndpoint("ylihkaetckt");
+            = new SshConnectivityEndpoint().withEndpoint("ppcqeqxolz").withPrivateSshEndpoint("hzxct");
         model = BinaryData.fromObject(model).toObject(SshConnectivityEndpoint.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.endpoint());
-        Assertions.assertEquals("ylihkaetckt", model.privateSshEndpoint());
+        Assertions.assertEquals("ppcqeqxolz", model.endpoint());
+        Assertions.assertEquals("hzxct", model.privateSshEndpoint());
     }
 }

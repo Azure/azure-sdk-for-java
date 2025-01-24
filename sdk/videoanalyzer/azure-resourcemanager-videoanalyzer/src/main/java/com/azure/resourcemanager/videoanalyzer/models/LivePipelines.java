@@ -36,8 +36,8 @@ public interface LivePipelines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of LivePipeline items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LivePipeline> list(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context);
+    PagedIterable<LivePipeline> list(String resourceGroupName, String accountName, String filter, Integer top,
+        Context context);
 
     /**
      * Retrieves a specific live pipeline by name. If a live pipeline with that name has been previously created, the
@@ -68,8 +68,8 @@ public interface LivePipelines {
      * @return live pipeline represents a unique instance of a live topology, used for real-time ingestion, archiving
      *     and publishing of content for a unique RTSP camera along with {@link Response}.
      */
-    Response<LivePipeline> getWithResponse(
-        String resourceGroupName, String accountName, String livePipelineName, Context context);
+    Response<LivePipeline> getWithResponse(String resourceGroupName, String accountName, String livePipelineName,
+        Context context);
 
     /**
      * Deletes a live pipeline with the given name.
@@ -95,8 +95,8 @@ public interface LivePipelines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String livePipelineName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String livePipelineName,
+        Context context);
 
     /**
      * Activates a live pipeline with the given name.

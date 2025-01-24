@@ -12,7 +12,8 @@ import com.azure.communication.callingserver.models.RemoveParticipantsResult;
 public final class RemoveParticipantsResponseConstructorProxy {
     private static RemoveParticipantsResponseConstructorAccessor accessor;
 
-    private RemoveParticipantsResponseConstructorProxy() { }
+    private RemoveParticipantsResponseConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link RemoveParticipantsResponseConstructorAccessor}

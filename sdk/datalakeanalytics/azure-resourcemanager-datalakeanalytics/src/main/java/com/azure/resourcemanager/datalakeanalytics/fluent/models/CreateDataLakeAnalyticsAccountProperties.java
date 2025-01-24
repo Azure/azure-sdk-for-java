@@ -6,6 +6,10 @@ package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.models.AddDataLakeStoreWithAccountParameters;
 import com.azure.resourcemanager.datalakeanalytics.models.AddStorageAccountWithAccountParameters;
 import com.azure.resourcemanager.datalakeanalytics.models.CreateComputePolicyWithAccountParameters;
@@ -13,98 +17,90 @@ import com.azure.resourcemanager.datalakeanalytics.models.CreateFirewallRuleWith
 import com.azure.resourcemanager.datalakeanalytics.models.FirewallAllowAzureIpsState;
 import com.azure.resourcemanager.datalakeanalytics.models.FirewallState;
 import com.azure.resourcemanager.datalakeanalytics.models.TierType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The CreateDataLakeAnalyticsAccountProperties model. */
+/**
+ * The CreateDataLakeAnalyticsAccountProperties model.
+ */
 @Fluent
-public final class CreateDataLakeAnalyticsAccountProperties {
+public final class CreateDataLakeAnalyticsAccountProperties
+    implements JsonSerializable<CreateDataLakeAnalyticsAccountProperties> {
     /*
      * The default Data Lake Store account associated with this account.
      */
-    @JsonProperty(value = "defaultDataLakeStoreAccount", required = true)
     private String defaultDataLakeStoreAccount;
 
     /*
      * The list of Data Lake Store accounts associated with this account.
      */
-    @JsonProperty(value = "dataLakeStoreAccounts", required = true)
     private List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts;
 
     /*
      * The list of Azure Blob Storage accounts associated with this account.
      */
-    @JsonProperty(value = "storageAccounts")
     private List<AddStorageAccountWithAccountParameters> storageAccounts;
 
     /*
      * The list of compute policies associated with this account.
      */
-    @JsonProperty(value = "computePolicies")
     private List<CreateComputePolicyWithAccountParameters> computePolicies;
 
     /*
      * The list of firewall rules associated with this account.
      */
-    @JsonProperty(value = "firewallRules")
     private List<CreateFirewallRuleWithAccountParameters> firewallRules;
 
     /*
      * The current state of the IP address firewall for this account.
      */
-    @JsonProperty(value = "firewallState")
     private FirewallState firewallState;
 
     /*
      * The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall
      * is disabled, this is not enforced.
      */
-    @JsonProperty(value = "firewallAllowAzureIps")
     private FirewallAllowAzureIpsState firewallAllowAzureIps;
 
     /*
      * The commitment tier for the next month.
      */
-    @JsonProperty(value = "newTier")
     private TierType newTier;
 
     /*
      * The maximum supported jobs running under the account at the same time.
      */
-    @JsonProperty(value = "maxJobCount")
     private Integer maxJobCount;
 
     /*
      * The maximum supported degree of parallelism for this account.
      */
-    @JsonProperty(value = "maxDegreeOfParallelism")
     private Integer maxDegreeOfParallelism;
 
     /*
      * The maximum supported degree of parallelism per job for this account.
      */
-    @JsonProperty(value = "maxDegreeOfParallelismPerJob")
     private Integer maxDegreeOfParallelismPerJob;
 
     /*
      * The minimum supported priority per job for this account.
      */
-    @JsonProperty(value = "minPriorityPerJob")
     private Integer minPriorityPerJob;
 
     /*
      * The number of days that job metadata is retained.
      */
-    @JsonProperty(value = "queryStoreRetention")
     private Integer queryStoreRetention;
 
-    /** Creates an instance of CreateDataLakeAnalyticsAccountProperties class. */
+    /**
+     * Creates an instance of CreateDataLakeAnalyticsAccountProperties class.
+     */
     public CreateDataLakeAnalyticsAccountProperties() {
     }
 
     /**
      * Get the defaultDataLakeStoreAccount property: The default Data Lake Store account associated with this account.
-     *
+     * 
      * @return the defaultDataLakeStoreAccount value.
      */
     public String defaultDataLakeStoreAccount() {
@@ -113,19 +109,19 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the defaultDataLakeStoreAccount property: The default Data Lake Store account associated with this account.
-     *
+     * 
      * @param defaultDataLakeStoreAccount the defaultDataLakeStoreAccount value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
-    public CreateDataLakeAnalyticsAccountProperties withDefaultDataLakeStoreAccount(
-        String defaultDataLakeStoreAccount) {
+    public CreateDataLakeAnalyticsAccountProperties
+        withDefaultDataLakeStoreAccount(String defaultDataLakeStoreAccount) {
         this.defaultDataLakeStoreAccount = defaultDataLakeStoreAccount;
         return this;
     }
 
     /**
      * Get the dataLakeStoreAccounts property: The list of Data Lake Store accounts associated with this account.
-     *
+     * 
      * @return the dataLakeStoreAccounts value.
      */
     public List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts() {
@@ -134,19 +130,19 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the dataLakeStoreAccounts property: The list of Data Lake Store accounts associated with this account.
-     *
+     * 
      * @param dataLakeStoreAccounts the dataLakeStoreAccounts value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
-    public CreateDataLakeAnalyticsAccountProperties withDataLakeStoreAccounts(
-        List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
+    public CreateDataLakeAnalyticsAccountProperties
+        withDataLakeStoreAccounts(List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
         this.dataLakeStoreAccounts = dataLakeStoreAccounts;
         return this;
     }
 
     /**
      * Get the storageAccounts property: The list of Azure Blob Storage accounts associated with this account.
-     *
+     * 
      * @return the storageAccounts value.
      */
     public List<AddStorageAccountWithAccountParameters> storageAccounts() {
@@ -155,19 +151,19 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the storageAccounts property: The list of Azure Blob Storage accounts associated with this account.
-     *
+     * 
      * @param storageAccounts the storageAccounts value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
-    public CreateDataLakeAnalyticsAccountProperties withStorageAccounts(
-        List<AddStorageAccountWithAccountParameters> storageAccounts) {
+    public CreateDataLakeAnalyticsAccountProperties
+        withStorageAccounts(List<AddStorageAccountWithAccountParameters> storageAccounts) {
         this.storageAccounts = storageAccounts;
         return this;
     }
 
     /**
      * Get the computePolicies property: The list of compute policies associated with this account.
-     *
+     * 
      * @return the computePolicies value.
      */
     public List<CreateComputePolicyWithAccountParameters> computePolicies() {
@@ -176,19 +172,19 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the computePolicies property: The list of compute policies associated with this account.
-     *
+     * 
      * @param computePolicies the computePolicies value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
-    public CreateDataLakeAnalyticsAccountProperties withComputePolicies(
-        List<CreateComputePolicyWithAccountParameters> computePolicies) {
+    public CreateDataLakeAnalyticsAccountProperties
+        withComputePolicies(List<CreateComputePolicyWithAccountParameters> computePolicies) {
         this.computePolicies = computePolicies;
         return this;
     }
 
     /**
      * Get the firewallRules property: The list of firewall rules associated with this account.
-     *
+     * 
      * @return the firewallRules value.
      */
     public List<CreateFirewallRuleWithAccountParameters> firewallRules() {
@@ -197,19 +193,19 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the firewallRules property: The list of firewall rules associated with this account.
-     *
+     * 
      * @param firewallRules the firewallRules value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
-    public CreateDataLakeAnalyticsAccountProperties withFirewallRules(
-        List<CreateFirewallRuleWithAccountParameters> firewallRules) {
+    public CreateDataLakeAnalyticsAccountProperties
+        withFirewallRules(List<CreateFirewallRuleWithAccountParameters> firewallRules) {
         this.firewallRules = firewallRules;
         return this;
     }
 
     /**
      * Get the firewallState property: The current state of the IP address firewall for this account.
-     *
+     * 
      * @return the firewallState value.
      */
     public FirewallState firewallState() {
@@ -218,7 +214,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the firewallState property: The current state of the IP address firewall for this account.
-     *
+     * 
      * @param firewallState the firewallState value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
@@ -230,7 +226,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
     /**
      * Get the firewallAllowAzureIps property: The current state of allowing or disallowing IPs originating within Azure
      * through the firewall. If the firewall is disabled, this is not enforced.
-     *
+     * 
      * @return the firewallAllowAzureIps value.
      */
     public FirewallAllowAzureIpsState firewallAllowAzureIps() {
@@ -240,19 +236,19 @@ public final class CreateDataLakeAnalyticsAccountProperties {
     /**
      * Set the firewallAllowAzureIps property: The current state of allowing or disallowing IPs originating within Azure
      * through the firewall. If the firewall is disabled, this is not enforced.
-     *
+     * 
      * @param firewallAllowAzureIps the firewallAllowAzureIps value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
-    public CreateDataLakeAnalyticsAccountProperties withFirewallAllowAzureIps(
-        FirewallAllowAzureIpsState firewallAllowAzureIps) {
+    public CreateDataLakeAnalyticsAccountProperties
+        withFirewallAllowAzureIps(FirewallAllowAzureIpsState firewallAllowAzureIps) {
         this.firewallAllowAzureIps = firewallAllowAzureIps;
         return this;
     }
 
     /**
      * Get the newTier property: The commitment tier for the next month.
-     *
+     * 
      * @return the newTier value.
      */
     public TierType newTier() {
@@ -261,7 +257,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the newTier property: The commitment tier for the next month.
-     *
+     * 
      * @param newTier the newTier value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
@@ -272,7 +268,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Get the maxJobCount property: The maximum supported jobs running under the account at the same time.
-     *
+     * 
      * @return the maxJobCount value.
      */
     public Integer maxJobCount() {
@@ -281,7 +277,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the maxJobCount property: The maximum supported jobs running under the account at the same time.
-     *
+     * 
      * @param maxJobCount the maxJobCount value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
@@ -292,7 +288,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Get the maxDegreeOfParallelism property: The maximum supported degree of parallelism for this account.
-     *
+     * 
      * @return the maxDegreeOfParallelism value.
      */
     public Integer maxDegreeOfParallelism() {
@@ -301,7 +297,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the maxDegreeOfParallelism property: The maximum supported degree of parallelism for this account.
-     *
+     * 
      * @param maxDegreeOfParallelism the maxDegreeOfParallelism value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
@@ -313,7 +309,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
     /**
      * Get the maxDegreeOfParallelismPerJob property: The maximum supported degree of parallelism per job for this
      * account.
-     *
+     * 
      * @return the maxDegreeOfParallelismPerJob value.
      */
     public Integer maxDegreeOfParallelismPerJob() {
@@ -323,19 +319,19 @@ public final class CreateDataLakeAnalyticsAccountProperties {
     /**
      * Set the maxDegreeOfParallelismPerJob property: The maximum supported degree of parallelism per job for this
      * account.
-     *
+     * 
      * @param maxDegreeOfParallelismPerJob the maxDegreeOfParallelismPerJob value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
-    public CreateDataLakeAnalyticsAccountProperties withMaxDegreeOfParallelismPerJob(
-        Integer maxDegreeOfParallelismPerJob) {
+    public CreateDataLakeAnalyticsAccountProperties
+        withMaxDegreeOfParallelismPerJob(Integer maxDegreeOfParallelismPerJob) {
         this.maxDegreeOfParallelismPerJob = maxDegreeOfParallelismPerJob;
         return this;
     }
 
     /**
      * Get the minPriorityPerJob property: The minimum supported priority per job for this account.
-     *
+     * 
      * @return the minPriorityPerJob value.
      */
     public Integer minPriorityPerJob() {
@@ -344,7 +340,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the minPriorityPerJob property: The minimum supported priority per job for this account.
-     *
+     * 
      * @param minPriorityPerJob the minPriorityPerJob value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
@@ -355,7 +351,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Get the queryStoreRetention property: The number of days that job metadata is retained.
-     *
+     * 
      * @return the queryStoreRetention value.
      */
     public Integer queryStoreRetention() {
@@ -364,7 +360,7 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Set the queryStoreRetention property: The number of days that job metadata is retained.
-     *
+     * 
      * @param queryStoreRetention the queryStoreRetention value to set.
      * @return the CreateDataLakeAnalyticsAccountProperties object itself.
      */
@@ -375,23 +371,19 @@ public final class CreateDataLakeAnalyticsAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (defaultDataLakeStoreAccount() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property defaultDataLakeStoreAccount in model"
-                            + " CreateDataLakeAnalyticsAccountProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property defaultDataLakeStoreAccount in model CreateDataLakeAnalyticsAccountProperties"));
         }
         if (dataLakeStoreAccounts() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataLakeStoreAccounts in model"
-                            + " CreateDataLakeAnalyticsAccountProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataLakeStoreAccounts in model CreateDataLakeAnalyticsAccountProperties"));
         } else {
             dataLakeStoreAccounts().forEach(e -> e.validate());
         }
@@ -407,4 +399,99 @@ public final class CreateDataLakeAnalyticsAccountProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CreateDataLakeAnalyticsAccountProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("defaultDataLakeStoreAccount", this.defaultDataLakeStoreAccount);
+        jsonWriter.writeArrayField("dataLakeStoreAccounts", this.dataLakeStoreAccounts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("storageAccounts", this.storageAccounts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("computePolicies", this.computePolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("firewallRules", this.firewallRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firewallState", this.firewallState == null ? null : this.firewallState.toString());
+        jsonWriter.writeStringField("firewallAllowAzureIps",
+            this.firewallAllowAzureIps == null ? null : this.firewallAllowAzureIps.toString());
+        jsonWriter.writeStringField("newTier", this.newTier == null ? null : this.newTier.toString());
+        jsonWriter.writeNumberField("maxJobCount", this.maxJobCount);
+        jsonWriter.writeNumberField("maxDegreeOfParallelism", this.maxDegreeOfParallelism);
+        jsonWriter.writeNumberField("maxDegreeOfParallelismPerJob", this.maxDegreeOfParallelismPerJob);
+        jsonWriter.writeNumberField("minPriorityPerJob", this.minPriorityPerJob);
+        jsonWriter.writeNumberField("queryStoreRetention", this.queryStoreRetention);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateDataLakeAnalyticsAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateDataLakeAnalyticsAccountProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateDataLakeAnalyticsAccountProperties.
+     */
+    public static CreateDataLakeAnalyticsAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateDataLakeAnalyticsAccountProperties deserializedCreateDataLakeAnalyticsAccountProperties
+                = new CreateDataLakeAnalyticsAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultDataLakeStoreAccount".equals(fieldName)) {
+                    deserializedCreateDataLakeAnalyticsAccountProperties.defaultDataLakeStoreAccount
+                        = reader.getString();
+                } else if ("dataLakeStoreAccounts".equals(fieldName)) {
+                    List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts
+                        = reader.readArray(reader1 -> AddDataLakeStoreWithAccountParameters.fromJson(reader1));
+                    deserializedCreateDataLakeAnalyticsAccountProperties.dataLakeStoreAccounts = dataLakeStoreAccounts;
+                } else if ("storageAccounts".equals(fieldName)) {
+                    List<AddStorageAccountWithAccountParameters> storageAccounts
+                        = reader.readArray(reader1 -> AddStorageAccountWithAccountParameters.fromJson(reader1));
+                    deserializedCreateDataLakeAnalyticsAccountProperties.storageAccounts = storageAccounts;
+                } else if ("computePolicies".equals(fieldName)) {
+                    List<CreateComputePolicyWithAccountParameters> computePolicies
+                        = reader.readArray(reader1 -> CreateComputePolicyWithAccountParameters.fromJson(reader1));
+                    deserializedCreateDataLakeAnalyticsAccountProperties.computePolicies = computePolicies;
+                } else if ("firewallRules".equals(fieldName)) {
+                    List<CreateFirewallRuleWithAccountParameters> firewallRules
+                        = reader.readArray(reader1 -> CreateFirewallRuleWithAccountParameters.fromJson(reader1));
+                    deserializedCreateDataLakeAnalyticsAccountProperties.firewallRules = firewallRules;
+                } else if ("firewallState".equals(fieldName)) {
+                    deserializedCreateDataLakeAnalyticsAccountProperties.firewallState
+                        = FirewallState.fromString(reader.getString());
+                } else if ("firewallAllowAzureIps".equals(fieldName)) {
+                    deserializedCreateDataLakeAnalyticsAccountProperties.firewallAllowAzureIps
+                        = FirewallAllowAzureIpsState.fromString(reader.getString());
+                } else if ("newTier".equals(fieldName)) {
+                    deserializedCreateDataLakeAnalyticsAccountProperties.newTier
+                        = TierType.fromString(reader.getString());
+                } else if ("maxJobCount".equals(fieldName)) {
+                    deserializedCreateDataLakeAnalyticsAccountProperties.maxJobCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxDegreeOfParallelism".equals(fieldName)) {
+                    deserializedCreateDataLakeAnalyticsAccountProperties.maxDegreeOfParallelism
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxDegreeOfParallelismPerJob".equals(fieldName)) {
+                    deserializedCreateDataLakeAnalyticsAccountProperties.maxDegreeOfParallelismPerJob
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("minPriorityPerJob".equals(fieldName)) {
+                    deserializedCreateDataLakeAnalyticsAccountProperties.minPriorityPerJob
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("queryStoreRetention".equals(fieldName)) {
+                    deserializedCreateDataLakeAnalyticsAccountProperties.queryStoreRetention
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateDataLakeAnalyticsAccountProperties;
+        });
+    }
 }

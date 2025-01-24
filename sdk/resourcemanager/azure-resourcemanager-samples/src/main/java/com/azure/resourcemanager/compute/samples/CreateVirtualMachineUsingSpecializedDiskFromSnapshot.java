@@ -50,9 +50,10 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
         final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallScript
+            = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
         List<String> apacheInstallScriptUris = new ArrayList<>();
         apacheInstallScriptUris.add(apacheInstallScript);
@@ -64,27 +65,28 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             System.out.println("Creating a un-managed Linux VM");
 
-            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withNewDataDisk(100)
-                    .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
-                    .defineNewExtension("CustomScriptForLinux")
-                        .withPublisher("Microsoft.OSTCExtensions")
-                        .withType("CustomScriptForLinux")
-                        .withVersion("1.4")
-                        .withMinorVersionAutoUpgrade()
-                        .withPublicSetting("fileUris", apacheInstallScriptUris)
-                        .withPublicSetting("commandToExecute", apacheInstallCommand)
-                        .attach()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines()
+                .define(linuxVMName1)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withNewDataDisk(100)
+                .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+                .defineNewExtension("CustomScriptForLinux")
+                .withPublisher("Microsoft.OSTCExtensions")
+                .withType("CustomScriptForLinux")
+                .withVersion("1.4")
+                .withMinorVersionAutoUpgrade()
+                .withPublicSetting("fileUris", apacheInstallScriptUris)
+                .withPublicSetting("commandToExecute", apacheInstallCommand)
+                .attach()
+                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+                .create();
 
             System.out.println("Created a Linux VM with managed OS and data disks: " + linuxVM.id());
             Utils.print(linuxVM);
@@ -109,13 +111,15 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             //=============================================================
             // Create Snapshot from the OS managed disk
 
-            System.out.println(String.format("Creating managed snapshot from the managed disk (holding specialized OS): %s ", osDisk.id()));
+            System.out.println(String
+                .format("Creating managed snapshot from the managed disk (holding specialized OS): %s ", osDisk.id()));
 
-            Snapshot osSnapshot = azureResourceManager.snapshots().define(managedOSSnapshotName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withLinuxFromDisk(osDisk)
-                    .create();
+            Snapshot osSnapshot = azureResourceManager.snapshots()
+                .define(managedOSSnapshotName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withLinuxFromDisk(osDisk)
+                .create();
 
             System.out.println("Created managed snapshot holding OS: " + osSnapshot.id());
             // ResourceManagerUtils.print(osSnapshot); TODO
@@ -126,14 +130,16 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             List<Snapshot> dataSnapshots = new ArrayList<>();
             int i = 0;
             for (Disk dataDisk : dataDisks) {
-                System.out.println(String.format("Creating managed snapshot from the managed disk (holding data): %s ", dataDisk.id()));
+                System.out.println(String.format("Creating managed snapshot from the managed disk (holding data): %s ",
+                    dataDisk.id()));
 
-                Snapshot dataSnapshot = azureResourceManager.snapshots().define(managedDataDiskSnapshotPrefix + "-" + i)
-                        .withRegion(region)
-                        .withExistingResourceGroup(rgName)
-                        .withDataFromDisk(dataDisk)
-                        .withSku(SnapshotSkuType.STANDARD_LRS)
-                        .create();
+                Snapshot dataSnapshot = azureResourceManager.snapshots()
+                    .define(managedDataDiskSnapshotPrefix + "-" + i)
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    .withDataFromDisk(dataDisk)
+                    .withSku(SnapshotSkuType.STANDARD_LRS)
+                    .create();
                 dataSnapshots.add(dataSnapshot);
 
                 System.out.println("Created managed snapshot holding data: " + dataSnapshot.id());
@@ -144,14 +150,16 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             //=============================================================
             // Create Managed disk from the specialized OS snapshot
 
-            System.out.println(String.format("Creating managed disk from the snapshot holding OS: %s ", osSnapshot.id()));
+            System.out
+                .println(String.format("Creating managed disk from the snapshot holding OS: %s ", osSnapshot.id()));
 
-            Disk newOSDisk = azureResourceManager.disks().define(managedNewOSDiskName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withLinuxFromSnapshot(osSnapshot)
-                    .withSizeInGB(100)
-                    .create();
+            Disk newOSDisk = azureResourceManager.disks()
+                .define(managedNewOSDiskName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withLinuxFromSnapshot(osSnapshot)
+                .withSizeInGB(100)
+                .create();
 
             System.out.println("Created managed disk holding OS: " + osDisk.id());
             // ResourceManagerUtils.print(osDisk); TODO
@@ -162,14 +170,16 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
             List<Disk> newDataDisks = new ArrayList<>();
             i = 0;
             for (Snapshot dataSnapshot : dataSnapshots) {
-                System.out.println(String.format("Creating managed disk from the Data snapshot: %s ", dataSnapshot.id()));
+                System.out
+                    .println(String.format("Creating managed disk from the Data snapshot: %s ", dataSnapshot.id()));
 
-                Disk dataDisk = azureResourceManager.disks().define(managedNewDataDiskNamePrefix + "-" + i)
-                        .withRegion(region)
-                        .withExistingResourceGroup(rgName)
-                        .withData()
-                        .fromSnapshot(dataSnapshot)
-                        .create();
+                Disk dataDisk = azureResourceManager.disks()
+                    .define(managedNewDataDiskNamePrefix + "-" + i)
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    .withData()
+                    .fromSnapshot(dataSnapshot)
+                    .create();
                 newDataDisks.add(dataDisk);
 
                 System.out.println("Created managed disk holding data: " + dataDisk.id());
@@ -183,17 +193,18 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
             System.out.println("Creating a Linux VM using specialized OS and data disks");
 
-            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVMName2)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withSpecializedOSDisk(newOSDisk, OperatingSystemTypes.LINUX)
-                    .withExistingDataDisk(newDataDisks.get(0))
-                    .withExistingDataDisk(newDataDisks.get(1), 1, CachingTypes.READ_WRITE)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines()
+                .define(linuxVMName2)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withSpecializedOSDisk(newOSDisk, OperatingSystemTypes.LINUX)
+                .withExistingDataDisk(newDataDisks.get(0))
+                .withExistingDataDisk(newDataDisks.get(1), 1, CachingTypes.READ_WRITE)
+                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+                .create();
 
             Utils.print(linuxVM2);
 
@@ -267,8 +278,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

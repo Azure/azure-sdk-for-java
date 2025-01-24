@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HostModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HostModelInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"uuid\":\"ccm\",\"vCenterId\":\"udxytlmoyrx\",\"moRefId\":\"fudwpznt\",\"inventoryItemId\":\"dzhlrq\",\"moName\":\"hckfrlhrx\",\"statuses\":[{\"type\":\"vpycanuzbp\",\"status\":\"afkuwb\",\"reason\":\"nwbmeh\",\"message\":\"eyvjusrtslhspkde\",\"severity\":\"aofmxagkvtme\",\"lastUpdatedAt\":\"2020-12-28T20:08:12Z\"}],\"customResourceName\":\"rhahvljuahaquhcd\",\"overallMemoryUsageGB\":4716171323603349027,\"memorySizeGB\":5990210580748230219,\"overallCpuUsageMHz\":495813413204095798,\"cpuMhz\":7771790370778973734,\"datastoreIds\":[\"mwsrcrgvxpvgo\",\"zlfmisgwbnbbeld\",\"wkz\",\"ali\"],\"networkIds\":[\"qhakauhashsf\",\"xosow\",\"xcug\"],\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"type\":\"xdje\",\"name\":\"pucwwfvovbvme\"},\"kind\":\"ivyhzceuojgjrwju\",\"location\":\"iotwmcdytdxwit\",\"tags\":{\"hniskxfbkpyc\":\"jawgqwg\"},\"id\":\"klwndnhjdauwhv\",\"name\":\"l\",\"type\":\"zbtd\"}")
-                .toObject(HostModelInner.class);
+        HostModelInner model = BinaryData.fromString(
+            "{\"properties\":{\"uuid\":\"ccm\",\"vCenterId\":\"udxytlmoyrx\",\"moRefId\":\"fudwpznt\",\"inventoryItemId\":\"dzhlrq\",\"moName\":\"hckfrlhrx\",\"statuses\":[{\"type\":\"vpycanuzbp\",\"status\":\"afkuwb\",\"reason\":\"nwbmeh\",\"message\":\"eyvjusrtslhspkde\",\"severity\":\"aofmxagkvtme\",\"lastUpdatedAt\":\"2020-12-28T20:08:12Z\"}],\"customResourceName\":\"rhahvljuahaquhcd\",\"overallMemoryUsageGB\":4716171323603349027,\"memorySizeGB\":5990210580748230219,\"overallCpuUsageMHz\":495813413204095798,\"cpuMhz\":7771790370778973734,\"datastoreIds\":[\"mwsrcrgvxpvgo\",\"zlfmisgwbnbbeld\",\"wkz\",\"ali\"],\"networkIds\":[\"qhakauhashsf\",\"xosow\",\"xcug\"],\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"type\":\"xdje\",\"name\":\"pucwwfvovbvme\"},\"kind\":\"ivyhzceuojgjrwju\",\"location\":\"iotwmcdytdxwit\",\"tags\":{\"hniskxfbkpyc\":\"jawgqwg\"},\"id\":\"klwndnhjdauwhv\",\"name\":\"l\",\"type\":\"zbtd\"}")
+            .toObject(HostModelInner.class);
         Assertions.assertEquals("iotwmcdytdxwit", model.location());
         Assertions.assertEquals("jawgqwg", model.tags().get("hniskxfbkpyc"));
         Assertions.assertEquals("xdje", model.extendedLocation().type());
@@ -31,15 +29,13 @@ public final class HostModelInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HostModelInner model =
-            new HostModelInner()
-                .withLocation("iotwmcdytdxwit")
-                .withTags(mapOf("hniskxfbkpyc", "jawgqwg"))
-                .withExtendedLocation(new ExtendedLocation().withType("xdje").withName("pucwwfvovbvme"))
-                .withKind("ivyhzceuojgjrwju")
-                .withVCenterId("udxytlmoyrx")
-                .withMoRefId("fudwpznt")
-                .withInventoryItemId("dzhlrq");
+        HostModelInner model = new HostModelInner().withLocation("iotwmcdytdxwit")
+            .withTags(mapOf("hniskxfbkpyc", "jawgqwg"))
+            .withExtendedLocation(new ExtendedLocation().withType("xdje").withName("pucwwfvovbvme"))
+            .withKind("ivyhzceuojgjrwju")
+            .withVCenterId("udxytlmoyrx")
+            .withMoRefId("fudwpznt")
+            .withInventoryItemId("dzhlrq");
         model = BinaryData.fromObject(model).toObject(HostModelInner.class);
         Assertions.assertEquals("iotwmcdytdxwit", model.location());
         Assertions.assertEquals("jawgqwg", model.tags().get("hniskxfbkpyc"));

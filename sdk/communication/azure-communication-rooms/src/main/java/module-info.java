@@ -8,11 +8,7 @@ module com.azure.communication.rooms {
     exports com.azure.communication.rooms;
     exports com.azure.communication.rooms.models;
 
-    opens com.azure.communication.rooms
-        to com.fasterxml.jackson.databind, com.azure.core;
-    opens com.azure.communication.rooms.models
-        to com.fasterxml.jackson.databind, com.azure.core;
-    opens com.azure.communication.rooms.implementation.models
-        to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.communication.rooms to com.azure.core;
+    opens com.azure.communication.rooms.models to com.azure.core;
+    opens com.azure.communication.rooms.implementation.models to com.azure.core;
 }
-

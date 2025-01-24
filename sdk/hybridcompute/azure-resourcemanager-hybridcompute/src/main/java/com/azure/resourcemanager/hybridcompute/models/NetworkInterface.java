@@ -18,6 +18,21 @@ import java.util.List;
 @Fluent
 public final class NetworkInterface implements JsonSerializable<NetworkInterface> {
     /*
+     * Represents MAC address of the network interface.
+     */
+    private String macAddress;
+
+    /*
+     * Represents the ID of the network interface.
+     */
+    private String id;
+
+    /*
+     * Represents the name of the network interface.
+     */
+    private String name;
+
+    /*
      * The list of IP addresses in this interface.
      */
     private List<IpAddress> ipAddresses;
@@ -26,6 +41,66 @@ public final class NetworkInterface implements JsonSerializable<NetworkInterface
      * Creates an instance of NetworkInterface class.
      */
     public NetworkInterface() {
+    }
+
+    /**
+     * Get the macAddress property: Represents MAC address of the network interface.
+     * 
+     * @return the macAddress value.
+     */
+    public String macAddress() {
+        return this.macAddress;
+    }
+
+    /**
+     * Set the macAddress property: Represents MAC address of the network interface.
+     * 
+     * @param macAddress the macAddress value to set.
+     * @return the NetworkInterface object itself.
+     */
+    public NetworkInterface withMacAddress(String macAddress) {
+        this.macAddress = macAddress;
+        return this;
+    }
+
+    /**
+     * Get the id property: Represents the ID of the network interface.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Represents the ID of the network interface.
+     * 
+     * @param id the id value to set.
+     * @return the NetworkInterface object itself.
+     */
+    public NetworkInterface withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the name property: Represents the name of the network interface.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Represents the name of the network interface.
+     * 
+     * @param name the name value to set.
+     * @return the NetworkInterface object itself.
+     */
+    public NetworkInterface withName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -65,6 +140,9 @@ public final class NetworkInterface implements JsonSerializable<NetworkInterface
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("macAddress", this.macAddress);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("ipAddresses", this.ipAddresses, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -84,7 +162,13 @@ public final class NetworkInterface implements JsonSerializable<NetworkInterface
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("ipAddresses".equals(fieldName)) {
+                if ("macAddress".equals(fieldName)) {
+                    deserializedNetworkInterface.macAddress = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedNetworkInterface.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkInterface.name = reader.getString();
+                } else if ("ipAddresses".equals(fieldName)) {
                     List<IpAddress> ipAddresses = reader.readArray(reader1 -> IpAddress.fromJson(reader1));
                     deserializedNetworkInterface.ipAddresses = ipAddresses;
                 } else {

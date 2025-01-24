@@ -48,7 +48,7 @@ public final class FeatureFlagStore {
     }
     
     @PostConstruct
-    public void validateAndInit() {
+    void validateAndInit() {
         if (enabled && selects.size() == 0) {
             selects.add(new FeatureFlagKeyValueSelector());
         }

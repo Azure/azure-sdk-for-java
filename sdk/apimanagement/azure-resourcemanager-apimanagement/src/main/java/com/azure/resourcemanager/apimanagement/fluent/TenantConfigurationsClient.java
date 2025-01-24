@@ -16,12 +16,14 @@ import com.azure.resourcemanager.apimanagement.models.ConfigurationIdName;
 import com.azure.resourcemanager.apimanagement.models.DeployConfigurationParameters;
 import com.azure.resourcemanager.apimanagement.models.SaveConfigurationParameter;
 
-/** An instance of this class provides access to all the operations defined in TenantConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TenantConfigurationsClient.
+ */
 public interface TenantConfigurationsClient {
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -33,15 +35,13 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginDeploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         DeployConfigurationParameters parameters);
 
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -54,16 +54,13 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginDeploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        DeployConfigurationParameters parameters, Context context);
 
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -74,16 +71,13 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters);
+    OperationResultContractInner deploy(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters);
 
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -95,17 +89,13 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+    OperationResultContractInner deploy(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters, Context context);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -117,15 +107,13 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginSave(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         SaveConfigurationParameter parameters);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -138,16 +126,13 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginSave(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters,
-        Context context);
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        SaveConfigurationParameter parameters, Context context);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -158,16 +143,13 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters);
+    OperationResultContractInner save(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, SaveConfigurationParameter parameters);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -179,17 +161,13 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters,
-        Context context);
+    OperationResultContractInner save(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, SaveConfigurationParameter parameters, Context context);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -201,15 +179,13 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginValidate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         DeployConfigurationParameters parameters);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -222,16 +198,13 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginValidate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        DeployConfigurationParameters parameters, Context context);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -242,16 +215,13 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters);
+    OperationResultContractInner validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -263,16 +233,12 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+    OperationResultContractInner validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters, Context context);
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -281,15 +247,15 @@ public interface TenantConfigurationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the most recent synchronization between the configuration database and the Git repository
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TenantConfigurationSyncStateContractInner> getSyncStateWithResponse(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName, Context context);
+    Response<TenantConfigurationSyncStateContractInner> getSyncStateWithResponse(String resourceGroupName,
+        String serviceName, ConfigurationIdName configurationName, Context context);
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -299,6 +265,6 @@ public interface TenantConfigurationsClient {
      * @return the status of the most recent synchronization between the configuration database and the Git repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TenantConfigurationSyncStateContractInner getSyncState(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName);
+    TenantConfigurationSyncStateContractInner getSyncState(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName);
 }

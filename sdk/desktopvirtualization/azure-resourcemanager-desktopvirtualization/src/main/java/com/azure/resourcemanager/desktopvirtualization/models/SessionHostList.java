@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.SessionHostInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * SessionHostList
- *
- * <p>List of SessionHost definitions.
+ * 
+ * List of SessionHost definitions.
  */
 @Fluent
-public final class SessionHostList {
+public final class SessionHostList implements JsonSerializable<SessionHostList> {
     /*
      * List of SessionHost definitions.
      */
-    @JsonProperty(value = "value")
     private List<SessionHostInner> value;
 
     /*
      * Link to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SessionHostList class. */
+    /**
+     * Creates an instance of SessionHostList class.
+     */
     public SessionHostList() {
     }
 
     /**
      * Get the value property: List of SessionHost definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<SessionHostInner> value() {
@@ -43,7 +47,7 @@ public final class SessionHostList {
 
     /**
      * Set the value property: List of SessionHost definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the SessionHostList object itself.
      */
@@ -54,7 +58,7 @@ public final class SessionHostList {
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,12 +67,51 @@ public final class SessionHostList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SessionHostList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SessionHostList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SessionHostList.
+     */
+    public static SessionHostList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SessionHostList deserializedSessionHostList = new SessionHostList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SessionHostInner> value = reader.readArray(reader1 -> SessionHostInner.fromJson(reader1));
+                    deserializedSessionHostList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSessionHostList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSessionHostList;
+        });
     }
 }

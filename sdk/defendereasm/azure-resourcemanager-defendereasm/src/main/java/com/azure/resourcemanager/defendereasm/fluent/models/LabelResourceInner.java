@@ -7,31 +7,51 @@ package com.azure.resourcemanager.defendereasm.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.defendereasm.models.ResourceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Label details. */
+/**
+ * Label details.
+ */
 @Fluent
 public class LabelResourceInner extends ProxyResource {
     /*
      * Label properties
      */
-    @JsonProperty(value = "properties")
     private LabelResourceProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of LabelResourceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LabelResourceInner class.
+     */
     public LabelResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Label properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LabelResourceProperties innerProperties() {
@@ -39,8 +59,19 @@ public class LabelResourceInner extends ProxyResource {
     }
 
     /**
+     * Set the innerProperties property: Label properties.
+     * 
+     * @param innerProperties the innerProperties value to set.
+     * @return the LabelResourceInner object itself.
+     */
+    LabelResourceInner withInnerProperties(LabelResourceProperties innerProperties) {
+        this.innerProperties = innerProperties;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,8 +79,49 @@ public class LabelResourceInner extends ProxyResource {
     }
 
     /**
+     * Set the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the LabelResourceInner object itself.
+     */
+    LabelResourceInner withSystemData(SystemData systemData) {
+        this.systemData = systemData;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Label display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -58,7 +130,7 @@ public class LabelResourceInner extends ProxyResource {
 
     /**
      * Set the displayName property: Label display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LabelResourceInner object itself.
      */
@@ -72,7 +144,7 @@ public class LabelResourceInner extends ProxyResource {
 
     /**
      * Get the color property: Label color.
-     *
+     * 
      * @return the color value.
      */
     public String color() {
@@ -81,7 +153,7 @@ public class LabelResourceInner extends ProxyResource {
 
     /**
      * Set the color property: Label color.
-     *
+     * 
      * @param color the color value to set.
      * @return the LabelResourceInner object itself.
      */
@@ -95,7 +167,7 @@ public class LabelResourceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceState provisioningState() {
@@ -104,12 +176,57 @@ public class LabelResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabelResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabelResourceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LabelResourceInner.
+     */
+    public static LabelResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabelResourceInner deserializedLabelResourceInner = new LabelResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLabelResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLabelResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLabelResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLabelResourceInner.innerProperties = LabelResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedLabelResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabelResourceInner;
+        });
     }
 }

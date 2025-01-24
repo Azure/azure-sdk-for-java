@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Put Job parameters. */
+/**
+ * Put Job parameters.
+ */
 @Fluent
-public final class PutJobParameters {
+public final class PutJobParameters implements JsonSerializable<PutJobParameters> {
     /*
      * Specifies the supported Azure location where the job should be created
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Specifies the tags that will be assigned to the job.
      */
-    @JsonProperty(value = "tags")
     private Object tags;
 
     /*
      * Specifies the job properties
      */
-    @JsonProperty(value = "properties")
     private JobDetails properties;
 
-    /** Creates an instance of PutJobParameters class. */
+    /**
+     * Creates an instance of PutJobParameters class.
+     */
     public PutJobParameters() {
     }
 
     /**
      * Get the location property: Specifies the supported Azure location where the job should be created.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -43,7 +48,7 @@ public final class PutJobParameters {
 
     /**
      * Set the location property: Specifies the supported Azure location where the job should be created.
-     *
+     * 
      * @param location the location value to set.
      * @return the PutJobParameters object itself.
      */
@@ -54,7 +59,7 @@ public final class PutJobParameters {
 
     /**
      * Get the tags property: Specifies the tags that will be assigned to the job.
-     *
+     * 
      * @return the tags value.
      */
     public Object tags() {
@@ -63,7 +68,7 @@ public final class PutJobParameters {
 
     /**
      * Set the tags property: Specifies the tags that will be assigned to the job.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PutJobParameters object itself.
      */
@@ -74,7 +79,7 @@ public final class PutJobParameters {
 
     /**
      * Get the properties property: Specifies the job properties.
-     *
+     * 
      * @return the properties value.
      */
     public JobDetails properties() {
@@ -83,7 +88,7 @@ public final class PutJobParameters {
 
     /**
      * Set the properties property: Specifies the job properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PutJobParameters object itself.
      */
@@ -94,12 +99,54 @@ public final class PutJobParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeUntypedField("tags", this.tags);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PutJobParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PutJobParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PutJobParameters.
+     */
+    public static PutJobParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PutJobParameters deserializedPutJobParameters = new PutJobParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedPutJobParameters.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    deserializedPutJobParameters.tags = reader.readUntyped();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPutJobParameters.properties = JobDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPutJobParameters;
+        });
     }
 }

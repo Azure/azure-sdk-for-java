@@ -5,56 +5,57 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * REST API Operation
- *
- * <p>Details of a REST API operation, returned from the Resource Provider Operations API.
+ * 
+ * Details of a REST API operation, returned from the Resource Provider Operations API.
  */
 @Fluent
-public class Operation {
+public class Operation implements JsonSerializable<Operation> {
     /*
      * The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
      * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for
      * ARM/control-plane operations.
      */
-    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;
 
     /*
      * Localized display information for this particular operation.
      */
-    @JsonProperty(value = "display")
     private OperationDisplay display;
 
     /*
      * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
      * value is "user,system"
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private Origin origin;
 
     /*
      * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
      */
-    @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
     private ActionType actionType;
 
-    /** Creates an instance of Operation class. */
+    /**
+     * Creates an instance of Operation class.
+     */
     public Operation() {
     }
 
     /**
      * Get the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
      * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,9 +63,21 @@ public class Operation {
     }
 
     /**
+     * Set the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
+     * 
+     * @param name the name value to set.
+     * @return the Operation object itself.
+     */
+    Operation withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
      * operations and "false" for ARM/control-plane operations.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -72,8 +85,20 @@ public class Operation {
     }
 
     /**
+     * Set the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
+     * 
+     * @param isDataAction the isDataAction value to set.
+     * @return the Operation object itself.
+     */
+    Operation withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
+        return this;
+    }
+
+    /**
      * Get the display property: Localized display information for this particular operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -82,7 +107,7 @@ public class Operation {
 
     /**
      * Set the display property: Localized display information for this particular operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the Operation object itself.
      */
@@ -94,7 +119,7 @@ public class Operation {
     /**
      * Get the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
      * audit logs UX. Default value is "user,system".
-     *
+     * 
      * @return the origin value.
      */
     public Origin origin() {
@@ -102,9 +127,21 @@ public class Operation {
     }
 
     /**
+     * Set the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
+     * audit logs UX. Default value is "user,system".
+     * 
+     * @param origin the origin value to set.
+     * @return the Operation object itself.
+     */
+    Operation withOrigin(Origin origin) {
+        this.origin = origin;
+        return this;
+    }
+
+    /**
      * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
      * only APIs.
-     *
+     * 
      * @return the actionType value.
      */
     public ActionType actionType() {
@@ -112,13 +149,69 @@ public class Operation {
     }
 
     /**
+     * Set the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
+     * only APIs.
+     * 
+     * @param actionType the actionType value to set.
+     * @return the Operation object itself.
+     */
+    Operation withActionType(ActionType actionType) {
+        this.actionType = actionType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.display);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Operation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Operation if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Operation.
+     */
+    public static Operation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Operation deserializedOperation = new Operation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperation.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperation.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperation.display = OperationDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperation.origin = Origin.fromString(reader.getString());
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedOperation.actionType = ActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperation;
+        });
     }
 }

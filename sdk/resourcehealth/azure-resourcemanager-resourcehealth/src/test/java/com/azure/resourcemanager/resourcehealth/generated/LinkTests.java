@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Link model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Button\",\"displayText\":{\"value\":\"ji\",\"localizedValue\":\"wifto\"},\"extensionName\":\"kvpuvksgplsaknyn\",\"bladeName\":\"ynl\",\"parameters\":\"datahuopxodlqiynto\"}")
-                .toObject(Link.class);
+        Link model = BinaryData.fromString(
+            "{\"type\":\"Button\",\"displayText\":{\"value\":\"ji\",\"localizedValue\":\"wifto\"},\"extensionName\":\"kvpuvksgplsaknyn\",\"bladeName\":\"ynl\",\"parameters\":\"datahuopxodlqiynto\"}")
+            .toObject(Link.class);
         Assertions.assertEquals(LinkTypeValues.BUTTON, model.type());
         Assertions.assertEquals("ji", model.displayText().value());
         Assertions.assertEquals("wifto", model.displayText().localizedValue());
@@ -27,13 +25,11 @@ public final class LinkTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Link model =
-            new Link()
-                .withType(LinkTypeValues.BUTTON)
-                .withDisplayText(new LinkDisplayText().withValue("ji").withLocalizedValue("wifto"))
-                .withExtensionName("kvpuvksgplsaknyn")
-                .withBladeName("ynl")
-                .withParameters("datahuopxodlqiynto");
+        Link model = new Link().withType(LinkTypeValues.BUTTON)
+            .withDisplayText(new LinkDisplayText().withValue("ji").withLocalizedValue("wifto"))
+            .withExtensionName("kvpuvksgplsaknyn")
+            .withBladeName("ynl")
+            .withParameters("datahuopxodlqiynto");
         model = BinaryData.fromObject(model).toObject(Link.class);
         Assertions.assertEquals(LinkTypeValues.BUTTON, model.type());
         Assertions.assertEquals("ji", model.displayText().value());

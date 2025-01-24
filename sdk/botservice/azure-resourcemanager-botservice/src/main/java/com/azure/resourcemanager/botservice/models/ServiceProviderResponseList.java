@@ -7,25 +7,27 @@ package com.azure.resourcemanager.botservice.models;
 import com.azure.resourcemanager.botservice.fluent.models.ServiceProviderResponseListInner;
 import java.util.List;
 
-/** An immutable client-side representation of ServiceProviderResponseList. */
+/**
+ * An immutable client-side representation of ServiceProviderResponseList.
+ */
 public interface ServiceProviderResponseList {
     /**
      * Gets the nextLink property: The link used to get the next page of bot service providers.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the value property: Gets the list of bot service providers and their properties.
-     *
+     * 
      * @return the value value.
      */
     List<ServiceProvider> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.botservice.fluent.models.ServiceProviderResponseListInner object.
-     *
+     * 
      * @return the inner object.
      */
     ServiceProviderResponseListInner innerModel();

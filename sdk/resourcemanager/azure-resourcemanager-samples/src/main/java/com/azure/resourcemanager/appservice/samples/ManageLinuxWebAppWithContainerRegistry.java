@@ -49,7 +49,8 @@ public class ManageLinuxWebAppWithContainerRegistry {
      * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, InterruptedException {
+    public static boolean runSample(AzureResourceManager azureResourceManager)
+        throws IOException, InterruptedException {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgACR", 15);
         final String acrName = Utils.randomResourceName(azureResourceManager, "acrsample", 20);
         final String appName = Utils.randomResourceName(azureResourceManager, "webapp", 20);
@@ -67,41 +68,44 @@ public class ManageLinuxWebAppWithContainerRegistry {
 
             Date t1 = new Date();
 
-            Registry azureRegistry = azureResourceManager.containerRegistries().define(acrName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withBasicSku()
-                    .withRegistryNameAsAdminUser()
-                    .create();
+            Registry azureRegistry = azureResourceManager.containerRegistries()
+                .define(acrName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .withRegistryNameAsAdminUser()
+                .create();
 
             Date t2 = new Date();
-            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureRegistry.id());
+            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000)
+                + " seconds) " + azureRegistry.id());
             Utils.print(azureRegistry);
-
 
             //=============================================================
             // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
 
             RegistryCredentials acrCredentials = azureRegistry.getCredentials();
-            DockerClient dockerClient = DockerUtils.createDockerClient(azureResourceManager, rgName, region,
-                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
+            DockerClient dockerClient
+                = DockerUtils.createDockerClient(azureResourceManager, rgName, region, azureRegistry.loginServerUrl(),
+                    acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             //=============================================================
             // Pull a temp image from public Docker repo and create a temporary container from that image
             // These steps can be replaced and instead build a custom image using a Dockerfile and the app's JAR
 
             dockerClient.pullImageCmd(dockerImageName)
-                    .withTag(dockerImageTag)
-                    .withAuthConfig(new AuthConfig())
-                    .exec(new PullImageResultCallback())
-                    .awaitCompletion();
+                .withTag(dockerImageTag)
+                .withAuthConfig(new AuthConfig())
+                .exec(new PullImageResultCallback())
+                .awaitCompletion();
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
                 System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
-            CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
+            CreateContainerResponse dockerContainerInstance
+                = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
                     .withName(dockerContainerName)
                     .exec();
 
@@ -111,19 +115,19 @@ public class ManageLinuxWebAppWithContainerRegistry {
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
             dockerClient.commitCmd(dockerContainerInstance.getId())
                 .withRepository(privateRepoUrl)
-                .withTag("latest").exec();
+                .withTag("latest")
+                .exec();
 
             // We can now remove the temporary container instance
-            dockerClient.removeContainerCmd(dockerContainerInstance.getId())
-                    .withForce(true)
-                    .exec();
+            dockerClient.removeContainerCmd(dockerContainerInstance.getId()).withForce(true).exec();
 
             //=============================================================
             // Push the new Docker image to the Azure Container Registry
 
             dockerClient.pushImageCmd(privateRepoUrl)
-                    .withAuthConfig(dockerClient.authConfig())
-                    .exec(new PushImageResultCallback()).awaitSuccess();
+                .withAuthConfig(dockerClient.authConfig())
+                .exec(new PushImageResultCallback())
+                .awaitSuccess();
 
             // Remove the temp image from the local Docker host
             try {
@@ -137,14 +141,15 @@ public class ManageLinuxWebAppWithContainerRegistry {
 
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
-            WebApp app = azureResourceManager.webApps().define(appName)
-                    .withRegion(Region.US_WEST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withPrivateRegistryImage(privateRepoUrl + ":latest", "http://" + azureRegistry.loginServerUrl())
-                    .withCredentials(acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
-                    .withAppSetting("PORT", "8080")
-                    .create();
+            WebApp app = azureResourceManager.webApps()
+                .define(appName)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .withNewLinuxPlan(PricingTier.STANDARD_S1)
+                .withPrivateRegistryImage(privateRepoUrl + ":latest", "http://" + azureRegistry.loginServerUrl())
+                .withCredentials(acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
+                .withAppSetting("PORT", "8080")
+                .create();
 
             System.out.println("Created web app " + app.name());
             Utils.print(app);
@@ -185,8 +190,7 @@ public class ManageLinuxWebAppWithContainerRegistry {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

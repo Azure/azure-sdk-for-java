@@ -18,9 +18,8 @@ import java.util.ArrayList;
  */
 class WebAppAuthenticationImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<SiteAuthSettingsInner>
-    implements WebAppAuthentication,
-        WebAppAuthentication.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
-        WebAppAuthentication.UpdateDefinition<WebAppBase.Update<FluentT>> {
+    implements WebAppAuthentication, WebAppAuthentication.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
+    WebAppAuthentication.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private final WebAppBaseImpl<FluentT, FluentImplT> parent;
 
@@ -50,10 +49,9 @@ class WebAppAuthenticationImpl<FluentT extends WebAppBase, FluentImplT extends W
     }
 
     @Override
-    public WebAppAuthenticationImpl<FluentT, FluentImplT> withDefaultAuthenticationProvider(
-        BuiltInAuthenticationProvider provider) {
-        innerModel()
-            .withUnauthenticatedClientAction(UnauthenticatedClientAction.REDIRECT_TO_LOGIN_PAGE)
+    public WebAppAuthenticationImpl<FluentT, FluentImplT>
+        withDefaultAuthenticationProvider(BuiltInAuthenticationProvider provider) {
+        innerModel().withUnauthenticatedClientAction(UnauthenticatedClientAction.REDIRECT_TO_LOGIN_PAGE)
             .withDefaultProvider(provider);
         return this;
     }

@@ -61,7 +61,8 @@ public final class ManageStorageAccountCustomerManagedKey {
             //============================================================
             // Create a storage account with system assigned managed service identity
 
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(storageAccountName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withInfrastructureEncryption()
@@ -73,17 +74,18 @@ public final class ManageStorageAccountCustomerManagedKey {
             //============================================================
             // Create a key vault with purge protection enabled and access policy for managed service identity of storage account
 
-            Vault vault = azureResourceManager.vaults().define(vaultName)
+            Vault vault = azureResourceManager.vaults()
+                .define(vaultName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()   // access policy for this sample client to generate key
-                    .forServicePrincipal(clientId)
-                    .allowKeyAllPermissions()
-                    .attach()
+                .forServicePrincipal(clientId)
+                .allowKeyAllPermissions()
+                .attach()
                 .defineAccessPolicy()   // access policy for storage account managed service identity
-                    .forObjectId(storageAccount.systemAssignedManagedServiceIdentityPrincipalId())
-                    .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
-                    .attach()
+                .forObjectId(storageAccount.systemAssignedManagedServiceIdentityPrincipalId())
+                .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
+                .attach()
                 .withPurgeProtectionEnabled()
                 .create();
 
@@ -92,21 +94,20 @@ public final class ManageStorageAccountCustomerManagedKey {
             //============================================================
             // Create a key for storage account, RSA 2048, 3072 or 4096
 
-            vault.keys().define("sakey")
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(4096)
-                .create();
+            vault.keys().define("sakey").withKeyTypeToCreate(KeyType.RSA).withKeySize(4096).create();
 
             //============================================================
             // Create a diagnostic setting on key vault and save audit logs to storage account
 
-            StorageAccount auditStorageAccount = azureResourceManager.storageAccounts().define(auditStorageAccountName)
+            StorageAccount auditStorageAccount = azureResourceManager.storageAccounts()
+                .define(auditStorageAccountName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withSku(StorageAccountSkuType.STANDARD_LRS)
                 .create();
 
-            azureResourceManager.diagnosticSettings().define(diagnosticSettingName)
+            azureResourceManager.diagnosticSettings()
+                .define(diagnosticSettingName)
                 .withResource(vault.id())
                 .withStorageAccount(auditStorageAccount.id())
                 .withLog("AuditEvent", 90)
@@ -115,9 +116,7 @@ public final class ManageStorageAccountCustomerManagedKey {
             //============================================================
             // Enable customer-managed key in storage account
 
-            storageAccount.update()
-                .withEncryptionKeyFromKeyVault(vault.vaultUri(), "sakey", null)
-                .apply();
+            storageAccount.update().withEncryptionKeyFromKeyVault(vault.vaultUri(), "sakey", null).apply();
 
             Utils.print(storageAccount);
 
@@ -126,16 +125,15 @@ public final class ManageStorageAccountCustomerManagedKey {
             //============================================================
             // Create a container and upload a blob
 
-            azureResourceManager.storageBlobContainers().defineContainer(containerName)
+            azureResourceManager.storageBlobContainers()
+                .defineContainer(containerName)
                 .withExistingStorageAccount(rgName, storageAccountName)
                 .withPublicAccess(PublicAccess.NONE)
                 .create();
 
             BlobClient blobClient = new BlobClientBuilder()
-                .connectionString(
-                    ResourceManagerUtils.getStorageConnectionString(
-                        storageAccountName, storageAccountKey,
-                        azureResourceManager.storageAccounts().manager().environment()))
+                .connectionString(ResourceManagerUtils.getStorageConnectionString(storageAccountName, storageAccountKey,
+                    azureResourceManager.storageAccounts().manager().environment()))
                 .containerName(containerName)
                 .blobName("data.txt")
                 .buildClient();
@@ -172,10 +170,9 @@ public final class ManageStorageAccountCustomerManagedKey {
             // Browse audit logs saved in storage account
 
             BlobContainerClient containerClient = new BlobContainerClientBuilder()
-                .connectionString(
-                    ResourceManagerUtils.getStorageConnectionString(
-                        auditStorageAccountName, auditStorageAccount.getKeys().iterator().next().value(),
-                        azureResourceManager.storageAccounts().manager().environment()))
+                .connectionString(ResourceManagerUtils.getStorageConnectionString(auditStorageAccountName,
+                    auditStorageAccount.getKeys().iterator().next().value(),
+                    azureResourceManager.storageAccounts().manager().environment()))
                 .containerName("insights-logs-auditevent")
                 .buildClient();
 
@@ -207,8 +204,7 @@ public final class ManageStorageAccountCustomerManagedKey {
                 .build();
             final Configuration configuration = Configuration.getGlobalConfiguration();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

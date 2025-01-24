@@ -7,32 +7,34 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventTrackEventInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of LiveEventTrackEvent. */
+/**
+ * An immutable client-side representation of LiveEventTrackEvent.
+ */
 public interface LiveEventTrackEvent {
     /**
      * Gets the eventType property: The type of the track event.
-     *
+     * 
      * @return the eventType value.
      */
     LiveEventTrackEventType eventType();
 
     /**
      * Gets the eventTime property: The time event raised.
-     *
+     * 
      * @return the eventTime value.
      */
     OffsetDateTime eventTime();
 
     /**
      * Gets the data property: Event data.
-     *
+     * 
      * @return the data value.
      */
     LiveEventTrackEventData data();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.LiveEventTrackEventInner object.
-     *
+     * 
      * @return the inner object.
      */
     LiveEventTrackEventInner innerModel();

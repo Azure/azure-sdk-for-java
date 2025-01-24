@@ -8,60 +8,62 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.extendedlocation.fluent.models.EnabledResourceTypeInner;
 import java.util.List;
 
-/** An immutable client-side representation of EnabledResourceType. */
+/**
+ * An immutable client-side representation of EnabledResourceType.
+ */
 public interface EnabledResourceType {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the clusterExtensionId property: Cluster Extension ID.
-     *
+     * 
      * @return the clusterExtensionId value.
      */
     String clusterExtensionId();
 
     /**
      * Gets the extensionType property: Cluster Extension Type.
-     *
+     * 
      * @return the extensionType value.
      */
     String extensionType();
 
     /**
      * Gets the typesMetadata property: Metadata of the Resource Type.
-     *
+     * 
      * @return the typesMetadata value.
      */
     List<EnabledResourceTypePropertiesTypesMetadataItem> typesMetadata();
 
     /**
      * Gets the inner com.azure.resourcemanager.extendedlocation.fluent.models.EnabledResourceTypeInner object.
-     *
+     * 
      * @return the inner object.
      */
     EnabledResourceTypeInner innerModel();

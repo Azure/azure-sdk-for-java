@@ -17,8 +17,7 @@ public final class RecipientEmailCollectionImpl implements RecipientEmailCollect
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    RecipientEmailCollectionImpl(
-        RecipientEmailCollectionInner innerObject,
+    RecipientEmailCollectionImpl(RecipientEmailCollectionInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class RecipientEmailCollectionImpl implements RecipientEmailCollect
     public List<RecipientEmailContract> value() {
         List<RecipientEmailContractInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new RecipientEmailContractImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new RecipientEmailContractImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

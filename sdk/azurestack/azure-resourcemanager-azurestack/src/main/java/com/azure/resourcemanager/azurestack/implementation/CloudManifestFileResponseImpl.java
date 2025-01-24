@@ -13,8 +13,7 @@ public final class CloudManifestFileResponseImpl implements CloudManifestFileRes
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    CloudManifestFileResponseImpl(
-        CloudManifestFileResponseInner innerObject,
+    CloudManifestFileResponseImpl(CloudManifestFileResponseInner innerObject,
         com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

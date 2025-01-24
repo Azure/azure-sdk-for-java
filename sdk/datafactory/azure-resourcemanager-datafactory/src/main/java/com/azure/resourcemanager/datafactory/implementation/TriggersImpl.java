@@ -16,8 +16,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.TriggerSubscriptionOp
 import com.azure.resourcemanager.datafactory.models.TriggerFilterParameters;
 import com.azure.resourcemanager.datafactory.models.TriggerQueryResponse;
 import com.azure.resourcemanager.datafactory.models.TriggerResource;
-import com.azure.resourcemanager.datafactory.models.Triggers;
 import com.azure.resourcemanager.datafactory.models.TriggerSubscriptionOperationStatus;
+import com.azure.resourcemanager.datafactory.models.Triggers;
 
 public final class TriggersImpl implements Triggers {
     private static final ClientLogger LOGGER = new ClientLogger(TriggersImpl.class);

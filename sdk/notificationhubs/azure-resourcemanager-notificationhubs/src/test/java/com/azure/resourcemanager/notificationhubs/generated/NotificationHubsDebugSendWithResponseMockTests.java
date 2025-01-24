@@ -6,52 +6,44 @@ package com.azure.resourcemanager.notificationhubs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.notificationhubs.NotificationHubsManager;
 import com.azure.resourcemanager.notificationhubs.models.DebugSendResponse;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.notificationhubs.models.SkuName;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NotificationHubsDebugSendWithResponseMockTests {
     @Test
     public void testDebugSendWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"success\":5181138864066743428,\"failure\":3926019895987631021,\"results\":[{\"applicationPlatform\":\"vo\",\"pnsHandle\":\"sotbob\",\"registrationId\":\"opcjwvnhd\",\"outcome\":\"wmgxcxrsl\"},{\"applicationPlatform\":\"utwu\",\"pnsHandle\":\"grpkhjwniyqs\",\"registrationId\":\"i\",\"outcome\":\"dggkzzlvmbmpa\"}]},\"location\":\"odfvuefywsbp\",\"tags\":{\"wiyzvqtmnubexkp\":\"wyhrfouyftaakc\",\"mquxvypo\":\"ksmond\"},\"id\":\"kopkwhojvpajqgx\",\"name\":\"smocmbq\",\"type\":\"qvmkcxo\"}";
+            = "{\"properties\":{\"success\":45.423527,\"failure\":32.826424,\"results\":\"datatfdygpfqb\"},\"sku\":{\"name\":\"Basic\",\"tier\":\"op\",\"size\":\"qrhhu\",\"family\":\"pppcqeqxo\",\"capacity\":280761286},\"location\":\"ahzxctobgbk\",\"tags\":{\"grcfb\":\"izpost\",\"bpvjymjhx\":\"nrmfqjhhk\",\"n\":\"j\",\"ivkrtsw\":\"u\"},\"id\":\"xqzvszjfa\",\"name\":\"vjfdx\",\"type\":\"ivetvtcq\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        NotificationHubsManager manager = NotificationHubsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 201, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NotificationHubsManager manager = NotificationHubsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DebugSendResponse response = manager.notificationHubs()
-            .debugSendWithResponse("hgw", "apnedgfbcvkc", "q", com.azure.core.util.Context.NONE).getValue();
+            .debugSendWithResponse("gylgqgitxmedjvcs", "ynqwwncwzzhxgk", "rmgucnap", "datat",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("odfvuefywsbp", response.location());
-        Assertions.assertEquals("wyhrfouyftaakc", response.tags().get("wiyzvqtmnubexkp"));
+        Assertions.assertEquals("ahzxctobgbk", response.location());
+        Assertions.assertEquals("izpost", response.tags().get("grcfb"));
+        Assertions.assertEquals(SkuName.BASIC, response.sku().name());
+        Assertions.assertEquals("op", response.sku().tier());
+        Assertions.assertEquals("qrhhu", response.sku().size());
+        Assertions.assertEquals("pppcqeqxo", response.sku().family());
+        Assertions.assertEquals(280761286, response.sku().capacity());
+        Assertions.assertEquals(45.423527F, response.success());
+        Assertions.assertEquals(32.826424F, response.failure());
     }
 }

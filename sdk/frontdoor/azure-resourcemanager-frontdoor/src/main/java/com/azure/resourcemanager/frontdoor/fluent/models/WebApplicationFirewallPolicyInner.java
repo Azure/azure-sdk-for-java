@@ -6,6 +6,9 @@ package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.CustomRuleList;
 import com.azure.resourcemanager.frontdoor.models.FrontendEndpointLink;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleSetList;
@@ -14,7 +17,7 @@ import com.azure.resourcemanager.frontdoor.models.PolicySettings;
 import com.azure.resourcemanager.frontdoor.models.RoutingRuleLink;
 import com.azure.resourcemanager.frontdoor.models.SecurityPolicyLink;
 import com.azure.resourcemanager.frontdoor.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -26,20 +29,32 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
     /*
      * Properties of the web application firewall policy.
      */
-    @JsonProperty(value = "properties")
     private WebApplicationFirewallPolicyProperties innerProperties;
 
     /*
      * Gets a unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * The pricing tier of web application firewall policy. Defaults to Classic_AzureFrontDoor if not specified.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of WebApplicationFirewallPolicyInner class.
@@ -96,6 +111,36 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
     public WebApplicationFirewallPolicyInner withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -244,5 +289,63 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebApplicationFirewallPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebApplicationFirewallPolicyInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebApplicationFirewallPolicyInner.
+     */
+    public static WebApplicationFirewallPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebApplicationFirewallPolicyInner deserializedWebApplicationFirewallPolicyInner
+                = new WebApplicationFirewallPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebApplicationFirewallPolicyInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.innerProperties
+                        = WebApplicationFirewallPolicyProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.etag = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebApplicationFirewallPolicyInner;
+        });
     }
 }

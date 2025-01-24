@@ -7,11 +7,13 @@ package com.azure.resourcemanager.mariadb.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mariadb.fluent.models.ConfigurationListResultInner;
 
-/** Resource collection API of ServerParameters. */
+/**
+ * Resource collection API of ServerParameters.
+ */
 public interface ServerParameters {
     /**
      * Update a list of configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param value The parameters for updating a list of server configuration.
@@ -20,12 +22,12 @@ public interface ServerParameters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server configurations.
      */
-    ConfigurationListResult listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value);
+    ConfigurationListResult listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value);
 
     /**
      * Update a list of configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param value The parameters for updating a list of server configuration.
@@ -35,6 +37,6 @@ public interface ServerParameters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server configurations.
      */
-    ConfigurationListResult listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value, Context context);
+    ConfigurationListResult listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value, Context context);
 }

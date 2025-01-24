@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"locationData\":{\"name\":\"zboimyfpqdo\",\"city\":\"ppnwyytfvpctfji\",\"district\":\"ff\",\"countryOrRegion\":\"kuhznwhvuldbk\"},\"description\":\"jjkj\"},\"id\":\"gawgazmxjqi\",\"name\":\"h\",\"type\":\"jjsbcmlzaahzbhur\"},{\"properties\":{\"locationData\":{\"name\":\"kolirhh\",\"city\":\"jusuzgfjzc\",\"district\":\"axoialahfxwccokd\",\"countryOrRegion\":\"ukmkczynu\"},\"description\":\"oq\"},\"id\":\"qshavlj\",\"name\":\"k\",\"type\":\"yrqolnthbbnkgz\"},{\"properties\":{\"locationData\":{\"name\":\"drnzkjthf\",\"city\":\"yjncjm\",\"district\":\"uyfjbpfiddhlrufz\",\"countryOrRegion\":\"yjmqrf\"},\"description\":\"ocuselqk\"},\"id\":\"sazrhxuddqmdtff\",\"name\":\"sjmrkkhm\",\"type\":\"dmdlgyqixokw\"}],\"count\":5561137804644228905,\"nextLink\":\"vagnqfqqdlcvmyo\"}")
-                .toObject(GatewayCollection.class);
+        GatewayCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"locationData\":{\"name\":\"zboimyfpqdo\",\"city\":\"ppnwyytfvpctfji\",\"district\":\"ff\",\"countryOrRegion\":\"kuhznwhvuldbk\"},\"description\":\"jjkj\"},\"id\":\"gawgazmxjqi\",\"name\":\"h\",\"type\":\"jjsbcmlzaahzbhur\"},{\"properties\":{\"locationData\":{\"name\":\"kolirhh\",\"city\":\"jusuzgfjzc\",\"district\":\"axoialahfxwccokd\",\"countryOrRegion\":\"ukmkczynu\"},\"description\":\"oq\"},\"id\":\"qshavlj\",\"name\":\"k\",\"type\":\"yrqolnthbbnkgz\"},{\"properties\":{\"locationData\":{\"name\":\"drnzkjthf\",\"city\":\"yjncjm\",\"district\":\"uyfjbpfiddhlrufz\",\"countryOrRegion\":\"yjmqrf\"},\"description\":\"ocuselqk\"},\"id\":\"sazrhxuddqmdtff\",\"name\":\"sjmrkkhm\",\"type\":\"dmdlgyqixokw\"}],\"count\":5561137804644228905,\"nextLink\":\"vagnqfqqdlcvmyo\"}")
+            .toObject(GatewayCollection.class);
         Assertions.assertEquals(5561137804644228905L, model.count());
     }
 

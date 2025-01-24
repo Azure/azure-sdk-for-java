@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Action to be taken after a user disconnect during the ramp up period. */
+/**
+ * Action to be taken after a user disconnect during the ramp up period.
+ */
 public final class SessionHandlingOperation extends ExpandableStringEnum<SessionHandlingOperation> {
-    /** Static value None for SessionHandlingOperation. */
+    /**
+     * Static value None for SessionHandlingOperation.
+     */
     public static final SessionHandlingOperation NONE = fromString("None");
 
-    /** Static value Deallocate for SessionHandlingOperation. */
+    /**
+     * Static value Deallocate for SessionHandlingOperation.
+     */
     public static final SessionHandlingOperation DEALLOCATE = fromString("Deallocate");
 
-    /** Static value Hibernate for SessionHandlingOperation. */
+    /**
+     * Static value Hibernate for SessionHandlingOperation.
+     */
     public static final SessionHandlingOperation HIBERNATE = fromString("Hibernate");
 
     /**
      * Creates a new instance of SessionHandlingOperation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class SessionHandlingOperation extends ExpandableStringEnum<Session
 
     /**
      * Creates or finds a SessionHandlingOperation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SessionHandlingOperation.
      */
-    @JsonCreator
     public static SessionHandlingOperation fromString(String name) {
         return fromString(name, SessionHandlingOperation.class);
     }
 
     /**
      * Gets known SessionHandlingOperation values.
-     *
+     * 
      * @return known SessionHandlingOperation values.
      */
     public static Collection<SessionHandlingOperation> values() {

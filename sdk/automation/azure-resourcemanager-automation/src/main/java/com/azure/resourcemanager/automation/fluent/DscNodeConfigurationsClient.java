@@ -14,11 +14,29 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.automation.fluent.models.DscNodeConfigurationInner;
 import com.azure.resourcemanager.automation.models.DscNodeConfigurationCreateOrUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in DscNodeConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DscNodeConfigurationsClient.
+ */
 public interface DscNodeConfigurationsClient {
     /**
      * Delete the Dsc node configurations by node configuration.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeConfigurationName The Dsc node configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, Context context);
+
+    /**
+     * Delete the Dsc node configurations by node configuration.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -30,8 +48,8 @@ public interface DscNodeConfigurationsClient {
     void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName);
 
     /**
-     * Delete the Dsc node configurations by node configuration.
-     *
+     * Retrieve the Dsc node configurations by node configuration.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -39,15 +57,15 @@ public interface DscNodeConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the dsc node configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context);
+    Response<DscNodeConfigurationInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, Context context);
 
     /**
      * Retrieve the Dsc node configurations by node configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -60,24 +78,8 @@ public interface DscNodeConfigurationsClient {
     DscNodeConfigurationInner get(String resourceGroupName, String automationAccountName, String nodeConfigurationName);
 
     /**
-     * Retrieve the Dsc node configurations by node configuration.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeConfigurationName The Dsc node configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node configuration along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DscNodeConfigurationInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context);
-
-    /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -89,14 +91,12 @@ public interface DscNodeConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DscNodeConfigurationInner>, DscNodeConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
+        String resourceGroupName, String automationAccountName, String nodeConfigurationName,
         DscNodeConfigurationCreateOrUpdateParameters parameters);
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -109,15 +109,12 @@ public interface DscNodeConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DscNodeConfigurationInner>, DscNodeConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters,
-        Context context);
+        String resourceGroupName, String automationAccountName, String nodeConfigurationName,
+        DscNodeConfigurationCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -128,15 +125,12 @@ public interface DscNodeConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DscNodeConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters);
+    DscNodeConfigurationInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, DscNodeConfigurationCreateOrUpdateParameters parameters);
 
     /**
      * Create the node configuration identified by node configuration name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeConfigurationName The Dsc node configuration name.
@@ -148,16 +142,12 @@ public interface DscNodeConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DscNodeConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeConfigurationName,
-        DscNodeConfigurationCreateOrUpdateParameters parameters,
-        Context context);
+    DscNodeConfigurationInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, DscNodeConfigurationCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Retrieve a list of dsc node configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,12 +156,12 @@ public interface DscNodeConfigurationsClient {
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DscNodeConfigurationInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName);
+    PagedIterable<DscNodeConfigurationInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName);
 
     /**
      * Retrieve a list of dsc node configurations.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -185,12 +175,6 @@ public interface DscNodeConfigurationsClient {
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DscNodeConfigurationInner> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context);
+    PagedIterable<DscNodeConfigurationInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Integer skip, Integer top, String inlinecount, Context context);
 }

@@ -21,70 +21,40 @@ public class UtilsTests {
     @Test
     public void testWebAppPrivateRegistryImage() throws Exception {
         // completion
-        Assertions
-            .assertEquals(
-                "weidxuregistry.azurecr.io/az-func-java:v1",
-                Utils
-                    .smartCompletionPrivateRegistryImage(
-                        "weidxuregistry.azurecr.io/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
+        Assertions.assertEquals("weidxuregistry.azurecr.io/az-func-java:v1", Utils.smartCompletionPrivateRegistryImage(
+            "weidxuregistry.azurecr.io/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
 
         // completion
-        Assertions
-            .assertEquals(
-                "weidxuregistry.azurecr.io/az-func-java:v1",
-                Utils.smartCompletionPrivateRegistryImage("az-func-java:v1", "https://weidxuregistry.azurecr.io"));
+        Assertions.assertEquals("weidxuregistry.azurecr.io/az-func-java:v1",
+            Utils.smartCompletionPrivateRegistryImage("az-func-java:v1", "https://weidxuregistry.azurecr.io"));
 
         // completion
-        Assertions
-            .assertEquals(
-                "weidxuregistry.azurecr.io/weidxu/az-func-java:v1",
-                Utils
-                    .smartCompletionPrivateRegistryImage(
-                        "weidxu/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
+        Assertions.assertEquals("weidxuregistry.azurecr.io/weidxu/az-func-java:v1",
+            Utils.smartCompletionPrivateRegistryImage("weidxu/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
 
         // completion
-        Assertions
-            .assertEquals(
-                "weidxuregistry.azurecr.io:5000/weidxu/az-func-java:v1",
-                Utils
-                    .smartCompletionPrivateRegistryImage(
-                        "weidxu/az-func-java:v1", "https://weidxuregistry.azurecr.io:5000"));
+        Assertions.assertEquals("weidxuregistry.azurecr.io:5000/weidxu/az-func-java:v1", Utils
+            .smartCompletionPrivateRegistryImage("weidxu/az-func-java:v1", "https://weidxuregistry.azurecr.io:5000"));
 
         // completion
-        Assertions
-            .assertEquals(
-                "weidxuregistry.azurecr.io/weidxu/az-func-java:v1",
-                Utils
-                    .smartCompletionPrivateRegistryImage(
-                        "az-func-java:v1", "https://weidxuregistry.azurecr.io/weidxu"));
+        Assertions.assertEquals("weidxuregistry.azurecr.io/weidxu/az-func-java:v1",
+            Utils.smartCompletionPrivateRegistryImage("az-func-java:v1", "https://weidxuregistry.azurecr.io/weidxu"));
 
         // completion not happen due to possible host
-        Assertions
-            .assertEquals(
-                "host.name/az-func-java:v1",
-                Utils
-                    .smartCompletionPrivateRegistryImage(
-                        "host.name/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
+        Assertions.assertEquals("host.name/az-func-java:v1", Utils
+            .smartCompletionPrivateRegistryImage("host.name/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
 
         // completion not happen due to possible port
-        Assertions
-            .assertEquals(
-                "host:port/az-func-java:v1",
-                Utils
-                    .smartCompletionPrivateRegistryImage(
-                        "host:port/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
+        Assertions.assertEquals("host:port/az-func-java:v1", Utils
+            .smartCompletionPrivateRegistryImage("host:port/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
 
         // completion not happen due to no idea what it is
-        Assertions
-            .assertEquals(
-                "/az-func-java:v1",
-                Utils.smartCompletionPrivateRegistryImage("/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
+        Assertions.assertEquals("/az-func-java:v1",
+            Utils.smartCompletionPrivateRegistryImage("/az-func-java:v1", "https://weidxuregistry.azurecr.io"));
 
         // completion not happen due to incorrect serviceUrl
-        Assertions
-            .assertEquals(
-                "az-func-java:v1",
-                Utils.smartCompletionPrivateRegistryImage("az-func-java:v1", "weidxuregistry.azurecr.io"));
+        Assertions.assertEquals("az-func-java:v1",
+            Utils.smartCompletionPrivateRegistryImage("az-func-java:v1", "weidxuregistry.azurecr.io"));
     }
 
     @Test
@@ -104,21 +74,20 @@ public class UtilsTests {
 
     @Test
     public void testBase64Url() {
-        String encoded =
-            "eyJuYmYiOjE1ODI2OTM0NTIsImV4cCI6MTU4MjY5Mzc1MiwiaWF0IjoxNTgyNjkzNDUyLCJpc3MiOiJodHRwczovL3dhMS13ZWlkeHUuc2NtLmF6dXJld2Vic2l0ZXMubmV0IiwiYXVkIjoiaHR0cHM6Ly93YTEtd2VpZHh1LmF6dXJld2Vic2l0ZXMubmV0L2F6dXJlZnVuY3Rpb25zIn0";
-        String decoded =
-            "{\"nbf\":1582693452,\"exp\":1582693752,\"iat\":1582693452,\"iss\":\"https://wa1-weidxu.scm.azurewebsites.net\",\"aud\":\"https://wa1-weidxu.azurewebsites.net/azurefunctions\"}";
+        String encoded
+            = "eyJuYmYiOjE1ODI2OTM0NTIsImV4cCI6MTU4MjY5Mzc1MiwiaWF0IjoxNTgyNjkzNDUyLCJpc3MiOiJodHRwczovL3dhMS13ZWlkeHUuc2NtLmF6dXJld2Vic2l0ZXMubmV0IiwiYXVkIjoiaHR0cHM6Ly93YTEtd2VpZHh1LmF6dXJld2Vic2l0ZXMubmV0L2F6dXJlZnVuY3Rpb25zIn0";
+        String decoded
+            = "{\"nbf\":1582693452,\"exp\":1582693752,\"iat\":1582693452,\"iss\":\"https://wa1-weidxu.scm.azurewebsites.net\",\"aud\":\"https://wa1-weidxu.azurewebsites.net/azurefunctions\"}";
         Assertions.assertEquals(decoded, new String(Base64.getUrlDecoder().decode(encoded), StandardCharsets.UTF_8));
     }
 
     @Test
     public void canDownloadFile() throws Exception {
-        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .policies(
-                new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
-                new RetryPolicy("Retry-After", ChronoUnit.SECONDS)
-            )
-            .build();
+        HttpPipeline httpPipeline
+            = new HttpPipelineBuilder()
+                .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
+                    new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
+                .build();
         byte[] content = Utils.downloadFileAsync("https://www.google.com/humans.txt", httpPipeline).block();
         String contentString = new String(content);
         Assertions.assertNotNull(contentString);

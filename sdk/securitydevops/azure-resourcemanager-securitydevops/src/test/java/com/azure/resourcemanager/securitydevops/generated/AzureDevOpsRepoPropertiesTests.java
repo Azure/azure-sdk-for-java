@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsRepoPropertiesTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsRepoProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Canceled\",\"repoId\":\"xsabkyqdu\",\"repoUrl\":\"itcjczdz\",\"orgName\":\"ndhkrw\",\"projectName\":\"appd\",\"visibility\":\"dkvwrwjfe\",\"actionableRemediation\":{\"state\":\"Enabled\",\"severityLevels\":[\"je\",\"tmrldhugjzzdatq\"],\"categories\":[\"IaC\"],\"branchConfiguration\":{\"names\":[\"ablgphuticndvk\",\"ozwyiftyhxhuro\"]}}}")
-                .toObject(AzureDevOpsRepoProperties.class);
+        AzureDevOpsRepoProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Canceled\",\"repoId\":\"xsabkyqdu\",\"repoUrl\":\"itcjczdz\",\"orgName\":\"ndhkrw\",\"projectName\":\"appd\",\"visibility\":\"dkvwrwjfe\",\"actionableRemediation\":{\"state\":\"Enabled\",\"severityLevels\":[\"je\",\"tmrldhugjzzdatq\"],\"categories\":[\"IaC\"],\"branchConfiguration\":{\"names\":[\"ablgphuticndvk\",\"ozwyiftyhxhuro\"]}}}")
+            .toObject(AzureDevOpsRepoProperties.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
         Assertions.assertEquals("xsabkyqdu", model.repoId());
         Assertions.assertEquals("itcjczdz", model.repoUrl());
@@ -37,22 +35,18 @@ public final class AzureDevOpsRepoPropertiesTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsRepoProperties model =
-            new AzureDevOpsRepoProperties()
-                .withProvisioningState(ProvisioningState.CANCELED)
+        AzureDevOpsRepoProperties model
+            = new AzureDevOpsRepoProperties().withProvisioningState(ProvisioningState.CANCELED)
                 .withRepoId("xsabkyqdu")
                 .withRepoUrl("itcjczdz")
                 .withOrgName("ndhkrw")
                 .withProjectName("appd")
                 .withVisibility("dkvwrwjfe")
-                .withActionableRemediation(
-                    new ActionableRemediation()
-                        .withState(ActionableRemediationState.ENABLED)
-                        .withSeverityLevels(Arrays.asList("je", "tmrldhugjzzdatq"))
-                        .withCategories(Arrays.asList(RuleCategory.IAC))
-                        .withBranchConfiguration(
-                            new TargetBranchConfiguration()
-                                .withNames(Arrays.asList("ablgphuticndvk", "ozwyiftyhxhuro"))));
+                .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.ENABLED)
+                    .withSeverityLevels(Arrays.asList("je", "tmrldhugjzzdatq"))
+                    .withCategories(Arrays.asList(RuleCategory.IAC))
+                    .withBranchConfiguration(
+                        new TargetBranchConfiguration().withNames(Arrays.asList("ablgphuticndvk", "ozwyiftyhxhuro"))));
         model = BinaryData.fromObject(model).toObject(AzureDevOpsRepoProperties.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
         Assertions.assertEquals("xsabkyqdu", model.repoId());

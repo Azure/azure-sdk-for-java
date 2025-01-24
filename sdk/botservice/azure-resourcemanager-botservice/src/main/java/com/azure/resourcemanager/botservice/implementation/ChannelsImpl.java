@@ -24,14 +24,26 @@ public final class ChannelsImpl implements Channels {
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    public ChannelsImpl(
-        ChannelsClient innerClient, com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
+    public ChannelsImpl(ChannelsClient innerClient,
+        com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public BotChannel create(
-        String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters) {
+    public Response<BotChannel> createWithResponse(String resourceGroupName, String resourceName,
+        ChannelName channelName, BotChannelInner parameters, Context context) {
+        Response<BotChannelInner> inner = this.serviceClient()
+            .createWithResponse(resourceGroupName, resourceName, channelName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BotChannelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BotChannel create(String resourceGroupName, String resourceName, ChannelName channelName,
+        BotChannelInner parameters) {
         BotChannelInner inner = this.serviceClient().create(resourceGroupName, resourceName, channelName, parameters);
         if (inner != null) {
             return new BotChannelImpl(inner, this.manager());
@@ -40,27 +52,20 @@ public final class ChannelsImpl implements Channels {
         }
     }
 
-    public Response<BotChannel> createWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ChannelName channelName,
-        BotChannelInner parameters,
-        Context context) {
-        Response<BotChannelInner> inner =
-            this.serviceClient().createWithResponse(resourceGroupName, resourceName, channelName, parameters, context);
+    public Response<BotChannel> updateWithResponse(String resourceGroupName, String resourceName,
+        ChannelName channelName, BotChannelInner parameters, Context context) {
+        Response<BotChannelInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, resourceName, channelName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BotChannelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public BotChannel update(
-        String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters) {
+    public BotChannel update(String resourceGroupName, String resourceName, ChannelName channelName,
+        BotChannelInner parameters) {
         BotChannelInner inner = this.serviceClient().update(resourceGroupName, resourceName, channelName, parameters);
         if (inner != null) {
             return new BotChannelImpl(inner, this.manager());
@@ -69,32 +74,25 @@ public final class ChannelsImpl implements Channels {
         }
     }
 
-    public Response<BotChannel> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ChannelName channelName,
-        BotChannelInner parameters,
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String channelName,
         Context context) {
-        Response<BotChannelInner> inner =
-            this.serviceClient().updateWithResponse(resourceGroupName, resourceName, channelName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BotChannelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, channelName, context);
     }
 
     public void delete(String resourceGroupName, String resourceName, String channelName) {
         this.serviceClient().delete(resourceGroupName, resourceName, channelName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String channelName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, channelName, context);
+    public Response<BotChannel> getWithResponse(String resourceGroupName, String resourceName, String channelName,
+        Context context) {
+        Response<BotChannelInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, channelName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BotChannelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BotChannel get(String resourceGroupName, String resourceName, String channelName) {
@@ -106,25 +104,22 @@ public final class ChannelsImpl implements Channels {
         }
     }
 
-    public Response<BotChannel> getWithResponse(
-        String resourceGroupName, String resourceName, String channelName, Context context) {
-        Response<BotChannelInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, channelName, context);
+    public Response<ListChannelWithKeysResponse> listWithKeysWithResponse(String resourceGroupName, String resourceName,
+        ChannelName channelName, Context context) {
+        Response<ListChannelWithKeysResponseInner> inner
+            = this.serviceClient().listWithKeysWithResponse(resourceGroupName, resourceName, channelName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BotChannelImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ListChannelWithKeysResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ListChannelWithKeysResponse listWithKeys(
-        String resourceGroupName, String resourceName, ChannelName channelName) {
-        ListChannelWithKeysResponseInner inner =
-            this.serviceClient().listWithKeys(resourceGroupName, resourceName, channelName);
+    public ListChannelWithKeysResponse listWithKeys(String resourceGroupName, String resourceName,
+        ChannelName channelName) {
+        ListChannelWithKeysResponseInner inner
+            = this.serviceClient().listWithKeys(resourceGroupName, resourceName, channelName);
         if (inner != null) {
             return new ListChannelWithKeysResponseImpl(inner, this.manager());
         } else {
@@ -132,32 +127,17 @@ public final class ChannelsImpl implements Channels {
         }
     }
 
-    public Response<ListChannelWithKeysResponse> listWithKeysWithResponse(
-        String resourceGroupName, String resourceName, ChannelName channelName, Context context) {
-        Response<ListChannelWithKeysResponseInner> inner =
-            this.serviceClient().listWithKeysWithResponse(resourceGroupName, resourceName, channelName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ListChannelWithKeysResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<BotChannel> listByResourceGroup(String resourceGroupName, String resourceName) {
-        PagedIterable<BotChannelInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new BotChannelImpl(inner1, this.manager()));
+        PagedIterable<BotChannelInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, resourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BotChannelImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BotChannel> listByResourceGroup(
-        String resourceGroupName, String resourceName, Context context) {
-        PagedIterable<BotChannelInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new BotChannelImpl(inner1, this.manager()));
+    public PagedIterable<BotChannel> listByResourceGroup(String resourceGroupName, String resourceName,
+        Context context) {
+        PagedIterable<BotChannelInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BotChannelImpl(inner1, this.manager()));
     }
 
     private ChannelsClient serviceClient() {

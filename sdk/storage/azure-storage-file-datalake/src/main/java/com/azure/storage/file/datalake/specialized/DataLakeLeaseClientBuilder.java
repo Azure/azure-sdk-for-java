@@ -133,10 +133,8 @@ public final class DataLakeLeaseClientBuilder {
      */
     public DataLakeLeaseClientBuilder fileClient(DataLakeFileClient dataLakeFileClient) {
         Objects.requireNonNull(dataLakeFileClient);
-        blobLeaseClientBuilder.blobClient(
-            getSpecializedBlobClientBuilder(dataLakeFileClient.getFileUrl(),
-                dataLakeFileClient.getHttpPipeline(), dataLakeFileClient.getServiceVersion())
-                .buildBlockBlobClient());
+        blobLeaseClientBuilder.blobClient(getSpecializedBlobClientBuilder(dataLakeFileClient.getFileUrl(),
+            dataLakeFileClient.getHttpPipeline(), dataLakeFileClient.getServiceVersion()).buildBlockBlobClient());
         return this;
     }
 
@@ -150,9 +148,8 @@ public final class DataLakeLeaseClientBuilder {
      */
     public DataLakeLeaseClientBuilder fileAsyncClient(DataLakeFileAsyncClient dataLakeFileAsyncClient) {
         Objects.requireNonNull(dataLakeFileAsyncClient);
-        blobLeaseClientBuilder.blobAsyncClient(
-            getSpecializedBlobClientBuilder(dataLakeFileAsyncClient.getFileUrl(),
-                dataLakeFileAsyncClient.getHttpPipeline(), dataLakeFileAsyncClient.getServiceVersion())
+        blobLeaseClientBuilder.blobAsyncClient(getSpecializedBlobClientBuilder(dataLakeFileAsyncClient.getFileUrl(),
+            dataLakeFileAsyncClient.getHttpPipeline(), dataLakeFileAsyncClient.getServiceVersion())
                 .buildBlockBlobAsyncClient());
         return this;
     }
@@ -167,9 +164,8 @@ public final class DataLakeLeaseClientBuilder {
      */
     public DataLakeLeaseClientBuilder directoryClient(DataLakeDirectoryClient dataLakeDirectoryClient) {
         Objects.requireNonNull(dataLakeDirectoryClient);
-        blobLeaseClientBuilder.blobClient(
-            getSpecializedBlobClientBuilder(dataLakeDirectoryClient.getDirectoryUrl(),
-                dataLakeDirectoryClient.getHttpPipeline(), dataLakeDirectoryClient.getServiceVersion())
+        blobLeaseClientBuilder.blobClient(getSpecializedBlobClientBuilder(dataLakeDirectoryClient.getDirectoryUrl(),
+            dataLakeDirectoryClient.getHttpPipeline(), dataLakeDirectoryClient.getServiceVersion())
                 .buildBlockBlobClient());
         return this;
     }
@@ -184,13 +180,12 @@ public final class DataLakeLeaseClientBuilder {
      */
     public DataLakeLeaseClientBuilder directoryAsyncClient(DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient) {
         Objects.requireNonNull(dataLakeDirectoryAsyncClient);
-        blobLeaseClientBuilder.blobAsyncClient(
-            getSpecializedBlobClientBuilder(dataLakeDirectoryAsyncClient.getDirectoryUrl(),
+        blobLeaseClientBuilder
+            .blobAsyncClient(getSpecializedBlobClientBuilder(dataLakeDirectoryAsyncClient.getDirectoryUrl(),
                 dataLakeDirectoryAsyncClient.getHttpPipeline(), dataLakeDirectoryAsyncClient.getServiceVersion())
-                .buildBlockBlobAsyncClient());
+                    .buildBlockBlobAsyncClient());
         return this;
     }
-
 
     /**
      * Configures the builder based on the passed {@link DataLakeFileSystemClient}. This will set the
@@ -202,10 +197,10 @@ public final class DataLakeLeaseClientBuilder {
      */
     public DataLakeLeaseClientBuilder fileSystemClient(DataLakeFileSystemClient dataLakeFileSystemClient) {
         Objects.requireNonNull(dataLakeFileSystemClient);
-        blobLeaseClientBuilder.containerClient(
-            getBlobContainerClientBuilder(dataLakeFileSystemClient.getFileSystemUrl(),
+        blobLeaseClientBuilder
+            .containerClient(getBlobContainerClientBuilder(dataLakeFileSystemClient.getFileSystemUrl(),
                 dataLakeFileSystemClient.getHttpPipeline(), dataLakeFileSystemClient.getServiceVersion())
-                .buildClient());
+                    .buildClient());
         return this;
     }
 
@@ -217,14 +212,14 @@ public final class DataLakeLeaseClientBuilder {
      * @return the updated DataLakeLeaseClientBuilder object
      * @throws NullPointerException If {@code dataLakeFileSystemAsyncClient} is {@code null}.
      */
-    public DataLakeLeaseClientBuilder fileSystemAsyncClient(
-        DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient) {
+    public DataLakeLeaseClientBuilder
+        fileSystemAsyncClient(DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient) {
         Objects.requireNonNull(dataLakeFileSystemAsyncClient);
 
-        blobLeaseClientBuilder.containerClient(
-            getBlobContainerClientBuilder(dataLakeFileSystemAsyncClient.getFileSystemUrl(),
-                dataLakeFileSystemAsyncClient.getHttpPipeline(),
-                dataLakeFileSystemAsyncClient.getServiceVersion()).buildClient());
+        blobLeaseClientBuilder
+            .containerClient(getBlobContainerClientBuilder(dataLakeFileSystemAsyncClient.getFileSystemUrl(),
+                dataLakeFileSystemAsyncClient.getHttpPipeline(), dataLakeFileSystemAsyncClient.getServiceVersion())
+                    .buildClient());
         return this;
     }
 
@@ -250,8 +245,7 @@ public final class DataLakeLeaseClientBuilder {
     private SpecializedBlobClientBuilder getSpecializedBlobClientBuilder(String dfsEndpoint, HttpPipeline pipeline,
         DataLakeServiceVersion version) {
         String blobEndpoint = DataLakeImplUtils.endpointToDesiredEndpoint(dfsEndpoint, "blob", "dfs");
-        return new SpecializedBlobClientBuilder()
-            .pipeline(pipeline)
+        return new SpecializedBlobClientBuilder().pipeline(pipeline)
             .endpoint(blobEndpoint)
             .serviceVersion(TransformUtils.toBlobServiceVersion(version));
     }
@@ -265,8 +259,7 @@ public final class DataLakeLeaseClientBuilder {
     private BlobContainerClientBuilder getBlobContainerClientBuilder(String dfsEndpoint, HttpPipeline pipeline,
         DataLakeServiceVersion version) {
         String blobEndpoint = DataLakeImplUtils.endpointToDesiredEndpoint(dfsEndpoint, "blob", "dfs");
-        return new BlobContainerClientBuilder()
-            .pipeline(pipeline)
+        return new BlobContainerClientBuilder().pipeline(pipeline)
             .endpoint(blobEndpoint)
             .serviceVersion(TransformUtils.toBlobServiceVersion(version));
     }

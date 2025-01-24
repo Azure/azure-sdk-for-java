@@ -6,28 +6,33 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a transcription track in the output of a live event, generated using speech-to-text transcription. This
  * property is reserved for future use, any value set on this property will be ignored.
  */
 @Fluent
-public final class LiveEventOutputTranscriptionTrack {
+public final class LiveEventOutputTranscriptionTrack implements JsonSerializable<LiveEventOutputTranscriptionTrack> {
     /*
      * The output track name. This property is reserved for future use, any value set on this property will be ignored.
      */
-    @JsonProperty(value = "trackName", required = true)
     private String trackName;
 
-    /** Creates an instance of LiveEventOutputTranscriptionTrack class. */
+    /**
+     * Creates an instance of LiveEventOutputTranscriptionTrack class.
+     */
     public LiveEventOutputTranscriptionTrack() {
     }
 
     /**
      * Get the trackName property: The output track name. This property is reserved for future use, any value set on
      * this property will be ignored.
-     *
+     * 
      * @return the trackName value.
      */
     public String trackName() {
@@ -37,7 +42,7 @@ public final class LiveEventOutputTranscriptionTrack {
     /**
      * Set the trackName property: The output track name. This property is reserved for future use, any value set on
      * this property will be ignored.
-     *
+     * 
      * @param trackName the trackName value to set.
      * @return the LiveEventOutputTranscriptionTrack object itself.
      */
@@ -48,17 +53,54 @@ public final class LiveEventOutputTranscriptionTrack {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (trackName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trackName in model LiveEventOutputTranscriptionTrack"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trackName in model LiveEventOutputTranscriptionTrack"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LiveEventOutputTranscriptionTrack.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("trackName", this.trackName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiveEventOutputTranscriptionTrack from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiveEventOutputTranscriptionTrack if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LiveEventOutputTranscriptionTrack.
+     */
+    public static LiveEventOutputTranscriptionTrack fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiveEventOutputTranscriptionTrack deserializedLiveEventOutputTranscriptionTrack
+                = new LiveEventOutputTranscriptionTrack();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trackName".equals(fieldName)) {
+                    deserializedLiveEventOutputTranscriptionTrack.trackName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiveEventOutputTranscriptionTrack;
+        });
+    }
 }

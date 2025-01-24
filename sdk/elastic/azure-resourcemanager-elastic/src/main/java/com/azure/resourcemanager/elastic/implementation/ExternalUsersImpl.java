@@ -21,21 +21,18 @@ public final class ExternalUsersImpl implements ExternalUsers {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public ExternalUsersImpl(
-        ExternalUsersClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public ExternalUsersImpl(ExternalUsersClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ExternalUserCreationResponse> createOrUpdateWithResponse(
-        String resourceGroupName, String monitorName, ExternalUserInfo body, Context context) {
-        Response<ExternalUserCreationResponseInner> inner =
-            this.serviceClient().createOrUpdateWithResponse(resourceGroupName, monitorName, body, context);
+    public Response<ExternalUserCreationResponse> createOrUpdateWithResponse(String resourceGroupName,
+        String monitorName, ExternalUserInfo body, Context context) {
+        Response<ExternalUserCreationResponseInner> inner
+            = this.serviceClient().createOrUpdateWithResponse(resourceGroupName, monitorName, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExternalUserCreationResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

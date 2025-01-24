@@ -15,11 +15,18 @@ import java.util.List;
  */
 @Fluent
 public class ShareSetAccessPolicyOptions {
-
     private List<ShareSignedIdentifier> permissions;
     private ShareRequestConditions requestConditions;
 
     /**
+     * Creates a new instance of {@link ShareSetAccessPolicyOptions}.
+     */
+    public ShareSetAccessPolicyOptions() {
+    }
+
+    /**
+     * Gets the access policies to set on the share.
+     *
      * @return Access policies to set on the share.
      */
     public List<ShareSignedIdentifier> getPermissions() {
@@ -27,6 +34,8 @@ public class ShareSetAccessPolicyOptions {
     }
 
     /**
+     * Sets the access policies to set on the share.
+     *
      * @param permissions Access policies to set on the share.
      * @return The updated options.
      */
@@ -36,6 +45,8 @@ public class ShareSetAccessPolicyOptions {
     }
 
     /**
+     * Gets the {@link ShareRequestConditions}.
+     *
      * @return {@link ShareRequestConditions}.
      */
     public ShareRequestConditions getRequestConditions() {
@@ -43,6 +54,8 @@ public class ShareSetAccessPolicyOptions {
     }
 
     /**
+     * Sets the {@link ShareRequestConditions}.
+     *
      * @param requestConditions {@link ShareRequestConditions}.
      * @return The updated options.
      */

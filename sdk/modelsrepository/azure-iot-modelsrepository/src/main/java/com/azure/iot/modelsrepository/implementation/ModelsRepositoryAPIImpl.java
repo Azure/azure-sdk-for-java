@@ -75,7 +75,8 @@ public final class ModelsRepositoryAPIImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param host server parameter.
      */
-    ModelsRepositoryAPIImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host, String apiVersion) {
+    ModelsRepositoryAPIImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host,
+        String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;

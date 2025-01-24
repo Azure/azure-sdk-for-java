@@ -6,9 +6,15 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.synapse.fluent.models.BigDataPoolResourceInfoInner;
+import com.azure.resourcemanager.synapse.fluent.models.LibraryInfo;
+import com.azure.resourcemanager.synapse.models.AutoPauseProperties;
+import com.azure.resourcemanager.synapse.models.AutoScaleProperties;
 import com.azure.resourcemanager.synapse.models.BigDataPoolResourceInfoListResult;
+import com.azure.resourcemanager.synapse.models.DynamicExecutorAllocation;
+import com.azure.resourcemanager.synapse.models.LibraryRequirements;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,110 +23,167 @@ import org.junit.jupiter.api.Assertions;
 public final class BigDataPoolResourceInfoListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BigDataPoolResourceInfoListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"ayzejnhlbkpbz\",\"value\":[{\"properties\":{\"provisioningState\":\"jh\",\"creationDate\":\"2021-11-24T03:49:25Z\",\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":320038857,\"sparkEventsFolder\":\"olewjwi\",\"nodeCount\":1773241461,\"customLibraries\":[],\"sparkVersion\":\"sfapaqtferrq\",\"defaultSparkLogFolder\":\"x\",\"nodeSize\":\"XXXLarge\",\"nodeSizeFamily\":\"None\",\"lastSucceededTimestamp\":\"2021-11-03T09:57:06Z\"},\"location\":\"jwogqqnobpudc\",\"tags\":{\"bzasqbucljgkyexa\":\"tqwpwya\",\"dsdaultxijjumf\":\"guyaip\",\"nqnm\":\"waz\",\"qdqx\":\"jng\"},\"id\":\"bjwgnyfus\",\"name\":\"zsvtuikzhajqgl\",\"type\":\"fh\"},{\"properties\":{\"provisioningState\":\"qryxyn\",\"creationDate\":\"2021-09-26T14:22:07Z\",\"isComputeIsolationEnabled\":true,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":569967866,\"sparkEventsFolder\":\"goeiybbabpfhvfsl\",\"nodeCount\":1073753139,\"customLibraries\":[],\"sparkVersion\":\"igjkskyrio\",\"defaultSparkLogFolder\":\"zid\",\"nodeSize\":\"XXXLarge\",\"nodeSizeFamily\":\"HardwareAcceleratedGPU\",\"lastSucceededTimestamp\":\"2021-06-03T04:19:09Z\"},\"location\":\"mifrygznmma\",\"tags\":{\"ieixynllxe\":\"zkzobgopxlhslnel\",\"u\":\"wcrojphslhcaw\"},\"id\":\"i\",\"name\":\"dwfmvigorqjb\",\"type\":\"tzh\"},{\"properties\":{\"provisioningState\":\"lkafhonqjuje\",\"creationDate\":\"2021-03-08T01:24:12Z\",\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":1711533455,\"sparkEventsFolder\":\"wcltyjede\",\"nodeCount\":1626288503,\"customLibraries\":[],\"sparkVersion\":\"qscazuawxtz\",\"defaultSparkLogFolder\":\"uamwabzxrvxc\",\"nodeSize\":\"XXXLarge\",\"nodeSizeFamily\":\"None\",\"lastSucceededTimestamp\":\"2021-07-14T13:30:43Z\"},\"location\":\"ivmxyasfl\",\"tags\":{\"ihknsmjbl\":\"gzwywak\",\"ryuzcbmqqv\":\"ljhlnymzotq\",\"fgtayxonsup\":\"mv\",\"oibgsxg\":\"ujlzqnhcvsqltn\"},\"id\":\"xfyqonmpqoxwdo\",\"name\":\"dbxiqx\",\"type\":\"iiqbi\"}]}")
-                .toObject(BigDataPoolResourceInfoListResult.class);
-        Assertions.assertEquals("ayzejnhlbkpbz", model.nextLink());
-        Assertions.assertEquals("jwogqqnobpudc", model.value().get(0).location());
-        Assertions.assertEquals("tqwpwya", model.value().get(0).tags().get("bzasqbucljgkyexa"));
-        Assertions.assertEquals("jh", model.value().get(0).provisioningState());
-        Assertions.assertEquals(false, model.value().get(0).isComputeIsolationEnabled());
-        Assertions.assertEquals(false, model.value().get(0).isAutotuneEnabled());
+        BigDataPoolResourceInfoListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"sntnbybkzgcw\",\"value\":[{\"properties\":{\"provisioningState\":\"xwrljdouskcqvkoc\",\"autoScale\":{\"minNodeCount\":1012894603,\"enabled\":true,\"maxNodeCount\":371451274},\"creationDate\":\"2021-04-07T16:39:29Z\",\"autoPause\":{\"delayInMinutes\":1299495603,\"enabled\":false},\"isComputeIsolationEnabled\":true,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":1218196264,\"dynamicExecutorAllocation\":{\"enabled\":true},\"sparkEventsFolder\":\"nqpjwnzlljfmpp\",\"nodeCount\":2010421384,\"libraryRequirements\":{\"time\":\"2021-11-23T16:03:48Z\",\"content\":\"sabkyqduujitcjcz\",\"filename\":\"evndh\"},\"customLibraries\":[{\"name\":\"d\",\"path\":\"p\",\"containerName\":\"bdkvwrwjf\",\"uploadedTimestamp\":\"2021-08-31T02:16Z\",\"type\":\"hutje\",\"provisioningStatus\":\"mrldhu\",\"creatorId\":\"zzd\"},{\"name\":\"qxhocdgeablgphut\",\"path\":\"ndv\",\"containerName\":\"ozwyiftyhxhuro\",\"uploadedTimestamp\":\"2020-12-20T08:53:33Z\",\"type\":\"xolniwpwcukjfk\",\"provisioningStatus\":\"awxklr\",\"creatorId\":\"lwckbasyypnddhs\"},{\"name\":\"bacphejko\",\"path\":\"nqgoulzndli\",\"containerName\":\"yqkgfg\",\"uploadedTimestamp\":\"2021-12-05T16:09:15Z\",\"type\":\"dgak\",\"provisioningStatus\":\"s\",\"creatorId\":\"yb\"}],\"sparkConfigProperties\":{\"time\":\"2021-07-27T23:28:20Z\",\"content\":\"qytbciq\",\"filename\":\"uflmm\"},\"sparkVersion\":\"zsm\",\"defaultSparkLogFolder\":\"mglougpbkw\",\"nodeSize\":\"Medium\",\"nodeSizeFamily\":\"MemoryOptimized\",\"lastSucceededTimestamp\":\"2021-07-26T02:06:56Z\"},\"location\":\"ktapspwgcuertu\",\"tags\":{\"vqwhbmdgbbjfd\":\"o\",\"q\":\"gmbmbexppbh\",\"algbquxigjyjg\":\"rolfpfp\",\"lnerkujysvleju\":\"jaoyfhrtx\"},\"id\":\"fqawrlyxw\",\"name\":\"kcprbnw\",\"type\":\"xgjvtbv\"},{\"properties\":{\"provisioningState\":\"szdnr\",\"autoScale\":{\"minNodeCount\":718700797,\"enabled\":true,\"maxNodeCount\":931696713},\"creationDate\":\"2021-03-27T03:26:42Z\",\"autoPause\":{\"delayInMinutes\":1747028439,\"enabled\":true},\"isComputeIsolationEnabled\":true,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":2100303933,\"dynamicExecutorAllocation\":{\"enabled\":false},\"sparkEventsFolder\":\"uizga\",\"nodeCount\":8203543,\"libraryRequirements\":{\"time\":\"2020-12-27T04:43:40Z\",\"content\":\"ckyfih\",\"filename\":\"idf\"},\"customLibraries\":[{\"name\":\"zuhtymwisdkfthwx\",\"path\":\"t\",\"containerName\":\"waopvkmijcmmxd\",\"uploadedTimestamp\":\"2021-08-10T20:04:10Z\",\"type\":\"fsrpymzidnse\",\"provisioningStatus\":\"xtbzsgfyccsne\",\"creatorId\":\"dwzjeiach\"},{\"name\":\"osfln\",\"path\":\"sfqpteehz\",\"containerName\":\"ypyqrimzinp\",\"uploadedTimestamp\":\"2021-01-25T11:13:44Z\",\"type\":\"dkirsoodqxhcr\",\"provisioningStatus\":\"ohjtckw\",\"creatorId\":\"soifiyipjxsqw\"},{\"name\":\"rjb\",\"path\":\"orcjxvsnby\",\"containerName\":\"abnmocpcyshu\",\"uploadedTimestamp\":\"2021-10-01T07:14:45Z\",\"type\":\"bl\",\"provisioningStatus\":\"gpbtoqcjmklj\",\"creatorId\":\"bqidtqaj\"}],\"sparkConfigProperties\":{\"time\":\"2021-10-05T17:16:42Z\",\"content\":\"kudjkrlkhb\",\"filename\":\"fepgzgq\"},\"sparkVersion\":\"zloc\",\"defaultSparkLogFolder\":\"c\",\"nodeSize\":\"Large\",\"nodeSizeFamily\":\"MemoryOptimized\",\"lastSucceededTimestamp\":\"2021-06-04T19:54:17Z\"},\"location\":\"bcsglumma\",\"tags\":{\"nbdxk\":\"aodxo\"},\"id\":\"pxokajionp\",\"name\":\"mexgstxgcp\",\"type\":\"dg\"},{\"properties\":{\"provisioningState\":\"jrmvdjwzrlo\",\"autoScale\":{\"minNodeCount\":1769717852,\"enabled\":false,\"maxNodeCount\":137439916},\"creationDate\":\"2021-06-21T02:40:32Z\",\"autoPause\":{\"delayInMinutes\":1491222167,\"enabled\":true},\"isComputeIsolationEnabled\":true,\"sessionLevelPackagesEnabled\":false,\"cacheSize\":2038129581,\"dynamicExecutorAllocation\":{\"enabled\":true},\"sparkEventsFolder\":\"bfkgukdkex\",\"nodeCount\":1041117095,\"libraryRequirements\":{\"time\":\"2021-08-26T06:38:07Z\",\"content\":\"axcfjpgddtocjjx\",\"filename\":\"pmouexhdz\"},\"customLibraries\":[{\"name\":\"eojnxqbzvddn\",\"path\":\"ndei\",\"containerName\":\"twnpzaoqvuhrhcf\",\"uploadedTimestamp\":\"2021-05-08T13:34:52Z\",\"type\":\"dglmjthjqkwp\",\"provisioningStatus\":\"icxm\",\"creatorId\":\"iwqvhkh\"}],\"sparkConfigProperties\":{\"time\":\"2021-05-06T05:08:48Z\",\"content\":\"dtopbob\",\"filename\":\"ghmewuam\"},\"sparkVersion\":\"hrzayvvtpgvdf\",\"defaultSparkLogFolder\":\"otkftutqxlngx\",\"nodeSize\":\"None\",\"nodeSizeFamily\":\"HardwareAcceleratedFPGA\",\"lastSucceededTimestamp\":\"2021-01-24T10:40:18Z\"},\"location\":\"xkrxdqmi\",\"tags\":{\"abhjybi\":\"hzrvqd\"},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}]}")
+            .toObject(BigDataPoolResourceInfoListResult.class);
+        Assertions.assertEquals("sntnbybkzgcw", model.nextLink());
+        Assertions.assertEquals("ktapspwgcuertu", model.value().get(0).location());
+        Assertions.assertEquals("o", model.value().get(0).tags().get("vqwhbmdgbbjfd"));
+        Assertions.assertEquals("xwrljdouskcqvkoc", model.value().get(0).provisioningState());
+        Assertions.assertEquals(1012894603, model.value().get(0).autoScale().minNodeCount());
+        Assertions.assertEquals(true, model.value().get(0).autoScale().enabled());
+        Assertions.assertEquals(371451274, model.value().get(0).autoScale().maxNodeCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-07T16:39:29Z"), model.value().get(0).creationDate());
+        Assertions.assertEquals(1299495603, model.value().get(0).autoPause().delayInMinutes());
+        Assertions.assertEquals(false, model.value().get(0).autoPause().enabled());
+        Assertions.assertEquals(true, model.value().get(0).isComputeIsolationEnabled());
         Assertions.assertEquals(true, model.value().get(0).sessionLevelPackagesEnabled());
-        Assertions.assertEquals("olewjwi", model.value().get(0).sparkEventsFolder());
-        Assertions.assertEquals(1773241461, model.value().get(0).nodeCount());
-        Assertions.assertEquals("sfapaqtferrq", model.value().get(0).sparkVersion());
-        Assertions.assertEquals("x", model.value().get(0).defaultSparkLogFolder());
-        Assertions.assertEquals(NodeSize.XXXLARGE, model.value().get(0).nodeSize());
-        Assertions.assertEquals(NodeSizeFamily.NONE, model.value().get(0).nodeSizeFamily());
+        Assertions.assertEquals(1218196264, model.value().get(0).cacheSize());
+        Assertions.assertEquals(true, model.value().get(0).dynamicExecutorAllocation().enabled());
+        Assertions.assertEquals("nqpjwnzlljfmpp", model.value().get(0).sparkEventsFolder());
+        Assertions.assertEquals(2010421384, model.value().get(0).nodeCount());
+        Assertions.assertEquals("sabkyqduujitcjcz", model.value().get(0).libraryRequirements().content());
+        Assertions.assertEquals("evndh", model.value().get(0).libraryRequirements().filename());
+        Assertions.assertEquals("d", model.value().get(0).customLibraries().get(0).name());
+        Assertions.assertEquals("p", model.value().get(0).customLibraries().get(0).path());
+        Assertions.assertEquals("bdkvwrwjf", model.value().get(0).customLibraries().get(0).containerName());
+        Assertions.assertEquals("hutje", model.value().get(0).customLibraries().get(0).type());
+        Assertions.assertEquals("qytbciq", model.value().get(0).sparkConfigProperties().content());
+        Assertions.assertEquals("uflmm", model.value().get(0).sparkConfigProperties().filename());
+        Assertions.assertEquals("zsm", model.value().get(0).sparkVersion());
+        Assertions.assertEquals("mglougpbkw", model.value().get(0).defaultSparkLogFolder());
+        Assertions.assertEquals(NodeSize.MEDIUM, model.value().get(0).nodeSize());
+        Assertions.assertEquals(NodeSizeFamily.MEMORY_OPTIMIZED, model.value().get(0).nodeSizeFamily());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BigDataPoolResourceInfoListResult model =
-            new BigDataPoolResourceInfoListResult()
-                .withNextLink("ayzejnhlbkpbz")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new BigDataPoolResourceInfoInner()
-                                .withLocation("jwogqqnobpudc")
-                                .withTags(
-                                    mapOf(
-                                        "bzasqbucljgkyexa",
-                                        "tqwpwya",
-                                        "dsdaultxijjumf",
-                                        "guyaip",
-                                        "nqnm",
-                                        "waz",
-                                        "qdqx",
-                                        "jng"))
-                                .withProvisioningState("jh")
-                                .withIsComputeIsolationEnabled(false)
-                                .withIsAutotuneEnabled(false)
-                                .withSessionLevelPackagesEnabled(true)
-                                .withSparkEventsFolder("olewjwi")
-                                .withNodeCount(1773241461)
-                                .withCustomLibraries(Arrays.asList())
-                                .withSparkVersion("sfapaqtferrq")
-                                .withDefaultSparkLogFolder("x")
-                                .withNodeSize(NodeSize.XXXLARGE)
-                                .withNodeSizeFamily(NodeSizeFamily.NONE),
-                            new BigDataPoolResourceInfoInner()
-                                .withLocation("mifrygznmma")
-                                .withTags(mapOf("ieixynllxe", "zkzobgopxlhslnel", "u", "wcrojphslhcaw"))
-                                .withProvisioningState("qryxyn")
-                                .withIsComputeIsolationEnabled(true)
-                                .withIsAutotuneEnabled(false)
-                                .withSessionLevelPackagesEnabled(true)
-                                .withSparkEventsFolder("goeiybbabpfhvfsl")
-                                .withNodeCount(1073753139)
-                                .withCustomLibraries(Arrays.asList())
-                                .withSparkVersion("igjkskyrio")
-                                .withDefaultSparkLogFolder("zid")
-                                .withNodeSize(NodeSize.XXXLARGE)
-                                .withNodeSizeFamily(NodeSizeFamily.HARDWARE_ACCELERATED_GPU),
-                            new BigDataPoolResourceInfoInner()
-                                .withLocation("ivmxyasfl")
-                                .withTags(
-                                    mapOf(
-                                        "ihknsmjbl",
-                                        "gzwywak",
-                                        "ryuzcbmqqv",
-                                        "ljhlnymzotq",
-                                        "fgtayxonsup",
-                                        "mv",
-                                        "oibgsxg",
-                                        "ujlzqnhcvsqltn"))
-                                .withProvisioningState("lkafhonqjuje")
-                                .withIsComputeIsolationEnabled(false)
-                                .withIsAutotuneEnabled(false)
-                                .withSessionLevelPackagesEnabled(true)
-                                .withSparkEventsFolder("wcltyjede")
-                                .withNodeCount(1626288503)
-                                .withCustomLibraries(Arrays.asList())
-                                .withSparkVersion("qscazuawxtz")
-                                .withDefaultSparkLogFolder("uamwabzxrvxc")
-                                .withNodeSize(NodeSize.XXXLARGE)
-                                .withNodeSizeFamily(NodeSizeFamily.NONE)));
+        BigDataPoolResourceInfoListResult model = new BigDataPoolResourceInfoListResult().withNextLink("sntnbybkzgcw")
+            .withValue(Arrays.asList(
+                new BigDataPoolResourceInfoInner().withLocation("ktapspwgcuertu")
+                    .withTags(mapOf("vqwhbmdgbbjfd", "o", "q", "gmbmbexppbh", "algbquxigjyjg", "rolfpfp",
+                        "lnerkujysvleju", "jaoyfhrtx"))
+                    .withProvisioningState("xwrljdouskcqvkoc")
+                    .withAutoScale(new AutoScaleProperties().withMinNodeCount(1012894603)
+                        .withEnabled(true)
+                        .withMaxNodeCount(371451274))
+                    .withCreationDate(OffsetDateTime.parse("2021-04-07T16:39:29Z"))
+                    .withAutoPause(new AutoPauseProperties().withDelayInMinutes(1299495603).withEnabled(false))
+                    .withIsComputeIsolationEnabled(true)
+                    .withSessionLevelPackagesEnabled(true)
+                    .withCacheSize(1218196264)
+                    .withDynamicExecutorAllocation(new DynamicExecutorAllocation().withEnabled(true))
+                    .withSparkEventsFolder("nqpjwnzlljfmpp")
+                    .withNodeCount(2010421384)
+                    .withLibraryRequirements(
+                        new LibraryRequirements().withContent("sabkyqduujitcjcz").withFilename("evndh"))
+                    .withCustomLibraries(Arrays.asList(
+                        new LibraryInfo().withName("d").withPath("p").withContainerName("bdkvwrwjf").withType("hutje"),
+                        new LibraryInfo().withName("qxhocdgeablgphut")
+                            .withPath("ndv")
+                            .withContainerName("ozwyiftyhxhuro")
+                            .withType("xolniwpwcukjfk"),
+                        new LibraryInfo().withName("bacphejko")
+                            .withPath("nqgoulzndli")
+                            .withContainerName("yqkgfg")
+                            .withType("dgak")))
+                    .withSparkConfigProperties(new LibraryRequirements().withContent("qytbciq").withFilename("uflmm"))
+                    .withSparkVersion("zsm")
+                    .withDefaultSparkLogFolder("mglougpbkw")
+                    .withNodeSize(NodeSize.MEDIUM)
+                    .withNodeSizeFamily(NodeSizeFamily.MEMORY_OPTIMIZED),
+                new BigDataPoolResourceInfoInner().withLocation("bcsglumma")
+                    .withTags(mapOf("nbdxk", "aodxo"))
+                    .withProvisioningState("szdnr")
+                    .withAutoScale(new AutoScaleProperties().withMinNodeCount(718700797)
+                        .withEnabled(true)
+                        .withMaxNodeCount(931696713))
+                    .withCreationDate(OffsetDateTime.parse("2021-03-27T03:26:42Z"))
+                    .withAutoPause(new AutoPauseProperties().withDelayInMinutes(1747028439).withEnabled(true))
+                    .withIsComputeIsolationEnabled(true)
+                    .withSessionLevelPackagesEnabled(true)
+                    .withCacheSize(2100303933)
+                    .withDynamicExecutorAllocation(new DynamicExecutorAllocation().withEnabled(false))
+                    .withSparkEventsFolder("uizga")
+                    .withNodeCount(8203543)
+                    .withLibraryRequirements(new LibraryRequirements().withContent("ckyfih").withFilename("idf"))
+                    .withCustomLibraries(Arrays.asList(
+                        new LibraryInfo().withName("zuhtymwisdkfthwx")
+                            .withPath("t")
+                            .withContainerName("waopvkmijcmmxd")
+                            .withType("fsrpymzidnse"),
+                        new LibraryInfo().withName("osfln")
+                            .withPath("sfqpteehz")
+                            .withContainerName("ypyqrimzinp")
+                            .withType("dkirsoodqxhcr"),
+                        new LibraryInfo().withName("rjb")
+                            .withPath("orcjxvsnby")
+                            .withContainerName("abnmocpcyshu")
+                            .withType("bl")))
+                    .withSparkConfigProperties(
+                        new LibraryRequirements().withContent("kudjkrlkhb").withFilename("fepgzgq"))
+                    .withSparkVersion("zloc")
+                    .withDefaultSparkLogFolder("c")
+                    .withNodeSize(NodeSize.LARGE)
+                    .withNodeSizeFamily(NodeSizeFamily.MEMORY_OPTIMIZED),
+                new BigDataPoolResourceInfoInner().withLocation("xkrxdqmi")
+                    .withTags(mapOf("abhjybi", "hzrvqd"))
+                    .withProvisioningState("jrmvdjwzrlo")
+                    .withAutoScale(new AutoScaleProperties().withMinNodeCount(1769717852)
+                        .withEnabled(false)
+                        .withMaxNodeCount(137439916))
+                    .withCreationDate(OffsetDateTime.parse("2021-06-21T02:40:32Z"))
+                    .withAutoPause(new AutoPauseProperties().withDelayInMinutes(1491222167).withEnabled(true))
+                    .withIsComputeIsolationEnabled(true)
+                    .withSessionLevelPackagesEnabled(false)
+                    .withCacheSize(2038129581)
+                    .withDynamicExecutorAllocation(new DynamicExecutorAllocation().withEnabled(true))
+                    .withSparkEventsFolder("bfkgukdkex")
+                    .withNodeCount(1041117095)
+                    .withLibraryRequirements(
+                        new LibraryRequirements().withContent("axcfjpgddtocjjx").withFilename("pmouexhdz"))
+                    .withCustomLibraries(Arrays.asList(new LibraryInfo().withName("eojnxqbzvddn")
+                        .withPath("ndei")
+                        .withContainerName("twnpzaoqvuhrhcf")
+                        .withType("dglmjthjqkwp")))
+                    .withSparkConfigProperties(
+                        new LibraryRequirements().withContent("dtopbob").withFilename("ghmewuam"))
+                    .withSparkVersion("hrzayvvtpgvdf")
+                    .withDefaultSparkLogFolder("otkftutqxlngx")
+                    .withNodeSize(NodeSize.NONE)
+                    .withNodeSizeFamily(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA)));
         model = BinaryData.fromObject(model).toObject(BigDataPoolResourceInfoListResult.class);
-        Assertions.assertEquals("ayzejnhlbkpbz", model.nextLink());
-        Assertions.assertEquals("jwogqqnobpudc", model.value().get(0).location());
-        Assertions.assertEquals("tqwpwya", model.value().get(0).tags().get("bzasqbucljgkyexa"));
-        Assertions.assertEquals("jh", model.value().get(0).provisioningState());
-        Assertions.assertEquals(false, model.value().get(0).isComputeIsolationEnabled());
-        Assertions.assertEquals(false, model.value().get(0).isAutotuneEnabled());
+        Assertions.assertEquals("sntnbybkzgcw", model.nextLink());
+        Assertions.assertEquals("ktapspwgcuertu", model.value().get(0).location());
+        Assertions.assertEquals("o", model.value().get(0).tags().get("vqwhbmdgbbjfd"));
+        Assertions.assertEquals("xwrljdouskcqvkoc", model.value().get(0).provisioningState());
+        Assertions.assertEquals(1012894603, model.value().get(0).autoScale().minNodeCount());
+        Assertions.assertEquals(true, model.value().get(0).autoScale().enabled());
+        Assertions.assertEquals(371451274, model.value().get(0).autoScale().maxNodeCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-07T16:39:29Z"), model.value().get(0).creationDate());
+        Assertions.assertEquals(1299495603, model.value().get(0).autoPause().delayInMinutes());
+        Assertions.assertEquals(false, model.value().get(0).autoPause().enabled());
+        Assertions.assertEquals(true, model.value().get(0).isComputeIsolationEnabled());
         Assertions.assertEquals(true, model.value().get(0).sessionLevelPackagesEnabled());
-        Assertions.assertEquals("olewjwi", model.value().get(0).sparkEventsFolder());
-        Assertions.assertEquals(1773241461, model.value().get(0).nodeCount());
-        Assertions.assertEquals("sfapaqtferrq", model.value().get(0).sparkVersion());
-        Assertions.assertEquals("x", model.value().get(0).defaultSparkLogFolder());
-        Assertions.assertEquals(NodeSize.XXXLARGE, model.value().get(0).nodeSize());
-        Assertions.assertEquals(NodeSizeFamily.NONE, model.value().get(0).nodeSizeFamily());
+        Assertions.assertEquals(1218196264, model.value().get(0).cacheSize());
+        Assertions.assertEquals(true, model.value().get(0).dynamicExecutorAllocation().enabled());
+        Assertions.assertEquals("nqpjwnzlljfmpp", model.value().get(0).sparkEventsFolder());
+        Assertions.assertEquals(2010421384, model.value().get(0).nodeCount());
+        Assertions.assertEquals("sabkyqduujitcjcz", model.value().get(0).libraryRequirements().content());
+        Assertions.assertEquals("evndh", model.value().get(0).libraryRequirements().filename());
+        Assertions.assertEquals("d", model.value().get(0).customLibraries().get(0).name());
+        Assertions.assertEquals("p", model.value().get(0).customLibraries().get(0).path());
+        Assertions.assertEquals("bdkvwrwjf", model.value().get(0).customLibraries().get(0).containerName());
+        Assertions.assertEquals("hutje", model.value().get(0).customLibraries().get(0).type());
+        Assertions.assertEquals("qytbciq", model.value().get(0).sparkConfigProperties().content());
+        Assertions.assertEquals("uflmm", model.value().get(0).sparkConfigProperties().filename());
+        Assertions.assertEquals("zsm", model.value().get(0).sparkVersion());
+        Assertions.assertEquals("mglougpbkw", model.value().get(0).defaultSparkLogFolder());
+        Assertions.assertEquals(NodeSize.MEDIUM, model.value().get(0).nodeSize());
+        Assertions.assertEquals(NodeSizeFamily.MEMORY_OPTIMIZED, model.value().get(0).nodeSizeFamily());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

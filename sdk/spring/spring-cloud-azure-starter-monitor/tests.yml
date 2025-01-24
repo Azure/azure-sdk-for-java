@@ -1,0 +1,29 @@
+trigger: none
+pr: none
+
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+
+stages:
+  - stage: "spring_monitor_tests"
+    jobs:
+      - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
+        parameters:
+          SparseCheckout: true
+          JobTemplatePath: /sdk/spring/pipeline/monitor-tests-job.yml
+          AdditionalParameters:
+            ServiceDirectory: spring
+          MatrixConfigs:
+            - Name: monitor_compatibility_tests
+              Path: sdk/spring/pipeline/monitor-supported-version-matrix.json
+              Selection: sparse
+              NonSparseParameters:
+                - TEST_SPRING_BOOT_VERSION
+              GenerateVMJobs: true
+          PreGenerationSteps:
+            - script: |
+                python -m pip install termcolor
+              displayName: 'python module install'
+            - script: |
+                python ./sdk/spring/scripts/monitor_update_monitor_matrix_json.py
+              displayName: 'update test version'

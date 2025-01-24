@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.AvailableOperationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of available operations. */
+/**
+ * List of available operations.
+ */
 @Fluent
-public final class AvailableOperationsListResponse {
+public final class AvailableOperationsListResponse implements JsonSerializable<AvailableOperationsListResponse> {
     /*
      * Link for next list of available operations
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Returns a list of available operations
      */
-    @JsonProperty(value = "value")
     private List<AvailableOperationInner> value;
 
-    /** Creates an instance of AvailableOperationsListResponse class. */
+    /**
+     * Creates an instance of AvailableOperationsListResponse class.
+     */
     public AvailableOperationsListResponse() {
     }
 
     /**
      * Get the nextLink property: Link for next list of available operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class AvailableOperationsListResponse {
 
     /**
      * Set the nextLink property: Link for next list of available operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AvailableOperationsListResponse object itself.
      */
@@ -50,7 +56,7 @@ public final class AvailableOperationsListResponse {
 
     /**
      * Get the value property: Returns a list of available operations.
-     *
+     * 
      * @return the value value.
      */
     public List<AvailableOperationInner> value() {
@@ -59,7 +65,7 @@ public final class AvailableOperationsListResponse {
 
     /**
      * Set the value property: Returns a list of available operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the AvailableOperationsListResponse object itself.
      */
@@ -70,12 +76,54 @@ public final class AvailableOperationsListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableOperationsListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableOperationsListResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableOperationsListResponse.
+     */
+    public static AvailableOperationsListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableOperationsListResponse deserializedAvailableOperationsListResponse
+                = new AvailableOperationsListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedAvailableOperationsListResponse.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<AvailableOperationInner> value
+                        = reader.readArray(reader1 -> AvailableOperationInner.fromJson(reader1));
+                    deserializedAvailableOperationsListResponse.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableOperationsListResponse;
+        });
     }
 }

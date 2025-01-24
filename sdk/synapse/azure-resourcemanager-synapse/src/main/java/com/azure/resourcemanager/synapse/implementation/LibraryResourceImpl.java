@@ -13,8 +13,8 @@ public final class LibraryResourceImpl implements LibraryResource {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    LibraryResourceImpl(
-        LibraryResourceInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    LibraryResourceImpl(LibraryResourceInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

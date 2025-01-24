@@ -43,8 +43,8 @@ public final class HealthcareDicomImageCreatedEventData
     private String serviceHostName;
 
     /*
-     * Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation
-     * and deletion within the service.
+     * Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation and
+     * deletion within the service.
      */
     private Long sequenceNumber;
 
@@ -176,6 +176,9 @@ public final class HealthcareDicomImageCreatedEventData
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

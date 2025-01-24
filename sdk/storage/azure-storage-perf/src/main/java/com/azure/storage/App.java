@@ -6,6 +6,7 @@ package com.azure.storage;
 import com.azure.perf.test.core.PerfStressProgram;
 import com.azure.storage.blob.perf.DownloadBlobTest;
 import com.azure.storage.blob.perf.DownloadBlobToFileTest;
+import com.azure.storage.blob.perf.GetPropertiesTest;
 import com.azure.storage.blob.perf.ListBlobsTest;
 import com.azure.storage.blob.perf.DownloadBlobNonSharedClientTest;
 import com.azure.storage.blob.perf.UploadBlobNoLengthTest;
@@ -34,7 +35,7 @@ import com.azure.storage.file.share.perf.UploadFromFileShareTest;
  */
 public class App {
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{
+        PerfStressProgram.run(new Class<?>[] {
             DownloadBlobTest.class,
             DownloadBlobToFileTest.class,
             ListBlobsTest.class,
@@ -51,7 +52,7 @@ public class App {
             ReadFileDatalakeTest.class,
             UploadFileDatalakeTest.class,
             UploadFromFileDatalakeTest.class,
-            DownloadBlobNonSharedClientTest.class
-        }, args);
+            DownloadBlobNonSharedClientTest.class,
+            GetPropertiesTest.class }, args);
     }
 }

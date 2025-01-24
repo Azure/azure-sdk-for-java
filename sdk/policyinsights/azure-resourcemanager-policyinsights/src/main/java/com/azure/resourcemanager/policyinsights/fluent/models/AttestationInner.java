@@ -8,34 +8,54 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.models.AttestationEvidence;
 import com.azure.resourcemanager.policyinsights.models.ComplianceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An attestation resource. */
+/**
+ * An attestation resource.
+ */
 @Fluent
 public final class AttestationInner extends ProxyResource {
     /*
      * Properties for the attestation.
      */
-    @JsonProperty(value = "properties", required = true)
     private AttestationProperties innerProperties = new AttestationProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AttestationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AttestationInner class.
+     */
     public AttestationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties for the attestation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AttestationProperties innerProperties() {
@@ -44,7 +64,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,9 +72,39 @@ public final class AttestationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the policyAssignmentId property: The resource ID of the policy assignment that the attestation is setting the
      * state for.
-     *
+     * 
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
@@ -64,7 +114,7 @@ public final class AttestationInner extends ProxyResource {
     /**
      * Set the policyAssignmentId property: The resource ID of the policy assignment that the attestation is setting the
      * state for.
-     *
+     * 
      * @param policyAssignmentId the policyAssignmentId value to set.
      * @return the AttestationInner object itself.
      */
@@ -81,7 +131,7 @@ public final class AttestationInner extends ProxyResource {
      * that the attestation is setting the state for. If the policy assignment assigns a policy set definition the
      * attestation can choose a definition within the set definition with this property or omit this and set the state
      * for the entire set definition.
-     *
+     * 
      * @return the policyDefinitionReferenceId value.
      */
     public String policyDefinitionReferenceId() {
@@ -93,7 +143,7 @@ public final class AttestationInner extends ProxyResource {
      * that the attestation is setting the state for. If the policy assignment assigns a policy set definition the
      * attestation can choose a definition within the set definition with this property or omit this and set the state
      * for the entire set definition.
-     *
+     * 
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set.
      * @return the AttestationInner object itself.
      */
@@ -107,7 +157,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the complianceState property: The compliance state that should be set on the resource.
-     *
+     * 
      * @return the complianceState value.
      */
     public ComplianceState complianceState() {
@@ -116,7 +166,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Set the complianceState property: The compliance state that should be set on the resource.
-     *
+     * 
      * @param complianceState the complianceState value to set.
      * @return the AttestationInner object itself.
      */
@@ -130,7 +180,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the expiresOn property: The time the compliance state should expire.
-     *
+     * 
      * @return the expiresOn value.
      */
     public OffsetDateTime expiresOn() {
@@ -139,7 +189,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Set the expiresOn property: The time the compliance state should expire.
-     *
+     * 
      * @param expiresOn the expiresOn value to set.
      * @return the AttestationInner object itself.
      */
@@ -154,7 +204,7 @@ public final class AttestationInner extends ProxyResource {
     /**
      * Get the owner property: The person responsible for setting the state of the resource. This value is typically an
      * Azure Active Directory object ID.
-     *
+     * 
      * @return the owner value.
      */
     public String owner() {
@@ -164,7 +214,7 @@ public final class AttestationInner extends ProxyResource {
     /**
      * Set the owner property: The person responsible for setting the state of the resource. This value is typically an
      * Azure Active Directory object ID.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the AttestationInner object itself.
      */
@@ -178,7 +228,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the comments property: Comments describing why this attestation was created.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -187,7 +237,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Set the comments property: Comments describing why this attestation was created.
-     *
+     * 
      * @param comments the comments value to set.
      * @return the AttestationInner object itself.
      */
@@ -201,7 +251,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the evidence property: The evidence supporting the compliance state set in this attestation.
-     *
+     * 
      * @return the evidence value.
      */
     public List<AttestationEvidence> evidence() {
@@ -210,7 +260,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Set the evidence property: The evidence supporting the compliance state set in this attestation.
-     *
+     * 
      * @param evidence the evidence value to set.
      * @return the AttestationInner object itself.
      */
@@ -224,7 +274,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The status of the attestation.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -233,7 +283,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the lastComplianceStateChangeAt property: The time the compliance state was last changed in this attestation.
-     *
+     * 
      * @return the lastComplianceStateChangeAt value.
      */
     public OffsetDateTime lastComplianceStateChangeAt() {
@@ -242,7 +292,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the assessmentDate property: The time the evidence was assessed.
-     *
+     * 
      * @return the assessmentDate value.
      */
     public OffsetDateTime assessmentDate() {
@@ -251,7 +301,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Set the assessmentDate property: The time the evidence was assessed.
-     *
+     * 
      * @param assessmentDate the assessmentDate value to set.
      * @return the AttestationInner object itself.
      */
@@ -265,7 +315,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the metadata property: Additional metadata for this attestation.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -274,7 +324,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Set the metadata property: Additional metadata for this attestation.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AttestationInner object itself.
      */
@@ -288,19 +338,63 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AttestationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model AttestationInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AttestationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttestationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttestationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AttestationInner.
+     */
+    public static AttestationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttestationInner deserializedAttestationInner = new AttestationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAttestationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAttestationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAttestationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAttestationInner.innerProperties = AttestationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAttestationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttestationInner;
+        });
+    }
 }

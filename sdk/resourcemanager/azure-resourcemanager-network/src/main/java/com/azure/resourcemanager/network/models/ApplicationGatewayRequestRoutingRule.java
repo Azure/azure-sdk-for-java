@@ -13,43 +13,73 @@ import java.util.Collection;
 
 /** A client-side representation of an application gateway request routing rule. */
 @Fluent()
-public interface ApplicationGatewayRequestRoutingRule
-    extends HasInnerModel<ApplicationGatewayRequestRoutingRuleInner>,
-        ChildResource<ApplicationGateway>,
-        HasPublicIpAddress,
-        HasSslCertificate<ApplicationGatewaySslCertificate>,
-        HasFrontendPort,
-        HasBackendPort,
-        HasHostname,
-        HasCookieBasedAffinity,
-        HasServerNameIndication {
+public interface ApplicationGatewayRequestRoutingRule extends HasInnerModel<ApplicationGatewayRequestRoutingRuleInner>,
+    ChildResource<ApplicationGateway>, HasPublicIpAddress, HasSslCertificate<ApplicationGatewaySslCertificate>,
+    HasFrontendPort, HasBackendPort, HasHostname, HasCookieBasedAffinity, HasServerNameIndication {
 
-    /** @return the redirect configuration associated with this request routing rule, if any */
+    /**
+     * Gets the redirect configuration associated with this request routing rule.
+     *
+     * @return the redirect configuration associated with this request routing rule, if any
+     */
     ApplicationGatewayRedirectConfiguration redirectConfiguration();
 
-    /** @return the frontend protocol */
+    /**
+     * Gets the frontend protocol.
+     *
+     * @return the frontend protocol
+     */
     ApplicationGatewayProtocol frontendProtocol();
 
-    /** @return rule type */
+    /**
+     * Gets rule type.
+     *
+     * @return rule type
+     */
     ApplicationGatewayRequestRoutingRuleType ruleType();
 
-    /** @return the associated backend address pool */
+    /**
+     * Gets the associated backend address pool.
+     *
+     * @return the associated backend address pool
+     */
     ApplicationGatewayBackend backend();
 
-    /** @return the associated backend HTTP settings configuration */
+    /**
+     * Gets the associated backend HTTP settings configuration.
+     *
+     * @return the associated backend HTTP settings configuration
+     */
     ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration();
 
-    /** @return the associated frontend HTTP listener */
+    /**
+     * Gets the associated frontend HTTP listener.
+     *
+     * @return the associated frontend HTTP listener
+     */
     ApplicationGatewayListener listener();
 
-    /** @return the addresses assigned to the associated backend */
+    /**
+     * Gets the addresses assigned to the associated backend.
+     *
+     * @return the addresses assigned to the associated backend
+     */
     Collection<ApplicationGatewayBackendAddress> backendAddresses();
 
-    /** @return the associated URL path map */
+    /**
+     * Gets the associated URL path map.
+     *
+     * @return the associated URL path map
+     */
     ApplicationGatewayUrlPathMap urlPathMap();
 
-    /** @return the priority of the rule
-                only available for {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} */
+    /**
+     * Gets the priority of the rule
+     *        only available for {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2}
+     *
+     * @return the priority of the rule
+                only available for {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2}
+     */
     Integer priority();
 
     /** Grouping of application gateway request routing rule definition stages. */
@@ -70,12 +100,8 @@ public interface ApplicationGatewayRequestRoutingRule
          *
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                WithHostname<ParentT>,
-                WithCookieBasedAffinity<ParentT>,
-                WithUrlPathMap<ParentT>,
-                WithPriority<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithHostname<ParentT>,
+            WithCookieBasedAffinity<ParentT>, WithUrlPathMap<ParentT>, WithPriority<ParentT> {
         }
 
         /**
@@ -176,9 +202,8 @@ public interface ApplicationGatewayRequestRoutingRule
          *
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithSslCertificate<ParentT>
-            extends HasSslCertificate.DefinitionStages.WithSslCertificate<
-                WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
+        interface WithSslCertificate<ParentT> extends
+            HasSslCertificate.DefinitionStages.WithSslCertificate<WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
         }
 
         /**
@@ -296,10 +321,8 @@ public interface ApplicationGatewayRequestRoutingRule
          *
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithBackendHttpConfigurationOrSni<ParentT>
-            extends WithBackendHttpConfiguration<ParentT>,
-                HasServerNameIndication.DefinitionStages.WithServerNameIndication<
-                    WithBackendHttpConfiguration<ParentT>> {
+        interface WithBackendHttpConfigurationOrSni<ParentT> extends WithBackendHttpConfiguration<ParentT>,
+            HasServerNameIndication.DefinitionStages.WithServerNameIndication<WithBackendHttpConfiguration<ParentT>> {
         }
 
         /**
@@ -421,24 +444,17 @@ public interface ApplicationGatewayRequestRoutingRule
      *
      * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithFrontend<ParentT>,
-            DefinitionStages.WithListener<ParentT>,
-            DefinitionStages.WithFrontendPort<ParentT>,
-            DefinitionStages.WithListenerOrFrontend<ParentT>,
-            DefinitionStages.WithBackend<ParentT>,
-            DefinitionStages.WithBackendAddress<ParentT>,
-            DefinitionStages.WithBackendOrAddress<ParentT>,
-            DefinitionStages.WithBackendAddressOrAttach<ParentT>,
-            DefinitionStages.WithBackendHttpConfigOrRedirect<ParentT>,
-            DefinitionStages.WithBackendHttpConfiguration<ParentT>,
-            DefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>,
-            DefinitionStages.WithSslCertificate<ParentT>,
-            DefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>,
-            DefinitionStages.WithSslPassword<DefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>>,
-            DefinitionStages.WithUrlPathMap<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithFrontend<ParentT>, DefinitionStages.WithListener<ParentT>,
+        DefinitionStages.WithFrontendPort<ParentT>, DefinitionStages.WithListenerOrFrontend<ParentT>,
+        DefinitionStages.WithBackend<ParentT>, DefinitionStages.WithBackendAddress<ParentT>,
+        DefinitionStages.WithBackendOrAddress<ParentT>, DefinitionStages.WithBackendAddressOrAttach<ParentT>,
+        DefinitionStages.WithBackendHttpConfigOrRedirect<ParentT>,
+        DefinitionStages.WithBackendHttpConfiguration<ParentT>,
+        DefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>, DefinitionStages.WithSslCertificate<ParentT>,
+        DefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>,
+        DefinitionStages.WithSslPassword<DefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>>,
+        DefinitionStages.WithUrlPathMap<ParentT> {
     }
 
     /** Grouping of application gateway request routing rule update stages. */
@@ -543,15 +559,9 @@ public interface ApplicationGatewayRequestRoutingRule
     }
 
     /** The entirety of an application gateway request routing rule update as part of an application gateway update. */
-    interface Update
-        extends Settable<ApplicationGateway.Update>,
-            UpdateStages.WithListener,
-            UpdateStages.WithBackend,
-            UpdateStages.WithBackendHttpConfiguration,
-            UpdateStages.WithSslCertificate,
-            UpdateStages.WithSslPassword,
-            UpdateStages.WithRedirectConfig,
-            UpdateStages.WithPriority {
+    interface Update extends Settable<ApplicationGateway.Update>, UpdateStages.WithListener, UpdateStages.WithBackend,
+        UpdateStages.WithBackendHttpConfiguration, UpdateStages.WithSslCertificate, UpdateStages.WithSslPassword,
+        UpdateStages.WithRedirectConfig, UpdateStages.WithPriority {
     }
 
     /**
@@ -575,12 +585,8 @@ public interface ApplicationGatewayRequestRoutingRule
          *
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-                WithHostname<ParentT>,
-                WithCookieBasedAffinity<ParentT>,
-                WithRedirectConfig<ParentT>,
-                WithPriority<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>, WithHostname<ParentT>,
+            WithCookieBasedAffinity<ParentT>, WithRedirectConfig<ParentT>, WithPriority<ParentT> {
         }
 
         /**
@@ -727,9 +733,8 @@ public interface ApplicationGatewayRequestRoutingRule
          *
          * @param <ParentT> the next stage of the definition
          */
-        interface WithSslCertificate<ParentT>
-            extends HasSslCertificate.UpdateDefinitionStages.WithSslCertificate<
-                WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
+        interface WithSslCertificate<ParentT> extends
+            HasSslCertificate.UpdateDefinitionStages.WithSslCertificate<WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
         }
 
         /**
@@ -837,10 +842,8 @@ public interface ApplicationGatewayRequestRoutingRule
          *
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithBackendHttpConfigurationOrSni<ParentT>
-            extends WithBackendHttpConfiguration<ParentT>,
-                HasServerNameIndication.UpdateDefinitionStages.WithServerNameIndication<
-                    WithBackendHttpConfiguration<ParentT>> {
+        interface WithBackendHttpConfigurationOrSni<ParentT> extends WithBackendHttpConfiguration<ParentT>,
+            HasServerNameIndication.UpdateDefinitionStages.WithServerNameIndication<WithBackendHttpConfiguration<ParentT>> {
         }
 
         /**
@@ -910,23 +913,17 @@ public interface ApplicationGatewayRequestRoutingRule
      *
      * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithFrontend<ParentT>,
-            UpdateDefinitionStages.WithListener<ParentT>,
-            UpdateDefinitionStages.WithFrontendPort<ParentT>,
-            UpdateDefinitionStages.WithListenerOrFrontend<ParentT>,
-            UpdateDefinitionStages.WithBackend<ParentT>,
-            UpdateDefinitionStages.WithBackendAddress<ParentT>,
-            UpdateDefinitionStages.WithBackendOrAddress<ParentT>,
-            UpdateDefinitionStages.WithBackendAddressOrAttach<ParentT>,
-            UpdateDefinitionStages.WithBackendHttpConfiguration<ParentT>,
-            UpdateDefinitionStages.WithBackendHttpConfigOrRedirect<ParentT>,
-            UpdateDefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>,
-            UpdateDefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>,
-            UpdateDefinitionStages.WithSslCertificate<ParentT>,
-            UpdateDefinitionStages.WithSslPassword<
-                UpdateDefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>, UpdateDefinitionStages.WithFrontend<ParentT>,
+        UpdateDefinitionStages.WithListener<ParentT>, UpdateDefinitionStages.WithFrontendPort<ParentT>,
+        UpdateDefinitionStages.WithListenerOrFrontend<ParentT>, UpdateDefinitionStages.WithBackend<ParentT>,
+        UpdateDefinitionStages.WithBackendAddress<ParentT>, UpdateDefinitionStages.WithBackendOrAddress<ParentT>,
+        UpdateDefinitionStages.WithBackendAddressOrAttach<ParentT>,
+        UpdateDefinitionStages.WithBackendHttpConfiguration<ParentT>,
+        UpdateDefinitionStages.WithBackendHttpConfigOrRedirect<ParentT>,
+        UpdateDefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>,
+        UpdateDefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>,
+        UpdateDefinitionStages.WithSslCertificate<ParentT>,
+        UpdateDefinitionStages.WithSslPassword<UpdateDefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
     }
 }

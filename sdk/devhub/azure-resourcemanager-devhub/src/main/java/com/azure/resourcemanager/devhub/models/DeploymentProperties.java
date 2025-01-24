@@ -5,52 +5,53 @@
 package com.azure.resourcemanager.devhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The DeploymentProperties model. */
+/**
+ * The DeploymentProperties model.
+ */
 @Fluent
-public final class DeploymentProperties {
+public final class DeploymentProperties implements JsonSerializable<DeploymentProperties> {
     /*
      * Determines the type of manifests within the repository.
      */
-    @JsonProperty(value = "manifestType")
     private ManifestType manifestType;
 
     /*
      * The kubeManifestLocations property.
      */
-    @JsonProperty(value = "kubeManifestLocations")
     private List<String> kubeManifestLocations;
 
     /*
      * Helm chart directory path in repository.
      */
-    @JsonProperty(value = "helmChartPath")
     private String helmChartPath;
 
     /*
      * Helm Values.yaml file location in repository.
      */
-    @JsonProperty(value = "helmValues")
     private String helmValues;
 
     /*
      * Manifest override values.
      */
-    @JsonProperty(value = "overrides")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> overrides;
 
-    /** Creates an instance of DeploymentProperties class. */
+    /**
+     * Creates an instance of DeploymentProperties class.
+     */
     public DeploymentProperties() {
     }
 
     /**
      * Get the manifestType property: Determines the type of manifests within the repository.
-     *
+     * 
      * @return the manifestType value.
      */
     public ManifestType manifestType() {
@@ -59,7 +60,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the manifestType property: Determines the type of manifests within the repository.
-     *
+     * 
      * @param manifestType the manifestType value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -70,7 +71,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the kubeManifestLocations property: The kubeManifestLocations property.
-     *
+     * 
      * @return the kubeManifestLocations value.
      */
     public List<String> kubeManifestLocations() {
@@ -79,7 +80,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the kubeManifestLocations property: The kubeManifestLocations property.
-     *
+     * 
      * @param kubeManifestLocations the kubeManifestLocations value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -90,7 +91,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the helmChartPath property: Helm chart directory path in repository.
-     *
+     * 
      * @return the helmChartPath value.
      */
     public String helmChartPath() {
@@ -99,7 +100,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the helmChartPath property: Helm chart directory path in repository.
-     *
+     * 
      * @param helmChartPath the helmChartPath value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -110,7 +111,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the helmValues property: Helm Values.yaml file location in repository.
-     *
+     * 
      * @return the helmValues value.
      */
     public String helmValues() {
@@ -119,7 +120,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the helmValues property: Helm Values.yaml file location in repository.
-     *
+     * 
      * @param helmValues the helmValues value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -130,7 +131,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the overrides property: Manifest override values.
-     *
+     * 
      * @return the overrides value.
      */
     public Map<String, String> overrides() {
@@ -139,7 +140,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the overrides property: Manifest override values.
-     *
+     * 
      * @param overrides the overrides value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -150,9 +151,60 @@ public final class DeploymentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("manifestType", this.manifestType == null ? null : this.manifestType.toString());
+        jsonWriter.writeArrayField("kubeManifestLocations", this.kubeManifestLocations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("helmChartPath", this.helmChartPath);
+        jsonWriter.writeStringField("helmValues", this.helmValues);
+        jsonWriter.writeMapField("overrides", this.overrides, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentProperties.
+     */
+    public static DeploymentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentProperties deserializedDeploymentProperties = new DeploymentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("manifestType".equals(fieldName)) {
+                    deserializedDeploymentProperties.manifestType = ManifestType.fromString(reader.getString());
+                } else if ("kubeManifestLocations".equals(fieldName)) {
+                    List<String> kubeManifestLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDeploymentProperties.kubeManifestLocations = kubeManifestLocations;
+                } else if ("helmChartPath".equals(fieldName)) {
+                    deserializedDeploymentProperties.helmChartPath = reader.getString();
+                } else if ("helmValues".equals(fieldName)) {
+                    deserializedDeploymentProperties.helmValues = reader.getString();
+                } else if ("overrides".equals(fieldName)) {
+                    Map<String, String> overrides = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeploymentProperties.overrides = overrides;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentProperties;
+        });
     }
 }

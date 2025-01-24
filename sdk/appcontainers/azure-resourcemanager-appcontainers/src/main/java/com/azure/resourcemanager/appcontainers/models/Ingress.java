@@ -85,6 +85,11 @@ public final class Ingress implements JsonSerializable<Ingress> {
      */
     private List<IngressPortMapping> additionalPortMappings;
 
+    /*
+     * Whether an http app listens on http or https
+     */
+    private IngressTargetPortHttpScheme targetPortHttpScheme;
+
     /**
      * Creates an instance of Ingress class.
      */
@@ -347,6 +352,26 @@ public final class Ingress implements JsonSerializable<Ingress> {
     }
 
     /**
+     * Get the targetPortHttpScheme property: Whether an http app listens on http or https.
+     * 
+     * @return the targetPortHttpScheme value.
+     */
+    public IngressTargetPortHttpScheme targetPortHttpScheme() {
+        return this.targetPortHttpScheme;
+    }
+
+    /**
+     * Set the targetPortHttpScheme property: Whether an http app listens on http or https.
+     * 
+     * @param targetPortHttpScheme the targetPortHttpScheme value to set.
+     * @return the Ingress object itself.
+     */
+    public Ingress withTargetPortHttpScheme(IngressTargetPortHttpScheme targetPortHttpScheme) {
+        this.targetPortHttpScheme = targetPortHttpScheme;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -393,6 +418,8 @@ public final class Ingress implements JsonSerializable<Ingress> {
         jsonWriter.writeJsonField("corsPolicy", this.corsPolicy);
         jsonWriter.writeArrayField("additionalPortMappings", this.additionalPortMappings,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("targetPortHttpScheme",
+            this.targetPortHttpScheme == null ? null : this.targetPortHttpScheme.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -444,6 +471,9 @@ public final class Ingress implements JsonSerializable<Ingress> {
                     List<IngressPortMapping> additionalPortMappings
                         = reader.readArray(reader1 -> IngressPortMapping.fromJson(reader1));
                     deserializedIngress.additionalPortMappings = additionalPortMappings;
+                } else if ("targetPortHttpScheme".equals(fieldName)) {
+                    deserializedIngress.targetPortHttpScheme
+                        = IngressTargetPortHttpScheme.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

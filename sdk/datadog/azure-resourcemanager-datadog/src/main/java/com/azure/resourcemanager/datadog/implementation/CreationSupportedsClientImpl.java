@@ -30,22 +30,28 @@ import com.azure.resourcemanager.datadog.fluent.models.CreateResourceSupportedRe
 import com.azure.resourcemanager.datadog.models.CreateResourceSupportedResponseList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CreationSupportedsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CreationSupportedsClient.
+ */
 public final class CreationSupportedsClientImpl implements CreationSupportedsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CreationSupportedsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftDatadogClientImpl client;
 
     /**
      * Initializes an instance of CreationSupportedsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CreationSupportedsClientImpl(MicrosoftDatadogClientImpl client) {
-        this.service =
-            RestProxy.create(CreationSupportedsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CreationSupportedsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,34 +62,28 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftDatadogClie")
     public interface CreationSupportedsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/subscriptionStatuses")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreateResourceSupportedResponseList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("datadogOrganizationId") String datadogOrganizationId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CreateResourceSupportedResponseList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("datadogOrganizationId") String datadogOrganizationId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/subscriptionStatuses/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreateResourceSupportedResponseInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("datadogOrganizationId") String datadogOrganizationId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CreateResourceSupportedResponseInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("datadogOrganizationId") String datadogOrganizationId, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -91,19 +91,15 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CreateResourceSupportedResponseInner>> listSinglePageAsync(
-        String datadogOrganizationId) {
+    private Mono<PagedResponse<CreateResourceSupportedResponseInner>>
+        listSinglePageAsync(String datadogOrganizationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (datadogOrganizationId == null) {
             return Mono
@@ -111,26 +107,16 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            datadogOrganizationId,
-                            accept,
-                            context))
-            .<PagedResponse<CreateResourceSupportedResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), datadogOrganizationId, accept, context))
+            .<PagedResponse<CreateResourceSupportedResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,19 +125,15 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CreateResourceSupportedResponseInner>> listSinglePageAsync(
-        String datadogOrganizationId, Context context) {
+    private Mono<PagedResponse<CreateResourceSupportedResponseInner>> listSinglePageAsync(String datadogOrganizationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (datadogOrganizationId == null) {
             return Mono
@@ -160,22 +142,15 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                datadogOrganizationId,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+                datadogOrganizationId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -189,7 +164,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,7 +179,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -218,7 +193,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,27 +208,23 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datadog resource can be created or not along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return datadog resource can be created or not along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreateResourceSupportedResponseInner>> getWithResponseAsync(String datadogOrganizationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (datadogOrganizationId == null) {
             return Mono
@@ -261,44 +232,32 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            datadogOrganizationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), datadogOrganizationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datadog resource can be created or not along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return datadog resource can be created or not along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreateResourceSupportedResponseInner>> getWithResponseAsync(
-        String datadogOrganizationId, Context context) {
+    private Mono<Response<CreateResourceSupportedResponseInner>> getWithResponseAsync(String datadogOrganizationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (datadogOrganizationId == null) {
             return Mono
@@ -306,19 +265,13 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                datadogOrganizationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            datadogOrganizationId, accept, context);
     }
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -332,7 +285,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,14 +294,14 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      * @return datadog resource can be created or not along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateResourceSupportedResponseInner> getWithResponse(
-        String datadogOrganizationId, Context context) {
+    public Response<CreateResourceSupportedResponseInner> getWithResponse(String datadogOrganizationId,
+        Context context) {
         return getWithResponseAsync(datadogOrganizationId, context).block();
     }
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -18,7 +18,7 @@ public class SecurityProfile {
     /**
      * Specifies the SecurityType of the virtual machine. It has to be set to
      * any specified value to enable UefiSettings.
-     * Possible values include: 'trustedLaunch'.
+     * Possible values include: 'trustedLaunch', 'confidentialVM'.
      */
     @JsonProperty(value = "securityType")
     private SecurityTypes securityType;
@@ -27,7 +27,9 @@ public class SecurityProfile {
      * This property can be used by user in the request to enable or disable
      * the Host Encryption for the virtual machine or virtual machine scale
      * set. This will enable the encryption for all the disks including
-     * Resource/Temp disk at host itself.
+     * Resource/Temp disk at host itself. For more information on encryption at
+     * host requirements, please refer to
+     * https://learn.microsoft.com/azure/virtual-machines/disk-encryption#supported-vm-sizes.
      */
     @JsonProperty(value = "encryptionAtHost")
     private Boolean encryptionAtHost;
@@ -42,7 +44,7 @@ public class SecurityProfile {
     private UefiSettings uefiSettings;
 
     /**
-     * Get possible values include: 'trustedLaunch'.
+     * Get possible values include: 'trustedLaunch', 'confidentialVM'.
      *
      * @return the securityType value
      */
@@ -51,7 +53,7 @@ public class SecurityProfile {
     }
 
     /**
-     * Set possible values include: 'trustedLaunch'.
+     * Set possible values include: 'trustedLaunch', 'confidentialVM'.
      *
      * @param securityType the securityType value to set
      * @return the SecurityProfile object itself.
@@ -62,7 +64,7 @@ public class SecurityProfile {
     }
 
     /**
-     * Get this property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself.
+     * Get this property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For more information on encryption at host requirements, please refer to https://learn.microsoft.com/azure/virtual-machines/disk-encryption#supported-vm-sizes.
      *
      * @return the encryptionAtHost value
      */
@@ -71,7 +73,7 @@ public class SecurityProfile {
     }
 
     /**
-     * Set this property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself.
+     * Set this property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For more information on encryption at host requirements, please refer to https://learn.microsoft.com/azure/virtual-machines/disk-encryption#supported-vm-sizes.
      *
      * @param encryptionAtHost the encryptionAtHost value to set
      * @return the SecurityProfile object itself.

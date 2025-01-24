@@ -6,25 +6,52 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.MsixPackagePatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** MSIX Package properties that can be patched. */
+/**
+ * MSIX Package properties that can be patched.
+ */
 @Fluent
 public final class MsixPackagePatch extends ProxyResource {
     /*
      * Detailed properties for MSIX Package
      */
-    @JsonProperty(value = "properties")
     private MsixPackagePatchProperties innerProperties;
 
-    /** Creates an instance of MsixPackagePatch class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MsixPackagePatch class.
+     */
     public MsixPackagePatch() {
     }
 
     /**
      * Get the innerProperties property: Detailed properties for MSIX Package.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MsixPackagePatchProperties innerProperties() {
@@ -32,8 +59,47 @@ public final class MsixPackagePatch extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the isActive property: Set a version of the package to be active across hostpool.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -42,7 +108,7 @@ public final class MsixPackagePatch extends ProxyResource {
 
     /**
      * Set the isActive property: Set a version of the package to be active across hostpool.
-     *
+     * 
      * @param isActive the isActive value to set.
      * @return the MsixPackagePatch object itself.
      */
@@ -56,7 +122,7 @@ public final class MsixPackagePatch extends ProxyResource {
 
     /**
      * Get the isRegularRegistration property: Set Registration mode. Regular or Delayed.
-     *
+     * 
      * @return the isRegularRegistration value.
      */
     public Boolean isRegularRegistration() {
@@ -65,7 +131,7 @@ public final class MsixPackagePatch extends ProxyResource {
 
     /**
      * Set the isRegularRegistration property: Set Registration mode. Regular or Delayed.
-     *
+     * 
      * @param isRegularRegistration the isRegularRegistration value to set.
      * @return the MsixPackagePatch object itself.
      */
@@ -79,7 +145,7 @@ public final class MsixPackagePatch extends ProxyResource {
 
     /**
      * Get the displayName property: Display name for MSIX Package.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -88,7 +154,7 @@ public final class MsixPackagePatch extends ProxyResource {
 
     /**
      * Set the displayName property: Display name for MSIX Package.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MsixPackagePatch object itself.
      */
@@ -102,12 +168,57 @@ public final class MsixPackagePatch extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MsixPackagePatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MsixPackagePatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MsixPackagePatch.
+     */
+    public static MsixPackagePatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MsixPackagePatch deserializedMsixPackagePatch = new MsixPackagePatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMsixPackagePatch.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMsixPackagePatch.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMsixPackagePatch.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMsixPackagePatch.innerProperties = MsixPackagePatchProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMsixPackagePatch.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMsixPackagePatch;
+        });
     }
 }

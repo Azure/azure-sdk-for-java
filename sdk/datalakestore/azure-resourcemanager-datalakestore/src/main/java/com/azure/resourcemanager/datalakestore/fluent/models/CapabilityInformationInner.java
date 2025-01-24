@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakestore.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** Subscription-level properties and limits for Data Lake Store. */
+/**
+ * Subscription-level properties and limits for Data Lake Store.
+ */
 @Immutable
-public final class CapabilityInformationInner {
+public final class CapabilityInformationInner implements JsonSerializable<CapabilityInformationInner> {
     /*
      * The subscription credentials that uniquely identifies the subscription.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID subscriptionId;
 
     /*
      * The subscription state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionState state;
 
     /*
      * The maximum supported number of accounts under this subscription.
      */
-    @JsonProperty(value = "maxAccountCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxAccountCount;
 
     /*
      * The current number of accounts under this subscription.
      */
-    @JsonProperty(value = "accountCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer accountCount;
 
     /*
      * The Boolean value of true or false to indicate the maintenance state.
      */
-    @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean migrationState;
 
-    /** Creates an instance of CapabilityInformationInner class. */
+    /**
+     * Creates an instance of CapabilityInformationInner class.
+     */
     public CapabilityInformationInner() {
     }
 
     /**
      * Get the subscriptionId property: The subscription credentials that uniquely identifies the subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public UUID subscriptionId() {
@@ -57,7 +60,7 @@ public final class CapabilityInformationInner {
 
     /**
      * Get the state property: The subscription state.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -66,7 +69,7 @@ public final class CapabilityInformationInner {
 
     /**
      * Get the maxAccountCount property: The maximum supported number of accounts under this subscription.
-     *
+     * 
      * @return the maxAccountCount value.
      */
     public Integer maxAccountCount() {
@@ -75,7 +78,7 @@ public final class CapabilityInformationInner {
 
     /**
      * Get the accountCount property: The current number of accounts under this subscription.
-     *
+     * 
      * @return the accountCount value.
      */
     public Integer accountCount() {
@@ -84,7 +87,7 @@ public final class CapabilityInformationInner {
 
     /**
      * Get the migrationState property: The Boolean value of true or false to indicate the maintenance state.
-     *
+     * 
      * @return the migrationState value.
      */
     public Boolean migrationState() {
@@ -93,9 +96,53 @@ public final class CapabilityInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilityInformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilityInformationInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilityInformationInner.
+     */
+    public static CapabilityInformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilityInformationInner deserializedCapabilityInformationInner = new CapabilityInformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedCapabilityInformationInner.subscriptionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedCapabilityInformationInner.state = SubscriptionState.fromString(reader.getString());
+                } else if ("maxAccountCount".equals(fieldName)) {
+                    deserializedCapabilityInformationInner.maxAccountCount = reader.getNullable(JsonReader::getInt);
+                } else if ("accountCount".equals(fieldName)) {
+                    deserializedCapabilityInformationInner.accountCount = reader.getNullable(JsonReader::getInt);
+                } else if ("migrationState".equals(fieldName)) {
+                    deserializedCapabilityInformationInner.migrationState = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilityInformationInner;
+        });
     }
 }

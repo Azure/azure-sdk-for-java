@@ -124,24 +124,20 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
     }
 
     public Watcher create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, watcherName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchers()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, watcherName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Watcher create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, watcherName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchers()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, watcherName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -157,72 +153,61 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
     }
 
     public Watcher apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchers()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, watcherName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchers()
+            .updateWithResponse(resourceGroupName, automationAccountName, watcherName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Watcher apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchers()
-                .updateWithResponse(resourceGroupName, automationAccountName, watcherName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchers()
+            .updateWithResponse(resourceGroupName, automationAccountName, watcherName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     WatcherImpl(WatcherInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.watcherName = Utils.getValueFromIdByName(innerObject.id(), "watchers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.watcherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "watchers");
     }
 
     public Watcher refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchers()
-                .getWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchers()
+            .getWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Watcher refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWatchers()
-                .getWithResponse(resourceGroupName, automationAccountName, watcherName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWatchers()
+            .getWithResponse(resourceGroupName, automationAccountName, watcherName, context)
+            .getValue();
         return this;
+    }
+
+    public Response<Void> startWithResponse(Context context) {
+        return serviceManager.watchers()
+            .startWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
     public void start() {
         serviceManager.watchers().start(resourceGroupName, automationAccountName, watcherName);
     }
 
-    public Response<Void> startWithResponse(Context context) {
-        return serviceManager
-            .watchers()
-            .startWithResponse(resourceGroupName, automationAccountName, watcherName, context);
+    public Response<Void> stopWithResponse(Context context) {
+        return serviceManager.watchers()
+            .stopWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
     public void stop() {
         serviceManager.watchers().stop(resourceGroupName, automationAccountName, watcherName);
-    }
-
-    public Response<Void> stopWithResponse(Context context) {
-        return serviceManager
-            .watchers()
-            .stopWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
     public WatcherImpl withRegion(Region location) {

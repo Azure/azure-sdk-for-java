@@ -6,18 +6,20 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.resourcemanager.logic.fluent.models.CallbackUrlInner;
 
-/** An immutable client-side representation of CallbackUrl. */
+/**
+ * An immutable client-side representation of CallbackUrl.
+ */
 public interface CallbackUrl {
     /**
      * Gets the value property: The URL value.
-     *
+     * 
      * @return the value value.
      */
     String value();
 
     /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.CallbackUrlInner object.
-     *
+     * 
      * @return the inner object.
      */
     CallbackUrlInner innerModel();

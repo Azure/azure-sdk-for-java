@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The network endpoint. */
+/**
+ * The network endpoint.
+ */
 @Fluent
-public final class IntegrationServiceEnvironmentNetworkEndpoint {
+public final class IntegrationServiceEnvironmentNetworkEndpoint
+    implements JsonSerializable<IntegrationServiceEnvironmentNetworkEndpoint> {
     /*
      * The accessibility state.
      */
-    @JsonProperty(value = "accessibility")
     private IntegrationServiceEnvironmentNetworkEndPointAccessibilityState accessibility;
 
     /*
      * The domain name.
      */
-    @JsonProperty(value = "domainName")
     private String domainName;
 
     /*
      * The ports.
      */
-    @JsonProperty(value = "ports")
     private List<String> ports;
 
-    /** Creates an instance of IntegrationServiceEnvironmentNetworkEndpoint class. */
+    /**
+     * Creates an instance of IntegrationServiceEnvironmentNetworkEndpoint class.
+     */
     public IntegrationServiceEnvironmentNetworkEndpoint() {
     }
 
     /**
      * Get the accessibility property: The accessibility state.
-     *
+     * 
      * @return the accessibility value.
      */
     public IntegrationServiceEnvironmentNetworkEndPointAccessibilityState accessibility() {
@@ -44,19 +50,19 @@ public final class IntegrationServiceEnvironmentNetworkEndpoint {
 
     /**
      * Set the accessibility property: The accessibility state.
-     *
+     * 
      * @param accessibility the accessibility value to set.
      * @return the IntegrationServiceEnvironmentNetworkEndpoint object itself.
      */
-    public IntegrationServiceEnvironmentNetworkEndpoint withAccessibility(
-        IntegrationServiceEnvironmentNetworkEndPointAccessibilityState accessibility) {
+    public IntegrationServiceEnvironmentNetworkEndpoint
+        withAccessibility(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState accessibility) {
         this.accessibility = accessibility;
         return this;
     }
 
     /**
      * Get the domainName property: The domain name.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -65,7 +71,7 @@ public final class IntegrationServiceEnvironmentNetworkEndpoint {
 
     /**
      * Set the domainName property: The domain name.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the IntegrationServiceEnvironmentNetworkEndpoint object itself.
      */
@@ -76,7 +82,7 @@ public final class IntegrationServiceEnvironmentNetworkEndpoint {
 
     /**
      * Get the ports property: The ports.
-     *
+     * 
      * @return the ports value.
      */
     public List<String> ports() {
@@ -85,7 +91,7 @@ public final class IntegrationServiceEnvironmentNetworkEndpoint {
 
     /**
      * Set the ports property: The ports.
-     *
+     * 
      * @param ports the ports value to set.
      * @return the IntegrationServiceEnvironmentNetworkEndpoint object itself.
      */
@@ -96,9 +102,54 @@ public final class IntegrationServiceEnvironmentNetworkEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accessibility", this.accessibility == null ? null : this.accessibility.toString());
+        jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationServiceEnvironmentNetworkEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationServiceEnvironmentNetworkEndpoint if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationServiceEnvironmentNetworkEndpoint.
+     */
+    public static IntegrationServiceEnvironmentNetworkEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationServiceEnvironmentNetworkEndpoint deserializedIntegrationServiceEnvironmentNetworkEndpoint
+                = new IntegrationServiceEnvironmentNetworkEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessibility".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentNetworkEndpoint.accessibility
+                        = IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.fromString(reader.getString());
+                } else if ("domainName".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentNetworkEndpoint.domainName = reader.getString();
+                } else if ("ports".equals(fieldName)) {
+                    List<String> ports = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIntegrationServiceEnvironmentNetworkEndpoint.ports = ports;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationServiceEnvironmentNetworkEndpoint;
+        });
     }
 }

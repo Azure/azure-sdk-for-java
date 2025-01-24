@@ -6,12 +6,14 @@ package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of CreateAndAssociateIpFilters. */
+/**
+ * Resource collection API of CreateAndAssociateIpFilters.
+ */
 public interface CreateAndAssociateIpFilters {
     /**
      * Create and Associate IP traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -21,8 +23,8 @@ public interface CreateAndAssociateIpFilters {
 
     /**
      * Create and Associate IP traffic filter for the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ips List of ips.
      * @param name Name of the traffic filter.

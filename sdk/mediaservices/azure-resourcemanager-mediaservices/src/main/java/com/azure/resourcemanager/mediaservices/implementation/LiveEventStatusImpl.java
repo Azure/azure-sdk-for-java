@@ -19,8 +19,8 @@ public final class LiveEventStatusImpl implements LiveEventStatus {
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    LiveEventStatusImpl(
-        LiveEventStatusInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
+    LiveEventStatusImpl(LiveEventStatusInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

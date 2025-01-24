@@ -7,11 +7,13 @@ package com.azure.resourcemanager.logic.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationServiceEnvironmentManagedApiOperations. */
+/**
+ * Resource collection API of IntegrationServiceEnvironmentManagedApiOperations.
+ */
 public interface IntegrationServiceEnvironmentManagedApiOperations {
     /**
      * Gets the managed Api operations.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -24,7 +26,7 @@ public interface IntegrationServiceEnvironmentManagedApiOperations {
 
     /**
      * Gets the managed Api operations.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -34,6 +36,6 @@ public interface IntegrationServiceEnvironmentManagedApiOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managed Api operations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApiOperation> list(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context);
+    PagedIterable<ApiOperation> list(String resourceGroup, String integrationServiceEnvironmentName, String apiName,
+        Context context);
 }

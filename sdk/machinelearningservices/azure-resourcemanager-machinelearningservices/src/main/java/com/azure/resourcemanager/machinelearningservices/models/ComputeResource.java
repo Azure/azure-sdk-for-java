@@ -99,17 +99,16 @@ public interface ComputeResource {
     ComputeResourceInner innerModel();
 
     /** The entirety of the ComputeResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ComputeResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ComputeResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ComputeResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -128,6 +127,7 @@ public interface ComputeResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ComputeResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -139,15 +139,13 @@ public interface ComputeResource {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the ComputeResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithProperties,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithSku {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
+            DefinitionStages.WithIdentity, DefinitionStages.WithSku {
             /**
              * Executes the create request.
              *
@@ -163,6 +161,7 @@ public interface ComputeResource {
              */
             ComputeResource create(Context context);
         }
+
         /** The stage of the ComputeResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -173,6 +172,7 @@ public interface ComputeResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ComputeResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -183,6 +183,7 @@ public interface ComputeResource {
              */
             WithCreate withProperties(Compute properties);
         }
+
         /** The stage of the ComputeResource definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -193,6 +194,7 @@ public interface ComputeResource {
              */
             WithCreate withIdentity(Identity identity);
         }
+
         /** The stage of the ComputeResource definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -204,6 +206,7 @@ public interface ComputeResource {
             WithCreate withSku(Sku sku);
         }
     }
+
     /**
      * Begins update for the ComputeResource resource.
      *
@@ -228,6 +231,7 @@ public interface ComputeResource {
          */
         ComputeResource apply(Context context);
     }
+
     /** The ComputeResource update stages. */
     interface UpdateStages {
         /** The stage of the ComputeResource update allowing to specify scaleSettings. */
@@ -241,6 +245,7 @@ public interface ComputeResource {
             Update withScaleSettings(ScaleSettings scaleSettings);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

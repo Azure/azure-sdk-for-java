@@ -231,7 +231,7 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     private MinimalTlsVersion minimalTlsVersion;
 
     /*
-     * Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
+     * Flag to indicate enabling/disabling of Burst Capacity feature on the account
      */
     private Boolean enableBurstCapacity;
 
@@ -240,6 +240,11 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
      * provides troubleshooting guidance.
      */
     private String customerManagedKeyStatus;
+
+    /*
+     * Flag to indicate enabling/disabling of PerRegionPerPartitionAutoscale feature on the account
+     */
+    private Boolean enablePerRegionPerPartitionAutoscale;
 
     /**
      * Creates an instance of DatabaseAccountGetProperties class.
@@ -910,8 +915,8 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     }
 
     /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -920,8 +925,8 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountGetProperties object itself.
@@ -950,6 +955,29 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
      */
     public DatabaseAccountGetProperties withCustomerManagedKeyStatus(String customerManagedKeyStatus) {
         this.customerManagedKeyStatus = customerManagedKeyStatus;
+        return this;
+    }
+
+    /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.enablePerRegionPerPartitionAutoscale;
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        this.enablePerRegionPerPartitionAutoscale = enablePerRegionPerPartitionAutoscale;
         return this;
     }
 
@@ -1050,6 +1078,7 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
             this.minimalTlsVersion == null ? null : this.minimalTlsVersion.toString());
         jsonWriter.writeBooleanField("enableBurstCapacity", this.enableBurstCapacity);
         jsonWriter.writeStringField("customerManagedKeyStatus", this.customerManagedKeyStatus);
+        jsonWriter.writeBooleanField("enablePerRegionPerPartitionAutoscale", this.enablePerRegionPerPartitionAutoscale);
         return jsonWriter.writeEndObject();
     }
 
@@ -1176,6 +1205,9 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("customerManagedKeyStatus".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.customerManagedKeyStatus = reader.getString();
+                } else if ("enablePerRegionPerPartitionAutoscale".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.enablePerRegionPerPartitionAutoscale
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

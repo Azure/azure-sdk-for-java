@@ -49,7 +49,7 @@ public class SampleCaptionImageFile {
             System.exit(1);
         }
 
-        // Create a synchronous Image Analysis client.
+        // Create a synchronous client using API key authentication
         ImageAnalysisClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
             .credential(new KeyCredential(key))

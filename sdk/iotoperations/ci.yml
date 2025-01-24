@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/iotoperations/ci.yml
+      - sdk/iotoperations/azure-resourcemanager-iotoperations/
+    exclude:
+      - sdk/iotoperations/pom.xml
+      - sdk/iotoperations/azure-resourcemanager-iotoperations/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/iotoperations/ci.yml
+      - sdk/iotoperations/azure-resourcemanager-iotoperations/
+    exclude:
+      - sdk/iotoperations/pom.xml
+      - sdk/iotoperations/azure-resourcemanager-iotoperations/pom.xml
+
+parameters:
+  - name: release_azureresourcemanageriotoperations
+    displayName: azure-resourcemanager-iotoperations
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: iotoperations
+    Artifacts:
+      - name: azure-resourcemanager-iotoperations
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageriotoperations
+        releaseInBatch: ${{ parameters.release_azureresourcemanageriotoperations }}

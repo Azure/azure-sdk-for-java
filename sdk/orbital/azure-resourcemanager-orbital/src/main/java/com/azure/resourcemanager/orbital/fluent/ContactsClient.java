@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.orbital.fluent.models.ContactInner;
 
-/** An instance of this class provides access to all the operations defined in ContactsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContactsClient.
+ */
 public interface ContactsClient {
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,13 +32,13 @@ public interface ContactsClient {
 
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,12 +46,12 @@ public interface ContactsClient {
      * @return response for the ListContacts API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ContactInner> list(
-        String resourceGroupName, String spacecraftName, String skiptoken, Context context);
+    PagedIterable<ContactInner> list(String resourceGroupName, String spacecraftName, String skiptoken,
+        Context context);
 
     /**
      * Gets the specified contact in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -60,12 +62,12 @@ public interface ContactsClient {
      * @return the specified contact in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContactInner> getWithResponse(
-        String resourceGroupName, String spacecraftName, String contactName, Context context);
+    Response<ContactInner> getWithResponse(String resourceGroupName, String spacecraftName, String contactName,
+        Context context);
 
     /**
      * Gets the specified contact in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -79,7 +81,7 @@ public interface ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -90,12 +92,12 @@ public interface ContactsClient {
      * @return the {@link SyncPoller} for polling of customer creates a contact resource for a spacecraft resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactInner>, ContactInner> beginCreate(
-        String resourceGroupName, String spacecraftName, String contactName, ContactInner parameters);
+    SyncPoller<PollResult<ContactInner>, ContactInner> beginCreate(String resourceGroupName, String spacecraftName,
+        String contactName, ContactInner parameters);
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -107,12 +109,12 @@ public interface ContactsClient {
      * @return the {@link SyncPoller} for polling of customer creates a contact resource for a spacecraft resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactInner>, ContactInner> beginCreate(
-        String resourceGroupName, String spacecraftName, String contactName, ContactInner parameters, Context context);
+    SyncPoller<PollResult<ContactInner>, ContactInner> beginCreate(String resourceGroupName, String spacecraftName,
+        String contactName, ContactInner parameters, Context context);
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -127,7 +129,7 @@ public interface ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -139,12 +141,12 @@ public interface ContactsClient {
      * @return customer creates a contact resource for a spacecraft resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContactInner create(
-        String resourceGroupName, String spacecraftName, String contactName, ContactInner parameters, Context context);
+    ContactInner create(String resourceGroupName, String spacecraftName, String contactName, ContactInner parameters,
+        Context context);
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -158,7 +160,7 @@ public interface ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -169,12 +171,12 @@ public interface ContactsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String spacecraftName, String contactName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String spacecraftName, String contactName,
+        Context context);
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -187,7 +189,7 @@ public interface ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.

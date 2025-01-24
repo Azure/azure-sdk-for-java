@@ -21,8 +21,7 @@ public final class ReservationOrderAliasImpl implements ReservationOrderAlias {
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    public ReservationOrderAliasImpl(
-        ReservationOrderAliasClient innerClient,
+    public ReservationOrderAliasImpl(ReservationOrderAliasClient innerClient,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -37,10 +36,10 @@ public final class ReservationOrderAliasImpl implements ReservationOrderAlias {
         }
     }
 
-    public ReservationOrderAliasResponse create(
-        String reservationOrderAliasName, ReservationOrderAliasRequest body, Context context) {
-        ReservationOrderAliasResponseInner inner =
-            this.serviceClient().create(reservationOrderAliasName, body, context);
+    public ReservationOrderAliasResponse create(String reservationOrderAliasName, ReservationOrderAliasRequest body,
+        Context context) {
+        ReservationOrderAliasResponseInner inner
+            = this.serviceClient().create(reservationOrderAliasName, body, context);
         if (inner != null) {
             return new ReservationOrderAliasResponseImpl(inner, this.manager());
         } else {
@@ -49,13 +48,10 @@ public final class ReservationOrderAliasImpl implements ReservationOrderAlias {
     }
 
     public Response<ReservationOrderAliasResponse> getWithResponse(String reservationOrderAliasName, Context context) {
-        Response<ReservationOrderAliasResponseInner> inner =
-            this.serviceClient().getWithResponse(reservationOrderAliasName, context);
+        Response<ReservationOrderAliasResponseInner> inner
+            = this.serviceClient().getWithResponse(reservationOrderAliasName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReservationOrderAliasResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

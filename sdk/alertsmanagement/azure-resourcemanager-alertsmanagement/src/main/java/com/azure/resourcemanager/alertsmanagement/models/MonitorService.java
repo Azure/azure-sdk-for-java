@@ -5,67 +5,104 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MonitorService. */
+/**
+ * Defines values for MonitorService.
+ */
 public final class MonitorService extends ExpandableStringEnum<MonitorService> {
-    /** Static value Application Insights for MonitorService. */
+    /**
+     * Static value Application Insights for MonitorService.
+     */
     public static final MonitorService APPLICATION_INSIGHTS = fromString("Application Insights");
 
-    /** Static value ActivityLog Administrative for MonitorService. */
+    /**
+     * Static value ActivityLog Administrative for MonitorService.
+     */
     public static final MonitorService ACTIVITY_LOG_ADMINISTRATIVE = fromString("ActivityLog Administrative");
 
-    /** Static value ActivityLog Security for MonitorService. */
+    /**
+     * Static value ActivityLog Security for MonitorService.
+     */
     public static final MonitorService ACTIVITY_LOG_SECURITY = fromString("ActivityLog Security");
 
-    /** Static value ActivityLog Recommendation for MonitorService. */
+    /**
+     * Static value ActivityLog Recommendation for MonitorService.
+     */
     public static final MonitorService ACTIVITY_LOG_RECOMMENDATION = fromString("ActivityLog Recommendation");
 
-    /** Static value ActivityLog Policy for MonitorService. */
+    /**
+     * Static value ActivityLog Policy for MonitorService.
+     */
     public static final MonitorService ACTIVITY_LOG_POLICY = fromString("ActivityLog Policy");
 
-    /** Static value ActivityLog Autoscale for MonitorService. */
+    /**
+     * Static value ActivityLog Autoscale for MonitorService.
+     */
     public static final MonitorService ACTIVITY_LOG_AUTOSCALE = fromString("ActivityLog Autoscale");
 
-    /** Static value Log Analytics for MonitorService. */
+    /**
+     * Static value Log Analytics for MonitorService.
+     */
     public static final MonitorService LOG_ANALYTICS = fromString("Log Analytics");
 
-    /** Static value Nagios for MonitorService. */
+    /**
+     * Static value Nagios for MonitorService.
+     */
     public static final MonitorService NAGIOS = fromString("Nagios");
 
-    /** Static value Platform for MonitorService. */
+    /**
+     * Static value Platform for MonitorService.
+     */
     public static final MonitorService PLATFORM = fromString("Platform");
 
-    /** Static value SCOM for MonitorService. */
+    /**
+     * Static value SCOM for MonitorService.
+     */
     public static final MonitorService SCOM = fromString("SCOM");
 
-    /** Static value ServiceHealth for MonitorService. */
+    /**
+     * Static value ServiceHealth for MonitorService.
+     */
     public static final MonitorService SERVICE_HEALTH = fromString("ServiceHealth");
 
-    /** Static value SmartDetector for MonitorService. */
+    /**
+     * Static value SmartDetector for MonitorService.
+     */
     public static final MonitorService SMART_DETECTOR = fromString("SmartDetector");
 
-    /** Static value VM Insights for MonitorService. */
+    /**
+     * Static value VM Insights for MonitorService.
+     */
     public static final MonitorService VM_INSIGHTS = fromString("VM Insights");
 
-    /** Static value Zabbix for MonitorService. */
+    /**
+     * Static value Zabbix for MonitorService.
+     */
     public static final MonitorService ZABBIX = fromString("Zabbix");
 
     /**
+     * Creates a new instance of MonitorService value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MonitorService() {
+    }
+
+    /**
      * Creates or finds a MonitorService from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MonitorService.
      */
-    @JsonCreator
     public static MonitorService fromString(String name) {
         return fromString(name, MonitorService.class);
     }
 
     /**
      * Gets known MonitorService values.
-     *
+     * 
      * @return known MonitorService values.
      */
     public static Collection<MonitorService> values() {

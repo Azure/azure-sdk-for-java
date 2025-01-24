@@ -6,47 +6,43 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
  */
 @Fluent
-public final class NodeTypeDescription {
+public final class NodeTypeDescription implements JsonSerializable<NodeTypeDescription> {
     /*
      * The name of the node type.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The placement tags applied to nodes in the node type, which can be used to indicate where certain services
      * (workload) should run.
      */
-    @JsonProperty(value = "placementProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> placementProperties;
 
     /*
      * The capacity tags applied to the nodes in the node type, the cluster resource manager uses these tags to
      * understand how much resource a node has.
      */
-    @JsonProperty(value = "capacities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> capacities;
 
     /*
      * The TCP cluster management endpoint port.
      */
-    @JsonProperty(value = "clientConnectionEndpointPort", required = true)
     private int clientConnectionEndpointPort;
 
     /*
      * The HTTP cluster management endpoint port.
      */
-    @JsonProperty(value = "httpGatewayEndpointPort", required = true)
     private int httpGatewayEndpointPort;
 
     /*
@@ -57,55 +53,46 @@ public final class NodeTypeDescription {
      * - Silver - The infrastructure jobs can be paused for a duration of 10 minutes per UD.
      * - Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled
      * only on full node VM skus like D15_V2, G5 etc.
-     * 
      */
-    @JsonProperty(value = "durabilityLevel")
     private DurabilityLevel durabilityLevel;
 
     /*
      * The range of ports from which cluster assigned port to Service Fabric applications.
      */
-    @JsonProperty(value = "applicationPorts")
     private EndpointRangeDescription applicationPorts;
 
     /*
      * The range of ephemeral ports that nodes in this node type should be configured with.
      */
-    @JsonProperty(value = "ephemeralPorts")
     private EndpointRangeDescription ephemeralPorts;
 
     /*
      * The node type on which system services will run. Only one node type should be marked as primary. Primary node
      * type cannot be deleted or changed for existing clusters.
      */
-    @JsonProperty(value = "isPrimary", required = true)
     private boolean isPrimary;
 
     /*
      * VMInstanceCount should be 1 to n, where n indicates the number of VM instances corresponding to this nodeType.
-     * VMInstanceCount = 0 can be done only in these scenarios: NodeType is a secondary nodeType. Durability = Bronze
-     * or Durability >= Bronze and InfrastructureServiceManager = true. If VMInstanceCount = 0, implies the VMs for
-     * this nodeType will not be used for the initial cluster size computation.
+     * VMInstanceCount = 0 can be done only in these scenarios: NodeType is a secondary nodeType. Durability = Bronze or
+     * Durability >= Bronze and InfrastructureServiceManager = true. If VMInstanceCount = 0, implies the VMs for this
+     * nodeType will not be used for the initial cluster size computation.
      */
-    @JsonProperty(value = "vmInstanceCount", required = true)
     private int vmInstanceCount;
 
     /*
      * The endpoint used by reverse proxy.
      */
-    @JsonProperty(value = "reverseProxyEndpointPort")
     private Integer reverseProxyEndpointPort;
 
     /*
      * Indicates if the node type can only host Stateless workloads.
      */
-    @JsonProperty(value = "isStateless")
     private Boolean isStateless;
 
     /*
      * Indicates if the node type is enabled to support multiple zones.
      */
-    @JsonProperty(value = "multipleAvailabilityZones")
     private Boolean multipleAvailabilityZones;
 
     /**
@@ -320,8 +307,7 @@ public final class NodeTypeDescription {
      * Get the vmInstanceCount property: VMInstanceCount should be 1 to n, where n indicates the number of VM instances
      * corresponding to this nodeType. VMInstanceCount = 0 can be done only in these scenarios: NodeType is a secondary
      * nodeType. Durability = Bronze or Durability &gt;= Bronze and InfrastructureServiceManager = true. If
-     * VMInstanceCount = 0, implies the VMs for this nodeType will not be used for the initial cluster size
-     * computation.
+     * VMInstanceCount = 0, implies the VMs for this nodeType will not be used for the initial cluster size computation.
      * 
      * @return the vmInstanceCount value.
      */
@@ -333,8 +319,7 @@ public final class NodeTypeDescription {
      * Set the vmInstanceCount property: VMInstanceCount should be 1 to n, where n indicates the number of VM instances
      * corresponding to this nodeType. VMInstanceCount = 0 can be done only in these scenarios: NodeType is a secondary
      * nodeType. Durability = Bronze or Durability &gt;= Bronze and InfrastructureServiceManager = true. If
-     * VMInstanceCount = 0, implies the VMs for this nodeType will not be used for the initial cluster size
-     * computation.
+     * VMInstanceCount = 0, implies the VMs for this nodeType will not be used for the initial cluster size computation.
      * 
      * @param vmInstanceCount the vmInstanceCount value to set.
      * @return the NodeTypeDescription object itself.
@@ -411,8 +396,8 @@ public final class NodeTypeDescription {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model NodeTypeDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model NodeTypeDescription"));
         }
         if (applicationPorts() != null) {
             applicationPorts().validate();
@@ -423,4 +408,82 @@ public final class NodeTypeDescription {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NodeTypeDescription.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeIntField("clientConnectionEndpointPort", this.clientConnectionEndpointPort);
+        jsonWriter.writeIntField("httpGatewayEndpointPort", this.httpGatewayEndpointPort);
+        jsonWriter.writeBooleanField("isPrimary", this.isPrimary);
+        jsonWriter.writeIntField("vmInstanceCount", this.vmInstanceCount);
+        jsonWriter.writeMapField("placementProperties", this.placementProperties,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("capacities", this.capacities, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("durabilityLevel",
+            this.durabilityLevel == null ? null : this.durabilityLevel.toString());
+        jsonWriter.writeJsonField("applicationPorts", this.applicationPorts);
+        jsonWriter.writeJsonField("ephemeralPorts", this.ephemeralPorts);
+        jsonWriter.writeNumberField("reverseProxyEndpointPort", this.reverseProxyEndpointPort);
+        jsonWriter.writeBooleanField("isStateless", this.isStateless);
+        jsonWriter.writeBooleanField("multipleAvailabilityZones", this.multipleAvailabilityZones);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NodeTypeDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NodeTypeDescription if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NodeTypeDescription.
+     */
+    public static NodeTypeDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NodeTypeDescription deserializedNodeTypeDescription = new NodeTypeDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNodeTypeDescription.name = reader.getString();
+                } else if ("clientConnectionEndpointPort".equals(fieldName)) {
+                    deserializedNodeTypeDescription.clientConnectionEndpointPort = reader.getInt();
+                } else if ("httpGatewayEndpointPort".equals(fieldName)) {
+                    deserializedNodeTypeDescription.httpGatewayEndpointPort = reader.getInt();
+                } else if ("isPrimary".equals(fieldName)) {
+                    deserializedNodeTypeDescription.isPrimary = reader.getBoolean();
+                } else if ("vmInstanceCount".equals(fieldName)) {
+                    deserializedNodeTypeDescription.vmInstanceCount = reader.getInt();
+                } else if ("placementProperties".equals(fieldName)) {
+                    Map<String, String> placementProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNodeTypeDescription.placementProperties = placementProperties;
+                } else if ("capacities".equals(fieldName)) {
+                    Map<String, String> capacities = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNodeTypeDescription.capacities = capacities;
+                } else if ("durabilityLevel".equals(fieldName)) {
+                    deserializedNodeTypeDescription.durabilityLevel = DurabilityLevel.fromString(reader.getString());
+                } else if ("applicationPorts".equals(fieldName)) {
+                    deserializedNodeTypeDescription.applicationPorts = EndpointRangeDescription.fromJson(reader);
+                } else if ("ephemeralPorts".equals(fieldName)) {
+                    deserializedNodeTypeDescription.ephemeralPorts = EndpointRangeDescription.fromJson(reader);
+                } else if ("reverseProxyEndpointPort".equals(fieldName)) {
+                    deserializedNodeTypeDescription.reverseProxyEndpointPort = reader.getNullable(JsonReader::getInt);
+                } else if ("isStateless".equals(fieldName)) {
+                    deserializedNodeTypeDescription.isStateless = reader.getNullable(JsonReader::getBoolean);
+                } else if ("multipleAvailabilityZones".equals(fieldName)) {
+                    deserializedNodeTypeDescription.multipleAvailabilityZones
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNodeTypeDescription;
+        });
+    }
 }

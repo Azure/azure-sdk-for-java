@@ -6,25 +6,27 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.resourcemanager.logic.fluent.models.JsonSchemaInner;
 
-/** An immutable client-side representation of JsonSchema. */
+/**
+ * An immutable client-side representation of JsonSchema.
+ */
 public interface JsonSchema {
     /**
      * Gets the title property: The JSON title.
-     *
+     * 
      * @return the title value.
      */
     String title();
 
     /**
      * Gets the content property: The JSON content.
-     *
+     * 
      * @return the content value.
      */
     String content();
 
     /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.JsonSchemaInner object.
-     *
+     * 
      * @return the inner object.
      */
     JsonSchemaInner innerModel();

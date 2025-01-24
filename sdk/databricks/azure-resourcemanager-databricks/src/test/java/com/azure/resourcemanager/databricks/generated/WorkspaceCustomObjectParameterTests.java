@@ -10,15 +10,13 @@ import com.azure.resourcemanager.databricks.models.WorkspaceCustomObjectParamete
 public final class WorkspaceCustomObjectParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceCustomObjectParameter model =
-            BinaryData
-                .fromString("{\"type\":\"String\",\"value\":\"datawjfeusnhutjel\"}")
-                .toObject(WorkspaceCustomObjectParameter.class);
+        WorkspaceCustomObjectParameter model = BinaryData.fromString("{\"type\":\"Object\",\"value\":\"datan\"}")
+            .toObject(WorkspaceCustomObjectParameter.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceCustomObjectParameter model = new WorkspaceCustomObjectParameter().withValue("datawjfeusnhutjel");
+        WorkspaceCustomObjectParameter model = new WorkspaceCustomObjectParameter().withValue("datan");
         model = BinaryData.fromObject(model).toObject(WorkspaceCustomObjectParameter.class);
     }
 }

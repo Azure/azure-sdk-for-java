@@ -21,7 +21,7 @@ public final class TriggersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"oo\",\"runtimeState\":\"Started\",\"annotations\":[\"dataqioqhphjq\",\"datakacwkoqmxkxfm\",\"databr\",\"dataslforlaudemzrpdn\"],\"\":{\"bbg\":\"datajb\"}},\"name\":\"okn\",\"type\":\"dqfynrdagmihxjpf\",\"etag\":\"puibczlre\",\"id\":\"rmqb\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"xdnckgdcszz\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datazle\",\"dataz\"],\"\":{\"seft\":\"dataeqmfzyhikhn\",\"ax\":\"datajzqfpfkdybe\",\"zcadoqijfll\":\"datathppjxtobeq\",\"wvg\":\"datamuzeolcgqjtvpalk\"}},\"name\":\"utdswjtuqw\",\"type\":\"pauiccjaea\",\"etag\":\"ebqhbbqodyv\",\"id\":\"coiaaagvaecwwd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,11 @@ public final class TriggersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TriggerResource response = manager.triggers()
-            .getWithResponse("ltzyua", "nlxcdpjssdt", "snlxwqmzez", "hfjjjzcxtzk", com.azure.core.util.Context.NONE)
+            .getWithResponse("klnrzoafxoyddush", "yjhhynlmxzdwpdw", "noukyz", "yeghmf",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rmqb", response.id());
-        Assertions.assertEquals("oo", response.properties().description());
+        Assertions.assertEquals("coiaaagvaecwwd", response.id());
+        Assertions.assertEquals("xdnckgdcszz", response.properties().description());
     }
 }

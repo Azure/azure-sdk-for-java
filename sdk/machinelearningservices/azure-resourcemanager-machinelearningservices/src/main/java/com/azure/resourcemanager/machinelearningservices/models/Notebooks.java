@@ -49,6 +49,6 @@ public interface Notebooks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<ListNotebookKeysResult> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListNotebookKeysResult> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 }

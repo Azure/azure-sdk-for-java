@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.machinelearning.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Features enabled for a workspace. */
+/**
+ * Features enabled for a workspace.
+ */
 @Fluent
-public final class AmlUserFeatureInner {
+public final class AmlUserFeatureInner implements JsonSerializable<AmlUserFeatureInner> {
     /*
      * Specifies the feature ID
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Specifies the feature name
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Describes the feature for user experience
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of AmlUserFeatureInner class. */
+    /**
+     * Creates an instance of AmlUserFeatureInner class.
+     */
     public AmlUserFeatureInner() {
     }
 
     /**
      * Get the id property: Specifies the feature ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +48,7 @@ public final class AmlUserFeatureInner {
 
     /**
      * Set the id property: Specifies the feature ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the AmlUserFeatureInner object itself.
      */
@@ -54,7 +59,7 @@ public final class AmlUserFeatureInner {
 
     /**
      * Get the displayName property: Specifies the feature name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -63,7 +68,7 @@ public final class AmlUserFeatureInner {
 
     /**
      * Set the displayName property: Specifies the feature name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AmlUserFeatureInner object itself.
      */
@@ -74,7 +79,7 @@ public final class AmlUserFeatureInner {
 
     /**
      * Get the description property: Describes the feature for user experience.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -83,7 +88,7 @@ public final class AmlUserFeatureInner {
 
     /**
      * Set the description property: Describes the feature for user experience.
-     *
+     * 
      * @param description the description value to set.
      * @return the AmlUserFeatureInner object itself.
      */
@@ -94,9 +99,51 @@ public final class AmlUserFeatureInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlUserFeatureInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlUserFeatureInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlUserFeatureInner.
+     */
+    public static AmlUserFeatureInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlUserFeatureInner deserializedAmlUserFeatureInner = new AmlUserFeatureInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAmlUserFeatureInner.id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAmlUserFeatureInner.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAmlUserFeatureInner.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlUserFeatureInner;
+        });
     }
 }

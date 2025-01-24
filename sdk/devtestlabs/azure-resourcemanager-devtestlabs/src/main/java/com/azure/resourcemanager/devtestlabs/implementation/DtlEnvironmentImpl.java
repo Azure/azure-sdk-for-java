@@ -105,20 +105,16 @@ public final class DtlEnvironmentImpl implements DtlEnvironment, DtlEnvironment.
     }
 
     public DtlEnvironment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironments()
-                .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironments()
+            .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DtlEnvironment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironments()
-                .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironments()
+            .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), context);
         return this;
     }
 
@@ -134,54 +130,46 @@ public final class DtlEnvironmentImpl implements DtlEnvironment, DtlEnvironment.
     }
 
     public DtlEnvironment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironments()
-                .updateWithResponse(resourceGroupName, labName, username, name, updateDtlEnvironment, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironments()
+            .updateWithResponse(resourceGroupName, labName, username, name, updateDtlEnvironment, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DtlEnvironment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironments()
-                .updateWithResponse(resourceGroupName, labName, username, name, updateDtlEnvironment, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironments()
+            .updateWithResponse(resourceGroupName, labName, username, name, updateDtlEnvironment, context)
+            .getValue();
         return this;
     }
 
-    DtlEnvironmentImpl(
-        DtlEnvironmentInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    DtlEnvironmentImpl(DtlEnvironmentInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.username = Utils.getValueFromIdByName(innerObject.id(), "users");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "environments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.username = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "users");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environments");
     }
 
     public DtlEnvironment refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironments()
-                .getWithResponse(resourceGroupName, labName, username, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironments()
+            .getWithResponse(resourceGroupName, labName, username, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DtlEnvironment refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironments()
-                .getWithResponse(resourceGroupName, labName, username, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironments()
+            .getWithResponse(resourceGroupName, labName, username, name, localExpand, context)
+            .getValue();
         return this;
     }
 

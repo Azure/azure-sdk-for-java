@@ -8,9 +8,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.perf.core.TestDataFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.core.perf.models.UserData;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.function.Function;
 
 public class JsonReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
@@ -37,14 +39,16 @@ public class JsonReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return service.getUserDatabaseJsonAsync(endpoint, id).map(userdatabase -> {
-            userdatabase.getValue().getUserList().forEach(sampleUserData -> {
-                sampleUserData.getId();
-            });
+            userdatabase.getValue().getUserList().forEach(UserData::getId);
             return 1;
         }).then();
     }
 
     private static byte[] generateBodyBytes(long size) {
-        return serializeData(TestDataFactory.generateUserDatabase(size), new ObjectMapper());
+        try {
+            return TestDataFactory.generateUserDatabase(size).toJsonBytes();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 }

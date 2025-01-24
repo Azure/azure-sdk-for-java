@@ -112,20 +112,16 @@ public final class FormulaImpl implements Formula, Formula.Definition, Formula.U
     }
 
     public Formula create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFormulas()
-                .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFormulas()
+            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Formula create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFormulas()
-                .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFormulas()
+            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), context);
         return this;
     }
 
@@ -141,52 +137,44 @@ public final class FormulaImpl implements Formula, Formula.Definition, Formula.U
     }
 
     public Formula apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFormulas()
-                .updateWithResponse(resourceGroupName, labName, name, updateFormula, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFormulas()
+            .updateWithResponse(resourceGroupName, labName, name, updateFormula, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Formula apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFormulas()
-                .updateWithResponse(resourceGroupName, labName, name, updateFormula, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFormulas()
+            .updateWithResponse(resourceGroupName, labName, name, updateFormula, context)
+            .getValue();
         return this;
     }
 
     FormulaImpl(FormulaInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "formulas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "formulas");
     }
 
     public Formula refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFormulas()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFormulas()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Formula refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFormulas()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFormulas()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, context)
+            .getValue();
         return this;
     }
 

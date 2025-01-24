@@ -10,9 +10,8 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.models.FirewallRulePro
 public final class FirewallRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FirewallRuleProperties model =
-            BinaryData
-                .fromString("{\"startIpAddress\":\"juqk\",\"endIpAddress\":\"sa\"}")
+        FirewallRuleProperties model
+            = BinaryData.fromString("{\"startIpAddress\":\"vorxzdmohct\",\"endIpAddress\":\"vudwx\"}")
                 .toObject(FirewallRuleProperties.class);
     }
 

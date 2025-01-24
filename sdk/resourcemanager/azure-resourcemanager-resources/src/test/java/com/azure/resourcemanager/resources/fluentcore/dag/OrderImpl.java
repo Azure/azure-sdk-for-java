@@ -13,9 +13,7 @@ import java.time.Duration;
 /**
  * Implementation of {@link IOrder}
  */
-public class OrderImpl
-        extends CreatableUpdatableImpl<IOrder, OrderInner, OrderImpl>
-        implements IOrder {
+public class OrderImpl extends CreatableUpdatableImpl<IOrder, OrderInner, OrderImpl> implements IOrder {
     private static final ClientLogger LOGGER = new ClientLogger(OrderImpl.class);
 
     /**
@@ -31,9 +29,7 @@ public class OrderImpl
     @Override
     public Mono<IOrder> createResourceAsync() {
         LOGGER.log(LogLevel.VERBOSE, () -> "Order(" + this.name() + ")::createResourceAsync() [Creating order]");
-        return Mono.just(this)
-                .delayElement(Duration.ofMillis(250))
-                .map(sandwich -> sandwich);
+        return Mono.just(this).delayElement(Duration.ofMillis(250)).map(sandwich -> sandwich);
     }
 
     @Override

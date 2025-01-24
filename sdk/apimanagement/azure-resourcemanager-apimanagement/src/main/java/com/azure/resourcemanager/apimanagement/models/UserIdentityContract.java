@@ -6,25 +6,27 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.UserIdentityContractInner;
 
-/** An immutable client-side representation of UserIdentityContract. */
+/**
+ * An immutable client-side representation of UserIdentityContract.
+ */
 public interface UserIdentityContract {
     /**
      * Gets the provider property: Identity provider name.
-     *
+     * 
      * @return the provider value.
      */
     String provider();
 
     /**
      * Gets the id property: Identifier value within provider.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.UserIdentityContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     UserIdentityContractInner innerModel();

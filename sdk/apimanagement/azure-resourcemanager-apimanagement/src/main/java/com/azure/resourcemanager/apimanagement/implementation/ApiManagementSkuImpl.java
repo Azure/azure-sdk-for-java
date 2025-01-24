@@ -19,8 +19,7 @@ public final class ApiManagementSkuImpl implements ApiManagementSku {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    ApiManagementSkuImpl(
-        ApiManagementSkuInner innerObject,
+    ApiManagementSkuImpl(ApiManagementSkuInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

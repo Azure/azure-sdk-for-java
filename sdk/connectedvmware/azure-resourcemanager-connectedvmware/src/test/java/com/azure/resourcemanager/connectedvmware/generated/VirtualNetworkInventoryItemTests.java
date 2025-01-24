@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkInventoryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkInventoryItem model =
-            BinaryData
-                .fromString(
-                    "{\"inventoryType\":\"VirtualNetwork\",\"managedResourceId\":\"wxezwzhok\",\"moRefId\":\"wnhhtqlgehgppip\",\"moName\":\"hpfeoajvgcxtxjc\",\"provisioningState\":\"Accepted\"}")
-                .toObject(VirtualNetworkInventoryItem.class);
+        VirtualNetworkInventoryItem model = BinaryData.fromString(
+            "{\"inventoryType\":\"VirtualNetwork\",\"managedResourceId\":\"wxezwzhok\",\"moRefId\":\"wnhhtqlgehgppip\",\"moName\":\"hpfeoajvgcxtxjc\",\"provisioningState\":\"Accepted\"}")
+            .toObject(VirtualNetworkInventoryItem.class);
         Assertions.assertEquals("wxezwzhok", model.managedResourceId());
         Assertions.assertEquals("wnhhtqlgehgppip", model.moRefId());
         Assertions.assertEquals("hpfeoajvgcxtxjc", model.moName());
@@ -23,11 +21,9 @@ public final class VirtualNetworkInventoryItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkInventoryItem model =
-            new VirtualNetworkInventoryItem()
-                .withManagedResourceId("wxezwzhok")
-                .withMoRefId("wnhhtqlgehgppip")
-                .withMoName("hpfeoajvgcxtxjc");
+        VirtualNetworkInventoryItem model = new VirtualNetworkInventoryItem().withManagedResourceId("wxezwzhok")
+            .withMoRefId("wnhhtqlgehgppip")
+            .withMoName("hpfeoajvgcxtxjc");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkInventoryItem.class);
         Assertions.assertEquals("wxezwzhok", model.managedResourceId());
         Assertions.assertEquals("wnhhtqlgehgppip", model.moRefId());

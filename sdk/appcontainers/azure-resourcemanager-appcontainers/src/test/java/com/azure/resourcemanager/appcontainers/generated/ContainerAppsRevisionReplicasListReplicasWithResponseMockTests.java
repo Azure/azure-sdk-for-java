@@ -20,7 +20,7 @@ public final class ContainerAppsRevisionReplicasListReplicasWithResponseMockTest
     @Test
     public void testListReplicasWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-09-15T19:47Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"khvuhxepmrutz\",\"containers\":[{},{}],\"initContainers\":[{}]},\"id\":\"nslujd\",\"name\":\"ltymkmvguihywart\",\"type\":\"pphkixkykxds\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-12-02T01:42:45Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"viqlluk\",\"containers\":[{},{},{},{}],\"initContainers\":[{},{},{},{}]},\"id\":\"gcbv\",\"name\":\"a\",\"type\":\"mqcbpokstsinv\"},{\"properties\":{\"createdTime\":\"2021-11-27T01:48:46Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"d\",\"containers\":[{},{}],\"initContainers\":[{},{}]},\"id\":\"cehqw\",\"name\":\"itxnmxgnmgu\",\"type\":\"buwvorba\"},{\"properties\":{\"createdTime\":\"2021-02-26T19:00:19Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"dhlltqstqkqsyg\",\"containers\":[{},{}],\"initContainers\":[{},{},{},{}]},\"id\":\"ovagzkheuban\",\"name\":\"xunpqcckqiawzlz\",\"type\":\"laslgacizux\"},{\"properties\":{\"createdTime\":\"2021-05-21T14:34:58Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"wsaudoejtighsxj\",\"containers\":[{},{}],\"initContainers\":[{},{}]},\"id\":\"bala\",\"name\":\"ovu\",\"type\":\"wxhmehjnhjiot\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ContainerAppsRevisionReplicasListReplicasWithResponseMockTest
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ReplicaCollection response = manager.containerAppsRevisionReplicas()
-            .listReplicasWithResponse("vteo", "xvgpiude", "gfsxzec", com.azure.core.util.Context.NONE)
+            .listReplicasWithResponse("jbrhlhpvzadbw", "nnin", "fhxrzfr", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

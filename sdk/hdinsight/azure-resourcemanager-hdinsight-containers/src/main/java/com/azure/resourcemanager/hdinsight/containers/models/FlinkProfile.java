@@ -6,61 +6,57 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Flink cluster profile.
  */
 @Fluent
-public final class FlinkProfile {
+public final class FlinkProfile implements JsonSerializable<FlinkProfile> {
     /*
      * The storage profile
      */
-    @JsonProperty(value = "storage", required = true)
     private FlinkStorageProfile storage;
 
     /*
      * The number of task managers.
      */
-    @JsonProperty(value = "numReplicas")
     private Integer numReplicas;
 
     /*
      * Job Manager container/ process CPU and memory requirements
      */
-    @JsonProperty(value = "jobManager", required = true)
     private ComputeResourceDefinition jobManager;
 
     /*
      * History Server container/ process CPU and memory requirements
      */
-    @JsonProperty(value = "historyServer")
     private ComputeResourceDefinition historyServer;
 
     /*
      * Task Manager container/ process CPU and memory requirements
      */
-    @JsonProperty(value = "taskManager", required = true)
     private ComputeResourceDefinition taskManager;
 
     /*
      * Flink cluster catalog options.
      */
-    @JsonProperty(value = "catalogOptions")
     private FlinkCatalogOptions catalogOptions;
 
     /*
      * A string property that indicates the deployment mode of Flink cluster. It can have one of the following enum
      * values => Application, Session. Default value is Session
      */
-    @JsonProperty(value = "deploymentMode")
     private DeploymentMode deploymentMode;
 
     /*
      * Job specifications for flink clusters in application deployment mode. The specification is immutable even if job
      * properties are changed by calling the RunJob API, please use the ListJob API to get the latest job information.
      */
-    @JsonProperty(value = "jobSpec")
     private FlinkJobProfile jobSpec;
 
     /**
@@ -212,9 +208,9 @@ public final class FlinkProfile {
     }
 
     /**
-     * Get the jobSpec property: Job specifications for flink clusters in application deployment mode. The
-     * specification is immutable even if job properties are changed by calling the RunJob API, please use the ListJob
-     * API to get the latest job information.
+     * Get the jobSpec property: Job specifications for flink clusters in application deployment mode. The specification
+     * is immutable even if job properties are changed by calling the RunJob API, please use the ListJob API to get the
+     * latest job information.
      * 
      * @return the jobSpec value.
      */
@@ -223,9 +219,9 @@ public final class FlinkProfile {
     }
 
     /**
-     * Set the jobSpec property: Job specifications for flink clusters in application deployment mode. The
-     * specification is immutable even if job properties are changed by calling the RunJob API, please use the ListJob
-     * API to get the latest job information.
+     * Set the jobSpec property: Job specifications for flink clusters in application deployment mode. The specification
+     * is immutable even if job properties are changed by calling the RunJob API, please use the ListJob API to get the
+     * latest job information.
      * 
      * @param jobSpec the jobSpec value to set.
      * @return the FlinkProfile object itself.
@@ -242,14 +238,14 @@ public final class FlinkProfile {
      */
     public void validate() {
         if (storage() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property storage in model FlinkProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property storage in model FlinkProfile"));
         } else {
             storage().validate();
         }
         if (jobManager() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property jobManager in model FlinkProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property jobManager in model FlinkProfile"));
         } else {
             jobManager().validate();
         }
@@ -257,8 +253,8 @@ public final class FlinkProfile {
             historyServer().validate();
         }
         if (taskManager() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property taskManager in model FlinkProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property taskManager in model FlinkProfile"));
         } else {
             taskManager().validate();
         }
@@ -271,4 +267,63 @@ public final class FlinkProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FlinkProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storage", this.storage);
+        jsonWriter.writeJsonField("jobManager", this.jobManager);
+        jsonWriter.writeJsonField("taskManager", this.taskManager);
+        jsonWriter.writeNumberField("numReplicas", this.numReplicas);
+        jsonWriter.writeJsonField("historyServer", this.historyServer);
+        jsonWriter.writeJsonField("catalogOptions", this.catalogOptions);
+        jsonWriter.writeStringField("deploymentMode",
+            this.deploymentMode == null ? null : this.deploymentMode.toString());
+        jsonWriter.writeJsonField("jobSpec", this.jobSpec);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlinkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlinkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FlinkProfile.
+     */
+    public static FlinkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlinkProfile deserializedFlinkProfile = new FlinkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storage".equals(fieldName)) {
+                    deserializedFlinkProfile.storage = FlinkStorageProfile.fromJson(reader);
+                } else if ("jobManager".equals(fieldName)) {
+                    deserializedFlinkProfile.jobManager = ComputeResourceDefinition.fromJson(reader);
+                } else if ("taskManager".equals(fieldName)) {
+                    deserializedFlinkProfile.taskManager = ComputeResourceDefinition.fromJson(reader);
+                } else if ("numReplicas".equals(fieldName)) {
+                    deserializedFlinkProfile.numReplicas = reader.getNullable(JsonReader::getInt);
+                } else if ("historyServer".equals(fieldName)) {
+                    deserializedFlinkProfile.historyServer = ComputeResourceDefinition.fromJson(reader);
+                } else if ("catalogOptions".equals(fieldName)) {
+                    deserializedFlinkProfile.catalogOptions = FlinkCatalogOptions.fromJson(reader);
+                } else if ("deploymentMode".equals(fieldName)) {
+                    deserializedFlinkProfile.deploymentMode = DeploymentMode.fromString(reader.getString());
+                } else if ("jobSpec".equals(fieldName)) {
+                    deserializedFlinkProfile.jobSpec = FlinkJobProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlinkProfile;
+        });
+    }
 }

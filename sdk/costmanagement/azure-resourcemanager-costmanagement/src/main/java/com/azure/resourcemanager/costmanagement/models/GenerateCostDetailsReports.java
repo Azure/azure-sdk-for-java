@@ -6,7 +6,9 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of GenerateCostDetailsReports. */
+/**
+ * Resource collection API of GenerateCostDetailsReports.
+ */
 public interface GenerateCostDetailsReports {
     /**
      * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
@@ -19,9 +21,9 @@ public interface GenerateCostDetailsReports {
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,9 +43,9 @@ public interface GenerateCostDetailsReports {
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,15 +53,15 @@ public interface GenerateCostDetailsReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the long running operation for cost details Api.
      */
-    CostDetailsOperationResults createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context);
+    CostDetailsOperationResults createOperation(String scope, GenerateCostDetailsReportRequestDefinition parameters,
+        Context context);
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,9 +73,9 @@ public interface GenerateCostDetailsReports {
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

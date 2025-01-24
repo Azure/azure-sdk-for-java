@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,7 +22,11 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * The content of the message.
      */
     @Generated
-    private final String content;
+    private final BinaryData content;
+
+    private final String stringContent;
+
+    private final List<ChatMessageContentItem> chatMessageContentItem;
 
     /*
      * An optional name for the participant.
@@ -44,22 +49,12 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     private FunctionCall functionCall;
 
     /**
-     * Creates an instance of ChatRequestAssistantMessage class.
-     *
-     * @param content the content value to set.
-     */
-    @Generated
-    public ChatRequestAssistantMessage(String content) {
-        this.content = content;
-    }
-
-    /**
      * Get the content property: The content of the message.
      *
      * @return the content value.
      */
     @Generated
-    public String getContent() {
+    public BinaryData getContent() {
         return this.content;
     }
 
@@ -157,12 +152,16 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("content", this.content);
+        if (stringContent != null) {
+            jsonWriter.writeStringField("content", stringContent);
+        } else if (chatMessageContentItem != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        }
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("refusal", this.refusal);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("function_call", this.functionCall);
@@ -178,11 +177,11 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatRequestAssistantMessage.
      */
-    @Generated
     public static ChatRequestAssistantMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String content = null;
+            BinaryData content = null;
             ChatRole role = ChatRole.ASSISTANT;
+            String refusal = null;
             String name = null;
             List<ChatCompletionsToolCall> toolCalls = null;
             FunctionCall functionCall = null;
@@ -190,9 +189,21 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
-                    content = reader.getString();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        content = BinaryData.fromString(reader.getString());
+                    } else if (reader.currentToken() == JsonToken.START_ARRAY) {
+                        content = BinaryData.fromObject(
+                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                    } else if (reader.currentToken() == JsonToken.NULL) {
+                        content = null;
+                    } else {
+                        throw new IllegalStateException("Unexpected 'content' type found when deserializing"
+                            + " ChatRequestAssistantMessage JSON object: " + reader.currentToken());
+                    }
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
+                } else if ("refusal".equals(fieldName)) {
+                    refusal = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("tool_calls".equals(fieldName)) {
@@ -206,10 +217,72 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
             ChatRequestAssistantMessage deserializedChatRequestAssistantMessage
                 = new ChatRequestAssistantMessage(content);
             deserializedChatRequestAssistantMessage.role = role;
-            deserializedChatRequestAssistantMessage.name = name;
-            deserializedChatRequestAssistantMessage.toolCalls = toolCalls;
-            deserializedChatRequestAssistantMessage.functionCall = functionCall;
+            deserializedChatRequestAssistantMessage.setRefusal(refusal)
+                .setName(name)
+                .setToolCalls(toolCalls)
+                .setFunctionCall(functionCall);
             return deserializedChatRequestAssistantMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ChatRequestAssistantMessage class.
+     *
+     * @param content the Binary content value to set.
+     */
+    private ChatRequestAssistantMessage(BinaryData content) {
+        this.content = content;
+        this.stringContent = null;
+        this.chatMessageContentItem = null;
+    }
+
+    /**
+     * Creates an instance of ChatRequestAssistantMessage class.
+     *
+     * @param content the String content value to set.
+     */
+    public ChatRequestAssistantMessage(String content) {
+        this.content = content == null ? null : BinaryData.fromString(content);
+        this.stringContent = content;
+        this.chatMessageContentItem = null;
+    }
+
+    /**
+     * Creates an instance of ChatRequestAssistantMessage class.
+     *
+     * @param content the List of ChatMessageContentItem content value to set.
+     */
+    public ChatRequestAssistantMessage(List<ChatMessageContentItem> content) {
+        this.content = BinaryData.fromObject(content);
+        this.stringContent = null;
+        this.chatMessageContentItem = content;
+    }
+
+    /*
+     * The refusal message by the assistant.
+     */
+    @Generated
+    private String refusal;
+
+    /**
+     * Get the refusal property: The refusal message by the assistant.
+     *
+     * @return the refusal value.
+     */
+    @Generated
+    public String getRefusal() {
+        return this.refusal;
+    }
+
+    /**
+     * Set the refusal property: The refusal message by the assistant.
+     *
+     * @param refusal the refusal value to set.
+     * @return the ChatRequestAssistantMessage object itself.
+     */
+    @Generated
+    public ChatRequestAssistantMessage setRefusal(String refusal) {
+        this.refusal = refusal;
+        return this;
     }
 }

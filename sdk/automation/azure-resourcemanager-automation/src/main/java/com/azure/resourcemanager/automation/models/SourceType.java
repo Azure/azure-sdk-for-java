@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The source type. Must be one of VsoGit, VsoTfvc, GitHub. */
+/**
+ * The source type. Must be one of VsoGit, VsoTfvc, GitHub.
+ */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
-    /** Static value VsoGit for SourceType. */
+    /**
+     * Static value VsoGit for SourceType.
+     */
     public static final SourceType VSO_GIT = fromString("VsoGit");
 
-    /** Static value VsoTfvc for SourceType. */
+    /**
+     * Static value VsoTfvc for SourceType.
+     */
     public static final SourceType VSO_TFVC = fromString("VsoTfvc");
 
-    /** Static value GitHub for SourceType. */
+    /**
+     * Static value GitHub for SourceType.
+     */
     public static final SourceType GIT_HUB = fromString("GitHub");
 
     /**
+     * Creates a new instance of SourceType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceType() {
+    }
+
+    /**
      * Creates or finds a SourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SourceType.
      */
-    @JsonCreator
     public static SourceType fromString(String name) {
         return fromString(name, SourceType.class);
     }
 
     /**
      * Gets known SourceType values.
-     *
+     * 
      * @return known SourceType values.
      */
     public static Collection<SourceType> values() {

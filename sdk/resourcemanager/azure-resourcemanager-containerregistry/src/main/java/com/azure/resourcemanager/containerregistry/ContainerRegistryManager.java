@@ -22,8 +22,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import java.util.Objects;
 
 /** Entry point to Azure container registry management. */
-public final class ContainerRegistryManager
-    extends Manager<ContainerRegistryManagementClient> {
+public final class ContainerRegistryManager extends Manager<ContainerRegistryManagementClient> {
     // The service managers
     private RegistriesImpl registries;
     private RegistryTasksImpl tasks;
@@ -91,17 +90,18 @@ public final class ContainerRegistryManager
      * @param profile the profile to use
      */
     private ContainerRegistryManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new ContainerRegistryManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new ContainerRegistryManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
     }
 
-    /** @return the availability set resource management API entry point */
+    /**
+     * Gets the availability set resource management API entry point.
+     *
+     * @return the availability set resource management API entry point
+     */
     public Registries containerRegistries() {
         if (this.registries == null) {
             this.registries = new RegistriesImpl(this);

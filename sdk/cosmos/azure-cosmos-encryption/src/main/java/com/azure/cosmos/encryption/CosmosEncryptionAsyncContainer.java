@@ -16,6 +16,7 @@ import com.azure.cosmos.encryption.implementation.EncryptionSettings;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
+import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -1683,8 +1684,9 @@ public final class CosmosEncryptionAsyncContainer {
     }
 
     private void setRequestHeaders(CosmosBulkExecutionOptions requestOptions) {
-        cosmosBulkExecutionOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        cosmosBulkExecutionOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+        CosmosBulkExecutionOptionsImpl requestOptionsImpl = cosmosBulkExecutionOptionsAccessor.getImpl(requestOptions);
+        requestOptionsImpl.setHeader(Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        requestOptionsImpl.setHeader(Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
     boolean isIncorrectContainerRid(CosmosException cosmosException) {

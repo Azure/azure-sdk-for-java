@@ -15,8 +15,7 @@ public final class SsisObjectMetadataListResponseImpl implements SsisObjectMetad
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    SsisObjectMetadataListResponseImpl(
-        SsisObjectMetadataListResponseInner innerObject,
+    SsisObjectMetadataListResponseImpl(SsisObjectMetadataListResponseInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

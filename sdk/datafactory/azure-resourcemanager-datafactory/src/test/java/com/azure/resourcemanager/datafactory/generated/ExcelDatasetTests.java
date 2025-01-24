@@ -21,41 +21,45 @@ public final class ExcelDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExcelDataset model = BinaryData.fromString(
-            "{\"type\":\"Excel\",\"typeProperties\":{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datal\",\"fileName\":\"datalhhfi\",\"\":{\"yldqpzfzxsox\":\"datafculzjrmhpfyw\",\"cqsxytqqtcmiw\":\"datanunjlzkdr\"}},\"sheetName\":\"datais\",\"sheetIndex\":\"datamey\",\"range\":\"datajamca\",\"firstRowAsHeader\":\"datahftpzcrrykll\",\"compression\":{\"type\":\"datanqanhkigglclwal\",\"level\":\"dataubhg\",\"\":{\"alec\":\"dataetxdqcmyctajqzj\",\"egyxsbfpzvoik\":\"databibiwks\",\"pblalhhez\":\"datantwczfzwushlc\",\"qdsgptotxj\":\"datafkissaidqzsaa\"}},\"nullValue\":\"dataia\"},\"description\":\"nlrtbfijzz\",\"structure\":\"datao\",\"schema\":\"dataolbuauktwieope\",\"linkedServiceName\":{\"referenceName\":\"e\",\"parameters\":{\"kgxyxyauxre\":\"datadwrswyiljpi\"}},\"parameters\":{\"wytkujsqy\":{\"type\":\"SecureString\",\"defaultValue\":\"datacnlt\"}},\"annotations\":[\"dataoxfab\",\"dataqgpwbmwhr\"],\"folder\":{\"name\":\"iwrycgnwplrrb\"},\"\":{\"hqvumspbfs\":\"datatsbbibtic\",\"xmzrmtmvwitu\":\"dataeqbbewfcuqfpy\"}}")
+            "{\"type\":\"Excel\",\"typeProperties\":{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"dataybydhui\",\"fileName\":\"dataouwudhuaorh\",\"\":{\"amqprlo\":\"datahwvumosqir\",\"zcmtagelajdyolj\":\"datarugejcvjkjy\",\"qfmzsizzhravrc\":\"dataqy\"}},\"sheetName\":\"datajymgqbgcxhn\",\"sheetIndex\":\"datagzxlermkmerghski\",\"range\":\"datanpupkcbkfuk\",\"firstRowAsHeader\":\"datajqnvtsdyd\",\"compression\":{\"type\":\"datakpafyaloowwziz\",\"level\":\"datayuf\",\"\":{\"kqiyvnd\":\"datastifgufyjf\",\"symzqhrqpf\":\"dataokgw\",\"tznxlu\":\"datalpe\"}},\"nullValue\":\"dataujqbbgsimwejl\"},\"description\":\"kbpjzobdwbcpra\",\"structure\":\"datakuhydtnaczkfwfat\",\"schema\":\"datawphn\",\"linkedServiceName\":{\"referenceName\":\"kivdwgtqcume\",\"parameters\":{\"iuycsbskowk\":\"dataaqgoqb\",\"rb\":\"databhz\",\"asfgqgucyhfaimqv\":\"datahtmqowi\",\"oehgfmqmskkixvlz\":\"dataruozkgyfp\"}},\"parameters\":{\"vzjyielb\":{\"type\":\"String\",\"defaultValue\":\"datapevasyn\"},\"nmpecqxgiqasifub\":{\"type\":\"Int\",\"defaultValue\":\"datavbqv\"},\"nxjkhtupsvyouw\":{\"type\":\"Int\",\"defaultValue\":\"datastlpwqp\"}},\"annotations\":[\"datayxfwkztsmsfb\",\"datavy\",\"datalznfhkqytkztado\",\"datagfzdgjfcycrsvl\"],\"folder\":{\"name\":\"h\"},\"\":{\"wqajquzxpixhy\":\"datakzju\",\"soscien\":\"dataipnfdb\",\"rtek\":\"datazfvbennmfkbpj\"}}")
             .toObject(ExcelDataset.class);
-        Assertions.assertEquals("nlrtbfijzz", model.description());
-        Assertions.assertEquals("e", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("wytkujsqy").type());
-        Assertions.assertEquals("iwrycgnwplrrb", model.folder().name());
+        Assertions.assertEquals("kbpjzobdwbcpra", model.description());
+        Assertions.assertEquals("kivdwgtqcume", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("vzjyielb").type());
+        Assertions.assertEquals("h", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExcelDataset model = new ExcelDataset().withDescription("nlrtbfijzz")
-            .withStructure("datao")
-            .withSchema("dataolbuauktwieope")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("e")
-                .withParameters(mapOf("kgxyxyauxre", "datadwrswyiljpi")))
-            .withParameters(mapOf("wytkujsqy",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datacnlt")))
-            .withAnnotations(Arrays.asList("dataoxfab", "dataqgpwbmwhr"))
-            .withFolder(new DatasetFolder().withName("iwrycgnwplrrb"))
-            .withLocation(new DatasetLocation().withFolderPath("datal")
-                .withFileName("datalhhfi")
+        ExcelDataset model = new ExcelDataset().withDescription("kbpjzobdwbcpra")
+            .withStructure("datakuhydtnaczkfwfat")
+            .withSchema("datawphn")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("kivdwgtqcume")
+                .withParameters(mapOf("iuycsbskowk", "dataaqgoqb", "rb", "databhz", "asfgqgucyhfaimqv", "datahtmqowi",
+                    "oehgfmqmskkixvlz", "dataruozkgyfp")))
+            .withParameters(mapOf("vzjyielb",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datapevasyn"),
+                "nmpecqxgiqasifub",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datavbqv"), "nxjkhtupsvyouw",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datastlpwqp")))
+            .withAnnotations(Arrays.asList("datayxfwkztsmsfb", "datavy", "datalznfhkqytkztado", "datagfzdgjfcycrsvl"))
+            .withFolder(new DatasetFolder().withName("h"))
+            .withLocation(new DatasetLocation().withFolderPath("dataybydhui")
+                .withFileName("dataouwudhuaorh")
                 .withAdditionalProperties(mapOf("type", "DatasetLocation")))
-            .withSheetName("datais")
-            .withSheetIndex("datamey")
-            .withRange("datajamca")
-            .withFirstRowAsHeader("datahftpzcrrykll")
-            .withCompression(new DatasetCompression().withType("datanqanhkigglclwal")
-                .withLevel("dataubhg")
+            .withSheetName("datajymgqbgcxhn")
+            .withSheetIndex("datagzxlermkmerghski")
+            .withRange("datanpupkcbkfuk")
+            .withFirstRowAsHeader("datajqnvtsdyd")
+            .withCompression(new DatasetCompression().withType("datakpafyaloowwziz")
+                .withLevel("datayuf")
                 .withAdditionalProperties(mapOf()))
-            .withNullValue("dataia");
+            .withNullValue("dataujqbbgsimwejl");
         model = BinaryData.fromObject(model).toObject(ExcelDataset.class);
-        Assertions.assertEquals("nlrtbfijzz", model.description());
-        Assertions.assertEquals("e", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("wytkujsqy").type());
-        Assertions.assertEquals("iwrycgnwplrrb", model.folder().name());
+        Assertions.assertEquals("kbpjzobdwbcpra", model.description());
+        Assertions.assertEquals("kivdwgtqcume", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("vzjyielb").type());
+        Assertions.assertEquals("h", model.folder().name());
     }
 
     // Use "Map.of" if available

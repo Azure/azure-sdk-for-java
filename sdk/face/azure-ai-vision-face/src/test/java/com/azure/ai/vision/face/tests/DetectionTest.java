@@ -15,13 +15,13 @@ import com.azure.ai.vision.face.tests.commands.detection.DetectionFunctionProvid
 import com.azure.ai.vision.face.tests.utils.FaceDisplayNameGenerator;
 import com.azure.ai.vision.face.tests.utils.TestUtils;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
-import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.util.function.Tuple3;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -34,16 +34,15 @@ public class DetectionTest extends FaceClientTestBase {
 
     @ParameterizedTest
     @MethodSource("getDataFortTestDetectFaceReturnFaceIdAndReturnRecognitionModel")
-    public void testDetectFaceReturnFaceIdAndReturnRecognitionModel(
-            String httpClientName, FaceServiceVersion serviceVersion, Supplier<DetectSyncFunction> detectionFunctionSupplier,
-            boolean returnFaceId, boolean returnRecognitionModel) {
+    public void testDetectFaceReturnFaceIdAndReturnRecognitionModel(String httpClientName,
+        FaceServiceVersion serviceVersion, Supplier<DetectSyncFunction> detectionFunctionSupplier, boolean returnFaceId,
+        boolean returnRecognitionModel) {
 
         DetectSyncFunction detectionFunction = detectionFunctionSupplier.get();
 
         FaceRecognitionModel recognitionModel = FaceRecognitionModel.RECOGNITION_04;
-        List<FaceDetectionResult> detectResults = detectionFunction.execute(
-                FaceDetectionModel.DETECTION_03, recognitionModel, returnFaceId, null,
-                null, returnRecognitionModel, null);
+        List<FaceDetectionResult> detectResults = detectionFunction.execute(FaceDetectionModel.DETECTION_03,
+            recognitionModel, returnFaceId, null, null, returnRecognitionModel, null);
 
         Assertions.assertNotNull(detectResults);
 
@@ -57,12 +56,12 @@ public class DetectionTest extends FaceClientTestBase {
     }
 
     private Stream<Arguments> getDataFortTestDetectFaceReturnFaceIdAndReturnRecognitionModel() {
-        Boolean[] booleanArray = {false, true};
-        DetectionFunctionProvider[] providers = DetectionFunctionProvider.getFunctionProviders(
-                Resources.TEST_IMAGE_PATH_FAMILY1_DAD1, Resources.TEST_IMAGE_URL_DETECT_SAMPLE);
+        Boolean[] booleanArray = { false, true };
+        DetectionFunctionProvider[] providers = DetectionFunctionProvider
+            .getFunctionProviders(Resources.TEST_IMAGE_PATH_FAMILY1_DAD1, Resources.TEST_IMAGE_URL_DETECT_SAMPLE);
 
-        Stream<Triple<String, FaceServiceVersion, Supplier<DetectSyncFunction>>> clientArumentStream =
-                createClientArgumentStream(FaceClient.class, FaceAsyncClient.class, providers);
+        Stream<Tuple3<String, FaceServiceVersion, Supplier<DetectSyncFunction>>> clientArumentStream
+            = createClientArgumentStream(FaceClient.class, FaceAsyncClient.class, providers);
 
         return TestUtils.createCombinationWithClientArguments(clientArumentStream, booleanArray, booleanArray);
     }

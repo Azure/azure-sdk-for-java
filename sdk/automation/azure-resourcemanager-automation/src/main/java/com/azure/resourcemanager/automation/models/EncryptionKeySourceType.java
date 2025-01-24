@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.automation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Encryption Key Source. */
+/**
+ * Encryption Key Source.
+ */
 public enum EncryptionKeySourceType {
-    /** Enum value Microsoft.Automation. */
+    /**
+     * Enum value Microsoft.Automation.
+     */
     MICROSOFT_AUTOMATION("Microsoft.Automation"),
 
-    /** Enum value Microsoft.Keyvault. */
+    /**
+     * Enum value Microsoft.Keyvault.
+     */
     MICROSOFT_KEYVAULT("Microsoft.Keyvault");
 
-    /** The actual serialized value for a EncryptionKeySourceType instance. */
+    /**
+     * The actual serialized value for a EncryptionKeySourceType instance.
+     */
     private final String value;
 
     EncryptionKeySourceType(String value) {
@@ -24,11 +29,10 @@ public enum EncryptionKeySourceType {
 
     /**
      * Parses a serialized value to a EncryptionKeySourceType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EncryptionKeySourceType object, or null if unable to parse.
      */
-    @JsonCreator
     public static EncryptionKeySourceType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum EncryptionKeySourceType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

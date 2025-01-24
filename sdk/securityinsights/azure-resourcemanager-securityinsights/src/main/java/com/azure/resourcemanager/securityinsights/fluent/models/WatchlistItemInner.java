@@ -5,31 +5,103 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
-/** Represents a Watchlist item in Azure Security Insights. */
+/**
+ * Represents a Watchlist Item in Azure Security Insights.
+ */
 @Fluent
 public final class WatchlistItemInner extends ResourceWithEtag {
     /*
      * Watchlist Item properties
      */
-    @JsonProperty(value = "properties")
     private WatchlistItemProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WatchlistItemInner class.
+     */
+    public WatchlistItemInner() {
+    }
 
     /**
      * Get the innerProperties property: Watchlist Item properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WatchlistItemProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WatchlistItemInner withEtag(String etag) {
         super.withEtag(etag);
@@ -38,7 +110,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the watchlistItemType property: The type of the watchlist item.
-     *
+     * 
      * @return the watchlistItemType value.
      */
     public String watchlistItemType() {
@@ -47,7 +119,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Set the watchlistItemType property: The type of the watchlist item.
-     *
+     * 
      * @param watchlistItemType the watchlistItemType value to set.
      * @return the WatchlistItemInner object itself.
      */
@@ -61,7 +133,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the watchlistItemId property: The id (a Guid) of the watchlist item.
-     *
+     * 
      * @return the watchlistItemId value.
      */
     public String watchlistItemId() {
@@ -70,7 +142,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Set the watchlistItemId property: The id (a Guid) of the watchlist item.
-     *
+     * 
      * @param watchlistItemId the watchlistItemId value to set.
      * @return the WatchlistItemInner object itself.
      */
@@ -84,7 +156,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the tenantId property: The tenantId to which the watchlist item belongs to.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -93,7 +165,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Set the tenantId property: The tenantId to which the watchlist item belongs to.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the WatchlistItemInner object itself.
      */
@@ -107,7 +179,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the isDeleted property: A flag that indicates if the watchlist item is deleted or not.
-     *
+     * 
      * @return the isDeleted value.
      */
     public Boolean isDeleted() {
@@ -116,7 +188,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Set the isDeleted property: A flag that indicates if the watchlist item is deleted or not.
-     *
+     * 
      * @param isDeleted the isDeleted value to set.
      * @return the WatchlistItemInner object itself.
      */
@@ -130,7 +202,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the created property: The time the watchlist item was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -139,7 +211,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Set the created property: The time the watchlist item was created.
-     *
+     * 
      * @param created the created value to set.
      * @return the WatchlistItemInner object itself.
      */
@@ -153,7 +225,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the updated property: The last time the watchlist item was updated.
-     *
+     * 
      * @return the updated value.
      */
     public OffsetDateTime updated() {
@@ -162,7 +234,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Set the updated property: The last time the watchlist item was updated.
-     *
+     * 
      * @param updated the updated value to set.
      * @return the WatchlistItemInner object itself.
      */
@@ -176,7 +248,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the createdBy property: Describes a user that created the watchlist item.
-     *
+     * 
      * @return the createdBy value.
      */
     public UserInfo createdBy() {
@@ -185,7 +257,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Set the createdBy property: Describes a user that created the watchlist item.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the WatchlistItemInner object itself.
      */
@@ -199,7 +271,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the updatedBy property: Describes a user that updated the watchlist item.
-     *
+     * 
      * @return the updatedBy value.
      */
     public UserInfo updatedBy() {
@@ -208,7 +280,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Set the updatedBy property: Describes a user that updated the watchlist item.
-     *
+     * 
      * @param updatedBy the updatedBy value to set.
      * @return the WatchlistItemInner object itself.
      */
@@ -222,20 +294,20 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the itemsKeyValue property: key-value pairs for a watchlist item.
-     *
+     * 
      * @return the itemsKeyValue value.
      */
-    public Map<String, Object> itemsKeyValue() {
+    public Object itemsKeyValue() {
         return this.innerProperties() == null ? null : this.innerProperties().itemsKeyValue();
     }
 
     /**
      * Set the itemsKeyValue property: key-value pairs for a watchlist item.
-     *
+     * 
      * @param itemsKeyValue the itemsKeyValue value to set.
      * @return the WatchlistItemInner object itself.
      */
-    public WatchlistItemInner withItemsKeyValue(Map<String, Object> itemsKeyValue) {
+    public WatchlistItemInner withItemsKeyValue(Object itemsKeyValue) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WatchlistItemProperties();
         }
@@ -245,20 +317,20 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Get the entityMapping property: key-value pairs for a watchlist item entity mapping.
-     *
+     * 
      * @return the entityMapping value.
      */
-    public Map<String, Object> entityMapping() {
+    public Object entityMapping() {
         return this.innerProperties() == null ? null : this.innerProperties().entityMapping();
     }
 
     /**
      * Set the entityMapping property: key-value pairs for a watchlist item entity mapping.
-     *
+     * 
      * @param entityMapping the entityMapping value to set.
      * @return the WatchlistItemInner object itself.
      */
-    public WatchlistItemInner withEntityMapping(Map<String, Object> entityMapping) {
+    public WatchlistItemInner withEntityMapping(Object entityMapping) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WatchlistItemProperties();
         }
@@ -268,14 +340,61 @@ public final class WatchlistItemInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WatchlistItemInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WatchlistItemInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WatchlistItemInner.
+     */
+    public static WatchlistItemInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WatchlistItemInner deserializedWatchlistItemInner = new WatchlistItemInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWatchlistItemInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWatchlistItemInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWatchlistItemInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedWatchlistItemInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWatchlistItemInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWatchlistItemInner.innerProperties = WatchlistItemProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWatchlistItemInner;
+        });
     }
 }

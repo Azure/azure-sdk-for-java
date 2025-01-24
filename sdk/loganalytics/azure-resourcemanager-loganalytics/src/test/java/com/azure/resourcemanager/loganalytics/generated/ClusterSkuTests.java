@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterSku model =
-            BinaryData.fromString("{\"capacity\":500,\"name\":\"CapacityReservation\"}").toObject(ClusterSku.class);
-        Assertions.assertEquals(Capacity.FIVE_ZERO_ZERO, model.capacity());
+        ClusterSku model
+            = BinaryData.fromString("{\"capacity\":2000,\"name\":\"CapacityReservation\"}").toObject(ClusterSku.class);
+        Assertions.assertEquals(Capacity.TWO_ZERO_ZERO_ZERO, model.capacity());
         Assertions.assertEquals(ClusterSkuNameEnum.CAPACITY_RESERVATION, model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterSku model =
-            new ClusterSku().withCapacity(Capacity.FIVE_ZERO_ZERO).withName(ClusterSkuNameEnum.CAPACITY_RESERVATION);
+        ClusterSku model = new ClusterSku().withCapacity(Capacity.TWO_ZERO_ZERO_ZERO)
+            .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION);
         model = BinaryData.fromObject(model).toObject(ClusterSku.class);
-        Assertions.assertEquals(Capacity.FIVE_ZERO_ZERO, model.capacity());
+        Assertions.assertEquals(Capacity.TWO_ZERO_ZERO_ZERO, model.capacity());
         Assertions.assertEquals(ClusterSkuNameEnum.CAPACITY_RESERVATION, model.name());
     }
 }

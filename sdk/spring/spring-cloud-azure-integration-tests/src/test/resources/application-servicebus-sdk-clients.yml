@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    azure:
+      credential:
+        token-credential-bean-name: integrationTestTokenCredential
+      servicebus:
+        namespace: ${AZURE_SERVICE_BUS_NAMESPACE}
+        entity-name: ${AZURE_SERVICE_BUS_ENTITY_NAME}
+        entity-type: ${AZURE_SERVICE_BUS_ENTITY_TYPE}
+        processor:
+          auto-startup: false

@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Server edition capabilities.
  */
 @Immutable
-public final class ServerEditionCapability {
+public final class ServerEditionCapability implements JsonSerializable<ServerEditionCapability> {
     /*
      * Server edition name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * A list of supported storage editions
      */
-    @JsonProperty(value = "supportedStorageEditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageEditionCapability> supportedStorageEditions;
 
     /*
      * A list of supported server versions.
      */
-    @JsonProperty(value = "supportedServerVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerVersionCapability> supportedServerVersions;
 
     /**
@@ -76,5 +77,48 @@ public final class ServerEditionCapability {
         if (supportedServerVersions() != null) {
             supportedServerVersions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerEditionCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerEditionCapability if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerEditionCapability.
+     */
+    public static ServerEditionCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerEditionCapability deserializedServerEditionCapability = new ServerEditionCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedServerEditionCapability.name = reader.getString();
+                } else if ("supportedStorageEditions".equals(fieldName)) {
+                    List<StorageEditionCapability> supportedStorageEditions
+                        = reader.readArray(reader1 -> StorageEditionCapability.fromJson(reader1));
+                    deserializedServerEditionCapability.supportedStorageEditions = supportedStorageEditions;
+                } else if ("supportedServerVersions".equals(fieldName)) {
+                    List<ServerVersionCapability> supportedServerVersions
+                        = reader.readArray(reader1 -> ServerVersionCapability.fromJson(reader1));
+                    deserializedServerEditionCapability.supportedServerVersions = supportedServerVersions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerEditionCapability;
+        });
     }
 }

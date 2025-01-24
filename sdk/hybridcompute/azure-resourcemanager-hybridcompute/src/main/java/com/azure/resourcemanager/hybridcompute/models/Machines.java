@@ -48,8 +48,8 @@ public interface Machines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a hybrid machine along with {@link Response}.
      */
-    Response<Machine> getByResourceGroupWithResponse(String resourceGroupName, String machineName, String expand,
-        Context context);
+    Response<Machine> getByResourceGroupWithResponse(String resourceGroupName, String machineName,
+        InstanceViewTypes expand, Context context);
 
     /**
      * Retrieves information about the model view or the instance view of a hybrid machine.

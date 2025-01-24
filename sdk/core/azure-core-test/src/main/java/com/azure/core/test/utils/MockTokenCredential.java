@@ -19,4 +19,9 @@ public class MockTokenCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
     }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        return new AccessToken("mockToken", OffsetDateTime.now().plusHours(2));
+    }
 }

@@ -63,23 +63,18 @@ public final class ProjectTaskImpl implements ProjectTask, ProjectTask.Definitio
     }
 
     public ProjectTask create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTasks()
-                .createOrUpdateWithResponse(
-                    groupName, serviceName, projectName, taskName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTasks()
+            .createOrUpdateWithResponse(groupName, serviceName, projectName, taskName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProjectTask create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTasks()
-                .createOrUpdateWithResponse(groupName, serviceName, projectName, taskName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTasks()
+            .createOrUpdateWithResponse(groupName, serviceName, projectName, taskName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -94,54 +89,46 @@ public final class ProjectTaskImpl implements ProjectTask, ProjectTask.Definitio
     }
 
     public ProjectTask apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTasks()
-                .updateWithResponse(groupName, serviceName, projectName, taskName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTasks()
+            .updateWithResponse(groupName, serviceName, projectName, taskName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProjectTask apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTasks()
-                .updateWithResponse(groupName, serviceName, projectName, taskName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTasks()
+            .updateWithResponse(groupName, serviceName, projectName, taskName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ProjectTaskImpl(
-        ProjectTaskInner innerObject, com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
+    ProjectTaskImpl(ProjectTaskInner innerObject,
+        com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.groupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "services");
-        this.projectName = Utils.getValueFromIdByName(innerObject.id(), "projects");
-        this.taskName = Utils.getValueFromIdByName(innerObject.id(), "tasks");
+        this.groupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "services");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.taskName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tasks");
     }
 
     public ProjectTask refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTasks()
-                .getWithResponse(groupName, serviceName, projectName, taskName, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTasks()
+            .getWithResponse(groupName, serviceName, projectName, taskName, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProjectTask refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTasks()
-                .getWithResponse(groupName, serviceName, projectName, taskName, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTasks()
+            .getWithResponse(groupName, serviceName, projectName, taskName, localExpand, context)
+            .getValue();
         return this;
     }
 

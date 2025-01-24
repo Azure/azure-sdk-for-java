@@ -21,7 +21,7 @@ public final class CredentialOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"yafdlfkyirjbfwr\",\"annotations\":[\"dataibzoqgut\"],\"\":{\"mhaarkh\":\"datawwmkgzsqrirlc\",\"ercshiuwnef\":\"dataa\",\"klqtnngwpgbfrtxb\":\"databheiywmxsxl\"}},\"name\":\"afttvpmdnigajbxj\",\"type\":\"lfdqpa\",\"etag\":\"wmxmdjezhutc\",\"id\":\"qdchmxr\"}";
+            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"xrljlqdpqkcbf\",\"annotations\":[\"dataddfre\"],\"\":{\"rphdakwwiezeut\":\"datarsufvtmseuqguz\",\"awmoxvqlwzatv\":\"datar\",\"shvozhhzlmwvce\":\"dataejlocmqladlpqlwt\"}},\"name\":\"vafcjek\",\"type\":\"g\",\"etag\":\"rifyrap\",\"id\":\"iaeqcg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class CredentialOperationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CredentialResource response = manager.credentialOperations()
-            .getWithResponse("ogboaimwxswfytn", "cjhjrwn", "gtgc", "mpjdrhxfg", com.azure.core.util.Context.NONE)
+            .getWithResponse("izoamttxyddkvi", "l", "bnycgzlicytfpy", "pedno", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qdchmxr", response.id());
-        Assertions.assertEquals("yafdlfkyirjbfwr", response.properties().description());
+        Assertions.assertEquals("iaeqcg", response.id());
+        Assertions.assertEquals("xrljlqdpqkcbf", response.properties().description());
     }
 }

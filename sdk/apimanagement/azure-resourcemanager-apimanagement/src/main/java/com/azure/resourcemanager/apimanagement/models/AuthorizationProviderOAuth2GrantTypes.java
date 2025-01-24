@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Authorization Provider oauth2 grant types settings. */
+/**
+ * Authorization Provider oauth2 grant types settings.
+ */
 @Fluent
-public final class AuthorizationProviderOAuth2GrantTypes {
+public final class AuthorizationProviderOAuth2GrantTypes
+    implements JsonSerializable<AuthorizationProviderOAuth2GrantTypes> {
     /*
      * OAuth2 authorization code grant parameters
      */
-    @JsonProperty(value = "authorizationCode")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> authorizationCode;
 
     /*
      * OAuth2 client credential grant parameters
      */
-    @JsonProperty(value = "clientCredentials")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> clientCredentials;
 
-    /** Creates an instance of AuthorizationProviderOAuth2GrantTypes class. */
+    /**
+     * Creates an instance of AuthorizationProviderOAuth2GrantTypes class.
+     */
     public AuthorizationProviderOAuth2GrantTypes() {
     }
 
     /**
      * Get the authorizationCode property: OAuth2 authorization code grant parameters.
-     *
+     * 
      * @return the authorizationCode value.
      */
     public Map<String, String> authorizationCode() {
@@ -41,7 +45,7 @@ public final class AuthorizationProviderOAuth2GrantTypes {
 
     /**
      * Set the authorizationCode property: OAuth2 authorization code grant parameters.
-     *
+     * 
      * @param authorizationCode the authorizationCode value to set.
      * @return the AuthorizationProviderOAuth2GrantTypes object itself.
      */
@@ -52,7 +56,7 @@ public final class AuthorizationProviderOAuth2GrantTypes {
 
     /**
      * Get the clientCredentials property: OAuth2 client credential grant parameters.
-     *
+     * 
      * @return the clientCredentials value.
      */
     public Map<String, String> clientCredentials() {
@@ -61,7 +65,7 @@ public final class AuthorizationProviderOAuth2GrantTypes {
 
     /**
      * Set the clientCredentials property: OAuth2 client credential grant parameters.
-     *
+     * 
      * @param clientCredentials the clientCredentials value to set.
      * @return the AuthorizationProviderOAuth2GrantTypes object itself.
      */
@@ -72,9 +76,53 @@ public final class AuthorizationProviderOAuth2GrantTypes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("authorizationCode", this.authorizationCode,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("clientCredentials", this.clientCredentials,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationProviderOAuth2GrantTypes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationProviderOAuth2GrantTypes if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizationProviderOAuth2GrantTypes.
+     */
+    public static AuthorizationProviderOAuth2GrantTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationProviderOAuth2GrantTypes deserializedAuthorizationProviderOAuth2GrantTypes
+                = new AuthorizationProviderOAuth2GrantTypes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authorizationCode".equals(fieldName)) {
+                    Map<String, String> authorizationCode = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAuthorizationProviderOAuth2GrantTypes.authorizationCode = authorizationCode;
+                } else if ("clientCredentials".equals(fieldName)) {
+                    Map<String, String> clientCredentials = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAuthorizationProviderOAuth2GrantTypes.clientCredentials = clientCredentials;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationProviderOAuth2GrantTypes;
+        });
     }
 }

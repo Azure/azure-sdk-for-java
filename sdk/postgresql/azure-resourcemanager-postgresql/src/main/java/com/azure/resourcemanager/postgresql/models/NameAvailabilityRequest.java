@@ -6,29 +6,36 @@ package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request from client to check resource name availability. */
+/**
+ * Request from client to check resource name availability.
+ */
 @Fluent
-public final class NameAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityRequest.class);
-
+public final class NameAvailabilityRequest implements JsonSerializable<NameAvailabilityRequest> {
     /*
      * Resource name to verify.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Resource type used for verification.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
+     * Creates an instance of NameAvailabilityRequest class.
+     */
+    public NameAvailabilityRequest() {
+    }
+
+    /**
      * Get the name property: Resource name to verify.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +44,7 @@ public final class NameAvailabilityRequest {
 
     /**
      * Set the name property: Resource name to verify.
-     *
+     * 
      * @param name the name value to set.
      * @return the NameAvailabilityRequest object itself.
      */
@@ -48,7 +55,7 @@ public final class NameAvailabilityRequest {
 
     /**
      * Get the type property: Resource type used for verification.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -57,7 +64,7 @@ public final class NameAvailabilityRequest {
 
     /**
      * Set the type property: Resource type used for verification.
-     *
+     * 
      * @param type the type value to set.
      * @return the NameAvailabilityRequest object itself.
      */
@@ -68,14 +75,55 @@ public final class NameAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model NameAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model NameAvailabilityRequest"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NameAvailabilityRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NameAvailabilityRequest.
+     */
+    public static NameAvailabilityRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityRequest deserializedNameAvailabilityRequest = new NameAvailabilityRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNameAvailabilityRequest.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNameAvailabilityRequest.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityRequest;
+        });
     }
 }
