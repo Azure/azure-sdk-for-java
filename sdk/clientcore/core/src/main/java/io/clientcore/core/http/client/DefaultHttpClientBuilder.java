@@ -3,34 +3,14 @@
 
 package io.clientcore.core.http.client;
 
-import io.clientcore.core.http.client.implementation.JdkHttpClientProxySelector;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.SharedExecutorService;
 import io.clientcore.core.util.configuration.Configuration;
 
 import javax.net.ssl.SSLContext;
-import java.io.IOException;
-import java.io.Reader;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
 import java.util.concurrent.Executor;
-
-import static io.clientcore.core.http.client.implementation.JdkHttpUtils.getDefaultTimeoutFromEnvironment;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_CONNECT_TIMEOUT;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_READ_TIMEOUT;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_RESPONSE_TIMEOUT;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_WRITE_TIMEOUT;
 
 /**
  * Builder to configure and build an instance of the core {@link HttpClient} type using the JDK
@@ -39,65 +19,30 @@ import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUE
 public class DefaultHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClientBuilder.class);
 
-    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_CONNECTION_TIMEOUT;
-    private static final Duration DEFAULT_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
-    private static final Duration DEFAULT_READ_TIMEOUT;
-
-    private static final String JAVA_HOME = System.getProperty("java.home");
-    private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
-
-    // These headers are restricted by default in native JDK12 HttpClient.
-    // These headers can be whitelisted by setting jdk.httpclient.allowRestrictedHeaders
-    // property in the network properties file: 'JAVA_HOME/conf/net.properties'
-    // e.g. white listing 'host' header.
-    //
-    // jdk.httpclient.allowRestrictedHeaders=host
-    // Also see - https://bugs.openjdk.java.net/browse/JDK-8213189
-    static final Set<String> DEFAULT_RESTRICTED_HEADERS;
-
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-        DEFAULT_CONNECTION_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_REQUEST_CONNECT_TIMEOUT,
-            Duration.ofSeconds(10), LOGGER);
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_REQUEST_RESPONSE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-
-        DEFAULT_RESTRICTED_HEADERS = Set.of("connection", "content-length", "expect", "host", "upgrade");
-    }
-
-    private java.net.http.HttpClient.Builder httpClientBuilder;
-    private ProxyOptions proxyOptions;
-    private Configuration configuration;
-    private Executor executor;
-    private SSLContext sslContext;
-
-    private Duration connectionTimeout;
-    private Duration writeTimeout;
-    private Duration responseTimeout;
-    private Duration readTimeout;
+    static final String ERROR_MESSAGE = "Usage of DefaultHttpClient is only available when using Java 12 or "
+        + "higher. For support with Java 11 or lower, please including a dependency on io.clientcore:http-okhttp3.";
 
     /**
      * Creates DefaultHttpClientBuilder.
      */
     public DefaultHttpClientBuilder() {
-        this.executor = SharedExecutorService.getInstance();
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
-     * Creates DefaultHttpClientBuilder from the builder of an existing {@link java.net.http.HttpClient.Builder}.
+     * Creates DefaultHttpClientBuilder from the builder of an existing JDK HttpClient.Builder.
+     * <p>
+     * This method exists to support multi-release JARs where the JDK HttpClient is only available in Java 11 and later.
+     * But since the baseline requirement is Java 8 there cannot be references to the class, so this method accepts
+     * {@link Object} as a holder. The actual type of the {@link Object} passed must be an instance of
+     * {@code HttpClient.Builder}, otherwise an exception will thrown.
      *
      * @param httpClientBuilder the HttpClient builder to use
+     * @throws ClassCastException if {@code httpClientBuilder} isn't an instance of {@code HttpClient.Builder}
      * @throws NullPointerException if {@code httpClientBuilder} is null
      */
-    public DefaultHttpClientBuilder(java.net.http.HttpClient.Builder httpClientBuilder) {
-        this.httpClientBuilder = Objects.requireNonNull(httpClientBuilder, "'httpClientBuilder' cannot be null.");
+    public DefaultHttpClientBuilder(Object httpClientBuilder) {
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
@@ -114,8 +59,7 @@ public class DefaultHttpClientBuilder {
      * @throws NullPointerException if {@code executor} is null
      */
     public DefaultHttpClientBuilder executor(Executor executor) {
-        this.executor = Objects.requireNonNull(executor, "executor can not be null");
-        return this;
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
@@ -137,9 +81,7 @@ public class DefaultHttpClientBuilder {
      * @return the updated {@link DefaultHttpClientBuilder} object
      */
     public DefaultHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
-        // setConnectionTimeout can be null
-        this.connectionTimeout = connectionTimeout;
-        return this;
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
@@ -159,8 +101,7 @@ public class DefaultHttpClientBuilder {
      * @return The updated {@link DefaultHttpClientBuilder} object.
      */
     public DefaultHttpClientBuilder writeTimeout(Duration writeTimeout) {
-        this.writeTimeout = writeTimeout;
-        return this;
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
@@ -178,8 +119,7 @@ public class DefaultHttpClientBuilder {
      * @return The updated {@link DefaultHttpClientBuilder} object.
      */
     public DefaultHttpClientBuilder responseTimeout(Duration responseTimeout) {
-        this.responseTimeout = responseTimeout;
-        return this;
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
@@ -198,8 +138,7 @@ public class DefaultHttpClientBuilder {
      * @return The updated {@link DefaultHttpClientBuilder} object.
      */
     public DefaultHttpClientBuilder readTimeout(Duration readTimeout) {
-        this.readTimeout = readTimeout;
-        return this;
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
@@ -224,14 +163,7 @@ public class DefaultHttpClientBuilder {
      * @throws NullPointerException If {@code proxyOptions} is not null and the proxy type or address is not set.
      */
     public DefaultHttpClientBuilder proxy(ProxyOptions proxyOptions) {
-        if (proxyOptions != null) {
-            Objects.requireNonNull(proxyOptions.getType(), "Proxy type is required.");
-            Objects.requireNonNull(proxyOptions.getAddress(), "Proxy address is required.");
-        }
-
-        // proxyOptions can be null
-        this.proxyOptions = proxyOptions;
-        return this;
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
@@ -241,8 +173,7 @@ public class DefaultHttpClientBuilder {
      * @return The updated {@link DefaultHttpClientBuilder} object.
      */
     public DefaultHttpClientBuilder sslContext(SSLContext sslContext) {
-        this.sslContext = sslContext;
-        return this;
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
@@ -252,8 +183,7 @@ public class DefaultHttpClientBuilder {
      * @return The updated {@link DefaultHttpClientBuilder} object.
      */
     public DefaultHttpClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
     /**
@@ -262,106 +192,6 @@ public class DefaultHttpClientBuilder {
      * @return a {@link HttpClient}.
      */
     public HttpClient build() {
-        java.net.http.HttpClient.Builder httpClientBuilder
-            = this.httpClientBuilder == null ? java.net.http.HttpClient.newBuilder() : this.httpClientBuilder;
-
-        // Client Core JDK http client supports HTTP 1.1 by default.
-        httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
-
-        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECTION_TIMEOUT));
-
-        Duration writeTimeout = getTimeout(this.writeTimeout, DEFAULT_WRITE_TIMEOUT);
-        Duration responseTimeout = getTimeout(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT);
-        Duration readTimeout = getTimeout(this.readTimeout, DEFAULT_READ_TIMEOUT);
-
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-
-        ProxyOptions buildProxyOptions
-            = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration) : proxyOptions;
-
-        if (executor != null) {
-            httpClientBuilder.executor(executor);
-        }
-
-        if (sslContext != null) {
-            httpClientBuilder.sslContext(sslContext);
-        }
-
-        if (buildProxyOptions != null) {
-            httpClientBuilder
-                = httpClientBuilder.proxy(new JdkHttpClientProxySelector(buildProxyOptions.getType().toProxyType(),
-                    buildProxyOptions.getAddress(), buildProxyOptions.getNonProxyHosts()));
-
-            if (buildProxyOptions.getUsername() != null) {
-                httpClientBuilder.authenticator(
-                    new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
-            }
-        }
-
-        return new DefaultHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
-            writeTimeout, responseTimeout, readTimeout);
-    }
-
-    Set<String> getRestrictedHeaders() {
-        // Compute the effective restricted headers by removing the allowed headers from default restricted headers
-        Set<String> restrictedHeaders = new HashSet<>(DEFAULT_RESTRICTED_HEADERS);
-        removeAllowedHeaders(restrictedHeaders);
-        return restrictedHeaders;
-    }
-
-    private void removeAllowedHeaders(Set<String> restrictedHeaders) {
-        Properties properties = getNetworkProperties();
-        String[] allowRestrictedHeadersNetProperties
-            = properties.getProperty(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
-
-        // Read all allowed restricted headers from configuration
-        Configuration config = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        String[] allowRestrictedHeadersSystemProperties
-            = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
-
-        // Combine the set of all allowed restricted headers from both sources
-        for (String header : allowRestrictedHeadersSystemProperties) {
-            restrictedHeaders.remove(header.trim().toLowerCase(Locale.ROOT));
-        }
-
-        for (String header : allowRestrictedHeadersNetProperties) {
-            restrictedHeaders.remove(header.trim().toLowerCase(Locale.ROOT));
-        }
-    }
-
-    Properties getNetworkProperties() {
-        // Read all allowed restricted headers from JAVA_HOME/conf/net.properties
-        Path path = Paths.get(JAVA_HOME, "conf", "net.properties");
-        Properties properties = new Properties();
-        try (Reader reader = Files.newBufferedReader(path)) {
-            properties.load(reader);
-        } catch (IOException e) {
-            LOGGER.atWarning().addKeyValue("path", path).log("Cannot read net properties.", e);
-        }
-        return properties;
-    }
-
-    private static class ProxyAuthenticator extends Authenticator {
-        private final String userName;
-        private final String password;
-
-        ProxyAuthenticator(String userName, String password) {
-            this.userName = userName;
-            this.password = password;
-        }
-
-        @Override
-        protected PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(this.userName, password.toCharArray());
-        }
-    }
-
-    private static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
-        if (configuredTimeout == null) {
-            return defaultTimeout;
-        }
-
-        return configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0 ? MINIMUM_TIMEOUT : configuredTimeout;
+        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 }

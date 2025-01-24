@@ -8,8 +8,17 @@ import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 
-public class DefaultHttpClientTests extends HttpClientTests {
+/**
+ * Tests for the {@link DefaultHttpClient} class.
+ * <p>
+ * Now that the default HttpClient, and related code, are using multi-release JARs this must be an integration test as
+ * the full JAR must be available to use the multi-release code.
+ */
+@DisabledForJreRange(max = JRE.JAVA_11)
+public class DefaultHttpClientTestsIT extends HttpClientTests {
     private static LocalTestServer server;
 
     @BeforeAll
