@@ -10,7 +10,7 @@ package com.azure.resourcemanager.kusto.generated;
 public final class ClustersListSkusSamples {
     /*
      * x-ms-original-file:
-     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersListSkus.json
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersListSkus.json
      */
     /**
      * Sample code: KustoClustersListSkus.

@@ -24,7 +24,7 @@ public final class DatabasePrincipalAssignmentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"principalId\":\"yqwcabvnuil\",\"role\":\"Monitor\",\"tenantId\":\"aswlp\",\"principalType\":\"Group\",\"tenantName\":\"mrmfjl\",\"principalName\":\"wtoaukhfk\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"izmoaeds\"},\"id\":\"jwuive\",\"name\":\"wcgyeewxeiqb\",\"type\":\"smgomguaml\"}]}";
+            = "{\"value\":[{\"properties\":{\"principalId\":\"zzydmxzjijpvua\",\"role\":\"Monitor\",\"tenantId\":\"ihcirldef\",\"principalType\":\"User\",\"tenantName\":\"c\",\"principalName\":\"nbkkjanurnnq\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"pizxqltgrdogyp\"},\"id\":\"rxvbfihwuh\",\"name\":\"ctafsrbxrblm\",\"type\":\"iowxi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class DatabasePrincipalAssignmentsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatabasePrincipalAssignment> response = manager.databasePrincipalAssignments()
-            .list("wfiwzcxmj", "byephmgt", "ljvrcmyfqipgxhnp", com.azure.core.util.Context.NONE);
+            .list("ssffxuifmc", "ypobkdqzr", "zsylollgt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yqwcabvnuil", response.iterator().next().principalId());
+        Assertions.assertEquals("zzydmxzjijpvua", response.iterator().next().principalId());
         Assertions.assertEquals(DatabasePrincipalRole.MONITOR, response.iterator().next().role());
-        Assertions.assertEquals("aswlp", response.iterator().next().tenantId());
-        Assertions.assertEquals(PrincipalType.GROUP, response.iterator().next().principalType());
+        Assertions.assertEquals("ihcirldef", response.iterator().next().tenantId());
+        Assertions.assertEquals(PrincipalType.USER, response.iterator().next().principalType());
     }
 }
