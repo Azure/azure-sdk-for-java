@@ -1,6 +1,7 @@
 # Release History
 
 ## 5.20.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.4.2 and Spring Cloud dependencies version to 2024.0.0
 Upgrade Spring Boot dependencies version to 3.4.1 and Spring Cloud dependencies version to 2024.0.0
 
 ### Spring Cloud Azure Autoconfigure
