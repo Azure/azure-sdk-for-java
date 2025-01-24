@@ -3,6 +3,7 @@
 
 package io.clientcore.core.util;
 
+import io.clientcore.core.implementation.GenericParameterizedType;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.lang.reflect.ParameterizedType;
@@ -38,6 +39,8 @@ import java.util.function.Consumer;
  *
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType -->
  * <pre>
+ * &#47;&#47; GenericParameterizedType is a non-public helper class that allows us to specify a generic type with
+ * &#47;&#47; a class and a type. User can define any similar class to achieve the same functionality.
  * Union unionCollections = Union.ofTypes&#40;
  *     new GenericParameterizedType&#40;List.class, String.class&#41;,
  *     new GenericParameterizedType&#40;List.class, Integer.class&#41;&#41;;
@@ -49,7 +52,7 @@ import java.util.function.Consumer;
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsSwitch -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
- * union.setValue&#40;&quot;Hello&quot;&#41;;
+ * union = union.setValue&#40;&quot;Hello&quot;&#41;;
  * switch &#40;union.getValue&#40;&#41;&#41; &#123;
  *     case String s -&gt; System.out.println&#40;&quot;String value: &quot; + s&#41;;
  *     case Integer i -&gt; System.out.println&#40;&quot;Integer value: &quot; + i&#41;;
@@ -64,7 +67,7 @@ import java.util.function.Consumer;
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsLambda -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
- * union.setValue&#40;&quot;Hello&quot;&#41;;
+ * union = union.setValue&#40;&quot;Hello&quot;&#41;;
  * union.tryConsume&#40;
  *     v -&gt; System.out.println&#40;&quot;String value: &quot; + v&#41;, String.class&#41;;
  * union.tryConsume&#40;
@@ -99,7 +102,7 @@ public final class Union {
 
             typeCopy.add(types[i]);
         }
-        this.types = typeCopy;
+        this.types = Collections.unmodifiableList(typeCopy);
     }
 
     /**
@@ -127,18 +130,20 @@ public final class Union {
     }
 
     /**
-     * Sets the value of the union.
+     * Sets the value of the union. A new updated immutable union is returned.
      *
      * @param value The value of the union.
+     * @return A new updated immutable union.
      * @throws IllegalArgumentException If the value is not of one of the types in the union.
      */
     @SuppressWarnings("unchecked")
-    public void setValue(Object value) {
+    public Union setValue(Object value) {
         for (Type type : types) {
             if (isInstanceOfType(value, type) || isPrimitiveTypeMatch(value, type)) {
-                this.value = value;
-                this.currentType = type;
-                return;
+                Union newUnion = new Union(types.toArray(new Type[0]));
+                newUnion.value = value;
+                newUnion.currentType = type;
+                return newUnion;
             }
         }
         throw LOGGER.logThrowableAsError(new IllegalArgumentException("Invalid type: " + value.getClass().getName()));
@@ -159,7 +164,7 @@ public final class Union {
      * @return The types of the union.
      */
     public List<Type> getSupportedTypes() {
-        return Collections.unmodifiableList(types);
+        return types;
     }
 
     /**
@@ -217,7 +222,7 @@ public final class Union {
      * @param <T> The expected type of the value.
      */
     @SuppressWarnings("unchecked")
-    public <T> T getValue(ParameterizedType type) {
+    public <T> T getValue(Type type) {
         if (type == currentType) {
             return (T) value;
         }

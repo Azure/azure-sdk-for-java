@@ -3,7 +3,7 @@
 
 package io.clientcore.core.util.union.codesnippets;
 
-import io.clientcore.core.util.GenericParameterizedType;
+import io.clientcore.core.implementation.GenericParameterizedType;
 import io.clientcore.core.util.Union;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +22,8 @@ public class UnionJavaDocCodeSnippets {
         // END: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsPrimitiveType
 
         // BEGIN: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsCollectionType
+        // GenericParameterizedType is a non-public helper class that allows us to specify a generic type with
+        // a class and a type. User can define any similar class to achieve the same functionality.
         Union unionCollections = Union.ofTypes(
             new GenericParameterizedType(List.class, String.class),
             new GenericParameterizedType(List.class, Integer.class));
@@ -32,7 +34,7 @@ public class UnionJavaDocCodeSnippets {
     public void unionConsumeSwitch() {
         // BEGIN: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsSwitch
         Union union = Union.ofTypes(String.class, Integer.class);
-        union.setValue("Hello");
+        union = union.setValue("Hello");
         switch (union.getValue()) {
             case String s -> System.out.println("String value: " + s);
             case Integer i -> System.out.println("Integer value: " + i);
@@ -46,7 +48,7 @@ public class UnionJavaDocCodeSnippets {
     public void unionConsumeLambda() {
         // BEGIN: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsLambda
         Union union = Union.ofTypes(String.class, Integer.class);
-        union.setValue("Hello");
+        union = union.setValue("Hello");
         union.tryConsume(
             v -> System.out.println("String value: " + v), String.class);
         union.tryConsume(

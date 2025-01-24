@@ -36,7 +36,7 @@
       <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
-      <Class name="io.clientcore.core.util.GenericParameterizedType" />
+      <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
       <Class name="io.clientcore.core.util.SharedExecutorService" />
       <Class name="io.clientcore.core.util.Union" />
       <Class name="io.clientcore.core.util.binarydata.FileBinaryData" />
@@ -288,6 +288,10 @@
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
     <Class name="io.clientcore.core.http.client.implementation.InputStreamTimeoutResponseSubscriber" />
+  </Match>
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED" />
+    <Class name="io.clientcore.core.util.UnionTests" />
   </Match>
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
