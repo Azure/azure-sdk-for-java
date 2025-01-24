@@ -10,7 +10,7 @@ package com.azure.resourcemanager.kusto.generated;
 public final class ScriptsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsDelete.json
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsDelete.json
      */
     /**
      * Sample code: KustoScriptsDelete.

@@ -70,7 +70,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
       <scope>compile</scope>
     </dependency>
 

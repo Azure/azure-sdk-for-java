@@ -4,7 +4,7 @@
 package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -15,8 +15,6 @@ import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
-
-import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 
 /**
  * THESE CODE SNIPPETS ARE INTENDED FOR CLIENT LIBRARY DEVELOPERS ONLY.
@@ -39,7 +37,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
             .setLibraryVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
+        InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
 
         Tracer tracer = Instrumentation.create(instrumentationOptions, libraryOptions).getTracer();
 
@@ -49,6 +47,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     /**
      * This example shows minimal distributed tracing instrumentation.
      */
+    @SuppressWarnings("try")
     public void traceCall() {
 
         Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS).getTracer();
@@ -56,13 +55,16 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracecall
 
-        Span span = tracer.spanBuilder("{operationName}", SpanKind.CLIENT, requestOptions)
+        Span span = tracer.spanBuilder("{operationName}", SpanKind.CLIENT, null)
             .startSpan();
 
         // we'll propagate context implicitly using span.makeCurrent() as shown later.
         // Libraries that write async code should propagate context explicitly in addition to implicit propagation.
         if (tracer.isEnabled()) {
-            requestOptions.putContext(TRACE_CONTEXT_KEY, span);
+            if (requestOptions == null) {
+                requestOptions = new RequestOptions();
+            }
+            requestOptions.setInstrumentationContext(span.getInstrumentationContext());
         }
 
         try (TracingScope scope = span.makeCurrent()) {
@@ -82,6 +84,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     /**
      * This example shows full distributed tracing instrumentation that adds attributes.
      */
+    @SuppressWarnings("try")
     public void traceWithAttributes() {
 
         Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS).getTracer();
@@ -89,7 +92,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracewithattributes
 
-        Span sendSpan = tracer.spanBuilder("send {queue-name}", SpanKind.PRODUCER, requestOptions)
+        Span sendSpan = tracer.spanBuilder("send {queue-name}", SpanKind.PRODUCER, null)
             // Some of the attributes should be provided at the start time (as documented in semantic conventions) -
             // they can be used by client apps to sample spans.
             .setAttribute("messaging.system", "servicebus")
@@ -114,51 +117,47 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     }
 
     public void configureInstrumentationPolicy() {
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
-        HttpLogOptions logOptions = new HttpLogOptions();
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions();
 
         // BEGIN: io.clientcore.core.telemetry.tracing.instrumentationpolicy
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
-                new HttpLoggingPolicy(logOptions))
+                new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
 
         // END:  io.clientcore.core.telemetry.tracing.instrumentationpolicy
     }
 
     public void customizeInstrumentationPolicy() {
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
-
         // BEGIN: io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy
 
         // You can configure URL sanitization to include additional query parameters to preserve
         // in `url.full` attribute.
-        HttpLogOptions logOptions = new HttpLogOptions();
-        logOptions.addAllowedQueryParamName("documentId");
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions();
+        instrumentationOptions.addAllowedQueryParamName("documentId");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
-                new HttpLoggingPolicy(logOptions))
+                new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
 
         // END:  io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy
     }
 
     public void enrichInstrumentationPolicySpans() {
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
-        HttpLogOptions logOptions = new HttpLogOptions();
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions();
 
         // BEGIN: io.clientcore.core.telemetry.tracing.enrichhttpspans
 
         HttpPipelinePolicy enrichingPolicy = (request, next) -> {
-            Object span = request.getRequestOptions().getContext().get(TRACE_CONTEXT_KEY);
-            if (span instanceof Span) {
-                ((Span)span).setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+            Span span = request.getRequestOptions() == null
+                ? Span.noop()
+                : request.getRequestOptions().getInstrumentationContext().getSpan();
+            if (span.isRecording()) {
+                span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
             }
 
             return next.process();
@@ -167,9 +166,8 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
-                enrichingPolicy,
-                new HttpLoggingPolicy(logOptions))
+                new HttpInstrumentationPolicy(instrumentationOptions),
+                enrichingPolicy)
             .build();
 
 

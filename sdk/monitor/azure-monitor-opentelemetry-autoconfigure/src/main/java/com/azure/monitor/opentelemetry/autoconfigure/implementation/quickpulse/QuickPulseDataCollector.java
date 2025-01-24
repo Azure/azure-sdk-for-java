@@ -29,6 +29,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Trace;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
@@ -59,7 +60,6 @@ final class QuickPulseDataCollector {
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    // TODO (harskaur): Track projection (runtime) related errors in future PR
     private final AtomicReference<FilteringConfiguration> configuration;
 
     QuickPulseDataCollector(AtomicReference<FilteringConfiguration> configuration) {
@@ -77,7 +77,8 @@ final class QuickPulseDataCollector {
 
     synchronized void enable(Supplier<String> instrumentationKeySupplier) {
         this.instrumentationKeySupplier = instrumentationKeySupplier;
-        counters.set(new Counters(configuration.get().getValidProjectionInitInfo()));
+        FilteringConfiguration config = configuration.get();
+        counters.set(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
     }
 
     synchronized void setQuickPulseStatus(QuickPulseStatus quickPulseStatus) {
@@ -91,7 +92,9 @@ final class QuickPulseDataCollector {
 
     @Nullable
     synchronized FinalCounters getAndRestart() {
-        Counters currentCounters = counters.getAndSet(new Counters(configuration.get().getValidProjectionInitInfo()));
+        FilteringConfiguration config = configuration.get();
+        Counters currentCounters
+            = counters.getAndSet(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
         if (currentCounters != null) {
             return new FinalCounters(currentCounters);
         }
@@ -180,7 +183,6 @@ final class QuickPulseDataCollector {
         List<DerivedMetricInfo> metricsConfig = currentConfig.fetchMetricConfigForTelemetryType(telemetryType);
         for (DerivedMetricInfo derivedMetricInfo : metricsConfig) {
             if (Filter.checkMetricFilters(derivedMetricInfo, columns)) {
-                // TODO (harskaur): In future PR, track any error that comes from calculateProjection
                 currentCounters.derivedMetrics.calculateProjection(derivedMetricInfo, columns);
             }
         }
@@ -411,6 +413,8 @@ final class QuickPulseDataCollector {
 
         final Map<String, Double> projections;
 
+        final List<CollectionConfigurationError> configErrors;
+
         private FinalCounters(Counters currentCounters) {
 
             processPhysicalMemory = getPhysicalMemory(memory);
@@ -431,6 +435,7 @@ final class QuickPulseDataCollector {
                 this.documentList.addAll(currentCounters.documentList);
             }
             this.projections = currentCounters.derivedMetrics.fetchFinalDerivedMetricValues();
+            this.configErrors = currentCounters.configErrors;
 
         }
 
@@ -486,8 +491,11 @@ final class QuickPulseDataCollector {
 
         final DerivedMetricProjections derivedMetrics;
 
-        Counters(Map<String, AggregationType> projectionInfo) {
+        final List<CollectionConfigurationError> configErrors;
+
+        Counters(Map<String, AggregationType> projectionInfo, List<CollectionConfigurationError> errors) {
             derivedMetrics = new DerivedMetricProjections(projectionInfo);
+            configErrors = errors;
         }
 
         static long encodeCountAndDuration(long count, long duration) {

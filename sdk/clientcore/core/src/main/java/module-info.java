@@ -28,11 +28,8 @@ module io.clientcore.core {
     exports io.clientcore.core.util.auth;
     exports io.clientcore.core.instrumentation;
     exports io.clientcore.core.instrumentation.tracing;
+    exports io.clientcore.core.instrumentation.logging;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
-
-    provides io.clientcore.core.http.client.HttpClientProvider
-        with io.clientcore.core.http.client.DefaultHttpClientProvider;
-
     uses io.clientcore.core.serialization.json.JsonProvider;
 }

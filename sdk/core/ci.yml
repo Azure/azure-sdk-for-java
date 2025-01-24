@@ -170,32 +170,14 @@ extends:
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
-    AdditionalStagesAfterBuild:
-      - stage: DependencyVersionOverridesTests
-        displayName: 'Dependency Version Overrides'
-        dependsOn: []
-        jobs:
-          - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
-            parameters:
-              Artifacts:
-                - name: azure-core-version-tests
-                  groupId: com.azure
-                  safeName: azurecoreversiontests
-              VersionOverrides:
-                - jackson_2.10
-                - jackson_2.11
-                - jackson_2.12
-                - jackson_2.13
-                - jackson_2.14
-                - jackson_2.15
-                - jackson_2.16
-                - jackson_2.17
-                - jackson_2.18
-                - reactor_2020
-                - reactor_2022
-                - reactor_2023
-                - reactor_2024
-              TestGoals: surefire:test
+
+    # Run separate version override tests using a different artifacts list
+    # This matrix config overrides the ArtifactsJson variable
+    AdditionalMatrixConfigs:
+      - Name: version_overrides_tests
+        Path: sdk/core/version-overrides-matrix.json
+        Selection: all
+        GenerateVMJobs: true
 
     LiveTestStages:
       - template: /sdk/storage/tests-template.yml

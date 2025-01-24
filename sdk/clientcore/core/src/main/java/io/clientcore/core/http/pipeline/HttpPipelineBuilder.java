@@ -4,7 +4,7 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.util.ArrayList;
