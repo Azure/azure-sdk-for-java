@@ -38,30 +38,6 @@ parameters:
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    stages:
-      - stage: InstallAnnotationProcessor
-        jobs:
-          - job: InstallAnnotationProcessor
-            timeoutInMinutes: 10
-
-            pool:
-              name: $(LINUXPOOL)
-              image: $(LINUXVMIMAGE)
-              os: linux
-
-            steps:
-              - task: Maven@4
-                displayName: 'Build and install annotation-processor'
-                inputs:
-                  mavenPomFile: /annotation-processor/pom.xml
-                  goals: 'install'
-                  options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -Dspotless.skip=true -pl io.clientcore:annotation-processor'
-                  mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: $(JavaBuildVersion)
-                  jdkArchitectureOption: 'x64'
-                  publishJUnitResults: false
-
     ServiceDirectory: clientcore
     MatrixConfigs:
       - Name: clientcore_ci_test_base
@@ -87,3 +63,15 @@ extends:
         groupId: io.clientcore
       - name: annotation-processor-test
         groupId: io.clientcore
+    PreBuildSteps:
+      - task:  Maven@4
+        displayName: 'Build and install annotation-processor'
+        inputs:
+          mavenPomFile: sdk/clientcore/annotation-processor/pom.xml
+          goals: 'install'
+          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -Dspotless.skip=true -pl io.clientcore:annotation-processor'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaBuildVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
