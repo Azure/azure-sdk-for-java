@@ -13,14 +13,14 @@ import java.util.Map;
 
 public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
 
-    private final Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContextHolder = new Utils.ValueHolder<Map<String, LocationSpecificHealthContext>>();
+    private final Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> perPartitionCircuitBreakerInfoHolder = new Utils.ValueHolder<Map<String, LocationSpecificHealthContext>>();
 
-    public synchronized void setLocationToLocationSpecificHealthContext(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {
-        this.locationToLocationSpecificHealthContextHolder.v = locationSpecificHealthContext;
+    public synchronized void setPerPartitionCircuitBreakerInfoHolder(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {
+        this.perPartitionCircuitBreakerInfoHolder.v = locationSpecificHealthContext;
     }
 
-    public synchronized Map<String, LocationSpecificHealthContext> getLocationToLocationSpecificHealthContext() {
-        return locationToLocationSpecificHealthContextHolder.v;
+    public synchronized Map<String, LocationSpecificHealthContext> getPerPartitionCircuitBreakerInfoHolder() {
+        return perPartitionCircuitBreakerInfoHolder.v;
     }
 
     public static class PerPartitionCircuitBreakerInfoHolderSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PerPartitionCircuitBreakerInfoHolder> {
@@ -28,7 +28,7 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
         @Override
         public void serialize(PerPartitionCircuitBreakerInfoHolder value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 
-            Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext = value.getLocationToLocationSpecificHealthContext();
+            Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext = value.getPerPartitionCircuitBreakerInfoHolder();
 
             if (locationToLocationSpecificHealthContext != null && !locationToLocationSpecificHealthContext.isEmpty()) {
                 gen.writeStartObject();

@@ -244,9 +244,9 @@ public class DocumentServiceRequestContext implements Cloneable {
 
         if (this.perPartitionCircuitBreakerInfoHolder == null) {
             this.perPartitionCircuitBreakerInfoHolder = new PerPartitionCircuitBreakerInfoHolder();
-            this.perPartitionCircuitBreakerInfoHolder.setLocationToLocationSpecificHealthContext(locationToLocationSpecificHealthContext);
+            this.perPartitionCircuitBreakerInfoHolder.setPerPartitionCircuitBreakerInfoHolder(locationToLocationSpecificHealthContext);
         } else {
-            this.perPartitionCircuitBreakerInfoHolder.setLocationToLocationSpecificHealthContext(locationToLocationSpecificHealthContext);
+            this.perPartitionCircuitBreakerInfoHolder.setPerPartitionCircuitBreakerInfoHolder(locationToLocationSpecificHealthContext);
         }
     }
 
