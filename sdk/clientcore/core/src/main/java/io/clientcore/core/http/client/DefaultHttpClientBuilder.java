@@ -35,7 +35,7 @@ public class DefaultHttpClientBuilder {
      * This method exists to support multi-release JARs where the JDK HttpClient is only available in Java 11 and later.
      * But since the baseline requirement is Java 8 there cannot be references to the class, so this method accepts
      * {@link Object} as a holder. The actual type of the {@link Object} passed must be an instance of
-     * {@code HttpClient.Builder}, otherwise an exception will thrown.
+     * {@code HttpClient.Builder}, otherwise an exception will be thrown.
      *
      * @param httpClientBuilder the HttpClient builder to use
      * @throws ClassCastException if {@code httpClientBuilder} isn't an instance of {@code HttpClient.Builder}
@@ -50,9 +50,9 @@ public class DefaultHttpClientBuilder {
      * <p>
      * If this method is not invoked prior to {@link #build() building}, handling for a default will be based on whether
      * the builder was created with the default constructor or the constructor that accepts an existing
-     * {@link java.net.http.HttpClient.Builder}. If the default constructor was used, the default executor will be
+     * {@code HttpClient.Builder}. If the default constructor was used, the default executor will be
      * {@link SharedExecutorService#getInstance()}. If the constructor that accepts an existing
-     * {@link java.net.http.HttpClient.Builder} was used, the executor from the existing builder will be used.
+     * {@code HttpClient.Builder} was used, the executor from the existing builder will be used.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
      * @return the updated {@link DefaultHttpClientBuilder} object

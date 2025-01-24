@@ -874,7 +874,6 @@
             <testFailureIgnore>false</testFailureIgnore>
             <argLine>
               ${defaultSurefireArgLine}
-              ${javaModulesSurefireArgLine}
               ${additionalSurefireArgLine}
             </argLine>
           </configuration>
@@ -927,7 +926,6 @@
             <testFailureIgnore>false</testFailureIgnore>
             <argLine>
               ${defaultFailsafeArgLine}
-              ${javaModulesFailsafeArgLine}
               ${additionalFailsafeArgLine}
             </argLine>
           </configuration>
