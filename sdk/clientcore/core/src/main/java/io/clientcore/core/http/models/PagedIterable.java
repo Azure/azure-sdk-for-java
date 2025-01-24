@@ -126,7 +126,7 @@ public final class PagedIterable<T> implements Iterable<T> {
     }
 
     private Iterable<T> iterableByItemInternal(PagingOptions pagingOptions) {
-        return () -> new PagedIterator<>(pageRetriever, pagingOptions) {
+        return () -> new PagedIterator<T, T>(pageRetriever, pagingOptions) {
 
             private Iterator<T> nextPage;
             private Iterator<T> currentPage;

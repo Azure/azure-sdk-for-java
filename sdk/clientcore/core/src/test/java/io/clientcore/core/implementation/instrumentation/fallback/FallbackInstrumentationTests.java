@@ -56,17 +56,18 @@ public class FallbackInstrumentationTests {
     private static final Instrumentation DEFAULT_INSTRUMENTATION = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
     private final AccessibleByteArrayOutputStream logCaptureStream;
 
-    private static final TraceContextGetter<Map<String, String>> GETTER = new TraceContextGetter<>() {
-        @Override
-        public Iterable<String> keys(Map<String, String> carrier) {
-            return carrier.keySet();
-        }
+    private static final TraceContextGetter<Map<String, String>> GETTER
+        = new TraceContextGetter<Map<String, String>>() {
+            @Override
+            public Iterable<String> keys(Map<String, String> carrier) {
+                return carrier.keySet();
+            }
 
-        @Override
-        public String get(Map<String, String> carrier, String key) {
-            return carrier.get(key);
-        }
-    };
+            @Override
+            public String get(Map<String, String> carrier, String key) {
+                return carrier.get(key);
+            }
+        };
 
     public FallbackInstrumentationTests() {
         logCaptureStream = new AccessibleByteArrayOutputStream();

@@ -14,6 +14,8 @@ import io.clientcore.core.util.configuration.ConfigurationBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -25,8 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link DefaultHttpClientBuilder}.
+ * <p>
+ * Now that the default HttpClient, and related code, are using multi-release JARs this must be an integration test as
+ * the full JAR must be available to use the multi-release code.
  */
-public class DefaultHttpClientBuilderTests {
+@DisabledForJreRange(max = JRE.JAVA_11)
+public class DefaultHttpClientBuilderIT {
     private static final String PROXY_USERNAME = "foo";
     private static final String PROXY_PASSWORD = "bar";
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
